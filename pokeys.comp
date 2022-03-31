@@ -170,7 +170,9 @@ int i=0;
 
 void user_mainloop(void) 
 { 
-   
+   devSerial=27295;
+
+
    int rtc_lastmin=0;
     while(0xb){
        FOR_ALL_INSTS() {
@@ -181,7 +183,7 @@ void user_mainloop(void)
 		 enum_usb_dev = PK_EnumerateUSBDevices();
 		 enum_fusb_dev = PK_EnumerateUSBDevices();
 		 enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices,30);
-	 
+			
 		 if (devSerial!=0 )
 		 {
 				if (enum_usb_dev!=0 && enum_udp_dev==0)
