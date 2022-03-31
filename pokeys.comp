@@ -244,10 +244,10 @@ void user_mainloop(void)
 
 			 if (info_PulseEnginev2!=0)
 			 {
-				 PEv2_nrOfAxes=dev->dev->PE.info.nrOfAxes;
-				 PEv2_maxPulseFrequency=dev->dev->PEv2.info.maxPulseFrequency;
-				 PEv2_bufferDepth=dev->dev->PEv2.info.bufferDepth;
-				 PEv2_slotTiming=dev->dev->PEv2.info.slotTiming;
+				 PEv2_nrOfAxes=dev->PEv2.info.nrOfAxes;
+				 PEv2_maxPulseFrequency=dev->PEv2.info.maxPulseFrequency;
+				 PEv2_bufferDepth=dev->PEv2.info.bufferDepth;
+				 PEv2_slotTiming=dev->PEv2.info.slotTiming;
 			 }
 		}
 		else
@@ -516,10 +516,10 @@ void user_mainloop(void)
 
 		 if (info_PulseEnginev2!=0)
 		 {
-			 PEv2_nrOfAxes=dev->dev->PEv2.info.nrOfAxes;
-			 PEv2_maxPulseFrequency=dev->dev->PEv2.info.maxPulseFrequency;
-			 PEv2_bufferDepth=dev->dev->PEv2.info.bufferDepth;
-			 PEv2_slotTiming=dev->dev->PEv2.info.slotTiming;
+			 PEv2_nrOfAxes=dev->PEv2.info.nrOfAxes;
+			 PEv2_maxPulseFrequency=dev->PEv2.info.maxPulseFrequency;
+			 PEv2_bufferDepth=dev->PEv2.info.bufferDepth;
+			 PEv2_slotTiming=dev->PEv2.info.slotTiming;
 		 }
 	}
 	alive=0;
