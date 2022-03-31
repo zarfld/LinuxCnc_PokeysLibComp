@@ -179,11 +179,12 @@ void user_mainloop(void)
 			
 		 if (devSerial!=0 )
 		 {
-
+				rtc_loopcount=11;
 				dev = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
+				rtc_loopcount=12;
 				if (dev == NULL)
 				{
-
+					rtc_loopcount=13;
 					dev = PK_ConnectToDeviceWSerial_UDP(devSerial, 5000);  //waits for usb device
 				}
 
@@ -193,9 +194,9 @@ void user_mainloop(void)
 			sPoKeysNetworkDeviceSummary * udp_devices;
 			enum_usb_dev = PK_EnumerateUSBDevices();
 			enum_fusb_dev = PK_EnumerateUSBDevices();
-			enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices,180); // does not work - it hangs here
+			//enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices,180); // does not work - it hangs here
 
-			dev = PK_ConnectToDeviceWSerial_UDP(27295, 5000);
+			//dev = PK_ConnectToDeviceWSerial_UDP(27295, 5000);
 		}
 
 		if(dev != NULL)
