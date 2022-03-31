@@ -114,7 +114,7 @@ pin out unsigned PEv2_AxisEnabledMask;				// Bit-mapped ouput enabled mask
 pin in unsigned PEv2_EmergencyInputPin;
 pin out unsigned PEv2_EmergencyInput;
 pin in unsigned PEv2_EmergencyOutputPin;				//added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)
-pin out unsigned PEv2_EmergencyOutput;
+pin in unsigned PEv2_EmergencyOutput;
 
 pin out unsigned PEv2_param1;
 pin out unsigned PEv2_param2;
@@ -261,7 +261,6 @@ void user_mainloop(void)
 	 // RTC
 	if (PK_RTCGet(dev) == PK_OK)
 	{
-
 		rtc_sec=dev->RTC.SEC;
 		rtc_min=dev->RTC.MIN;
 		rtc_hour=dev->RTC.HOUR;
@@ -278,8 +277,6 @@ void user_mainloop(void)
 			rtc_loopcount=0;
 			rtc_lastsec=rtc_sec;
 		}
-
-
 	}
 
 	// PulseEnginev2
