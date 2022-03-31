@@ -174,29 +174,24 @@ void user_mainloop(void)
 
 	 while(dev == NULL)
 	 {
-		 sPoKeysNetworkDeviceSummary * udp_devices;
-		 enum_usb_dev = PK_EnumerateUSBDevices();
-		 enum_fusb_dev = PK_EnumerateUSBDevices();
-		 enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices,30);
 			
 		 if (devSerial!=0 )
 		 {
-				if (enum_usb_dev!=0 && enum_udp_dev==0)
-				{
-					dev = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
-				}
-				if (enum_fusb_dev!=0 && enum_udp_dev==0)
-				{
-					dev = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
-				}
-				if (enum_usb_dev==0 && enum_udp_dev!=0)
+
+				dev = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
+				if (dev == NULL)
 				{
 					dev = PK_ConnectToDeviceWSerial_UDP(devSerial, 5000);  //waits for usb device
 				}
 		 }
 		else
 		{
-		dev = PK_ConnectToDeviceWSerial_UDP(27295, 5000);
+			sPoKeysNetworkDeviceSummary * udp_devices;
+			enum_usb_dev = PK_EnumerateUSBDevices();
+			enum_fusb_dev = PK_EnumerateUSBDevices();
+			enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices,180); does not work - it hangs here
+
+			dev = PK_ConnectToDeviceWSerial_UDP(27295, 5000);
 		}
 
 		if(dev != NULL)
