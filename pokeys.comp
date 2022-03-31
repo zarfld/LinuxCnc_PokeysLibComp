@@ -315,7 +315,37 @@ void user_mainloop(void)
 		PE2_LimitOverrideSetup=PEv2.LimitOverrideSetup;			// Limit override configuration
 		PE2_PulseEngineState=PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
 		PE2_AxisEnabledMask=PEv2.AxisEnabledMask;				// Bit-mapped ouput enabled mask
-		PE2_EmergencyInputPin=PEv2.EmergencyInputPin;
+		if (PE2_EmergencyInputPin!=0)
+		{	//check if pin is parametrized in HAL
+			PEv2.EmergencyInputPin=PE2_EmergencyInputPin;
+		}
+		if (PEv2.EmergencyInputPin>0)
+		{
+			PE2_EmergencyInput=dev->Pins[PEv2.EmergencyInputPin-1].DigitalValueGet;
+		}
+
+		if (PE2_EmergencyOutputPin!=0)
+		{	//check if pin is parametrized in HAL
+			dev->Pins[PE2_EmergencyOutputPin].DigitalValueSet=PE2_EmergencyOutput;
+		}
+		else
+		{
+			if (PEv2.EmergencyInputPin>0)
+			{
+				if(dev->Pins[PEv2.EmergencyInputPin-1].DigitalValueGet>0)
+				{
+					PE2_EmergencyInput=1;
+				}
+				else
+				{
+					PE2_EmergencyInput=PE2_EmergencyOutput;
+				}
+			}
+			else
+			{
+				PE2_EmergencyInput=PE2_EmergencyOutput;
+			}
+		}
 		PE2_param1=PEv2.param1;
 		PE2_param2=PEv2.param2;
 		PE2_param3=PEv2.param3;
@@ -367,10 +397,59 @@ void user_mainloop(void)
 				PE2_MaxDecceleration(i)=PEv2.MaxDecceleration[i];			// Maximum axis deceleration (in pulses/ms/ms)
 				PE2_MPGjogMultiplier(i)=PEv2.MPGjogMultiplier[i];		// MPG jog multiplier value
 				PE2_MPGjogEncoder(i)=PEv2.MPGjogEncoder[i];			// MPG jog encoder ID
-				PE2_PinHomeSwitch(i)=PEv2.PinHomeSwitch[i];			// Home switch pin (0 for external dedicated input)
-				PE2_PinLimitMSwitch(i)=PEv2.PinLimitMSwitch[i];		// Limit- switch pin (0 for external dedicated input)
-				PE2_PinLimitPSwitch(i)=PEv2.PinLimitPSwitch[i];		// Limit+ switch pin (0 for external dedicated input)
+				
+				// Home switch pin (0 for external dedicated input)
+				if (PE2_PinHomeSwitch(i)!=0)
+				{	//check if pin is parametrized in HAL
+					PEv2.PinHomeSwitch[i]=PE2_PinHomeSwitch(i);
+				}
+				if (PEv2.PinHomeSwitch[i]>0)
+				{
+					PE2_HomeSwitch(i)=dev->Pins[PEv2.PinHomeSwitch[i]-1].DigitalValueGet;
+				}
+				else
+				{
+					PE2_HomeSwitch(i)=0;
+				}
+
+				// Limit- switch pin (0 for external dedicated input)
+				if (PE2_PinLimitMSwitch(i)!=0)
+				{	//check if pin is parametrized in HAL
+					PEv2.PinLimitMSwitch[i]=PE2_PinLimitMSwitch(i);
+				}
+				if (PEv2.PinLimitMSwitch[i]>0)
+				{
+					PE2_LimitMSwitch(i)=dev->Pins[PEv2.PinLimitMSwitch[i]-1].DigitalValueGet;
+				}
+				else
+				{
+					PE2_LimitMSwitch(i)=0;
+				}
+
+				// Limit+ switch pin (0 for external dedicated input)
+				if (PE2_PinLimitPSwitch(i)!=0)
+				{	//check if pin is parametrized in HAL
+					PEv2.PinLimitPSwitch[i]=PE2_PinLimitPSwitch(i);
+				}
+				if (PEv2.PinLimitPSwitch[i]>0)
+				{
+					PE2_LimitPSwitch(i)=dev->Pins[PEv2.PinLimitPSwitch[i]-1].DigitalValueGet;
+				}
+				else
+				{
+					PE2_LimitPSwitch(i)=0;
+				}
+
 				PE2_AxisEnableOutputPins(i)=PEv2.AxisEnableOutputPins[i];	// Axis enabled output pin (0 for external dedicated output)
+				if (PE2_AxisEnableOutputPins(i)!=0)
+				{	//check if pin is parametrized in HAL
+					PEv2.AxisEnableOutputPins[i]=PE2_AxisEnableOutputPins(i);
+				}
+				if (PEv2.AxisEnableOutputPins[i]>0)
+				{
+					dev->Pins[PEv2.PinLimitPSwitch[i]-1].DigitalValueSet=PE2_AxisEnableOutput(i);
+				}
+
 				PE2_HomeBackOffDistance(i)=PEv2.HomeBackOffDistance[i];	// Back-off distance after homing
 				PE2_MPGjogDivider(i)=PEv2.MPGjogDivider[i];			// Divider for the MPG jogging (enhanced encoder resolution)
 				PE2_BacklashWidth(i)=PEv2.BacklashWidth[i];			// half of real backlash width
