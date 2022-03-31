@@ -171,18 +171,20 @@ void user_mainloop(void)
 
     while(0xb){
        FOR_ALL_INSTS() {
-	   rtc_loopcount++;
+	   rtc_loopcount=1;
 	 while(dev == NULL)
 	 {
 			
 		 if (devSerial!=0 )
 		 {
-
+				 rtc_loopcount=2;
 				dev = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
 				if (dev == NULL)
 				{
+					 rtc_loopcount=3;
 					dev = PK_ConnectToDeviceWSerial_UDP(devSerial, 5000);  //waits for usb device
 				}
+				 rtc_loopcount=4;
 		 }
 		else
 		{
