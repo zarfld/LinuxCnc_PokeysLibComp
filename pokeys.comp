@@ -148,9 +148,9 @@ pin out unsigned rtc_tmp;
 pin out unsigned rtc_doy;
 pin out unsigned rtc_month;
 pin out unsigned rtc_year;
-
+pin out unsigned rtc_loopcount;
 pin out unsigned pincap-# [55];
-
+pin out unsigned rtc_lastmin;
 license "GPL";
 
 option extra_link_args "-lPoKeys";
@@ -168,10 +168,10 @@ void user_mainloop(void)
 { 
 
 
-   int rtc_lastmin=0;
+
     while(0xb){
        FOR_ALL_INSTS() {
-
+	   rtc_loopcount++;
 	 while(dev == NULL)
 	 {
 			
@@ -189,7 +189,7 @@ void user_mainloop(void)
 			sPoKeysNetworkDeviceSummary * udp_devices;
 			enum_usb_dev = PK_EnumerateUSBDevices();
 			enum_fusb_dev = PK_EnumerateUSBDevices();
-			enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices,180); does not work - it hangs here
+			enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices,180); // does not work - it hangs here
 
 			dev = PK_ConnectToDeviceWSerial_UDP(27295, 5000);
 		}
