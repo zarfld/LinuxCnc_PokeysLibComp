@@ -261,39 +261,23 @@ void user_mainloop(void)
 		}
 	 }
 	 alive=1; 
-	 if ((PK_DigitalIOGet(dev) == PK_OK) && (PK_AnalogIOGet(dev) == PK_OK) && (PK_PinConfigurationGet(dev) == PK_OK)){  //gets IO data and checks return value 
-		err=0;
-		sPoKeysPinData iPin;
-		
-		for(i=0;i<info_PinCount-1;i++)
-		{
-			pincap(i) = dev->Pins[i].PinFunction;
-			switch(dev->Pins[i].PinFunction)
-			{
-				case PK_PinCap_digitalInput:
-					in(i)=dev->Pins[i].DigitalValueGet;           //just transfers values
-					break;
-				case PK_PinCap_digitalOutput:
-					dev->Pins[i].DigitalValueSet=out(i);
-					break;
-				case PK_PinCap_analogInput:
-					ain(i-40)=dev->Pins[i].AnalogValue;
-					break;
-				default:
-					in(i)=0;
-					break;
-			}
-		}
-		PK_DigitalIOSet(dev);
-	 }
-         else{             		  //on connection error
-		PK_DisconnectDevice(dev);
-		dev=NULL;  		  //tries to reconnect
-		err=1;
-		for(i=0;i<54;i++)in(i)=0;
-		for(i=0;i<3;i++)ain(i)=0;
-	 }
-	 alive++; 
+
+	 // RTC
+	if (PK_RTCGet(dev) == PK_OK)
+	{
+
+		rtc_sec=dev->RTC.SEC;
+		rtc_min=dev->RTC.MIN;
+		rtc_hour=dev->RTC.HOUR;
+		rtc_dow=dev->RTC.DOW;
+		rtc_dom=dev->RTC.DOM;
+		rtc_tmp=dev->RTC.tmp;
+		rtc_doy=dev->RTC.DOY;
+		rtc_month=dev->RTC.MONTH;
+		rtc_year=dev->RTC.YEAR;
+	}
+
+	// PulseEnginev2
 	if (info_PulseEnginev2!=0)
 	{
 	 if ((PK_PEv2_StatusGet(dev) == PK_OK) && (PK_PEv2_Status2Get(dev) == PK_OK))
@@ -366,14 +350,12 @@ void user_mainloop(void)
 		PE2_ProbeSpeed=PEv2.ProbeSpeed;						// Probe speed (ratio of the maximum speed)
 		PE2_BacklashCompensationEnabled=PEv2.BacklashCompensationEnabled;
 	 }
-	alive++; 
 	 if (PK_PEv2_AxisConfigurationGet(dev) == PK_OK)
 	 {
 		PEv2 = dev->PEv2;
 
 			for(i=0;i<PE2_nrOfAxes;i++)
 			{ 
-				alive++; 
 				PE2_AxesState(i)=PEv2.AxesState[i];				// Axis states (bit-mapped) - see ePK_PEAxisState
 				PE2_AxesConfig(i)=PEv2.AxesConfig[i];				// Axis configuration - see ePK_PE2_AxisConfig
 				PE2_AxesSwitchConfig(i)=PEv2.AxesSwitchConfig[i];		// Axis switch configuration - see ePK_PE2_AxisSwitchOptions
@@ -458,23 +440,43 @@ void user_mainloop(void)
 			}
 	 }
 	}
-	if (PK_RTCGet(dev) == PK_OK)
-	{
-		alive++; 
-		rtc_sec=dev->RTC.SEC;
-		rtc_min=dev->RTC.MIN;
-		rtc_hour=dev->RTC.HOUR;
-		rtc_dow=dev->RTC.DOW;
-		rtc_dom=dev->RTC.DOM;
-		rtc_tmp=dev->RTC.tmp;
-		rtc_doy=dev->RTC.DOY;
-		rtc_month=dev->RTC.MONTH;
-		rtc_year=dev->RTC.YEAR;
-	}
+
+		 if ((PK_DigitalIOGet(dev) == PK_OK) && (PK_AnalogIOGet(dev) == PK_OK) && (PK_PinConfigurationGet(dev) == PK_OK)){  //gets IO data and checks return value 
+		err=0;
+		sPoKeysPinData iPin;
+		
+		for(i=0;i<info_PinCount-1;i++)
+		{
+			pincap(i) = dev->Pins[i].PinFunction;
+			switch(dev->Pins[i].PinFunction)
+			{
+				case PK_PinCap_digitalInput:
+					in(i)=dev->Pins[i].DigitalValueGet;           //just transfers values
+					break;
+				case PK_PinCap_digitalOutput:
+					dev->Pins[i].DigitalValueSet=out(i);
+					break;
+				case PK_PinCap_analogInput:
+					ain(i-40)=dev->Pins[i].AnalogValue;
+					break;
+				default:
+					in(i)=0;
+					break;
+			}
+		}
+		PK_DigitalIOSet(dev);
+	 }
+         else{             		  //on connection error
+		PK_DisconnectDevice(dev);
+		dev=NULL;  		  //tries to reconnect
+		err=1;
+		for(i=0;i<54;i++)in(i)=0;
+		for(i=0;i<3;i++)ain(i)=0;
+	 }
 	
 	if (rtc_lastmin!=rtc_min)
 	{
-	alive++; 
+
 	rtc_lastmin=rtc_min;
 	 dev_info = dev->info;
 		
