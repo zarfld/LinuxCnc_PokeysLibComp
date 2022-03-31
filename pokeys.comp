@@ -170,7 +170,6 @@ int i=0;
 
 void user_mainloop(void) 
 { 
-   devSerial=27295;
 
 
    int rtc_lastmin=0;
@@ -201,6 +200,7 @@ void user_mainloop(void)
 		 }
 		else
 		{
+		dev = PK_ConnectToDeviceWSerial_UDP(27295, 5000);
 		}
 
 		if(dev != NULL)
