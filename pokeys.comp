@@ -92,7 +92,7 @@ pin in unsigned PEv2_AxisEnableOutputPins-# [8];		// Axis enabled output pin (0 
 pin out bit PEv2_HomeSwitch-# [8];				// Home switch
 pin out bit PEv2_LimitMSwitch-# [8];			// Limit- switch
 pin out bit PEv2_LimitPSwitch-# [8];			// Limit+ switch
-pin in bit PEv2_AxisEnableOutput-# [8];		// Axis enabled output
+pin in u32 PEv2_AxisEnableOutput-# [8];		// Axis enabled output
 
 pin out unsigned PEv2_HomeBackOffDistance-# [8];		// Back-off distance after homing
 pin out unsigned PEv2_MPGjogDivider-# [8];			// Divider for the MPG jogging (enhanced encoder resolution)
