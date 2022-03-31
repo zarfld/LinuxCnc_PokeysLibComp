@@ -532,7 +532,7 @@ void user_mainloop(void)
 		 }
 	}
 	alive=0;
-	usleep(40000); 
+	usleep(20000); 
         }
     }
 
