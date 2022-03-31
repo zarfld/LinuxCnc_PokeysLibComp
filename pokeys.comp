@@ -151,6 +151,8 @@ pin out unsigned rtc_year;
 pin out unsigned rtc_loopcount;
 pin out unsigned pincap-# [55];
 pin out unsigned rtc_lastmin;
+pin out unsigned rtc_lastsec;
+pin out unsigned rtc_loop_frequ;
 license "GPL";
 
 option extra_link_args "-lPoKeys";
@@ -171,20 +173,20 @@ void user_mainloop(void)
 
     while(0xb){
        FOR_ALL_INSTS() {
-	   rtc_loopcount=1;
+	   rtc_loopcount++;
 	 while(dev == NULL)
 	 {
 			
 		 if (devSerial!=0 )
 		 {
-				 rtc_loopcount=2;
+
 				dev = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
 				if (dev == NULL)
 				{
-					 rtc_loopcount=3;
+
 					dev = PK_ConnectToDeviceWSerial_UDP(devSerial, 5000);  //waits for usb device
 				}
-				 rtc_loopcount=4;
+
 		 }
 		else
 		{
@@ -268,6 +270,15 @@ void user_mainloop(void)
 		rtc_doy=dev->RTC.DOY;
 		rtc_month=dev->RTC.MONTH;
 		rtc_year=dev->RTC.YEAR;
+
+		if (rtc_lastsec!=rtc_sec)
+		{
+			rtc_loop_frequ=rtc_loopcount;
+			rtc_loopcount=0;
+			rtc_lastsec=rtc_sec;
+		}
+
+
 	}
 
 	// PulseEnginev2
