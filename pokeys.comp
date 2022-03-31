@@ -93,6 +93,7 @@ pin out bit PEv2_HomeSwitch-# [8];				// Home switch
 pin out bit PEv2_LimitMSwitch-# [8];			// Limit- switch
 pin out bit PEv2_LimitPSwitch-# [8];			// Limit+ switch
 pin in bit PEv2_AxisEnableOutput-# [8];		// Axis enabled output
+pin out bit PEv2_HomeSwitch;				// Home switch
 
 pin out unsigned PEv2_HomeBackOffDistance-# [8];		// Back-off distance after homing
 pin out unsigned PEv2_MPGjogDivider-# [8];			// Divider for the MPG jogging (enhanced encoder resolution)
@@ -180,8 +181,14 @@ void user_mainloop(void)
 		 if (devSerial!=0 )
 		 {
 				rtc_loopcount=11;
-				dev = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
+				enum_usb_dev = PK_EnumerateUSBDevices();
 				rtc_loopcount=12;
+				if (enum_usb_dev != 0)
+				{
+				dev = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
+				}
+				
+				rtc_loopcount=13;
 				if (dev == NULL)
 				{
 					rtc_loopcount=13;
@@ -196,7 +203,6 @@ void user_mainloop(void)
 			enum_fusb_dev = PK_EnumerateUSBDevices();
 			//enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices,180); // does not work - it hangs here
 
-			//dev = PK_ConnectToDeviceWSerial_UDP(27295, 5000);
 		}
 
 		if(dev != NULL)
