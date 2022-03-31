@@ -440,7 +440,7 @@ void user_mainloop(void)
 					PE2_LimitPSwitch(i)=0;
 				}
 
-				PE2_AxisEnableOutputPins(i)=PEv2.AxisEnableOutputPins[i];	// Axis enabled output pin (0 for external dedicated output)
+				//PE2_AxisEnableOutputPins(i)=PEv2.AxisEnableOutputPins[i];	// Axis enabled output pin (0 for external dedicated output)
 				if (PE2_AxisEnableOutputPins(i)!=0)
 				{	//check if pin is parametrized in HAL
 					PEv2.AxisEnableOutputPins[i]=PE2_AxisEnableOutputPins(i);
