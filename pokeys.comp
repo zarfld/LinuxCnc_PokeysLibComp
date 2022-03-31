@@ -89,10 +89,10 @@ pin in unsigned PEv2_PinLimitMSwitch-# [8];			// Limit- switch pin (0 for extern
 pin in unsigned PEv2_PinLimitPSwitch-# [8];			// Limit+ switch pin (0 for external dedicated input)
 pin in unsigned PEv2_AxisEnableOutputPins-# [8];		// Axis enabled output pin (0 for external dedicated output)
 
-pin out unsigned PEv2_HomeSwitch-# [8];				// Home switch
-pin out unsigned PEv2_LimitMSwitch-# [8];			// Limit- switch
-pin out unsigned PEv2_LimitPSwitch-# [8];			// Limit+ switch
-pin in unsigned PEv2_AxisEnableOutput-# [8];		// Axis enabled output
+pin out bit PEv2_HomeSwitch-# [8];				// Home switch
+pin out bit PEv2_LimitMSwitch-# [8];			// Limit- switch
+pin out bit PEv2_LimitPSwitch-# [8];			// Limit+ switch
+pin in bit PEv2_AxisEnableOutput-# [8];		// Axis enabled output
 
 pin out unsigned PEv2_HomeBackOffDistance-# [8];		// Back-off distance after homing
 pin out unsigned PEv2_MPGjogDivider-# [8];			// Divider for the MPG jogging (enhanced encoder resolution)
@@ -112,9 +112,9 @@ pin out unsigned PEv2_PulseEngineState;				// State of pulse engine - see ePoKey
 pin out unsigned PEv2_AxisEnabledMask;				// Bit-mapped ouput enabled mask
 
 pin in unsigned PEv2_EmergencyInputPin;
-pin out unsigned PEv2_EmergencyInput;
+pin out bit PEv2_EmergencyInput;
 pin in unsigned PEv2_EmergencyOutputPin;				//added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)
-pin in unsigned PEv2_EmergencyOutput;
+pin in bit PEv2_EmergencyOutput;
 
 pin out unsigned PEv2_param1;
 pin out unsigned PEv2_param2;
