@@ -193,7 +193,7 @@ void user_mainloop(void)
 			enum_fusb_dev = PK_EnumerateUSBDevices();
 			enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices,180); // does not work - it hangs here
 
-			dev = PK_ConnectToDeviceWSerial_UDP(27295, 5000);
+			//dev = PK_ConnectToDeviceWSerial_UDP(27295, 5000);
 		}
 
 		if(dev != NULL)
