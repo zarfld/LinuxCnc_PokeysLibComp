@@ -408,7 +408,7 @@ void user_mainloop(void)
 
 						if (PEv2_PinLimitPSwitch(i)!=0)
 						{	//check if pin is parametrized in HAL
-						dev->Pins[PinLimitMSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
+						dev->Pins[PEv2_PinLimitPSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
 						setPinConfig=true;
 						}
 						if (PEv2_PinLimitPSwitch(i)!=0)
