@@ -124,7 +124,7 @@ pin in float PEv2_STEPGEN_MAXACCEL-# [8];
 pin in float PEv2_DEADBAND-# [8];
 pin in float PEv2_MAX_OUTPUT-# [8];
 pin in float PEv2_ENCODER_SCALE-# [8];
-# these are in nanoseconds
+// these are in nanoseconds
 pin in float PEv2_DIRSETUP-# [8];					// (ns)
 pin in float PEv2_DIRHOLD-# [8];					// (ns)
 pin in float PEv2_STEPLEN-# [8];					// (ns)
