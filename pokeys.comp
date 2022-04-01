@@ -234,9 +234,9 @@ pin out unsigned Pins_preventUpdate-#[55];
 pin out unsigned MatrixKB_matrixKBconfiguration;		// Matrix keyboard configuration (set to 1 to enable matrix keyboard support)
 pin out unsigned MatrixKB_matrixKBwidth;				// Matrix keyboard width (number of columns)
 pin out unsigned MatrixKB_matrixKBheight;				// Matrix keyboard height (number of rows)
-pin out unsigned MatrixKB_matrixKBcolumnsPins[8];		// List of matrix keyboard column connections
-pin out unsigned MatrixKB_matrixKBrowsPins[16];			// List of matrix keyboard row connections
-pin out unsigned MatrixKB_matrixKBvalues[128];			// Current state of each matrix keyboard key (assumes fixed width of 8 columns)
+pin out unsigned MatrixKB_matrixKBcolumnsPins-#[8];		// List of matrix keyboard column connections
+pin out unsigned MatrixKB_matrixKBrowsPins-#[16];			// List of matrix keyboard row connections
+pin out unsigned MatrixKB_matrixKBvalues-#[128];			// Current state of each matrix keyboard key (assumes fixed width of 8 columns)
 
 license "GPL";
 
