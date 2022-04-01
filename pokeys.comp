@@ -14,6 +14,10 @@ pin out bit connected;
 pin in unsigned devSerial;
 pin out bit alive;
 
+pin in bit machine_is_on;
+
+
+
 // PoKeys device information
 pin out unsigned info_PinCount;                        // Number of pins, physically on the device
 pin out unsigned info_PWMCount;                        // Number of pins that support PWM output
@@ -343,8 +347,9 @@ void user_mainloop(void)
 				dev->PEv2.ProbeInput=PEv2_ProbeInput;
 				//check if pin is parametrized in HAL
 				dev->PEv2.ProbeInputPolarity=PEv2_ProbeInputPolarity;
-				
+				dev->PEv2.PulseEngineEnabled=8; //Enable 8 axes
 				dev->PEv2.PulseEngineActivated=true;
+				dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
 				PK_PEv2_PulseEngineSetup(dev);
 
 				for(i=0;i<PEv2_nrOfAxes;i++)
@@ -452,34 +457,86 @@ void user_mainloop(void)
 		switch (PEv2_PulseEngineState)
 		{
 		    case PK_PEState_peSTOPPED:           // Pulse engine is stopped
+				if(machine_is_on==true)
+				{
+					dev->PEv2.PulseEngineState = PK_PEState_peRUNNING;
+					PK_PEv2_PulseEngineStateSet(dev)
+				}
 				break;
 		    casePK_PEState_peINTERNAL:           // PEv1: Internal motion controller is in use, PEv2: not used
 				break;
 		    casePK_PEState_peBUFFER:           // PEv1: Buffered operation mode is in use, PEv2: not used
 				break;
 		    casePK_PEState_peRUNNING:           // Pulse engine is activated
+				if(machine_is_on==false)
+				{
+					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
+					PK_PEv2_PulseEngineStateSet(dev)
+				}
 				break;
 		    casePK_PEState_peJOGGING:          // Jogging mode enabled
+				if(machine_is_on==false)
+				{
+					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
+					PK_PEv2_PulseEngineStateSet(dev)
+				}
 				break;
 		    casePK_PEState_peSTOPPING:          // Pulse engine is stopping
 				break;
 		    casePK_PEState_peHOME:          // All axes are homed
+				if(machine_is_on==false)
+				{
+					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
+					PK_PEv2_PulseEngineStateSet(dev)
+				}
 				break;
 		    casePK_PEState_peHOMING:          // Axes homing is in progress
+				if(machine_is_on==false)
+				{
+					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
+					PK_PEv2_PulseEngineStateSet(dev)
+				}
 				break;
 		    casePK_PEState_pePROBECOMPLETE:          // All axes are homed
+				if(machine_is_on==false)
+				{
+					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
+					PK_PEv2_PulseEngineStateSet(dev)
+				}
 				break;
 		    casePK_PEState_pePROBE:          // Axes probing is in progress
+				if(machine_is_on==false)
+				{
+					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
+					PK_PEv2_PulseEngineStateSet(dev)
+				}
 				break;
 		    casePK_PEState_pePROBEERROR:          // Error occured during probing
+				if(machine_is_on==false)
+				{
+					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
+					PK_PEv2_PulseEngineStateSet(dev)
+				}
 				break;
 		    casePK_PEState_peHYBRIDPROBE_STOPPING:
+				if(machine_is_on==false)
+				{
+					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
+					PK_PEv2_PulseEngineStateSet(dev)
+				}
 				break;
 		    casePK_PEState_peHYBRIDPROBE_COMPLETE:
+				if(machine_is_on==false)
+				{
+					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
+					PK_PEv2_PulseEngineStateSet(dev)
+				}
 				break;
 		    casePK_PEState_peSTOP_LIMIT:         // Pulse engine stopped due to limit reached
+				err=true;
 				break;
 		    casePK_PEState_peSTOP_EMERGENCY:          // Pulse engine stopped due to emergency switch
+				err=true;
 				break;
 		}
 
