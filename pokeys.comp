@@ -393,7 +393,7 @@ void user_mainloop(void)
 					}
 				}
 				dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
-				PK_PEv2_PulseEngineStateSet(dev)
+				PK_PEv2_PulseEngineStateSet(dev);
 
 			 }
 		}
