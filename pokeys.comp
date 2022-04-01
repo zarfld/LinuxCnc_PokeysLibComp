@@ -2,9 +2,6 @@ component pokeys "PoKeys IO driver, by Mit Zot";
 
 option userspace yes;
 
-pin out bit in-# [55];
-pin in bit out-# [55];
-pin out unsigned ain-# [7];
 pin out unsigned enum_usb_dev;
 pin out unsigned enum_fusb_dev;
 pin out unsigned enum_udp_dev;
@@ -796,21 +793,6 @@ void user_mainloop(void)
 			Pins_upKeyCodeMacroID(i)=dev->Pins[i].upKeyCodeMacroID;
 			Pins_upKeyModifier(i)=dev->Pins[i].upKeyModifier;
 			Pins_preventUpdate(i)=dev->Pins[i].preventUpdate;
-			switch(dev->Pins[i].PinFunction)
-			{
-				case PK_PinCap_digitalInput:
-					in(i)=dev->Pins[i].DigitalValueGet;           //just transfers values
-					break;
-				case PK_PinCap_digitalOutput:
-					dev->Pins[i].DigitalValueSet=out(i);
-					break;
-				case PK_PinCap_analogInput:
-					ain(i-40)=dev->Pins[i].AnalogValue;
-					break;
-				default:
-					in(i)=0;
-					break;
-			}
 		}
 		PK_DigitalIOSet(dev);
 	 }
