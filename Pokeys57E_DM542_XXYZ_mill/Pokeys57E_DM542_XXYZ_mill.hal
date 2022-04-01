@@ -6,7 +6,7 @@
 loadrt [KINS]KINEMATICS
 loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS
 loadrt hostmot2
-loadrt hm2_pci config=" num_encoders=1 num_pwmgens=0 num_stepgens=5 sserial_port_0=00xxxx" 
+#loadrt hm2_pci config=" num_encoders=1 num_pwmgens=0 num_stepgens=5 sserial_port_0=00xxxx" 
 setp    [HMOT](CARD0).watchdog.timeout_ns 5000000
 loadusr pokeys
 show pin
