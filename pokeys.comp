@@ -321,14 +321,14 @@ void user_mainloop(void)
 				
 						if (PEv2_AxesConfig(i)!=PK_AC_POSITION_MODE)
 						{
-							dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_vel_cmd * PEv2_STEP_SCALE(i);
+							dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_vel_cmd(i) * PEv2_STEP_SCALE(i);
 
 							PEv2_joint_vel_fb(i) = dev->PEv2.PositionSetup[i] / PEv2_STEP_SCALE(i);
 							PEv2_joint_pos_fb = dev->PEv2.CurrentPosition[i] / PEv2_STEP_SCALE(i);
 						}
 						else
 						{
-							dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_pos_cmd * PEv2_STEP_SCALE(i);
+							dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i) * PEv2_STEP_SCALE(i);
 							PEv2_joint_vel_fb(i) = dev->PEv2.PositionSetup[i] / PEv2_STEP_SCALE(i);
 							PEv2_joint_pos_fb = dev->PEv2.CurrentPosition[i] / PEv2_STEP_SCALE(i);
 						}
