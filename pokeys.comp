@@ -190,7 +190,7 @@ pin out unsigned PEv2_newMotionBufferEntries;
 pin out unsigned PEv2_HomingStartMaskSetup;			// Bit-mapped axes indexes to be homed
 pin out unsigned PEv2_ProbeStartMaskSetup;			// Bit-mapped axis indexes for probing
 pin in unsigned PEv2_ProbeInput;					// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
-pin out unsigned PEv2_ProbeInputPolarity;			// Probe input polarity
+pin in unsigned PEv2_ProbeInputPolarity;			// Probe input polarity
 pin out unsigned PEv2_ProbeStatus;					// Probe status (probe completion bit-mapped status)
 //pin out unsigned PEv2_MotionBuffer[448];			// Motion buffer
 pin out float PEv2_ProbeSpeed;						// Probe speed (ratio of the maximum speed)
@@ -342,6 +342,11 @@ void user_mainloop(void)
 				if (PEv2_ProbeInput!=0)
 				{	//check if pin is parametrized in HAL
 					dev->PEv2.ProbeInput=PEv2_ProbeInput;
+					setPeConfig=true;
+				}
+				if (PEv2_ProbeInputPolarity!=0)
+				{	//check if pin is parametrized in HAL
+					dev->PEv2.ProbeInputPolarity=PEv2_ProbeInputPolarity;
 					setPeConfig=true;
 				}
 				for(i=0;i<PEv2_nrOfAxes;i++)
