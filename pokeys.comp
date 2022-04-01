@@ -781,7 +781,21 @@ void user_mainloop(void)
 		
 		for(i=0;i<info_PinCount-1;i++)
 		{
-			pincap(i) = dev->Pins[i].PinFunction;
+			Pins_DigitalCounterValue(i)=dev->Pins[i].DigitalCounterValue;
+			Pins_AnalogValue(i)=dev->Pins[i].AnalogValue;
+			Pins_PinFunction(i)=dev->Pins[i].PinFunction;
+			Pins_CounterOptions(i)=dev->Pins[i].CounterOptions;
+			Pins_DigitalValueGet(i)=dev->Pins[i].DigitalValueGet;
+			dev->Pins[i].DigitalValueSet=Pins_DigitalValueSet(i);
+			Pins_DigitalCounterAvailable(i)=dev->Pins[i].DigitalCounterAvailable;
+			Pins_MappingType(i)=dev->Pins[i].MappingType;
+			Pins_KeyCodeMacroID(i)=dev->Pins[i].KeyCodeMacroID;
+			Pins_KeyModifier(i)=dev->Pins[i].KeyModifier;
+			Pins_downKeyCodeMacroID(i)=dev->Pins[i].downKeyCodeMacroID;
+			Pins_downKeyModifier(i)=dev->Pins[i].downKeyModifier;
+			Pins_upKeyCodeMacroID(i)=dev->Pins[i].upKeyCodeMacroID;
+			Pins_upKeyModifier(i)=dev->Pins[i].upKeyModifier;
+			Pins_preventUpdate(i)=dev->Pins[i].preventUpdate;
 			switch(dev->Pins[i].PinFunction)
 			{
 				case PK_PinCap_digitalInput:
