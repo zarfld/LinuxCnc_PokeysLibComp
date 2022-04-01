@@ -352,7 +352,7 @@ void user_mainloop(void)
 
 				if (setPeConfig=true)
 				{
-					PK_PEv2_PulseEngineSetup(dev)
+					PK_PEv2_PulseEngineSetup(dev);
 				}
 				for(i=0;i<PEv2_nrOfAxes;i++)
 				{
