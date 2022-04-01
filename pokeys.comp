@@ -61,9 +61,9 @@ pin out unsigned PEv2_slotTiming;
 
 //***********************************************************************
 //[TRAJ] information in HAL-INI 
-pin in string COORDINATES;
-pin in string LINEAR_UNITS;
-pin in string ANGULAR_UNITS;
+pin in s32 COORDINATES;
+pin in s32 LINEAR_UNITS;
+pin in s32 ANGULAR_UNITS;
 pin in float CYCLE_TIME;
 pin in float DEFAULT_LINEAR_VELOCITY;
 pin in float MAX_LINEAR_VELOCITY;
