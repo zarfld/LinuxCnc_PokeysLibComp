@@ -23,7 +23,7 @@ addf pid.s.do-pid-calcs       servo-thread
 #addf [HMOT](CARD0).write         servo-thread
 
 # external output signals
-#net estop-out       => pokeys.0.PEv2-EmergencyOutput
+net estop-out       => pokeys.0.PEv2-EmergencyOutput
 
 # external input signals
 
@@ -48,6 +48,7 @@ net home-x2     <=  pokeys.0.PEv2-HomeSwitchStat-7
 # --- ESTOP-EXT ---
 net estop-ext     <=  pokeys.0.PEv2-EmergencyInput
 #setp pokeys.0.PEv2-EmergencyInput-invert 1
+#
 
 # --- JOG-X-POS ---
 #net jog-x-pos     <=  [HMOT](CARD0).gpio.026.in
