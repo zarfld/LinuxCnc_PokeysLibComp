@@ -554,7 +554,8 @@ void user_mainloop(void)
 				}
 				if (dev->PEv2.PinHomeSwitch[i]>0)
 				{
-					PEv2_HomeSwitch(i)=dev->Pins[dev->PEv2.PinHomeSwitch[i]-1].DigitalValueGet;
+					unsigned PinId = dev->PEv2.PinHomeSwitch[i]
+					PEv2_HomeSwitch(i)=dev->Pins[PinId-1].DigitalValueGet;
 				}
 				else
 				{
