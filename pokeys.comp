@@ -498,7 +498,7 @@ void user_mainloop(void)
 			{
 				if(dev->Pins[dev->PEv2.EmergencyInputPin-1].DigitalValueGet>0)
 				{
-					PEv2_EmergencyInput=1;
+					PEv2_EmergencyInput=0;
 				}
 				else
 				{
