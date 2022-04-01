@@ -72,7 +72,7 @@ pin in float MAX_LINEAR_VELOCITY;
 // Pulse engine v2 structure...
 pin out unsigned PEv2_AxesState-# [8];				// Axis states (bit-mapped) - see ePK_PEAxisState
 pin out unsigned PEv2_AxesConfig-# [8];				// Axis configuration - see ePK_PEv2_AxisConfig
-pin out unsigned PEv2_AxesSwitchConfig-# [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
+pin in unsigned PEv2_AxesSwitchConfig-# [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
 
 pin out u32 PEv2_InvertAxisEnable-# [8];		// Invert axis enable signal
 pin out u32 PEv2_SoftLimitMaximum-# [8];		// Soft limit maximum position
@@ -349,6 +349,7 @@ void user_mainloop(void)
 					dev->PEv2.ProbeInputPolarity=PEv2_ProbeInputPolarity;
 					setPeConfig=true;
 				}
+
 				for(i=0;i<PEv2_nrOfAxes;i++)
 				{
 					if(PEv2_STEP_SCALE(i)!=0)
@@ -378,6 +379,8 @@ void user_mainloop(void)
 
 						dev->PEv2.HomingSpeed[i] = PEv2_HOME_SEARCH_VEL(i)*100/PEv2_MAX_VELOCITY(i) ;			// Homing speed per axis (in %)
 						dev->PEv2.HomingReturnSpeed[i] = PEv2_HOME_LATCH_VEL(i)*100/PEv2_HOME_SEARCH_VEL(i);		// Homing return speed per axis (in % of the homing speed)
+
+						dev->PEv2.AxesSwitchConfig[i]=PEv2_AxesSwitchConfig(i);
 
 						dev->PEv2.param1 = i;
 						PK_PEv2_AxisConfigurationSet(dev);
@@ -567,7 +570,6 @@ void user_mainloop(void)
 
 
 				PEv2_AxesConfig(i)=dev->PEv2.AxesConfig[i];				// Axis configuration - see ePK_PEv2_AxisConfig
-				PEv2_AxesSwitchConfig(i)=dev->PEv2.AxesSwitchConfig[i];		// Axis switch configuration - see ePK_PEv2_AxisSwitchOptions
 				PEv2_InvertAxisEnable(i)=dev->PEv2.InvertAxisEnable[i];		// Invert axis enable signal
 				PEv2_SoftLimitMaximum(i)=dev->PEv2.SoftLimitMaximum[i];		// Soft limit maximum position
 				PEv2_SoftLimitMinimum(i)=dev->PEv2.SoftLimitMinimum[i];		// Soft limit minimum position
