@@ -213,6 +213,23 @@ pin out unsigned pincap-# [55];
 pin out unsigned rtc_lastmin;
 pin out unsigned rtc_lastsec;
 pin out unsigned rtc_loop_frequ;
+
+pin out unsigned Pins_DigitalCounterValue-#[55];
+pin out unsigned Pins_AnalogValue-#[55];
+pin out unsigned Pins_PinFunction-#[55];
+pin out unsigned Pins_CounterOptions-#[55];
+pin out unsigned Pins_DigitalValueGet-#[55];
+pin in unsigned Pins_DigitalValueSet-#[55];
+pin out unsigned Pins_DigitalCounterAvailable-#[55];
+pin out unsigned Pins_MappingType-#[55];
+pin out unsigned Pins_KeyCodeMacroID-#[55];
+pin out unsigned Pins_KeyModifier-#[55];
+pin out unsigned Pins_downKeyCodeMacroID-#[55];
+pin out unsigned Pins_downKeyModifier-#[55];
+pin out unsigned Pins_upKeyCodeMacroID-#[55];
+pin out unsigned Pins_upKeyModifier-#[55];
+pin out unsigned Pins_preventUpdate-#[55];
+
 license "GPL";
 
 option extra_link_args "-lPoKeys";
@@ -223,6 +240,7 @@ option extra_link_args "-lPoKeys";
 #include "PoKeysLib.h"
 
 sPoKeysDevice * dev=0;
+
 
 int i=0;
 
@@ -314,6 +332,11 @@ void user_mainloop(void)
 				 PEv2_bufferDepth=dev->PEv2.info.bufferDepth;
 				 PEv2_slotTiming=dev->PEv2.info.slotTiming;
 
+				if (PEv2_EmergencyInputPin!=0)
+				{	//check if pin is parametrized in HAL
+					dev->PEv2.EmergencyInputPin=PEv2_EmergencyInputPin;
+				}
+
 				for(i=0;i<PEv2_nrOfAxes;i++)
 				{
 					if(PEv2_STEP_SCALE(i)!=0)
@@ -402,16 +425,51 @@ void user_mainloop(void)
 		PEv2_LimitOverride=dev->PEv2.LimitOverride;				// Limit override status
 		PEv2_LimitOverrideSetup=dev->PEv2.LimitOverrideSetup;			// Limit override configuration
 		PEv2_PulseEngineState=dev->PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
-		PEv2_AxisEnabledMask=dev->PEv2.AxisEnabledMask;				// Bit-mapped ouput enabled mask
-		if (PEv2_EmergencyInputPin!=0)
-		{	//check if pin is parametrized in HAL
-			dev->PEv2.EmergencyInputPin=PEv2_EmergencyInputPin;
+		switch (PEv2_PulseEngineState)
+		{
+		    case PK_PEState_peSTOPPED:           // Pulse engine is stopped
+				break;
+		    casePK_PEState_peINTERNAL:           // PEv1: Internal motion controller is in use, PEv2: not used
+				break;
+		    casePK_PEState_peBUFFER:           // PEv1: Buffered operation mode is in use, PEv2: not used
+				break;
+		    casePK_PEState_peRUNNING:           // Pulse engine is activated
+				break;
+		    casePK_PEState_peJOGGING:          // Jogging mode enabled
+				break;
+		    casePK_PEState_peSTOPPING:          // Pulse engine is stopping
+				break;
+		    casePK_PEState_peHOME:,          // All axes are homed
+				break;
+		    casePK_PEState_peHOMING:          // Axes homing is in progress
+				break;
+		    casePK_PEState_pePROBECOMPLETE:          // All axes are homed
+				break;
+		    casePK_PEState_pePROBE:          // Axes probing is in progress
+				break;
+		    casePK_PEState_pePROBEERROR:          // Error occured during probing
+				break;
+		    casePK_PEState_peHYBRIDPROBE_STOPPING:
+				break;
+		    casePK_PEState_peHYBRIDPROBE_COMPLETE:
+				break;
+		    casePK_PEState_peSTOP_LIMIT:         // Pulse engine stopped due to limit reached
+				break;
+		    casePK_PEState_peSTOP_EMERGENCY:          // Pulse engine stopped due to emergency switch
+				break;
 		}
+
+
+		PEv2_AxisEnabledMask=dev->PEv2.AxisEnabledMask;				// Bit-mapped ouput enabled mask
+
 		if (dev->PEv2.EmergencyInputPin>0)
 		{
 			PEv2_EmergencyInput=dev->Pins[dev->PEv2.EmergencyInputPin-1].DigitalValueGet;
 		}
-
+		else
+		{
+			PEv2_EmergencyInput=PEv2_EmergencyOutput;
+		}
 		if (PEv2_EmergencyOutputPin!=0)
 		{	//check if pin is parametrized in HAL
 			dev->Pins[PEv2_EmergencyOutputPin].DigitalValueSet=PEv2_EmergencyOutput;
