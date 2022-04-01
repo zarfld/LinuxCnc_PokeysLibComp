@@ -492,7 +492,7 @@ void user_mainloop(void)
 		}
 		else
 		{
-			PEv2_EmergencyInput=1;
+			PEv2_EmergencyInput=false;
 		}
 		if (PEv2_EmergencyOutputPin!=0)
 		{	//check if pin is parametrized in HAL
