@@ -439,7 +439,7 @@ void user_mainloop(void)
 				break;
 		    casePK_PEState_peSTOPPING:          // Pulse engine is stopping
 				break;
-		    casePK_PEState_peHOME:,          // All axes are homed
+		    casePK_PEState_peHOME:          // All axes are homed
 				break;
 		    casePK_PEState_peHOMING:          // Axes homing is in progress
 				break;
