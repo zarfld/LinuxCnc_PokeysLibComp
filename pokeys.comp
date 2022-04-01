@@ -285,8 +285,8 @@ void user_mainloop(void)
 		if(dev != NULL)
 		{
 			connected=1;
-
-		
+			bool setPkConfig = false;
+			bool setPinConfig = false;
 			 info_PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
 			 info_PWMCount = dev->info.iPWMCount;                        // Number of pins that support PWM output
 			 info_BasicEncoderCount = dev->info.iBasicEncoderCount;               // Number of basic encoders
@@ -388,6 +388,12 @@ void user_mainloop(void)
 						dev->PEv2.FilterLimitMSwitch[i]= PEv2_FilterLimitMSwitch(i);		// Digital filter for limit- switch
 						dev->PEv2.FilterLimitPSwitch[i]=PEv2_FilterLimitPSwitch(i);		// Digital filter for limit+ switch
 						dev->PEv2.FilterHomeSwitch[i]=PEv2_FilterHomeSwitch(i);		// Digital filter for home switch
+
+						// Limit- switch pin (0 for external dedicated input)
+						dev->PEv2.PinLimitMSwitch[i]=PEv2_PinLimitMSwitch(i);
+
+						// Limit+ switch pin (0 for external dedicated input)
+						dev->PEv2.PinLimitPSwitch[i]=PEv2_PinLimitPSwitch(i);
 
 						dev->PEv2.param1 = i;
 						PK_PEv2_AxisConfigurationSet(dev);
@@ -641,11 +647,8 @@ void user_mainloop(void)
 					PEv2_HomeSwitchStat(i)=0;
 				}
 
-				// Limit- switch pin (0 for external dedicated input)
-				if (PEv2_PinLimitMSwitch(i)!=0)
-				{	//check if pin is parametrized in HAL
-					dev->PEv2.PinLimitMSwitch[i]=PEv2_PinLimitMSwitch(i);
-				}
+				
+
 				if (dev->PEv2.PinLimitMSwitch[i]>0)
 				{
 					PEv2_LimitMSwitch(i)=dev->Pins[dev->PEv2.PinLimitMSwitch[i]-1].DigitalValueGet;
@@ -655,11 +658,7 @@ void user_mainloop(void)
 					PEv2_LimitMSwitch(i)=0;
 				}
 
-				// Limit+ switch pin (0 for external dedicated input)
-				if (PEv2_PinLimitPSwitch(i)!=0)
-				{	//check if pin is parametrized in HAL
-					dev->PEv2.PinLimitPSwitch[i]=PEv2_PinLimitPSwitch(i);
-				}
+
 				if (dev->PEv2.PinLimitPSwitch[i]>0)
 				{
 					PEv2_LimitPSwitch(i)=dev->Pins[dev->PEv2.PinLimitPSwitch[i]-1].DigitalValueGet;
