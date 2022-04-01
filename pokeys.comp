@@ -255,7 +255,7 @@ pin out unsigned EasySensors_sensorType-#[10];             // Type of the sensor
 pin out unsigned EasySensors_sensorRefreshPeriod-#[10];    // Refresh period in 0.1s
 pin out unsigned EasySensors_sensorFailsafeConfig-#[10];   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
 pin out unsigned EasySensors_sensorReadingID-#[10];        // Sensor reading selection (see Protocol description document for details)
-pin out unsigned EasySensors_sensorID[8]-#[10];            // 8 byte sensor ID - see protocol specifications for details
+
 
 license "GPL";
 
