@@ -431,6 +431,7 @@ void user_mainloop(void)
 			 {
 				PK_PinConfigurationSet(dev);
 			 }
+			 PK_SaveConfiguration(dev);
 		}
 		else
 		{
