@@ -161,14 +161,14 @@ setp   pokeys.0.PEv2-DIRSETUP-7        [JOINT_1]DIRSETUP
 setp   pokeys.0.PEv2-DIRHOLD-7         [JOINT_1]DIRHOLD
 setp   pokeys.0.PEv2-STEPLEN-7         [JOINT_1]STEPLEN
 setp   pokeys.0.PEv2-STEPSPACE-7       [JOINT_1]STEPSPACE
-setp   pokeys.0.PEv2-STEP_SCALE-7  	   [JOINT_1]STEP_SCALE
-setp   pokeys.0.PEv2-MIN_LIMIT-7  	   [JOINT_1]MIN_LIMIT
-setp   pokeys.0.PEv2-MAX_LIMIT-7  	   [JOINT_1]MAX_LIMIT
-setp   pokeys.0.PEv2-HOME_OFFSET-7  	   [JOINT_1]HOME_OFFSETE
-setp   pokeys.0.PEv2-HOME_SEARCH_VEL-7  	   [JOINT_1]HOME_SEARCH_VEL
-setp   pokeys.0.PEv2-HOME_LATCH_VEL-7  	   [JOINT_1]HOME_LATCH_VEL
-setp   pokeys.0.PEv2-STEPGEN_MAXVEL-7         [JOINT_1]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2-STEPGEN_MAXACCEL-7           [JOINT_1]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2-STEP-SCALE-7  	   [JOINT_1]STEP_SCALE
+setp   pokeys.0.PEv2-MIN-LIMIT-7  	   [JOINT_1]MIN_LIMIT
+setp   pokeys.0.PEv2-MAX-LIMIT-7  	   [JOINT_1]MAX_LIMIT
+setp   pokeys.0.PEv2-HOME-OFFSET-7  	   [JOINT_1]HOME_OFFSETE
+setp   pokeys.0.PEv2-HOME-SEARCH_VEL-7  	   [JOINT_1]HOME_SEARCH_VEL
+setp   pokeys.0.PEv2-HOME-LATCH_VEL-7  	   [JOINT_1]HOME_LATCH_VEL
+setp   pokeys.0.PEv2-STEPGEN-MAXVEL-7         [JOINT_1]STEPGEN_MAXACCEL
+setp   pokeys.0.PEv2-STEPGEN-MAXACCEL-7           [JOINT_1]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
@@ -217,14 +217,14 @@ setp   pokeys.0.PEv2-DIRSETUP-2        [JOINT_2]DIRSETUP
 setp   pokeys.0.PEv2-DIRHOLD-2         [JOINT_2]DIRHOLD
 setp   pokeys.0.PEv2-STEPLEN-2         [JOINT_2]STEPLEN
 setp   pokeys.0.PEv2-STEPSPACE-2       [JOINT_2]STEPSPACE
-setp   pokeys.0.PEv2-STEP_SCALE-2  	   [JOINT_2]STEP_SCALE
-setp   pokeys.0.PEv2-MIN_LIMIT-2  	   [JOINT_2]MIN_LIMIT
-setp   pokeys.0.PEv2-MAX_LIMIT-2  	   [JOINT_2]MAX_LIMIT
-setp   pokeys.0.PEv2-HOME_OFFSET-2  	   [JOINT_2]HOME_OFFSETE
-setp   pokeys.0.PEv2-HOME_SEARCH_VEL-2  	   [JOINT_2]HOME_SEARCH_VEL
-setp   pokeys.0.PEv2-HOME_LATCH_VEL-2  	   [JOINT_2]HOME_LATCH_VEL
-setp   pokeys.0.PEv2-STEPGEN_MAXVEL-2         [JOINT_2]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2-STEPGEN_MAXACCEL-2           [JOINT_2]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2-STEP-SCALE-2  	   [JOINT_2]STEP_SCALE
+setp   pokeys.0.PEv2-MIN-LIMIT-2  	   [JOINT_2]MIN_LIMIT
+setp   pokeys.0.PEv2-MAX-LIMIT-2  	   [JOINT_2]MAX_LIMIT
+setp   pokeys.0.PEv2-HOME-OFFSET-2  	   [JOINT_2]HOME_OFFSETE
+setp   pokeys.0.PEv2-HOME-SEARCH_VEL-2  	   [JOINT_2]HOME_SEARCH_VEL
+setp   pokeys.0.PEv2-HOME-LATCH_VEL-2  	   [JOINT_2]HOME_LATCH_VEL
+setp   pokeys.0.PEv2-STEPGEN-MAXVEL-2         [JOINT_2]STEPGEN_MAXACCEL
+setp   pokeys.0.PEv2-STEPGEN-MAXACCEL-2           [JOINT_2]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
@@ -273,14 +273,14 @@ setp   pokeys.0.PEv2-DIRSETUP-3        [JOINT_3]DIRSETUP
 setp   pokeys.0.PEv2-DIRHOLD-3         [JOINT_3]DIRHOLD
 setp   pokeys.0.PEv2-STEPLEN-3         [JOINT_3]STEPLEN
 setp   pokeys.0.PEv2-STEPSPACE-3       [JOINT_3]STEPSPACE
-setp   pokeys.0.PEv2-STEP_SCALE-3  	   [JOINT_3]STEP_SCALE
-setp   pokeys.0.PEv2-MIN_LIMIT-3  	   [JOINT_3]MIN_LIMIT
-setp   pokeys.0.PEv2-MAX_LIMIT-3  	   [JOINT_3]MAX_LIMIT
-setp   pokeys.0.PEv2-HOME_OFFSET-3  	   [JOINT_3]HOME_OFFSETE
-setp   pokeys.0.PEv2-HOME_SEARCH_VEL-3  	   [JOINT_3]HOME_SEARCH_VEL
-setp   pokeys.0.PEv2-HOME_LATCH_VEL-3  	   [JOINT_3]HOME_LATCH_VEL
-setp   pokeys.0.PEv2-STEPGEN_MAXVEL-3         [JOINT_3]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2-STEPGEN_MAXACCEL-3           [JOINT_3]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2-STEP-SCALE-3  	   [JOINT_3]STEP_SCALE
+setp   pokeys.0.PEv2-MIN-LIMIT-3  	   [JOINT_3]MIN_LIMIT
+setp   pokeys.0.PEv2-MAX-LIMIT-3  	   [JOINT_3]MAX_LIMIT
+setp   pokeys.0.PEv2-HOME-OFFSET-3  	   [JOINT_3]HOME_OFFSETE
+setp   pokeys.0.PEv2-HOME-SEARCH_VEL-3  	   [JOINT_3]HOME_SEARCH_VEL
+setp   pokeys.0.PEv2-HOME-LATCH_VEL-3  	   [JOINT_3]HOME_LATCH_VEL
+setp   pokeys.0.PEv2-STEPGEN-MAXVEL-3         [JOINT_3]STEPGEN_MAXACCEL
+setp   pokeys.0.PEv2-STEPGEN-MAXACCEL-3           [JOINT_3]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
