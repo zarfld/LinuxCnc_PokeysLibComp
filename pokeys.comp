@@ -517,7 +517,7 @@ void user_mainloop(void)
 		PEv2_newMotionBufferEntries=dev->PEv2.newMotionBufferEntries;
 		PEv2_HomingStartMaskSetup=dev->PEv2.HomingStartMaskSetup;			// Bit-mapped axes indexes to be homed
 		PEv2_ProbeStartMaskSetup=dev->PEv2.ProbeStartMaskSetup;			// Bit-mapped axis indexes for probing
-		PEv2_ProbeInputPolarity=dev->PEv2.ProbeInputPolarity;			// Probe input polarity
+		// writeonly PEv2_ProbeInputPolarity=dev->PEv2.ProbeInputPolarity;			// Probe input polarity
 		PEv2_ProbeStatus=dev->PEv2.ProbeStatus;					// Probe status (probe completion bit-mapped status)
 		//PEv2_MotionBuffer=dev->PEv2.MotionBuffer;			// Motion buffer
 		PEv2_ProbeSpeed=dev->PEv2.ProbeSpeed;						// Probe speed (ratio of the maximum speed)
