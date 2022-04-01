@@ -81,9 +81,9 @@ pin out unsigned PEv2_HomingSpeed-# [8];			// Homing speed per axis (in %)
 pin out unsigned PEv2_HomingReturnSpeed-# [8];		// Homing return speed per axis (in % of the homing speed)
 pin out u32 PEv2_HomeOffsets-# [8];				// Home position offset
 pin out unsigned PEv2_HomingAlgorithm-# [8];		// Homing algorithm configuration
-pin out unsigned PEv2_FilterLimitMSwitch-# [8];		// Digital filter for limit- switch
-pin out unsigned PEv2_FilterLimitPSwitch-# [8];		// Digital filter for limit+ switch
-pin out unsigned PEv2_FilterHomeSwitch-# [8];		// Digital filter for home switch
+pin in unsigned PEv2_FilterLimitMSwitch-# [8];		// Digital filter for limit- switch
+pin in unsigned PEv2_FilterLimitPSwitch-# [8];		// Digital filter for limit+ switch
+pin in unsigned PEv2_FilterHomeSwitch-# [8];		// Digital filter for home switch
 pin out u32 PEv2_ProbePosition-# [8];			// Position where probe detected change
 pin out u32 PEv2_ProbeMaxPosition-# [8];		// Maximum position to travel to until stopping and returning error
 
@@ -381,6 +381,9 @@ void user_mainloop(void)
 						dev->PEv2.HomingReturnSpeed[i] = PEv2_HOME_LATCH_VEL(i)*100/PEv2_HOME_SEARCH_VEL(i);		// Homing return speed per axis (in % of the homing speed)
 
 						dev->PEv2.AxesSwitchConfig[i]=PEv2_AxesSwitchConfig(i);
+						dev->PEv2.FilterLimitMSwitch[i]= PEv2_FilterLimitMSwitch(i);		// Digital filter for limit- switch
+						dev->PEv2.FilterLimitPSwitch[i]=PEv2_FilterLimitPSwitch(i);		// Digital filter for limit+ switch
+						dev->PEv2.FilterHomeSwitch[i]=PEv2_FilterHomeSwitch(i);		// Digital filter for home switch
 
 						dev->PEv2.param1 = i;
 						PK_PEv2_AxisConfigurationSet(dev);
@@ -577,9 +580,7 @@ void user_mainloop(void)
 				PEv2_HomingReturnSpeed(i)=dev->PEv2.HomingReturnSpeed[i];		// Homing return speed per axis (in % of the homing speed)
 				PEv2_HomeOffsets(i)=dev->PEv2.HomeOffsets[i];				// Home position offset
 				PEv2_HomingAlgorithm(i)=dev->PEv2.HomingAlgorithm[i];		// Homing algorithm configuration
-				PEv2_FilterLimitMSwitch(i)=dev->PEv2.FilterLimitMSwitch[i];		// Digital filter for limit- switch
-				PEv2_FilterLimitPSwitch(i)=dev->PEv2.FilterLimitPSwitch[i];		// Digital filter for limit+ switch
-				PEv2_FilterHomeSwitch(i)=dev->PEv2.FilterHomeSwitch[i];		// Digital filter for home switch
+
 				PEv2_ProbePosition(i)=dev->PEv2.ProbePosition[i];			// Position where probe detected change
 				PEv2_ProbeMaxPosition(i)=dev->PEv2.ProbeMaxPosition[i];		// Maximum position to travel to until stopping and returning error
 				PEv2_MPGjogMultiplier(i)=dev->PEv2.MPGjogMultiplier[i];		// MPG jog multiplier value
