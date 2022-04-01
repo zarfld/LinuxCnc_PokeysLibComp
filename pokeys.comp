@@ -106,7 +106,7 @@ pin out float PEv2_joint_pos_fb-# [8];
     
 //***********************************************************************
 //[JOINT_n] information in HAL-INI 
-pin in string TYPE-# [8];			//LINEAR / ANGULAR
+pin in s32 TYPE-# [8];			//LINEAR / ANGULAR
 pin in float PEv2_HOME-# [8];
 pin in float PEv2_FERROR-# [8];
 pin in float PEv2_MIN_FERROR-# [8];
@@ -136,8 +136,8 @@ pin in float PEv2_HOME_OFFSET-# [8];				// position (mm)
 pin in float PEv2_HOME_SEARCH_VEL-# [8];			// position (mm)
 pin in float PEv2_HOME_LATCH_VEL-# [8];				// position (mm)
 pin in float PEv2_HOME_FINAL_VEL-# [8];				// position (mm)
-pin in string PEv2_HOME_USE_INDEX-# [8];				// YES / NO
-pin in string PEv2_HOME_IGNORE_LIMITS-# [8];			// YES / NO
+pin in s32 PEv2_HOME_USE_INDEX-# [8];				// YES / NO
+pin in s32 PEv2_HOME_IGNORE_LIMITS-# [8];			// YES / NO
 //***********************************************************************
 
 pin out u32 PEv2_MPGjogMultiplier-# [8];		// MPG jog multiplier value
