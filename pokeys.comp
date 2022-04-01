@@ -801,8 +801,7 @@ void user_mainloop(void)
 		PK_DisconnectDevice(dev);
 		dev=NULL;  		  //tries to reconnect
 		err=1;
-		for(i=0;i<54;i++)in(i)=0;
-		for(i=0;i<3;i++)ain(i)=0;
+
 	 }
 	
 	if (rtc_lastmin!=rtc_min)
