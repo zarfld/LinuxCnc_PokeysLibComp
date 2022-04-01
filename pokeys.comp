@@ -189,7 +189,7 @@ pin out unsigned PEv2_motionBufferEntriesAccepted;
 pin out unsigned PEv2_newMotionBufferEntries;
 pin out unsigned PEv2_HomingStartMaskSetup;			// Bit-mapped axes indexes to be homed
 pin out unsigned PEv2_ProbeStartMaskSetup;			// Bit-mapped axis indexes for probing
-pin out unsigned PEv2_ProbeInput;					// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
+pin in unsigned PEv2_ProbeInput;					// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
 pin out unsigned PEv2_ProbeInputPolarity;			// Probe input polarity
 pin out unsigned PEv2_ProbeStatus;					// Probe status (probe completion bit-mapped status)
 //pin out unsigned PEv2_MotionBuffer[448];			// Motion buffer
@@ -331,12 +331,19 @@ void user_mainloop(void)
 				 PEv2_maxPulseFrequency=dev->PEv2.info.maxPulseFrequency;
 				 PEv2_bufferDepth=dev->PEv2.info.bufferDepth;
 				 PEv2_slotTiming=dev->PEv2.info.slotTiming;
-
+				 bool setPeConfig = false;
 				if (PEv2_EmergencyInputPin!=0)
 				{	//check if pin is parametrized in HAL
 					dev->PEv2.EmergencyInputPin=PEv2_EmergencyInputPin;
+					setPeConfig=true;
 				}
 
+				// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
+				if (PEv2_ProbeInput!=0)
+				{	//check if pin is parametrized in HAL
+					dev->PEv2.ProbeInput=PEv2_ProbeInput;
+					setPeConfig=true;
+				}
 				for(i=0;i<PEv2_nrOfAxes;i++)
 				{
 					if(PEv2_STEP_SCALE(i)!=0)
@@ -505,7 +512,6 @@ void user_mainloop(void)
 		PEv2_newMotionBufferEntries=dev->PEv2.newMotionBufferEntries;
 		PEv2_HomingStartMaskSetup=dev->PEv2.HomingStartMaskSetup;			// Bit-mapped axes indexes to be homed
 		PEv2_ProbeStartMaskSetup=dev->PEv2.ProbeStartMaskSetup;			// Bit-mapped axis indexes for probing
-		PEv2_ProbeInput=dev->PEv2.ProbeInput;					// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
 		PEv2_ProbeInputPolarity=dev->PEv2.ProbeInputPolarity;			// Probe input polarity
 		PEv2_ProbeStatus=dev->PEv2.ProbeStatus;					// Probe status (probe completion bit-mapped status)
 		//PEv2_MotionBuffer=dev->PEv2.MotionBuffer;			// Motion buffer
