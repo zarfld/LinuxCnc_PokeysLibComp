@@ -231,6 +231,13 @@ pin out unsigned Pins_upKeyCodeMacroID-#[55];
 pin out unsigned Pins_upKeyModifier-#[55];
 pin out unsigned Pins_preventUpdate-#[55];
 
+pin out unsigned MatrixKB_matrixKBconfiguration;		// Matrix keyboard configuration (set to 1 to enable matrix keyboard support)
+pin out unsigned MatrixKB_matrixKBwidth;				// Matrix keyboard width (number of columns)
+pin out unsigned MatrixKB_matrixKBheight;				// Matrix keyboard height (number of rows)
+pin out unsigned MatrixKB_matrixKBcolumnsPins[8];		// List of matrix keyboard column connections
+pin out unsigned MatrixKB_matrixKBrowsPins[16];			// List of matrix keyboard row connections
+pin out unsigned MatrixKB_matrixKBvalues[128];			// Current state of each matrix keyboard key (assumes fixed width of 8 columns)
+
 license "GPL";
 
 option extra_link_args "-lPoKeys";
@@ -772,7 +779,7 @@ void user_mainloop(void)
 	 }
 	}
 
-		 if ((PK_DigitalIOGet(dev) == PK_OK) && (PK_AnalogIOGet(dev) == PK_OK) && (PK_PinConfigurationGet(dev) == PK_OK)){  //gets IO data and checks return value 
+	if ((PK_DigitalIOGet(dev) == PK_OK) && (PK_AnalogIOGet(dev) == PK_OK) && (PK_PinConfigurationGet(dev) == PK_OK)){  //gets IO data and checks return value 
 		err=0;
 		sPoKeysPinData iPin;
 		
@@ -804,6 +811,14 @@ void user_mainloop(void)
 
 	 }
 	
+	if (info_MatrixKeyboard!=0)
+	{
+		for(i=0;i<MatrixKB_matrixKBwidth*MatrixKB_matrixKBheight-1;i++)
+		{
+			MatrixKB_matrixKBvalues(i) = dev->matrixKB.matrixKBvalues[i]; 
+		}
+	}
+
 	if (rtc_lastmin!=rtc_min)
 	{
 
