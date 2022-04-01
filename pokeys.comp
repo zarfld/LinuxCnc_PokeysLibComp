@@ -815,10 +815,14 @@ void user_mainloop(void)
 	{
 		if (PK_MatrixKBStatusGet(dev) == PK_OK)
 		{
-			for(i=0;i<MatrixKB_matrixKBwidth*MatrixKB_matrixKBheight-1;i++)
+			if (MatrixKB_matrixKBwidth>0 && MatrixKB_matrixKBheight>0)
 			{
-				MatrixKB_matrixKBvalues(i) = dev->matrixKB.matrixKBvalues[i]; 
+				for(i=0;i<MatrixKB_matrixKBwidth*MatrixKB_matrixKBheight-1;i++)
+				{
+					MatrixKB_matrixKBvalues(i) = dev->matrixKB.matrixKBvalues[i]; 
+				}
 			}
+
 		}
 
 	}
