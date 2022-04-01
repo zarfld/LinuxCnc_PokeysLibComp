@@ -148,7 +148,7 @@ pin in unsigned PEv2_PinLimitMSwitch-# [8];			// Limit- switch pin (0 for extern
 pin in unsigned PEv2_PinLimitPSwitch-# [8];			// Limit+ switch pin (0 for external dedicated input)
 pin in unsigned PEv2_AxisEnableOutputPins-# [8];		// Axis enabled output pin (0 for external dedicated output)
 
-pin out bit PEv2_HomeSwitch-# [8];				// Home switch
+pin out bit PEv2_HomeSwitchStat-# [8];				// Home switch
 pin out bit PEv2_LimitMSwitch-# [8];			// Limit- switch
 pin out bit PEv2_LimitPSwitch-# [8];			// Limit+ switch
 pin in bit PEv2_AxisEnableOutput-# [8];		// Axis enabled output
@@ -557,11 +557,11 @@ void user_mainloop(void)
 					byte allStat =dev->PEv2.HomeStatus;					// Home status (bit-mapped)
 					
 					//unsigned PinId = dev->PEv2.PinHomeSwitch[i]
-					PEv2_HomeSwitch(i)=(allStat & (1 << i)) != 0;
+					PEv2_HomeSwitchStat(i)=(allStat & (1 << i)) != 0;
 				}
 				else
 				{
-					PEv2_HomeSwitch(i)=0;
+					PEv2_HomeSwitchStat(i)=0;
 				}
 
 				// Limit- switch pin (0 for external dedicated input)
