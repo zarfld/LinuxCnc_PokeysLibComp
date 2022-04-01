@@ -350,6 +350,10 @@ void user_mainloop(void)
 					setPeConfig=true;
 				}
 
+				if (setPeConfig=true)
+				{
+					PK_PEv2_PulseEngineSetup(dev)
+				}
 				for(i=0;i<PEv2_nrOfAxes;i++)
 				{
 					if(PEv2_STEP_SCALE(i)!=0)
