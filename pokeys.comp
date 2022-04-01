@@ -339,21 +339,14 @@ void user_mainloop(void)
 				}
 
 				// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
-				if (PEv2_ProbeInput!=0)
-				{	//check if pin is parametrized in HAL
-					dev->PEv2.ProbeInput=PEv2_ProbeInput;
-					setPeConfig=true;
-				}
-				if (PEv2_ProbeInputPolarity!=0)
-				{	//check if pin is parametrized in HAL
-					dev->PEv2.ProbeInputPolarity=PEv2_ProbeInputPolarity;
-					setPeConfig=true;
-				}
+				//check if pin is parametrized in HAL
+				dev->PEv2.ProbeInput=PEv2_ProbeInput;
+				//check if pin is parametrized in HAL
+				dev->PEv2.ProbeInputPolarity=PEv2_ProbeInputPolarity;
+				
+				dev->PEv2.PulseEngineActivated=true;
+				PK_PEv2_PulseEngineSetup(dev);
 
-				if (setPeConfig=true)
-				{
-					PK_PEv2_PulseEngineSetup(dev);
-				}
 				for(i=0;i<PEv2_nrOfAxes;i++)
 				{
 					if(PEv2_STEP_SCALE(i)!=0)
@@ -399,6 +392,8 @@ void user_mainloop(void)
 						PK_PEv2_AxisConfigurationSet(dev);
 					}
 				}
+				dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+				PK_PEv2_PulseEngineStateSet(dev)
 
 			 }
 		}
