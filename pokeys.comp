@@ -813,10 +813,14 @@ void user_mainloop(void)
 	
 	if (info_MatrixKeyboard!=0)
 	{
-		for(i=0;i<MatrixKB_matrixKBwidth*MatrixKB_matrixKBheight-1;i++)
+		if (PK_MatrixKBStatusGet(dev) == PK_OK)
 		{
-			MatrixKB_matrixKBvalues(i) = dev->matrixKB.matrixKBvalues[i]; 
+			for(i=0;i<MatrixKB_matrixKBwidth*MatrixKB_matrixKBheight-1;i++)
+			{
+				MatrixKB_matrixKBvalues(i) = dev->matrixKB.matrixKBvalues[i]; 
+			}
 		}
+
 	}
 
 	if (rtc_lastmin!=rtc_min)
@@ -870,6 +874,26 @@ void user_mainloop(void)
 			 PEv2_bufferDepth=dev->PEv2.info.bufferDepth;
 			 PEv2_slotTiming=dev->PEv2.info.slotTiming;
 		 }
+
+		 if (info_MatrixKeyboard!=0)
+			{
+				if (PK_MatrixKBConfigurationGet(dev) == PK_OK)
+				{
+
+				MatrixKB_matrixKBconfiguration = dev->matrixKB.matrixKBconfiguration;
+				MatrixKB_matrixKBwidth = dev->matrixKB.matrixKBwidth;
+				MatrixKB_matrixKBheight = dev->matrixKB.matrixKBheight;
+					for(i=0;i<8;i++)
+					{
+						MatrixKB_matrixKBcolumnsPins(i) = dev->matrixKB.matrixKBcolumnsPins[i]; 
+					}
+					for(i=0;i<16;i++)
+					{
+						MatrixKB_matrixKBrowsPins(i) = dev->matrixKB.matrixKBrowsPins[i]; 
+					}
+				}
+
+			}
 	}
 	alive=0;
 	usleep(40000); 
