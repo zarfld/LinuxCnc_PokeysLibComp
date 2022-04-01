@@ -36,7 +36,7 @@ net max-x     <=  pokeys.0.PEv2-LimitPSwitch-1
 net max-x2     <=  pokeys.0.PEv2-LimitPSwitch-7
 
 # --- HOME-X2 ---
-net home-x1     <=  pokeys.0.PEv2-HomeSwitchStat-1
+net home-x     <=  pokeys.0.PEv2-HomeSwitchStat-1
 net home-x2     <=  pokeys.0.PEv2-HomeSwitchStat-7
 
 # --- CYCLE-START ---
