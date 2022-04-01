@@ -336,22 +336,35 @@ void user_mainloop(void)
 				 PEv2_bufferDepth=dev->PEv2.info.bufferDepth;
 				 PEv2_slotTiming=dev->PEv2.info.slotTiming;
 				 bool setPeConfig = false;
+				 dev->PEv2.EmergencyInputPin=PEv2_EmergencyInputPin;
 				if (PEv2_EmergencyInputPin!=0)
 				{	//check if pin is parametrized in HAL
-					dev->PEv2.EmergencyInputPin=PEv2_EmergencyInputPin;
+					
+					dev->Pins[PEv2_EmergencyInputPin-1].PinFunction = PK_PinCap_digitalInput;
+					setPinConfig=true;
 					setPeConfig=true;
 				}
-
+				if (PEv2_EmergencyOutputPin!=0)
+				{	//check if pin is parametrized in HAL
+						dev->Pins[PEv2_EmergencyOutputPin-1].PinFunction = PK_PinCap_digitalOutput;
+						setPinConfig=true;
+				}
 				// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
 				//check if pin is parametrized in HAL
 				dev->PEv2.ProbeInput=PEv2_ProbeInput;
 				//check if pin is parametrized in HAL
 				dev->PEv2.ProbeInputPolarity=PEv2_ProbeInputPolarity;
+				if (PEv2_ProbeInput!=0)
+				{	//check if pin is parametrized in HAL
+						dev->Pins[PEv2_ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
+						setPinConfig=true;
+				}
+
 				dev->PEv2.PulseEngineEnabled=8; //Enable 8 axes
 				dev->PEv2.PulseEngineActivated=true;
 				dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
 				PK_PEv2_PulseEngineSetup(dev);
-
+				
 				for(i=0;i<PEv2_nrOfAxes;i++)
 				{
 					if(PEv2_STEP_SCALE(i)!=0)
@@ -393,6 +406,18 @@ void user_mainloop(void)
 						// Limit+ switch pin (0 for external dedicated input)
 						dev->PEv2.PinLimitPSwitch[i]=PEv2_PinLimitPSwitch(i);
 
+						if (PEv2_PinLimitPSwitch(i)!=0)
+						{	//check if pin is parametrized in HAL
+						dev->Pins[PinLimitMSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
+						setPinConfig=true;
+						}
+						if (PEv2_PinLimitPSwitch(i)!=0)
+						{	//check if pin is parametrized in HAL
+						dev->Pins[PEv2_PinLimitPSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
+						setPinConfig=true;
+						}
+
+
 						dev->PEv2.param1 = i;
 						PK_PEv2_AxisConfigurationSet(dev);
 					}
@@ -400,6 +425,11 @@ void user_mainloop(void)
 				dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
 				PK_PEv2_PulseEngineStateSet(dev);
 
+			 }
+
+			 if (setPinConfig==true)
+			 {
+				PK_PinConfigurationSet(dev);
 			 }
 		}
 		else
