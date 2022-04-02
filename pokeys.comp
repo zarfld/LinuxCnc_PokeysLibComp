@@ -835,13 +835,13 @@ void user_mainloop(void)
 	{
 		if (PK_MatrixKBStatusGet(dev) == PK_OK)
 		{
-			if (MatrixKB_matrixKBwidth>0 && MatrixKB_matrixKBheight>0)
-			{
-				for(i=0;i<MatrixKB_matrixKBwidth*MatrixKB_matrixKBheight-1;i++)
-				{
-					MatrixKB_matrixKBvalues(i) = dev->matrixKB.matrixKBvalues[i]; 
-				}
-			}
+//			if (MatrixKB_matrixKBwidth>0 && MatrixKB_matrixKBheight>0)
+//			{
+//				for(i=0;i<MatrixKB_matrixKBwidth*MatrixKB_matrixKBheight-1;i++)
+//				{
+//					MatrixKB_matrixKBvalues(i) = dev->matrixKB.matrixKBvalues[i]; 
+//				}
+//			}
 
 		}
 
@@ -849,15 +849,15 @@ void user_mainloop(void)
 
 	if (info_EasySensors!=0 && info_PinCount!=0)
 	{
-			for(i=0;i<info_PinCount-1;i++)
-		{
-			EasySensors_sensorValue(i)=dev->EasySensors[i].sensorValue;
-			EasySensors_sensorType(i)=dev->EasySensors[i].sensorType;
-			EasySensors_sensorRefreshPeriod(i)=dev->EasySensors[i].sensorRefreshPeriod;
-			EasySensors_sensorFailsafeConfig(i)=dev->EasySensors[i].sensorFailsafeConfig;
-			EasySensors_sensorReadingID(i)=dev->EasySensors[i].sensorReadingID;
-
-		}
+//		for(i=0;i<info_PinCount-1;i++)
+//		{
+//			EasySensors_sensorValue(i)=dev->EasySensors[i].sensorValue;
+//			EasySensors_sensorType(i)=dev->EasySensors[i].sensorType;
+//			EasySensors_sensorRefreshPeriod(i)=dev->EasySensors[i].sensorRefreshPeriod;
+//			EasySensors_sensorFailsafeConfig(i)=dev->EasySensors[i].sensorFailsafeConfig;
+//			EasySensors_sensorReadingID(i)=dev->EasySensors[i].sensorReadingID;
+//
+//		}
 	}
 	if (rtc_lastmin!=rtc_min)
 	{
@@ -919,14 +919,14 @@ void user_mainloop(void)
 				MatrixKB_matrixKBconfiguration = dev->matrixKB.matrixKBconfiguration;
 				MatrixKB_matrixKBwidth = dev->matrixKB.matrixKBwidth;
 				MatrixKB_matrixKBheight = dev->matrixKB.matrixKBheight;
-					for(i=0;i<MatrixKB_matrixKBwidth;i++)
-					{
-						MatrixKB_matrixKBcolumnsPins(i) = dev->matrixKB.matrixKBcolumnsPins[i]; 
-					}
-					for(i=0;i<MatrixKB_matrixKBheight;i++)
-					{
-						MatrixKB_matrixKBrowsPins(i) = dev->matrixKB.matrixKBrowsPins[i]; 
-					}
+//					for(i=0;i<MatrixKB_matrixKBwidth-1;i++)
+//					{
+//						MatrixKB_matrixKBcolumnsPins(i) = dev->matrixKB.matrixKBcolumnsPins[i]; 
+//					}
+//					for(i=0;i<MatrixKB_matrixKBheight-1;i++)
+//					{
+//						MatrixKB_matrixKBrowsPins(i) = dev->matrixKB.matrixKBrowsPins[i]; 
+//					}
 				}
 
 			}
