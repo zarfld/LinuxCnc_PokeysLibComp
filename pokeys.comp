@@ -837,10 +837,10 @@ void user_mainloop(void)
 		{
 			if (MatrixKB_matrixKBwidth>0 && MatrixKB_matrixKBheight>0)
 			{
-//				for(i=0;i<MatrixKB_matrixKBwidth*MatrixKB_matrixKBheight-1;i++)
-//				{
-//					MatrixKB_matrixKBvalues(i) = dev->matrixKB.matrixKBvalues[i]; 
-//				}
+				for(i=0;i<128;i++)
+				{
+					MatrixKB_matrixKBvalues(i) = dev->matrixKB.matrixKBvalues[i]; 
+				}
 			}
 
 		}
