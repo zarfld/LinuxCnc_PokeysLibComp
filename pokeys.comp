@@ -267,7 +267,7 @@ option extra_link_args "-lPoKeys";
 #include "PoKeysLib.h"
 
 sPoKeysDevice * dev=0;
-
+Pk_Pins_Comp Pins = new Pk_Pins_Comp();
 
 int i=0;
 
@@ -944,4 +944,30 @@ void user_mainloop(void)
 };
 
 
+Class Pk_Pins_Comp
 
+Pk_Pin_Comp Pin-#[55];
+
+public Pk_Pins_Comp(){}
+End Clas
+
+
+Class Pk_Pin_Comp
+pin out unsigned DigitalCounterValue;
+pin out unsigned AnalogValue;
+pin out unsigned PinFunction;
+pin out unsigned CounterOptions;
+pin out unsigned DigitalValueGet ;
+pin in unsigned DigitalValueSet ;
+pin out unsigned DigitalCounterAvailable ;
+pin out unsigned MappingType ;
+pin out unsigned KeyCodeMacroID ;
+pin out unsigned KeyModifier ;
+pin out unsigned downKeyCodeMacroID ;
+pin out unsigned downKeyModifier ;
+pin out unsigned upKeyCodeMacroID ;
+pin out unsigned upKeyModifier ;
+pin out unsigned preventUpdate ;
+
+
+End Clas
