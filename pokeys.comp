@@ -835,13 +835,13 @@ void user_mainloop(void)
 	{
 		if (PK_MatrixKBStatusGet(dev) == PK_OK)
 		{
-//			if (MatrixKB_matrixKBwidth>0 && MatrixKB_matrixKBheight>0)
-//			{
+			if (MatrixKB_matrixKBwidth>0 && MatrixKB_matrixKBheight>0)
+			{
 //				for(i=0;i<MatrixKB_matrixKBwidth*MatrixKB_matrixKBheight-1;i++)
 //				{
 //					MatrixKB_matrixKBvalues(i) = dev->matrixKB.matrixKBvalues[i]; 
 //				}
-//			}
+			}
 
 		}
 
@@ -919,14 +919,14 @@ void user_mainloop(void)
 				MatrixKB_matrixKBconfiguration = dev->matrixKB.matrixKBconfiguration;
 				MatrixKB_matrixKBwidth = dev->matrixKB.matrixKBwidth;
 				MatrixKB_matrixKBheight = dev->matrixKB.matrixKBheight;
-//					for(i=0;i<MatrixKB_matrixKBwidth-1;i++)
-//					{
-//						MatrixKB_matrixKBcolumnsPins(i) = dev->matrixKB.matrixKBcolumnsPins[i]; 
-//					}
-//					for(i=0;i<MatrixKB_matrixKBheight-1;i++)
-//					{
-//						MatrixKB_matrixKBrowsPins(i) = dev->matrixKB.matrixKBrowsPins[i]; 
-//					}
+					for(i=0;i<MatrixKB_matrixKBwidth-1;i++)
+					{
+						MatrixKB_matrixKBcolumnsPins(i) = dev->matrixKB.matrixKBcolumnsPins[i]; 
+					}
+					for(i=0;i<MatrixKB_matrixKBheight-1;i++)
+					{
+						MatrixKB_matrixKBrowsPins(i) = dev->matrixKB.matrixKBrowsPins[i]; 
+					}
 				}
 
 			}
