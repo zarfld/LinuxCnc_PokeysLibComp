@@ -149,14 +149,31 @@ pin io unsigned PEv2_PinLimitMSwitch-# [8];			// Limit- switch pin (0 for extern
 pin io unsigned PEv2_PinLimitPSwitch-# [8];			// Limit+ switch pin (0 for external dedicated input)
 pin io unsigned PEv2_AxisEnableOutputPins-# [8];		// Axis enabled output pin (0 for external dedicated output)
 
+pin io unsigned PEv2.#.PinHomeSwitch [8];			// Home switch pin (0 for external dedicated input)
+pin io unsigned PEv2.#.PinLimitMSwitch [8];			// Limit- switch pin (0 for external dedicated input)
+pin io unsigned PEv2.#.PinLimitPSwitch [8];			// Limit+ switch pin (0 for external dedicated input)
+pin io unsigned PEv2.#.AxisEnableOutputPins [8];		// Axis enabled output pin (0 for external dedicated output)
+
+
 pin out bit PEv2_HomeSwitchStat-# [8];				// Home switch
 pin out bit PEv2_LimitMSwitch-# [8];			// Limit- switch
 pin out bit PEv2_LimitPSwitch-# [8];			// Limit+ switch
 pin in bit PEv2_AxisEnableOutput-# [8];		// Axis enabled output
 pin out bit PEv2_HomeSwitch;				// Home switch
 
+pin out bit PEv2.#.HomeSwitchStat-# [8];				// Home switch
+pin out bit PEv2.#.LimitMSwitch-# [8];			// Limit- switch
+pin out bit PEv2.#.LimitPSwitch-# [8];			// Limit+ switch
+pin in bit PEv2.#.AxisEnableOutput-# [8];		// Axis enabled output
+pin out bit PEv2.#.HomeSwitch;				// Home switch
+
+
 pin io unsigned PEv2_HomeBackOffDistance-# [8];		// Back-off distance after homing
 pin io unsigned PEv2_MPGjogDivider-# [8];			// Divider for the MPG jogging (enhanced encoder resolution)
+
+pin io unsigned PEv2.#.HomeBackOffDistance-# [8];		// Back-off distance after homing
+pin io unsigned PEv2.#.MPGjogDivider-# [8];			// Divider for the MPG jogging (enhanced encoder resolution)
+
 pin io unsigned PEv2_PulseEngineEnabled;			// Pulse engine enabled status, also number of enabled axes
 pin io unsigned PEv2_PulseGeneratorType;			// Pulse engine generator type (0: external, 1: internal 3ch)
 pin io unsigned PEv2_ChargePumpEnabled;				// Charge pump output enabled
@@ -303,13 +320,14 @@ int Pins_HalSetup(sPoKeysDevice *dev)
 	int hal_comp_id = hal_init("Pins");
 
 	//hal_pin_u32_newf(HAL_OUT, &(PINS_HAL_DATA->PinCount), hal_comp_id, "%s.Pins", "Pins");
-
+	// extern int hal_pin_u32_new(const char *name, hal_pin_dir_t dir, hal_u32_t ** data_ptr_addr, int comp_id);
+	hal_pin_u32_new 
 	for(i=0;i< PinCount;i++)
 	{
 
-		char *hName = "Pins.%i" ;
+		char *hName = "Pins.%i.DigitalValueGet" ;
 
-		hal_comp_id = hal_init(hName);
+		//hal_comp_id = hal_init(hName);
 
 		//extern int hal_pin_s32_newf(hal_pin_dir_t dir,hal_s32_t ** data_ptr_addr, int comp_id, const char *fmt, ...)
 	//	hal_pin_s32_newf(HAL_OUT, &(PIN_HAL_DATA->DigitalValueGet), hal_comp_id, "%s.DigitalValueGet", hName);
