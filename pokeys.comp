@@ -364,7 +364,7 @@ void user_mainloop(void)
 				if ( PEv2_EmergencyInputPin!=0)
 				{	//check if pin is parametrized in HAL
 					
-					dev->Pins[PEv2_EmergencyInputPin-1].PinFunction = PK_PinCap_digitalInput;
+					dev->Pins[ PEv2_EmergencyInputPin-1].PinFunction = PK_PinCap_digitalInput;
 					setPinConfig=true;
 					setPeConfig=true;
 				}
@@ -380,7 +380,7 @@ void user_mainloop(void)
 				dev->PEv2.ProbeInputPolarity= PEv2_ProbeInputPolarity;
 				if ( PEv2_ProbeInput!=0)
 				{	//check if pin is parametrized in HAL
-						dev->Pins[PEv2_ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
+						dev->Pins[ PEv2_ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
 						setPinConfig=true;
 				}
 
@@ -432,12 +432,12 @@ void user_mainloop(void)
 
 						if ( PEv2_PinLimitPSwitch(i)!=0)
 						{	//check if pin is parametrized in HAL
-						dev->Pins[PEv2.PinLimitPSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
+						dev->Pins[ PEv2_PinLimitPSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
 						setPinConfig=true;
 						}
 						if ( PEv2_PinLimitPSwitch(i)!=0)
 						{	//check if pin is parametrized in HAL
-						dev->Pins[PEv2.PinLimitPSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
+						dev->Pins[ PEv2_PinLimitPSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
 						setPinConfig=true;
 						}
 
@@ -609,7 +609,7 @@ void user_mainloop(void)
 		}
 		if ( PEv2_EmergencyOutputPin!=0)
 		{	//check if pin is parametrized in HAL
-			dev->Pins[PEv2.EmergencyOutputPin].DigitalValueSet= PEv2_EmergencyOutput;
+			dev->Pins[ PEv2_EmergencyOutputPin].DigitalValueSet= PEv2_EmergencyOutput;
 		}
 		else
 		{
