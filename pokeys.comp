@@ -85,7 +85,7 @@ pin out unsigned PEv2_HomingAlgorithm-# [8];		// Homing algorithm configuration
 pin in unsigned PEv2_FilterLimitMSwitch-# [8];		// Digital filter for limit- switch
 pin in unsigned PEv2_FilterLimitPSwitch-# [8];		// Digital filter for limit+ switch
 pin in unsigned PEv2_FilterHomeSwitch-# [8];		// Digital filter for home switch
-pin out u32 PEv2_ProbePosition-# [8];			// Position where probe detected change
+pin out u32 PEv2.ProbePosition-# [8];			// Position where probe detected change
 pin out u32 PEv2_ProbeMaxPosition-# [8];		// Maximum position to travel to until stopping and returning error
 
 pin out u32 PEv2_CurrentPosition-# [8];			// Current position
@@ -267,7 +267,7 @@ option extra_link_args "-lPoKeys";
 #include "PoKeysLib.h"
 
 sPoKeysDevice * dev=0;
-Pk_Pins_Comp Pins = new Pk_Pins_Comp();
+//Pk_Pins_Comp Pins;
 
 int i=0;
 
@@ -944,30 +944,26 @@ void user_mainloop(void)
 };
 
 
-public Class Pk_Pins_Comp
-
-Pk_Pin_Comp Pin-#[55];
-
-public Pk_Pins_Comp(){}
-End Clas
+//public Class Pk_Pins_Comp
+//Pk_Pin_Comp Pin-#[55];
+//public Pk_Pins_Comp(){}
+//End Clas
 
 
-public Class Pk_Pin_Comp
-pin out unsigned DigitalCounterValue;
-pin out unsigned AnalogValue;
-pin out unsigned PinFunction;
-pin out unsigned CounterOptions;
-pin out unsigned DigitalValueGet ;
-pin in unsigned DigitalValueSet ;
-pin out unsigned DigitalCounterAvailable ;
-pin out unsigned MappingType ;
-pin out unsigned KeyCodeMacroID ;
-pin out unsigned KeyModifier ;
-pin out unsigned downKeyCodeMacroID ;
-pin out unsigned downKeyModifier ;
-pin out unsigned upKeyCodeMacroID ;
-pin out unsigned upKeyModifier ;
-pin out unsigned preventUpdate ;
-
-
-End Clas
+//public Class Pk_Pin_Comp
+//pin out unsigned DigitalCounterValue;
+//pin out unsigned AnalogValue;
+//pin out unsigned PinFunction;
+//pin out unsigned CounterOptions;
+//pin out unsigned DigitalValueGet ;
+//pin in unsigned DigitalValueSet ;
+//pin out unsigned DigitalCounterAvailable ;
+//pin out unsigned MappingType ;
+//pin out unsigned KeyCodeMacroID ;
+//pin out unsigned KeyModifier ;
+//pin out unsigned downKeyCodeMacroID ;
+//pin out unsigned downKeyModifier ;
+//pin out unsigned upKeyCodeMacroID ;
+//pin out unsigned upKeyModifier ;
+//pin out unsigned preventUpdate ;
+//End Clas
