@@ -165,7 +165,7 @@ pin out bit PEv2.#.HomeSwitchStat [8];				// Home switch
 pin out bit PEv2.#.LimitMSwitch [8];			// Limit- switch
 pin out bit PEv2.#.LimitPSwitch [8];			// Limit+ switch
 pin in bit PEv2.#.AxisEnableOutput [8];		// Axis enabled output
-pin out bit PEv2.#.HomeSwitch;				// Home switch
+pin out bit PEv2.HomeSwitch;				// Home switch
 
 
 pin io unsigned PEv2_HomeBackOffDistance-# [8];		// Back-off distance after homing
