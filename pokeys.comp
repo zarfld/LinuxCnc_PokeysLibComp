@@ -5,7 +5,7 @@ option userspace yes;
 pin out unsigned enum_usb_dev;
 pin out unsigned enum_fusb_dev;
 pin out unsigned enum_udp_dev;
-pin out unsigned 1debout;
+pin out unsigned a_debout;
 
 pin out bit err;
 pin out bit connected;
@@ -323,7 +323,7 @@ int i=0;
 
 void user_mainloop(void) 
 { 
-		1debout = 100;
+		a_debout = 100;
 
 
     while(0xb){
@@ -334,25 +334,25 @@ void user_mainloop(void)
 			
 		 if (devSerial!=0 )
 		 {
-				1debout = 110;
+				a_debout = 110;
 				enum_usb_dev = PK_EnumerateUSBDevices();
-				1debout = 111;
+				a_debout = 111;
 				if (enum_usb_dev != 0)
 				{
 				dev = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
 				}
 				
-				1debout = 112;
+				a_debout = 112;
 				if (dev == NULL)
 				{
-					1debout = 113;
+					a_debout = 113;
 					dev = PK_ConnectToDeviceWSerial_UDP(devSerial, 5000);  //waits for usb device
 				}
 
 		 }
 		else
 		{
-			1debout = 114;
+			a_debout = 114;
 			sPoKeysNetworkDeviceSummary *udp_devices;
 			enum_usb_dev = PK_EnumerateUSBDevices();
 			enum_fusb_dev = PK_EnumerateUSBDevices();
@@ -362,7 +362,7 @@ void user_mainloop(void)
 
 		if(dev != NULL)
 		{
-			1debout = 121;
+			a_debout = 121;
 			connected=1;
 			bool setPkConfig = false;
 			bool setPinConfig = false;
@@ -404,16 +404,16 @@ void user_mainloop(void)
 			 info_PulseEnginev2 = dev->info.iPulseEnginev2;                   // Device supports Pulse engine v2
 			 info_EasySensors = dev->info.iEasySensors;                     // Device supports EasySensors
 
-			 1debout = 122;
+			 a_debout = 122;
 			 if ( info_PinCount!=0 )
 			 {
-				1debout = 123;
+				a_debout = 123;
 				//Pins_HalSetup(dev);
 			 }
-			 1debout = 124;
+			 a_debout = 124;
 			 if ( info_PulseEnginev2!=0 )
 			 {
-				1debout = 130;
+				a_debout = 130;
 				 PEv2_nrOfAxes=dev->PEv2.info.nrOfAxes;
 				 PEv2_maxPulseFrequency=dev->PEv2.info.maxPulseFrequency;
 				 PEv2_bufferDepth=dev->PEv2.info.bufferDepth;
@@ -422,14 +422,14 @@ void user_mainloop(void)
 				 dev->PEv2.EmergencyInputPin= PEv2_EmergencyInputPin;
 				if ( PEv2_EmergencyInputPin!=0)
 				{	//check if pin is parametrized in HAL
-					1debout = 131;
+					a_debout = 131;
 					dev->Pins[ PEv2_EmergencyInputPin-1].PinFunction = PK_PinCap_digitalInput;
 					setPinConfig=true;
 					setPeConfig=true;
 				}
 				if ( PEv2_EmergencyOutputPin!=0)
 				{	//check if pin is parametrized in HAL
-					1debout = 132;
+					a_debout = 132;
 						dev->Pins[ PEv2_EmergencyOutputPin-1].PinFunction = PK_PinCap_digitalOutput;
 						setPinConfig=true;
 				}
@@ -438,13 +438,13 @@ void user_mainloop(void)
 				dev->PEv2.ProbeInput= PEv2_ProbeInput;
 				//check if pin is parametrized in HAL
 				dev->PEv2.ProbeInputPolarity= PEv2_ProbeInputPolarity;
-				1debout = 133;
+				a_debout = 133;
 				if ( PEv2_ProbeInput!=0)
 				{	//check if pin is parametrized in HAL
 						dev->Pins[ PEv2_ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
 						setPinConfig=true;
 				}
-				1debout = 134;
+				a_debout = 134;
 				dev->PEv2.PulseEngineEnabled=8; //Enable 8 axes
 				dev->PEv2.PulseEngineActivated=true;
 				dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
@@ -452,13 +452,13 @@ void user_mainloop(void)
 				
 				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
-					1debout = 1310 + 1;
+					a_debout = 1310 + 1;
 					if(PEv2_STEP_SCALE(i)!=0)
 					{
 						
 						if ( PEv2_AxesConfig(i)!=PK_AC_POSITION_MODE)
 						{
-							1debout = 13"0 + 1;
+							a_debout = 13"0 + 1;
 							dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_vel_cmd(i) * PEv2_STEP_SCALE(i);
 
 							PEv2_joint_vel_fb(i) = dev->PEv2.PositionSetup[i] / PEv2_STEP_SCALE(i);
@@ -466,12 +466,12 @@ void user_mainloop(void)
 						}
 						else
 						{
-							1debout = 1320 + 1;
+							a_debout = 1320 + 1;
 							dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i) * PEv2_STEP_SCALE(i);
 							PEv2_joint_vel_fb(i) = dev->PEv2.PositionSetup[i] / PEv2_STEP_SCALE(i);
 							PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_STEP_SCALE(i);
 						}
-						1debout = 1330 + 1;
+						a_debout = 1330 + 1;
 						dev->PEv2.MaxSpeed[i] = PEv2_STEPGEN_MAXVEL(i)* PEv2_STEP_SCALE(i)/1000;					// Maximum axis speed convert (mm/s) to (pulses per ms)
 						dev->PEv2.MaxAcceleration[i] = PEv2_STEPGEN_MAXVEL(i)* PEv2_STEP_SCALE(i) /1000000;			// Maximum axis acceleration convert (mm/s²) to (in pulses/ms/ms)
 						dev->PEv2.MaxDecceleration[i] = PEv2_STEPGEN_MAXVEL(i)* PEv2_STEP_SCALE(i) /1000000;			// Maximum axis deceleration convert (mm/s²) to (in pulses/ms/ms)
@@ -504,7 +504,7 @@ void user_mainloop(void)
 						dev->Pins[ PEv2_PinLimitPSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
 						setPinConfig=true;
 						}
-						1debout = 1350 + 1;
+						a_debout = 1350 + 1;
 
 						dev->PEv2.param1 = i;
 						PK_PEv2_AxisConfigurationSet(dev);
@@ -512,17 +512,17 @@ void user_mainloop(void)
 				}
 				dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
 				PK_PEv2_PulseEngineStateSet(dev);
-				1debout = 136;
+				a_debout = 136;
 			 }
 			
 			 if (setPinConfig==true)
 			 {
-				1debout = 140;
+				a_debout = 140;
 				PK_PinConfigurationSet(dev);
 			 }
 			 dev->DeviceData.DeviceLockStatus=1;
 			 PK_SaveConfiguration(dev);
-			 1debout = 141;
+			 a_debout = 141;
 		}
 		else
 		{
@@ -533,11 +533,11 @@ void user_mainloop(void)
 	 }
 	 alive=1; 
 
-	 1debout = 200;
+	 a_debout = 200;
 	 // RTC
 	if (PK_RTCGet(dev) == PK_OK)
 	{
-		1debout = 210;
+		a_debout = 210;
 		rtc_sec=dev->RTC.SEC;
 		rtc_min=dev->RTC.MIN;
 		rtc_hour=dev->RTC.HOUR;
@@ -550,23 +550,23 @@ void user_mainloop(void)
 
 		if (rtc_lastsec!=rtc_sec)
 		{
-			1debout = 211;
+			a_debout = 211;
 			rtc_loop_frequ=rtc_loopcount;
 			rtc_loopcount=0;
 			rtc_lastsec=rtc_sec;
 
 				
 		}
-		1debout = 212;
+		a_debout = 212;
 	}
 
 	// PulseEnginev2
 	if (info_PulseEnginev2!=0)
 	{
-		1debout = 220;
+		a_debout = 220;
 	 if ((PK_PEv2_StatusGet(dev) == PK_OK) && (PK_PEv2_Status2Get(dev) == PK_OK))
 	 {
-		1debout = 221;
+		a_debout = 221;
 	 // Pulse engine v2 structure...
 		PEv2_PulseEngineEnabled=dev->PEv2.PulseEngineEnabled;			// Pulse engine enabled status, also number of enabled axes
 		PEv2_PulseGeneratorType=dev->PEv2.PulseGeneratorType;			// Pulse engine generator type (0: external, 1: internal 3ch)
@@ -586,7 +586,7 @@ void user_mainloop(void)
 		    case PK_PEState_peSTOPPED:           // Pulse engine is stopped
 				if(machine_is_on==true)
 				{
-					1debout = 222;
+					a_debout = 222;
 					dev->PEv2.PulseEngineState = PK_PEState_peRUNNING;
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
@@ -598,7 +598,7 @@ void user_mainloop(void)
 		    casePK_PEState_peRUNNING:           // Pulse engine is activated
 				if(machine_is_on==false)
 				{
-					1debout = 222;
+					a_debout = 222;
 					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
@@ -606,7 +606,7 @@ void user_mainloop(void)
 		    casePK_PEState_peJOGGING:          // Jogging mode enabled
 				if(machine_is_on==false)
 				{
-					1debout = 222;
+					a_debout = 222;
 					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
@@ -616,7 +616,7 @@ void user_mainloop(void)
 		    casePK_PEState_peHOME:          // All axes are homed
 				if(machine_is_on==false)
 				{
-					1debout = 222;
+					a_debout = 222;
 					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
@@ -624,7 +624,7 @@ void user_mainloop(void)
 		    casePK_PEState_peHOMING:          // Axes homing is in progress
 				if(machine_is_on==false)
 				{
-					1debout = 222;
+					a_debout = 222;
 					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
@@ -632,7 +632,7 @@ void user_mainloop(void)
 		    casePK_PEState_pePROBECOMPLETE:          // All axes are homed
 				if(machine_is_on==false)
 				{
-					1debout = 222;
+					a_debout = 222;
 					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
@@ -640,7 +640,7 @@ void user_mainloop(void)
 		    casePK_PEState_pePROBE:          // Axes probing is in progress
 				if(machine_is_on==false)
 				{
-					1debout = 222;
+					a_debout = 222;
 					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
@@ -648,7 +648,7 @@ void user_mainloop(void)
 		    casePK_PEState_pePROBEERROR:          // Error occured during probing
 				if(machine_is_on==false)
 				{
-					1debout = 222;
+					a_debout = 222;
 					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
@@ -656,7 +656,7 @@ void user_mainloop(void)
 		    casePK_PEState_peHYBRIDPROBE_STOPPING:
 				if(machine_is_on==false)
 				{
-					1debout = 222;
+					a_debout = 222;
 					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
@@ -664,7 +664,7 @@ void user_mainloop(void)
 		    casePK_PEState_peHYBRIDPROBE_COMPLETE:
 				if(machine_is_on==false)
 				{
-					1debout = 222;
+					a_debout = 222;
 					dev->PEv2.PulseEngineState = PK_PEState_peSTOPPED;
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
@@ -677,7 +677,7 @@ void user_mainloop(void)
 				break;
 		}
 
-		1debout = 223;
+		a_debout = 223;
 		PEv2_AxisEnabledMask=dev->PEv2.AxisEnabledMask;				// Bit-mapped ouput enabled mask
 
 		if (dev->PEv2.EmergencyInputPin>0)
@@ -688,7 +688,7 @@ void user_mainloop(void)
 		{
 			PEv2_EmergencyInput=false;
 		}
-		1debout = 224;
+		a_debout = 224;
 		if ( PEv2_EmergencyOutputPin!=0)
 		{	//check if pin is parametrized in HAL
 			dev->Pins[ PEv2_EmergencyOutputPin].DigitalValueSet= PEv2_EmergencyOutput;
@@ -711,7 +711,7 @@ void user_mainloop(void)
 				PEv2_EmergencyInput= PEv2_EmergencyOutput;
 			}
 		}
-		1debout = 225;
+		a_debout = 225;
 		PEv2_param1=dev->PEv2.param1;
 		PEv2_param2=dev->PEv2.param2;
 		PEv2_param3=dev->PEv2.param3;
@@ -730,16 +730,16 @@ void user_mainloop(void)
 		// PEv2_MotionBuffer=dev->PEv2.MotionBuffer;			// Motion buffer
 		PEv2_ProbeSpeed=dev->PEv2.ProbeSpeed;						// Probe speed (ratio of the maximum speed)
 		PEv2_BacklashCompensationEnabled=dev->PEv2.BacklashCompensationEnabled;
-		1debout = 226;
+		a_debout = 226;
 	 }
 	 if (PK_PEv2_AxisConfigurationGet(dev) == PK_OK)
 	 {
-		1debout = 230;
+		a_debout = 230;
 			bool PEv2_move = false;
 
 			for(i=0;i< PEv2_nrOfAxes;i++)
 			{ 
-				1debout = 2310+i;
+				a_debout = 2310+i;
 				PEv2_AxesState(i)=dev->PEv2.AxesState[i];				// Axis states (bit-mapped) - see ePK_PEAxisState
 				switch( PEv2_AxesState(i))
 				{
@@ -776,7 +776,7 @@ void user_mainloop(void)
 						break ;
 				}
 
-				1debout = 2320+i;
+				a_debout = 2320+i;
 				PEv2_AxesConfig(i)=dev->PEv2.AxesConfig[i];				// Axis configuration - see ePK_PEv2_AxisConfig
 				PEv2_InvertAxisEnable(i)=dev->PEv2.InvertAxisEnable[i];		// Invert axis enable signal
 				PEv2_SoftLimitMaximum(i)=dev->PEv2.SoftLimitMaximum[i];		// Soft limit maximum position
@@ -793,7 +793,7 @@ void user_mainloop(void)
 				
 				if( PEv2_STEP_SCALE(i)!=0)
 				{
-					1debout = 2330+i;
+					a_debout = 2330+i;
 					if ( PEv2_AxesConfig(i)!=PK_AC_POSITION_MODE)
 					{
 						// Velocity-Mode
@@ -806,19 +806,19 @@ void user_mainloop(void)
 					}
 					else
 					{
-						1debout = 2340+i;
+						a_debout = 2340+i;
 						dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i) * PEv2_STEP_SCALE(i);
 						PEv2_joint_vel_fb(i) = dev->PEv2.PositionSetup[i] / PEv2_STEP_SCALE(i);
 						PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_STEP_SCALE(i);
 						PEv2_move=true;
 					}
 
-					1debout = 2350+i;
+					a_debout = 2350+i;
 					PEv2_MaxSpeed(i)=dev->PEv2.MaxSpeed[i];					// Maximum axis speed (in pulses per ms)
 					PEv2_MaxAcceleration(i)=dev->PEv2.MaxAcceleration[i];			// Maximum axis acceleration (in pulses/ms/ms)
 					PEv2_MaxDecceleration(i)=dev->PEv2.MaxDecceleration[i];			// Maximum axis deceleration (in pulses/ms/ms)
 				}
-				1debout = 2360+i;
+				a_debout = 2360+i;
 				PEv2_CurrentPosition(i)=dev->PEv2.CurrentPosition[i];				// Current position
 				PEv2_PositionSetup(i)=dev->PEv2.PositionSetup[i];					// Position to be set as current position
 				PEv2_ReferencePositionSpeed(i)=dev->PEv2.ReferencePositionSpeed[i];	// Reference position or speed (position or pulses/s)
@@ -879,11 +879,11 @@ void user_mainloop(void)
 				PEv2_BacklashWidth(i)=dev->PEv2.BacklashWidth[i];			// half of real backlash width
 				PEv2_BacklashRegister(i)=dev->PEv2.BacklashRegister[i];		// current value of the backlash register
 				PEv2_BacklashAcceleration(i)=dev->PEv2.BacklashAcceleration[i];	// in pulses per ms^2
-				1debout = 2370+i;
+				a_debout = 2370+i;
 			}
 			if ( PEv2_move==true)
 			{
-			1debout = 2380+i;
+			a_debout = 2380+i;
 			PK_PEv2_PulseEngineMove(dev);
 			}
 	 }
@@ -892,10 +892,10 @@ void user_mainloop(void)
 	if ((PK_DigitalIOGet(dev) == PK_OK) && (PK_AnalogIOGet(dev) == PK_OK) && (PK_PinConfigurationGet(dev) == PK_OK)){  //gets IO data and checks return value 
 		err=0;
 		sPoKeysPinData iPin;
-		1debout = 240;
+		a_debout = 240;
 		for(i=0;i<info_PinCount-1;i++)
 		{
-			1debout = 2410+i;
+			a_debout = 2410+i;
 			Pins_DigitalCounterValue(i)=dev->Pins[i].DigitalCounterValue;
 			Pins_AnalogValue(i)=dev->Pins[i].AnalogValue;
 			Pins_PinFunction(i)=dev->Pins[i].PinFunction;
@@ -911,15 +911,15 @@ void user_mainloop(void)
 			Pins_upKeyCodeMacroID(i)=dev->Pins[i].upKeyCodeMacroID;
 			Pins_upKeyModifier(i)=dev->Pins[i].upKeyModifier;
 			Pins_preventUpdate(i)=dev->Pins[i].preventUpdate;
-			1debout = 2420+i;
+			a_debout = 2420+i;
 		}
-		1debout = 243;
+		a_debout = 243;
 		PK_DigitalIOSet(dev);
-		1debout = 244;
+		a_debout = 244;
 	 }
      else
 	 {             		  //on connection error
-		1debout = 245;
+		a_debout = 245;
 		PK_DisconnectDevice(dev);
 		dev=NULL;  		  //tries to reconnect
 		err=1;
@@ -928,15 +928,15 @@ void user_mainloop(void)
 	
 	if (info_MatrixKeyboard!=0)
 	{
-		1debout = 250;
+		a_debout = 250;
 		if (PK_MatrixKBStatusGet(dev) == PK_OK)
 		{
-			1debout = 251;
+			a_debout = 251;
 			if (MatrixKB_matrixKBwidth>0 && MatrixKB_matrixKBheight>0)
 			{
 				for(i=0;i<128;i++)
 				{
-					1debout = 2520+i;
+					a_debout = 2520+i;
 					MatrixKB_matrixKBvalues(i) = dev->matrixKB.matrixKBvalues[i]; 
 				}
 			}
@@ -947,13 +947,13 @@ void user_mainloop(void)
 
 	if (info_EasySensors!=0 && info_PinCount!=0)
 	{
-		1debout = 260;
+		a_debout = 260;
 		if ((PK_EasySensorsSetupGet(dev) == PK_OK) && (PK_EasySensorsValueGetAll(dev) == PK_OK))
 		{
-			1debout = 261;
+			a_debout = 261;
 			for(i=0;i<10;i++)
 			{
-				1debout = 2610+i;
+				a_debout = 2610+i;
 				EasySensors_sensorValue(i)=dev->EasySensors[i].sensorValue;
 				EasySensors_sensorType(i)=dev->EasySensors[i].sensorType;
 				EasySensors_sensorRefreshPeriod(i)=dev->EasySensors[i].sensorRefreshPeriod;
@@ -966,7 +966,7 @@ void user_mainloop(void)
 	}
 	if (rtc_lastmin!=rtc_min)
 	{
-		1debout = 310;
+		a_debout = 310;
 		rtc_lastmin=rtc_min;
 		
 		 info_PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
@@ -1006,11 +1006,11 @@ void user_mainloop(void)
 		 info_PulseEngine = dev->info.iPulseEngine;                     // Device supports Pulse engine
 		 info_PulseEnginev2 = dev->info.iPulseEnginev2;                   // Device supports Pulse engine v2
 		 info_EasySensors = dev->info.iEasySensors;                     // Device supports EasySensors
-		 1debout = 311;
+		 a_debout = 311;
 
 		 if ( info_PulseEnginev2!=0)
 		 {
-			1debout = 320;
+			a_debout = 320;
 			 PEv2_nrOfAxes=dev->PEv2.info.nrOfAxes;
 			 PEv2_maxPulseFrequency=dev->PEv2.info.maxPulseFrequency;
 			 PEv2_bufferDepth=dev->PEv2.info.bufferDepth;
@@ -1019,7 +1019,7 @@ void user_mainloop(void)
 
 			if (info_MatrixKeyboard!=0)
 			{
-				1debout = 330;
+				a_debout = 330;
 				if (PK_MatrixKBConfigurationGet(dev) == PK_OK)
 				{
 
@@ -1028,12 +1028,12 @@ void user_mainloop(void)
 					MatrixKB_matrixKBheight = dev->matrixKB.matrixKBheight;
 					for(i=0;i<MatrixKB_matrixKBwidth-1;i++)
 					{
-						1debout = 3310+i;
+						a_debout = 3310+i;
 						MatrixKB_matrixKBcolumnsPins(i) = dev->matrixKB.matrixKBcolumnsPins[i]; 
 					}
 					for(i=0;i<MatrixKB_matrixKBheight-1;i++)
 					{
-						1debout = 3320+i;
+						a_debout = 3320+i;
 						MatrixKB_matrixKBrowsPins(i) = dev->matrixKB.matrixKBrowsPins[i]; 
 					}
 				}
