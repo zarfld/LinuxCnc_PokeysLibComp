@@ -16,6 +16,7 @@ pin in bit machine_is_on;
 
 
 // PoKeys device information
+sPoKeysDevice_Info info;
 pin out unsigned info.PinCount;                        // Number of pins, physically on the device
 pin out unsigned info.PWMCount;                        // Number of pins that support PWM output
 pin out unsigned info.BasicEncoderCount;               // Number of basic encoders
