@@ -272,21 +272,21 @@ option extra_link_args "-lPoKeys";
 
 typedef struct
 {
-hal_u32_t DigitalCounterValue;
-hal_u32_t AnalogValue;
-hal_u32_t PinFunction;
-hal_u32_t CounterOptions;
-hal_u32_t DigitalValueGet ;
-hal_u32_t DigitalValueSet ;
-hal_u32_t DigitalCounterAvailable ;
-hal_u32_t MappingType ;
-hal_u32_t KeyCodeMacroID ;
-hal_u32_t KeyModifier ;
-hal_u32_t downKeyCodeMacroID ;
-hal_u32_t downKeyModifier ;
-hal_u32_t upKeyCodeMacroID ;
-hal_u32_t upKeyModifier ;
-hal_u32_t preventUpdate ;
+hal_u32_t *DigitalCounterValue;
+hal_u32_t *AnalogValue;
+hal_u32_t *PinFunction;
+hal_u32_t *CounterOptions;
+hal_s32_t *DigitalValueGet ;
+hal_s32_t *DigitalValueSet ;
+hal_u32_t *DigitalCounterAvailable ;
+hal_u32_t *MappingType ;
+hal_u32_t *KeyCodeMacroID ;
+hal_u32_t *KeyModifier ;
+hal_u32_t *downKeyCodeMacroID ;
+hal_u32_t *downKeyModifier ;
+hal_u32_t *upKeyCodeMacroID ;
+hal_u32_t *upKeyModifier ;
+hal_u32_t *preventUpdate ;
 }PK_Pin_HALComp;
 
 typedef struct
