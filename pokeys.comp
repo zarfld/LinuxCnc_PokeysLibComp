@@ -326,102 +326,22 @@ option extra_link_args "-lPoKeys";
 
 sPoKeysDevice * dev=0;
 
-
+bool setPkConfig = false;
+bool setPinConfig = false;
 int i=0;
 
-void user_mainloop(void) 
-{ 
-	
 
-
-    while(0xb){
-       FOR_ALL_INSTS() {
-	   rtc_loopcount++;
-	   a_debout = 100;
-	 while(dev == NULL)
-	 {
-			
-		 if (devSerial!=0 )
-		 {
-				a_debout = 110;
-				enum_usb_dev = PK_EnumerateUSBDevices();
-				a_debout = 111;
-				if (enum_usb_dev != 0)
-				{
-				dev = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
-				}
+int Config_PoNet()
+{
+	(PK_PoNETGetPoNETStatus(dev) == PK_OK)
+	{
 				
-				a_debout = 112;
-				if (dev == NULL)
-				{
-					a_debout = 113;
-					dev = PK_ConnectToDeviceWSerial_UDP(devSerial, 5000);  //waits for usb device
-				}
+	}
 
-		 }
-		else
-		{
-			a_debout = 114;
-			sPoKeysNetworkDeviceSummary *udp_devices;
-			enum_usb_dev = PK_EnumerateUSBDevices();
-			enum_fusb_dev = PK_EnumerateUSBDevices();
-			//enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices,180); // does not work - it hangs here
+}
 
-		}
-
-		if(dev != NULL)
-		{
-			a_debout = 121;
-			connected=1;
-			bool setPkConfig = false;
-			bool setPinConfig = false;
-			 info_PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
-			 info_PWMCount = dev->info.iPWMCount;                        // Number of pins that support PWM output
-			 info_BasicEncoderCount = dev->info.iBasicEncoderCount;               // Number of basic encoders
-			 info_EncodersCount = dev->info.iEncodersCount;                   // Number of encoder slots available
-			 info_FastEncoders = dev->info.iFastEncoders;                    // Number of fast encoders supported
-			 info_UltraFastEncoders = dev->info.iUltraFastEncoders;               // Number of available ultra fast encoders
-			 info_PWMinternalFrequency = dev->info.PWMinternalFrequency;             // Main PWM peripheral clock
-			 info_AnalogInputs = dev->info.iAnalogInputs;                    // Number of available analog inputs
-			 info_KeyMapping = dev->info.iKeyMapping;                      // Device supports key mapping (acts as a USB keyboard)
-			 info_TriggeredKeyMapping = dev->info.iTriggeredKeyMapping;             // Device supports triggered key mapping
-			 info_KeyRepeatDelay = dev->info.iKeyRepeatDelay;                  // Device supports user customizable key repeat rates and delays
-			 info_DigitalCounters = dev->info.iDigitalCounters;                 // Device supports digital counters
-			 info_JoystickButtonAxisMapping = dev->info.iJoystickButtonAxisMapping;       // Device supports mapping of joystick buttons
-			 info_JoystickAnalogToDigitalMapping = dev->info.iJoystickAnalogToDigitalMapping;  // Device supports mapping of analog inputs to digital keys
-			 info_Macros = dev->info.iMacros;                          // Device supports customizable macro sequences
-			 info_MatrixKeyboard = dev->info.iMatrixKeyboard;                  // Device supports matrix keyboard
-			 info_MatrixKeyboardTriggeredMapping = dev->info.iMatrixKeyboardTriggeredMapping;  // Device supports matrix keyboard triggered key mapping
-			 info_LCD = dev->info.iLCD;                             // Device supports alphanumeric LCD display
-			 info_MatrixLED = dev->info.iMatrixLED;                       // Device supports matrix LED display
-			 info_ConnectionSignal = dev->info.iConnectionSignal;                // Device supports connection signal output
-			 info_PoExtBus = dev->info.iPoExtBus;                        // Device supports PoExtBus digital outputs
-			 info_PoNET = dev->info.iPoNET;                           // Device supports PoNET bus devices
-			 info_AnalogFiltering = dev->info.iAnalogFiltering;                 // Device supports analog inputs low-pass digital filtering
-			 info_InitOutputsStart = dev->info.iInitOutputsStart;                // Device supports initializing outputs at startup
-			 info_protI2C = dev->info.iprotI2C;                         // Device supports I2C bus (master)
-			 info_prot1wire = dev->info.iprot1wire;                       // Device supports 1-wire bus (master)
-			 info_AdditionalOptions = dev->info.iAdditionalOptions;               // Device supports additional options with activation keys
-			 info_LoadStatus = dev->info.iLoadStatus;                      // Device supports reporting load status
-			 info_CustomDeviceName = dev->info.iCustomDeviceName;                // Device supports specifying custom device names
-			 info_PoTLog27support = dev->info.iPoTLog27support;                 // Device supports PoTLog27 firmware
-			 info_SensorList = dev->info.iSensorList;                      // Device supports sensor lists
-			 info_WebInterface = dev->info.iWebInterface;                    // Device supports web interface
-			 info_FailSafeSettings = dev->info.iFailSafeSettings;                // Device supports fail-safe mode
-			 info_JoystickHATswitch = dev->info.iJoystickHATswitch;               // Device supports joystick HAT switch mapping
-			 info_PulseEngine = dev->info.iPulseEngine;                     // Device supports Pulse engine
-			 info_PulseEnginev2 = dev->info.iPulseEnginev2;                   // Device supports Pulse engine v2
-			 info_EasySensors = dev->info.iEasySensors;                     // Device supports EasySensors
-
-			 a_debout = 122;
-			 if ( info_PinCount!=0 )
-			 {
-				a_debout = 123;
-
-			 }
-			 a_debout = 124;
-			 if ( info_PulseEnginev2!=0 )
-			 {
+int Config_PEv2()
+{
 				a_debout = 130;
 				 PEv2_nrOfAxes=dev->PEv2.info.nrOfAxes;
 				 PEv2_maxPulseFrequency=dev->PEv2.info.maxPulseFrequency;
@@ -522,13 +442,121 @@ void user_mainloop(void)
 				dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
 				PK_PEv2_PulseEngineStateSet(dev);
 				a_debout = 136;
+
+}
+
+void user_mainloop(void) 
+{ 
+	
+
+
+    while(0xb){
+       FOR_ALL_INSTS() {
+	   rtc_loopcount++;
+	   a_debout = 100;
+	 while(dev == NULL)
+	 {
+			
+		 if (devSerial!=0 )
+		 {
+				a_debout = 110;
+				enum_usb_dev = PK_EnumerateUSBDevices();
+				a_debout = 111;
+				if (enum_usb_dev != 0)
+				{
+				dev = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
+				}
+				
+				a_debout = 112;
+				if (dev == NULL)
+				{
+					a_debout = 113;
+					dev = PK_ConnectToDeviceWSerial_UDP(devSerial, 5000);  //waits for usb device
+				}
+
+		 }
+		else
+		{
+			a_debout = 114;
+			sPoKeysNetworkDeviceSummary *udp_devices;
+			enum_usb_dev = PK_EnumerateUSBDevices();
+			enum_fusb_dev = PK_EnumerateUSBDevices();
+			//enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices,180); // does not work - it hangs here
+
+		}
+
+		if(dev != NULL)
+		{
+			a_debout = 121;
+			connected=1;
+
+			 info_PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
+			 info_PWMCount = dev->info.iPWMCount;                        // Number of pins that support PWM output
+			 info_BasicEncoderCount = dev->info.iBasicEncoderCount;               // Number of basic encoders
+			 info_EncodersCount = dev->info.iEncodersCount;                   // Number of encoder slots available
+			 info_FastEncoders = dev->info.iFastEncoders;                    // Number of fast encoders supported
+			 info_UltraFastEncoders = dev->info.iUltraFastEncoders;               // Number of available ultra fast encoders
+			 info_PWMinternalFrequency = dev->info.PWMinternalFrequency;             // Main PWM peripheral clock
+			 info_AnalogInputs = dev->info.iAnalogInputs;                    // Number of available analog inputs
+			 info_KeyMapping = dev->info.iKeyMapping;                      // Device supports key mapping (acts as a USB keyboard)
+			 info_TriggeredKeyMapping = dev->info.iTriggeredKeyMapping;             // Device supports triggered key mapping
+			 info_KeyRepeatDelay = dev->info.iKeyRepeatDelay;                  // Device supports user customizable key repeat rates and delays
+			 info_DigitalCounters = dev->info.iDigitalCounters;                 // Device supports digital counters
+			 info_JoystickButtonAxisMapping = dev->info.iJoystickButtonAxisMapping;       // Device supports mapping of joystick buttons
+			 info_JoystickAnalogToDigitalMapping = dev->info.iJoystickAnalogToDigitalMapping;  // Device supports mapping of analog inputs to digital keys
+			 info_Macros = dev->info.iMacros;                          // Device supports customizable macro sequences
+			 info_MatrixKeyboard = dev->info.iMatrixKeyboard;                  // Device supports matrix keyboard
+			 info_MatrixKeyboardTriggeredMapping = dev->info.iMatrixKeyboardTriggeredMapping;  // Device supports matrix keyboard triggered key mapping
+			 info_LCD = dev->info.iLCD;                             // Device supports alphanumeric LCD display
+			 info_MatrixLED = dev->info.iMatrixLED;                       // Device supports matrix LED display
+			 info_ConnectionSignal = dev->info.iConnectionSignal;                // Device supports connection signal output
+			 info_PoExtBus = dev->info.iPoExtBus;                        // Device supports PoExtBus digital outputs
+			 info_PoNET = dev->info.iPoNET;                           // Device supports PoNET bus devices
+			 info_AnalogFiltering = dev->info.iAnalogFiltering;                 // Device supports analog inputs low-pass digital filtering
+			 info_InitOutputsStart = dev->info.iInitOutputsStart;                // Device supports initializing outputs at startup
+			 info_protI2C = dev->info.iprotI2C;                         // Device supports I2C bus (master)
+			 info_prot1wire = dev->info.iprot1wire;                       // Device supports 1-wire bus (master)
+			 info_AdditionalOptions = dev->info.iAdditionalOptions;               // Device supports additional options with activation keys
+			 info_LoadStatus = dev->info.iLoadStatus;                      // Device supports reporting load status
+			 info_CustomDeviceName = dev->info.iCustomDeviceName;                // Device supports specifying custom device names
+			 info_PoTLog27support = dev->info.iPoTLog27support;                 // Device supports PoTLog27 firmware
+			 info_SensorList = dev->info.iSensorList;                      // Device supports sensor lists
+			 info_WebInterface = dev->info.iWebInterface;                    // Device supports web interface
+			 info_FailSafeSettings = dev->info.iFailSafeSettings;                // Device supports fail-safe mode
+			 info_JoystickHATswitch = dev->info.iJoystickHATswitch;               // Device supports joystick HAT switch mapping
+			 info_PulseEngine = dev->info.iPulseEngine;                     // Device supports Pulse engine
+			 info_PulseEnginev2 = dev->info.iPulseEnginev2;                   // Device supports Pulse engine v2
+			 info_EasySensors = dev->info.iEasySensors;                     // Device supports EasySensors
+
+			 a_debout = 122;
+			 if ( info_PinCount!=0 )
+			 {
+				a_debout = 123;
+
+			 }
+			 a_debout = 124;
+			 if ( info_PulseEnginev2!=0 )
+			 {
+				 Config_PEv2
 			 }
 			
+			if (info_MatrixKeyboard!=0)
+			{
+				dev->matrixKB.matrixKBconfiguration = 1;
+			}
+
 			 if (setPinConfig==true)
 			 {
 				a_debout = 140;
 				PK_PinConfigurationSet(dev);
+				setPinConfig = false;
 			 }
+			 if (info_PoNET!=0)
+			 {
+			 getConfig_PoNet
+			 }
+			 
+
 			 dev->DeviceData.DeviceLockStatus=1;
 			 PK_SaveConfiguration(dev);
 			 a_debout = 141;
