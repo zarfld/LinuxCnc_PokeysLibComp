@@ -341,7 +341,7 @@ int Config_PoNet()
 	{
 				
 	}
-	return 0
+	return 0;
 }
 
 int Update_PoNet()
@@ -354,7 +354,7 @@ int Update_PoNet()
 	{
 				
 	}
-	return 0
+	return 0;
 }
 
 
@@ -467,7 +467,7 @@ int Config_PEv2()
 				PK_PEv2_PulseEngineStateSet(dev);
 				a_debout = 136;
 	}
-	return 0
+	return 0;
 }
 
 int Update_PEv2()
@@ -485,7 +485,7 @@ int Update_PEv2()
 	//PK_PEv2_PulseEngineStateSet
 	//PK_PEv2_PulseEngineMove
 	//PK_PEv2_ExternalOutputsSet
-	return 0
+	return 0;
 }
 
 int Config_MatrixKB()
@@ -495,7 +495,7 @@ int Config_MatrixKB()
 	}
 
 	//PK_MatrixKBConfigurationSet
-	return 0
+	return 0;
 }
 
 int Update_MatrixKB()
@@ -503,7 +503,7 @@ int Update_MatrixKB()
 	if(PK_MatrixKBStatusGet(dev) == PK_OK)
 	{
 	}
-	return 0
+	return 0;
 }
 
 int Config_LCD()
@@ -515,7 +515,7 @@ int Config_LCD()
 	//PK_LCDConfigurationSet
 	// Change between modes PK_LCD_MODE_DIRECT and PK_LCD_MODE_BUFFERED
 	// PK_LCDChangeMode(dev, PK_LCD_MODE_DIRECT);
-	return 0
+	return 0;
 }
 
 int Update_LCD()
@@ -526,7 +526,7 @@ int Update_LCD()
 	if(PK_LCDSetCustomCharacters(dev) == PK_OK)
 	{
 	}
-	return 0
+	return 0;
 }
 
 int Config_EasySensors()
@@ -536,7 +536,7 @@ int Config_EasySensors()
 	}
 
 	//PK_EasySensorsSetupSet
-	return 0
+	return 0;
 }
 
 int Update_EasySensors()
@@ -544,7 +544,7 @@ int Update_EasySensors()
 	if(PK_EasySensorsValueGetAll(dev) == PK_OK)
 	{
 	}
-	return 0
+	return 0;
 }
 
 
@@ -560,7 +560,7 @@ int Config_PoStep()
 
 	//PK_PoStep_ConfigurationSet(dev)
 	//PK_PoStep_DriverConfigurationSet(dev)
-	return 0
+	return 0;
 }
 
 int Update_PoStep()
@@ -568,7 +568,7 @@ int Update_PoStep()
 	if(PK_PoStep_StatusGet(dev) == PK_OK)
 	{
 	}
-	return 0
+	return 0;
 }
 
 
