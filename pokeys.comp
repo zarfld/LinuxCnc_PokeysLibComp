@@ -409,7 +409,7 @@ void user_mainloop(void)
 			 if ( info_PinCount!=0 )
 			 {
 				a_debout = 123;
-				//Pins_HalSetup(dev);
+				Pins_HalSetup(dev);
 			 }
 			 a_debout = 124;
 			 if ( info_PulseEnginev2!=0 )
