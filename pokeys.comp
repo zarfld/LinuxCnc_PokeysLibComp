@@ -298,7 +298,7 @@ PK_Pins_HALComp Pins;
 
 int Pins_HalSetup(sPoKeysDevice *dev)
 {
-	int PinCount = dev-> dev->info.iPinCount;
+	int PinCount = dev->info.iPinCount;
 	int i =0;
 
 	char hName = "Pin-" & i;
