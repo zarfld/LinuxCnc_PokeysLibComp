@@ -363,6 +363,7 @@ void user_mainloop(void)
 
 		if(dev != NULL)
 		{
+			Pins_HalSetup(dev);
 			connected=1;
 			bool setPkConfig = false;
 			bool setPinConfig = false;
