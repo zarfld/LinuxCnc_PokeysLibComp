@@ -389,7 +389,7 @@ void user_mainloop(void)
 				dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
 				PK_PEv2_PulseEngineSetup(dev);
 				
-				for(i=0;i<PEv2_nrOfAxes;i++)
+				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
 					if(PEv2_STEP_SCALE(i)!=0)
 					{
@@ -652,7 +652,7 @@ void user_mainloop(void)
 	 {
 			bool PEv2_move = false;
 
-			for(i=0;i<PEv2.nrOfAxes;i++)
+			for(i=0;i< PEv2_nrOfAxes;i++)
 			{ 
 				PEv2_AxesState(i)=dev->PEv2.AxesState[i];				// Axis states (bit-mapped) - see ePK_PEAxisState
 				switch( PEv2_AxesState(i))
