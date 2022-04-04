@@ -462,35 +462,35 @@ void user_mainloop(void)
 				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
 					a_debout = 1310 + 1;
-					if(PEv2_STEP_SCALE(i)!=0)
+					if(PEv2_params_STEP_SCALE(i)!=0)
 					{
 						
 						if ( PEv2_AxesConfig(i)!=PK_AC_POSITION_MODE)
 						{
 							a_debout = 130 + 1;
-							dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_vel_cmd(i) * PEv2_STEP_SCALE(i);
+							dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_vel_cmd(i) * PEv2_params_STEP_SCALE(i);
 
-							PEv2_joint_vel_fb(i) = dev->PEv2.PositionSetup[i] / PEv2_STEP_SCALE(i);
-							PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_STEP_SCALE(i);
+							PEv2_joint_vel_fb(i) = dev->PEv2.PositionSetup[i] / PEv2_params_STEP_SCALE(i);
+							PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_params_STEP_SCALE(i);
 						}
 						else
 						{
 							a_debout = 1320 + 1;
-							dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i) * PEv2_STEP_SCALE(i);
-							PEv2_joint_vel_fb(i) = dev->PEv2.PositionSetup[i] / PEv2_STEP_SCALE(i);
-							PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_STEP_SCALE(i);
+							dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i);
+							PEv2_joint_vel_fb(i) = dev->PEv2.PositionSetup[i] / PEv2_params_STEP_SCALE(i);
+							PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_params_STEP_SCALE(i);
 						}
 						a_debout = 1330 + 1;
-						dev->PEv2.MaxSpeed[i] = PEv2_STEPGEN_MAXVEL(i)* PEv2_STEP_SCALE(i)/1000;					// Maximum axis speed convert (mm/s) to (pulses per ms)
-						dev->PEv2.MaxAcceleration[i] = PEv2_STEPGEN_MAXVEL(i)* PEv2_STEP_SCALE(i) /1000000;			// Maximum axis acceleration convert (mm/s�) to (in pulses/ms/ms)
-						dev->PEv2.MaxDecceleration[i] = PEv2_STEPGEN_MAXVEL(i)* PEv2_STEP_SCALE(i) /1000000;			// Maximum axis deceleration convert (mm/s�) to (in pulses/ms/ms)
+						dev->PEv2.MaxSpeed[i] = PEv2_params_STEPGEN_MAXVEL(i)* PEv2_params_STEP_SCALE(i)/1000;					// Maximum axis speed convert (mm/s) to (pulses per ms)
+						dev->PEv2.MaxAcceleration[i] = PEv2_params_STEPGEN_MAXVEL(i)* PEv2_params_STEP_SCALE(i) /1000000;			// Maximum axis acceleration convert (mm/s�) to (in pulses/ms/ms)
+						dev->PEv2.MaxDecceleration[i] = PEv2_params_STEPGEN_MAXVEL(i)* PEv2_params_STEP_SCALE(i) /1000000;			// Maximum axis deceleration convert (mm/s�) to (in pulses/ms/ms)
 
-						dev->PEv2.SoftLimitMaximum[i] = PEv2_MAX_LIMIT(i)* PEv2_STEP_SCALE(i);		// Soft limit maximum position
-						dev->PEv2.SoftLimitMinimum[i] = PEv2_MIN_LIMIT(i)* PEv2_STEP_SCALE(i);		// Soft limit minimum position
-						dev->PEv2.HomeOffsets[i] = PEv2_HOME_OFFSET(i)* PEv2_STEP_SCALE(i);				// Home position offset
+						dev->PEv2.SoftLimitMaximum[i] = PEv2_params_MAX_LIMIT(i)* PEv2_params_STEP_SCALE(i);		// Soft limit maximum position
+						dev->PEv2.SoftLimitMinimum[i] = PEv2_params_MIN_LIMIT(i)* PEv2_params_STEP_SCALE(i);		// Soft limit minimum position
+						dev->PEv2.HomeOffsets[i] = PEv2_params_HOME_OFFSET(i)* PEv2_params_STEP_SCALE(i);				// Home position offset
 
-						dev->PEv2.HomingSpeed[i] = PEv2_HOME_SEARCH_VEL(i)*100/ PEv2_MAX_VELOCITY(i) ;			// Homing speed per axis (in %)
-						dev->PEv2.HomingReturnSpeed[i] = PEv2_HOME_LATCH_VEL(i)*100/ PEv2_HOME_SEARCH_VEL(i);		// Homing return speed per axis (in % of the homing speed)
+						dev->PEv2.HomingSpeed[i] = PEv2_params_HOME_SEARCH_VEL(i)*100/ PEv2_params_MAX_VELOCITY(i) ;			// Homing speed per axis (in %)
+						dev->PEv2.HomingReturnSpeed[i] = PEv2_params_HOME_LATCH_VEL(i)*100/ PEv2_params_HOME_SEARCH_VEL(i);		// Homing return speed per axis (in % of the homing speed)
 
 						dev->PEv2.AxesSwitchConfig[i]= PEv2_AxesSwitchConfig(i);
 						dev->PEv2.FilterLimitMSwitch[i]= PEv2_FilterLimitMSwitch(i);		// Digital filter for limit- switch
@@ -800,25 +800,25 @@ void user_mainloop(void)
 				PEv2_MPGjogMultiplier(i)=dev->PEv2.MPGjogMultiplier[i];		// MPG jog multiplier value
 				PEv2_MPGjogEncoder(i)=dev->PEv2.MPGjogEncoder[i];			// MPG jog encoder ID
 				
-				if( PEv2_STEP_SCALE(i)!=0)
+				if( PEv2_params_STEP_SCALE(i)!=0)
 				{
 					a_debout = 2330+i;
 					if ( PEv2_AxesConfig(i)!=PK_AC_POSITION_MODE)
 					{
 						// Velocity-Mode
-						dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_vel_cmd(i) * PEv2_STEP_SCALE(i);
+						dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_vel_cmd(i) * PEv2_params_STEP_SCALE(i);
 						
 						// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-						PEv2_joint_vel_fb(i) = ( PEv2_joint_pos_fb(i) - (dev->PEv2.CurrentPosition[i] / PEv2_STEP_SCALE(i)) )* rtc_loop_frequ;
-						PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_STEP_SCALE(i);
+						PEv2_joint_vel_fb(i) = ( PEv2_joint_pos_fb(i) - (dev->PEv2.CurrentPosition[i] / PEv2_params_STEP_SCALE(i)) )* rtc_loop_frequ;
+						PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_params_STEP_SCALE(i);
 						PEv2_move=true;
 					}
 					else
 					{
 						a_debout = 2340+i;
-						dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i) * PEv2_STEP_SCALE(i);
-						PEv2_joint_vel_fb(i) = dev->PEv2.PositionSetup[i] / PEv2_STEP_SCALE(i);
-						PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_STEP_SCALE(i);
+						dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i);
+						PEv2_joint_vel_fb(i) = dev->PEv2.PositionSetup[i] / PEv2_params_STEP_SCALE(i);
+						PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_params_STEP_SCALE(i);
 						PEv2_move=true;
 					}
 
