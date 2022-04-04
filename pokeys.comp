@@ -77,28 +77,28 @@ pin out unsigned PEv2_AxesConfig-# [8];				// Axis configuration - see ePK_PEv2_
 pin in unsigned PEv2_AxesSwitchConfig-# [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
 
 pin io u32 PEv2_InvertAxisEnable-# [8];		// Invert axis enable signal
-pin out u32 PEv2_SoftLimitMaximum-# [8];		// Soft limit maximum position
-pin out u32 PEv2_SoftLimitMinimum-# [8];		// Soft limit minimum position
-pin out unsigned PEv2_HomingSpeed-# [8];			// Homing speed per axis (in %)
-pin out unsigned PEv2_HomingReturnSpeed-# [8];		// Homing return speed per axis (in % of the homing speed)
-pin out u32 PEv2_HomeOffsets-# [8];				// Home position offset
-pin out unsigned PEv2_HomingAlgorithm-# [8];		// Homing algorithm configuration
-pin in unsigned PEv2_FilterLimitMSwitch-# [8];		// Digital filter for limit- switch
-pin in unsigned PEv2_FilterLimitPSwitch-# [8];		// Digital filter for limit+ switch
-pin in unsigned PEv2_FilterHomeSwitch-# [8];		// Digital filter for home switch
-pin out u32 PEv2_ProbePosition-# [8];			// Position where probe detected change
-pin out u32 PEv2_ProbeMaxPosition-# [8];		// Maximum position to travel to until stopping and returning error
+pin io u32 PEv2_SoftLimitMaximum-# [8];		// Soft limit maximum position
+pin io u32 PEv2_SoftLimitMinimum-# [8];		// Soft limit minimum position
+pin io unsigned PEv2_HomingSpeed-# [8];			// Homing speed per axis (in %)
+pin io unsigned PEv2_HomingReturnSpeed-# [8];		// Homing return speed per axis (in % of the homing speed)
+pin io u32 PEv2_HomeOffsets-# [8];				// Home position offset
+pin io unsigned PEv2_HomingAlgorithm-# [8];		// Homing algorithm configuration
+pin io unsigned PEv2_FilterLimitMSwitch-# [8];		// Digital filter for limit- switch
+pin io unsigned PEv2_FilterLimitPSwitch-# [8];		// Digital filter for limit+ switch
+pin io unsigned PEv2_FilterHomeSwitch-# [8];		// Digital filter for home switch
+pin io u32 PEv2_ProbePosition-# [8];			// Position where probe detected change
+pin io u32 PEv2_ProbeMaxPosition-# [8];		// Maximum position to travel to until stopping and returning error
 
 pin out u32 PEv2_CurrentPosition-# [8];			// Current position
-pin out u32 PEv2_PositionSetup-# [8];			// Position to be set as current position
-pin out u32 PEv2_ReferencePositionSpeed-# [8];	// Reference position or speed (position or pulses/s)
-pin out float PEv2_MaxSpeed-# [8];					// Maximum axis speed (in pulses per ms)
-pin out float PEv2_MaxAcceleration-# [8];			// Maximum axis acceleration (in pulses/ms/ms)
-pin out float PEv2_MaxDecceleration-# [8];			// Maximum axis deceleration (in pulses/ms/ms)
+pin io u32 PEv2_PositionSetup-# [8];			// Position to be set as current position
+pin io u32 PEv2_ReferencePositionSpeed-# [8];	// Reference position or speed (position or pulses/s)
+pin io float PEv2_MaxSpeed-# [8];					// Maximum axis speed (in pulses per ms)
+pin io float PEv2_MaxAcceleration-# [8];			// Maximum axis acceleration (in pulses/ms/ms)
+pin io float PEv2_MaxDecceleration-# [8];			// Maximum axis deceleration (in pulses/ms/ms)
 
-pin in float PEv2_MaxSpeed_mm_per_sec-# [8];			// Maximum axis speed (mm/s)
-pin in float PEv2_MaxAcceleration_mm_per_sec2-# [8];	// Maximum axis acceleration (in mm/s²)
-pin in float PEv2_MaxDecceleration_mm_per_sec2-# [8];	// Maximum axis deceleration (in mm/s²)
+pin io float PEv2_MaxSpeed_mm_per_sec-# [8];			// Maximum axis speed (mm/s)
+pin io float PEv2_MaxAcceleration_mm_per_sec2-# [8];	// Maximum axis acceleration (in mm/s²)
+pin io float PEv2_MaxDecceleration_mm_per_sec2-# [8];	// Maximum axis deceleration (in mm/s²)
 
 	
 pin in float PEv2_joint_vel_cmd-# [8];				
@@ -142,13 +142,13 @@ pin in s32 PEv2_HOME_USE_INDEX-# [8];				// YES / NO
 pin in s32 PEv2_HOME_IGNORE_LIMITS-# [8];			// YES / NO
 //***********************************************************************
 
-pin out u32 PEv2_MPGjogMultiplier-# [8];		// MPG jog multiplier value
-pin out unsigned PEv2_MPGjogEncoder-# [8];			// MPG jog encoder ID
+pin io u32 PEv2_MPGjogMultiplier-# [8];		// MPG jog multiplier value
+pin io unsigned PEv2_MPGjogEncoder-# [8];			// MPG jog encoder ID
 
-pin in unsigned PEv2_PinHomeSwitch-# [8];			// Home switch pin (0 for external dedicated input)
-pin in unsigned PEv2_PinLimitMSwitch-# [8];			// Limit- switch pin (0 for external dedicated input)
-pin in unsigned PEv2_PinLimitPSwitch-# [8];			// Limit+ switch pin (0 for external dedicated input)
-pin in unsigned PEv2_AxisEnableOutputPins-# [8];		// Axis enabled output pin (0 for external dedicated output)
+pin io unsigned PEv2_PinHomeSwitch-# [8];			// Home switch pin (0 for external dedicated input)
+pin io unsigned PEv2_PinLimitMSwitch-# [8];			// Limit- switch pin (0 for external dedicated input)
+pin io unsigned PEv2_PinLimitPSwitch-# [8];			// Limit+ switch pin (0 for external dedicated input)
+pin io unsigned PEv2_AxisEnableOutputPins-# [8];		// Axis enabled output pin (0 for external dedicated output)
 
 pin out bit PEv2_HomeSwitchStat-# [8];				// Home switch
 pin out bit PEv2_LimitMSwitch-# [8];			// Limit- switch
@@ -156,50 +156,50 @@ pin out bit PEv2_LimitPSwitch-# [8];			// Limit+ switch
 pin in bit PEv2_AxisEnableOutput-# [8];		// Axis enabled output
 pin out bit PEv2_HomeSwitch;				// Home switch
 
-pin out unsigned PEv2_HomeBackOffDistance-# [8];		// Back-off distance after homing
-pin out unsigned PEv2_MPGjogDivider-# [8];			// Divider for the MPG jogging (enhanced encoder resolution)
-pin out unsigned PEv2_PulseEngineEnabled;			// Pulse engine enabled status, also number of enabled axes
-pin out unsigned PEv2_PulseGeneratorType;			// Pulse engine generator type (0: external, 1: internal 3ch)
-pin out unsigned PEv2_ChargePumpEnabled;				// Charge pump output enabled
-pin out unsigned PEv2_EmergencySwitchPolarity;		// Emergency switch polarity (set to 1 to invert)
-pin out unsigned PEv2_PulseEngineActivated;			// Pulse engine activation status
+pin io unsigned PEv2_HomeBackOffDistance-# [8];		// Back-off distance after homing
+pin io unsigned PEv2_MPGjogDivider-# [8];			// Divider for the MPG jogging (enhanced encoder resolution)
+pin io unsigned PEv2_PulseEngineEnabled;			// Pulse engine enabled status, also number of enabled axes
+pin io unsigned PEv2_PulseGeneratorType;			// Pulse engine generator type (0: external, 1: internal 3ch)
+pin io unsigned PEv2_ChargePumpEnabled;				// Charge pump output enabled
+pin io unsigned PEv2_EmergencySwitchPolarity;		// Emergency switch polarity (set to 1 to invert)
+pin io unsigned PEv2_PulseEngineActivated;			// Pulse engine activation status
 pin out unsigned PEv2_LimitStatusP;					// Limit+ status (bit-mapped)
 pin out unsigned PEv2_LimitStatusN;					// Limit- status (bit-mapped)
 pin out unsigned PEv2_HomeStatus;					// Home status (bit-mapped)
 pin out unsigned PEv2_ErrorInputStatus;				// Stepper motor driver error inputs status (bit-mapped)
 pin out unsigned PEv2_MiscInputStatus;				// Miscelenous digital inputs...
-pin out unsigned PEv2_LimitOverride;					// Limit override status
-pin out unsigned PEv2_LimitOverrideSetup;			// Limit override configuration
-pin out unsigned PEv2_PulseEngineState;				// State of pulse engine - see ePoKeysPEState
-pin out unsigned PEv2_AxisEnabledMask;				// Bit-mapped ouput enabled mask
+pin io unsigned PEv2_LimitOverride;					// Limit override status
+pin io unsigned PEv2_LimitOverrideSetup;			// Limit override configuration
+pin io unsigned PEv2_PulseEngineState;				// State of pulse engine - see ePoKeysPEState
+pin io unsigned PEv2_AxisEnabledMask;				// Bit-mapped ouput enabled mask
 
-pin in unsigned PEv2_EmergencyInputPin;
+pin io unsigned PEv2_EmergencyInputPin;
 pin out bit PEv2_EmergencyInput;
-pin in unsigned PEv2_EmergencyOutputPin;				//added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)
+pin io unsigned PEv2_EmergencyOutputPin;				//added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)
 pin in bit PEv2_EmergencyOutput;
 
-pin out unsigned PEv2_param1;
-pin out unsigned PEv2_param2;
-pin out unsigned PEv2_param3;
-pin out unsigned PEv2_AxisEnabledStatesMask;		// Bit-mapped states, where axis enabled and charge pump signals are active
-pin out unsigned PEv2_PulseEngineStateSetup;		// Pulse engine new state configuration
+pin io unsigned PEv2_param1;
+pin io unsigned PEv2_param2;
+pin io unsigned PEv2_param3;
+pin io unsigned PEv2_AxisEnabledStatesMask;		// Bit-mapped states, where axis enabled and charge pump signals are active
+pin io unsigned PEv2_PulseEngineStateSetup;		// Pulse engine new state configuration
 pin out unsigned PEv2_SoftLimitStatus;				// Bit-mapped soft-limit statuses per axes
-pin out unsigned PEv2_ExternalRelayOutputs;			// External relay outputs
-pin out unsigned PEv2_ExternalOCOutputs;			// External open-collector outputs
-pin out unsigned PEv2_PulseEngineBufferSize;		// Buffer size information...
-pin out unsigned PEv2_motionBufferEntriesAccepted;
-pin out unsigned PEv2_newMotionBufferEntries;
-pin out unsigned PEv2_HomingStartMaskSetup;			// Bit-mapped axes indexes to be homed
-pin out unsigned PEv2_ProbeStartMaskSetup;			// Bit-mapped axis indexes for probing
-pin in unsigned PEv2_ProbeInput;					// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
-pin in unsigned PEv2_ProbeInputPolarity;			// Probe input polarity
+pin io unsigned PEv2_ExternalRelayOutputs;			// External relay outputs
+pin io unsigned PEv2_ExternalOCOutputs;			// External open-collector outputs
+pin io unsigned PEv2_PulseEngineBufferSize;		// Buffer size information...
+pin io unsigned PEv2_motionBufferEntriesAccepted;
+pin io unsigned PEv2_newMotionBufferEntries;
+pin io unsigned PEv2_HomingStartMaskSetup;			// Bit-mapped axes indexes to be homed
+pin io unsigned PEv2_ProbeStartMaskSetup;			// Bit-mapped axis indexes for probing
+pin io unsigned PEv2_ProbeInput;					// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
+pin io unsigned PEv2_ProbeInputPolarity;			// Probe input polarity
 pin out unsigned PEv2_ProbeStatus;					// Probe status (probe completion bit-mapped status)
 //pin out unsigned PEv2_MotionBuffer[448];			// Motion buffer
-pin out float PEv2_ProbeSpeed;						// Probe speed (ratio of the maximum speed)
-pin out unsigned PEv2_BacklashWidth-# [8];			// half of real backlash width
-pin out unsigned PEv2_BacklashRegister-# [8];		// current value of the backlash register
-pin out unsigned PEv2_BacklashAcceleration-# [8];	// in pulses per ms^2
-pin out unsigned PEv2_BacklashCompensationEnabled;
+pin io float PEv2_ProbeSpeed;						// Probe speed (ratio of the maximum speed)
+pin io unsigned PEv2_BacklashWidth-# [8];			// half of real backlash width
+pin io unsigned PEv2_BacklashRegister-# [8];		// current value of the backlash register
+pin io unsigned PEv2_BacklashAcceleration-# [8];	// in pulses per ms^2
+pin io unsigned PEv2_BacklashCompensationEnabled;
 
 pin out unsigned rtc_sec;
 pin out unsigned rtc_min;
@@ -240,7 +240,7 @@ pin out unsigned MatrixKB_matrixKBrowsPins-#[16];			// List of matrix keyboard r
 pin out unsigned MatrixKB_matrixKBvalues-#[128];			// Current state of each matrix keyboard key (assumes fixed width of 8 columns)
 
 pin out unsigned Encoders_encoderValue-#[26];       // Encoder current value
-pin in unsigned Encoders_encoderOptions-#[26];      // Encoder options -    bit 0: enable encoder
+pin io unsigned Encoders_encoderOptions-#[26];      // Encoder options -    bit 0: enable encoder
 													//                      bit 1: 4x sampling
 													//                      bit 2: 2x sampling
 													//                      bit 3: reserved
@@ -248,8 +248,8 @@ pin in unsigned Encoders_encoderOptions-#[26];      // Encoder options -    bit 
 													//                      bit 5: mapped to macro for direction A
 													//                      bit 6: direct key mapping for direction B
 													//                      bit 7: mapped to macro for direction B
-pin in unsigned Encoders_channelApin-#[26];         // Channel A encoder pin
-pin in unsigned Encoders_channelBpin-#[26];         // Channel B encoder pin
+pin io unsigned Encoders_channelApin-#[26];         // Channel A encoder pin
+pin io unsigned Encoders_channelBpin-#[26];         // Channel B encoder pin
 
 pin out u32 EasySensors_sensorValue-#[10];            // Current sensor value
 pin out unsigned EasySensors_sensorType-#[10];             // Type of the sensor
@@ -296,8 +296,20 @@ PK_Pin_HALComp *Pin;
 
 PK_Pins_HALComp Pins;
 
+int Pins_HalSetup(sPoKeysDevice *dev)
+{
+	int PinCount = dev-> dev->info.iPinCount;
 
+	char hName = "Pin-" & i;
+	int hal_comp_id = hal_init(hName);
 
+	for(i=0;i< PinCount;i++)
+	{
+
+		//extern int hal_pin_s32_newf(hal_pin_dir_t dir,hal_s32_t ** data_ptr_addr, int comp_id, const char *fmt, ...)
+		PIN(hal_pin_s32_newf(HAL_OUT, &(PK_Pin_HALComp->DigitalCounterValue), hal_comp_id, "%s.DigitalCounterValue", hName));
+	}
+}
 
 sPoKeysDevice * dev=0;
 
