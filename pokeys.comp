@@ -333,7 +333,7 @@ int i=0;
 
 int Config_PoNet()
 {
-	(PK_PoNETGetPoNETStatus(dev) == PK_OK)
+	if(PK_PoNETGetPoNETStatus(dev) == PK_OK)
 	{
 				
 	}
@@ -342,7 +342,7 @@ int Config_PoNet()
 
 int Config_PEv2()
 {
-				a_debout = 130;
+				
 				 PEv2_nrOfAxes=dev->PEv2.info.nrOfAxes;
 				 PEv2_maxPulseFrequency=dev->PEv2.info.maxPulseFrequency;
 				 PEv2_bufferDepth=dev->PEv2.info.bufferDepth;
@@ -537,7 +537,7 @@ void user_mainloop(void)
 			 a_debout = 124;
 			 if ( info_PulseEnginev2!=0 )
 			 {
-				 Config_PEv2
+				 Config_PEv2;
 			 }
 			
 			if (info_MatrixKeyboard!=0)
@@ -553,7 +553,7 @@ void user_mainloop(void)
 			 }
 			 if (info_PoNET!=0)
 			 {
-			 getConfig_PoNet
+			 getConfig_PoNet;
 			 }
 			 
 
