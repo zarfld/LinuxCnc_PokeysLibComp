@@ -945,26 +945,33 @@ void user_mainloop(void)
 };
 
 
+typedef struct
+{
+PK_Pin_HALComp Pin[55];
+}PK_Pins_HALComp;
 //public Class Pk_Pins_Comp
 //Pk_Pin_Comp Pin-#[55];
 //public Pk_Pins_Comp(){}
 //End Clas
 
 
-//public Class Pk_Pin_Comp
-//pin out unsigned DigitalCounterValue;
-//pin out unsigned AnalogValue;
-//pin out unsigned PinFunction;
-//pin out unsigned CounterOptions;
-//pin out unsigned DigitalValueGet ;
-//pin in unsigned DigitalValueSet ;
-//pin out unsigned DigitalCounterAvailable ;
-//pin out unsigned MappingType ;
-//pin out unsigned KeyCodeMacroID ;
-//pin out unsigned KeyModifier ;
-//pin out unsigned downKeyCodeMacroID ;
-//pin out unsigned downKeyModifier ;
-//pin out unsigned upKeyCodeMacroID ;
-//pin out unsigned upKeyModifier ;
-//pin out unsigned preventUpdate ;
+typedef struct
+{
+pin out unsigned DigitalCounterValue;
+pin out unsigned AnalogValue;
+pin out unsigned PinFunction;
+pin out unsigned CounterOptions;
+pin out unsigned DigitalValueGet ;
+pin in unsigned DigitalValueSet ;
+pin out unsigned DigitalCounterAvailable ;
+pin out unsigned MappingType ;
+pin out unsigned KeyCodeMacroID ;
+pin out unsigned KeyModifier ;
+pin out unsigned downKeyCodeMacroID ;
+pin out unsigned downKeyModifier ;
+pin out unsigned upKeyCodeMacroID ;
+pin out unsigned upKeyModifier ;
+pin out unsigned preventUpdate ;
+}PK_Pin_HALComp;
+
 //End Clas
