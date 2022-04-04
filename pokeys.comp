@@ -73,7 +73,7 @@ pin in float MAX_LINEAR_VELOCITY;
 
 // Pulse engine v2 structure...
 pin out unsigned PEv2_AxesState-# [8];				// Axis states (bit-mapped) - see ePK_PEAxisState
-pin out unsigned PEv2_AxesConfig-# [8];				// Axis configuration - see ePK_PEv2.AxisConfig
+pin out unsigned PEv2_AxesConfig-# [8];				// Axis configuration - see ePK_PEv2_AxisConfig
 pin in unsigned PEv2_AxesSwitchConfig-# [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
 
 pin out u32 PEv2_InvertAxisEnable-# [8];		// Invert axis enable signal
@@ -361,14 +361,14 @@ void user_mainloop(void)
 				 PEv2_slotTiming=dev->PEv2.info.slotTiming;
 				 bool setPeConfig = false;
 				 dev->PEv2.EmergencyInputPin= PEv2_EmergencyInputPin;
-				if (PEv2.EmergencyInputPin!=0)
+				if ( PEv2_EmergencyInputPin!=0)
 				{	//check if pin is parametrized in HAL
 					
 					dev->Pins[PEv2.EmergencyInputPin-1].PinFunction = PK_PinCap_digitalInput;
 					setPinConfig=true;
 					setPeConfig=true;
 				}
-				if (PEv2.EmergencyOutputPin!=0)
+				if ( PEv2_EmergencyOutputPin!=0)
 				{	//check if pin is parametrized in HAL
 						dev->Pins[PEv2.EmergencyOutputPin-1].PinFunction = PK_PinCap_digitalOutput;
 						setPinConfig=true;
@@ -443,11 +443,11 @@ void user_mainloop(void)
 
 
 						dev->PEv2.param1 = i;
-						PK_PEv2.AxisConfigurationSet(dev);
+						PK_PEv2_AxisConfigurationSet(dev);
 					}
 				}
 				dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
-				PK_PEv2.PulseEngineStateSet(dev);
+				PK_PEv2_PulseEngineStateSet(dev);
 
 			 }
 			 dev->DeviceData.DeviceLockStatus=1;
@@ -491,9 +491,9 @@ void user_mainloop(void)
 	}
 
 	// PulseEnginev2
-	if (info.PulseEnginev2!=0)
+	if (info_PulseEnginev2!=0)
 	{
-	 if ((PK_PEv2.StatusGet(dev) == PK_OK) && (PK_PEv2.Status2Get(dev) == PK_OK))
+	 if ((PK_PEv2_StatusGet(dev) == PK_OK) && (PK_PEv2_Status2Get(dev) == PK_OK))
 	 {
 
 	 // Pulse engine v2 structure...
@@ -648,7 +648,7 @@ void user_mainloop(void)
 		PEv2_ProbeSpeed=dev->PEv2.ProbeSpeed;						// Probe speed (ratio of the maximum speed)
 		PEv2_BacklashCompensationEnabled=dev->PEv2.BacklashCompensationEnabled;
 	 }
-	 if (PK_PEv2.AxisConfigurationGet(dev) == PK_OK)
+	 if (PK_PEv2_AxisConfigurationGet(dev) == PK_OK)
 	 {
 			bool PEv2_move = false;
 
