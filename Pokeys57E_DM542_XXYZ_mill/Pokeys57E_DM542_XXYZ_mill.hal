@@ -118,7 +118,7 @@ net x-enable     => pokeys.0.PEv2.0.AxisEnableOutput
 #setp    [HMOT](CARD0).encoder.00.index-invert 0
 #setp    [HMOT](CARD0).encoder.00.index-mask 0
 #setp    [HMOT](CARD0).encoder.00.index-mask-invert 0
-setp    pokeys.0.PEv2.ENCODER-SCALE-0  [JOINT_0]ENCODER_SCALE
+setp    pokeys.0.PEv2.0.ENCODER-SCALE  [JOINT_0]ENCODER_SCALE
 
 net x-pos-fb               <=  pokeys.0.PEv2.0.joint-pos-fb
 net x-vel-fb               <=  pokeys.0.PEv2.0.joint-vel-fb
@@ -159,18 +159,18 @@ net x2-output        <=  pid.x2.output
 
 # Step Gen signals/setup for tandem axis
 
-setp   pokeys.0.PEv2.6.DIRSETUP-6        [JOINT_1]DIRSETUP
-setp   pokeys.0.PEv2.6.DIRHOLD-6         [JOINT_1]DIRHOLD
-setp   pokeys.0.PEv2.6.STEPLEN-6         [JOINT_1]STEPLEN
-setp   pokeys.0.PEv2.6.STEPSPACE-6       [JOINT_1]STEPSPACE
-setp   pokeys.0.PEv2.6.STEP-SCALE-6  	   [JOINT_1]STEP_SCALE
-setp   pokeys.0.PEv2.6.MIN-LIMIT-6  	   [JOINT_1]MIN_LIMIT
-setp   pokeys.0.PEv2.6.MAX-LIMIT-6  	   [JOINT_1]MAX_LIMIT
-setp   pokeys.0.PEv2.6.HOME-OFFSET-6  	   [JOINT_1]HOME_OFFSET
-setp   pokeys.0.PEv2.6.HOME-SEARCH-VEL-6  	   [JOINT_1]HOME_SEARCH_VEL
-setp   pokeys.0.PEv2.6.HOME-LATCH-VEL-6  	   [JOINT_1]HOME_LATCH_VEL
-setp   pokeys.0.PEv2.6.STEPGEN-MAXVEL-6         [JOINT_1]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2.6.STEPGEN-MAXACCEL-6           [JOINT_1]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2.6.DIRSETU        [JOINT_1]DIRSETUP
+setp   pokeys.0.PEv2.6.DIRHOLD         [JOINT_1]DIRHOLD
+setp   pokeys.0.PEv2.6.STEPLEN         [JOINT_1]STEPLEN
+setp   pokeys.0.PEv2.6.STEPSPACE       [JOINT_1]STEPSPACE
+setp   pokeys.0.PEv2.6.STEP-SCALE  	   [JOINT_1]STEP_SCALE
+setp   pokeys.0.PEv2.6.MIN-LIMIT  	   [JOINT_1]MIN_LIMIT
+setp   pokeys.0.PEv2.6.MAX-LIMIT  	   [JOINT_1]MAX_LIMIT
+setp   pokeys.0.PEv2.6.HOME-OFFSET  	   [JOINT_1]HOME_OFFSET
+setp   pokeys.0.PEv2.6.HOME-SEARCH-VEL  	   [JOINT_1]HOME_SEARCH_VEL
+setp   pokeys.0.PEv2.6.HOME-LATCH-VEL  	   [JOINT_1]HOME_LATCH_VEL
+setp   pokeys.0.PEv2.6.STEPGEN-MAXVEL         [JOINT_1]STEPGEN_MAXACCEL
+setp   pokeys.0.PEv2.6.STEPGEN-MAXACCEL           [JOINT_1]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
