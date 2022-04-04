@@ -16,49 +16,49 @@ pin in bit machine_is_on;
 
 // PoKeys device information
 //sPoKeysDevice_Info info;
-pin out unsigned info_PinCount;                        // Number of pins, physically on the device
-pin out unsigned info_PWMCount;                        // Number of pins that support PWM output
-pin out unsigned info_BasicEncoderCount;               // Number of basic encoders
-pin out unsigned info_EncodersCount;                   // Number of encoder slots available
-pin out unsigned info_FastEncoders;                    // Number of fast encoders supported
-pin out unsigned info_UltraFastEncoders;               // Number of available ultra fast encoders
-pin out unsigned info_PWMinternalFrequency;             // Main PWM peripheral clock
-pin out unsigned info_AnalogInputs;                    // Number of available analog inputs
-pin out unsigned info_KeyMapping;                      // Device supports key mapping (acts as a USB keyboard)
-pin out unsigned info_TriggeredKeyMapping;             // Device supports triggered key mapping
-pin out unsigned info_KeyRepeatDelay;                  // Device supports user customizable key repeat rates and delays
-pin out unsigned info_DigitalCounters;                 // Device supports digital counters
-pin out unsigned info_JoystickButtonAxisMapping;       // Device supports mapping of joystick buttons
-pin out unsigned info_JoystickAnalogToDigitalMapping;  // Device supports mapping of analog inputs to digital keys
-pin out unsigned info_Macros;                          // Device supports customizable macro sequences
-pin out unsigned info_MatrixKeyboard;                  // Device supports matrix keyboard
-pin out unsigned info_MatrixKeyboardTriggeredMapping;  // Device supports matrix keyboard triggered key mapping
-pin out unsigned info_LCD;                             // Device supports alphanumeric LCD display
-pin out unsigned info_MatrixLED;                       // Device supports matrix LED display
-pin out unsigned info_ConnectionSignal;                // Device supports connection signal output
-pin out unsigned info_PoExtBus;                        // Device supports PoExtBus digital outputs
-pin out unsigned info_PoNET;                           // Device supports PoNET bus devices
-pin out unsigned info_AnalogFiltering;                 // Device supports analog inputs low-pass digital filtering
-pin out unsigned info_InitOutputsStart;                // Device supports initializing outputs at startup
-pin out unsigned info_protI2C;                         // Device supports I2C bus (master)
-pin out unsigned info_prot1wire;                       // Device supports 1-wire bus (master)
-pin out unsigned info_AdditionalOptions;               // Device supports additional options with activation keys
-pin out unsigned info_LoadStatus;                      // Device supports reporting load status
-pin out unsigned info_CustomDeviceName;                // Device supports specifying custom device names
-pin out unsigned info_PoTLog27support;                 // Device supports PoTLog27 firmware
-pin out unsigned info_SensorList;                      // Device supports sensor lists
-pin out unsigned info_WebInterface;                    // Device supports web interface
-pin out unsigned info_FailSafeSettings;                // Device supports fail-safe mode
-pin out unsigned info_JoystickHATswitch;               // Device supports joystick HAT switch mapping
-pin out unsigned info_PulseEngine;                     // Device supports Pulse engine
-pin out unsigned info_PulseEnginev2;                   // Device supports Pulse engine v2
-pin out unsigned info_EasySensors;                     // Device supports EasySensors
+pin out unsigned info.PinCount;                        // Number of pins, physically on the device
+pin out unsigned info.PWMCount;                        // Number of pins that support PWM output
+pin out unsigned info.BasicEncoderCount;               // Number of basic encoders
+pin out unsigned info.EncodersCount;                   // Number of encoder slots available
+pin out unsigned info.FastEncoders;                    // Number of fast encoders supported
+pin out unsigned info.UltraFastEncoders;               // Number of available ultra fast encoders
+pin out unsigned info.PWMinternalFrequency;             // Main PWM peripheral clock
+pin out unsigned info.AnalogInputs;                    // Number of available analog inputs
+pin out unsigned info.KeyMapping;                      // Device supports key mapping (acts as a USB keyboard)
+pin out unsigned info.TriggeredKeyMapping;             // Device supports triggered key mapping
+pin out unsigned info.KeyRepeatDelay;                  // Device supports user customizable key repeat rates and delays
+pin out unsigned info.DigitalCounters;                 // Device supports digital counters
+pin out unsigned info.JoystickButtonAxisMapping;       // Device supports mapping of joystick buttons
+pin out unsigned info.JoystickAnalogToDigitalMapping;  // Device supports mapping of analog inputs to digital keys
+pin out unsigned info.Macros;                          // Device supports customizable macro sequences
+pin out unsigned info.MatrixKeyboard;                  // Device supports matrix keyboard
+pin out unsigned info.MatrixKeyboardTriggeredMapping;  // Device supports matrix keyboard triggered key mapping
+pin out unsigned info.LCD;                             // Device supports alphanumeric LCD display
+pin out unsigned info.MatrixLED;                       // Device supports matrix LED display
+pin out unsigned info.ConnectionSignal;                // Device supports connection signal output
+pin out unsigned info.PoExtBus;                        // Device supports PoExtBus digital outputs
+pin out unsigned info.PoNET;                           // Device supports PoNET bus devices
+pin out unsigned info.AnalogFiltering;                 // Device supports analog inputs low-pass digital filtering
+pin out unsigned info.InitOutputsStart;                // Device supports initializing outputs at startup
+pin out unsigned info.protI2C;                         // Device supports I2C bus (master)
+pin out unsigned info.prot1wire;                       // Device supports 1-wire bus (master)
+pin out unsigned info.AdditionalOptions;               // Device supports additional options with activation keys
+pin out unsigned info.LoadStatus;                      // Device supports reporting load status
+pin out unsigned info.CustomDeviceName;                // Device supports specifying custom device names
+pin out unsigned info.PoTLog27support;                 // Device supports PoTLog27 firmware
+pin out unsigned info.SensorList;                      // Device supports sensor lists
+pin out unsigned info.WebInterface;                    // Device supports web interface
+pin out unsigned info.FailSafeSettings;                // Device supports fail-safe mode
+pin out unsigned info.JoystickHATswitch;               // Device supports joystick HAT switch mapping
+pin out unsigned info.PulseEngine;                     // Device supports Pulse engine
+pin out unsigned info.PulseEnginev2;                   // Device supports Pulse engine v2
+pin out unsigned info.EasySensors;                     // Device supports EasySensors
 
 // Pulse engine v2 information
-pin out unsigned PEv2_nrOfAxes;
-pin out unsigned PEv2_maxPulseFrequency;
-pin out unsigned PEv2_bufferDepth;
-pin out unsigned PEv2_slotTiming;
+pin out unsigned PEv2.nrOfAxes;
+pin out unsigned PEv2.maxPulseFrequency;
+pin out unsigned PEv2.bufferDepth;
+pin out unsigned PEv2.slotTiming;
 
 //***********************************************************************
 //[TRAJ] information in HAL-INI 
@@ -71,83 +71,83 @@ pin in float MAX_LINEAR_VELOCITY;
 //***********************************************************************
 
 // Pulse engine v2 structure...
-pin out unsigned PEv2_AxesState-# [8];				// Axis states (bit-mapped) - see ePK_PEAxisState
-pin out unsigned PEv2_AxesConfig-# [8];				// Axis configuration - see ePK_PEv2_AxisConfig
-pin in unsigned PEv2_AxesSwitchConfig-# [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
+pin out unsigned PEv2.#.AxesState [8];				// Axis states (bit-mapped) - see ePK_PEAxisState
+pin out unsigned PEv2.#.AxesConfig [8];				// Axis configuration - see ePK_PEv2_AxisConfig
+pin in unsigned PEv2.#.AxesSwitchConfig [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
 
-pin io u32 PEv2_InvertAxisEnable-# [8];		// Invert axis enable signal
-pin io u32 PEv2_SoftLimitMaximum-# [8];		// Soft limit maximum position
-pin io u32 PEv2_SoftLimitMinimum-# [8];		// Soft limit minimum position
-pin io unsigned PEv2_HomingSpeed-# [8];			// Homing speed per axis (in %)
-pin io unsigned PEv2_HomingReturnSpeed-# [8];		// Homing return speed per axis (in % of the homing speed)
-pin io u32 PEv2_HomeOffsets-# [8];				// Home position offset
-pin io unsigned PEv2_HomingAlgorithm-# [8];		// Homing algorithm configuration
-pin io unsigned PEv2_FilterLimitMSwitch-# [8];		// Digital filter for limit- switch
-pin io unsigned PEv2_FilterLimitPSwitch-# [8];		// Digital filter for limit+ switch
-pin io unsigned PEv2_FilterHomeSwitch-# [8];		// Digital filter for home switch
-pin io u32 PEv2_ProbePosition-# [8];			// Position where probe detected change
-pin io u32 PEv2_ProbeMaxPosition-# [8];		// Maximum position to travel to until stopping and returning error
+pin io u32 PEv2.#.InvertAxisEnable [8];		// Invert axis enable signal
+pin io u32 PEv2.#.SoftLimitMaximum [8];		// Soft limit maximum position
+pin io u32 PEv2.#.SoftLimitMinimum [8];		// Soft limit minimum position
+pin io unsigned PEv2.#.HomingSpeed [8];			// Homing speed per axis (in %)
+pin io unsigned PEv2.#.HomingReturnSpeed [8];		// Homing return speed per axis (in % of the homing speed)
+pin io u32 PEv2.#.HomeOffsets [8];				// Home position offset
+pin io unsigned PEv2.#.HomingAlgorithm [8];		// Homing algorithm configuration
+pin io unsigned PEv2.#.FilterLimitMSwitch [8];		// Digital filter for limit- switch
+pin io unsigned PEv2.#.FilterLimitPSwitch [8];		// Digital filter for limit+ switch
+pin io unsigned PEv2.#.FilterHomeSwitch [8];		// Digital filter for home switch
+pin io u32 PEv2.#.ProbePosition [8];			// Position where probe detected change
+pin io u32 PEv2.#.ProbeMaxPosition [8];		// Maximum position to travel to until stopping and returning error
 
-pin out u32 PEv2_CurrentPosition-# [8];			// Current position
-pin io u32 PEv2_PositionSetup-# [8];			// Position to be set as current position
-pin io u32 PEv2_ReferencePositionSpeed-# [8];	// Reference position or speed (position or pulses/s)
-pin io float PEv2_MaxSpeed-# [8];					// Maximum axis speed (in pulses per ms)
-pin io float PEv2_MaxAcceleration-# [8];			// Maximum axis acceleration (in pulses/ms/ms)
-pin io float PEv2_MaxDecceleration-# [8];			// Maximum axis deceleration (in pulses/ms/ms)
+pin out u32 PEv2.#.CurrentPosition [8];			// Current position
+pin io u32 PEv2.#.PositionSetup [8];			// Position to be set as current position
+pin io u32 PEv2.#.ReferencePositionSpeed [8];	// Reference position or speed (position or pulses/s)
+pin io float PEv2.#.MaxSpeed [8];					// Maximum axis speed (in pulses per ms)
+pin io float PEv2.#.MaxAcceleration [8];			// Maximum axis acceleration (in pulses/ms/ms)
+pin io float PEv2.#.MaxDecceleration [8];			// Maximum axis deceleration (in pulses/ms/ms)
 
-pin io float PEv2_MaxSpeed_mm_per_sec-# [8];			// Maximum axis speed (mm/s)
-pin io float PEv2_MaxAcceleration_mm_per_sec2-# [8];	// Maximum axis acceleration (in mm/s²)
-pin io float PEv2_MaxDecceleration_mm_per_sec2-# [8];	// Maximum axis deceleration (in mm/s²)
+pin io float PEv2.#.MaxSpeed_mm_per_sec [8];			// Maximum axis speed (mm/s)
+pin io float PEv2.#.MaxAcceleration_mm_per_sec2 [8];	// Maximum axis acceleration (in mm/sï¿½)
+pin io float PEv2.#.MaxDecceleration_mm_per_sec2 [8];	// Maximum axis deceleration (in mm/sï¿½)
 
 	
-pin in float PEv2_joint_vel_cmd-# [8];				
-pin out float PEv2_joint_vel_fb-# [8];				
-pin in float PEv2_joint_pos_cmd-# [8];				
-pin out float PEv2_joint_pos_fb-# [8];				
+pin in float PEv2.#.joint_vel_cmd [8];				
+pin out float PEv2.#.joint_vel_fb [8];				
+pin in float PEv2.#.joint_pos_cmd [8];				
+pin out float PEv2.#.joint_pos_fb [8];				
     
 //***********************************************************************
 //[JOINT_n] information in HAL-INI 
-pin in s32 TYPE-# [8];			//LINEAR / ANGULAR
-pin in float PEv2_HOME-# [8];
-pin in float PEv2_FERROR-# [8];
-pin in float PEv2_MIN_FERROR-# [8];
-pin in float PEv2_MAX_VELOCITY-# [8];
-pin in float PEv2_MAX_ACCELERATION-# [8];
-pin in float PEv2_STEPGEN_MAXVEL-# [8];
-pin in float PEv2_STEPGEN_MAXACCEL-# [8];
-//pin in float PEv2_P-# [8];
-//pin in float PEv2_I-# [8];
-//pin in float PEv2_D-# [8];
-//pin in float PEv2_FF0-# [8];
-//pin in float PEv2_FF1-# [8];
-//pin in float PEv2_FF2-# [8];
-//pin in float PEv2_BIAS-# [8];
-pin in float PEv2_DEADBAND-# [8];
-pin in float PEv2_MAX_OUTPUT-# [8];
-pin in float PEv2_ENCODER_SCALE-# [8];
+pin in s32 PEv2.#.TYPE [8];			//LINEAR / ANGULAR
+pin in float PEv2.#.HOME [8];
+pin in float PEv2.#.FERROR [8];
+pin in float PEv2.#.MIN_FERROR [8];
+pin in float PEv2.#.MAX_VELOCITY [8];
+pin in float PEv2.#.MAX_ACCELERATION [8];
+pin in float PEv2.#.STEPGEN_MAXVEL [8];
+pin in float PEv2.#.STEPGEN_MAXACCEL [8];
+//pin in float PEv2.#.P [8];
+//pin in float PEv2.#.I [8];
+//pin in float PEv2.#.D [8];
+//pin in float PEv2.#.FF0 [8];
+//pin in float PEv2.#.FF1 [8];
+//pin in float PEv2.#.FF2 [8];
+//pin in float PEv2.#.BIAS [8];
+pin in float PEv2.#.DEADBAND [8];
+pin in float PEv2.#.MAX_OUTPUT [8];
+pin in float PEv2.#.ENCODER_SCALE [8];
 // these are in nanoseconds
-pin in float PEv2_DIRSETUP-# [8];					// (ns)
-pin in float PEv2_DIRHOLD-# [8];					// (ns)
-pin in float PEv2_STEPLEN-# [8];					// (ns)
-pin in float PEv2_STEPSPACE-# [8];					// (ns)
-pin in float PEv2_STEP_SCALE-# [8];					// (pulses/mm)
-pin in float PEv2_MIN_LIMIT-# [8];					// position (mm)
-pin in float PEv2_MAX_LIMIT-# [8];					// position (mm)
-pin in float PEv2_HOME_OFFSET-# [8];				// position (mm)
-pin in float PEv2_HOME_SEARCH_VEL-# [8];			// position (mm)
-pin in float PEv2_HOME_LATCH_VEL-# [8];				// position (mm)
-pin in float PEv2_HOME_FINAL_VEL-# [8];				// position (mm)
-pin in s32 PEv2_HOME_USE_INDEX-# [8];				// YES / NO
-pin in s32 PEv2_HOME_IGNORE_LIMITS-# [8];			// YES / NO
+pin in float PEv2.#.DIRSETUP [8];					// (ns)
+pin in float PEv2.#.DIRHOLD [8];					// (ns)
+pin in float PEv2.#.STEPLEN [8];					// (ns)
+pin in float PEv2.#.STEPSPACE [8];					// (ns)
+pin in float PEv2.#.STEP_SCALE [8];					// (pulses/mm)
+pin in float PEv2.#.MIN_LIMIT [8];					// position (mm)
+pin in float PEv2.#.MAX_LIMIT [8];					// position (mm)
+pin in float PEv2.#.HOME_OFFSET [8];				// position (mm)
+pin in float PEv2.#.HOME_SEARCH_VEL [8];			// position (mm)
+pin in float PEv2.#.HOME_LATCH_VEL [8];				// position (mm)
+pin in float PEv2.#.HOME_FINAL_VEL [8];				// position (mm)
+pin in s32 PEv2.#.HOME_USE_INDEX [8];				// YES / NO
+pin in s32 PEv2.#.HOME_IGNORE_LIMITS [8];			// YES / NO
 //***********************************************************************
 
-pin io u32 PEv2_MPGjogMultiplier-# [8];		// MPG jog multiplier value
-pin io unsigned PEv2_MPGjogEncoder-# [8];			// MPG jog encoder ID
+pin io u32 PEv2.#.MPGjogMultiplier [8];		// MPG jog multiplier value
+pin io unsigned PEv2.#.MPGjogEncoder [8];			// MPG jog encoder ID
 
-//pin io unsigned PEv2_PinHomeSwitch-# [8];			// Home switch pin (0 for external dedicated input)
-//pin io unsigned PEv2_PinLimitMSwitch-# [8];			// Limit- switch pin (0 for external dedicated input)
-//pin io unsigned PEv2_PinLimitPSwitch-# [8];			// Limit+ switch pin (0 for external dedicated input)
-//pin io unsigned PEv2_AxisEnableOutputPins-# [8];		// Axis enabled output pin (0 for external dedicated output)
+//pin io unsigned PEv2_PinHomeSwitch [8];			// Home switch pin (0 for external dedicated input)
+//pin io unsigned PEv2_PinLimitMSwitch [8];			// Limit- switch pin (0 for external dedicated input)
+//pin io unsigned PEv2_PinLimitPSwitch [8];			// Limit+ switch pin (0 for external dedicated input)
+//pin io unsigned PEv2_AxisEnableOutputPins [8];		// Axis enabled output pin (0 for external dedicated output)
 
 pin io unsigned PEv2.#.PinHomeSwitch [8];			// Home switch pin (0 for external dedicated input)
 pin io unsigned PEv2.#.PinLimitMSwitch [8];			// Limit- switch pin (0 for external dedicated input)
@@ -155,10 +155,10 @@ pin io unsigned PEv2.#.PinLimitPSwitch [8];			// Limit+ switch pin (0 for extern
 pin io unsigned PEv2.#.AxisEnableOutputPins [8];		// Axis enabled output pin (0 for external dedicated output)
 
 
-//pin out bit PEv2_HomeSwitchStat-# [8];				// Home switch
-//pin out bit PEv2_LimitMSwitch-# [8];			// Limit- switch
-//pin out bit PEv2_LimitPSwitch-# [8];			// Limit+ switch
-//pin in bit PEv2_AxisEnableOutput-# [8];		// Axis enabled output
+//pin out bit PEv2_HomeSwitchStat [8];				// Home switch
+//pin out bit PEv2_LimitMSwitch [8];			// Limit- switch
+//pin out bit PEv2_LimitPSwitch [8];			// Limit+ switch
+//pin in bit PEv2_AxisEnableOutput [8];		// Axis enabled output
 //pin out bit PEv2_HomeSwitch;				// Home switch
 
 pin out bit PEv2.#.HomeSwitchStat [8];				// Home switch
@@ -168,54 +168,54 @@ pin in bit PEv2.#.AxisEnableOutput [8];		// Axis enabled output
 pin out bit PEv2.HomeSwitch;				// Home switch
 
 
-//pin io unsigned PEv2_HomeBackOffDistance-# [8];		// Back-off distance after homing
-//pin io unsigned PEv2_MPGjogDivider-# [8];			// Divider for the MPG jogging (enhanced encoder resolution)
+//pin io unsigned PEv2_HomeBackOffDistance [8];		// Back-off distance after homing
+//pin io unsigned PEv2_MPGjogDivider [8];			// Divider for the MPG jogging (enhanced encoder resolution)
 
 pin io unsigned PEv2.#.HomeBackOffDistance [8];		// Back-off distance after homing
 pin io unsigned PEv2.#.MPGjogDivider [8];			// Divider for the MPG jogging (enhanced encoder resolution)
 
-pin io unsigned PEv2_PulseEngineEnabled;			// Pulse engine enabled status, also number of enabled axes
-pin io unsigned PEv2_PulseGeneratorType;			// Pulse engine generator type (0: external, 1: internal 3ch)
-pin io unsigned PEv2_ChargePumpEnabled;				// Charge pump output enabled
-pin io unsigned PEv2_EmergencySwitchPolarity;		// Emergency switch polarity (set to 1 to invert)
-pin io unsigned PEv2_PulseEngineActivated;			// Pulse engine activation status
-pin out unsigned PEv2_LimitStatusP;					// Limit+ status (bit-mapped)
-pin out unsigned PEv2_LimitStatusN;					// Limit- status (bit-mapped)
-pin out unsigned PEv2_HomeStatus;					// Home status (bit-mapped)
-pin out unsigned PEv2_ErrorInputStatus;				// Stepper motor driver error inputs status (bit-mapped)
-pin out unsigned PEv2_MiscInputStatus;				// Miscelenous digital inputs...
-pin io unsigned PEv2_LimitOverride;					// Limit override status
-pin io unsigned PEv2_LimitOverrideSetup;			// Limit override configuration
-pin io unsigned PEv2_PulseEngineState;				// State of pulse engine - see ePoKeysPEState
-pin io unsigned PEv2_AxisEnabledMask;				// Bit-mapped ouput enabled mask
+pin io unsigned PEv2.PulseEngineEnabled;			// Pulse engine enabled status, also number of enabled axes
+pin io unsigned PEv2.PulseGeneratorType;			// Pulse engine generator type (0: external, 1: internal 3ch)
+pin io unsigned PEv2.ChargePumpEnabled;				// Charge pump output enabled
+pin io unsigned PEv2.EmergencySwitchPolarity;		// Emergency switch polarity (set to 1 to invert)
+pin io unsigned PEv2.PulseEngineActivated;			// Pulse engine activation status
+pin out unsigned PEv2.LimitStatusP;					// Limit+ status (bit-mapped)
+pin out unsigned PEv2.LimitStatusN;					// Limit- status (bit-mapped)
+pin out unsigned PEv2.HomeStatus;					// Home status (bit-mapped)
+pin out unsigned PEv2.ErrorInputStatus;				// Stepper motor driver error inputs status (bit-mapped)
+pin out unsigned PEv2.MiscInputStatus;				// Miscelenous digital inputs...
+pin io unsigned PEv2.LimitOverride;					// Limit override status
+pin io unsigned PEv2.LimitOverrideSetup;			// Limit override configuration
+pin io unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
+pin io unsigned PEv2.AxisEnabledMask;				// Bit-mapped ouput enabled mask
 
-pin io unsigned PEv2_EmergencyInputPin;
-pin out bit PEv2_EmergencyInput;
-pin io unsigned PEv2_EmergencyOutputPin;				//added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)
-pin in bit PEv2_EmergencyOutput;
+pin io unsigned PEv2.EmergencyInputPin;
+pin out bit PEv2.EmergencyInput;
+pin io unsigned PEv2.EmergencyOutputPin;				//added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)
+pin in bit PEv2.EmergencyOutput;
 
-pin io unsigned PEv2_param1;
-pin io unsigned PEv2_param2;
-pin io unsigned PEv2_param3;
-pin io unsigned PEv2_AxisEnabledStatesMask;		// Bit-mapped states, where axis enabled and charge pump signals are active
-pin io unsigned PEv2_PulseEngineStateSetup;		// Pulse engine new state configuration
-pin out unsigned PEv2_SoftLimitStatus;				// Bit-mapped soft-limit statuses per axes
-pin io unsigned PEv2_ExternalRelayOutputs;			// External relay outputs
-pin io unsigned PEv2_ExternalOCOutputs;			// External open-collector outputs
-pin io unsigned PEv2_PulseEngineBufferSize;		// Buffer size information...
-pin io unsigned PEv2_motionBufferEntriesAccepted;
-pin io unsigned PEv2_newMotionBufferEntries;
-pin io unsigned PEv2_HomingStartMaskSetup;			// Bit-mapped axes indexes to be homed
-pin io unsigned PEv2_ProbeStartMaskSetup;			// Bit-mapped axis indexes for probing
-pin io unsigned PEv2_ProbeInput;					// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
-pin io unsigned PEv2_ProbeInputPolarity;			// Probe input polarity
-pin out unsigned PEv2_ProbeStatus;					// Probe status (probe completion bit-mapped status)
-//pin out unsigned PEv2_MotionBuffer[448];			// Motion buffer
-pin io float PEv2_ProbeSpeed;						// Probe speed (ratio of the maximum speed)
-pin io unsigned PEv2_BacklashWidth-# [8];			// half of real backlash width
-pin io unsigned PEv2_BacklashRegister-# [8];		// current value of the backlash register
-pin io unsigned PEv2_BacklashAcceleration-# [8];	// in pulses per ms^2
-pin io unsigned PEv2_BacklashCompensationEnabled;
+pin io unsigned PEv2.param1;
+pin io unsigned PEv2.param2;
+pin io unsigned PEv2.param3;
+pin io unsigned PEv2.AxisEnabledStatesMask;		// Bit-mapped states, where axis enabled and charge pump signals are active
+pin io unsigned PEv2.PulseEngineStateSetup;		// Pulse engine new state configuration
+pin out unsigned PEv2.SoftLimitStatus;				// Bit-mapped soft-limit statuses per axes
+pin io unsigned PEv2.ExternalRelayOutputs;			// External relay outputs
+pin io unsigned PEv2.ExternalOCOutputs;			// External open-collector outputs
+pin io unsigned PEv2.PulseEngineBufferSize;		// Buffer size information...
+pin io unsigned PEv2.motionBufferEntriesAccepted;
+pin io unsigned PEv2.newMotionBufferEntries;
+pin io unsigned PEv2.HomingStartMaskSetup;			// Bit-mapped axes indexes to be homed
+pin io unsigned PEv2.ProbeStartMaskSetup;			// Bit-mapped axis indexes for probing
+pin io unsigned PEv2.ProbeInput;					// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
+pin io unsigned PEv2.ProbeInputPolarity;			// Probe input polarity
+pin out unsigned PEv2.ProbeStatus;					// Probe status (probe completion bit-mapped status)
+//pin out unsigned PEv2.MotionBuffer[448];			// Motion buffer
+pin io float PEv2.ProbeSpeed;						// Probe speed (ratio of the maximum speed)
+pin io unsigned PEv2.#.BacklashWidth [8];			// half of real backlash width
+pin io unsigned PEv2.#.BacklashRegister [8];		// current value of the backlash register
+pin io unsigned PEv2.#.BacklashAcceleration [8];	// in pulses per ms^2
+pin io unsigned PEv2.BacklashCompensationEnabled;
 
 pin out unsigned rtc_sec;
 pin out unsigned rtc_min;
@@ -444,8 +444,8 @@ void user_mainloop(void)
 						}
 						a_debout = 1330 + 1;
 						dev->PEv2.MaxSpeed[i] = PEv2_STEPGEN_MAXVEL(i)* PEv2_STEP_SCALE(i)/1000;					// Maximum axis speed convert (mm/s) to (pulses per ms)
-						dev->PEv2.MaxAcceleration[i] = PEv2_STEPGEN_MAXVEL(i)* PEv2_STEP_SCALE(i) /1000000;			// Maximum axis acceleration convert (mm/s²) to (in pulses/ms/ms)
-						dev->PEv2.MaxDecceleration[i] = PEv2_STEPGEN_MAXVEL(i)* PEv2_STEP_SCALE(i) /1000000;			// Maximum axis deceleration convert (mm/s²) to (in pulses/ms/ms)
+						dev->PEv2.MaxAcceleration[i] = PEv2_STEPGEN_MAXVEL(i)* PEv2_STEP_SCALE(i) /1000000;			// Maximum axis acceleration convert (mm/sï¿½) to (in pulses/ms/ms)
+						dev->PEv2.MaxDecceleration[i] = PEv2_STEPGEN_MAXVEL(i)* PEv2_STEP_SCALE(i) /1000000;			// Maximum axis deceleration convert (mm/sï¿½) to (in pulses/ms/ms)
 
 						dev->PEv2.SoftLimitMaximum[i] = PEv2_MAX_LIMIT(i)* PEv2_STEP_SCALE(i);		// Soft limit maximum position
 						dev->PEv2.SoftLimitMinimum[i] = PEv2_MIN_LIMIT(i)* PEv2_STEP_SCALE(i);		// Soft limit minimum position
