@@ -303,11 +303,12 @@ int Pins_HalSetup(sPoKeysDevice *dev)
 
 	
 	PK_Pin_HALComp *PIN_HAL_DATA;
-	int hal_comp_id = hal_init(hName);
+	
 
 	for(i=0;i< PinCount;i++)
 	{
 		char *hName = "Pin-%i" ;
+		int hal_comp_id = hal_init(hName);
 		//extern int hal_pin_s32_newf(hal_pin_dir_t dir,hal_s32_t ** data_ptr_addr, int comp_id, const char *fmt, ...)
 		hal_pin_s32_newf(HAL_OUT, &(PIN_HAL_DATA->DigitalValueGet), hal_comp_id, "%s.DigitalValueGet", hName);
 	}
