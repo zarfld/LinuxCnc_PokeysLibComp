@@ -126,19 +126,19 @@ param r float PEv2.#.DEADBAND [8];
 param r float PEv2.#.MAX_OUTPUT [8];
 param r float PEv2.#.ENCODER_SCALE [8];
 // these are in nanoseconds
-param r float PEv2.#.DIRSETUP [8];					// (ns)
-param r float PEv2.#.DIRHOLD [8];					// (ns)
-param r float PEv2.#.STEPLEN [8];					// (ns)
-param r float PEv2.#.STEPSPACE [8];					// (ns)
-param r float PEv2.#.STEP_SCALE [8];					// (pulses/mm)
-param r float PEv2.#.MIN_LIMIT [8];					// position (mm)
-param r float PEv2.#.MAX_LIMIT [8];					// position (mm)
-param r float PEv2.#.HOME_OFFSET [8];				// position (mm)
-param r float PEv2.#.HOME_SEARCH_VEL [8];			// position (mm)
-param r float PEv2.#.HOME_LATCH_VEL [8];				// position (mm)
-param r float PEv2.#.HOME_FINAL_VEL [8];				// position (mm)
-param r s32 PEv2.#.HOME_USE_INDEX [8];				// YES / NO
-param r s32 PEv2.#.HOME_IGNORE_LIMITS [8];			// YES / NO
+param r float PEv2.#.DIRSETUP [8] = 0;					// (ns)
+param r float PEv2.#.DIRHOLD [8] = 0;					// (ns)
+param r float PEv2.#.STEPLEN [8] = 0;					// (ns)
+param r float PEv2.#.STEPSPACE [8] = 0;					// (ns)
+param r float PEv2.#.STEP_SCALE [8] = 0;					// (pulses/mm)
+param r float PEv2.#.MIN_LIMIT [8] = 0;					// position (mm)
+param r float PEv2.#.MAX_LIMIT [8] = 0;					// position (mm)
+param r float PEv2.#.HOME_OFFSET [8] = 0;				// position (mm)
+param r float PEv2.#.HOME_SEARCH_VEL [8] = 0;			// position (mm)
+param r float PEv2.#.HOME_LATCH_VEL [8] = 0;				// position (mm)
+param r float PEv2.#.HOME_FINAL_VEL [8] = 0;				// position (mm)
+param r s32 PEv2.#.HOME_USE_INDEX [8] = 0;				// YES / NO
+param r s32 PEv2.#.HOME_IGNORE_LIMITS [8] = 0;			// YES / NO
 //***********************************************************************
 
 pin io u32 PEv2.#.MPGjogMultiplier [8];		// MPG jog multiplier value
