@@ -5,11 +5,11 @@ option userspace yes;
 pin out unsigned enum_usb_dev;
 pin out unsigned enum_fusb_dev;
 pin out unsigned enum_udp_dev;
-pin out unsigned a_debout;
+pin out u32 a_debout;
 
 pin out bit err;
 pin out bit connected;
-pin in u32 devSerial;
+pin in unsigned devSerial;
 pin out bit alive;
 
 pin in bit machine_is_on;
