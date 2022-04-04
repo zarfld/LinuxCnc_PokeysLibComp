@@ -155,11 +155,11 @@ pin io unsigned PEv2.#.PinLimitPSwitch [8];			// Limit+ switch pin (0 for extern
 pin io unsigned PEv2.#.AxisEnableOutputPins [8];		// Axis enabled output pin (0 for external dedicated output)
 
 
-pin out bit PEv2_HomeSwitchStat-# [8];				// Home switch
-pin out bit PEv2_LimitMSwitch-# [8];			// Limit- switch
-pin out bit PEv2_LimitPSwitch-# [8];			// Limit+ switch
-pin in bit PEv2_AxisEnableOutput-# [8];		// Axis enabled output
-pin out bit PEv2_HomeSwitch;				// Home switch
+//pin out bit PEv2_HomeSwitchStat-# [8];				// Home switch
+//pin out bit PEv2_LimitMSwitch-# [8];			// Limit- switch
+//pin out bit PEv2_LimitPSwitch-# [8];			// Limit+ switch
+//pin in bit PEv2_AxisEnableOutput-# [8];		// Axis enabled output
+//pin out bit PEv2_HomeSwitch;				// Home switch
 
 pin out bit PEv2.#.HomeSwitchStat [8];				// Home switch
 pin out bit PEv2.#.LimitMSwitch [8];			// Limit- switch
