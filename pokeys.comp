@@ -257,7 +257,7 @@ pin out unsigned EasySensors.#.sensorRefreshPeriod [10];    // Refresh period in
 pin out unsigned EasySensors.#.sensorFailsafeConfig [10];   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
 pin out unsigned EasySensors.#.sensorReadingID [10];        // Sensor reading selection (see Protocol description document for details)
 
-pin io unsigned EnablePoStepCommunication;
+pin io unsigned PoStep.EnablePoStepCommunication;
     // Status
 pin out unsigned PoStep.#.SupplyVoltage [8];
 pin out unsigned PoStep.#.Temperature [8];
