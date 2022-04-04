@@ -269,7 +269,7 @@ option extra_link_args "-lPoKeys";
 
 
 
-
+/*
 typedef struct
 {
 hal_u32_t *DigitalCounterValue;
@@ -292,7 +292,7 @@ hal_u32_t *preventUpdate ;
 typedef struct
 {
 	PK_Pin_HALComp *Pin;
-	hal_u32_t *Count;
+	hal_u32_t *PinCount;
 }PK_Pins_HALComp;
 
 PK_Pins_HALComp *PINS_HAL_DATA;
@@ -303,11 +303,10 @@ int Pins_HalSetup(sPoKeysDevice *dev)
 	int PinCount = dev->info.iPinCount;
 	int i =0;
 
-
 	
 	int hal_comp_id = hal_init("Pins");
 
-	hal_pin_u32_newf(HAL_OUT, &(PINS_HAL_DATA->Count), hal_comp_id, "%s.Pins", "Pins.Count");
+	hal_pin_u32_newf(HAL_OUT, &(PINS_HAL_DATA->PinCount), hal_comp_id, "%s.Pins", "Pins");
 
 	for(i=0;i< PinCount;i++)
 	{
@@ -317,7 +316,7 @@ int Pins_HalSetup(sPoKeysDevice *dev)
 		hal_pin_s32_newf(HAL_OUT, &(PIN_HAL_DATA->DigitalValueGet), hal_comp_id, "%s.DigitalValueGet", hName);
 	}
 }
-
+*/
 sPoKeysDevice * dev=0;
 
 
@@ -354,7 +353,7 @@ void user_mainloop(void)
 		 }
 		else
 		{
-			sPoKeysNetworkDeviceSummary * udp_devices;
+			sPoKeysNetworkDeviceSummary *udp_devices;
 			enum_usb_dev = PK_EnumerateUSBDevices();
 			enum_fusb_dev = PK_EnumerateUSBDevices();
 			//enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices,180); // does not work - it hangs here
