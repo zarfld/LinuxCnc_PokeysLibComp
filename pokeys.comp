@@ -364,7 +364,7 @@ void user_mainloop(void)
 				if ( PEv2_EmergencyInputPin!=0)
 				{	//check if pin is parametrized in HAL
 					
-					dev->Pins[PEv2.EmergencyInputPin-1].PinFunction = PK_PinCap_digitalInput;
+					dev->Pins[PEv2_EmergencyInputPin-1].PinFunction = PK_PinCap_digitalInput;
 					setPinConfig=true;
 					setPeConfig=true;
 				}
@@ -804,7 +804,7 @@ void user_mainloop(void)
 		err=0;
 		sPoKeysPinData iPin;
 		
-		for(i=0;i<info.PinCount-1;i++)
+		for(i=0;i<info_PinCount-1;i++)
 		{
 			Pins_DigitalCounterValue(i)=dev->Pins[i].DigitalCounterValue;
 			Pins_AnalogValue(i)=dev->Pins[i].AnalogValue;
