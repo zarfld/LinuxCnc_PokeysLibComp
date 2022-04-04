@@ -352,7 +352,7 @@ int Config_PEv2()
 		PK_PEv2_AdditionalParametersGet(dev);
 		PK_PEv2_AxisConfigurationGet(dev);
 
-				 PEv2_nrOfAxes=dev->PEv2.info.nrOfAxes;
+				// PEv2_nrOfAxes=dev->PEv2.info.nrOfAxes;
 				 PEv2_maxPulseFrequency=dev->PEv2.info.maxPulseFrequency;
 				 PEv2_bufferDepth=dev->PEv2.info.bufferDepth;
 				 PEv2_slotTiming=dev->PEv2.info.slotTiming;
