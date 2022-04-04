@@ -268,6 +268,8 @@ option extra_link_args "-lPoKeys";
 #include "PoKeysLib.h"
 
 
+/*
+
 typedef struct
 {
 hal_u32_t DigitalCounterValue;
@@ -292,11 +294,13 @@ typedef struct
 PK_Pin_HALComp Pin[55];
 }PK_Pins_HALComp;
 
+PK_Pins_HALComp Pins;
 
+*/
 
 
 sPoKeysDevice * dev=0;
-//Pk_Pins_Comp Pins;
+
 
 int i=0;
 
