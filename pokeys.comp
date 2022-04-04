@@ -378,7 +378,7 @@ void user_mainloop(void)
 				dev->PEv2.ProbeInput= PEv2_ProbeInput;
 				//check if pin is parametrized in HAL
 				dev->PEv2.ProbeInputPolarity=PEv2_ProbeInputPolarity;
-				if (PEv2_ProbeInput!=0)
+				if ( PEv2_ProbeInput!=0)
 				{	//check if pin is parametrized in HAL
 						dev->Pins[PEv2_ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
 						setPinConfig=true;
@@ -389,12 +389,12 @@ void user_mainloop(void)
 				dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
 				PK_PEv2_PulseEngineSetup(dev);
 				
-				for(i=0;i<PEv2.nrOfAxes;i++)
+				for(i=0;i<PEv2_nrOfAxes;i++)
 				{
-					if(PEv2.STEP_SCALE(i)!=0)
+					if(PEv_STEP_SCALE(i)!=0)
 					{
 				
-						if (PEv2.AxesConfig(i)!=PK_AC_POSITION_MODE)
+						if ( PEv2_AxesConfig(i)!=PK_AC_POSITION_MODE)
 						{
 							dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_vel_cmd(i) * PEv2_STEP_SCALE(i);
 
@@ -430,12 +430,12 @@ void user_mainloop(void)
 						// Limit+ switch pin (0 for external dedicated input)
 						dev->PEv2.PinLimitPSwitch[i]=PEv2.PinLimitPSwitch(i);
 
-						if (PEv2.PinLimitPSwitch(i)!=0)
+						if ( PEv2_PinLimitPSwitch(i)!=0)
 						{	//check if pin is parametrized in HAL
 						dev->Pins[PEv2.PinLimitPSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
 						setPinConfig=true;
 						}
-						if (PEv2.PinLimitPSwitch(i)!=0)
+						if ( PEv2_PinLimitPSwitch(i)!=0)
 						{	//check if pin is parametrized in HAL
 						dev->Pins[PEv2.PinLimitPSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
 						setPinConfig=true;
@@ -510,7 +510,7 @@ void user_mainloop(void)
 		PEv2_LimitOverride=dev->PEv2.LimitOverride;				// Limit override status
 		PEv2_LimitOverrideSetup=dev->PEv2.LimitOverrideSetup;			// Limit override configuration
 		PEv2_PulseEngineState=dev->PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
-		switch (PEv2.PulseEngineState)
+		switch ( PEv2_PulseEngineState)
 		{
 		    case PK_PEState_peSTOPPED:           // Pulse engine is stopped
 				if(machine_is_on==true)
@@ -607,7 +607,7 @@ void user_mainloop(void)
 		{
 			PEv2_EmergencyInput=false;
 		}
-		if (PEv2.EmergencyOutputPin!=0)
+		if ( PEv2_EmergencyOutputPin!=0)
 		{	//check if pin is parametrized in HAL
 			dev->Pins[PEv2.EmergencyOutputPin].DigitalValueSet=PEv2.EmergencyOutput;
 		}
@@ -655,7 +655,7 @@ void user_mainloop(void)
 			for(i=0;i<PEv2.nrOfAxes;i++)
 			{ 
 				PEv2_AxesState(i)=dev->PEv2.AxesState[i];				// Axis states (bit-mapped) - see ePK_PEAxisState
-				switch(PEv2.AxesState(i))
+				switch( PEv2_AxesState(i))
 				{
 					case PK_PEAxisState_axSTOPPED:        // Axis is stopped
 						break ;
@@ -705,16 +705,16 @@ void user_mainloop(void)
 				PEv2_MPGjogMultiplier(i)=dev->PEv2.MPGjogMultiplier[i];		// MPG jog multiplier value
 				PEv2_MPGjogEncoder(i)=dev->PEv2.MPGjogEncoder[i];			// MPG jog encoder ID
 				
-				if(PEv2_STEP_SCALE(i)!=0)
+				if( PEv2_STEP_SCALE(i)!=0)
 				{
 				
-					if (PEv2_AxesConfig(i)!=PK_AC_POSITION_MODE)
+					if ( PEv2_AxesConfig(i)!=PK_AC_POSITION_MODE)
 					{
 						// Velocity-Mode
 						dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_vel_cmd(i) * PEv2_STEP_SCALE(i);
 						
 						// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-						PEv2_joint_vel_fb(i) = (PEv2_joint_pos_fb(i) - (dev->PEv2.CurrentPosition[i] / PEv2_STEP_SCALE(i)) )* rtc_loop_frequ;
+						PEv2_joint_vel_fb(i) = ( PEv2_joint_pos_fb(i) - (dev->PEv2.CurrentPosition[i] / PEv2_STEP_SCALE(i)) )* rtc_loop_frequ;
 						PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_STEP_SCALE(i);
 						PEv2_move=true;
 					}
@@ -740,7 +740,7 @@ void user_mainloop(void)
 				PEv2_MaxDecceleration(i)=dev->PEv2.MaxDecceleration[i];				// Maximum axis deceleration (in pulses/ms/ms)
 
 				// Home switch pin (0 for external dedicated input)
-				if (PEv2_PinHomeSwitch(i)!=0)
+				if ( PEv2_PinHomeSwitch(i)!=0)
 				{	//check if pin is parametrized in HAL
 					dev->PEv2.PinHomeSwitch[i]=PEv2_PinHomeSwitch(i);
 				}
@@ -778,7 +778,7 @@ void user_mainloop(void)
 				}
 
 				//PEv2_AxisEnableOutputPins(i)=dev->PEv2.AxisEnableOutputPins[i];	// Axis enabled output pin (0 for external dedicated output)
-				if (PEv2_AxisEnableOutputPins(i)!=0)
+				if ( PEv2_AxisEnableOutputPins(i)!=0)
 				{	//check if pin is parametrized in HAL
 					dev->PEv2.AxisEnableOutputPins[i]=PEv2_AxisEnableOutputPins(i);
 				}
@@ -793,7 +793,7 @@ void user_mainloop(void)
 				PEv2_BacklashRegister(i)=dev->PEv2.BacklashRegister[i];		// current value of the backlash register
 				PEv2_BacklashAcceleration(i)=dev->PEv2.BacklashAcceleration[i];	// in pulses per ms^2
 			}
-			if (PEv2_move==true)
+			if ( PEv2_move==true)
 			{
 			PK_PEv2_PulseEngineMove(dev);
 			}
@@ -908,7 +908,7 @@ void user_mainloop(void)
 		 info_EasySensors = dev->info.iEasySensors;                     // Device supports EasySensors
 
 
-		 if (info.PulseEnginev2!=0)
+		 if ( info_PulseEnginev2!=0)
 		 {
 			 PEv2_nrOfAxes=dev->PEv2.info.nrOfAxes;
 			 PEv2_maxPulseFrequency=dev->PEv2.info.maxPulseFrequency;
@@ -916,7 +916,7 @@ void user_mainloop(void)
 			 PEv2_slotTiming=dev->PEv2.info.slotTiming;
 		 }
 
-			if (info.MatrixKeyboard!=0)
+			if (info_MatrixKeyboard!=0)
 			{
 				if (PK_MatrixKBConfigurationGet(dev) == PK_OK)
 				{
