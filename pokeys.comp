@@ -301,7 +301,7 @@ int Pins_HalSetup(sPoKeysDevice *dev)
 	int PinCount = dev->info.iPinCount;
 	int i =0;
 
-	char hName = "Pins";
+	const char *hName = "Pins";
 	int hal_comp_id = hal_init(hName);
 
 	for(i=0;i< PinCount;i++)
