@@ -302,7 +302,7 @@ int Pins_HalSetup(sPoKeysDevice *dev)
 	int i =0;
 	int hal_comp_id = hal_init("Pins");
 
-//	hal_pin_u32_newf(HAL_OUT, &(PINS_HAL_DATA->PinCount), hal_comp_id, "%s.Pins", "Pins");
+	hal_pin_u32_newf(HAL_OUT, &(PINS_HAL_DATA->PinCount), hal_comp_id, "%s.Pins", "Pins");
 
 	for(i=0;i< PinCount;i++)
 	{
