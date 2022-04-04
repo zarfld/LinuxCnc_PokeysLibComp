@@ -944,7 +944,7 @@ void user_mainloop(void)
 };
 
 
-Class Pk_Pins_Comp
+public Class Pk_Pins_Comp
 
 Pk_Pin_Comp Pin-#[55];
 
@@ -952,7 +952,7 @@ public Pk_Pins_Comp(){}
 End Clas
 
 
-Class Pk_Pin_Comp
+public Class Pk_Pin_Comp
 pin out unsigned DigitalCounterValue;
 pin out unsigned AnalogValue;
 pin out unsigned PinFunction;
