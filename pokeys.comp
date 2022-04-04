@@ -341,8 +341,22 @@ int Config_PoNet()
 	{
 				
 	}
-
+	return 0
 }
+
+int Update_PoNet()
+{
+	if(PK_PoNETGetPoNETStatus(dev) == PK_OK)
+	{
+				
+	}
+	if(PK_PoNETGetModuleSettings(dev) == PK_OK)
+	{
+				
+	}
+	return 0
+}
+
 
 int Config_PEv2()
 {
@@ -352,32 +366,33 @@ int Config_PEv2()
 		PK_PEv2_AdditionalParametersGet(dev);
 		PK_PEv2_AxisConfigurationGet(dev);
 
-				// PEv2_nrOfAxes=dev->PEv2.info.nrOfAxes;
-				 PEv2_maxPulseFrequency=dev->PEv2.info.maxPulseFrequency;
-				 PEv2_bufferDepth=dev->PEv2.info.bufferDepth;
-				 PEv2_slotTiming=dev->PEv2.info.slotTiming;
-				 bool setPeConfig = false;
-				 dev->PEv2.EmergencyInputPin= PEv2_EmergencyInputPin;
-				if ( PEv2_EmergencyInputPin!=0)
-				{	//check if pin is parametrized in HAL
-					a_debout = 131;
-					dev->Pins[ PEv2_EmergencyInputPin-1].PinFunction = PK_PinCap_digitalInput;
-					setPinConfig=true;
-					setPeConfig=true;
-				}
-				if ( PEv2_EmergencyOutputPin!=0)
-				{	//check if pin is parametrized in HAL
-					a_debout = 132;
-						dev->Pins[ PEv2_EmergencyOutputPin-1].PinFunction = PK_PinCap_digitalOutput;
-						setPinConfig=true;
-				}
-				// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
-				//check if pin is parametrized in HAL
-				dev->PEv2.ProbeInput= PEv2_ProbeInput;
-				//check if pin is parametrized in HAL
-				dev->PEv2.ProbeInputPolarity= PEv2_ProbeInputPolarity;
-				a_debout = 133;
-				if ( PEv2_ProbeInput!=0)
+		PEv2_nrOfAxes=dev->PEv2.info.nrOfAxes;
+		PEv2_maxPulseFrequency=dev->PEv2.info.maxPulseFrequency;
+		PEv2_bufferDepth=dev->PEv2.info.bufferDepth;
+		PEv2_slotTiming=dev->PEv2.info.slotTiming;
+		
+		bool setPeConfig = false;
+		dev->PEv2.EmergencyInputPin= PEv2_EmergencyInputPin;
+		if ( PEv2_EmergencyInputPin!=0)
+		{	//check if pin is parametrized in HAL
+			a_debout = 131;
+			dev->Pins[ PEv2_EmergencyInputPin-1].PinFunction = PK_PinCap_digitalInput;
+			setPinConfig=true;
+			setPeConfig=true;
+		}
+		if ( PEv2_EmergencyOutputPin!=0)
+		{	//check if pin is parametrized in HAL
+			a_debout = 132;
+			dev->Pins[ PEv2_EmergencyOutputPin-1].PinFunction = PK_PinCap_digitalOutput;
+			setPinConfig=true;
+		}
+		// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
+		//check if pin is parametrized in HAL
+		dev->PEv2.ProbeInput= PEv2_ProbeInput;
+		//check if pin is parametrized in HAL
+		dev->PEv2.ProbeInputPolarity= PEv2_ProbeInputPolarity;
+		a_debout = 133;
+		if ( PEv2_ProbeInput!=0)
 				{	//check if pin is parametrized in HAL
 						dev->Pins[ PEv2_ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
 						setPinConfig=true;
@@ -452,6 +467,7 @@ int Config_PEv2()
 				PK_PEv2_PulseEngineStateSet(dev);
 				a_debout = 136;
 	}
+	return 0
 }
 
 int Update_PEv2()
@@ -469,6 +485,7 @@ int Update_PEv2()
 	//PK_PEv2_PulseEngineStateSet
 	//PK_PEv2_PulseEngineMove
 	//PK_PEv2_ExternalOutputsSet
+	return 0
 }
 
 int Config_MatrixKB()
@@ -478,7 +495,7 @@ int Config_MatrixKB()
 	}
 
 	//PK_MatrixKBConfigurationSet
-
+	return 0
 }
 
 int Update_MatrixKB()
@@ -486,7 +503,7 @@ int Update_MatrixKB()
 	if(PK_MatrixKBStatusGet(dev) == PK_OK)
 	{
 	}
-
+	return 0
 }
 
 int Config_LCD()
@@ -498,6 +515,7 @@ int Config_LCD()
 	//PK_LCDConfigurationSet
 	// Change between modes PK_LCD_MODE_DIRECT and PK_LCD_MODE_BUFFERED
 	// PK_LCDChangeMode(dev, PK_LCD_MODE_DIRECT);
+	return 0
 }
 
 int Update_LCD()
@@ -508,6 +526,7 @@ int Update_LCD()
 	if(PK_LCDSetCustomCharacters(dev) == PK_OK)
 	{
 	}
+	return 0
 }
 
 int Config_EasySensors()
@@ -517,7 +536,7 @@ int Config_EasySensors()
 	}
 
 	//PK_EasySensorsSetupSet
-
+	return 0
 }
 
 int Update_EasySensors()
@@ -525,7 +544,7 @@ int Update_EasySensors()
 	if(PK_EasySensorsValueGetAll(dev) == PK_OK)
 	{
 	}
-
+	return 0
 }
 
 
@@ -541,6 +560,7 @@ int Config_PoStep()
 
 	//PK_PoStep_ConfigurationSet(dev)
 	//PK_PoStep_DriverConfigurationSet(dev)
+	return 0
 }
 
 int Update_PoStep()
@@ -548,15 +568,12 @@ int Update_PoStep()
 	if(PK_PoStep_StatusGet(dev) == PK_OK)
 	{
 	}
-
-
+	return 0
 }
 
 
 void user_mainloop(void) 
 { 
-	
-
 
     while(0xb){
        FOR_ALL_INSTS() {
