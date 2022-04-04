@@ -323,12 +323,13 @@ int i=0;
 
 void user_mainloop(void) 
 { 
-		a_debout = 100;
+	
 
 
     while(0xb){
        FOR_ALL_INSTS() {
 	   rtc_loopcount++;
+	   a_debout = 100;
 	 while(dev == NULL)
 	 {
 			
@@ -458,7 +459,7 @@ void user_mainloop(void)
 						
 						if ( PEv2_AxesConfig(i)!=PK_AC_POSITION_MODE)
 						{
-							a_debout = 13"0 + 1;
+							a_debout = 130 + 1;
 							dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_vel_cmd(i) * PEv2_STEP_SCALE(i);
 
 							PEv2_joint_vel_fb(i) = dev->PEv2.PositionSetup[i] / PEv2_STEP_SCALE(i);
