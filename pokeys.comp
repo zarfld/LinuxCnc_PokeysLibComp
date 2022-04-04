@@ -391,7 +391,7 @@ void user_mainloop(void)
 				
 				for(i=0;i<PEv2_nrOfAxes;i++)
 				{
-					if(PEv_STEP_SCALE(i)!=0)
+					if(PEv2_STEP_SCALE(i)!=0)
 					{
 				
 						if ( PEv2_AxesConfig(i)!=PK_AC_POSITION_MODE)
@@ -416,8 +416,8 @@ void user_mainloop(void)
 						dev->PEv2.SoftLimitMinimum[i] = PEv2_MIN_LIMIT(i)* PEv2_STEP_SCALE(i);		// Soft limit minimum position
 						dev->PEv2.HomeOffsets[i] = PEv2_HOME_OFFSET(i)* PEv2_STEP_SCALE(i);				// Home position offset
 
-						dev->PEv2.HomingSpeed[i] = PEv2_HOME_SEARCH_VEL(i)*100/PEv2.MAX_VELOCITY(i) ;			// Homing speed per axis (in %)
-						dev->PEv2.HomingReturnSpeed[i] = PEv2_HOME_LATCH_VEL(i)*100/PEv2.HOME_SEARCH_VEL(i);		// Homing return speed per axis (in % of the homing speed)
+						dev->PEv2.HomingSpeed[i] = PEv2_HOME_SEARCH_VEL(i)*100/ PEv2_MAX_VELOCITY(i) ;			// Homing speed per axis (in %)
+						dev->PEv2.HomingReturnSpeed[i] = PEv2_HOME_LATCH_VEL(i)*100/ PEv2_HOME_SEARCH_VEL(i);		// Homing return speed per axis (in % of the homing speed)
 
 						dev->PEv2.AxesSwitchConfig[i]=PEv2.AxesSwitchConfig(i);
 						dev->PEv2.FilterLimitMSwitch[i]= PEv2_FilterLimitMSwitch(i);		// Digital filter for limit- switch
@@ -638,13 +638,13 @@ void user_mainloop(void)
 		PEv2_ExternalRelayOutputs=dev->PEv2.ExternalRelayOutputs;			// External relay outputs
 		PEv2_ExternalOCOutputs=dev->PEv2.ExternalOCOutputs;			// External open-collector outputs
 		PEv2_PulseEngineBufferSize=dev->PEv2.PulseEngineBufferSize;		// Buffer size information...
-		//PEv2.motionBufferEntriesAccepted=dev->PEv2.motionBufferEntriesAccepted;
+		// PEv2_motionBufferEntriesAccepted=dev->PEv2.motionBufferEntriesAccepted;
 		PEv2_newMotionBufferEntries=dev->PEv2.newMotionBufferEntries;
 		PEv2_HomingStartMaskSetup=dev->PEv2.HomingStartMaskSetup;			// Bit-mapped axes indexes to be homed
 		PEv2_ProbeStartMaskSetup=dev->PEv2.ProbeStartMaskSetup;			// Bit-mapped axis indexes for probing
 		// writeonly PEv2_ProbeInputPolarity=dev->PEv2.ProbeInputPolarity;			// Probe input polarity
 		PEv2_ProbeStatus=dev->PEv2.ProbeStatus;					// Probe status (probe completion bit-mapped status)
-		//PEv2.MotionBuffer=dev->PEv2.MotionBuffer;			// Motion buffer
+		// PEv2_MotionBuffer=dev->PEv2.MotionBuffer;			// Motion buffer
 		PEv2_ProbeSpeed=dev->PEv2.ProbeSpeed;						// Probe speed (ratio of the maximum speed)
 		PEv2_BacklashCompensationEnabled=dev->PEv2.BacklashCompensationEnabled;
 	 }
@@ -777,7 +777,7 @@ void user_mainloop(void)
 					PEv2_LimitPSwitch(i)=0;
 				}
 
-				//PEv2_AxisEnableOutputPins(i)=dev->PEv2.AxisEnableOutputPins[i];	// Axis enabled output pin (0 for external dedicated output)
+				// PEv2_AxisEnableOutputPins(i)=dev->PEv2.AxisEnableOutputPins[i];	// Axis enabled output pin (0 for external dedicated output)
 				if ( PEv2_AxisEnableOutputPins(i)!=0)
 				{	//check if pin is parametrized in HAL
 					dev->PEv2.AxisEnableOutputPins[i]=PEv2_AxisEnableOutputPins(i);
