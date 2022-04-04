@@ -363,7 +363,7 @@ void user_mainloop(void)
 
 		if(dev != NULL)
 		{
-			Pins_HalSetup(dev);
+			
 			connected=1;
 			bool setPkConfig = false;
 			bool setPinConfig = false;
@@ -404,6 +404,11 @@ void user_mainloop(void)
 			 info_PulseEngine = dev->info.iPulseEngine;                     // Device supports Pulse engine
 			 info_PulseEnginev2 = dev->info.iPulseEnginev2;                   // Device supports Pulse engine v2
 			 info_EasySensors = dev->info.iEasySensors;                     // Device supports EasySensors
+
+			 if ( info_PinCount!=0 )
+			 {
+				//Pins_HalSetup(dev);
+			 }
 
 			 if ( info_PulseEnginev2!=0 )
 			 {
