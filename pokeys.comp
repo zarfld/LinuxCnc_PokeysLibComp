@@ -62,12 +62,12 @@ pin out unsigned PEv2.slotTiming;
 
 //***********************************************************************
 //[TRAJ] information in HAL-INI 
-param in s32 PEv2.COORDINATES;
-param in s32 PEv2.LINEAR_UNITS;
-param in s32 PEv2.ANGULAR_UNITS;
-param in float PEv2.CYCLE_TIME;
-param in float PEv2.DEFAULT_LINEAR_VELOCITY;
-param in float PEv2.MAX_LINEAR_VELOCITY;
+param HAL_RW s32 PEv2.COORDINATES;
+param HAL_RW s32 PEv2.LINEAR_UNITS;
+param HAL_RW s32 PEv2.ANGULAR_UNITS;
+param HAL_RW float PEv2.CYCLE_TIME;
+param HAL_RW float PEv2.DEFAULT_LINEAR_VELOCITY;
+param HAL_RW float PEv2.MAX_LINEAR_VELOCITY;
 //***********************************************************************
 
 // Pulse engine v2 structure...
