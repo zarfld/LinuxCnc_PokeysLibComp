@@ -168,8 +168,8 @@ pin in bit PEv2.#.AxisEnableOutput [8];		// Axis enabled output
 pin out bit PEv2.HomeSwitch;				// Home switch
 
 
-pin io unsigned PEv2_HomeBackOffDistance-# [8];		// Back-off distance after homing
-pin io unsigned PEv2_MPGjogDivider-# [8];			// Divider for the MPG jogging (enhanced encoder resolution)
+//pin io unsigned PEv2_HomeBackOffDistance-# [8];		// Back-off distance after homing
+//pin io unsigned PEv2_MPGjogDivider-# [8];			// Divider for the MPG jogging (enhanced encoder resolution)
 
 pin io unsigned PEv2.#.HomeBackOffDistance [8];		// Back-off distance after homing
 pin io unsigned PEv2.#.MPGjogDivider [8];			// Divider for the MPG jogging (enhanced encoder resolution)
