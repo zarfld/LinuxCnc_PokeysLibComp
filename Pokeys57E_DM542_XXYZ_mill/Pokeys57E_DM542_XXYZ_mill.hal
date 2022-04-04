@@ -118,7 +118,7 @@ net x-enable     => pokeys.0.PEv2.0.AxisEnableOutput
 #setp    [HMOT](CARD0).encoder.00.index-invert 0
 #setp    [HMOT](CARD0).encoder.00.index-mask 0
 #setp    [HMOT](CARD0).encoder.00.index-mask-invert 0
-setp    pokeys.0.PEv2.0.ENCODER-SCALE  [JOINT_0]ENCODER_SCALE
+#setp    pokeys.0.PEv2.0.ENCODER-SCALE  [JOINT_0]ENCODER_SCALE
 
 net x-pos-fb               <=  pokeys.0.PEv2.0.joint-pos-fb
 net x-vel-fb               <=  pokeys.0.PEv2.0.joint-vel-fb
