@@ -370,17 +370,17 @@ void user_mainloop(void)
 				}
 				if ( PEv2_EmergencyOutputPin!=0)
 				{	//check if pin is parametrized in HAL
-						dev->Pins[PEv2.EmergencyOutputPin-1].PinFunction = PK_PinCap_digitalOutput;
+						dev->Pins[ PEv2_EmergencyOutputPin-1].PinFunction = PK_PinCap_digitalOutput;
 						setPinConfig=true;
 				}
 				// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
 				//check if pin is parametrized in HAL
-				dev->PEv2.ProbeInput=PEv2.ProbeInput;
+				dev->PEv2.ProbeInput= PEv2_ProbeInput;
 				//check if pin is parametrized in HAL
-				dev->PEv2.ProbeInputPolarity=PEv2.ProbeInputPolarity;
+				dev->PEv2.ProbeInputPolarity=PEv2_ProbeInputPolarity;
 				if (PEv2.ProbeInput!=0)
 				{	//check if pin is parametrized in HAL
-						dev->Pins[PEv2.ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
+						dev->Pins[PEv2_ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
 						setPinConfig=true;
 				}
 
@@ -832,7 +832,7 @@ void user_mainloop(void)
 
 	 }
 	
-	if (info.MatrixKeyboard!=0)
+	if (info_MatrixKeyboard!=0)
 	{
 		if (PK_MatrixKBStatusGet(dev) == PK_OK)
 		{
