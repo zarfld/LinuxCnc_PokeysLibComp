@@ -553,7 +553,7 @@ void user_mainloop(void)
 			 }
 			 if (info_PoNET!=0)
 			 {
-			 getConfig_PoNet;
+				Config_PoNet;
 			 }
 			 
 
