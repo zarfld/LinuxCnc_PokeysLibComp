@@ -161,18 +161,18 @@ pin out bit PEv2_LimitPSwitch-# [8];			// Limit+ switch
 pin in bit PEv2_AxisEnableOutput-# [8];		// Axis enabled output
 pin out bit PEv2_HomeSwitch;				// Home switch
 
-pin out bit PEv2.#.HomeSwitchStat-# [8];				// Home switch
-pin out bit PEv2.#.LimitMSwitch-# [8];			// Limit- switch
-pin out bit PEv2.#.LimitPSwitch-# [8];			// Limit+ switch
-pin in bit PEv2.#.AxisEnableOutput-# [8];		// Axis enabled output
+pin out bit PEv2.#.HomeSwitchStat [8];				// Home switch
+pin out bit PEv2.#.LimitMSwitch [8];			// Limit- switch
+pin out bit PEv2.#.LimitPSwitch [8];			// Limit+ switch
+pin in bit PEv2.#.AxisEnableOutput [8];		// Axis enabled output
 pin out bit PEv2.#.HomeSwitch;				// Home switch
 
 
 pin io unsigned PEv2_HomeBackOffDistance-# [8];		// Back-off distance after homing
 pin io unsigned PEv2_MPGjogDivider-# [8];			// Divider for the MPG jogging (enhanced encoder resolution)
 
-pin io unsigned PEv2.#.HomeBackOffDistance-# [8];		// Back-off distance after homing
-pin io unsigned PEv2.#.MPGjogDivider-# [8];			// Divider for the MPG jogging (enhanced encoder resolution)
+pin io unsigned PEv2.#.HomeBackOffDistance [8];		// Back-off distance after homing
+pin io unsigned PEv2.#.MPGjogDivider [8];			// Divider for the MPG jogging (enhanced encoder resolution)
 
 pin io unsigned PEv2_PulseEngineEnabled;			// Pulse engine enabled status, also number of enabled axes
 pin io unsigned PEv2_PulseGeneratorType;			// Pulse engine generator type (0: external, 1: internal 3ch)
