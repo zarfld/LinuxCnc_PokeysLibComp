@@ -76,7 +76,7 @@ pin out unsigned PEv2_AxesState-# [8];				// Axis states (bit-mapped) - see ePK_
 pin out unsigned PEv2_AxesConfig-# [8];				// Axis configuration - see ePK_PEv2_AxisConfig
 pin in unsigned PEv2_AxesSwitchConfig-# [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
 
-pin out u32 PEv2_InvertAxisEnable-# [8];		// Invert axis enable signal
+pin io u32 PEv2_InvertAxisEnable-# [8];		// Invert axis enable signal
 pin out u32 PEv2_SoftLimitMaximum-# [8];		// Soft limit maximum position
 pin out u32 PEv2_SoftLimitMinimum-# [8];		// Soft limit minimum position
 pin out unsigned PEv2_HomingSpeed-# [8];			// Homing speed per axis (in %)
@@ -291,7 +291,7 @@ hal_u32_t *preventUpdate ;
 
 typedef struct
 {
-PK_Pin_HALComp Pin[55];
+PK_Pin_HALComp *Pin;
 }PK_Pins_HALComp;
 
 PK_Pins_HALComp Pins;
