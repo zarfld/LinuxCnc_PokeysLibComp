@@ -259,12 +259,12 @@ pin out unsigned EasySensors.#.sensorReadingID [10];        // Sensor reading se
 
 pin io unsigned EnablePoStepCommunication;
     // Status
-pin io unsigned PoStep.#.SupplyVoltage [8];
-pin io unsigned PoStep.#.Temperature [8];
-pin io unsigned PoStep.#.InputStatus [8];
-pin io unsigned PoStep.#.DriverStatus [8];
-pin io unsigned PoStep.#.FaultStatus [8];
-pin io unsigned PoStep.#.UpdateState [8];
+pin out unsigned PoStep.#.SupplyVoltage [8];
+pin out unsigned PoStep.#.Temperature [8];
+pin out unsigned PoStep.#.InputStatus [8];
+pin out unsigned PoStep.#.DriverStatus [8];
+pin out unsigned PoStep.#.FaultStatus [8];
+pin out unsigned PoStep.#.UpdateState [8];
 
     // Settings
 pin io unsigned PoStep.#.DriverMode [8];
