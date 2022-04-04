@@ -144,10 +144,10 @@ pin in s32 PEv2_HOME_IGNORE_LIMITS-# [8];			// YES / NO
 pin io u32 PEv2_MPGjogMultiplier-# [8];		// MPG jog multiplier value
 pin io unsigned PEv2_MPGjogEncoder-# [8];			// MPG jog encoder ID
 
-pin io unsigned PEv2_PinHomeSwitch-# [8];			// Home switch pin (0 for external dedicated input)
-pin io unsigned PEv2_PinLimitMSwitch-# [8];			// Limit- switch pin (0 for external dedicated input)
-pin io unsigned PEv2_PinLimitPSwitch-# [8];			// Limit+ switch pin (0 for external dedicated input)
-pin io unsigned PEv2_AxisEnableOutputPins-# [8];		// Axis enabled output pin (0 for external dedicated output)
+//pin io unsigned PEv2_PinHomeSwitch-# [8];			// Home switch pin (0 for external dedicated input)
+//pin io unsigned PEv2_PinLimitMSwitch-# [8];			// Limit- switch pin (0 for external dedicated input)
+//pin io unsigned PEv2_PinLimitPSwitch-# [8];			// Limit+ switch pin (0 for external dedicated input)
+//pin io unsigned PEv2_AxisEnableOutputPins-# [8];		// Axis enabled output pin (0 for external dedicated output)
 
 pin io unsigned PEv2.#.PinHomeSwitch [8];			// Home switch pin (0 for external dedicated input)
 pin io unsigned PEv2.#.PinLimitMSwitch [8];			// Limit- switch pin (0 for external dedicated input)
