@@ -378,7 +378,7 @@ void user_mainloop(void)
 				dev->PEv2.ProbeInput= PEv2_ProbeInput;
 				//check if pin is parametrized in HAL
 				dev->PEv2.ProbeInputPolarity=PEv2_ProbeInputPolarity;
-				if (PEv2.ProbeInput!=0)
+				if (PEv2_ProbeInput!=0)
 				{	//check if pin is parametrized in HAL
 						dev->Pins[PEv2_ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
 						setPinConfig=true;
@@ -848,7 +848,7 @@ void user_mainloop(void)
 
 	}
 
-	if (info.EasySensors!=0 && info_PinCount!=0)
+	if (info_EasySensors!=0 && info_PinCount!=0)
 	{
 		if ((PK_EasySensorsSetupGet(dev) == PK_OK) && (PK_EasySensorsValueGetAll(dev) == PK_OK))
 		{
