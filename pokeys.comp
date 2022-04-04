@@ -266,10 +266,7 @@ option extra_link_args "-lPoKeys";
 
 #include <unistd.h>   /* UNIX standard function definitions */
 #include "PoKeysLib.h"
-typedef struct
-{
-PK_Pin_HALComp Pin[55];
-}PK_Pins_HALComp;
+
 
 typedef struct
 {
@@ -290,7 +287,10 @@ hal_u32_t upKeyModifier ;
 hal_u32_t preventUpdate ;
 }PK_Pin_HALComp;
 
-
+typedef struct
+{
+PK_Pin_HALComp Pin[55];
+}PK_Pins_HALComp;
 
 
 
