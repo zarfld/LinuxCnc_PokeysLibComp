@@ -313,7 +313,7 @@ int Pins_HalSetup(sPoKeysDevice *dev)
 }
 
 sPoKeysDevice * dev=0;
-PK_Pins_HALComp * Pins = new PK_Pins_HALComp;
+
 
 int i=0;
 
