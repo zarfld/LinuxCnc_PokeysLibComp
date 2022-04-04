@@ -377,7 +377,7 @@ void user_mainloop(void)
 				//check if pin is parametrized in HAL
 				dev->PEv2.ProbeInput= PEv2_ProbeInput;
 				//check if pin is parametrized in HAL
-				dev->PEv2.ProbeInputPolarity=PEv2_ProbeInputPolarity;
+				dev->PEv2.ProbeInputPolarity= PEv2_ProbeInputPolarity;
 				if ( PEv2_ProbeInput!=0)
 				{	//check if pin is parametrized in HAL
 						dev->Pins[PEv2_ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
@@ -419,16 +419,16 @@ void user_mainloop(void)
 						dev->PEv2.HomingSpeed[i] = PEv2_HOME_SEARCH_VEL(i)*100/ PEv2_MAX_VELOCITY(i) ;			// Homing speed per axis (in %)
 						dev->PEv2.HomingReturnSpeed[i] = PEv2_HOME_LATCH_VEL(i)*100/ PEv2_HOME_SEARCH_VEL(i);		// Homing return speed per axis (in % of the homing speed)
 
-						dev->PEv2.AxesSwitchConfig[i]=PEv2.AxesSwitchConfig(i);
+						dev->PEv2.AxesSwitchConfig[i]= PEv2_AxesSwitchConfig(i);
 						dev->PEv2.FilterLimitMSwitch[i]= PEv2_FilterLimitMSwitch(i);		// Digital filter for limit- switch
-						dev->PEv2.FilterLimitPSwitch[i]=PEv2.FilterLimitPSwitch(i);		// Digital filter for limit+ switch
-						dev->PEv2.FilterHomeSwitch[i]=PEv2.FilterHomeSwitch(i);		// Digital filter for home switch
+						dev->PEv2.FilterLimitPSwitch[i]= PEv2_FilterLimitPSwitch(i);		// Digital filter for limit+ switch
+						dev->PEv2.FilterHomeSwitch[i]= PEv2_FilterHomeSwitch(i);		// Digital filter for home switch
 
 						// Limit- switch pin (0 for external dedicated input)
-						dev->PEv2.PinLimitMSwitch[i]=PEv2.PinLimitMSwitch(i);
+						dev->PEv2.PinLimitMSwitch[i]= PEv2_PinLimitMSwitch(i);
 
 						// Limit+ switch pin (0 for external dedicated input)
-						dev->PEv2.PinLimitPSwitch[i]=PEv2.PinLimitPSwitch(i);
+						dev->PEv2.PinLimitPSwitch[i]= PEv2_PinLimitPSwitch(i);
 
 						if ( PEv2_PinLimitPSwitch(i)!=0)
 						{	//check if pin is parametrized in HAL
@@ -609,7 +609,7 @@ void user_mainloop(void)
 		}
 		if ( PEv2_EmergencyOutputPin!=0)
 		{	//check if pin is parametrized in HAL
-			dev->Pins[PEv2.EmergencyOutputPin].DigitalValueSet=PEv2.EmergencyOutput;
+			dev->Pins[PEv2.EmergencyOutputPin].DigitalValueSet= PEv2_EmergencyOutput;
 		}
 		else
 		{
@@ -621,12 +621,12 @@ void user_mainloop(void)
 				}
 				else
 				{
-					PEv2_EmergencyInput=PEv2.EmergencyOutput;
+					PEv2_EmergencyInput= PEv2_EmergencyOutput;
 				}
 			}
 			else
 			{
-				PEv2_EmergencyInput=PEv2.EmergencyOutput;
+				PEv2_EmergencyInput= PEv2_EmergencyOutput;
 			}
 		}
 		PEv2_param1=dev->PEv2.param1;
@@ -742,7 +742,7 @@ void user_mainloop(void)
 				// Home switch pin (0 for external dedicated input)
 				if ( PEv2_PinHomeSwitch(i)!=0)
 				{	//check if pin is parametrized in HAL
-					dev->PEv2.PinHomeSwitch[i]=PEv2_PinHomeSwitch(i);
+					dev->PEv2.PinHomeSwitch[i]= PEv2_PinHomeSwitch(i);
 				}
 				if (dev->PEv2.PinHomeSwitch[i]>0)
 				{
@@ -780,11 +780,11 @@ void user_mainloop(void)
 				// PEv2_AxisEnableOutputPins(i)=dev->PEv2.AxisEnableOutputPins[i];	// Axis enabled output pin (0 for external dedicated output)
 				if ( PEv2_AxisEnableOutputPins(i)!=0)
 				{	//check if pin is parametrized in HAL
-					dev->PEv2.AxisEnableOutputPins[i]=PEv2_AxisEnableOutputPins(i);
+					dev->PEv2.AxisEnableOutputPins[i]= PEv2_AxisEnableOutputPins(i);
 				}
 				if (dev->PEv2.AxisEnableOutputPins[i]>0)
 				{
-					dev->Pins[dev->PEv2.PinLimitPSwitch[i]-1].DigitalValueSet=PEv2_AxisEnableOutput(i);
+					dev->Pins[dev->PEv2.PinLimitPSwitch[i]-1].DigitalValueSet= PEv2_AxisEnableOutput(i);
 				}
 
 				PEv2_HomeBackOffDistance(i)=dev->PEv2.HomeBackOffDistance[i];	// Back-off distance after homing
