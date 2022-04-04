@@ -293,7 +293,7 @@ pin io unsigned PoNET.PWMduty;
 pin io unsigned PoNET.lightValue;
 pin io unsigned PoNET.PoNETstatus;
 pin out unsigned PoNET.#.statusIn [16];
-pin in unsigned PoNET.#.statusOut [16]
+pin in unsigned PoNET.#.statusOut [16];
 
 pin io unsigned MatrixLED.displayEnabled;                    // Display enabled byte - set to 1 to enable the display
 pin io unsigned MatrixLED.rows;                              // Number of Matrix LED rows
