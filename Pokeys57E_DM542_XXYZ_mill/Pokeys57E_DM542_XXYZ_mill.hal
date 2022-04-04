@@ -87,18 +87,18 @@ net x-output        <=  pid.x.output
 
 # Step Gen signals/setup
 
-#setp   pokeys.0.PEv2.0.DIRSETUP        [JOINT_0]DIRSETUP
-#setp   pokeys.0.PEv2.0.DIRHOLD         [JOINT_0]DIRHOLD
-#setp   pokeys.0.PEv2.0.STEPLEN         [JOINT_0]STEPLEN
-#setp   pokeys.0.PEv2.0.STEPSPACE       [JOINT_0]STEPSPACE
-#setp   pokeys.0.PEv2.0.STEP-SCALE  	   [JOINT_0]STEP_SCALE
-#setp   pokeys.0.PEv2.0.MIN-LIMIT  	   [JOINT_0]MIN_LIMIT
-#setp   pokeys.0.PEv2.0.MAX-LIMIT  	   [JOINT_0]MAX_LIMIT
-#setp   pokeys.0.PEv2.0.HOME-OFFSET  	   [JOINT_0]HOME_OFFSET
-#setp   pokeys.0.PEv2.0.HOME-SEARCH-VEL  	   [JOINT_0]HOME_SEARCH_VEL
-#setp   pokeys.0.PEv2.0.HOME-LATCH-VEL  	   [JOINT_0]HOME_LATCH_VEL
-#setp   pokeys.0.PEv2.0.STEPGEN-MAXVEL         [JOINT_0]STEPGEN_MAXACCEL
-#setp   pokeys.0.PEv2.0.STEPGEN-MAXACCEL           [JOINT_0]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2.0.params.DIRSETUP        [JOINT_0]DIRSETUP
+setp   pokeys.0.PEv2.0.params.DIRHOLD         [JOINT_0]DIRHOLD
+setp   pokeys.0.PEv2.0.params.STEPLEN         [JOINT_0]STEPLEN
+setp   pokeys.0.PEv2.0.params.STEPSPACE       [JOINT_0]STEPSPACE
+setp   pokeys.0.PEv2.0.params.STEP-SCALE  	   [JOINT_0]STEP_SCALE
+setp   pokeys.0.PEv2.0.params.MIN-LIMIT  	   [JOINT_0]MIN_LIMIT
+setp   pokeys.0.PEv2.0.params.MAX-LIMIT  	   [JOINT_0]MAX_LIMIT
+setp   pokeys.0.PEv2.0.params.HOME-OFFSET  	   [JOINT_0]HOME_OFFSET
+setp   pokeys.0.PEv2.0.params.HOME-SEARCH-VEL  	   [JOINT_0]HOME_SEARCH_VEL
+setp   pokeys.0.PEv2.0.params.HOME-LATCH-VEL  	   [JOINT_0]HOME_LATCH_VEL
+setp   pokeys.0.PEv2.0.params.STEPGEN-MAXVEL         [JOINT_0]STEPGEN_MAXACCEL
+setp   pokeys.0.PEv2.0.params.STEPGEN-MAXACCEL           [JOINT_0]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
@@ -118,7 +118,7 @@ net x-enable     => pokeys.0.PEv2.0.AxisEnableOutput
 #setp    [HMOT](CARD0).encoder.00.index-invert 0
 #setp    [HMOT](CARD0).encoder.00.index-mask 0
 #setp    [HMOT](CARD0).encoder.00.index-mask-invert 0
-#setp    pokeys.0.PEv2.0.ENCODER-SCALE  [JOINT_0]ENCODER_SCALE
+setp    pokeys.0.PEv2.0.params.ENCODER-SCALE  [JOINT_0]ENCODER_SCALE
 
 net x-pos-fb               <=  pokeys.0.PEv2.0.joint-pos-fb
 net x-vel-fb               <=  pokeys.0.PEv2.0.joint-vel-fb
@@ -159,18 +159,18 @@ net x2-output        <=  pid.x2.output
 
 # Step Gen signals/setup for tandem axis
 
-#setp   pokeys.0.PEv2.6.DIRSETUP        [JOINT_1]DIRSETUP
-#setp   pokeys.0.PEv2.6.DIRHOLD         [JOINT_1]DIRHOLD
-#setp   pokeys.0.PEv2.6.STEPLEN         [JOINT_1]STEPLEN
-#setp   pokeys.0.PEv2.6.STEPSPACE       [JOINT_1]STEPSPACE
-#setp   pokeys.0.PEv2.6.STEP-SCALE  	   [JOINT_1]STEP_SCALE
-#setp   pokeys.0.PEv2.6.MIN-LIMIT  	   [JOINT_1]MIN_LIMIT
-#setp   pokeys.0.PEv2.6.MAX-LIMIT  	   [JOINT_1]MAX_LIMIT
-#setp   pokeys.0.PEv2.6.HOME-OFFSET  	   [JOINT_1]HOME_OFFSET
-#setp   pokeys.0.PEv2.6.HOME-SEARCH-VEL  	   [JOINT_1]HOME_SEARCH_VEL
-#setp   pokeys.0.PEv2.6.HOME-LATCH-VEL  	   [JOINT_1]HOME_LATCH_VEL
-#setp   pokeys.0.PEv2.6.STEPGEN-MAXVEL         [JOINT_1]STEPGEN_MAXACCEL
-#setp   pokeys.0.PEv2.6.STEPGEN-MAXACCEL           [JOINT_1]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2.6.params.DIRSETUP        [JOINT_1]DIRSETUP
+setp   pokeys.0.PEv2.6.params.DIRHOLD         [JOINT_1]DIRHOLD
+setp   pokeys.0.PEv2.6.params.STEPLEN         [JOINT_1]STEPLEN
+setp   pokeys.0.PEv2.6.params.STEPSPACE       [JOINT_1]STEPSPACE
+setp   pokeys.0.PEv2.6.params.STEP-SCALE  	   [JOINT_1]STEP_SCALE
+setp   pokeys.0.PEv2.6.params.MIN-LIMIT  	   [JOINT_1]MIN_LIMIT
+setp   pokeys.0.PEv2.6.params.MAX-LIMIT  	   [JOINT_1]MAX_LIMIT
+setp   pokeys.0.PEv2.6.params.HOME-OFFSET  	   [JOINT_1]HOME_OFFSET
+setp   pokeys.0.PEv2.6.params.HOME-SEARCH-VEL  	   [JOINT_1]HOME_SEARCH_VEL
+setp   pokeys.0.PEv2.6.params.HOME-LATCH-VEL  	   [JOINT_1]HOME_LATCH_VEL
+setp   pokeys.0.PEv2.6.params.STEPGEN-MAXVEL         [JOINT_1]STEPGEN_MAXACCEL
+setp   pokeys.0.PEv2.6.params.STEPGEN-MAXACCEL           [JOINT_1]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
@@ -215,18 +215,18 @@ net y-output        <=  pid.y.output
 
 # Step Gen signals/setup
 
-#setp   pokeys.0.PEv2.1.DIRSETUP        [JOINT_2]DIRSETUP
-#setp   pokeys.0.PEv2.1.DIRHOLD         [JOINT_2]DIRHOLD
-#setp   pokeys.0.PEv2.1.STEPLEN         [JOINT_2]STEPLEN
-#setp   pokeys.0.PEv2.1.STEPSPACE       [JOINT_2]STEPSPACE
-#setp   pokeys.0.PEv2.1.STEP-SCALE  	   [JOINT_2]STEP_SCALE
-#setp   pokeys.0.PEv2.1.MIN-LIMIT  	   [JOINT_2]MIN_LIMIT
-#setp   pokeys.0.PEv2.1.MAX-LIMIT  	   [JOINT_2]MAX_LIMIT
-#setp   pokeys.0.PEv2.1.HOME-OFFSET  	   [JOINT_2]HOME_OFFSET
-#setp   pokeys.0.PEv2.1.HOME-SEARCH-VEL  	   [JOINT_2]HOME_SEARCH_VEL
-#setp   pokeys.0.PEv2.1.HOME-LATCH-VEL  	   [JOINT_2]HOME_LATCH_VEL
-#setp   pokeys.0.PEv2.1.STEPGEN-MAXVEL        [JOINT_2]STEPGEN_MAXACCEL
-#setp   pokeys.0.PEv2.1.STEPGEN-MAXACCEL           [JOINT_2]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2.1..paramsDIRSETUP        [JOINT_2]DIRSETUP
+setp   pokeys.0.PEv2.1..paramsDIRHOLD         [JOINT_2]DIRHOLD
+setp   pokeys.0.PEv2.1..paramsSTEPLEN         [JOINT_2]STEPLEN
+setp   pokeys.0.PEv2.1..paramsSTEPSPACE       [JOINT_2]STEPSPACE
+setp   pokeys.0.PEv2.1..paramsSTEP-SCALE  	   [JOINT_2]STEP_SCALE
+setp   pokeys.0.PEv2.1..paramsMIN-LIMIT  	   [JOINT_2]MIN_LIMIT
+setp   pokeys.0.PEv2.1..paramsMAX-LIMIT  	   [JOINT_2]MAX_LIMIT
+setp   pokeys.0.PEv2.1..paramsHOME-OFFSET  	   [JOINT_2]HOME_OFFSET
+setp   pokeys.0.PEv2.1..paramsHOME-SEARCH-VEL  	   [JOINT_2]HOME_SEARCH_VEL
+setp   pokeys.0.PEv2.1..paramsHOME-LATCH-VEL  	   [JOINT_2]HOME_LATCH_VEL
+setp   pokeys.0.PEv2.1..paramsSTEPGEN-MAXVEL        [JOINT_2]STEPGEN_MAXACCEL
+setp   pokeys.0.PEv2.1..paramsSTEPGEN-MAXACCEL           [JOINT_2]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
@@ -271,18 +271,18 @@ net z-output        <=  pid.z.output
 
 # Step Gen signals/setup
 
-#setp   pokeys.0.PEv2.2.DIRSETUP        [JOINT_3]DIRSETUP
-#setp   pokeys.0.PEv2.2.DIRHOLD         [JOINT_3]DIRHOLD
-#setp   pokeys.0.PEv2.2.STEPLEN         [JOINT_3]STEPLEN
-#setp   pokeys.0.PEv2.2.STEPSPACE       [JOINT_3]STEPSPACE
-#setp   pokeys.0.PEv2.2.STEP-SCALE  	   [JOINT_3]STEP_SCALE
-#setp   pokeys.0.PEv2.2.MIN-LIMIT  	   [JOINT_3]MIN_LIMIT
-#setp   pokeys.0.PEv2.2.MAX-LIMIT 	   [JOINT_3]MAX_LIMIT
-#setp   pokeys.0.PEv2.2.HOME-OFFSET  	   [JOINT_3]HOME_OFFSET
-#setp   pokeys.0.PEv2.2.HOME-SEARCH-VEL  	   [JOINT_3]HOME_SEARCH_VEL
-#setp   pokeys.0.PEv2.2.HOME-LATCH-VEL  	   [JOINT_3]HOME_LATCH_VEL
-#setp   pokeys.0.PEv2.2.STEPGEN-MAXVEL         [JOINT_3]STEPGEN_MAXACCEL
-#setp   pokeys.0.PEv2.2.STEPGEN-MAXACCEL           [JOINT_3]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2.2..paramsDIRSETUP        [JOINT_3]DIRSETUP
+setp   pokeys.0.PEv2.2..params         [JOINT_3]DIRHOLD
+setp   pokeys.0.PEv2.2..paramsSTEPLEN         [JOINT_3]STEPLEN
+setp   pokeys.0.PEv2.2..paramsSTEPSPACE       [JOINT_3]STEPSPACE
+setp   pokeys.0.PEv2.2..paramsSTEP-SCALE  	   [JOINT_3]STEP_SCALE
+setp   pokeys.0.PEv2.2..paramsMIN-LIMIT  	   [JOINT_3]MIN_LIMIT
+setp   pokeys.0.PEv2.2..paramsMAX-LIMIT 	   [JOINT_3]MAX_LIMIT
+setp   pokeys.0.PEv2.2..paramsHOME-OFFSET  	   [JOINT_3]HOME_OFFSET
+setp   pokeys.0.PEv2.2..paramsHOME-SEARCH-VEL  	   [JOINT_3]HOME_SEARCH_VEL
+setp   pokeys.0.PEv2.2..paramsHOME-LATCH-VEL  	   [JOINT_3]HOME_LATCH_VEL
+setp   pokeys.0.PEv2.2..paramsSTEPGEN-MAXVEL         [JOINT_3]STEPGEN_MAXACCEL
+setp   pokeys.0.PEv2.2..paramsSTEPGEN-MAXACCEL           [JOINT_3]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
