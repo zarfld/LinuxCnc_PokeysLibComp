@@ -285,55 +285,6 @@ option extra_link_args "-lPoKeys";
 
 
 
-typedef struct
-{
-hal_u32_t *DigitalCounterValue;
-hal_u32_t *AnalogValue;
-hal_u32_t *PinFunction;
-hal_u32_t *CounterOptions;
-hal_s32_t *DigitalValueGet ;
-hal_s32_t *DigitalValueSet ;
-hal_u32_t *DigitalCounterAvailable ;
-hal_u32_t *MappingType ;
-hal_u32_t *KeyCodeMacroID ;
-hal_u32_t *KeyModifier ;
-hal_u32_t *downKeyCodeMacroID ;
-hal_u32_t *downKeyModifier ;
-hal_u32_t *upKeyCodeMacroID ;
-hal_u32_t *upKeyModifier ;
-hal_u32_t *preventUpdate ;
-}PK_Pin_HALComp;
-
-typedef struct
-{
-	PK_Pin_HALComp *Pin;
-	hal_u32_t *PinCount;
-}PK_Pins_HALComp;
-
-PK_Pins_HALComp *PINS_HAL_DATA;
-PK_Pin_HALComp *PIN_HAL_DATA;
-
-int Pins_HalSetup(sPoKeysDevice *dev)
-{
-	int PinCount = dev->info.iPinCount;
-	int i =0;
-	int hal_comp_id = hal_init("Pins");
-
-	//hal_pin_u32_newf(HAL_OUT, &(PINS_HAL_DATA->PinCount), hal_comp_id, "%s.Pins", "Pins");
-	// extern int hal_pin_u32_new(const char *name, hal_pin_dir_t dir, hal_u32_t ** data_ptr_addr, int comp_id);
-	hal_pin_u32_new 
-	for(i=0;i< PinCount;i++)
-	{
-
-		char *hName = "Pins.%i.DigitalValueGet" ;
-
-		//hal_comp_id = hal_init(hName);
-
-		//extern int hal_pin_s32_newf(hal_pin_dir_t dir,hal_s32_t ** data_ptr_addr, int comp_id, const char *fmt, ...)
-	//	hal_pin_s32_newf(HAL_OUT, &(PIN_HAL_DATA->DigitalValueGet), hal_comp_id, "%s.DigitalValueGet", hName);
-
-	}
-}
 
 sPoKeysDevice * dev=0;
 
@@ -428,7 +379,7 @@ void user_mainloop(void)
 			 if ( info_PinCount!=0 )
 			 {
 				a_debout = 123;
-				Pins_HalSetup(dev);
+
 			 }
 			 a_debout = 124;
 			 if ( info_PulseEnginev2!=0 )
