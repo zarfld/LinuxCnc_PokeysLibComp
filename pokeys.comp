@@ -144,32 +144,16 @@ pin in s32 PEv2.#.HOME_IGNORE_LIMITS [8];			// YES / NO
 pin io u32 PEv2.#.MPGjogMultiplier [8];		// MPG jog multiplier value
 pin io unsigned PEv2.#.MPGjogEncoder [8];			// MPG jog encoder ID
 
-//pin io unsigned PEv2_PinHomeSwitch [8];			// Home switch pin (0 for external dedicated input)
-//pin io unsigned PEv2_PinLimitMSwitch [8];			// Limit- switch pin (0 for external dedicated input)
-//pin io unsigned PEv2_PinLimitPSwitch [8];			// Limit+ switch pin (0 for external dedicated input)
-//pin io unsigned PEv2_AxisEnableOutputPins [8];		// Axis enabled output pin (0 for external dedicated output)
-
 pin io unsigned PEv2.#.PinHomeSwitch [8];			// Home switch pin (0 for external dedicated input)
 pin io unsigned PEv2.#.PinLimitMSwitch [8];			// Limit- switch pin (0 for external dedicated input)
 pin io unsigned PEv2.#.PinLimitPSwitch [8];			// Limit+ switch pin (0 for external dedicated input)
 pin io unsigned PEv2.#.AxisEnableOutputPins [8];		// Axis enabled output pin (0 for external dedicated output)
-
-
-//pin out bit PEv2_HomeSwitchStat [8];				// Home switch
-//pin out bit PEv2_LimitMSwitch [8];			// Limit- switch
-//pin out bit PEv2_LimitPSwitch [8];			// Limit+ switch
-//pin in bit PEv2_AxisEnableOutput [8];		// Axis enabled output
-//pin out bit PEv2_HomeSwitch;				// Home switch
 
 pin out bit PEv2.#.HomeSwitchStat [8];				// Home switch
 pin out bit PEv2.#.LimitMSwitch [8];			// Limit- switch
 pin out bit PEv2.#.LimitPSwitch [8];			// Limit+ switch
 pin in bit PEv2.#.AxisEnableOutput [8];		// Axis enabled output
 pin out bit PEv2.HomeSwitch;				// Home switch
-
-
-//pin io unsigned PEv2_HomeBackOffDistance [8];		// Back-off distance after homing
-//pin io unsigned PEv2_MPGjogDivider [8];			// Divider for the MPG jogging (enhanced encoder resolution)
 
 pin io unsigned PEv2.#.HomeBackOffDistance [8];		// Back-off distance after homing
 pin io unsigned PEv2.#.MPGjogDivider [8];			// Divider for the MPG jogging (enhanced encoder resolution)
@@ -217,46 +201,46 @@ pin io unsigned PEv2.#.BacklashRegister [8];		// current value of the backlash r
 pin io unsigned PEv2.#.BacklashAcceleration [8];	// in pulses per ms^2
 pin io unsigned PEv2.BacklashCompensationEnabled;
 
-pin out unsigned rtc_sec;
-pin out unsigned rtc_min;
-pin out unsigned rtc_hour;
-pin out unsigned rtc_dow;
-pin out unsigned rtc_dom;
-pin out unsigned rtc_tmp;
-pin out unsigned rtc_doy;
-pin out unsigned rtc_month;
-pin out unsigned rtc_year;
-pin out unsigned rtc_loopcount;
-pin out unsigned pincap-# [55];
-pin out unsigned rtc_lastmin;
-pin out unsigned rtc_lastsec;
-pin out unsigned rtc_loop_frequ;
+pin out unsigned rtc.sec;
+pin out unsigned rtc.min;
+pin out unsigned rtc.hour;
+pin out unsigned rtc.dow;
+pin out unsigned rtc.dom;
+pin out unsigned rtc.tmp;
+pin out unsigned rtc.doy;
+pin out unsigned rtc.month;
+pin out unsigned rtc.year;
+pin out unsigned rtc.loopcount;
 
-pin out unsigned Pins_DigitalCounterValue-#[55];
-pin out unsigned Pins_AnalogValue-#[55];
-pin out unsigned Pins_PinFunction-#[55];
-pin out unsigned Pins_CounterOptions-#[55];
-pin out unsigned Pins_DigitalValueGet-#[55];
-pin in unsigned Pins_DigitalValueSet-#[55];
-pin out unsigned Pins_DigitalCounterAvailable-#[55];
-pin out unsigned Pins_MappingType-#[55];
-pin out unsigned Pins_KeyCodeMacroID-#[55];
-pin out unsigned Pins_KeyModifier-#[55];
-pin out unsigned Pins_downKeyCodeMacroID-#[55];
-pin out unsigned Pins_downKeyModifier-#[55];
-pin out unsigned Pins_upKeyCodeMacroID-#[55];
-pin out unsigned Pins_upKeyModifier-#[55];
-pin out unsigned Pins_preventUpdate-#[55];
+pin out unsigned rtc.lastmin;
+pin out unsigned rtc.lastsec;
+pin out unsigned rtc.loop_frequ;
 
-pin out unsigned MatrixKB_matrixKBconfiguration;		// Matrix keyboard configuration (set to 1 to enable matrix keyboard support)
-pin out unsigned MatrixKB_matrixKBwidth;				// Matrix keyboard width (number of columns)
-pin out unsigned MatrixKB_matrixKBheight;				// Matrix keyboard height (number of rows)
-pin out unsigned MatrixKB_matrixKBcolumnsPins-#[8];		// List of matrix keyboard column connections
-pin out unsigned MatrixKB_matrixKBrowsPins-#[16];			// List of matrix keyboard row connections
-pin out unsigned MatrixKB_matrixKBvalues-#[128];			// Current state of each matrix keyboard key (assumes fixed width of 8 columns)
+pin out unsigned Pins.#.DigitalCounterValue [55];
+pin out unsigned Pins.#.AnalogValue [55];
+pin out unsigned Pins.#.PinFunction [55];
+pin out unsigned Pins.#.CounterOptions [55];
+pin out unsigned Pins.#.DigitalValueGet [55];
+pin in unsigned Pins.#.DigitalValueSet [55];
+pin out unsigned Pins.#.DigitalCounterAvailable [55];
+pin out unsigned Pins.#.MappingType [55];
+pin out unsigned Pins.#.KeyCodeMacroID [55];
+pin out unsigned Pins.#.KeyModifier [55];
+pin out unsigned Pins.#.downKeyCodeMacroID [55];
+pin out unsigned Pins.#.downKeyModifier [55];
+pin out unsigned Pins.#.upKeyCodeMacroID [55];
+pin out unsigned Pins.#.upKeyModifier [55];
+pin out unsigned Pins.#.preventUpdate [55];
 
-pin out unsigned Encoders_encoderValue-#[26];       // Encoder current value
-pin io unsigned Encoders_encoderOptions-#[26];      // Encoder options -    bit 0: enable encoder
+pin out unsigned MatrixKB.matrixKBconfiguration;		// Matrix keyboard configuration (set to 1 to enable matrix keyboard support)
+pin out unsigned MatrixKB.matrixKBwidth;				// Matrix keyboard width (number of columns)
+pin out unsigned MatrixKB.matrixKBheight;				// Matrix keyboard height (number of rows)
+pin out unsigned MatrixKB.matrixKBcolumnsPins-#[8];		// List of matrix keyboard column connections
+pin out unsigned MatrixKB.matrixKBrowsPins-#[16];			// List of matrix keyboard row connections
+pin out unsigned MatrixKB.matrixKBvalues-#[128];			// Current state of each matrix keyboard key (assumes fixed width of 8 columns)
+
+pin out unsigned Encoders.#.encoderValue [26];       // Encoder current value
+pin io unsigned Encoders.#.encoderOptions [26];      // Encoder options -    bit 0: enable encoder
 													//                      bit 1: 4x sampling
 													//                      bit 2: 2x sampling
 													//                      bit 3: reserved
@@ -264,14 +248,14 @@ pin io unsigned Encoders_encoderOptions-#[26];      // Encoder options -    bit 
 													//                      bit 5: mapped to macro for direction A
 													//                      bit 6: direct key mapping for direction B
 													//                      bit 7: mapped to macro for direction B
-pin io unsigned Encoders_channelApin-#[26];         // Channel A encoder pin
-pin io unsigned Encoders_channelBpin-#[26];         // Channel B encoder pin
+pin io unsigned Encoders.#.channelApin [26];         // Channel A encoder pin
+pin io unsigned Encoders.#.channelBpin [26];         // Channel B encoder pin
 
-pin out u32 EasySensors_sensorValue-#[10];            // Current sensor value
-pin out unsigned EasySensors_sensorType-#[10];             // Type of the sensor
-pin out unsigned EasySensors_sensorRefreshPeriod-#[10];    // Refresh period in 0.1s
-pin out unsigned EasySensors_sensorFailsafeConfig-#[10];   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
-pin out unsigned EasySensors_sensorReadingID-#[10];        // Sensor reading selection (see Protocol description document for details)
+pin out u32 EasySensors.#.sensorValue [10];            // Current sensor value
+pin out unsigned EasySensors.#.sensorType [10];             // Type of the sensor
+pin out unsigned EasySensors.#.sensorRefreshPeriod [10];    // Refresh period in 0.1s
+pin out unsigned EasySensors.#.sensorFailsafeConfig [10];   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
+pin out unsigned EasySensors.#.sensorReadingID [10];        // Sensor reading selection (see Protocol description document for details)
 
 
 license "GPL";
