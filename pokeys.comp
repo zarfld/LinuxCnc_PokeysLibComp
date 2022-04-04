@@ -9,7 +9,7 @@ pin out unsigned a_debout;
 
 pin out bit err;
 pin out bit connected;
-pin in unsigned devSerial;
+pin in u32 devSerial;
 pin out bit alive;
 
 pin in bit machine_is_on;
