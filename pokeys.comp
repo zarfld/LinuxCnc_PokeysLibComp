@@ -295,15 +295,15 @@ typedef struct
 	hal_u32_t *Count;
 }PK_Pins_HALComp;
 
-PK_Pins_HALComp Pins;
+PK_Pins_HALComp *PINS_HAL_DATA;
+PK_Pin_HALComp *PIN_HAL_DATA;
 
 int Pins_HalSetup(sPoKeysDevice *dev)
 {
 	int PinCount = dev->info.iPinCount;
 	int i =0;
 
-	PK_Pins_HALComp *PINS_HAL_DATA;
-	PK_Pin_HALComp *PIN_HAL_DATA=PINS_HAL_DATA->Pin;
+
 	
 	int hal_comp_id = hal_init("Pins");
 
