@@ -159,7 +159,7 @@ net x2-output        <=  pid.x2.output
 
 # Step Gen signals/setup for tandem axis
 
-setp   pokeys.0.PEv2.6.DIRSETU        [JOINT_1]DIRSETUP
+setp   pokeys.0.PEv2.6.DIRSETUP        [JOINT_1]DIRSETUP
 setp   pokeys.0.PEv2.6.DIRHOLD         [JOINT_1]DIRHOLD
 setp   pokeys.0.PEv2.6.STEPLEN         [JOINT_1]STEPLEN
 setp   pokeys.0.PEv2.6.STEPSPACE       [JOINT_1]STEPSPACE
