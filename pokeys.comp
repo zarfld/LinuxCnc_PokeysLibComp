@@ -582,10 +582,10 @@ int Update_PEv2(PK_PEv2_Stat* status)
 		//status->maxPulseFrequency = dev->PEv2.info.maxPulseFrequency;
 		//status->bufferDepth = dev->PEv2.info.bufferDepth;
 		//status->slotTiming = dev->PEv2.info.slotTiming;
-		/*
+		
 		status->AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 		status->LimitOverride = dev->PEv2.LimitOverride;
-
+		/*
 		// Basic engine states
 		status->PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 		status->PulseEngineActivated = dev->PEv2.PulseEngineActivated;
