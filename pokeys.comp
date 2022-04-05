@@ -220,8 +220,8 @@ pin out unsigned Pins.#.DigitalCounterValue [55];
 pin out unsigned Pins.#.AnalogValue [55];
 pin out unsigned Pins.#.PinFunction [55];
 pin out unsigned Pins.#.CounterOptions [55];
-pin out unsigned Pins.#.DigitalValueGet [55];
-pin in unsigned Pins.#.DigitalValueSet [55];
+pin out bit Pins.#.DigitalValueGet [55];
+pin in bit Pins.#.DigitalValueSet [55];
 pin out unsigned Pins.#.DigitalCounterAvailable [55];
 pin out unsigned Pins.#.MappingType [55];
 pin out unsigned Pins.#.KeyCodeMacroID [55];
@@ -1248,7 +1248,15 @@ void user_mainloop(void)
 		if ( PEv2_EmergencyOutputPin!=0)
 		{	//check if pin is parametrized in HAL
 			a_debout = 231;
-			Pins_DigitalValueSet(i-1)= PEv2_EmergencyOutput;
+			if (PEv2_EmergencyOutput==true)
+			{
+			Pins_DigitalValueSet(i-1)= 0;
+			}
+			else
+			{
+			Pins_DigitalValueSet(i-1)= 1;
+			}
+			
 		}
 
 		a_debout = 232;
@@ -1259,8 +1267,26 @@ void user_mainloop(void)
 			Pins_AnalogValue(i)=dev->Pins[i].AnalogValue;
 			Pins_PinFunction(i)=dev->Pins[i].PinFunction;
 			Pins_CounterOptions(i)=dev->Pins[i].CounterOptions;
-			Pins_DigitalValueGet(i)=dev->Pins[i].DigitalValueGet;
-			dev->Pins[i].DigitalValueSet=Pins_DigitalValueSet(i);
+			if (dev->Pins[i].DigitalValueGet==0)
+			{
+				Pins_DigitalValueGet(i)=false;
+			}
+			else
+			{
+				Pins_DigitalValueGet(i)=true;
+			}
+			
+
+
+			if (Pins_DigitalValueSet(i)==true)
+			{
+				dev->Pins[i].DigitalValueSet=1;
+			}
+			else
+			{
+				dev->Pins[i].DigitalValueSet=0;
+			}
+			;
 			Pins_DigitalCounterAvailable(i)=dev->Pins[i].DigitalCounterAvailable;
 			Pins_MappingType(i)=dev->Pins[i].MappingType;
 			Pins_KeyCodeMacroID(i)=dev->Pins[i].KeyCodeMacroID;
