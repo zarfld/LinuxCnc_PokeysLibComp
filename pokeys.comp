@@ -428,9 +428,9 @@ typedef struct
     uint8_t         PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
     uint8_t         ChargePumpEnabled;         // Charge pump output enabled
     uint8_t         PulseGeneratorType;        // Pulse engine generator type (0: external, 1: internal 3ch)
-    device->request[11] = device->PEv2.PulseEngineBufferSize;
+    //device->request[11] = device->PEv2.PulseEngineBufferSize;
     uint8_t         EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
-    device->request[13] = device->PEv2.AxisEnabledStatesMask;
+    //device->request[13] = device->PEv2.AxisEnabledStatesMask;
 	
 	
 //PK_PEv2_AxisConfigurationGet
