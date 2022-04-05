@@ -489,7 +489,7 @@ typedef struct
 
 
 
-PK_PEv2_Parameters * PEv2_params;
+PK_PEv2_Parameters PEv2_params;
 PK_PEv2_Stat PEv2_status;
 
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
@@ -733,12 +733,12 @@ PK_PEv2_Stat Update_PEv2()
 					break ;
 				case PK_PEAxisState_axRUNNING:        // Axis is running
 		
-					if ( PEv2_params->AxesConfig[i]!=PK_AC_POSITION_MODE)
+					if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
 					{
-						if(status.ReferencePositionSpeed[i] != status.joint_vel_cmd[i] * PEv2_params->STEP_SCALE[i])
+						if(status.ReferencePositionSpeed[i] != status.joint_vel_cmd[i] * PEv2_params.STEP_SCALE[i])
 						{
-							status.ReferencePositionSpeed[i] = status.joint_vel_cmd[i] * PEv2_params->STEP_SCALE[i];
-							status.PositionSetup[i] = status.joint_pos_cmd[i] * PEv2_params->STEP_SCALE[i];
+							status.ReferencePositionSpeed[i] = status.joint_vel_cmd[i] * PEv2_params.STEP_SCALE[i];
+							status.PositionSetup[i] = status.joint_pos_cmd[i] * PEv2_params.STEP_SCALE[i];
 
 							doMove=true;
 							dev->PEv2.ReferencePositionSpeed[i] = status.ReferencePositionSpeed[i];
@@ -750,15 +750,15 @@ PK_PEv2_Stat Update_PEv2()
 
 						if ((status.CurrentPosition[i] - status.ReferencePositionSpeed[i]) < 10 )
 						{
-							status.ReferencePositionSpeed[i] = status.joint_pos_cmd[i] * PEv2_params->STEP_SCALE[i];
+							status.ReferencePositionSpeed[i] = status.joint_pos_cmd[i] * PEv2_params.STEP_SCALE[i];
 							dev->PEv2.ReferencePositionSpeed[i] = status.ReferencePositionSpeed[i];
 							dev->PEv2.PositionSetup[i] = status.PositionSetup[i];
 							doPositionSet =true;
 						}
 					}
 					// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-					status.joint_vel_fb[i] = ( status.joint_pos_fb[i] - (status.CurrentPosition[i] / PEv2_params->STEP_SCALE[i]) )* Loop_Frequ;
-					status.joint_pos_fb[i] = dev->PEv2.CurrentPosition[i] / PEv2_params->STEP_SCALE[i];
+					status.joint_vel_fb[i] = ( status.joint_pos_fb[i] - (status.CurrentPosition[i] / PEv2_params.STEP_SCALE[i]) )* Loop_Frequ;
+					status.joint_pos_fb[i] = dev->PEv2.CurrentPosition[i] / PEv2_params.STEP_SCALE[i];
 
 					break ;
 				case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
