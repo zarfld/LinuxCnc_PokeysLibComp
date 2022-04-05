@@ -1044,10 +1044,7 @@ void user_mainloop(void)
 				PK_PEv2_Parameters * PEv2_params;
 				PK_PEv2_Stat * PEv2_status;
 			  */
-				PK_PEv2_Parameters PEv2_params_t;
-				PK_PEv2_Stat PEv2_status_t;
-				new(PEv2_status) PK_PEv2_Parameters();
-				//PEv2_params = PEv2_params_t;
+				
 
 				PEv2_params = Config_PEv2(PEv2_params);
 				PEv2_nrOfAxes=dev->PEv2.info.nrOfAxes;
