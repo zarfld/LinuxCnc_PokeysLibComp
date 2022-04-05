@@ -565,7 +565,7 @@ int Config_PEv2(PK_PEv2_Parameters* params)
 	return 0;
 }
 
-int Update_PEv2(PK_PEv2_Stat* status)
+int Update_PEv2(PK_PEv2_Stat *status)
 {
 	uint8_t         bm_LimitStatusP;              // Limit+ status (bit-mapped)
 	uint8_t         bm_LimitStatusN;              // Limit- status (bit-mapped)
