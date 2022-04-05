@@ -783,8 +783,8 @@ int Update_PEv2(PK_PEv2_Stat* status)
 
 	if(PK_PEv2_ExternalOutputsGet(dev) == PK_OK)
 	{
-		uint8_t ExternalRelayOutputs_set=  Merge_8BitsToByte(ExternalRelayOutput);
-		uint8_t ExternalOCOutputs_set=  Merge_8BitsToByte(ExternalOCOutput);
+		uint8_t ExternalRelayOutputs_set=  Merge_8BitsToByte(status->ExternalRelayOutput);
+		uint8_t ExternalOCOutputs_set=  Merge_8BitsToByte(status->ExternalOCOutput);
 		bool doSetExtOut = false;
 
 		status->ExternalRelayOutputs = dev->PEv2.ExternalRelayOutputs;
