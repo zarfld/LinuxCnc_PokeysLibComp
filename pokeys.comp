@@ -794,19 +794,19 @@ int Update_PEv2(PK_PEv2_Stat* status)
 		status->ExternalRelayOutputs = dev->PEv2.ExternalRelayOutputs;
 		status->ExternalOCOutputs = dev->PEv2.ExternalOCOutputs;
 
-		if (ExternalRelayOutputs != ExternalRelayOutputs_set)
+		if (status->ExternalRelayOutputs != ExternalRelayOutputs_set)
 		{
 			dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set;
 			doSetExtOut=true;
 		}
-		if (ExternalOCOutputs != ExternalOCOutputs_set)
+		if (status->ExternalOCOutputs != ExternalOCOutputs_set)
 		{
 			dev->PEv2.ExternalOCOutputs = ExternalOCOutputs_set;
 			doSetExtOut=true;
 		}
 		if (doSetExtOut==true)
 		{
-			PK_PEv2_ExternalOutputsSet(dev)
+			PK_PEv2_ExternalOutputsSet(dev);
 		}
 
 	}
@@ -1216,18 +1216,18 @@ void user_mainloop(void)
 		
 			for (i = 0; i < PEv2_nrOfAxes; i++)
 			{
-				PEv2_AxesState(i) = PEv2_status->AxesState(i);
-				PEv2_CurrentPosition(i) = PEv2_status->CurrentPosition(i);
+				PEv2_AxesState(i) = PEv2_status->AxesState[i];
+				PEv2_CurrentPosition(i) = PEv2_status->CurrentPosition[i];
 
-				PEv2_LimitStatusP(i) = PEv2_status->LimitStatusP(i);			// Limit+ status 
-				PEv2_LimitStatusN(i) = PEv2_status->LimitStatusN(i);	// Limit- status 
-				PEv2_HomeStatus(i) = PEv2_status->HomeStatus(i);		// Home status 
+				PEv2_LimitStatusP(i) = PEv2_status->LimitStatusP[i];			// Limit+ status 
+				PEv2_LimitStatusN(i) = PEv2_status->LimitStatusN[i];	// Limit- status 
+				PEv2_HomeStatus(i) = PEv2_status->HomeStatus[i];		// Home status 
 
-				//PEv2_status->DedicatedLimitNInputs(i);
-				//PEv2_status->DedicatedLimitPInputs(i);
-				//PEv2_status->DedicatedHomeInputs(i);
+				//PEv2_status->DedicatedLimitNInputs[i];
+				//PEv2_status->DedicatedLimitPInputs[i];
+				//PEv2_status->DedicatedHomeInputs[i];
 		
-				PEv2_SoftLimitStatus(i) = PEv2_status->SoftLimitStatus(i);
+				PEv2_SoftLimitStatus(i) = PEv2_status->SoftLimitStatus[i];
 			}
 	
 			PEv2_ExternalRelayOutputs = PEv2_status->ExternalRelayOutputs;
@@ -1238,11 +1238,6 @@ void user_mainloop(void)
 		a_debout = 220;
 	 if ((PK_PEv2_StatusGet(dev) == PK_OK) && (PK_PEv2_Status2Get(dev) == PK_OK))
 	 {
-		a_debout = 221;
-	 // Pulse engine v2 structure...
-
-		PEv2_LimitOverrideSetup=PEv2_status->LimitOverrideSetup;			// Limit override configuration
-
 
 		if (dev->PEv2.EmergencyInputPin>0)
 		{
@@ -1252,7 +1247,7 @@ void user_mainloop(void)
 		{
 			PEv2_EmergencyInput=false;
 		}
-		a_debout = 224;
+
 		if ( PEv2_EmergencyOutputPin!=0)
 		{	//check if pin is parametrized in HAL
 			dev->Pins[ PEv2_EmergencyOutputPin].DigitalValueSet= PEv2_EmergencyOutput;
@@ -1277,103 +1272,8 @@ void user_mainloop(void)
 		}
 
 
-		a_debout = 226;
 	 }
-	 if (PK_PEv2_AxisConfigurationGet(dev) == PK_OK)
-	 {
-		a_debout = 230;
-			bool PEv2_move = false;
 
-			for(i=0;i< PEv2_nrOfAxes;i++)
-			{ 
-				a_debout = 2310+i;
-				PEv2_AxesState(i)=dev->PEv2.AxesState[i];				// Axis states (bit-mapped) - see ePK_PEAxisState
-
-
-				a_debout = 2320+i;
-				PEv2_AxesConfig(i)=dev->PEv2.AxesConfig[i];				// Axis configuration - see ePK_PEv2_AxisConfig
-				PEv2_InvertAxisEnable(i)=dev->PEv2.InvertAxisEnable[i];		// Invert axis enable signal
-				PEv2_SoftLimitMaximum(i)=dev->PEv2.SoftLimitMaximum[i];		// Soft limit maximum position
-				PEv2_SoftLimitMinimum(i)=dev->PEv2.SoftLimitMinimum[i];		// Soft limit minimum position
-				PEv2_HomingSpeed(i)=dev->PEv2.HomingSpeed[i];			// Homing speed per axis (in %)
-				PEv2_HomingReturnSpeed(i)=dev->PEv2.HomingReturnSpeed[i];		// Homing return speed per axis (in % of the homing speed)
-				PEv2_HomeOffsets(i)=dev->PEv2.HomeOffsets[i];				// Home position offset
-				PEv2_HomingAlgorithm(i)=dev->PEv2.HomingAlgorithm[i];		// Homing algorithm configuration
-
-				PEv2_ProbePosition(i)=dev->PEv2.ProbePosition[i];			// Position where probe detected change
-				PEv2_ProbeMaxPosition(i)=dev->PEv2.ProbeMaxPosition[i];		// Maximum position to travel to until stopping and returning error
-				PEv2_MPGjogMultiplier(i)=dev->PEv2.MPGjogMultiplier[i];		// MPG jog multiplier value
-				PEv2_MPGjogEncoder(i)=dev->PEv2.MPGjogEncoder[i];			// MPG jog encoder ID
-				
-				if( PEv2_params_STEP_SCALE(i)!=0)
-				{
-					a_debout = 2330+i;
-					if ( PEv2_AxesConfig(i)!=PK_AC_POSITION_MODE)
-					{
-						// Velocity-Mode
-						dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_vel_cmd(i) * PEv2_params_STEP_SCALE(i);
-						
-						// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-						PEv2_joint_vel_fb(i) = ( PEv2_joint_pos_fb(i) - (dev->PEv2.CurrentPosition[i] / PEv2_params_STEP_SCALE(i)) )* rtc_loop_frequ;
-						PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_params_STEP_SCALE(i);
-						PEv2_move=true;
-					}
-					else
-					{
-						a_debout = 2340+i;
-						dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i);
-						PEv2_joint_vel_fb(i) = dev->PEv2.PositionSetup[i] / PEv2_params_STEP_SCALE(i);
-						PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_params_STEP_SCALE(i);
-						PEv2_move=true;
-					}
-
-					a_debout = 2350+i;
-					PEv2_MaxSpeed(i)=dev->PEv2.MaxSpeed[i];					// Maximum axis speed (in pulses per ms)
-					PEv2_MaxAcceleration(i)=dev->PEv2.MaxAcceleration[i];			// Maximum axis acceleration (in pulses/ms/ms)
-					PEv2_MaxDecceleration(i)=dev->PEv2.MaxDecceleration[i];			// Maximum axis deceleration (in pulses/ms/ms)
-				}
-				a_debout = 2360+i;
-				PEv2_CurrentPosition(i)=dev->PEv2.CurrentPosition[i];				// Current position
-				PEv2_PositionSetup(i)=dev->PEv2.PositionSetup[i];					// Position to be set as current position
-				PEv2_ReferencePositionSpeed(i)=dev->PEv2.ReferencePositionSpeed[i];	// Reference position or speed (position or pulses/s)
-				PEv2_MaxSpeed(i)=dev->PEv2.MaxSpeed[i];								// Maximum axis speed (in pulses per ms)
-				PEv2_MaxAcceleration(i)=dev->PEv2.MaxAcceleration[i];				// Maximum axis acceleration (in pulses/ms/ms)
-				PEv2_MaxDecceleration(i)=dev->PEv2.MaxDecceleration[i];				// Maximum axis deceleration (in pulses/ms/ms)
-
-				// Home switch pin (0 for external dedicated input)
-				if ( PEv2_PinHomeSwitch(i)!=0)
-				{	//check if pin is parametrized in HAL
-					dev->PEv2.PinHomeSwitch[i]= PEv2_PinHomeSwitch(i);
-				}
-				if (dev->PEv2.PinHomeSwitch[i]>0)
-				{
-					unsigned allStat =dev->PEv2.HomeStatus;					// Home status (bit-mapped)
-					
-					//unsigned PinId = dev->PEv2.PinHomeSwitch[i]
-					PEv2_HomeSwitchStat(i)=(allStat & (1 << i)) != 0;
-				}
-				else
-				{
-					PEv2_HomeSwitchStat(i)=0;
-				}
-
-				// PEv2_AxisEnableOutputPins(i)=dev->PEv2.AxisEnableOutputPins[i];	// Axis enabled output pin (0 for external dedicated output)
-				if ( PEv2_AxisEnableOutputPins(i)!=0)
-				{	//check if pin is parametrized in HAL
-					dev->PEv2.AxisEnableOutputPins[i]= PEv2_AxisEnableOutputPins(i);
-				}
-				if (dev->PEv2.AxisEnableOutputPins[i]>0)
-				{
-					dev->Pins[dev->PEv2.AxisEnableOutputPins[i]-1].DigitalValueSet= PEv2_AxisEnableOutput(i);
-				}
-
-			}
-			if ( PEv2_move==true)
-			{
-			a_debout = 2380+i;
-			PK_PEv2_PulseEngineMove(dev);
-			}
-	 }
 	}
 
 	if ((PK_DigitalIOGet(dev) == PK_OK) && (PK_AnalogIOGet(dev) == PK_OK) && (PK_PinConfigurationGet(dev) == PK_OK)){  //gets IO data and checks return value 
