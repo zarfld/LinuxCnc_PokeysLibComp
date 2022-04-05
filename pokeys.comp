@@ -358,16 +358,8 @@ int Update_PoNet()
 }
 
 
-int Config_PEv2()
+int Config_PEv2(PK_PEv2_Parameters params)
 {
-	if(PK_PEv2_StatusGet(dev) == PK_OK)
-	{
-	}
-
-	if(PK_PEv2_Status2Get(dev) == PK_OK)
-	{
-	}
-
 	if(PK_PEv2_AdditionalParametersGet(dev) == PK_OK)
 	{
 	/*
@@ -493,12 +485,10 @@ typedef struct
 
 } PK_PEv2_Parameters;
 
-
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
 {
 	return false;
 }
-
 
 int Update_PEv2(PK_PEv2_Stat* status)
 {
@@ -850,10 +840,14 @@ int Update_PoStep()
 }
 
 
+PK_PEv2_Stat *PEv2_status;
+PK_PEv2_Parameters *PEv2_params;
+
+
 void user_mainloop(void) 
 { 
 
-	PK_PEv2_Stat *PEv2_status;
+
     while(0xb){
        FOR_ALL_INSTS() {
 	   rtc_loopcount++;
