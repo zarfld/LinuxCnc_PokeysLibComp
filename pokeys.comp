@@ -1190,8 +1190,10 @@ void user_mainloop(void)
 	// PulseEnginev2
 	if (info_PulseEnginev2!=0)
 	{
+		a_debout = 220;
 		if (Update_PEv2(PEv2_status)==0)
 		{
+			a_debout = 221;
 			// Engine info
 			PEv2_nrOfAxes = PEv2_status->nrOfAxes;
 			PEv2_maxPulseFrequency = PEv2_status->maxPulseFrequency;
@@ -1213,9 +1215,10 @@ void user_mainloop(void)
 			// Other inputs
 			PEv2_ErrorInputStatus = PEv2_status->ErrorInputStatus;
 			PEv2_MiscInputStatus = PEv2_status->MiscInputStatus;
-		
+			a_debout = 222;
 			for (i = 0; i < PEv2_nrOfAxes; i++)
 			{
+				a_debout = 2220 + i;
 				PEv2_AxesState(i) = PEv2_status->AxesState[i];
 				PEv2_CurrentPosition(i) = PEv2_status->CurrentPosition[i];
 
@@ -1229,13 +1232,14 @@ void user_mainloop(void)
 		
 				PEv2_SoftLimitStatus(i) = PEv2_status->SoftLimitStatus[i];
 			}
-	
+			a_debout = 223;
 			PEv2_ExternalRelayOutputs = PEv2_status->ExternalRelayOutputs;
 			PEv2_ExternalOCOutputs = PEv2_status->ExternalOCOutputs;
+			a_debout = 224;
 		}
 			
 
-		a_debout = 220;
+
 	 if ((PK_PEv2_StatusGet(dev) == PK_OK) && (PK_PEv2_Status2Get(dev) == PK_OK))
 	 {
 
