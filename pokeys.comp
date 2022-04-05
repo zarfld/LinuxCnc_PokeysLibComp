@@ -495,7 +495,8 @@ bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
 {
 	return false;
 }
-uint8_t Merge_8BitsToByte( bool Bit_Id(8))
+
+uint8_t Merge_8BitsToByte(bool Bit_Id())
 {
 	return 0;
 }
