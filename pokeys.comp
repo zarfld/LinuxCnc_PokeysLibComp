@@ -1318,7 +1318,8 @@ void user_mainloop(void)
 			Pins_downKeyModifier(i)=dev->Pins[i].downKeyModifier;
 			Pins_upKeyCodeMacroID(i)=dev->Pins[i].upKeyCodeMacroID;
 			Pins_upKeyModifier(i)=dev->Pins[i].upKeyModifier;
-			Pins_preventUpdate(i)=dev->Pins[i].preventUpdate;
+			dev->Pins[i].preventUpdate=Pins_preventUpdate(i);
+			
 			a_debout = 2330+i;
 		}
 
