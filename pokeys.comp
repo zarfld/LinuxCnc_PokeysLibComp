@@ -692,20 +692,20 @@ int Update_PEv2(PK_PEv2_Stat* status)
 	bool doMove = false;
 	for (i = 0; i < status->nrOfAxes; i++)
 	{
-		status->AxesState(i) = dev->PEv2.AxesState[i];
-		status->CurrentPosition(i) = dev->PEv2.CurrentPosition[i];
+		status->AxesState[i] = dev->PEv2.AxesState[i];
+		status->CurrentPosition[i] = dev->PEv2.CurrentPosition[i];
 
-		status->LimitStatusP(i) = Get_BitOfByte(bm_LimitStatusP,i);
-		status->LimitStatusN(i) = Get_BitOfByte(bm_LimitStatusN,i);
-		status->HomeStatus(i) =  Get_BitOfByte(bm_HomeStatus,i);
+		status->LimitStatusP[i] = Get_BitOfByte(bm_LimitStatusP,i);
+		status->LimitStatusN[i] = Get_BitOfByte(bm_LimitStatusN,i);
+		status->HomeStatus[i] =  Get_BitOfByte(bm_HomeStatus,i);
 
-		status->DedicatedLimitNInputs(i) =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
-		status->DedicatedLimitPInputs(i) =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
-		status->DedicatedHomeInputs(i) =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
+		status->DedicatedLimitNInputs[i] =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
+		status->DedicatedLimitPInputs[i] =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
+		status->DedicatedHomeInputs[i] =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
 
-		status->SoftLimitStatus(i) = Get_BitOfByte(dev->PEv2.SoftLimitStatus,i);
+		status->SoftLimitStatus[i] = Get_BitOfByte(dev->PEv2.SoftLimitStatus,i);
 
-		switch( status->AxesState(i))
+		switch( status->AxesState[i])
 		{
 			case PK_PEAxisState_axSTOPPED:        // Axis is stopped
 
