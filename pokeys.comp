@@ -477,7 +477,7 @@ typedef struct
 
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
 {
-	return false
+	return false;
 }
 
 
@@ -493,33 +493,33 @@ int Update_PEv2(PK_PEv2_Stat* status)
 	if(PK_PEv2_StatusGet(dev) == PK_OK)
 	{
 		// Engine info
-		status.nrOfAxes = dev->PEv2.info.nrOfAxes;
-		status.maxPulseFrequency = dev->PEv2.info.maxPulseFrequency;
-		status.bufferDepth = dev->PEv2.info.bufferDepth;
-		status.slotTiming = dev->PEv2.info.slotTiming;
+		status->nrOfAxes = dev->PEv2.info.nrOfAxes;
+		status->maxPulseFrequency = dev->PEv2.info.maxPulseFrequency;
+		status->bufferDepth = dev->PEv2.info.bufferDepth;
+		status->slotTiming = dev->PEv2.info.slotTiming;
 		
-		status.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
-		status.LimitOverride = dev->PEv2.LimitOverride;
+		status->AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
+		status->LimitOverride = dev->PEv2.LimitOverride;
 
 		// Basic engine states
-		status.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-		status.PulseEngineActivated = dev->PEv2.PulseEngineActivated;
-		status.PulseEngineState = dev->PEv2.PulseEngineState;
-		status.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
-		status.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
+		status->PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+		status->PulseEngineActivated = dev->PEv2.PulseEngineActivated;
+		status->PulseEngineState = dev->PEv2.PulseEngineState;
+		status->ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+		status->PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 
 		// Switch states
 		bm_LimitStatusP = dev->PEv2.LimitStatusP;              // Limit+ status (bit-mapped)
 		bm_LimitStatusN = dev->PEv2.LimitStatusN;              // Limit- status (bit-mapped)
 		bm_HomeStatus = dev->PEv2.HomeStatus;                // Home status (bit-mapped)
 
-		status.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
+		status->EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
 
 		// Other inputs
-		status.ErrorInputStatus = dev->PEv2.ErrorInputStatus;
-		status.MiscInputStatus = dev->PEv2.MiscInputStatus;
+		status->ErrorInputStatus = dev->PEv2.ErrorInputStatus;
+		status->MiscInputStatus = dev->PEv2.MiscInputStatus;
 
-		switch (status.PulseEngineState)
+		switch (status->PulseEngineState)
 		{
 		    case PK_PEState_peSTOPPED:           // Pulse engine is stopped
 				if(HAL_Machine_On==true)
@@ -617,22 +617,22 @@ int Update_PEv2(PK_PEv2_Stat* status)
 
 	bool doPositionSet = false;
 	bool doMove = false;
-	for (i = 0; i < status.nrOfAxes; i++)
+	for (i = 0; i < status->nrOfAxes; i++)
 	{
-		status.AxesState(i) = dev->PEv2.AxesState[i];
-		status.CurrentPosition(i) = dev->PEv2.CurrentPosition[i];
+		status->AxesState(i) = dev->PEv2.AxesState[i];
+		status->CurrentPosition(i) = dev->PEv2.CurrentPosition[i];
 
-		status.LimitStatusP(i) = Get_BitOfByte(bm_LimitStatusP,i);
-		status.LimitStatusN(i) = Get_BitOfByte(bm_LimitStatusNdevice,i);
-		status.HomeStatus(i) =  Get_BitOfByte(bm_HomeStatusdevice,i);
+		status->LimitStatusP(i) = Get_BitOfByte(bm_LimitStatusP,i);
+		status->LimitStatusN(i) = Get_BitOfByte(bm_LimitStatusNdevice,i);
+		status->HomeStatus(i) =  Get_BitOfByte(bm_HomeStatusdevice,i);
 
-		status.DedicatedLimitNInputs(i) =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
-		status.DedicatedLimitPInputs(i) =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
-		status.DedicatedHomeInputs(i) =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
+		status->DedicatedLimitNInputs(i) =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
+		status->DedicatedLimitPInputs(i) =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
+		status->DedicatedHomeInputs(i) =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
 
-		status.SoftLimitStatus(i) = Get_BitOfByte(dev->PEv2.SoftLimitStatus,i);
+		status->SoftLimitStatus(i) = Get_BitOfByte(dev->PEv2.SoftLimitStatus,i);
 
-		switch( status.AxesState(i))
+		switch( status->AxesState(i))
 		{
 			case PK_PEAxisState_axSTOPPED:        // Axis is stopped
 
@@ -646,30 +646,30 @@ int Update_PEv2(PK_PEv2_Stat* status)
 		
 				if ( PEv2_AxesConfig(i)!=PK_AC_POSITION_MODE)
 				{
-					if(status.ReferencePositionSpeed(i) != status.joint_vel_cmd(i) * PEv2_params.STEP_SCALE(i))
+					if(status->ReferencePositionSpeed(i) != status->joint_vel_cmd(i) * PEv2_params.STEP_SCALE(i))
 					{
-						status.ReferencePositionSpeed(i) = status.joint_vel_cmd(i) * PEv2_params.STEP_SCALE(i);
-						status.PositionSetup(i) = status.joint_pos_cmd(i) * PEv2_params.STEP_SCALE(i)
+						status->ReferencePositionSpeed(i) = status->joint_vel_cmd(i) * PEv2_params.STEP_SCALE(i);
+						status->PositionSetup(i) = status->joint_pos_cmd(i) * PEv2_params.STEP_SCALE(i)
 
 						doMove=true;
-						dev->PEv2.ReferencePositionSpeed[i] = status.ReferencePositionSpeed(i);
-						dev->PEv2.PositionSetup[i] = status.PositionSetup(i);
+						dev->PEv2.ReferencePositionSpeed[i] = status->ReferencePositionSpeed(i);
+						dev->PEv2.PositionSetup[i] = status->PositionSetup(i);
 					}
 				}
 				else
 				{
 
-					if ((status.CurrentPosition(i) - status.ReferencePositionSpeed(i)) < 10 )
+					if ((status->CurrentPosition(i) - status->ReferencePositionSpeed(i)) < 10 )
 					{
-						status.ReferencePositionSpeed(i) = status.joint_pos_cmd(i) * PEv2_params.STEP_SCALE(i);
-						dev->PEv2.ReferencePositionSpeed[i] = status.ReferencePositionSpeed(i);
-						dev->PEv2.PositionSetup[i] = status.PositionSetup(i);
+						status->ReferencePositionSpeed(i) = status->joint_pos_cmd(i) * PEv2_params.STEP_SCALE(i);
+						dev->PEv2.ReferencePositionSpeed[i] = status->ReferencePositionSpeed(i);
+						dev->PEv2.PositionSetup[i] = status->PositionSetup(i);
 						doPositionSet =true;
 					}
 				}
 				// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-				status.joint_vel_fb(i) = ( status.joint_pos_fb(i) - (status.CurrentPosition[i] / PEv2_params.STEP_SCALE(i)) )* rtc_loop_frequ;
-				status.joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_params_STEP_SCALE(i);
+				status->joint_vel_fb(i) = ( status->joint_pos_fb(i) - (status->CurrentPosition[i] / PEv2_params.STEP_SCALE(i)) )* rtc_loop_frequ;
+				status->joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_params_STEP_SCALE(i);
 
 				break ;
 			case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
@@ -703,11 +703,11 @@ int Update_PEv2(PK_PEv2_Stat* status)
 
 	if(PK_PEv2_ExternalOutputsGet(dev) == PK_OK)
 	{
-		status.ExternalRelayOutputs = dev->PEv2.ExternalRelayOutputs;
-		status.ExternalOCOutputs = dev->PEv2.ExternalOCOutputs;
+		status->ExternalRelayOutputs = dev->PEv2.ExternalRelayOutputs;
+		status->ExternalOCOutputs = dev->PEv2.ExternalOCOutputs;
 	}
 
-	if (status.PulseEngineState != status.PulseEngineStateSet)
+	if (status->PulseEngineState != status->PulseEngineStateSet)
 	{
 		PK_PEv2_PulseEngineStateSet(dev);
 	}
@@ -1091,45 +1091,45 @@ void user_mainloop(void)
 		if (Update_PEv2(PEv2_status)==0)
 		{
 			// Engine info
-			PEv2_nrOfAxes = PEv2_status.nrOfAxes;
-			PEv2_maxPulseFrequency = PEv2_status.maxPulseFrequency;
-			PEv2_bufferDepth = PEv2_status.bufferDepth;
-			PEv2_slotTiming = PEv2_status.slotTiming;
+			PEv2_nrOfAxes = PEv2_status->nrOfAxes;
+			PEv2_maxPulseFrequency = PEv2_status->maxPulseFrequency;
+			PEv2_bufferDepth = PEv2_status->bufferDepth;
+			PEv2_slotTiming = PEv2_status->slotTiming;
 	
-			PEv2_AxisEnabledStatesMask = PEv2_status.AxisEnabledStatesMask;
-			PEv2_LimitOverride = PEv2_status.LimitOverride;
+			PEv2_AxisEnabledStatesMask = PEv2_status->AxisEnabledStatesMask;
+			PEv2_LimitOverride = PEv2_status->LimitOverride;
 
 			// Basic engine states
-			PEv2_PulseEngineEnabled = PEv2_status.PulseEngineEnabled;
-			PEv2_PulseEngineActivated = PEv2_status.PulseEngineActivated;
-			PEv2_PulseEngineState = PEv2_status.PulseEngineState;
-			PEv2_ChargePumpEnabled = PEv2_status.ChargePumpEnabled;
-			PEv2_PulseGeneratorType = PEv2_status.PulseGeneratorType;
+			PEv2_PulseEngineEnabled = PEv2_status->PulseEngineEnabled;
+			PEv2_PulseEngineActivated = PEv2_status->PulseEngineActivated;
+			PEv2_PulseEngineState = PEv2_status->PulseEngineState;
+			PEv2_ChargePumpEnabled = PEv2_status->ChargePumpEnabled;
+			PEv2_PulseGeneratorType = PEv2_status->PulseGeneratorType;
        
-			PEv2_EmergencySwitchPolarity = PEv2_status.EmergencySwitchPolarity;
+			PEv2_EmergencySwitchPolarity = PEv2_status->EmergencySwitchPolarity;
 
 			// Other inputs
-			PEv2_ErrorInputStatus = PEv2_status.ErrorInputStatus;
-			PEv2_MiscInputStatus = PEv2_status.MiscInputStatus;
+			PEv2_ErrorInputStatus = PEv2_status->ErrorInputStatus;
+			PEv2_MiscInputStatus = PEv2_status->MiscInputStatus;
 		
-			for (i = 0; i < PEv2_status.nrOfAxes; i++)
+			for (i = 0; i < PEv2_status->nrOfAxes; i++)
 			{
-				PEv2_AxesState(i) = PEv2_status.AxesState(i);
-				PEv2_CurrentPosition(i) = PEv2_status.CurrentPosition(i);
+				PEv2_AxesState(i) = PEv2_status->AxesState(i);
+				PEv2_CurrentPosition(i) = PEv2_status->CurrentPosition(i);
 
-				PEv2_LimitStatusP(i) = PEv2_status.LimitStatusP(i);			// Limit+ status 
-				PEv2_LimitStatusN(i) = PEv2_status.LimitStatusN(i);	// Limit- status 
-				PEv2_HomeStatus(i) = PEv2_status.HomeStatus(i);		// Home status 
+				PEv2_LimitStatusP(i) = PEv2_status->LimitStatusP(i);			// Limit+ status 
+				PEv2_LimitStatusN(i) = PEv2_status->LimitStatusN(i);	// Limit- status 
+				PEv2_HomeStatus(i) = PEv2_status->HomeStatus(i);		// Home status 
 
-				//PEv2_status.DedicatedLimitNInputs(i);
-				//PEv2_status.DedicatedLimitPInputs(i);
-				//PEv2_status.DedicatedHomeInputs(i);
+				//PEv2_status->DedicatedLimitNInputs(i);
+				//PEv2_status->DedicatedLimitPInputs(i);
+				//PEv2_status->DedicatedHomeInputs(i);
 		
-				PEv2_SoftLimitStatus(i) = PEv2_status.SoftLimitStatus(i);
+				PEv2_SoftLimitStatus(i) = PEv2_status->SoftLimitStatus(i);
 			}
 	
-			PEv2_ExternalRelayOutputs = PEv2_status.ExternalRelayOutputs;
-			PEv2_ExternalOCOutputs = PEv2_status.ExternalOCOutputs;
+			PEv2_ExternalRelayOutputs = PEv2_status->ExternalRelayOutputs;
+			PEv2_ExternalOCOutputs = PEv2_status->ExternalOCOutputs;
 		}
 			
 
@@ -1139,7 +1139,7 @@ void user_mainloop(void)
 		a_debout = 221;
 	 // Pulse engine v2 structure...
 
-		PEv2_LimitOverrideSetup=PEv2_status.LimitOverrideSetup;			// Limit override configuration
+		PEv2_LimitOverrideSetup=PEv2_status->LimitOverrideSetup;			// Limit override configuration
 
 
 		if (dev->PEv2.EmergencyInputPin>0)
