@@ -473,6 +473,15 @@ typedef struct
 	int16_t			BacklashRegister[8];		// current value of the backlash register
 	uint8_t			BacklashAcceleration[8];	// in pulses per ms^2
 	uint8_t			BacklashCompensationEnabled;
+
+// HAL-INI parameters
+	 float STEP_SCALE [8] = 0;					// (pulses/mm)
+	 float MIN_LIMIT [8] = 0;					// position (mm)
+	 float MAX_LIMIT [8] = 0;					// position (mm)
+	 float HOME_OFFSET [8] = 0;				// position (mm)
+	 float HOME_SEARCH_VEL [8] = 0;			// position (mm)
+	 float HOME_LATCH_VEL [8] = 0;				// position (mm)
+	 float HOME_FINAL_VEL [8] = 0;				// position (mm)
 } PK_PEv2_Parameters;
 
 
