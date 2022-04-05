@@ -1250,11 +1250,11 @@ void user_mainloop(void)
 			a_debout = 231;
 			if (PEv2_EmergencyOutput==0)
 			{
-			Pins_DigitalValueSet(PEv2_EmergencyOutputPin-1)= 0;
+				Pins_DigitalValueSet(PEv2_EmergencyOutputPin-1)=0;
 			}
 			else
 			{
-			Pins_DigitalValueSet(PEv2_EmergencyOutputPin-1)= 1;
+				Pins_DigitalValueSet(PEv2_EmergencyOutputPin-1)=1;
 			}
 			
 		}
