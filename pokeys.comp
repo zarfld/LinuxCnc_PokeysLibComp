@@ -585,7 +585,7 @@ PK_PEv2_Stat Update_PEv2()
 		status.maxPulseFrequency = dev->PEv2.info.maxPulseFrequency;
 		status.bufferDepth = dev->PEv2.info.bufferDepth;
 		status.slotTiming = dev->PEv2.info.slotTiming;
-		/*
+		
 		status.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 		status.LimitOverride = dev->PEv2.LimitOverride;
 		
@@ -691,10 +691,10 @@ PK_PEv2_Stat Update_PEv2()
 		    casePK_PEState_peSTOP_EMERGENCY:          // Pulse engine stopped due to emergency switch
 				break;
 		}
-		*/
+		
 	}
 
-	/*
+	
 	if(PK_PEv2_Status2Get(dev) == PK_OK)
 	{
 		bm_DedicatedLimitNInputs = dev->PEv2.DedicatedLimitNInputs;
@@ -832,7 +832,7 @@ PK_PEv2_Stat Update_PEv2()
 		PK_PEv2_PulseEngineMove(dev);
 	}
 
-	*/
+	
 	//PK_PEv2_PositionSet
 	return status;
 }
