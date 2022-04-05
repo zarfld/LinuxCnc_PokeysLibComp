@@ -490,7 +490,7 @@ typedef struct
 
 
 PK_PEv2_Parameters *PEv2_params;
-PK_PEv2_Stat *PEv2_status;
+PK_PEv2_Stat *PEv2_status = new PK_PEv2_Stat();
 
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
 {
