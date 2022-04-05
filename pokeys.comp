@@ -689,6 +689,7 @@ int Update_PEv2(PK_PEv2_Stat* status)
 		}
 	}
 
+	/*
 	if(PK_PEv2_Status2Get(dev) == PK_OK)
 	{
 		bm_DedicatedLimitNInputs = dev->PEv2.DedicatedLimitNInputs;
@@ -825,6 +826,8 @@ int Update_PEv2(PK_PEv2_Stat* status)
 	{
 		PK_PEv2_PulseEngineMove(dev);
 	}
+
+	*/
 	//PK_PEv2_PositionSet
 	return 0;
 }
