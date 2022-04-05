@@ -364,7 +364,8 @@ int Update_PoNet()
 typedef struct
 {
 
-	uint8_t         SoftLimitStatus;           // Bit-mapped soft-limit statuses per axes
+	bool         SoftLimitStatus[8];           //soft-limit statuses per axes
+	bool         AxisEnabledStates[8];     // Bit-mapped states, where axis enabled and charge pump signals are active
 	uint8_t         AxisEnabledStatesMask;     // Bit-mapped states, where axis enabled and charge pump signals are active
 	uint8_t         LimitOverride;             // Limit override status
 	uint8_t         EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
@@ -378,8 +379,8 @@ typedef struct
     uint8_t         PulseGeneratorType;        // Pulse engine generator type (0: external, 1: internal 3ch)
 
 	// Switch states
-    bool         LimitStatusP[8];              // Limit+ status (bit-mapped)
-    bool         LimitStatusN[8];              // Limit- status (bit-mapped)
+    bool         LimitStatusP[8];              // Limit+ status (NOT bit-mapped)
+    bool         LimitStatusN[8];              // Limit- status (NOT bit-mapped)
     bool         HomeStatus[8];                // Home status (bit-mapped)
 
     uint8_t         AxesState[8];              // Axis states (bit-mapped) - see ePK_PEAxisState
@@ -703,6 +704,7 @@ int Update_PEv2(PK_PEv2_Stat* status)
 		status->DedicatedLimitPInputs[i] =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
 		status->DedicatedHomeInputs[i] =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
 
+		uint8_t  bm_SoftLimitStatus = dev->PEv2.SoftLimitStatus;
 		status->SoftLimitStatus[i] = Get_BitOfByte(dev->PEv2.SoftLimitStatus,i);
 
 		switch( status->AxesState[i])
