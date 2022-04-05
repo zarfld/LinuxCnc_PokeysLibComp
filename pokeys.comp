@@ -489,8 +489,8 @@ typedef struct
 
 
 
-PK_PEv2_Parameters *PEv2_params;
-PK_PEv2_Stat *PEv2_status = new PK_PEv2_Stat();
+PK_PEv2_Parameters * PEv2_params;
+PK_PEv2_Stat * PEv2_status;
 
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
 {
@@ -1040,6 +1040,16 @@ void user_mainloop(void)
 			 a_debout = 124;
 			 if ( info_PulseEnginev2!=0 )
 			 {
+
+			  /* 
+				PK_PEv2_Parameters * PEv2_params;
+				PK_PEv2_Stat * PEv2_status;
+			  */
+				PK_PEv2_Parameters PEv2_params_t;
+				PK_PEv2_Stat PEv2_status_t;
+				PEv2_status = PEv2_status_t;
+				PEv2_params = PEv2_params_t;
+
 				Config_PEv2(PEv2_params);
 				PEv2_nrOfAxes=dev->PEv2.info.nrOfAxes;
 				PEv2_maxPulseFrequency=dev->PEv2.info.maxPulseFrequency;
