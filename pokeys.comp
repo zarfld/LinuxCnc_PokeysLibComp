@@ -480,10 +480,66 @@ typedef struct
 
 } PK_PEv2_Stat;
 
+
+
+
 typedef struct
 {
+// PK_PEv2_PulseEngineSetup   
+    uint8_t         PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
+    uint8_t         ChargePumpEnabled;         // Charge pump output enabled
+    uint8_t         PulseGeneratorType;        // Pulse engine generator type (0: external, 1: internal 3ch)
+    device->request[11] = device->PEv2.PulseEngineBufferSize;
+    uint8_t         EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
+    device->request[13] = device->PEv2.AxisEnabledStatesMask;
+	
+	
+//PK_PEv2_AxisConfigurationGet
+   // Read the structure
+    uint8_t         AxesConfig[8];             // Axis configuration - see ePK_PEv2_AxisConfig
+    uint8_t         AxesSwitchConfig[8];       // Axis switch configuration - see ePK_PEv2_AxisSwitchOptions
 
+    uint8_t         PinHomeSwitch[8];          // Home switch pin (0 for external dedicated input)
+    uint8_t         PinLimitMSwitch[8];        // Limit- switch pin (0 for external dedicated input)
+    uint8_t         PinLimitPSwitch[8];        // Limit+ switch pin (0 for external dedicated input)
+
+    uint8_t         HomingSpeed[8];            // Homing speed per axis (in %)
+    uint8_t         HomingReturnSpeed[8];      // Homing return speed per axis (in % of the homing speed)
+
+    uint8_t         MPGjogEncoder[8];          // MPG jog encoder ID
+
+    // Convert parameters... assume little-endian format
+    float           MaxSpeed[8];               // Maximum axis speed (in pulses per ms)
+    float           MaxAcceleration[8];        // Maximum axis acceleration (in pulses/ms/ms)
+    float           MaxDecceleration[8];       // Maximum axis deceleration (in pulses/ms/ms)
+
+    int32_t         SoftLimitMaximum[8];       // Soft limit maximum position
+    int32_t         SoftLimitMinimum[8];       // Soft limit minimum position
+
+    int32_t         MPGjogMultiplier[8];       // MPG jog multiplier value
+
+    uint8_t         AxisEnableOutputPins[8];   // Axis enabled output pin (0 for external dedicated output)
+    int8_t          InvertAxisEnable[8];       // Invert axis enable signal
+
+	uint8_t			FilterLimitMSwitch[8];	   // Digital filter for limit- switch
+	uint8_t			FilterLimitPSwitch[8];	   // Digital filter for limit+ switch
+	uint8_t			FilterHomeSwitch[8];	   // Digital filter for home switch
+
+	uint8_t			HomingAlgorithm[8];		   // Homing algorithm configuration
+	// MPG 1x mode here
+	uint32_t		HomeBackOffDistance[8];	   // Back-off distance after homing
+    uint16_t        MPGjogDivider[8];          // Divider for the MPG jogging (enhanced encoder resolution)
+
+// 	uint16_t		BacklashWidth[8];			// half of real backlash width
+	int16_t			BacklashRegister[8];		// current value of the backlash register
+	uint8_t			BacklashAcceleration[8];	// in pulses per ms^2
+	uint8_t			BacklashCompensationEnabled;
 } PK_PEv2_Parameters;
+
+
+
+PK_PEv2_Parameters *PEv2_params;
+PK_PEv2_Stat *PEv2_status;
 
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
 {
@@ -840,8 +896,7 @@ int Update_PoStep()
 }
 
 
-PK_PEv2_Stat *PEv2_status;
-PK_PEv2_Parameters *PEv2_params;
+
 
 
 void user_mainloop(void) 
