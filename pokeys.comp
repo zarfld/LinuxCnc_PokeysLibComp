@@ -1177,7 +1177,7 @@ void user_mainloop(void)
 			PEv2_ErrorInputStatus = PEv2_status->ErrorInputStatus;
 			PEv2_MiscInputStatus = PEv2_status->MiscInputStatus;
 		
-			for (i = 0; i < PEv2_status->nrOfAxes; i++)
+			for (i = 0; i < PEv2_nrOfAxes; i++)
 			{
 				PEv2_AxesState(i) = PEv2_status->AxesState(i);
 				PEv2_CurrentPosition(i) = PEv2_status->CurrentPosition(i);
