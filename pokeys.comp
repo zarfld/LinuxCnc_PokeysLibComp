@@ -475,10 +475,10 @@ typedef struct
     int32_t         ReferencePositionSpeed[8]; // Reference position or speed (position or pulses/s)
 	
 	// Cyclic Setting
-	float			joint_vel_cmd[8]			// SetVelocity
-	float			joint_pos_cmd[8]			// SetVelocity
-	float			joint_vel_fb[8]			// GetVelocity
-	float			joint_pos_fb[8]			// SetVelocity
+	float			joint_vel_cmd[8];			// SetVelocity
+	float			joint_pos_cmd[8];			// SetVelocity
+	float			joint_vel_fb[8];			// GetVelocity
+	float			joint_pos_fb[8];			// SetVelocity
 
 	uint8_t         PulseEngineStateSetup;     // Pulse engine new state configuration
 	uint8_t         LimitOverrideSetup;        // Limit override configuration
@@ -487,6 +487,11 @@ typedef struct
     bool         ExternalOCOutput[8];         // External open-collector outputs
 
 } PK_PEv2_Stat;
+
+typedef struct
+{
+
+} PK_PEv2_Parameters;
 
 
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
