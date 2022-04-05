@@ -1245,19 +1245,22 @@ void user_mainloop(void)
 		sPoKeysPinData iPin;
 		a_debout = 230;
 
+		/* 
 		if ( PEv2_EmergencyOutputPin!=0)
 		{	//check if pin is parametrized in HAL
 			a_debout = 231;
 			if (PEv2_EmergencyOutput==0)
 			{
+				//error: lvalue required as left operand of assignment
 				Pins_DigitalValueSet(PEv2_EmergencyOutputPin-1)=0;
 			}
 			else
 			{
+				//error: lvalue required as left operand of assignment
 				Pins_DigitalValueSet(PEv2_EmergencyOutputPin-1)=1;
 			}
 			
-		}
+		}*/
 
 		a_debout = 232;
 		for(i=0;i<info_PinCount-1;i++)
