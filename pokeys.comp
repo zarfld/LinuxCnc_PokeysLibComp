@@ -383,6 +383,7 @@ typedef struct
     bool         LimitStatusP[8];              // Limit+ status (NOT bit-mapped)
     bool         LimitStatusN[8];              // Limit- status (NOT bit-mapped)
     bool         HomeStatus[8];                // Home status (bit-mapped)
+	bool         EmergencyStatus;                // Home status 0=ok 1=Emergency
 
     uint8_t         AxesState[8];              // Axis states (bit-mapped) - see ePK_PEAxisState
     int32_t         CurrentPosition[8];        // Current position
@@ -1237,56 +1238,23 @@ void user_mainloop(void)
 			PEv2_ExternalOCOutputs = PEv2_status->ExternalOCOutputs;
 			a_debout = 224;
 		}
-			
-
-
-	 if ((PK_PEv2_StatusGet(dev) == PK_OK) && (PK_PEv2_Status2Get(dev) == PK_OK))
-	 {
-
-		if (dev->PEv2.EmergencyInputPin>0)
-		{
-			PEv2_EmergencyInput=dev->Pins[dev->PEv2.EmergencyInputPin-1].DigitalValueGet;
-		}
-		else
-		{
-			PEv2_EmergencyInput=false;
-		}
-
-		if ( PEv2_EmergencyOutputPin!=0)
-		{	//check if pin is parametrized in HAL
-			dev->Pins[ PEv2_EmergencyOutputPin].DigitalValueSet= PEv2_EmergencyOutput;
-		}
-		else
-		{
-			if (dev->PEv2.EmergencyInputPin>0)
-			{
-				if(dev->Pins[dev->PEv2.EmergencyInputPin-1].DigitalValueGet>0)
-				{
-					PEv2_EmergencyInput=true;
-				}
-				else
-				{
-					PEv2_EmergencyInput= PEv2_EmergencyOutput;
-				}
-			}
-			else
-			{
-				PEv2_EmergencyInput= PEv2_EmergencyOutput;
-			}
-		}
-
-
-	 }
-
 	}
 
 	if ((PK_DigitalIOGet(dev) == PK_OK) && (PK_AnalogIOGet(dev) == PK_OK) && (PK_PinConfigurationGet(dev) == PK_OK)){  //gets IO data and checks return value 
 		err=0;
 		sPoKeysPinData iPin;
-		a_debout = 240;
+		a_debout = 230;
+
+		if ( PEv2_EmergencyOutputPin!=0)
+		{	//check if pin is parametrized in HAL
+			a_debout = 231;
+			Pins_DigitalValueSet(i-1)= PEv2_EmergencyOutput;
+		}
+
+		a_debout = 232;
 		for(i=0;i<info_PinCount-1;i++)
 		{
-			a_debout = 2410+i;
+			a_debout = 2320+i;
 			Pins_DigitalCounterValue(i)=dev->Pins[i].DigitalCounterValue;
 			Pins_AnalogValue(i)=dev->Pins[i].AnalogValue;
 			Pins_PinFunction(i)=dev->Pins[i].PinFunction;
@@ -1302,11 +1270,33 @@ void user_mainloop(void)
 			Pins_upKeyCodeMacroID(i)=dev->Pins[i].upKeyCodeMacroID;
 			Pins_upKeyModifier(i)=dev->Pins[i].upKeyModifier;
 			Pins_preventUpdate(i)=dev->Pins[i].preventUpdate;
-			a_debout = 2420+i;
+			a_debout = 2330+i;
 		}
-		a_debout = 243;
+
+		if (dev->PEv2.EmergencyInputPin>0)
+		{
+			a_debout = 234;
+			PEv2_EmergencyInput=Pins_DigitalValueGet(dev->PEv2.EmergencyInputPin-1);
+		}
+		else
+		{
+			a_debout = 235;
+			if ( PEv2_EmergencyOutputPin!=0)
+			{
+				PEv2_EmergencyInput=PEv2_EmergencyOutput;
+			}
+			else
+			{
+				PEv2_EmergencyInput=false;
+			}
+		}
+
+
+
+
+		a_debout = 236;
 		PK_DigitalIOSet(dev);
-		a_debout = 244;
+		a_debout = 237;
 	 }
      else
 	 {             		  //on connection error
