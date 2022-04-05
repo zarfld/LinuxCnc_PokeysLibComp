@@ -475,13 +475,13 @@ typedef struct
 	uint8_t			BacklashCompensationEnabled;
 
 // HAL-INI parameters
-	 float STEP_SCALE [8] = 0;					// (pulses/mm)
-	 float MIN_LIMIT [8] = 0;					// position (mm)
-	 float MAX_LIMIT [8] = 0;					// position (mm)
-	 float HOME_OFFSET [8] = 0;				// position (mm)
-	 float HOME_SEARCH_VEL [8] = 0;			// position (mm)
-	 float HOME_LATCH_VEL [8] = 0;				// position (mm)
-	 float HOME_FINAL_VEL [8] = 0;				// position (mm)
+	 float STEP_SCALE[8];					// (pulses/mm)
+	 float MIN_LIMIT[8];					// position (mm)
+	 float MAX_LIMIT[8];					// position (mm)
+	 float HOME_OFFSET[8];				// position (mm)
+	 float HOME_SEARCH_VEL[8];			// position (mm)
+	 float HOME_LATCH_VEL[8];				// position (mm)
+	 float HOME_FINAL_VEL[8];				// position (mm)
 } PK_PEv2_Parameters;
 
 
