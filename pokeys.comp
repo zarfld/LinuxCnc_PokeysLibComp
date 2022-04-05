@@ -504,7 +504,7 @@ uint8_t Merge_8BitsToByte(bool Bit_array[8])
 
 PK_PEv2_Parameters Config_PEv2()
 {
-	PK_PEv2_Parameters params
+	PK_PEv2_Parameters params;
 	if(PK_PEv2_AdditionalParametersGet(dev) == PK_OK)
 	{
 	/*
@@ -1211,7 +1211,8 @@ void user_mainloop(void)
 	if (info_PulseEnginev2!=0)
 	{
 		a_debout = 220;
-		if (Update_PEv2(PEv2_status)==0)
+		PEv2_status = Update_PEv2(PEv2_status);
+		if (0==0)
 		{
 			a_debout = 221;
 			// Engine info
