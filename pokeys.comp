@@ -1248,13 +1248,13 @@ void user_mainloop(void)
 		if ( PEv2_EmergencyOutputPin!=0)
 		{	//check if pin is parametrized in HAL
 			a_debout = 231;
-			if (PEv2_EmergencyOutput==true)
+			if (PEv2_EmergencyOutput==0)
 			{
-			Pins_DigitalValueSet(i-1)= false;
+			Pins_DigitalValueSet(PEv2_EmergencyOutputPin-1)= 0;
 			}
 			else
 			{
-			Pins_DigitalValueSet(i-1)= true;
+			Pins_DigitalValueSet(PEv2_EmergencyOutputPin-1)= 1;
 			}
 			
 		}
@@ -1278,7 +1278,7 @@ void user_mainloop(void)
 			
 
 
-			if (Pins_DigitalValueSet(i)==true)
+			if (Pins_DigitalValueSet(i)==1)
 			{
 				dev->Pins[i].DigitalValueSet=1;
 			}
