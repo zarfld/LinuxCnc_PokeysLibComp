@@ -495,6 +495,10 @@ bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
 {
 	return false;
 }
+uint8_t Merge_8BitsToByte( bool Bit_Id(8))
+{
+	return 0;
+}
 
 int Config_PEv2(PK_PEv2_Parameters* params)
 {
@@ -745,7 +749,7 @@ int Update_PEv2(PK_PEv2_Stat* status)
 				}
 				// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
 				status->joint_vel_fb[i] = ( status->joint_pos_fb[i] - (status->CurrentPosition[i] / PEv2_params->STEP_SCALE[i]) )* Loop_Frequ;
-				status->joint_pos_fb[i] = dev->PEv2.CurrentPosition[i] / PEv2_params_STEP_SCALE[i];
+				status->joint_pos_fb[i] = dev->PEv2.CurrentPosition[i] / PEv2_params->STEP_SCALE[i];
 
 				break ;
 			case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
@@ -774,31 +778,44 @@ int Update_PEv2(PK_PEv2_Stat* status)
 			default:
 				break ;
 		}
-
 	}
 
 	if(PK_PEv2_ExternalOutputsGet(dev) == PK_OK)
 	{
+		uint8_t ExternalRelayOutputs_set=  Merge_8BitsToByte(ExternalRelayOutput);
+		uint8_t ExternalOCOutputs_set=  Merge_8BitsToByte(ExternalOCOutput);
+		bool doSetExtOut = false;
+
 		status->ExternalRelayOutputs = dev->PEv2.ExternalRelayOutputs;
 		status->ExternalOCOutputs = dev->PEv2.ExternalOCOutputs;
+
+		if (ExternalRelayOutputs != ExternalRelayOutputs_set)
+		{
+			dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set;
+			doSetExtOut=true;
+		}
+		if (ExternalOCOutputs != ExternalOCOutputs_set)
+		{
+			dev->PEv2.ExternalOCOutputs = ExternalOCOutputs_set;
+			doSetExtOut=true;
+		}
+		if (doSetExtOut==true)
+		{
+			PK_PEv2_ExternalOutputsSet(dev)
+		}
+
 	}
 
-	if (status->PulseEngineState != status->PulseEngineStateSet)
+	if (status->PulseEngineState != status->PulseEngineStateSetup)
 	{
 		PK_PEv2_PulseEngineStateSet(dev);
 	}
-
-
 
 	if (doMove==true)
 	{
 		PK_PEv2_PulseEngineMove(dev);
 	}
-
-
 	//PK_PEv2_PositionSet
-	//PK_PEv2_ExternalOutputsSet
-
 	return 0;
 }
 
