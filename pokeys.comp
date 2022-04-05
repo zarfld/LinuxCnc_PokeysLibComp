@@ -525,7 +525,7 @@ PK_PEv2_Parameters GetConfig_PEv2()
 		params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
 		//params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 
-		for (i = 0; i < pe.nrOfAxes; i++)
+		for (i = 0; i < pe.info.nrOfAxes; i++)
 		{
 		    // Read the structure
 			params.AxesConfig(i) = pe.AxesConfig(i);
@@ -766,7 +766,8 @@ PK_PEv2_Stat Update_PEv2()
 							status.ReferencePositionSpeed[i] = status.joint_pos_cmd[i] * PEv2_params.STEP_SCALE[i];
 							dev->PEv2.ReferencePositionSpeed[i] = status.ReferencePositionSpeed[i];
 							dev->PEv2.PositionSetup[i] = status.PositionSetup[i];
-							doPositionSet =true;
+							//doPositionSet =true;
+							doMove=true;
 						}
 					}
 					// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
