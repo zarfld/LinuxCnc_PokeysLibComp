@@ -163,9 +163,9 @@ pin io unsigned PEv2.PulseGeneratorType;			// Pulse engine generator type (0: ex
 pin io unsigned PEv2.ChargePumpEnabled;				// Charge pump output enabled
 pin io unsigned PEv2.EmergencySwitchPolarity;		// Emergency switch polarity (set to 1 to invert)
 pin io unsigned PEv2.PulseEngineActivated;			// Pulse engine activation status
-pin out unsigned PEv2.LimitStatusP[8];					// Limit+ status (NOT bit-mapped)
-pin out unsigned PEv2.LimitStatusN[8];					// Limit- status (NOT bit-mapped)
-pin out unsigned PEv2.HomeStatus[8];					// Home status (NOT bit-mapped)
+pin out unsigned PEv2.#.LimitStatusP[8];					// Limit+ status (NOT bit-mapped)
+pin out unsigned PEv2.#.LimitStatusN[8];					// Limit- status (NOT bit-mapped)
+pin out unsigned PEv2.#.HomeStatus[8];					// Home status (NOT bit-mapped)
 pin out unsigned PEv2.ErrorInputStatus;				// Stepper motor driver error inputs status (bit-mapped)
 pin out unsigned PEv2.MiscInputStatus;				// Miscelenous digital inputs...
 pin io unsigned PEv2.LimitOverride;					// Limit override status
@@ -183,7 +183,7 @@ pin io unsigned PEv2.param2;
 pin io unsigned PEv2.param3;
 pin io unsigned PEv2.AxisEnabledStatesMask;		// Bit-mapped states, where axis enabled and charge pump signals are active
 pin io unsigned PEv2.PulseEngineStateSetup;		// Pulse engine new state configuration
-pin out unsigned PEv2.SoftLimitStatus [8] ;				// Bit-mapped soft-limit statuses per axes
+pin out unsigned PEv2.#.SoftLimitStatus [8] ;				// Bit-mapped soft-limit statuses per axes
 pin io unsigned PEv2.ExternalRelayOutputs;			// External relay outputs
 pin io unsigned PEv2.ExternalOCOutputs;			// External open-collector outputs
 pin io unsigned PEv2.PulseEngineBufferSize;		// Buffer size information...
