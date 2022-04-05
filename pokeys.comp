@@ -358,68 +358,7 @@ int Update_PoNet()
 }
 
 
-int Config_PEv2(PK_PEv2_Parameters params)
-{
-	if(PK_PEv2_AdditionalParametersGet(dev) == PK_OK)
-	{
-	/*
-	dev->PEv2.EmergencyInputPin = dev->response[8];   
-	*/
-	}
 
-	if(PK_PEv2_AxisConfigurationGet(dev) == PK_OK)
-	{
-	/*
-	    // Read the structure
-		pe->AxesConfig[pe->param1] = dev->response[8];
-		pe->AxesSwitchConfig[pe->param1] = dev->response[9];
-
-		pe->PinHomeSwitch[pe->param1] = dev->response[10];
-		pe->PinLimitMSwitch[pe->param1] = dev->response[11];
-		pe->PinLimitPSwitch[pe->param1] = dev->response[12];
-
-		pe->HomingSpeed[pe->param1] = dev->response[13];
-		pe->HomingReturnSpeed[pe->param1] = dev->response[14];
-
-		pe->MPGjogEncoder[pe->param1] = dev->response[15];
-
-		// Convert parameters... assume little-endian format
-		pe->MaxSpeed[pe->param1] = *(float*)(dev->response + 16);
-		pe->MaxAcceleration[pe->param1] = *(float*)(dev->response + 20);
-		pe->MaxDecceleration[pe->param1] = *(float*)(dev->response + 24);
-
-		pe->SoftLimitMinimum[pe->param1] = *(int32_t*)(dev->response + 28);
-		pe->SoftLimitMaximum[pe->param1] = *(int32_t*)(dev->response + 32);
-
-		pe->MPGjogMultiplier[pe->param1] = *(int16_t*)(dev->response + 36);
-
-		pe->AxisEnableOutputPins[pe->param1] = dev->response[38];
-		pe->InvertAxisEnable[pe->param1] = dev->response[39];
-
-		pe->FilterLimitMSwitch[pe->param1] = dev->response[40];
-		pe->FilterLimitPSwitch[pe->param1] = dev->response[41];
-		pe->FilterHomeSwitch[pe->param1] = dev->response[42];
-
-		pe->HomingAlgorithm[pe->param1] = dev->response[43];
-		// MPG 1x mode here
-		pe->HomeBackOffDistance[pe->param1] = *(uint32_t*)(dev->response + 45);
-		pe->MPGjogDivider[pe->param1] = *(uint16_t*)(dev->response + 49);
-	*/
-	}
-
-
-	/*
-	dev->request[8] = dev->PEv2.PulseEngineEnabled;
-    dev->request[9] = dev->PEv2.ChargePumpEnabled;
-    dev->request[10] = dev->PEv2.PulseGeneratorType;
-    dev->request[11] = dev->PEv2.PulseEngineBufferSize;
-    dev->request[12] = dev->PEv2.EmergencySwitchPolarity;
-    dev->request[13] = dev->PEv2.AxisEnabledStatesMask;
-	PK_PEv2_PulseEngineSetup
-	*/
-
-	return 0;
-}
 
 // Pulse engine v2 information
 typedef struct
@@ -544,6 +483,69 @@ PK_PEv2_Stat *PEv2_status;
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
 {
 	return false;
+}
+
+int Config_PEv2(PK_PEv2_Parameters* params)
+{
+	if(PK_PEv2_AdditionalParametersGet(dev) == PK_OK)
+	{
+	/*
+	dev->PEv2.EmergencyInputPin = dev->response[8];   
+	*/
+	}
+
+	if(PK_PEv2_AxisConfigurationGet(dev) == PK_OK)
+	{
+	/*
+	    // Read the structure
+		pe->AxesConfig[pe->param1] = dev->response[8];
+		pe->AxesSwitchConfig[pe->param1] = dev->response[9];
+
+		pe->PinHomeSwitch[pe->param1] = dev->response[10];
+		pe->PinLimitMSwitch[pe->param1] = dev->response[11];
+		pe->PinLimitPSwitch[pe->param1] = dev->response[12];
+
+		pe->HomingSpeed[pe->param1] = dev->response[13];
+		pe->HomingReturnSpeed[pe->param1] = dev->response[14];
+
+		pe->MPGjogEncoder[pe->param1] = dev->response[15];
+
+		// Convert parameters... assume little-endian format
+		pe->MaxSpeed[pe->param1] = *(float*)(dev->response + 16);
+		pe->MaxAcceleration[pe->param1] = *(float*)(dev->response + 20);
+		pe->MaxDecceleration[pe->param1] = *(float*)(dev->response + 24);
+
+		pe->SoftLimitMinimum[pe->param1] = *(int32_t*)(dev->response + 28);
+		pe->SoftLimitMaximum[pe->param1] = *(int32_t*)(dev->response + 32);
+
+		pe->MPGjogMultiplier[pe->param1] = *(int16_t*)(dev->response + 36);
+
+		pe->AxisEnableOutputPins[pe->param1] = dev->response[38];
+		pe->InvertAxisEnable[pe->param1] = dev->response[39];
+
+		pe->FilterLimitMSwitch[pe->param1] = dev->response[40];
+		pe->FilterLimitPSwitch[pe->param1] = dev->response[41];
+		pe->FilterHomeSwitch[pe->param1] = dev->response[42];
+
+		pe->HomingAlgorithm[pe->param1] = dev->response[43];
+		// MPG 1x mode here
+		pe->HomeBackOffDistance[pe->param1] = *(uint32_t*)(dev->response + 45);
+		pe->MPGjogDivider[pe->param1] = *(uint16_t*)(dev->response + 49);
+	*/
+	}
+
+
+	/*
+	dev->request[8] = dev->PEv2.PulseEngineEnabled;
+    dev->request[9] = dev->PEv2.ChargePumpEnabled;
+    dev->request[10] = dev->PEv2.PulseGeneratorType;
+    dev->request[11] = dev->PEv2.PulseEngineBufferSize;
+    dev->request[12] = dev->PEv2.EmergencySwitchPolarity;
+    dev->request[13] = dev->PEv2.AxisEnabledStatesMask;
+	PK_PEv2_PulseEngineSetup
+	*/
+
+	return 0;
 }
 
 int Update_PEv2(PK_PEv2_Stat* status)
@@ -990,7 +992,7 @@ void user_mainloop(void)
 			 a_debout = 124;
 			 if ( info_PulseEnginev2!=0 )
 			 {
-				Config_PEv2();
+				Config_PEv2(PEv2_params);
 				PEv2_nrOfAxes=dev->PEv2.info.nrOfAxes;
 				PEv2_maxPulseFrequency=dev->PEv2.info.maxPulseFrequency;
 				PEv2_bufferDepth=dev->PEv2.info.bufferDepth;
