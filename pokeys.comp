@@ -473,7 +473,19 @@ typedef struct
 
 	int32_t         PositionSetup[8];          // Position to be set as current position
     int32_t         ReferencePositionSpeed[8]; // Reference position or speed (position or pulses/s)
-	//
+	
+	// Cyclic Setting
+	float			joint_vel_cmd[8]			// SetVelocity
+	float			joint_pos_cmd[8]			// SetVelocity
+	float			joint_vel_fb[8]			// GetVelocity
+	float			joint_pos_fb[8]			// SetVelocity
+
+	uint8_t         PulseEngineStateSetup;     // Pulse engine new state configuration
+	uint8_t         LimitOverrideSetup;        // Limit override configuration
+
+	bool         ExternalRelayOutput[8] ;      // External relay outputs
+    bool         ExternalOCOutput[8];         // External open-collector outputs
+
 } PK_PEv2_Stat;
 
 
@@ -622,8 +634,8 @@ int Update_PEv2(PK_PEv2_Stat* status)
 		status->CurrentPosition(i) = dev->PEv2.CurrentPosition[i];
 
 		status->LimitStatusP(i) = Get_BitOfByte(bm_LimitStatusP,i);
-		status->LimitStatusN(i) = Get_BitOfByte(bm_LimitStatusNdevice,i);
-		status->HomeStatus(i) =  Get_BitOfByte(bm_HomeStatusdevice,i);
+		status->LimitStatusN(i) = Get_BitOfByte(bm_LimitStatusN,i);
+		status->HomeStatus(i) =  Get_BitOfByte(bm_HomeStatus,i);
 
 		status->DedicatedLimitNInputs(i) =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
 		status->DedicatedLimitPInputs(i) =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
@@ -643,12 +655,12 @@ int Update_PEv2(PK_PEv2_Stat* status)
 				break ;
 			case PK_PEAxisState_axRUNNING:        // Axis is running
 		
-				if ( PEv2_AxesConfig(i)!=PK_AC_POSITION_MODE)
+				if ( status->AxesConfig(i)!=PK_AC_POSITION_MODE)
 				{
 					if(status->ReferencePositionSpeed(i) != status->joint_vel_cmd(i) * PEv2_params.STEP_SCALE(i))
 					{
 						status->ReferencePositionSpeed(i) = status->joint_vel_cmd(i) * PEv2_params.STEP_SCALE(i);
-						status->PositionSetup(i) = status->joint_pos_cmd(i) * PEv2_params.STEP_SCALE(i)
+						status->PositionSetup(i) = status->joint_pos_cmd(i) * PEv2_params.STEP_SCALE(i);
 
 						doMove=true;
 						dev->PEv2.ReferencePositionSpeed[i] = status->ReferencePositionSpeed(i);
