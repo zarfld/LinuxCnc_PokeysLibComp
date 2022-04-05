@@ -716,7 +716,7 @@ PK_PEv2_Stat Update_PEv2()
 
 	bool doPositionSet = false;
 	bool doMove = false;
-	if (status.nrOfAxes!=0)
+	if (status.info.nrOfAxes!=0)
 	{
 		for (i = 0; i < status.nrOfAxes; i++)
 		{
