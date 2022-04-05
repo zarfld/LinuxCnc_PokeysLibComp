@@ -518,49 +518,49 @@ PK_PEv2_Parameters GetConfig_PEv2()
 	sPoKeysPEv2 pe = dev->PEv2;
 	if(PK_PEv2_AxisConfigurationGet(dev) == PK_OK)
 	{
-		params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-		params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+		params.PulseEngineEnabled = pe.PulseEngineEnabled;
+		params.ChargePumpEnabled = pe.ChargePumpEnabled;
 		params.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 		params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
 		params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
 		params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 
-		for (i = 0; i < pe->nrOfAxes; i++)
+		for (i = 0; i < pe.nrOfAxes; i++)
 		{
 		    // Read the structure
-			params.AxesConfig(i) = pe->AxesConfig[i];
-			params.AxesSwitchConfig(i) = pe->AxesSwitchConfig[i];
+			params.AxesConfig(i) = pe.AxesConfig[i];
+			params.AxesSwitchConfig(i) = pe.AxesSwitchConfig[i];
 
-			params.PinHomeSwitch(i) = pe->PinHomeSwitch[i];
-			params.PinLimitMSwitch(i) = pe->PinLimitMSwitch[i];
-			params.PinLimitPSwitch(i) = pe->PinLimitPSwitch[i];
+			params.PinHomeSwitch(i) = pe.PinHomeSwitch[i];
+			params.PinLimitMSwitch(i) = pe.PinLimitMSwitch[i];
+			params.PinLimitPSwitch(i) = pe.PinLimitPSwitch[i];
 
-			params.HomingSpeed(i) = pe->HomingSpeed[i];
-			params.HomingReturnSpeed(i) = pe->HomingReturnSpeed[i];
+			params.HomingSpeed(i) = pe.HomingSpeed[i];
+			params.HomingReturnSpeed(i) = pe.HomingReturnSpeed[i];
 
-			params.MPGjogEncoder(i) = pe->MPGjogEncoder[i] = dev->response[15];
+			params.MPGjogEncoder(i) = pe.MPGjogEncoder[i] = dev->response[15];
 
 			// Convert parameters... assume little-endian format
-			params.MaxSpeed(i) = pe->MaxSpeed[i];
-			params.MaxAcceleration(i) = pe->MaxAcceleration[i];
-			params.MaxDecceleration(i) = pe->MaxDecceleration[i];
+			params.MaxSpeed(i) = pe.MaxSpeed[i];
+			params.MaxAcceleration(i) = pe.MaxAcceleration[i];
+			params.MaxDecceleration(i) = pe.MaxDecceleration[i];
 
-			params.SoftLimitMinimum(i) = pe->SoftLimitMinimum[i];
-			params.SoftLimitMaximum(i) = pe->SoftLimitMaximum[i];
+			params.SoftLimitMinimum(i) = pe.SoftLimitMinimum[i];
+			params.SoftLimitMaximum(i) = pe.SoftLimitMaximum[i];
 
-			params.MPGjogMultiplier(i) = pe->MPGjogMultiplier[i];
+			params.MPGjogMultiplier(i) = pe.MPGjogMultiplier[i];
 
-			params.AxisEnableOutputPins(i) = pe->AxisEnableOutputPins[i];
-			params.InvertAxisEnable(i) = pe->InvertAxisEnable[i];
+			params.AxisEnableOutputPins(i) = pe.AxisEnableOutputPins[i];
+			params.InvertAxisEnable(i) = pe.InvertAxisEnable[i];
 
-			params.FilterLimitMSwitch(i) = pe->FilterLimitMSwitch[i];
-			params.FilterLimitPSwitch(i) = pe->FilterLimitPSwitch[i];
-			params.FilterHomeSwitch(i) = pe->FilterHomeSwitch[i];
+			params.FilterLimitMSwitch(i) = pe.FilterLimitMSwitch[i];
+			params.FilterLimitPSwitch(i) = pe.FilterLimitPSwitch[i];
+			params.FilterHomeSwitch(i) = pe.FilterHomeSwitch[i];
 
-			params.HomingAlgorithm(i) = pe->HomingAlgorithm[i];
+			params.HomingAlgorithm(i) = pe.HomingAlgorithm[i];
 			// MPG 1x mode here
-			params.HomeBackOffDistance(i) = pe->HomeBackOffDistance[i];
-			params.MPGjogDivider(i) = pe->MPGjogDivider[i];	
+			params.HomeBackOffDistance(i) = pe.HomeBackOffDistance[i];
+			params.MPGjogDivider(i) = pe.MPGjogDivider[i];	
 		}
 	}
 
