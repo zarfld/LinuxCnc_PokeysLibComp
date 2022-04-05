@@ -698,89 +698,93 @@ int Update_PEv2(PK_PEv2_Stat* status)
 
 	bool doPositionSet = false;
 	bool doMove = false;
-	for (i = 0; i < status->nrOfAxes; i++)
+	if (status->nrOfAxes!=0)
 	{
-		status->AxesState[i] = dev->PEv2.AxesState[i];
-		status->CurrentPosition[i] = dev->PEv2.CurrentPosition[i];
-
-		status->LimitStatusP[i] = Get_BitOfByte(bm_LimitStatusP,i);
-		status->LimitStatusN[i] = Get_BitOfByte(bm_LimitStatusN,i);
-		status->HomeStatus[i] =  Get_BitOfByte(bm_HomeStatus,i);
-
-		status->DedicatedLimitNInputs[i] =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
-		status->DedicatedLimitPInputs[i] =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
-		status->DedicatedHomeInputs[i] =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
-
-		uint8_t  bm_SoftLimitStatus = dev->PEv2.SoftLimitStatus;
-		status->SoftLimitStatus[i] = Get_BitOfByte(dev->PEv2.SoftLimitStatus,i);
-
-		switch( status->AxesState[i])
+		for (i = 0; i < status->nrOfAxes; i++)
 		{
-			case PK_PEAxisState_axSTOPPED:        // Axis is stopped
+			status->AxesState[i] = dev->PEv2.AxesState[i];
+			status->CurrentPosition[i] = dev->PEv2.CurrentPosition[i];
+
+			status->LimitStatusP[i] = Get_BitOfByte(bm_LimitStatusP,i);
+			status->LimitStatusN[i] = Get_BitOfByte(bm_LimitStatusN,i);
+			status->HomeStatus[i] =  Get_BitOfByte(bm_HomeStatus,i);
+
+			status->DedicatedLimitNInputs[i] =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
+			status->DedicatedLimitPInputs[i] =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
+			status->DedicatedHomeInputs[i] =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
+
+			uint8_t  bm_SoftLimitStatus = dev->PEv2.SoftLimitStatus;
+			status->SoftLimitStatus[i] = Get_BitOfByte(dev->PEv2.SoftLimitStatus,i);
+
+			switch( status->AxesState[i])
+			{
+				case PK_PEAxisState_axSTOPPED:        // Axis is stopped
 
 
-				break ;
-			case PK_PEAxisState_axREADY:        // Axis ready
+					break ;
+				case PK_PEAxisState_axREADY:        // Axis ready
 
 
-				break ;
-			case PK_PEAxisState_axRUNNING:        // Axis is running
+					break ;
+				case PK_PEAxisState_axRUNNING:        // Axis is running
 		
-				if ( PEv2_params->AxesConfig[i]!=PK_AC_POSITION_MODE)
-				{
-					if(status->ReferencePositionSpeed[i] != status->joint_vel_cmd[i] * PEv2_params->STEP_SCALE[i])
+					if ( PEv2_params->AxesConfig[i]!=PK_AC_POSITION_MODE)
 					{
-						status->ReferencePositionSpeed[i] = status->joint_vel_cmd[i] * PEv2_params->STEP_SCALE[i];
-						status->PositionSetup[i] = status->joint_pos_cmd[i] * PEv2_params->STEP_SCALE[i];
+						if(status->ReferencePositionSpeed[i] != status->joint_vel_cmd[i] * PEv2_params->STEP_SCALE[i])
+						{
+							status->ReferencePositionSpeed[i] = status->joint_vel_cmd[i] * PEv2_params->STEP_SCALE[i];
+							status->PositionSetup[i] = status->joint_pos_cmd[i] * PEv2_params->STEP_SCALE[i];
 
-						doMove=true;
-						dev->PEv2.ReferencePositionSpeed[i] = status->ReferencePositionSpeed[i];
-						dev->PEv2.PositionSetup[i] = status->PositionSetup[i];
+							doMove=true;
+							dev->PEv2.ReferencePositionSpeed[i] = status->ReferencePositionSpeed[i];
+							dev->PEv2.PositionSetup[i] = status->PositionSetup[i];
+						}
 					}
-				}
-				else
-				{
-
-					if ((status->CurrentPosition[i] - status->ReferencePositionSpeed[i]) < 10 )
+					else
 					{
-						status->ReferencePositionSpeed[i] = status->joint_pos_cmd[i] * PEv2_params->STEP_SCALE[i];
-						dev->PEv2.ReferencePositionSpeed[i] = status->ReferencePositionSpeed[i];
-						dev->PEv2.PositionSetup[i] = status->PositionSetup[i];
-						doPositionSet =true;
-					}
-				}
-				// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-				status->joint_vel_fb[i] = ( status->joint_pos_fb[i] - (status->CurrentPosition[i] / PEv2_params->STEP_SCALE[i]) )* Loop_Frequ;
-				status->joint_pos_fb[i] = dev->PEv2.CurrentPosition[i] / PEv2_params->STEP_SCALE[i];
 
-				break ;
-			case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
-				break ;
-			case PK_PEAxisState_axHOMING_BACKING_OFF:   // Backing off switch
-				break ;
-			case PK_PEAxisState_axHOME:       // Axis is homed
-			// PEv2_joint_
-				break ;
-			case PK_PEAxisState_axHOMINGSTART:       // Homing procedure is starting on axis
-				break ;
-			case PK_PEAxisState_axHOMINGSEARCH:       // Homing procedure first step - going to home
-				break ;
-			case PK_PEAxisState_axHOMINGBACK:       // Homing procedure second step - slow homing
-				break ;
-			case PK_PEAxisState_axPROBED:       // Probing completed for this axis
-				break ;
-			case PK_PEAxisState_axPROBESTART:       // Probing procedure is starting on axis
-				break ;
-			case PK_PEAxisState_axPROBESEARCH:       // Probing procedure - probing
-				break ;
-			case PK_PEAxisState_axERROR:       // Axis error
-				break ;
-			case PK_PEAxisState_axLIMIT:        // Axis limit tripped
-				break ;
-			default:
-				break ;
+						if ((status->CurrentPosition[i] - status->ReferencePositionSpeed[i]) < 10 )
+						{
+							status->ReferencePositionSpeed[i] = status->joint_pos_cmd[i] * PEv2_params->STEP_SCALE[i];
+							dev->PEv2.ReferencePositionSpeed[i] = status->ReferencePositionSpeed[i];
+							dev->PEv2.PositionSetup[i] = status->PositionSetup[i];
+							doPositionSet =true;
+						}
+					}
+					// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
+					status->joint_vel_fb[i] = ( status->joint_pos_fb[i] - (status->CurrentPosition[i] / PEv2_params->STEP_SCALE[i]) )* Loop_Frequ;
+					status->joint_pos_fb[i] = dev->PEv2.CurrentPosition[i] / PEv2_params->STEP_SCALE[i];
+
+					break ;
+				case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
+					break ;
+				case PK_PEAxisState_axHOMING_BACKING_OFF:   // Backing off switch
+					break ;
+				case PK_PEAxisState_axHOME:       // Axis is homed
+				// PEv2_joint_
+					break ;
+				case PK_PEAxisState_axHOMINGSTART:       // Homing procedure is starting on axis
+					break ;
+				case PK_PEAxisState_axHOMINGSEARCH:       // Homing procedure first step - going to home
+					break ;
+				case PK_PEAxisState_axHOMINGBACK:       // Homing procedure second step - slow homing
+					break ;
+				case PK_PEAxisState_axPROBED:       // Probing completed for this axis
+					break ;
+				case PK_PEAxisState_axPROBESTART:       // Probing procedure is starting on axis
+					break ;
+				case PK_PEAxisState_axPROBESEARCH:       // Probing procedure - probing
+					break ;
+				case PK_PEAxisState_axERROR:       // Axis error
+					break ;
+				case PK_PEAxisState_axLIMIT:        // Axis limit tripped
+					break ;
+				default:
+					break ;
+			}
 		}
 	}
+
 
 	if(PK_PEv2_ExternalOutputsGet(dev) == PK_OK)
 	{
