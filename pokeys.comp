@@ -578,10 +578,10 @@ int Update_PEv2(PK_PEv2_Stat* status)
 	{
 		
 		// Engine info
-		status->nrOfAxes = dev->PEv2.info.nrOfAxes;
-		status->maxPulseFrequency = dev->PEv2.info.maxPulseFrequency;
-		status->bufferDepth = dev->PEv2.info.bufferDepth;
-		status->slotTiming = dev->PEv2.info.slotTiming;
+		//status->nrOfAxes = dev->PEv2.info.nrOfAxes;
+		//status->maxPulseFrequency = dev->PEv2.info.maxPulseFrequency;
+		//status->bufferDepth = dev->PEv2.info.bufferDepth;
+		//status->slotTiming = dev->PEv2.info.slotTiming;
 		/*
 		status->AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 		status->LimitOverride = dev->PEv2.LimitOverride;
