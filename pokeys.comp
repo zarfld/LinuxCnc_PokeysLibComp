@@ -576,6 +576,7 @@ int Update_PEv2(PK_PEv2_Stat* status)
 
 	if(PK_PEv2_StatusGet(dev) == PK_OK)
 	{
+		/*
 		// Engine info
 		status->nrOfAxes = dev->PEv2.info.nrOfAxes;
 		status->maxPulseFrequency = dev->PEv2.info.maxPulseFrequency;
@@ -687,6 +688,7 @@ int Update_PEv2(PK_PEv2_Stat* status)
 		    casePK_PEState_peSTOP_EMERGENCY:          // Pulse engine stopped due to emergency switch
 				break;
 		}
+		*/
 	}
 
 	/*
