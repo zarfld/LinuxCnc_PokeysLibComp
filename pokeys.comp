@@ -436,6 +436,8 @@ typedef struct
 	uint8_t         SoftLimitStatus;           // Bit-mapped soft-limit statuses per axes
 	uint8_t         AxisEnabledStatesMask;     // Bit-mapped states, where axis enabled and charge pump signals are active
 	uint8_t         LimitOverride;             // Limit override status
+	uint8_t         EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
+
 
 	// Basic engine states
     uint8_t         PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
@@ -560,7 +562,6 @@ int Update_PEv2(PK_PEv2_Stat* status)
 				if(HAL_Machine_On==false)
 				{
 					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
-					
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
 				break;
@@ -600,10 +601,8 @@ int Update_PEv2(PK_PEv2_Stat* status)
 				}
 				break;
 		    casePK_PEState_peSTOP_LIMIT:         // Pulse engine stopped due to limit reached
-				err=true;
 				break;
 		    casePK_PEState_peSTOP_EMERGENCY:          // Pulse engine stopped due to emergency switch
-				err=true;
 				break;
 		}
 	}
