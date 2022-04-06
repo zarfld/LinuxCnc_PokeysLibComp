@@ -478,13 +478,13 @@ typedef struct
 	uint8_t			BacklashCompensationEnabled;
 
 // HAL-INI parameters
-		s32 COORDINATES;
-		s32 LINEAR_UNITS;
-		s32 ANGULAR_UNITS;
+		CHAR COORDINATES;
+		CHAR LINEAR_UNITS;
+		CHAR ANGULAR_UNITS;
 		float CYCLE_TIME;
 		float DEFAULT_LINEAR_VELOCITY;
 		float MAX_LINEAR_VELOCITY;
-		s32 TYPE [8];			//LINEAR / ANGULAR
+		CHAR TYPE [8];			//LINEAR / ANGULAR
 		float HOME [8];
 		float FERROR [8];
 		float MIN_FERROR [8];
