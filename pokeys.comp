@@ -503,19 +503,19 @@ typedef struct
 		float MAX_OUTPUT [8];
 		float ENCODER_SCALE [8];
 // these are in nanoseconds
-		float DIRSETUP [8] = 0;					// (ns)
-		float DIRHOLD [8] = 0;					// (ns)
-		float STEPLEN [8] = 0;					// (ns)
-		float STEPSPACE [8] = 0;					// (ns)
-		float STEP_SCALE [8] = 0;					// (pulses/mm)
-		float MIN_LIMIT [8] = 0;					// position (mm)
-		float MAX_LIMIT [8] = 0;					// position (mm)
-		float HOME_OFFSET [8] = 0;				// position (mm)
-		float HOME_SEARCH_VEL [8] = 0;			// position (mm)
-		float HOME_LATCH_VEL [8] = 0;				// position (mm)
-		float HOME_FINAL_VEL [8] = 0;				// position (mm)
-		bool HOME_USE_INDEX [8] = 0;				// YES / NO
-		bool HOME_IGNORE_LIMITS [8] = 0;			// YES / NO
+		float DIRSETUP [8];					// (ns)
+		float DIRHOLD [8];					// (ns)
+		float STEPLEN [8];					// (ns)
+		float STEPSPACE [8];					// (ns)
+		float STEP_SCALE [8];					// (pulses/mm)
+		float MIN_LIMIT [8];					// position (mm)
+		float MAX_LIMIT [8];					// position (mm)
+		float HOME_OFFSET [8];				// position (mm)
+		float HOME_SEARCH_VEL [8];			// position (mm)
+		float HOME_LATCH_VEL [8];				// position (mm)
+		float HOME_FINAL_VEL [8];				// position (mm)
+		bool HOME_USE_INDEX [8];				// YES / NO
+		bool HOME_IGNORE_LIMITS [8];			// YES / NO
 } PK_PEv2_Parameters;
 
 
