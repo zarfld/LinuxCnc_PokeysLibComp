@@ -70,3 +70,5 @@ setp pokeys.0.PEv2.7.PinHomeSwitch  [POKEYS]PEv2_PinHomeSwitch_7
 setp pokeys.0.PEv2.7.PinLimitMSwitch  [POKEYS]PEv2_PinLimitMSwitch_7
 setp pokeys.0.PEv2.7.PinLimitPSwitch  [POKEYS]PEv2_PinLimitPSwitch_7
 setp pokeys.0.PEv2.7.AxisEnableOutputPins  [POKEYS]PEv2_AxisEnableOutputPins_7
+
+setp pokeys.0.PEv2.params.ApplyIniSettings  [POKEYS]ApplyIniSettings

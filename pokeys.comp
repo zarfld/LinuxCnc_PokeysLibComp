@@ -68,6 +68,8 @@ pin in s32 PEv2.params.ANGULAR_UNITS;
 pin in float PEv2.params.CYCLE_TIME;
 pin in float PEv2.params.DEFAULT_LINEAR_VELOCITY;
 pin in float PEv2.params.MAX_LINEAR_VELOCITY;
+
+pin in bit PEv2.params.ApplyIniSettings;
 //***********************************************************************
 
 // Pulse engine v2 structure...
@@ -487,6 +489,7 @@ typedef struct
     uint8_t         EmergencyOutputPin;
 
 // HAL-INI parameters
+		bool ApplyIniSettings;
 		char COORDINATES;
 		char LINEAR_UNITS;
 		char ANGULAR_UNITS;
@@ -551,69 +554,170 @@ uint8_t Merge_8BitsToByte(bool Bit_array[8])
 PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 {
 
-	if(PK_PEv2_AdditionalParametersGet(dev) == PK_OK)
+	if (params.ApplyIniSettings!=0)
 	{
-	//	params.EmergencyInputPin = dev->PEv2.EmergencyInputPin;   
+		dev->PEv2.EmergencyInputPin = params.EmergencyInputPin;
+		if ( params.EmergencyInputPin!=0)
+		{	//check if pin is parametrized in HAL
+			dev->Pins[params.EmergencyInputPin-1].PinFunction = PK_PinCap_digitalInput;
+			setPinConfig=true;
+		}
+		if ( params.EmergencyOutputPin!=0)
+		{	//check if pin is parametrized in HAL
+			dev->Pins[ params.EmergencyOutputPin-1].PinFunction = PK_PinCap_digitalOutput;
+			setPinConfig=true;
+		}
+
+
+
+		dev->PEv2.PulseEngineEnabled = params.PulseEngineEnabled;
+		dev->PEv2.ChargePumpEnabled = params.ChargePumpEnabled;
+		dev->PEv2.PulseGeneratorType = params.PulseGeneratorType;
+		//dev->PEv2.PulseEngineBufferSize = params.PulseEngineBufferSize;
+		dev->PEv2.EmergencySwitchPolarity = params.EmergencySwitchPolarity;
+		//dev->PEv2.AxisEnabledStatesMask = params.AxisEnabledStatesMask;
+
+		for (i = 0; i < pe.info.nrOfAxes; i++)
+		{
+			// Read the structure
+			dev->PEv2.AxesConfig[i] = params.AxesConfig[i];
+			dev->PEv2.AxesSwitchConfig[i] = params.AxesSwitchConfig[i];
+
+			dev->PEv2.PinHomeSwitch[i] = params.PinHomeSwitch[i];
+			if ( params.PinHomeSwitch[i]!=0)
+			{	//check if pin is parametrized in HAL
+				dev->Pins[ params.PinHomeSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
+				setPinConfig=true;
+			}
+
+			dev->PEv2.PinLimitMSwitch[i] = params.PinLimitMSwitch[i];
+			if ( params.PinLimitMSwitch[i]!=0)
+			{	//check if pin is parametrized in HAL
+				dev->Pins[ params.PinLimitMSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
+				setPinConfig=true;
+			}
+
+			dev->PEv2.PinLimitPSwitch[i] = params.PinLimitPSwitch[i];
+			if ( params.PinLimitPSwitch[i]!=0)
+			{	//check if pin is parametrized in HAL
+				dev->Pins[ params.PinLimitPSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
+				setPinConfig=true;
+			}
+
+			dev->PEv2.HomingSpeed[i] = params.HomingSpeed[i];
+			dev->PEv2.HomingReturnSpeed[i] = params.HomingReturnSpeed[i];
+
+			dev->PEv2.MPGjogEncoder[i] = params.MPGjogEncoder[i] = dev->response[15];
+
+			// Convert parameters... assume little-endian format
+			dev->PEv2.MaxSpeed[i] = params.MaxSpeed[i];
+			dev->PEv2.MaxAcceleration[i] = params.MaxAcceleration[i];
+			dev->PEv2.MaxDecceleration[i] = params.MaxDecceleration[i];
+
+			dev->PEv2.SoftLimitMinimum[i] = params.SoftLimitMinimum[i];
+			dev->PEv2.SoftLimitMaximum[i] = params.SoftLimitMaximum[i];
+
+			dev->PEv2.MPGjogMultiplier[i] = params.MPGjogMultiplier[i];
+
+			dev->PEv2.AxisEnableOutputPins[i] = pe.AxisEnableOutputPins[i];
+			if ( params.AxisEnableOutputPins[i]!=0)
+			{	//check if pin is parametrized in HAL
+				dev->Pins[ params.AxisEnableOutputPins[i]-1].PinFunction = PK_PinCap_digitalOutput;
+				setPinConfig=true;
+			}
+
+			dev->PEv2.InvertAxisEnable[i] = params.InvertAxisEnable[i];
+
+			dev->PEv2.FilterLimitMSwitch[i] = params.FilterLimitMSwitch[i];
+			dev->PEv2.FilterLimitPSwitch[i] = params.FilterLimitPSwitch[i];
+			dev->PEv2.FilterHomeSwitch[i] = params.FilterHomeSwitch[i];
+
+			dev->PEv2.HomingAlgorithm[i] = params.HomingAlgorithm[i];
+				// MPG 1x mode here
+			dev->PEv2.HomeBackOffDistance[i] = params.HomeBackOffDistance[i];
+			dev->PEv2.MPGjogDivider[i] = params.MPGjogDivider[i];	
+			dev->PEv2.param1 = i;
+			PK_PEv2_AxisConfigurationSet(dev);
+		}
+
+		/*
+		params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+		params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+		params.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
+		params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
+		params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
+		params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
+		PK_PEv2_PulseEngineSetup
+		*/
+
+		if (setPinConfig==true)
+		{
+		}
 	}
-	sPoKeysPEv2 pe = dev->PEv2;
-	if(PK_PEv2_AxisConfigurationGet(dev) == PK_OK)
+	else
 	{
-		params.PulseEngineEnabled = pe.PulseEngineEnabled;
-		params.ChargePumpEnabled = pe.ChargePumpEnabled;
+		params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+		params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 		params.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 		//params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
 		params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
 		//params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 
+		if(PK_PEv2_AdditionalParametersGet(dev) == PK_OK)
+		{
+			params.EmergencyInputPin = dev->PEv2.EmergencyInputPin;   
+		}
+
 		for (i = 0; i < pe.info.nrOfAxes; i++)
 		{
-		    // Read the structure
-			params.AxesConfig[i] = pe.AxesConfig[i];
-			params.AxesSwitchConfig[i] = pe.AxesSwitchConfig[i];
+			dev->PEv2.param1 = i;
+			if(PK_PEv2_AxisConfigurationGet(dev) == PK_OK)
+			{
+				// Read the structure
+				params.AxesConfig[i] = pe.AxesConfig[i];
 
-			params.PinHomeSwitch[i] = pe.PinHomeSwitch[i];
-			params.PinLimitMSwitch[i] = pe.PinLimitMSwitch[i];
-			params.PinLimitPSwitch[i] = pe.PinLimitPSwitch[i];
+				params.AxesSwitchConfig[i] = pe.AxesSwitchConfig[i];
 
-			params.HomingSpeed[i] = pe.HomingSpeed[i];
-			params.HomingReturnSpeed[i] = pe.HomingReturnSpeed[i];
+				params.PinHomeSwitch[i] = pe.PinHomeSwitch[i];
+				params.PinLimitMSwitch[i] = pe.PinLimitMSwitch[i];
+				params.PinLimitPSwitch[i] = pe.PinLimitPSwitch[i];
 
-			params.MPGjogEncoder[i] = pe.MPGjogEncoder[i] = dev->response[15];
+				params.HomingSpeed[i] = pe.HomingSpeed[i];
+				params.HomingReturnSpeed[i] = pe.HomingReturnSpeed[i];
 
-			// Convert parameters... assume little-endian format
-			params.MaxSpeed[i] = pe.MaxSpeed[i];
-			params.MaxAcceleration[i] = pe.MaxAcceleration[i];
-			params.MaxDecceleration[i] = pe.MaxDecceleration[i];
+				params.MPGjogEncoder[i] = pe.MPGjogEncoder[i] = dev->response[15];
 
-			params.SoftLimitMinimum[i] = pe.SoftLimitMinimum[i];
-			params.SoftLimitMaximum[i] = pe.SoftLimitMaximum[i];
+				// Convert parameters... assume little-endian format
+				params.MaxSpeed[i] = pe.MaxSpeed[i];
+				params.MaxAcceleration[i] = pe.MaxAcceleration[i];
+				params.MaxDecceleration[i] = pe.MaxDecceleration[i];
 
-			params.MPGjogMultiplier[i] = pe.MPGjogMultiplier[i];
+				params.SoftLimitMinimum[i] = pe.SoftLimitMinimum[i];
+				params.SoftLimitMaximum[i] = pe.SoftLimitMaximum[i];
 
-			params.AxisEnableOutputPins[i] = pe.AxisEnableOutputPins[i];
-			params.InvertAxisEnable[i] = pe.InvertAxisEnable[i];
+				params.MPGjogMultiplier[i] = pe.MPGjogMultiplier[i];
 
-			params.FilterLimitMSwitch[i] = pe.FilterLimitMSwitch[i];
-			params.FilterLimitPSwitch[i] = pe.FilterLimitPSwitch[i];
-			params.FilterHomeSwitch[i] = pe.FilterHomeSwitch[i];
+				params.AxisEnableOutputPins[i] = pe.AxisEnableOutputPins[i];
+				params.InvertAxisEnable[i] = pe.InvertAxisEnable[i];
 
-			params.HomingAlgorithm[i] = pe.HomingAlgorithm[i];
-			// MPG 1x mode here
-			params.HomeBackOffDistance[i] = pe.HomeBackOffDistance[i];
-			params.MPGjogDivider[i] = pe.MPGjogDivider[i];	
+				params.FilterLimitMSwitch[i] = pe.FilterLimitMSwitch[i];
+				params.FilterLimitPSwitch[i] = pe.FilterLimitPSwitch[i];
+				params.FilterHomeSwitch[i] = pe.FilterHomeSwitch[i];
+
+				params.HomingAlgorithm[i] = pe.HomingAlgorithm[i];
+				// MPG 1x mode here
+				params.HomeBackOffDistance[i] = pe.HomeBackOffDistance[i];
+				params.MPGjogDivider[i] = pe.MPGjogDivider[i];	
+			}
 		}
+
+		params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+		params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+		params.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
+		params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
+		params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
+		params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 	}
-
-
-	/*
-	params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-    params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
-    params.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
-    params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
-    params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
-    params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
-	PK_PEv2_PulseEngineSetup
-	*/
 
 	return params;
 }
@@ -1093,17 +1197,9 @@ void user_mainloop(void)
 			 a_debout = 124;
 			 if ( info_PulseEnginev2!=0 )
 			 {
-
-			  /* 
-				PK_PEv2_Parameters * PEv2_params;
-				PK_PEv2_Stat * PEv2_status;
-			  */
-				PEv2_status =Update_PEv2();
-
-
 				//***************************************************************************
 				// Setting Parameters from INI
-				
+				PEv2_params.ApplyIniSettings =PEv2.params.ApplyIniSettings;
 				PEv2_params.COORDINATES = PEv2_params_COORDINATES;
 				PEv2_params.LINEAR_UNITS = PEv2_params_LINEAR_UNITS;
 				PEv2_params.ANGULAR_UNITS = PEv2_params_ ANGULAR_UNITS;
@@ -1112,41 +1208,38 @@ void user_mainloop(void)
 				PEv2_params.MAX_LINEAR_VELOCITY = PEv2_params_MAX_LINEAR_VELOCITY;
 				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
-					PEv2_params.TYPE[i] = PEv2_params_TYPE[i];			//LINEAR / ANGULAR
-					PEv2_params.HOME[i] = PEv2_params_HOME[i];
-					PEv2_params.FERROR[i] = PEv2_params_FERROR[i];
-					PEv2_params.MIN_FERROR[i] = PEv2_params_MIN_FERROR[i];
-					PEv2_params.MAX_VELOCITY[i] = PEv2_params_MAX_VELOCITY[i];
-					PEv2_params.STEPGEN_MAXVEL[i] = PEv2_params_MAX_ACCELERATION[i];
-					PEv2_params.STEPGEN_MAXVEL[i] = PEv2_params_STEPGEN_MAXVEL[i];
-					PEv2_params.STEPGEN_MAXACCEL[i] = PEv2_params_STEPGEN_MAXACCEL[i];
-					//		float P[i];
-					//		float I[i];
-					//		float D[i];
-					//		float FF0[i];
-					//		float FF1[i];
-					//		float FF2[i];
-					//		float BIAS[i];
-					PEv2_params.DEADBAND[i] = PEv2_params_DEADBAND[i];
-					PEv2_params.MAX_OUTPUT[i] = PEv2_params_MAX_OUTPUT[i];
-					PEv2_params.ENCODER_SCALE[i] = PEv2_params_ENCODER_SCALE[i];
+					PEv2_params.TYPE[i] = PEv2_params_TYPE(i);			//LINEAR / ANGULAR
+					PEv2_params.HOME[i] = PEv2_params_HOME(i);
+					PEv2_params.FERROR[i] = PEv2_params_FERROR(i);
+					PEv2_params.MIN_FERROR[i] = PEv2_params_MIN_FERROR(i);
+					PEv2_params.MAX_VELOCITY[i] = PEv2_params_MAX_VELOCITY(i);
+					PEv2_params.STEPGEN_MAXVEL[i] = PEv2_params_MAX_ACCELERATION(i);
+					PEv2_params.STEPGEN_MAXVEL[i] = PEv2_params_STEPGEN_MAXVEL(i);
+					PEv2_params.STEPGEN_MAXACCEL[i] = PEv2_params_STEPGEN_MAXACCEL(i);
+					//		float P(i);
+					//		float I(i);
+					//		float D(i);
+					//		float FF0(i);
+					//		float FF1(i);
+					//		float FF2(i);
+					//		float BIAS(i);
+					PEv2_params.DEADBAND[i] = PEv2_params_DEADBAND(i);
+					PEv2_params.MAX_OUTPUT[i] = PEv2_params_MAX_OUTPUT(i);
+					PEv2_params.ENCODER_SCALE[i] = PEv2_params_ENCODER_SCALE(i);
 					// these are in nanoseconds
-					PEv2_params.DIRSETUP[i] = PEv2_params_DIRSETUP[i];					// (ns)
-					PEv2_params.DIRHOLD[i] = PEv2_params_DIRHOLD[i];					// (ns)
-					PEv2_params.STEPLEN[i] = PEv2_params_STEPLEN[i];					// (ns)
-					PEv2_params.STEPSPACE[i] = PEv2_params_STEPSPACE[i];					// (ns)
-					PEv2_params.STEP_SCALE[i] = PEv2_params_STEP_SCALE[i];					// (pulses/mm)
-					PEv2_params.MIN_LIMIT[i] = PEv2_params_MIN_LIMIT[i];					// position (mm)
-					PEv2_params.MAX_LIMIT[i] = PEv2_params_MAX_LIMIT[i];					// position (mm)
-					PEv2_params.HOME_OFFSET[i] = PEv2_params_HOME_OFFSET[i];				// position (mm)
-					PEv2_params.HOME_SEARCH_VEL[i] = PEv2_params_HOME_SEARCH_VEL[i];			// position (mm)
-					PEv2_params.HOME_FINAL_VEL[i] = PEv2_params_HOME_FINAL_VEL[i];				// position (mm)
-					PEv2_params.HOME_FINAL_VEL[i] = PEv2_params_HOME_FINAL_VEL[i];				// position (mm)
-					PEv2_params.HOME_USE_INDEX[i] = PEv2_params_HOME_USE_INDEX[i];				// YES / NO
-					PEv2_params.HOME_IGNORE_LIMITS[i] = PEv2_params_HOME_IGNORE_LIMITS[i];			// YES / NO
-
-
-
+					PEv2_params.DIRSETUP[i] = PEv2_params_DIRSETUP(i);					// (ns)
+					PEv2_params.DIRHOLD[i] = PEv2_params_DIRHOLD(i);					// (ns)
+					PEv2_params.STEPLEN[i] = PEv2_params_STEPLEN(i);					// (ns)
+					PEv2_params.STEPSPACE[i] = PEv2_params_STEPSPACE(i);					// (ns)
+					PEv2_params.STEP_SCALE[i] = PEv2_params_STEP_SCALE(i);					// (pulses/mm)
+					PEv2_params.MIN_LIMIT[i] = PEv2_params_MIN_LIMIT(i);					// position (mm)
+					PEv2_params.MAX_LIMIT[i] = PEv2_params_MAX_LIMIT(i);					// position (mm)
+					PEv2_params.HOME_OFFSET[i] = PEv2_params_HOME_OFFSET(i);				// position (mm)
+					PEv2_params.HOME_SEARCH_VEL[i] = PEv2_params_HOME_SEARCH_VEL(i);			// position (mm)
+					PEv2_params.HOME_FINAL_VEL[i] = PEv2_params_HOME_FINAL_VEL(i);				// position (mm)
+					PEv2_params.HOME_FINAL_VEL[i] = PEv2_params_HOME_FINAL_VEL(i);				// position (mm)
+					PEv2_params.HOME_USE_INDEX[i] = PEv2_params_HOME_USE_INDEX(i);				// YES / NO
+					PEv2_params.HOME_IGNORE_LIMITS[i] = PEv2_params_HOME_IGNORE_LIMITS(i);			// YES / NO
 				}
 				
 
@@ -1160,7 +1253,6 @@ void user_mainloop(void)
 				//device->request[13] = device->PEv2.AxisEnabledStatesMask;
 
 				//PK_PEv2_AxisConfigurationGet
-
 				PEv2_BacklashCompensationEnabled=PEv2_params.BacklashCompensationEnabled;
 				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
@@ -1202,10 +1294,8 @@ void user_mainloop(void)
 					// 	PEv2_BacklashWidth(i) = PEv2_params.BacklashWidth[i];			// half of real backlash width
 						PEv2_BacklashRegister(i) = PEv2_params.BacklashRegister[i];		// current value of the backlash register
 						PEv2_BacklashAcceleration(i) = PEv2_params.BacklashAcceleration[i];	// in pulses per ms^2
-
 				}
 			
-				
 				PEv2_nrOfAxes=PEv2_status.nrOfAxes;
 				PEv2_maxPulseFrequency=PEv2_status.maxPulseFrequency;
 				PEv2_bufferDepth=PEv2_status.bufferDepth;
@@ -1213,19 +1303,7 @@ void user_mainloop(void)
 		
 				bool setPeConfig = false;
 				PEv2_EmergencyInputPin = PEv2_params.EmergencyInputPin;
-				if ( dev->PEv2.EmergencyInputPin!=PEv2_params.EmergencyInputPin)
-				{	//check if pin is parametrized in HAL
-					a_debout = 131;
-					dev->Pins[ PEv2_EmergencyInputPin-1].PinFunction = PK_PinCap_digitalInput;
-					setPinConfig=true;
-					setPeConfig=true;
-				}
-				if ( PEv2_EmergencyOutputPin!=0)
-				{	//check if pin is parametrized in HAL
-					a_debout = 132;
-					dev->Pins[ PEv2_EmergencyOutputPin-1].PinFunction = PK_PinCap_digitalOutput;
-					setPinConfig=true;
-				}
+
 				// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
 				//check if pin is parametrized in HAL
 				dev->PEv2.ProbeInput= PEv2_ProbeInput;
