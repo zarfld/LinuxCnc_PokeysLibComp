@@ -771,93 +771,39 @@ PK_PEv2_Stat Update_PEv2()
 		status.ErrorInputStatus = dev->PEv2.ErrorInputStatus;
 		status.MiscInputStatus = dev->PEv2.MiscInputStatus;
 		
+		if(HAL_Machine_On==true)
+		{
+			dev->PEv2.PulseEngineStateSetup = PK_PEState_peRUNNING;
+		}
+		else
+		{
+			dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+		}
+
 		switch (status.PulseEngineState)
 		{
 		    case PK_PEState_peSTOPPED:           // Pulse engine is stopped
-				if(HAL_Machine_On==true)
-				{
-					dev->PEv2.PulseEngineStateSetup = PK_PEState_peRUNNING;
-					dev->PEv2.LimitOverrideSetup = 0;
-					dev->PEv2.AxisEnabledMask = 0;
-					PK_PEv2_PulseEngineStateSet(dev);
-					PK_PEv2_PulseEngineStateSet(dev);
-				}
 				break;
 		    casePK_PEState_peINTERNAL:           // PEv1: Internal motion controller is in use, PEv2: not used
 				break;
 		    casePK_PEState_peBUFFER:           // PEv1: Buffered operation mode is in use, PEv2: not used
 				break;
 		    casePK_PEState_peRUNNING:           // Pulse engine is activated
-				if(HAL_Machine_On==false)
-				{
-					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
-					dev->PEv2.LimitOverrideSetup = 0;
-					dev->PEv2.AxisEnabledMask = 0;
-					PK_PEv2_PulseEngineStateSet(dev);
-					PK_PEv2_PulseEngineStateSet(dev);
-				}
 				break;
 		    casePK_PEState_peJOGGING:          // Jogging mode enabled
-				if(HAL_Machine_On==false)
-				{
-					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
-					dev->PEv2.LimitOverrideSetup = 0;
-					dev->PEv2.AxisEnabledMask = 0;
-					PK_PEv2_PulseEngineStateSet(dev);
-					PK_PEv2_PulseEngineStateSet(dev);
-				}
 				break;
 		    casePK_PEState_peSTOPPING:          // Pulse engine is stopping
 				break;
 		    casePK_PEState_peHOME:          // All axes are homed
-				if(HAL_Machine_On==false)
-				{
-					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
-					dev->PEv2.LimitOverrideSetup = 0;
-					dev->PEv2.AxisEnabledMask = 0;
-					PK_PEv2_PulseEngineStateSet(dev);
-					PK_PEv2_PulseEngineStateSet(dev);
-				}
 				break;
 		    casePK_PEState_peHOMING:          // Axes homing is in progress
-				if(HAL_Machine_On==false)
-				{
-					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
-					dev->PEv2.LimitOverrideSetup = 0;
-					dev->PEv2.AxisEnabledMask = 0;
-					PK_PEv2_PulseEngineStateSet(dev);
-					PK_PEv2_PulseEngineStateSet(dev);
-				}
 				break;
 		    casePK_PEState_pePROBECOMPLETE:          // All axes are homed
-				if(HAL_Machine_On==false)
-				{
-					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
-					dev->PEv2.LimitOverrideSetup = 0;
-					dev->PEv2.AxisEnabledMask = 0;
-					PK_PEv2_PulseEngineStateSet(dev);
-					PK_PEv2_PulseEngineStateSet(dev);
-				}
 				break;
 		    casePK_PEState_pePROBE:          // Axes probing is in progress
-				if(HAL_Machine_On==false)
-				{
-					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
-					dev->PEv2.LimitOverrideSetup = 0;
-					dev->PEv2.AxisEnabledMask = 0;
-					PK_PEv2_PulseEngineStateSet(dev);
-					PK_PEv2_PulseEngineStateSet(dev);
-				}
 				break;
 		    casePK_PEState_pePROBEERROR:          // Error occured during probing
-				if(HAL_Machine_On==false)
-				{
-					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
-					dev->PEv2.LimitOverrideSetup = 0;
-					dev->PEv2.AxisEnabledMask = 0;
-					PK_PEv2_PulseEngineStateSet(dev);
-					PK_PEv2_PulseEngineStateSet(dev);
-				}
+
 				break;
 		    casePK_PEState_peHYBRIDPROBE_STOPPING:
 				if(HAL_Machine_On==false)
@@ -889,7 +835,13 @@ PK_PEv2_Stat Update_PEv2()
 		
 	}
 
-	
+	if(dev->PEv2.PulseEngineStateSetup != status.PulseEngineState)
+	{
+
+		PK_PEv2_PulseEngineStateSet(dev);
+		PK_PEv2_PulseEngineStateSet(dev);
+	}
+
 	if(PK_PEv2_Status2Get(dev) == PK_OK)
 	{
 		bm_DedicatedLimitNInputs = dev->PEv2.DedicatedLimitNInputs;
@@ -1020,6 +972,11 @@ PK_PEv2_Stat Update_PEv2()
 
 	if (status.PulseEngineState != status.PulseEngineStateSetup)
 	{
+
+		dev->PEv2.PulseEngineStateSetup = status.PulseEngineStateSetup;
+		dev->PEv2.LimitOverrideSetup = 0;
+		dev->PEv2.AxisEnabledMask = 0;
+
 		PK_PEv2_PulseEngineStateSet(dev);
 	}
 
@@ -1416,8 +1373,7 @@ void user_mainloop(void)
 						PK_PEv2_AxisConfigurationSet(dev);
 					}
 				}
-				dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
-				PK_PEv2_PulseEngineStateSet(dev);
+
 				a_debout = 136;
 			 }
 			
