@@ -773,6 +773,28 @@ PK_PEv2_Stat Update_PEv2()
 		
 		if(HAL_Machine_On==true)
 		{
+		/*
+		    PK_PEState_peSTOPPED        = 0,           // Pulse engine is stopped
+			PK_PEState_peINTERNAL       = 1,           // PEv1: Internal motion controller is in use, PEv2: not used
+			PK_PEState_peBUFFER         = 2,           // PEv1: Buffered operation mode is in use, PEv2: not used
+			PK_PEState_peRUNNING        = 3,           // Pulse engine is activated
+
+			PK_PEState_peJOGGING        = 10,          // Jogging mode enabled
+			PK_PEState_peSTOPPING       = 11,          // Pulse engine is stopping
+
+			PK_PEState_peHOME           = 20,          // All axes are homed
+			PK_PEState_peHOMING         = 21,          // Axes homing is in progress
+
+			PK_PEState_pePROBECOMPLETE  = 30,          // All axes are homed
+			PK_PEState_pePROBE          = 31,          // Axes probing is in progress
+			PK_PEState_pePROBEERROR     = 32,          // Error occured during probing
+
+			PK_PEState_peHYBRIDPROBE_STOPPING = 40,
+			PK_PEState_peHYBRIDPROBE_COMPLETE = 41,
+
+			PK_PEState_peSTOP_LIMIT     = 100,         // Pulse engine stopped due to limit reached
+			PK_PEState_peSTOP_EMERGENCY = 101          // Pulse engine stopped due to emergency switch
+		*/
 			dev->PEv2.PulseEngineStateSetup = PK_PEState_peRUNNING;
 		}
 		else
@@ -1108,10 +1130,12 @@ void user_mainloop(void)
     while(0xb){
        FOR_ALL_INSTS() {
 	   rtc_loopcount++;
+	   HAL_Machine_On = machine_is_on;
+
 	   a_debout = 100;
 	 while(dev == NULL)
 	 {
-			HAL_Machine_On = machine_is_on;
+			
 			Loop_Frequ = rtc_loop_frequ;
 		 if (devSerial!=0 )
 		 {

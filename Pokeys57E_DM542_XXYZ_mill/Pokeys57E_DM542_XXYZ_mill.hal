@@ -23,7 +23,7 @@ addf pid.s.do-pid-calcs       servo-thread
 #addf [HMOT](CARD0).write         servo-thread
 
 # external output signals
-net estop-out       => pokeys.0.PEv2.EmergencyOutput
+net estop-out     => pokeys.0.PEv2.EmergencyOutput
 net machine-is-on => pokeys.0.machine-is-on
 # external input signals
 
