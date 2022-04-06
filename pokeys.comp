@@ -477,6 +477,15 @@ typedef struct
 	uint8_t			BacklashAcceleration[8];	// in pulses per ms^2
 	uint8_t			BacklashCompensationEnabled;
 
+// add pins
+    uint8_t         ProbeInput;                // Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
+    uint8_t         ProbeInputPolarity;        // Probe input polarity
+
+//int32_t PK_PEv2_AdditionalParametersGet(sPoKeysDevice * device)
+//int32_t PK_PEv2_AdditionalParametersSet(sPoKeysDevice * device)
+    uint8_t         EmergencyInputPin;
+    uint8_t         EmergencyOutputPin;
+
 // HAL-INI parameters
 		char COORDINATES;
 		char LINEAR_UNITS;
@@ -539,9 +548,9 @@ uint8_t Merge_8BitsToByte(bool Bit_array[8])
   return sum;
 }
 
-PK_PEv2_Parameters GetConfig_PEv2()
+PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 {
-	PK_PEv2_Parameters params;
+
 	if(PK_PEv2_AdditionalParametersGet(dev) == PK_OK)
 	{
 	//	params.EmergencyInputPin = dev->PEv2.EmergencyInputPin;   
@@ -1089,10 +1098,10 @@ void user_mainloop(void)
 				PK_PEv2_Parameters * PEv2_params;
 				PK_PEv2_Stat * PEv2_status;
 			  */
-				PEv2_status =Update_PEv();
-				PEv2_params = GetConfig_PEv2();
+				PEv2_status =Update_PEv2();
+				PEv2_params = GetConfig_PEv2(PEv2_params);
 				// PK_PEv2_PulseEngineSetup   
-				if (PEv2_params!=Null)
+				if (PEv2_params!=NULL)
 				{
 					PEv2_PulseEngineEnabled=PEv2_status.PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
 					PEv2_ChargePumpEnabled=PEv2_status.ChargePumpEnabled;         // Charge pump output enabled
@@ -1110,7 +1119,7 @@ void user_mainloop(void)
 
 					   // Read the structure
 						PEv2_AxesConfig(i) = PEv2_params.AxesConfig[i];             // Axis configuration - see ePK_PEv2_AxisConfig
-						PEv2_AxesSwitchConfig(i) = PEv2_params.AxesSwitchConfig[i];       // Axis switch configuration - see ePK_PEv2_AxisSwitchOptions
+						//PEv2_AxesSwitchConfig(i) = PEv2_params.AxesSwitchConfig[i];       // Axis switch configuration - see ePK_PEv2_AxisSwitchOptions
 
 						PEv2_PinHomeSwitch(i) = PEv2_params.PinHomeSwitch[i];          // Home switch pin (0 for external dedicated input)
 						PEv2_PinLimitMSwitch(i) = PEv2_params.PinLimitMSwitch[i];        // Limit- switch pin (0 for external dedicated input)
