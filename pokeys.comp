@@ -1099,6 +1099,54 @@ void user_mainloop(void)
 				PK_PEv2_Stat * PEv2_status;
 			  */
 				PEv2_status =Update_PEv2();
+
+
+				//***************************************************************************
+				// Setting Parameters from INI
+				
+				PEv2_params.COORDINATES = PEv2_params_COORDINATES;
+				PEv2_params.LINEAR_UNITS = PEv2_params_LINEAR_UNITS;
+				PEv2_params.ANGULAR_UNITS = PEv2_params_ ANGULAR_UNITS;
+				PEv2_params.CYCLE_TIME = PEv2_params_CYCLE_TIME;
+				PEv2_params.DEFAULT_LINEAR_VELOCITY = PEv2_params_DEFAULT_LINEAR_VELOCITY;
+				PEv2_params.MAX_LINEAR_VELOCITY = PEv2_params_MAX_LINEAR_VELOCITY;
+				for(i=0;i< PEv2_nrOfAxes;i++)
+				{
+					PEv2_params.TYPE[i] = PEv2_params_TYPE[i];			//LINEAR / ANGULAR
+					PEv2_params.HOME[i] = PEv2_params_HOME[i];
+					PEv2_params.FERROR[i] = PEv2_params_FERROR[i];
+					PEv2_params.MIN_FERROR[i] = PEv2_params_MIN_FERROR[i];
+					PEv2_params.MAX_VELOCITY[i] = PEv2_params_MAX_VELOCITY[i];
+					PEv2_params.STEPGEN_MAXVEL[i] = PEv2_params_MAX_ACCELERATION[i];
+					PEv2_params.STEPGEN_MAXVEL[i] = PEv2_params_STEPGEN_MAXVEL[i];
+					PEv2_params.STEPGEN_MAXACCEL[i] = PEv2_params_STEPGEN_MAXACCEL[i];
+					//		float P[i];
+					//		float I[i];
+					//		float D[i];
+					//		float FF0[i];
+					//		float FF1[i];
+					//		float FF2[i];
+					//		float BIAS[i];
+					PEv2_params.DEADBAND[i] = PEv2_params_DEADBAND[i];
+					PEv2_params.MAX_OUTPUT[i] = PEv2_params_MAX_OUTPUT[i];
+					PEv2_params.ENCODER_SCALE[i] = PEv2_params_ENCODER_SCALE[i];
+					// these are in nanoseconds
+					PEv2_params.DIRSETUP[i] = PEv2_params_DIRSETUP[i];					// (ns)
+					PEv2_params.DIRHOLD[i] = PEv2_params_DIRHOLD[i];					// (ns)
+					PEv2_params.STEPLEN[i] = PEv2_params_STEPLEN[i];					// (ns)
+					PEv2_params.STEPSPACE[i] = PEv2_params_STEPSPACE[i];					// (ns)
+					PEv2_params.STEP_SCALE[i] = PEv2_params_STEP_SCALE[i];					// (pulses/mm)
+					PEv2_params.MIN_LIMIT[i] = PEv2_params_MIN_LIMIT[i];					// position (mm)
+					PEv2_params.MAX_LIMIT[i] = PEv2_params_MAX_LIMIT[i];					// position (mm)
+					PEv2_params.HOME_OFFSET[i] = PEv2_params_HOME_OFFSET[i];				// position (mm)
+					PEv2_params.HOME_SEARCH_VEL[i] = PEv2_params_HOME_SEARCH_VEL[i];			// position (mm)
+					PEv2_params.HOME_FINAL_VEL[i] = PEv2_params_HOME_FINAL_VEL[i];				// position (mm)
+					PEv2_params.HOME_FINAL_VEL[i] = PEv2_params_HOME_FINAL_VEL[i];				// position (mm)
+					PEv2_params.HOME_USE_INDEX[i] = PEv2_params_HOME_USE_INDEX[i];				// YES / NO
+					PEv2_params.HOME_IGNORE_LIMITS[i] = PEv2_params_HOME_IGNORE_LIMITS[i];			// YES / NO
+				}
+				
+
 				PEv2_params = GetConfig_PEv2(PEv2_params);
 				// PK_PEv2_PulseEngineSetup   
 				PEv2_PulseEngineEnabled=PEv2_status.PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
@@ -1373,7 +1421,7 @@ void user_mainloop(void)
 		a_debout = 230;
 
 		/* 
-		if ( PEv2_EmergencyOutputPin!=0)
+		if ( PEv2_EmergencyOutputPin!=0 && PEv2_PulseEngineEnabled!=0)
 		{	//check if pin is parametrized in HAL
 			a_debout = 231;
 			if (PEv2_EmergencyOutput==0)
@@ -1430,23 +1478,27 @@ void user_mainloop(void)
 			a_debout = 2330+i;
 		}
 
-		if (dev->PEv2.EmergencyInputPin>0)
+		if (PEv2_PulseEngineEnabled!=0)
 		{
-			a_debout = 234;
-			PEv2_EmergencyInput=Pins_DigitalValueGet(dev->PEv2.EmergencyInputPin-1);
-		}
-		else
-		{
-			a_debout = 235;
-			if ( PEv2_EmergencyOutputPin!=0)
+			if (dev->PEv2.EmergencyInputPin>0)
 			{
-				PEv2_EmergencyInput=PEv2_EmergencyOutput;
+				a_debout = 234;
+				PEv2_EmergencyInput=Pins_DigitalValueGet(dev->PEv2.EmergencyInputPin-1);
 			}
 			else
 			{
-				PEv2_EmergencyInput=false;
+				a_debout = 235;
+				if ( PEv2_EmergencyOutputPin!=0)
+				{
+					PEv2_EmergencyInput=PEv2_EmergencyOutput;
+				}
+				else
+				{
+					PEv2_EmergencyInput=false;
+				}
 			}
 		}
+
 
 
 
