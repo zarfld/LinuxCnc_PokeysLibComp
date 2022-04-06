@@ -577,7 +577,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 		dev->PEv2.EmergencySwitchPolarity = params.EmergencySwitchPolarity;
 		//dev->PEv2.AxisEnabledStatesMask = params.AxisEnabledStatesMask;
 
-		for (i = 0; i < pe.info.nrOfAxes; i++)
+		for (i = 0; i < dev->PEv2.info.nrOfAxes; i++)
 		{
 			// Read the structure
 			dev->PEv2.AxesConfig[i] = params.AxesConfig[i];
@@ -714,9 +714,9 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 		params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 		params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 		params.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
-		params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
+		//params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
 		params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
-		params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
+		//params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 	}
 
 	return params;
@@ -1199,10 +1199,10 @@ void user_mainloop(void)
 			 {
 				//***************************************************************************
 				// Setting Parameters from INI
-				PEv2_params.ApplyIniSettings =PEv2.params.ApplyIniSettings;
+				PEv2_params.ApplyIniSettings =PEv2_params_ApplyIniSettings;
 				PEv2_params.COORDINATES = PEv2_params_COORDINATES;
 				PEv2_params.LINEAR_UNITS = PEv2_params_LINEAR_UNITS;
-				PEv2_params.ANGULAR_UNITS = PEv2_params_ ANGULAR_UNITS;
+				PEv2_params.ANGULAR_UNITS = PEv2_params_ANGULAR_UNITS;
 				PEv2_params.CYCLE_TIME = PEv2_params_CYCLE_TIME;
 				PEv2_params.DEFAULT_LINEAR_VELOCITY = PEv2_params_DEFAULT_LINEAR_VELOCITY;
 				PEv2_params.MAX_LINEAR_VELOCITY = PEv2_params_MAX_LINEAR_VELOCITY;
