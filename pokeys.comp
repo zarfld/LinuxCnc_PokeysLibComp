@@ -1144,6 +1144,9 @@ void user_mainloop(void)
 					PEv2_params.HOME_FINAL_VEL[i] = PEv2_params_HOME_FINAL_VEL[i];				// position (mm)
 					PEv2_params.HOME_USE_INDEX[i] = PEv2_params_HOME_USE_INDEX[i];				// YES / NO
 					PEv2_params.HOME_IGNORE_LIMITS[i] = PEv2_params_HOME_IGNORE_LIMITS[i];			// YES / NO
+
+
+
 				}
 				
 
