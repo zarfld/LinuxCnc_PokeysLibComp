@@ -1101,23 +1101,19 @@ void user_mainloop(void)
 				PEv2_status =Update_PEv2();
 				PEv2_params = GetConfig_PEv2(PEv2_params);
 				// PK_PEv2_PulseEngineSetup   
-				if (PEv2_params!=NULL)
+				PEv2_PulseEngineEnabled=PEv2_status.PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
+				PEv2_ChargePumpEnabled=PEv2_status.ChargePumpEnabled;         // Charge pump output enabled
+				PEv2_PulseGeneratorType=PEv2_status.PulseGeneratorType;        // Pulse engine generator type (0: external, 1: internal 3ch)
+				//device->request[11] = device->PEv2.PulseEngineBufferSize;
+				PEv2_EmergencySwitchPolarity=PEv2_status.EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
+				//device->request[13] = device->PEv2.AxisEnabledStatesMask;
+
+				//PK_PEv2_AxisConfigurationGet
+
+				PEv2_BacklashCompensationEnabled=PEv2_params.BacklashCompensationEnabled;
+				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
-					PEv2_PulseEngineEnabled=PEv2_status.PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
-					PEv2_ChargePumpEnabled=PEv2_status.ChargePumpEnabled;         // Charge pump output enabled
-					PEv2_PulseGeneratorType=PEv2_status.PulseGeneratorType;        // Pulse engine generator type (0: external, 1: internal 3ch)
-					//device->request[11] = device->PEv2.PulseEngineBufferSize;
-					PEv2_EmergencySwitchPolarity=PEv2_status.EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
-					//device->request[13] = device->PEv2.AxisEnabledStatesMask;
-
-					//PK_PEv2_AxisConfigurationGet
-
-					PEv2_EmergencySwitchPolarity=PEv2_params.BacklashCompensationEnabled;
-					for(i=0;i< PEv2_nrOfAxes;i++)
-					{
-
-
-					   // Read the structure
+					// Read the structure
 						PEv2_AxesConfig(i) = PEv2_params.AxesConfig[i];             // Axis configuration - see ePK_PEv2_AxisConfig
 						//PEv2_AxesSwitchConfig(i) = PEv2_params.AxesSwitchConfig[i];       // Axis switch configuration - see ePK_PEv2_AxisSwitchOptions
 
@@ -1156,14 +1152,8 @@ void user_mainloop(void)
 						PEv2_BacklashRegister(i) = PEv2_params.BacklashRegister[i];		// current value of the backlash register
 						PEv2_BacklashAcceleration(i) = PEv2_params.BacklashAcceleration[i];	// in pulses per ms^2
 
-					}
 				}
-	
-	
-
-
-				
-				
+			
 				
 				PEv2_nrOfAxes=PEv2_status.nrOfAxes;
 				PEv2_maxPulseFrequency=PEv2_status.maxPulseFrequency;
@@ -1248,13 +1238,13 @@ void user_mainloop(void)
 
 						if ( PEv2_PinLimitPSwitch(i)!=0)
 						{	//check if pin is parametrized in HAL
-						dev->Pins[ PEv2_PinLimitPSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
-						setPinConfig=true;
+							dev->Pins[ PEv2_PinLimitPSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
+							setPinConfig=true;
 						}
 						if ( PEv2_PinLimitPSwitch(i)!=0)
 						{	//check if pin is parametrized in HAL
-						dev->Pins[ PEv2_PinLimitPSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
-						setPinConfig=true;
+							dev->Pins[ PEv2_PinLimitPSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
+							setPinConfig=true;
 						}
 						a_debout = 1350 + 1;
 
