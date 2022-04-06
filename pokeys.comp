@@ -117,6 +117,7 @@ pin in float PEv2.#.params.MAX_VELOCITY [8];
 pin in float PEv2.#.params.MAX_ACCELERATION [8];
 pin in float PEv2.#.params.STEPGEN_MAXVEL [8];
 pin in float PEv2.#.params.STEPGEN_MAXACCEL [8];
+pin in float PEv2.#.params.Feedback_Encoder_Id [8];
 //pin in float PEv2.#.params.P [8];
 //pin in float PEv2.#.params.I [8];
 //pin in float PEv2.#.params.D [8];
@@ -505,6 +506,7 @@ typedef struct
 		float MAX_ACCELERATION [8];
 		float STEPGEN_MAXVEL [8];
 		float STEPGEN_MAXACCEL [8];
+		uint Feedback_Encoder_Id [8]
 //		float P [8];
 //		float I [8];
 //		float D [8];
@@ -590,8 +592,8 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			if(params.STEP_SCALE[i]!=0)
 			{
 				params.MaxSpeed[i] = params.STEPGEN_MAXVEL[i]* params.STEP_SCALE[i]/1000;				// Maximum axis speed convert (mm/s) to (pulses per ms)
-				params.MaxAcceleration[i] = params.STEPGEN_MAXVEL[i]* params.STEP_SCALE[i] /1000000;	// Maximum axis acceleration convert (mm/s�) to (in pulses/ms/ms)
-				params.MaxDecceleration[i] = params.STEPGEN_MAXVEL[i]* params.STEP_SCALE[i] /1000000;	// Maximum axis deceleration convert (mm/s�) to (in pulses/ms/ms)
+				params.MaxAcceleration[i] = params.STEPGEN_MAXACCEL[i]* params.STEP_SCALE[i] /1000000;	// Maximum axis acceleration convert (mm/s�) to (in pulses/ms/ms)
+				params.MaxDecceleration[i] = params.STEPGEN_MAXACCEL[i]* params.STEP_SCALE[i] /1000000;	// Maximum axis deceleration convert (mm/s�) to (in pulses/ms/ms)
 
 				params.SoftLimitMaximum[i] = params.MAX_LIMIT[i]* params.STEP_SCALE[i];		// Soft limit maximum position
 				params.SoftLimitMinimum[i] = params.MIN_LIMIT[i]* params.STEP_SCALE[i];		// Soft limit minimum position
@@ -601,7 +603,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				params.HomingReturnSpeed[i] = params.HOME_LATCH_VEL[i]*100/ params.HOME_SEARCH_VEL[i];	// Homing return speed per axis (in % of the homing speed)
 
 			}
-
+			params.AxesConfig[i]=0
 			// Read the structure
 			/*
 			    PK_AC_ENABLED            = (1 << 0),       // Axis enabled
@@ -612,7 +614,17 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // Use soft-limits for this axis
 				PK_AC_ENABLED_MASKED     = (1 << 7)        // Use output enable pin masking
 			*/
-			dev->PEv2.AxesConfig[i] = PK_AC_ENABLED | PK_AC_INTERNAL_PLANNER | PK_AC_POSITION_MODE;
+			if (params.STEPGEN_MAXVEL[i] !=0)
+			{
+				params.AxesConfig[i] = PK_AC_ENABLED | PK_AC_INTERNAL_PLANNER;
+			}
+
+			
+			if (params.Feedback_Encoder_Id[i] = 0)
+			{
+				params.AxesConfig[i] = params.AxesConfig[i] | PK_AC_POSITION_MODE
+			}
+			
 
 			/*
 			    PK_ASO_SWITCH_LIMIT_N        = (1 << 0),   // Limit- switch
@@ -624,17 +636,17 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // Invert limit+ switch polarity
 				PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // Invert home switch polarity
 			*/
-			dev->PEv2.AxesSwitchConfig[i] = 0;
+			params.AxesSwitchConfig[i] = 0;
 
 			if (params.SoftLimitMaximum[i] !=0 && params.SoftLimitMaximum[i] !=0)
 			{
-				dev->PEv2.AxesConfig[i] = dev->PEv2.AxesConfig[i] | PK_AC_SOFT_LIMIT_ENABLED;
+				params.AxesConfig[i] = params.AxesConfig[i] | PK_AC_SOFT_LIMIT_ENABLED;
 			}
 
 			dev->PEv2.PinHomeSwitch[i] = params.PinHomeSwitch[i];
 			if ( params.PinHomeSwitch[i]!=0)
 			{	//check if pin is parametrized in HAL
-				dev->PEv2.AxesConfig[i] = dev->PEv2.AxesConfig[i] | PK_ASO_SWITCH_HOME;
+				params.AxesConfig[i] = params.AxesSwitchConfig[i] | PK_ASO_SWITCH_HOME;
 				dev->Pins[ params.PinHomeSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
 				setPinConfig=true;
 			}
@@ -642,7 +654,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.PinLimitMSwitch[i] = params.PinLimitMSwitch[i];
 			if ( params.PinLimitMSwitch[i]!=0)
 			{	//check if pin is parametrized in HAL
-				dev->PEv2.AxesConfig[i] = dev->PEv2.AxesConfig[i] | PK_ASO_SWITCH_LIMIT_N;
+				params.AxesConfig[i] = params.AxesSwitchConfig[i] | PK_ASO_SWITCH_LIMIT_N;
 				dev->Pins[ params.PinLimitMSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
 				setPinConfig=true;
 			}
@@ -650,7 +662,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.PinLimitPSwitch[i] = params.PinLimitPSwitch[i];
 			if ( params.PinLimitPSwitch[i]!=0)
 			{	//check if pin is parametrized in HAL
-				dev->PEv2.AxesConfig[i] = dev->PEv2.AxesConfig[i] | PK_ASO_SWITCH_LIMIT_P;
+				params.AxesConfig[i] = params.AxesSwitchConfig[i] | PK_ASO_SWITCH_LIMIT_P;
 				dev->Pins[ params.PinLimitPSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
 				setPinConfig=true;
 			}
@@ -687,6 +699,8 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				// MPG 1x mode here
 			dev->PEv2.HomeBackOffDistance[i] = params.HomeBackOffDistance[i];
 			dev->PEv2.MPGjogDivider[i] = params.MPGjogDivider[i];	
+			dev->PEv2.AxesConfig[i] =params.AxesConfig[i];
+			dev->PEv2.AxesSwitchConfig[i] =params.AxesConfig[i];
 			dev->PEv2.param1 = i;
 
 			
@@ -1256,9 +1270,11 @@ void user_mainloop(void)
 					PEv2_params.FERROR[i] = PEv2_params_FERROR(i);
 					PEv2_params.MIN_FERROR[i] = PEv2_params_MIN_FERROR(i);
 					PEv2_params.MAX_VELOCITY[i] = PEv2_params_MAX_VELOCITY(i);
-					PEv2_params.STEPGEN_MAXVEL[i] = PEv2_params_MAX_ACCELERATION(i);
+					PEv2_params.MAX_ACCELERATION[i] = PEv2_params_MAX_ACCELERATION(i);
 					PEv2_params.STEPGEN_MAXVEL[i] = PEv2_params_STEPGEN_MAXVEL(i);
 					PEv2_params.STEPGEN_MAXACCEL[i] = PEv2_params_STEPGEN_MAXACCEL(i);
+					PEv2_params.Feedback_Encoder_Id[i] = PEv2_params_Feedback_Encoder_Id(i);
+
 					//		float P(i);
 					//		float I(i);
 					//		float D(i);
