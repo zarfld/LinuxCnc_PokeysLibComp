@@ -528,7 +528,7 @@ PK_PEv2_Parameters GetConfig_PEv2()
 		for (i = 0; i < pe.info.nrOfAxes; i++)
 		{
 		    // Read the structure
-			params.AxesConfig(i) = pe.AxesConfig[i];
+			params.AxesConfig[i] = pe.AxesConfig[i];
 			params.AxesSwitchConfig(i) = pe.AxesSwitchConfig(i);
 
 			params.PinHomeSwitch(i) = pe.PinHomeSwitch(i);
