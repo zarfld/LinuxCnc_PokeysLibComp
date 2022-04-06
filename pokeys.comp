@@ -778,6 +778,8 @@ PK_PEv2_Stat Update_PEv2()
 				{
 					dev->PEv2.PulseEngineStateSetup = PK_PEState_peRUNNING;
 					dev->PEv2.LimitOverrideSetup = 0;
+					device->PEv2.AxisEnabledMask = 0;
+					PK_PEv2_PulseEngineStateSet(dev);
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
 				break;
@@ -789,6 +791,9 @@ PK_PEv2_Stat Update_PEv2()
 				if(HAL_Machine_On==false)
 				{
 					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+					dev->PEv2.LimitOverrideSetup = 0;
+					device->PEv2.AxisEnabledMask = 0;
+					PK_PEv2_PulseEngineStateSet(dev);
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
 				break;
@@ -796,6 +801,9 @@ PK_PEv2_Stat Update_PEv2()
 				if(HAL_Machine_On==false)
 				{
 					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+					dev->PEv2.LimitOverrideSetup = 0;
+					device->PEv2.AxisEnabledMask = 0;
+					PK_PEv2_PulseEngineStateSet(dev);
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
 				break;
@@ -805,6 +813,9 @@ PK_PEv2_Stat Update_PEv2()
 				if(HAL_Machine_On==false)
 				{
 					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+					dev->PEv2.LimitOverrideSetup = 0;
+					device->PEv2.AxisEnabledMask = 0;
+					PK_PEv2_PulseEngineStateSet(dev);
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
 				break;
@@ -812,6 +823,9 @@ PK_PEv2_Stat Update_PEv2()
 				if(HAL_Machine_On==false)
 				{
 					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+					dev->PEv2.LimitOverrideSetup = 0;
+					device->PEv2.AxisEnabledMask = 0;
+					PK_PEv2_PulseEngineStateSet(dev);
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
 				break;
@@ -819,6 +833,9 @@ PK_PEv2_Stat Update_PEv2()
 				if(HAL_Machine_On==false)
 				{
 					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+					dev->PEv2.LimitOverrideSetup = 0;
+					device->PEv2.AxisEnabledMask = 0;
+					PK_PEv2_PulseEngineStateSet(dev);
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
 				break;
@@ -826,6 +843,9 @@ PK_PEv2_Stat Update_PEv2()
 				if(HAL_Machine_On==false)
 				{
 					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+					dev->PEv2.LimitOverrideSetup = 0;
+					device->PEv2.AxisEnabledMask = 0;
+					PK_PEv2_PulseEngineStateSet(dev);
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
 				break;
@@ -833,6 +853,9 @@ PK_PEv2_Stat Update_PEv2()
 				if(HAL_Machine_On==false)
 				{
 					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+					dev->PEv2.LimitOverrideSetup = 0;
+					device->PEv2.AxisEnabledMask = 0;
+					PK_PEv2_PulseEngineStateSet(dev);
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
 				break;
@@ -840,6 +863,10 @@ PK_PEv2_Stat Update_PEv2()
 				if(HAL_Machine_On==false)
 				{
 					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+					dev->PEv2.LimitOverrideSetup = 0;
+					device->PEv2.AxisEnabledMask = 0;
+					PK_PEv2_PulseEngineStateSet(dev);
+
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
 				break;
@@ -847,6 +874,10 @@ PK_PEv2_Stat Update_PEv2()
 				if(HAL_Machine_On==false)
 				{
 					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+					dev->PEv2.LimitOverrideSetup = 0;
+					device->PEv2.AxisEnabledMask = 0;
+					PK_PEv2_PulseEngineStateSet(dev);
+
 					PK_PEv2_PulseEngineStateSet(dev);
 				}
 				break;
