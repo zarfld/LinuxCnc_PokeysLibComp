@@ -1408,7 +1408,7 @@ void user_mainloop(void)
 			
 
 
-			if (Pins_DigitalValueSet(i-1)==1)
+			if (Pins_DigitalValueSet(i)==1)
 			{
 				dev->Pins[i].DigitalValueSet=1;
 			}
