@@ -469,6 +469,7 @@ typedef struct
 	uint8_t			FilterLimitPSwitch[8];	   // Digital filter for limit+ switch
 	uint8_t			FilterHomeSwitch[8];	   // Digital filter for home switch
 
+	int32_t         HomeOffsets[8];            // Home position offset
 	uint8_t			HomingAlgorithm[8];		   // Homing algorithm configuration
 	// MPG 1x mode here
 	uint32_t		HomeBackOffDistance[8];	   // Back-off distance after homing
