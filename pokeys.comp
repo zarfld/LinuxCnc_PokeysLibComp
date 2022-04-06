@@ -603,12 +603,38 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			}
 
 			// Read the structure
-			dev->PEv2.AxesConfig[i] = params.AxesConfig[i];
-			dev->PEv2.AxesSwitchConfig[i] = params.AxesSwitchConfig[i];
+			/*
+			    PK_AC_ENABLED            = (1 << 0),       // Axis enabled
+				PK_AC_INVERTED           = (1 << 1),       // Axis inverted
+				PK_AC_INTERNAL_PLANNER   = (1 << 2),       // Axis uses internal motion planner
+				PK_AC_POSITION_MODE      = (1 << 3),       // Internal motion planner for this axis is in position mode
+				PK_AC_INVERTED_HOME      = (1 << 4),       // Axis homing direction is inverted
+				PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // Use soft-limits for this axis
+				PK_AC_ENABLED_MASKED     = (1 << 7)        // Use output enable pin masking
+			*/
+			dev->PEv2.AxesConfig[i] = PK_AC_ENABLED | PK_AC_INTERNAL_PLANNER | PK_AC_POSITION_MODE;
+
+			/*
+			    PK_ASO_SWITCH_LIMIT_N        = (1 << 0),   // Limit- switch
+				PK_ASO_SWITCH_LIMIT_P        = (1 << 1),   // Limit+ switch
+				PK_ASO_SWITCH_HOME           = (1 << 2),   // Home switch
+				PK_ASO_SWITCH_COMBINED_LN_H  = (1 << 3),   // Home switch is shared with Limit- switch
+				PK_ASO_SWITCH_COMBINED_LP_H  = (1 << 4),   // Home switch is shared with Limit+ switch
+				PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // Invert limit- switch polarity
+				PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // Invert limit+ switch polarity
+				PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // Invert home switch polarity
+			*/
+			dev->PEv2.AxesSwitchConfig[i] = 0;
+
+			if (params.SoftLimitMaximum[i] !=0 && params.SoftLimitMaximum[i] !=0)
+			{
+				dev->PEv2.AxesConfig[i] = dev->PEv2.AxesConfig[i] | PK_AC_SOFT_LIMIT_ENABLED;
+			}
 
 			dev->PEv2.PinHomeSwitch[i] = params.PinHomeSwitch[i];
 			if ( params.PinHomeSwitch[i]!=0)
 			{	//check if pin is parametrized in HAL
+				dev->PEv2.AxesConfig[i] = dev->PEv2.AxesConfig[i] | PK_ASO_SWITCH_HOME;
 				dev->Pins[ params.PinHomeSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
 				setPinConfig=true;
 			}
@@ -616,6 +642,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.PinLimitMSwitch[i] = params.PinLimitMSwitch[i];
 			if ( params.PinLimitMSwitch[i]!=0)
 			{	//check if pin is parametrized in HAL
+				dev->PEv2.AxesConfig[i] = dev->PEv2.AxesConfig[i] | PK_ASO_SWITCH_LIMIT_N;
 				dev->Pins[ params.PinLimitMSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
 				setPinConfig=true;
 			}
@@ -623,6 +650,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.PinLimitPSwitch[i] = params.PinLimitPSwitch[i];
 			if ( params.PinLimitPSwitch[i]!=0)
 			{	//check if pin is parametrized in HAL
+				dev->PEv2.AxesConfig[i] = dev->PEv2.AxesConfig[i] | PK_ASO_SWITCH_LIMIT_P;
 				dev->Pins[ params.PinLimitPSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
 				setPinConfig=true;
 			}
@@ -660,6 +688,9 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.HomeBackOffDistance[i] = params.HomeBackOffDistance[i];
 			dev->PEv2.MPGjogDivider[i] = params.MPGjogDivider[i];	
 			dev->PEv2.param1 = i;
+
+			
+
 			PK_PEv2_AxisConfigurationSet(dev);
 		}
 
@@ -1269,7 +1300,8 @@ void user_mainloop(void)
 				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
 					// Read the structure
-						PEv2_AxesConfig(i) = PEv2_params.AxesConfig[i];             // Axis configuration - see ePK_PEv2_AxisConfig
+						//PEv2_AxesConfig(i) = PEv2_params.AxesConfig[i];             // Axis configuration - see ePK_PEv2_AxisConfig
+						PEv2_AxesConfig(i) = ePK_PEv2_AxisConfig.PK_AC_ENABLED | ePK_PEv2_AxisConfig.PK_AC_INTERNAL_PLANNER
 						//PEv2_AxesSwitchConfig(i) = PEv2_params.AxesSwitchConfig[i];       // Axis switch configuration - see ePK_PEv2_AxisSwitchOptions
 
 						PEv2_PinHomeSwitch(i) = PEv2_params.PinHomeSwitch[i];          // Home switch pin (0 for external dedicated input)
