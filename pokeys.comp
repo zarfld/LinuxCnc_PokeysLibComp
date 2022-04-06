@@ -586,18 +586,18 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 		for (i = 0; i < dev->PEv2.info.nrOfAxes; i++)
 		{
 			// Convert mm/s -> pulses/s
-			if(params.STEP_SCALE(i)!=0)
+			if(params.STEP_SCALE[i]!=0)
 			{
-				params.MaxSpeed[i] = params.STEPGEN_MAXVEL(i)* params.STEP_SCALE(i)/1000;				// Maximum axis speed convert (mm/s) to (pulses per ms)
-				params.MaxAcceleration[i] = params.STEPGEN_MAXVEL(i)* params.STEP_SCALE(i) /1000000;	// Maximum axis acceleration convert (mm/s�) to (in pulses/ms/ms)
-				params.MaxDecceleration[i] = params.STEPGEN_MAXVEL(i)* params.STEP_SCALE(i) /1000000;	// Maximum axis deceleration convert (mm/s�) to (in pulses/ms/ms)
+				params.MaxSpeed[i] = params.STEPGEN_MAXVEL[i]* params.STEP_SCALE[i]/1000;				// Maximum axis speed convert (mm/s) to (pulses per ms)
+				params.MaxAcceleration[i] = params.STEPGEN_MAXVEL[i]* params.STEP_SCALE[i] /1000000;	// Maximum axis acceleration convert (mm/s�) to (in pulses/ms/ms)
+				params.MaxDecceleration[i] = params.STEPGEN_MAXVEL[i]* params.STEP_SCALE[i] /1000000;	// Maximum axis deceleration convert (mm/s�) to (in pulses/ms/ms)
 
-				params.SoftLimitMaximum[i] = params.MAX_LIMIT(i)* params.STEP_SCALE(i);		// Soft limit maximum position
-				params.SoftLimitMinimum[i] = params.MIN_LIMIT(i)* params.STEP_SCALE(i);		// Soft limit minimum position
-				params.HomeOffsets[i] = params.HOME_OFFSET(i)* params.STEP_SCALE(i);		// Home position offset
+				params.SoftLimitMaximum[i] = params.MAX_LIMIT[i]* params.STEP_SCALE[i];		// Soft limit maximum position
+				params.SoftLimitMinimum[i] = params.MIN_LIMIT[i]* params.STEP_SCALE[i];		// Soft limit minimum position
+				params.HomeOffsets[i] = params.HOME_OFFSET[i]* params.STEP_SCALE[i];		// Home position offset
 
-				params.HomingSpeed[i] = params.HOME_SEARCH_VEL(i)*100/ params.MAX_VELOCITY(i) ;			// Homing speed per axis (in %)
-				params.HomingReturnSpeed[i] = params.HOME_LATCH_VEL(i)*100/ params.HOME_SEARCH_VEL(i);	// Homing return speed per axis (in % of the homing speed)
+				params.HomingSpeed[i] = params.HOME_SEARCH_VEL[i]*100/ params.MAX_VELOCITY[i] ;			// Homing speed per axis (in %)
+				params.HomingReturnSpeed[i] = params.HOME_LATCH_VEL[i]*100/ params.HOME_SEARCH_VEL[i];	// Homing return speed per axis (in % of the homing speed)
 
 			}
 
