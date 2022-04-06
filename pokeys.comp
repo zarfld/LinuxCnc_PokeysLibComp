@@ -770,7 +770,7 @@ PK_PEv2_Stat Update_PEv2()
 		// Other inputs
 		status.ErrorInputStatus = dev->PEv2.ErrorInputStatus;
 		status.MiscInputStatus = dev->PEv2.MiscInputStatus;
-		
+
 		if(HAL_Machine_On==true)
 		{
 		/*
@@ -795,11 +795,11 @@ PK_PEv2_Stat Update_PEv2()
 			PK_PEState_peSTOP_LIMIT     = 100,         // Pulse engine stopped due to limit reached
 			PK_PEState_peSTOP_EMERGENCY = 101          // Pulse engine stopped due to emergency switch
 		*/
-			dev->PEv2.PulseEngineStateSetup = PK_PEState_peRUNNING;
+			status.PulseEngineStateSetup = PK_PEState_peRUNNING;
 		}
 		else
 		{
-			dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+			status.PulseEngineStateSetup = PK_PEState_peSTOPPED;
 		}
 
 		switch (status.PulseEngineState)
@@ -828,26 +828,8 @@ PK_PEv2_Stat Update_PEv2()
 
 				break;
 		    casePK_PEState_peHYBRIDPROBE_STOPPING:
-				if(HAL_Machine_On==false)
-				{
-					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
-					dev->PEv2.LimitOverrideSetup = 0;
-					dev->PEv2.AxisEnabledMask = 0;
-					PK_PEv2_PulseEngineStateSet(dev);
-
-					PK_PEv2_PulseEngineStateSet(dev);
-				}
 				break;
 		    casePK_PEState_peHYBRIDPROBE_COMPLETE:
-				if(HAL_Machine_On==false)
-				{
-					dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
-					dev->PEv2.LimitOverrideSetup = 0;
-					dev->PEv2.AxisEnabledMask = 0;
-					PK_PEv2_PulseEngineStateSet(dev);
-
-					PK_PEv2_PulseEngineStateSet(dev);
-				}
 				break;
 		    casePK_PEState_peSTOP_LIMIT:         // Pulse engine stopped due to limit reached
 				break;
@@ -855,13 +837,6 @@ PK_PEv2_Stat Update_PEv2()
 				break;
 		}
 		
-	}
-
-	if(dev->PEv2.PulseEngineStateSetup != status.PulseEngineState)
-	{
-
-		PK_PEv2_PulseEngineStateSet(dev);
-		PK_PEv2_PulseEngineStateSet(dev);
 	}
 
 	if(PK_PEv2_Status2Get(dev) == PK_OK)
