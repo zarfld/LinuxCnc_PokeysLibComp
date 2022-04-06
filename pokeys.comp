@@ -1301,7 +1301,7 @@ void user_mainloop(void)
 				{
 					// Read the structure
 						//PEv2_AxesConfig(i) = PEv2_params.AxesConfig[i];             // Axis configuration - see ePK_PEv2_AxisConfig
-						PEv2_AxesConfig(i) = ePK_PEv2_AxisConfig.PK_AC_ENABLED | ePK_PEv2_AxisConfig.PK_AC_INTERNAL_PLANNER
+						//PEv2_AxesConfig(i) = PK_AC_ENABLED | PK_AC_INTERNAL_PLANNER
 						//PEv2_AxesSwitchConfig(i) = PEv2_params.AxesSwitchConfig[i];       // Axis switch configuration - see ePK_PEv2_AxisSwitchOptions
 
 						PEv2_PinHomeSwitch(i) = PEv2_params.PinHomeSwitch[i];          // Home switch pin (0 for external dedicated input)
