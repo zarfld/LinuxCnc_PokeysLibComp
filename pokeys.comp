@@ -658,7 +658,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 
 		if (setPinConfig==true)
 		{
-			PK_PinConfigurationSet(dev)
+			PK_PinConfigurationSet(dev);
 			setPinConfig=false;
 		}
 	}
@@ -676,7 +676,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			params.EmergencyInputPin = dev->PEv2.EmergencyInputPin;   
 		}
 
-		for (i = 0; i < pe.info.nrOfAxes; i++)
+		for (i = 0; i < dev->PEv2.info.nrOfAxes; i++)
 		{
 			dev->PEv2.param1 = i;
 			if(PK_PEv2_AxisConfigurationGet(dev) == PK_OK)
