@@ -716,7 +716,7 @@ PK_PEv2_Stat Update_PEv2()
 
 	bool doPositionSet = false;
 	bool doMove = false;
-	if (status.info.nrOfAxes!=0)
+	if (status.nrOfAxes!=0)
 	{
 		for (i = 0; i < status.nrOfAxes; i++)
 		{
@@ -1060,15 +1060,15 @@ void user_mainloop(void)
 			  */
 				
 
-				PEv2_params = Config_PEv2();
-				PEv2_nrOfAxes=dev->PEv2.info.nrOfAxes;
-				PEv2_maxPulseFrequency=dev->PEv2.info.maxPulseFrequency;
-				PEv2_bufferDepth=dev->PEv2.info.bufferDepth;
-				PEv2_slotTiming=dev->PEv2.info.slotTiming;
+				PEv2_params = GetConfig_PEv2();
+				PEv2_nrOfAxes=PEv2_params.nrOfAxes;
+				PEv2_maxPulseFrequency=PEv2_params.maxPulseFrequency;
+				PEv2_bufferDepth=PEv2_params.bufferDepth;
+				PEv2_slotTiming=PEv2_params.slotTiming;
 		
 				bool setPeConfig = false;
-				dev->PEv2.EmergencyInputPin= PEv2_EmergencyInputPin;
-				if ( PEv2_EmergencyInputPin!=0)
+				PEv2_EmergencyInputPin = PEv2_params.EmergencyInputPin;
+				if ( dev->PEv2.EmergencyInputPin!=PEv2_params.EmergencyInputPin)
 				{	//check if pin is parametrized in HAL
 					a_debout = 131;
 					dev->Pins[ PEv2_EmergencyInputPin-1].PinFunction = PK_PinCap_digitalInput;
@@ -1180,14 +1180,14 @@ void user_mainloop(void)
 			 }
 			 
 
-			 dev->DeviceData.DeviceLockStatus=1;
+			 //dev->DeviceData.DeviceLockStatus=1;
 			 PK_SaveConfiguration(dev);
 			 a_debout = 141;
 		}
 		else
 		{
-		connected=0;
-		err=1;
+			connected=0;
+			err=1;
 		}
 		usleep(40000);
 	 }
