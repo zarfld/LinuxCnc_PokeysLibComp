@@ -585,12 +585,8 @@ uint8_t Merge_8BitsToByte(bool Bit_array[8])
 
 PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 {
-
-
-
 	if (params.ApplyIniSettings!=0)
 	{
-
 		if ( params.ProbeInput!=0)
 		{	//check if pin is parametrized in HAL
 			dev->Pins[ params.ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
