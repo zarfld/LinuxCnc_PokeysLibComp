@@ -603,7 +603,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				params.HomingReturnSpeed[i] = params.HOME_LATCH_VEL[i]*100/ params.HOME_SEARCH_VEL[i];	// Homing return speed per axis (in % of the homing speed)
 
 			}
-			params.AxesConfig[i]=0
+			params.AxesConfig[i]=0;
 			// Read the structure
 			/*
 			    PK_AC_ENABLED            = (1 << 0),       // Axis enabled
