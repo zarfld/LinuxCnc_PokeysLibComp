@@ -1255,8 +1255,15 @@ void user_mainloop(void)
 
 			 }
 			 a_debout = 124;
+
+			 if (PEv2_params_ApplyIniSettings !=0 && info_PulseEnginev2!=0 )
+			{
+				PK_ClearConfiguration(dev);
+			}
+
 			 if ( info_PulseEnginev2!=0 )
 			 {
+
 				//***************************************************************************
 				// Setting Parameters from INI
 				PEv2_params.ApplyIniSettings =PEv2_params_ApplyIniSettings;
@@ -1407,8 +1414,13 @@ void user_mainloop(void)
 			 
 
 			 //dev->DeviceData.DeviceLockStatus=1;
-			 PK_SaveConfiguration(dev);
+
+
+			 if (PEv2_params_ApplyIniSettings !=0 && info_PulseEnginev2!=0 )
+			{
+				PK_SaveConfiguration(dev);
 			  PK_SaveConfiguration(dev);
+			}
 			 a_debout = 141;
 		}
 		else
