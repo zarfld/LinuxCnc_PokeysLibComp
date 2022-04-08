@@ -622,7 +622,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			
 			if (params.Feedback_Encoder_Id[i] = 0)
 			{
-				params.AxesConfig[i] = params.AxesConfig[i] | PK_AC_POSITION_MODE
+				params.AxesConfig[i] = params.AxesConfig[i] | PK_AC_POSITION_MODE;
 			}
 			
 
