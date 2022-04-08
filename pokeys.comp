@@ -241,6 +241,7 @@ pin out unsigned MatrixKB.matrixKBheight;				// Matrix keyboard height (number o
 pin out unsigned MatrixKB.matrixKBcolumnsPins.#[8];		// List of matrix keyboard column connections
 pin out unsigned MatrixKB.matrixKBrowsPins.#[16];			// List of matrix keyboard row connections
 pin out unsigned MatrixKB.matrixKBvalues.#[128];			// Current state of each matrix keyboard key (assumes fixed width of 8 columns)
+pin out unsigned MatrixKB.matrixKBPins.#[128];			// matrixKBrowsPins
 
 pin out unsigned Encoders.#.encoderValue [26];       // Encoder current value
 pin io unsigned Encoders.#.encoderOptions [26];      // Encoder options -    bit 0: enable encoder
@@ -533,10 +534,38 @@ typedef struct
 		bool HOME_IGNORE_LIMITS [8];			// YES / NO
 } PK_PEv2_Parameters;
 
+typedef struct
+{
+/*
+	pin out unsigned MatrixKB.matrixKBconfiguration;		// Matrix keyboard configuration (set to 1 to enable matrix keyboard support)
+	pin out unsigned MatrixKB.matrixKBwidth;				// Matrix keyboard width (number of columns)
+	pin out unsigned MatrixKB.matrixKBheight;				// Matrix keyboard height (number of rows)
+	pin out unsigned MatrixKB.matrixKBcolumnsPins.#[8];		// List of matrix keyboard column connections
+	pin out unsigned MatrixKB.matrixKBrowsPins.#[16];			// List of matrix keyboard row connections
+	pin out unsigned MatrixKB.matrixKBvalues.#[128];			// Current state of each matrix keyboard key (assumes fixed width of 8 columns)
+*/
 
+    uint8_t matrixKBconfiguration;             // Matrix keyboard configuration (set to 1 to enable matrix keyboard support)
+    uint8_t matrixKBwidth;                     // Matrix keyboard width (number of columns)
+    uint8_t matrixKBheight;                    // Matrix keyboard height (number of rows)
+    uint8_t reserved[5];                       // placeholder
+    uint8_t matrixKBcolumnsPins[8];            // List of matrix keyboard column connections
+    uint8_t matrixKBrowsPins[16];              // List of matrix keyboard row connections
+    uint8_t macroMappingOptions[128];          // Selects between direct key mapping and mapping to macro sequence for each key (assumes fixed width of 8 columns)
+//    uint8_t keyMappingKeyCode[128];            // USB keyboard key code for each key (assumes fixed width of 8 columns), also down key code in triggered mapping mode
+//    uint8_t keyMappingKeyModifier[128];        // USB keyboard key modifier, also down key modifier in triggered mapping mode (assumes fixed width of 8 columns)
+//    uint8_t keyMappingTriggeredKey[128];       // Selects between normal direct key mapping and triggered key mapping for each key (assumes fixed width of 8 columns)
+//    uint8_t keyMappingKeyCodeUp[128];          // USB keyboard up key code in triggered mapping mode (assumes fixed width of 8 columns)
+//    uint8_t keyMappingKeyModifierUp[128];      // USB keyboard up key modifier in triggered mapping mode (assumes fixed width of 8 columns)
+    uint8_t matrixKBvalues[128];               // Current state of each matrix keyboard key (assumes fixed width of 8 columns)
+	uint8_t matrixKBPins[128];               // extracted from matrixKBrowsPins
+
+} PK_MatrixKB_Parameters;
 
 PK_PEv2_Parameters PEv2_params;
 PK_PEv2_Stat PEv2_status;
+
+PK_MatrixKB_Parameters MatrixKB;
 
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
 {
@@ -1056,24 +1085,23 @@ int Config_MatrixKB()
 {
 	if(PK_MatrixKBConfigurationGet(dev) == PK_OK)
 	{
-	/*
-			dev->matrixKB.matrixKBconfiguration = dev->response[8];
-			dev->matrixKB.matrixKBheight = 1 + (dev->response[9] & 0x0F);
-			dev->matrixKB.matrixKBwidth = 1 + ((dev->response[9] >> 4) & 0x0F);
+			MatrixKB.matrixKBconfiguration = dev->matrixKB.matrixKBconfiguration;
+			MatrixKB.matrixKBwidth = dev->matrixKB.matrixKBheight = 1 + (dev->response[9] & 0x0F);
+			MatrixKB.matrixKBheight = dev->matrixKB.matrixKBwidth = 1 + ((dev->response[9] >> 4) & 0x0F);
 
 			for (n = 0; n < 8; n++)
 			{
-				dev->matrixKB.matrixKBrowsPins[n] = dev->response[10 + n];
-				dev->matrixKB.matrixKBrowsPins[8 + n] = dev->response[42 + n];
+				MatrixKB.matrixKBrowsPins[n] = dev->matrixKB.matrixKBrowsPins[n];
+				MatrixKB.matrixKBrowsPins[8+n] = dev->matrixKB.matrixKBrowsPins[8 + n];
 
-				dev->matrixKB.matrixKBcolumnsPins[n] = dev->response[18 + n];
+				MatrixKB.matrixKBcolumnsPins[n] = dev->matrixKB.matrixKBcolumnsPins[n];
 			}
 
 			for (n = 0; n < 128; n++)
 			{
-				dev->matrixKB.macroMappingOptions[n] = ((dev->response[26 + n / 8] & (1 << (n % 8))) > 0) ? 1 : 0;
+				MatrixKB.macroMappingOptions[n]  = dev->matrixKB.macroMappingOptions[n] = ((dev->response[26 + n / 8] & (1 << (n % 8))) > 0) ? 1 : 0;
 			}
-	*/
+
 	}
 
 	//PK_MatrixKBConfigurationSet
@@ -1084,13 +1112,24 @@ int Update_MatrixKB()
 {
 	if(PK_MatrixKBStatusGet(dev) == PK_OK)
 	{
-	/*
-	for (n = 0; n < 128; n++)
-            {
-				dev->matrixKB.matrixKBvalues[n];
-            }
-	*/
+		for (n = 0; n < 128; n++)
+		{
+			MatrixKB.matrixKBvalues[i] = dev->matrixKB.matrixKBvalues[n];
+		}
 	}
+	if(PK_MatrixKBConfigurationGet(dev) == PK_OK)
+	{
+		int i =0;
+		for (h = 0; h < MatrixKB.matrixKBheight; h++)
+		{
+			for (h = 0; h < MatrixKB.matrixKBwidth; h++)
+			{
+				MatrixKB.matrixKBPins[i] = Get_BitOfByte(MatrixKB.matrixKBrowsPins[h], h);
+				i++;
+			}
+		}
+	}
+
 	return 0;
 }
 
@@ -1399,6 +1438,7 @@ void user_mainloop(void)
 			if (info_MatrixKeyboard!=0)
 			{
 				dev->matrixKB.matrixKBconfiguration = 1;
+				Config_MatrixKB;
 			}
 
 			 if (setPinConfig==true)
@@ -1619,18 +1659,12 @@ void user_mainloop(void)
 	
 	if (info_MatrixKeyboard!=0)
 	{
-		a_debout = 250;
-		if (PK_MatrixKBStatusGet(dev) == PK_OK)
+		a_debout = 330;
+		Update_MatrixKB;
+		for (n = 0; n < 128; n++)
 		{
-			a_debout = 251;
-			if (MatrixKB_matrixKBwidth>0 && MatrixKB_matrixKBheight>0)
-			{
-				for(i=0;i<128;i++)
-				{
-					a_debout = 2520+i;
-					MatrixKB_matrixKBvalues(i) = dev->matrixKB.matrixKBvalues[i]; 
-				}
-			}
+			MatrixKB_matrixKBvalues_(i) = MatrixKB.matrixKBvalues[i];
+			MatrixKB_matrixKBPins_(i) = MatrixKB.matrixKBPins[i];
 		}
 	}
 
@@ -1706,28 +1740,7 @@ void user_mainloop(void)
 			 PEv2_slotTiming=dev->PEv2.info.slotTiming;
 		 }
 
-			if (info_MatrixKeyboard!=0)
-			{
-				a_debout = 330;
-				if (PK_MatrixKBConfigurationGet(dev) == PK_OK)
-				{
 
-					MatrixKB_matrixKBconfiguration = dev->matrixKB.matrixKBconfiguration;
-					MatrixKB_matrixKBwidth = dev->matrixKB.matrixKBwidth;
-					MatrixKB_matrixKBheight = dev->matrixKB.matrixKBheight;
-					for(i=0;i<MatrixKB_matrixKBwidth-1;i++)
-					{
-						a_debout = 3310+i;
-						MatrixKB_matrixKBcolumnsPins(i) = dev->matrixKB.matrixKBcolumnsPins[i]; 
-					}
-					for(i=0;i<MatrixKB_matrixKBheight-1;i++)
-					{
-						a_debout = 3320+i;
-						MatrixKB_matrixKBrowsPins(i) = dev->matrixKB.matrixKBrowsPins[i]; 
-					}
-				}
-
-			}
 	}
 	alive=0;
 	usleep(40000); 
