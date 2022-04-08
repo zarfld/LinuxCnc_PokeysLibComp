@@ -1083,6 +1083,13 @@ PK_PEv2_Stat Update_PEv2()
 
 int Config_MatrixKB()
 {
+
+dev->matrixKB.matrixKBconfiguration = 1;
+dev->matrixKB.matrixKBheight = 6;
+dev->matrixKB.matrixKBwidth = 8;
+PK_MatrixKBConfigurationSet(dev);
+PK_MatrixKBConfigurationSet(dev)
+
 	if(PK_MatrixKBConfigurationGet(dev) == PK_OK)
 	{
 			MatrixKB.matrixKBconfiguration = dev->matrixKB.matrixKBconfiguration;
