@@ -241,7 +241,7 @@ pin out unsigned MatrixKB.matrixKBheight;				// Matrix keyboard height (number o
 pin out unsigned MatrixKB.matrixKBcolumnsPins.#[8];		// List of matrix keyboard column connections
 pin out unsigned MatrixKB.matrixKBrowsPins.#[16];			// List of matrix keyboard row connections
 pin out unsigned MatrixKB.matrixKBvalues.#[128];			// Current state of each matrix keyboard key (assumes fixed width of 8 columns)
-pin out unsigned MatrixKB.matrixKBPins.#[128];			// matrixKBrowsPins
+pin out bit MatrixKB.matrixKBPins.#[128];			// matrixKBrowsPins
 
 pin out unsigned Encoders.#.encoderValue [26];       // Encoder current value
 pin io unsigned Encoders.#.encoderOptions [26];      // Encoder options -    bit 0: enable encoder
@@ -558,7 +558,7 @@ typedef struct
 //    uint8_t keyMappingKeyCodeUp[128];          // USB keyboard up key code in triggered mapping mode (assumes fixed width of 8 columns)
 //    uint8_t keyMappingKeyModifierUp[128];      // USB keyboard up key modifier in triggered mapping mode (assumes fixed width of 8 columns)
     uint8_t matrixKBvalues[128];               // Current state of each matrix keyboard key (assumes fixed width of 8 columns)
-	uint8_t matrixKBPins[128];               // extracted from matrixKBrowsPins
+	Bool matrixKBPins[128];               // extracted from matrixKBrowsPins
 
 } PK_MatrixKB_Parameters;
 
