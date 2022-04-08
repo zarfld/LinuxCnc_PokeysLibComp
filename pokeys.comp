@@ -586,23 +586,29 @@ uint8_t Merge_8BitsToByte(bool Bit_array[8])
 PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 {
 
-	if ( params.ProbeInput!=0)
-	{	//check if pin is parametrized in HAL
-		dev->Pins[ params.ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
-		setPinConfig=true;
-	}
+
 
 	if (params.ApplyIniSettings!=0)
 	{
+
+		if ( params.ProbeInput!=0)
+		{	//check if pin is parametrized in HAL
+			dev->Pins[ params.ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
+			PK_SL_SetPinFunction(dev, params.ProbeInput-1, PK_PinCap_digitalInput);
+			setPinConfig=true;
+		}
+
 		dev->PEv2.EmergencyInputPin = params.EmergencyInputPin;
 		if ( params.EmergencyInputPin!=0)
 		{	//check if pin is parametrized in HAL
 			dev->Pins[params.EmergencyInputPin-1].PinFunction = PK_PinCap_digitalInput;
+			PK_SL_SetPinFunction(dev, params.EmergencyInputPin-1, PK_PinCap_digitalInput);
 			setPinConfig=true;
 		}
 		if ( params.EmergencyOutputPin!=0)
 		{	//check if pin is parametrized in HAL
 			dev->Pins[ params.EmergencyOutputPin-1].PinFunction = PK_PinCap_digitalOutput;
+			PK_SL_SetPinFunction(dev, params.EmergencyInputPin-1, PK_PinCap_digitalOutput);
 			setPinConfig=true;
 		}
 
@@ -677,6 +683,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			{	//check if pin is parametrized in HAL
 				params.AxesConfig[i] = params.AxesSwitchConfig[i] | PK_ASO_SWITCH_HOME;
 				dev->Pins[ params.PinHomeSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
+				PK_SL_SetPinFunction(dev, params.PinHomeSwitch[i]-1, PK_PinCap_digitalInput);
 				setPinConfig=true;
 			}
 
@@ -685,6 +692,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			{	//check if pin is parametrized in HAL
 				params.AxesConfig[i] = params.AxesSwitchConfig[i] | PK_ASO_SWITCH_LIMIT_N;
 				dev->Pins[ params.PinLimitMSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
+				PK_SL_SetPinFunction(dev, params.PinLimitMSwitch[i]-1, PK_PinCap_digitalInput);
 				setPinConfig=true;
 			}
 
@@ -693,6 +701,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			{	//check if pin is parametrized in HAL
 				params.AxesConfig[i] = params.AxesSwitchConfig[i] | PK_ASO_SWITCH_LIMIT_P;
 				dev->Pins[ params.PinLimitPSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
+				PK_SL_SetPinFunction(dev, params.PinLimitPSwitch[i]-1, PK_PinCap_digitalInput);
 				setPinConfig=true;
 			}
 
@@ -715,6 +724,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			if ( params.AxisEnableOutputPins[i]!=0)
 			{	//check if pin is parametrized in HAL
 				dev->Pins[ params.AxisEnableOutputPins[i]-1].PinFunction = PK_PinCap_digitalOutput;
+				PK_SL_SetPinFunction(dev, params.AxisEnableOutputPins[i]-1, PK_PinCap_digitalOutput);
 				setPinConfig=true;
 			}
 
@@ -1138,7 +1148,6 @@ int Update_MatrixKB()
 			}
 		}
 	}
-
 	return 0;
 }
 
