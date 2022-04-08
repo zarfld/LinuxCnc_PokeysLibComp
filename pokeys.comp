@@ -558,7 +558,7 @@ typedef struct
 //    uint8_t keyMappingKeyCodeUp[128];          // USB keyboard up key code in triggered mapping mode (assumes fixed width of 8 columns)
 //    uint8_t keyMappingKeyModifierUp[128];      // USB keyboard up key modifier in triggered mapping mode (assumes fixed width of 8 columns)
     uint8_t matrixKBvalues[128];               // Current state of each matrix keyboard key (assumes fixed width of 8 columns)
-	Bool matrixKBPins[128];               // extracted from matrixKBrowsPins
+	bool matrixKBPins[128];               // extracted from matrixKBrowsPins
 
 } PK_MatrixKB_Parameters;
 
