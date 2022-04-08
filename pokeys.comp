@@ -536,15 +536,6 @@ typedef struct
 
 typedef struct
 {
-/*
-	pin out unsigned MatrixKB.matrixKBconfiguration;		// Matrix keyboard configuration (set to 1 to enable matrix keyboard support)
-	pin out unsigned MatrixKB.matrixKBwidth;				// Matrix keyboard width (number of columns)
-	pin out unsigned MatrixKB.matrixKBheight;				// Matrix keyboard height (number of rows)
-	pin out unsigned MatrixKB.matrixKBcolumnsPins.#[8];		// List of matrix keyboard column connections
-	pin out unsigned MatrixKB.matrixKBrowsPins.#[16];			// List of matrix keyboard row connections
-	pin out unsigned MatrixKB.matrixKBvalues.#[128];			// Current state of each matrix keyboard key (assumes fixed width of 8 columns)
-*/
-
     uint8_t matrixKBconfiguration;             // Matrix keyboard configuration (set to 1 to enable matrix keyboard support)
     uint8_t matrixKBwidth;                     // Matrix keyboard width (number of columns)
     uint8_t matrixKBheight;                    // Matrix keyboard height (number of rows)
@@ -564,7 +555,7 @@ typedef struct
 
 PK_PEv2_Parameters PEv2_params;
 PK_PEv2_Stat PEv2_status;
-
+sPoKeysEasySensor EasySensors[10];
 PK_MatrixKB_Parameters MatrixKB;
 
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
@@ -1174,6 +1165,10 @@ int Config_EasySensors()
 {
 	if(PK_EasySensorsSetupGet(dev) == PK_OK)
 	{
+		for (i = 0; i < device->info.iEasySensors; i++)
+		{
+			EasySensors[i] = &device->EasySensors[i];
+		}
 	}
 
 	//PK_EasySensorsSetupSet
@@ -1184,6 +1179,10 @@ int Update_EasySensors()
 {
 	if(PK_EasySensorsValueGetAll(dev) == PK_OK)
 	{
+		for (i = 0; i < device->info.iEasySensors; i++)
+		{
+			EasySensors[i] = &device->EasySensors[i];
+		}
 	}
 	return 0;
 }
@@ -1454,7 +1453,18 @@ void user_mainloop(void)
 				dev->matrixKB.matrixKBconfiguration = 1;
 				Config_MatrixKB;
 			}
-
+			if (info_EasySensors!=0)
+			{
+				Config_EasySensors;
+				for (i = 0; i < device->info.iEasySensors; i++)
+				{
+					EasySensors_sensorValue(i) = EasySensors[i].sensorValue;            // Current sensor value
+					EasySensors_sensorType(i)= EasySensors[i].sensorType;             // Type of the sensor
+					EasySensors_sensorRefreshPeriod(i)= EasySensors[i].sensorRefreshPeriod;    // Refresh period in 0.1s
+					EasySensors_sensorFailsafeConfig(i)= EasySensors[i].sensorFailsafeConfig;   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
+					EasySensors_sensorReadingID(i)= EasySensors[i].sensorReadingID;        // Sensor reading selection (see Protocol description document for details)
+				}
+			}
 			 if (setPinConfig==true)
 			 {
 				a_debout = 140;
@@ -1466,7 +1476,7 @@ void user_mainloop(void)
 				Config_PoNet;
 			 }
 			 
-
+			 
 			 //dev->DeviceData.DeviceLockStatus=1;
 
 
@@ -1682,25 +1692,15 @@ void user_mainloop(void)
 		}
 	}
 
-	if (info_EasySensors!=0 && info_PinCount!=0)
+	if (info_EasySensors!=0)
 	{
-		a_debout = 260;
-		if ((PK_EasySensorsSetupGet(dev) == PK_OK) && (PK_EasySensorsValueGetAll(dev) == PK_OK))
+		Update_EasySensors;
+		for (i = 0; i < device->info.iEasySensors; i++)
 		{
-			a_debout = 261;
-			for(i=0;i<10;i++)
-			{
-				a_debout = 2610+i;
-				EasySensors_sensorValue(i)=dev->EasySensors[i].sensorValue;
-				EasySensors_sensorType(i)=dev->EasySensors[i].sensorType;
-				EasySensors_sensorRefreshPeriod(i)=dev->EasySensors[i].sensorRefreshPeriod;
-				EasySensors_sensorFailsafeConfig(i)=dev->EasySensors[i].sensorFailsafeConfig;
-				EasySensors_sensorReadingID(i)=dev->EasySensors[i].sensorReadingID;
-
-			}		
+			EasySensors_sensorValue(i) = EasySensors[i].sensorValue;            // Current sensor value
 		}
-
 	}
+
 	if (rtc_lastmin!=rtc_min)
 	{
 		a_debout = 310;
