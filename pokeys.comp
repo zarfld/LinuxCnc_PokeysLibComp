@@ -704,10 +704,13 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.param1 = i;
 
 			
-
+			dev->PEv2.param1 = i+1;
+			PK_PEv2_AxisConfigurationSet(dev);
+			dev->PEv2.param1 = i;
 			PK_PEv2_AxisConfigurationSet(dev);
 		}
-
+		dev->PEv2.param1 = 0;
+		PK_PEv2_AxisConfigurationSet(dev);
 		/*
 		params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 		params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
@@ -1405,6 +1408,7 @@ void user_mainloop(void)
 
 			 //dev->DeviceData.DeviceLockStatus=1;
 			 PK_SaveConfiguration(dev);
+			  PK_SaveConfiguration(dev);
 			 a_debout = 141;
 		}
 		else
