@@ -243,6 +243,11 @@ pin out unsigned MatrixKB.matrixKBrowsPins.#[16];			// List of matrix keyboard r
 pin out unsigned MatrixKB.matrixKBvalues.#[128];			// Current state of each matrix keyboard key (assumes fixed width of 8 columns)
 pin out bit MatrixKB.matrixKBPins.#[128];			// matrixKBrowsPins
 
+pin in unsigned kbd48CNC.#.bitIndex[48]				// adressing 
+pin in unsigned kbd48CNC.#.byteIndex[48]
+pin in bit kbd48CNC.#.LedStatus[48]
+pin out bit kbd48CNC.#.PinStatus[48]
+
 pin out unsigned Encoders.#.encoderValue [26];       // Encoder current value
 pin io unsigned Encoders.#.encoderOptions [26];      // Encoder options -    bit 0: enable encoder
 													//                      bit 1: 4x sampling
@@ -255,11 +260,11 @@ pin io unsigned Encoders.#.encoderOptions [26];      // Encoder options -    bit
 pin io unsigned Encoders.#.channelApin [26];         // Channel A encoder pin
 pin io unsigned Encoders.#.channelBpin [26];         // Channel B encoder pin
 
-pin out u32 EasySensors.#.sensorValue [10];            // Current sensor value
-pin out unsigned EasySensors.#.sensorType [10];             // Type of the sensor
-pin out unsigned EasySensors.#.sensorRefreshPeriod [10];    // Refresh period in 0.1s
-pin out unsigned EasySensors.#.sensorFailsafeConfig [10];   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
-pin out unsigned EasySensors.#.sensorReadingID [10];        // Sensor reading selection (see Protocol description document for details)
+pin out u32 EasySensors.#.sensorValue [100];            // Current sensor value
+pin out unsigned EasySensors.#.sensorType [100];             // Type of the sensor
+pin out unsigned EasySensors.#.sensorRefreshPeriod [100];    // Refresh period in 0.1s
+pin out unsigned EasySensors.#.sensorFailsafeConfig [100];   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
+pin out unsigned EasySensors.#.sensorReadingID [100];        // Sensor reading selection (see Protocol description document for details)
 
 pin io unsigned PoStep.EnablePoStepCommunication;
     // Status
@@ -340,11 +345,20 @@ int Config_PoNet()
 {
 	if(PK_PoNETGetPoNETStatus(dev) == PK_OK)
 	{
-				
+				// device->PoNETmodule.PoNETstatus
 	}
 	if(PK_PoNETGetModuleSettings(dev) == PK_OK)
 	{
-				
+			/*
+		CreateRequest(device->request, 0xDD, 0x10, device->PoNETmodule.moduleID, 0, 0);
+		  if (SendRequest(device) != PK_OK) return PK_ERR_TRANSFER;
+
+		  device->PoNETmodule.i2cAddress = device->response[8];
+		  device->PoNETmodule.moduleType = device->response[9];
+		  device->PoNETmodule.moduleSize = device->response[10];
+		  device->PoNETmodule.moduleOptions = device->response[11];
+			
+			*/	
 	}
 	return 0;
 }
@@ -555,7 +569,7 @@ typedef struct
 
 PK_PEv2_Parameters PEv2_params;
 PK_PEv2_Stat PEv2_status;
-sPoKeysEasySensor EasySensors[10];
+sPoKeysEasySensor EasySensors[100];
 PK_MatrixKB_Parameters MatrixKB;
 
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
@@ -1138,6 +1152,40 @@ int Update_MatrixKB()
 	return 0;
 }
 
+private Point kbd48CNC_DecodeButtonPosition(int byteIndex, int bitIndex)
+ {
+	 Point t = new Point();
+	 t.X = (byteIndex ^ 1) * 2;
+	 if (bitIndex < 4)
+	 {
+		 t.X++;
+		 t.Y = bitIndex;
+	 }
+	 else
+	 {
+		t.Y = 7 - bitIndex;
+	 }
+	 return t;
+}
+
+private void kbd48CNC_SetLED(int x, int y, bool status)
+ {
+	 int byteindex = 1 ^ (int)(x / 2);
+	 int bitindex = y;
+	 if ((x % 2) == 0)
+	 {
+		bitindex = 7 - y;
+	 }
+	 if (status)
+	 {
+		LEDstatus[byteindex] |= (byte)(1 << bitindex);
+	 }
+	 else
+	 {
+		LEDstatus[byteindex] &= (byte)~(1 << bitindex);
+	}
+}
+
 int Config_LCD()
 {
 	if(PK_LCDConfigurationGet(dev) == PK_OK)
@@ -1310,7 +1358,7 @@ void user_mainloop(void)
 
 			 if (PEv2_params_ApplyIniSettings !=0 && info_PulseEnginev2!=0 )
 			{
-				PK_ClearConfiguration(dev);
+			//	PK_ClearConfiguration(dev);
 			}
 
 			 if ( info_PulseEnginev2!=0 )
