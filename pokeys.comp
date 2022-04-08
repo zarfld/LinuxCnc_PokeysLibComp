@@ -1089,7 +1089,7 @@ int Config_MatrixKB()
 			MatrixKB.matrixKBwidth = dev->matrixKB.matrixKBheight = 1 + (dev->response[9] & 0x0F);
 			MatrixKB.matrixKBheight = dev->matrixKB.matrixKBwidth = 1 + ((dev->response[9] >> 4) & 0x0F);
 
-			for (n = 0; n < 8; n++)
+			for (i = 0; i < 8; i++)
 			{
 				MatrixKB.matrixKBrowsPins[n] = dev->matrixKB.matrixKBrowsPins[n];
 				MatrixKB.matrixKBrowsPins[8+n] = dev->matrixKB.matrixKBrowsPins[8 + n];
@@ -1097,7 +1097,7 @@ int Config_MatrixKB()
 				MatrixKB.matrixKBcolumnsPins[n] = dev->matrixKB.matrixKBcolumnsPins[n];
 			}
 
-			for (n = 0; n < 128; n++)
+			for (i = 0; i < 128; i++)
 			{
 				MatrixKB.macroMappingOptions[n]  = dev->matrixKB.macroMappingOptions[n] = ((dev->response[26 + n / 8] & (1 << (n % 8))) > 0) ? 1 : 0;
 			}
@@ -1661,10 +1661,10 @@ void user_mainloop(void)
 	{
 		a_debout = 330;
 		Update_MatrixKB;
-		for (n = 0; n < 128; n++)
+		for (i = 0; i < 128; i++)
 		{
-			MatrixKB_matrixKBvalues_(i) = MatrixKB.matrixKBvalues[i];
-			MatrixKB_matrixKBPins_(i) = MatrixKB.matrixKBPins[i];
+			MatrixKB_matrixKBvalues(i) = MatrixKB.matrixKBvalues[i];
+			MatrixKB_matrixKBPins(i) = MatrixKB.matrixKBPins[i];
 		}
 	}
 
