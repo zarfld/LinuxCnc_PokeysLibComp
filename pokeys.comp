@@ -506,7 +506,7 @@ typedef struct
 		float MAX_ACCELERATION [8];
 		float STEPGEN_MAXVEL [8];
 		float STEPGEN_MAXACCEL [8];
-		uint Feedback_Encoder_Id [8]
+		uint Feedback_Encoder_Id [8];
 //		float P [8];
 //		float I [8];
 //		float D [8];
