@@ -1086,20 +1086,20 @@ int Config_MatrixKB()
 	if(PK_MatrixKBConfigurationGet(dev) == PK_OK)
 	{
 			MatrixKB.matrixKBconfiguration = dev->matrixKB.matrixKBconfiguration;
-			MatrixKB.matrixKBwidth = dev->matrixKB.matrixKBheight = 1 + (dev->response[9] & 0x0F);
-			MatrixKB.matrixKBheight = dev->matrixKB.matrixKBwidth = 1 + ((dev->response[9] >> 4) & 0x0F);
+			MatrixKB.matrixKBwidth = dev->matrixKB.matrixKBheight;
+			MatrixKB.matrixKBheight = dev->matrixKB.matrixKBwidth;
 
 			for (i = 0; i < 8; i++)
 			{
-				MatrixKB.matrixKBrowsPins[n] = dev->matrixKB.matrixKBrowsPins[n];
-				MatrixKB.matrixKBrowsPins[8+n] = dev->matrixKB.matrixKBrowsPins[8 + n];
+				MatrixKB.matrixKBrowsPins[i] = dev->matrixKB.matrixKBrowsPins[i];
+				MatrixKB.matrixKBrowsPins[8+i] = dev->matrixKB.matrixKBrowsPins[8 + i];
 
-				MatrixKB.matrixKBcolumnsPins[n] = dev->matrixKB.matrixKBcolumnsPins[n];
+				MatrixKB.matrixKBcolumnsPins[i] = dev->matrixKB.matrixKBcolumnsPins[i];
 			}
 
 			for (i = 0; i < 128; i++)
 			{
-				MatrixKB.macroMappingOptions[n]  = dev->matrixKB.macroMappingOptions[n] = ((dev->response[26 + n / 8] & (1 << (n % 8))) > 0) ? 1 : 0;
+				MatrixKB.macroMappingOptions[i]  = dev->matrixKB.macroMappingOptions[i];
 			}
 
 	}
@@ -1112,19 +1112,21 @@ int Update_MatrixKB()
 {
 	if(PK_MatrixKBStatusGet(dev) == PK_OK)
 	{
-		for (n = 0; n < 128; n++)
+		for (i = 0; i < 128; i++)
 		{
-			MatrixKB.matrixKBvalues[i] = dev->matrixKB.matrixKBvalues[n];
+			MatrixKB.matrixKBvalues[i] = dev->matrixKB.matrixKBvalues[i];
 		}
 	}
 	if(PK_MatrixKBConfigurationGet(dev) == PK_OK)
 	{
 		int i =0;
+		int h =0;
+		int w =0;
 		for (h = 0; h < MatrixKB.matrixKBheight; h++)
 		{
-			for (h = 0; h < MatrixKB.matrixKBwidth; h++)
+			for (w = 0; w < MatrixKB.matrixKBwidth; w++)
 			{
-				MatrixKB.matrixKBPins[i] = Get_BitOfByte(MatrixKB.matrixKBrowsPins[h], h);
+				MatrixKB.matrixKBPins[i] = Get_BitOfByte(MatrixKB.matrixKBrowsPins[h], w);
 				i++;
 			}
 		}
