@@ -1195,7 +1195,7 @@ void user_mainloop(void)
 		else
 		{
 			a_debout = 114;
-			sPoKeysNetworkDeviceSummary *udp_devices;
+			sPoKeysNetworkDeviceSummary * udp_devices;
 			enum_usb_dev = PK_EnumerateUSBDevices();
 			enum_fusb_dev = PK_EnumerateUSBDevices();
 			//enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices,180); // does not work - it hangs here
