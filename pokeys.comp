@@ -1834,8 +1834,7 @@ void user_mainloop(void)
 			pin out bit kbd48CNC.#.status [48]; */
 
 			bool state = kbd48CNC_LED(i);
-			int ID = kbd48CNC_ID(i);
-
+			
 			int offset[] = {15, 8, 7, 0};
 
 			int top = (i & 0xF0) + offset[(i / 4) % 4];
