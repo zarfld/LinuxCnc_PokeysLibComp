@@ -1825,6 +1825,7 @@ void user_mainloop(void)
 	{
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 		PK_PoNETGetModuleSettings(dev);
+		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 		PK_PoNETGetPoNETStatus(dev);
 
 		for (i = 0; i < 16; i++)
@@ -1843,7 +1844,8 @@ void user_mainloop(void)
 			pin out bit kbd48CNC.#.status [48]; */
 
 			bool state = kbd48CNC_LED(i);
-			state=secBlink;
+			// blinking 1Hz for Debug
+			//state=secBlink;
 			int offset[] = {15, 8, 7, 0};
 
 			int top = (i & 0xF0) + offset[(i / 4) % 4];
@@ -1851,8 +1853,16 @@ void user_mainloop(void)
 			int ID = top + y;
 			if (((i / 4) % 2) == 0)
 				ID = top - y;
-
-			kbd48CNC_status(i) = (dev->PoNETmodule.statusIn[ID/8] & (1<<(ID%8))) > 0;
+			if ((dev->PoNETmodule.statusIn[ID/8] & (1<<(ID%8))) > 0)
+			{
+				kbd48CNC_status(i) = 1;
+				state = true;
+			}
+			else
+			{
+				kbd48CNC_status(i) = 0;
+			}
+			
 
 			int tmp = dev->PoNETmodule.statusOut[ID/8];
 
