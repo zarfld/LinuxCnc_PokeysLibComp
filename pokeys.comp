@@ -380,7 +380,7 @@ int Config_PoNet()
 			}
 		}*/
 
-		memset(myDevice->PoNETmodule.statusOut, 0, 10);
+		memset(dev->PoNETmodule.statusOut, 0, 10);
 	}
 
 
