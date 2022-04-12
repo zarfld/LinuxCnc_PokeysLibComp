@@ -348,7 +348,7 @@ int Config_PoNet()
 				// device->PoNETmodule.PoNETstatus
 	}
 
-	for (id = 0; i < 16, i++)
+	for (i = 0; i < 16, i++)
 	{
 		dev->PoNETmodule.moduleID = i;
 
