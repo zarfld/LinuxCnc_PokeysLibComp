@@ -1397,7 +1397,7 @@ void user_mainloop(void)
 							if ((dev->PoNETmodule.moduleOptions & (1<<7)) != 0)
 							{
 								// kbd48CNC is also detected
-								//kbd48CNC_PoNetID = i;
+								kbd48CNC_PoNetID = i;
 								//dev->deviceConfig->iEnableKBD48CNC = 1;
 								kbd48CNC_available=1;
 
