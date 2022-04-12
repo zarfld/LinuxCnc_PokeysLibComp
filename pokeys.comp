@@ -344,20 +344,7 @@ int i=0;
 
 
 
-typedef struct
-{
-    /* uint8_t statusIn[16];
-    uint8_t statusOut[16];
-    uint8_t moduleID;
-	uint8_t i2cAddress;
-	uint8_t moduleType;
-    uint8_t moduleSize;
-	uint8_t moduleOptions;
-	uint8_t PWMduty;
-	uint8_t lightValue;
-	uint8_t PoNETstatus;*/
-	sPoNETmodule Module[16]
-} PK_PoNET;
+
 
 
 // Pulse engine v2 information
