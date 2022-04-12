@@ -293,11 +293,11 @@ pin io unsigned PWM.#.PWMduty [6];
 pin io unsigned PWM.#.PWMenabledChannels [6];
 pin io unsigned PWM.#.PWMpinIDs [6];
 
-pin io unsigned PoNET.moduleID;
-pin io unsigned PoNET.i2cAddress;
-pin io unsigned PoNET.moduleType;
-pin io unsigned PoNET.moduleSize;
-pin io unsigned PoNET.moduleOptions;
+pin out unsigned PoNET.#.moduleID[16];
+pin out unsigned PoNET.#.i2cAddress[16];
+pin out unsigned PoNET.#.moduleType[16];
+pin out unsigned PoNET.#.moduleSize[16];
+pin out unsigned PoNET.#.moduleOptions[16];
 pin io unsigned PoNET.PWMduty;
 pin io unsigned PoNET.lightValue;
 pin io unsigned PoNET.PoNETstatus;
@@ -347,19 +347,44 @@ int Config_PoNet()
 	{
 				// device->PoNETmodule.PoNETstatus
 	}
-	if(PK_PoNETGetModuleSettings(dev) == PK_OK)
-	{
-			/*
-		CreateRequest(device->request, 0xDD, 0x10, device->PoNETmodule.moduleID, 0, 0);
-		  if (SendRequest(device) != PK_OK) return PK_ERR_TRANSFER;
 
-		  device->PoNETmodule.i2cAddress = device->response[8];
-		  device->PoNETmodule.moduleType = device->response[9];
-		  device->PoNETmodule.moduleSize = device->response[10];
-		  device->PoNETmodule.moduleOptions = device->response[11];
-			
-			*/	
+	for (id = 0; i < 16, i++)
+	{
+		dev->PoNETmodule.moduleID = i;
+
+		if(PK_PoNETGetModuleSettings(dev) == PK_OK)
+		{
+
+			PoNET_moduleID(i)=i;
+			PoNET_i2cAddress(i)=dev->PoNETmodule.i2cAddress;
+			PoNET_moduleType(i)=dev->PoNETmodule.moduleType;
+			PoNET_moduleSize(i)=dev->PoNETmodule.moduleSize;
+			PoNET_moduleOptions(i)=dev->PoNETmodule.moduleOptions;
+
+		}
+
+
+		//TRACE(_("Module %d: type=%d\n"), mod, myDevice->PoNETmodule.moduleType);
+		
+		/*if (myDevice->PoNETmodule.moduleType == 0x10)
+		{
+			logObj.DeviceEvent(LOG_KBD48CNC_GET_SETTINGS, this->device);
+
+			// ok, kbd48CNC configured
+			if ((myDevice->PoNETmodule.moduleOptions & (1<<7)) != 0)
+			{
+				// kbd48CNC is also detected
+				modulePoNETinitialized = true;
+				TRACE("kbd48CNC found!\n");
+				logObj.DeviceEvent(LOG_KBD48CNC_MODULE_FOUND, this->device);
+			}
+		}*/
+
+		memset(myDevice->PoNETmodule.statusOut, 0, 10);
 	}
+
+
+
 	return 0;
 }
 
@@ -1152,9 +1177,10 @@ int Update_MatrixKB()
 	return 0;
 }
 
-Point kbd48CNC_DecodeButtonPosition(int byteIndex, int bitIndex)
+/*
+int kbd48CNC_DecodeButtonPosition(int byteIndex, int bitIndex)
  {
-	 Point t = new Point();
+	 int t = 0);
 	 t.X = (byteIndex ^ 1) * 2;
 	 if (bitIndex < 4)
 	 {
@@ -1167,8 +1193,9 @@ Point kbd48CNC_DecodeButtonPosition(int byteIndex, int bitIndex)
 	 }
 	 return t;
 }
+*/
 
-void kbd48CNC_SetLED(int x, int y, bool status)
+/*void kbd48CNC_SetLED(int x, int y, bool status)
  {
 	 int byteindex = 1 ^ (int)(x / 2);
 	 int bitindex = y;
@@ -1185,6 +1212,7 @@ void kbd48CNC_SetLED(int x, int y, bool status)
 		LEDstatus[byteindex] &= (byte)~(1 << bitindex);
 	}
 }
+*/
 
 int Config_LCD()
 {
