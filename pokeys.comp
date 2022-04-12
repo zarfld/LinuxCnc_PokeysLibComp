@@ -576,7 +576,7 @@ int Config_PoNet()
 	for (i = 0; i < 16; i++)
 	{
 		dev->PoNETmodule.moduleID = i;
-		PK_PoNETGetModuleSettings(dev)
+		PK_PoNETGetModuleSettings(dev);
 
 		PoNet[i].moduleID=i;
 		PoNet[i].i2cAddress=dev->PoNETmodule.i2cAddress;
