@@ -576,48 +576,23 @@ int Config_PoNet()
 	for (i = 0; i < 16; i++)
 	{
 		dev->PoNETmodule.moduleID = i;
+		PK_PoNETGetModuleSettings(dev)
 
-		if(PK_PoNETGetModuleSettings(dev) == PK_OK)
+		PoNet[i].moduleID=i;
+		PoNet[i].i2cAddress=dev->PoNETmodule.i2cAddress;
+		PoNet[i].moduleType=dev->PoNETmodule.moduleType;
+		PoNet[i].moduleSize=dev->PoNETmodule.moduleSize;
+		PoNet[i].moduleOptions=dev->PoNETmodule.moduleOptions;
+		if (PoNet[i].moduleType == 0x10)
 		{
-
-			PoNet[i].moduleID=i;
-			PoNet[i].i2cAddress=dev->PoNETmodule.i2cAddress;
-			PoNet[i].moduleType=dev->PoNETmodule.moduleType;
-			PoNet[i].moduleSize=dev->PoNETmodule.moduleSize;
-			PoNet[i].moduleOptions=dev->PoNETmodule.moduleOptions;
-
-			if (PoNet[i].moduleType == 0x10)
-			{
-				if ((dev->PoNETmodule.moduleOptions & (1<<7)) != 0)
-				{
-					// kbd48CNC is also detected
-					kbd48CNC_available=true;
-				}
-			}
-		}
-
-
-		//TRACE(_("Module %d: type=%d\n"), mod, myDevice->PoNETmodule.moduleType);
-		
-		/*if (myDevice->PoNETmodule.moduleType == 0x10)
-		{
-			logObj.DeviceEvent(LOG_KBD48CNC_GET_SETTINGS, this->device);
-
-			// ok, kbd48CNC configured
-			if ((myDevice->PoNETmodule.moduleOptions & (1<<7)) != 0)
+			if ((dev->PoNETmodule.moduleOptions & (1<<7)) != 0)
 			{
 				// kbd48CNC is also detected
-				modulePoNETinitialized = true;
-				TRACE("kbd48CNC found!\n");
-				logObj.DeviceEvent(LOG_KBD48CNC_MODULE_FOUND, this->device);
+				kbd48CNC_available=true;
 			}
-		}*/
-
+		}
 		memset(dev->PoNETmodule.statusOut, 0, 10);
 	}
-
-
-
 	return 0;
 }
 
