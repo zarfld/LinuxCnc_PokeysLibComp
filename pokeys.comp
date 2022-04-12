@@ -260,11 +260,11 @@ pin io unsigned Encoders.#.encoderOptions [26];      // Encoder options -    bit
 pin io unsigned Encoders.#.channelApin [26];         // Channel A encoder pin
 pin io unsigned Encoders.#.channelBpin [26];         // Channel B encoder pin
 
-pin out u32 EasySensors.#.sensorValue [100];            // Current sensor value
-pin out unsigned EasySensors.#.sensorType [100];             // Type of the sensor
-pin out unsigned EasySensors.#.sensorRefreshPeriod [100];    // Refresh period in 0.1s
-pin out unsigned EasySensors.#.sensorFailsafeConfig [100];   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
-pin out unsigned EasySensors.#.sensorReadingID [100];        // Sensor reading selection (see Protocol description document for details)
+pin out u32 EasySensors.#.sensorValue [16];            // Current sensor value
+pin out unsigned EasySensors.#.sensorType [16];             // Type of the sensor
+pin out unsigned EasySensors.#.sensorRefreshPeriod [16];    // Refresh period in 0.1s
+pin out unsigned EasySensors.#.sensorFailsafeConfig [16];   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
+pin out unsigned EasySensors.#.sensorReadingID [16];        // Sensor reading selection (see Protocol description document for details)
 
 pin io unsigned PoStep.EnablePoStepCommunication;
     // Status
