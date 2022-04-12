@@ -583,15 +583,15 @@ int Config_PoNet()
 		PoNet[i].moduleType=dev->PoNETmodule.moduleType;
 		PoNet[i].moduleSize=dev->PoNETmodule.moduleSize;
 		PoNet[i].moduleOptions=dev->PoNETmodule.moduleOptions;
-		if (PoNet[i].moduleType == 0x10)
+		/*if (PoNet[i].moduleType == 0x10)
 		{
 			if ((dev->PoNETmodule.moduleOptions & (1<<7)) != 0)
 			{
 				// kbd48CNC is also detected
 				kbd48CNC_available=true;
 			}
-		}
-		memset(dev->PoNETmodule.statusOut, 0, 10);
+		}*/
+	//	memset(dev->PoNETmodule.statusOut, 0, 10);
 	}
 	return 0;
 }
@@ -1384,7 +1384,7 @@ void user_mainloop(void)
 						PoNET_moduleType(i) = PoNet[i].moduleType;
 						PoNET_moduleSize(i) = PoNet[i].moduleSize;
 						PoNET_moduleOptions(i) = PoNet[i].moduleOptions;
-					}
+				}
 			 }
 			 a_debout = 124;
 
