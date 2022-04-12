@@ -1384,7 +1384,7 @@ void user_mainloop(void)
 						dev->PoNETmodule.moduleID = i;
 						PK_PoNETGetModuleSettings(dev);
 
-						PoNET_moduleID(i)i;
+						PoNET_moduleID(i) = i;
 						PoNET_i2cAddress(i) = dev->PoNETmodule.i2cAddress;
 						PoNET_moduleType(i) = dev->PoNETmodule.moduleType;
 						PoNET_moduleSize(i) = dev->PoNETmodule.moduleSize;
