@@ -254,6 +254,8 @@ pin io unsigned kbd48CNC.PoNetID;
 pin io unsigned kbd48CNC.#.ID [48];
 pin in bit kbd48CNC.#.LED [48];
 pin out bit kbd48CNC.#.status [48];
+pin io unsigned kbd48CNC.statusIn-#[16];
+pin io unsigned kbd48CNC.statusOut-#[16];
 
 pin out unsigned Encoders.#.encoderValue [26];       // Encoder current value
 pin io unsigned Encoders.#.encoderOptions [26];      // Encoder options -    bit 0: enable encoder
@@ -1816,6 +1818,15 @@ void user_mainloop(void)
 		PK_PoNETGetModuleSettings(dev);
 		PK_PoNETGetPoNETStatus(dev);
 
+		for (i = 0; i < 16; i++)
+		{
+			/* 
+			pin io unsigned kbd48CNC.statusIn-#[16];
+			pin io unsigned kbd48CNC.statusOut-#[16];
+			*/
+			kbd48CNC_statusIn(i) = dev->PoNETmodule.statusIn[i];
+			kbd48CNC_statusOut(i) =  dev->PoNETmodule.statusOut[i];
+		}
 		for (i = 0; i < 48; i++)
 		{
 		/*	pin out unsigned kbd48CNC.#.ID [48];
@@ -1824,6 +1835,15 @@ void user_mainloop(void)
 
 			bool state = kbd48CNC_LED(i);
 			int ID = kbd48CNC_ID(i);
+
+			int offset[] = {15, 8, 7, 0};
+
+			int top = (i & 0xF0) + offset[(i / 4) % 4];
+			int y = i % 4;
+			int ID = top + y;
+			if (((i / 4) % 2) == 0)
+				ID = top - y;
+
 			kbd48CNC_status(i) = (dev->PoNETmodule.statusIn[ID/8] & (1<<(ID%8))) > 0;
 
 			int tmp = dev->PoNETmodule.statusOut[ID/8];
