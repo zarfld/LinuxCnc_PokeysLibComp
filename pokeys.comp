@@ -1406,7 +1406,7 @@ void user_mainloop(void)
 				{
 						PoNET_moduleID(i) = PoNet[i].moduleID;
 						PoNET_i2cAddress(i) = PoNet[i].i2cAddress;
-						PoNETt_moduleType(i) = PoNet[i].moduleType;
+						PoNET_moduleType(i) = PoNet[i].moduleType;
 						PoNET_moduleSize(i) = PoNet[i].moduleSize;
 						PoNET_moduleOptions(i) = PoNet[i].moduleOptions;
 					}
