@@ -1404,11 +1404,11 @@ void user_mainloop(void)
 				Config_PoNet;
 				for (i = 0; i < 16; i++)
 				{
-						PoNet_moduleID(i) = PoNet[i].moduleID;
-						PoNet_i2cAddress(i) = PoNet[i].i2cAddress;
-						PoNet_moduleType(i) = PoNet[i].moduleType;
-						PoNet_moduleSize(i) = PoNet[i].moduleSize;
-						PoNet_moduleOptions(i) = PoNet[i].moduleOptions;
+						PoNET_moduleID(i) = PoNet[i].moduleID;
+						PoNET_i2cAddress(i) = PoNet[i].i2cAddress;
+						PoNETt_moduleType(i) = PoNet[i].moduleType;
+						PoNET_moduleSize(i) = PoNet[i].moduleSize;
+						PoNET_moduleOptions(i) = PoNet[i].moduleOptions;
 					}
 			 }
 			 a_debout = 124;
