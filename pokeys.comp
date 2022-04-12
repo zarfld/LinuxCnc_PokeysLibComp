@@ -553,7 +553,6 @@ sPoKeysEasySensor EasySensors[100];
 sPoNETmodule PoNet[16];
 
 PK_MatrixKB_Parameters MatrixKB;
-bool kbd48CNC_available=false;
 
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
 {
@@ -1399,7 +1398,7 @@ void user_mainloop(void)
 							{
 								// kbd48CNC is also detected
 								kbd48CNC_PoNetID = i;
-								dev->deviceConfig->iEnableKBD48CNC = 1;
+								//dev->deviceConfig->iEnableKBD48CNC = 1;
 								kbd48CNC_available=1;
 
 								
