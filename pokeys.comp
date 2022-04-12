@@ -1170,6 +1170,15 @@ int Update_MatrixKB()
 	return 0;
 }
 
+int Update_kbd48CNC()
+{
+	dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+	PK_PoNETGetModuleSettings(dev);
+	PK_PoNETGetPoNETStatus(dev);
+
+	return 0;
+}
+
 /*
 int kbd48CNC_DecodeButtonPosition(int byteIndex, int bitIndex)
  {
@@ -1807,6 +1816,39 @@ void user_mainloop(void)
 			MatrixKB_matrixKBvalues(i) = MatrixKB.matrixKBvalues[i];
 			MatrixKB_matrixKBPins(i) = MatrixKB.matrixKBPins[i];
 		}
+	}
+	
+	if (kbd48CNC_available!=0)
+	{
+		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+		PK_PoNETGetModuleSettings(dev);
+		PK_PoNETGetPoNETStatus(dev);
+
+		for (i = 0; i < 48; i++)
+		{
+		/*	pin out unsigned kbd48CNC.#.ID [48];
+			pin in bit kbd48CNC.#.LED [48];
+			pin out bit kbd48CNC.#.status [48]; */
+
+			bool state = kbd48CNC_LED(i;)
+			int ID = kbd48CNC_ID(i);
+			kbd48CNC_status(i) = (dev->PoNETmodule.statusIn[ID/8] & (1<<(ID%8))) > 0;
+
+			int tmp = dev->PoNETmodule.statusOut[ID/8];
+
+			if (state)
+				tmp |= (1<<(ID%8));
+			else					
+				tmp &= ~(1<<(ID%8));
+
+			if (dev->PoNETmodule.statusOut[ID/8] != tmp)
+			{
+				dev->PoNETmodule.statusOut[ID/8] = tmp;
+			}
+		}
+		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+		PK_PoNETSetModuleStatus(dev);
+
 	}
 
 	if (info_EasySensors!=0)
