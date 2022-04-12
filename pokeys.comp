@@ -249,6 +249,11 @@ pin in unsigned kbd48CNC.#.byteIndex[48];
 pin in bit kbd48CNC.#.LedStatus[48];
 pin out bit kbd48CNC.#.PinStatus[48];
 */
+pin out bit kbd48CNC.available;
+pin out unsigned kbd48CNC.PoNetID;
+pin in bit kbd48CNC.#.ID [48];
+pin in bit kbd48CNC.#.LED [48];
+pin out bit kbd48CNC.#.status [48];
 
 pin out unsigned Encoders.#.encoderValue [26];       // Encoder current value
 pin io unsigned Encoders.#.encoderOptions [26];      // Encoder options -    bit 0: enable encoder
@@ -583,15 +588,7 @@ int Config_PoNet()
 		PoNet[i].moduleType=dev->PoNETmodule.moduleType;
 		PoNet[i].moduleSize=dev->PoNETmodule.moduleSize;
 		PoNet[i].moduleOptions=dev->PoNETmodule.moduleOptions;
-		/*if (PoNet[i].moduleType == 0x10)
-		{
-			if ((dev->PoNETmodule.moduleOptions & (1<<7)) != 0)
-			{
-				// kbd48CNC is also detected
-				dev->deviceConfig->iEnableKBD48CNC = 1;
-				kbd48CNC_available=true;
-			}
-		}*/
+
 	//	memset(dev->PoNETmodule.statusOut, 0, 10);
 	}
 	return 0;
@@ -1395,11 +1392,39 @@ void user_mainloop(void)
 						PoNET_moduleType(i) = PoNet[i].moduleType;
 						PoNET_moduleSize(i) = PoNet[i].moduleSize;
 						PoNET_moduleOptions(i) = PoNet[i].moduleOptions;*/
+
+						if (PoNET_moduleType(i)== 0x10)
+						{
+							if ((dev->PoNETmodule.moduleOptions & (1<<7)) != 0)
+							{
+								// kbd48CNC is also detected
+								kbd48CNC_PoNetID = i;
+								dev->deviceConfig->iEnableKBD48CNC = 1;
+								kbd48CNC_available=1;
+
+								
+							}
+						}
+
 				}
 			 }
 			 a_debout = 124;
 
+			 if (kbd48CNC_available!=0)
+			 {
+				for (i = 0; i < 48; i++)
+				{
+					int offset[] = {15, 8, 7, 0};
 
+					int top = (i & 0xF0) + offset[(i / 4) % 4];
+					int y = i % 4;
+					int ID = top + y;
+					if (((i / 4) % 2) == 0)
+						ID = top - y;
+
+					kbd48CNC_ID(i) = ID;
+				}
+			 }
 
 			 if (PEv2_params_ApplyIniSettings !=0 && info_PulseEnginev2!=0 )
 			{
