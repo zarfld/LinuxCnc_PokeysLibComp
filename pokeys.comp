@@ -1152,7 +1152,7 @@ int Update_MatrixKB()
 	return 0;
 }
 
-private Point kbd48CNC_DecodeButtonPosition(int byteIndex, int bitIndex)
+Point kbd48CNC_DecodeButtonPosition(int byteIndex, int bitIndex)
  {
 	 Point t = new Point();
 	 t.X = (byteIndex ^ 1) * 2;
@@ -1168,7 +1168,7 @@ private Point kbd48CNC_DecodeButtonPosition(int byteIndex, int bitIndex)
 	 return t;
 }
 
-private void kbd48CNC_SetLED(int x, int y, bool status)
+void kbd48CNC_SetLED(int x, int y, bool status)
  {
 	 int byteindex = 1 ^ (int)(x / 2);
 	 int bitindex = y;
