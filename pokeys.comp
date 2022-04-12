@@ -352,6 +352,7 @@ sPoKeysDevice * dev=0;
 bool HAL_Machine_On = false;
 bool setPkConfig = false;
 bool setPinConfig = false;
+bool secBlink = false;
 unsigned Loop_Frequ =0;
 int i=0;
 
@@ -1638,7 +1639,15 @@ void user_mainloop(void)
 			rtc_loopcount=0;
 			rtc_lastsec=rtc_sec;
 
-				
+			if (secBlink)
+			{
+			secBlink = false;
+			}
+			else
+			{
+			secBlink = true;
+			}
+			 
 		}
 		a_debout = 212;
 	}
@@ -1834,7 +1843,7 @@ void user_mainloop(void)
 			pin out bit kbd48CNC.#.status [48]; */
 
 			bool state = kbd48CNC_LED(i);
-			
+			state=secBlink;
 			int offset[] = {15, 8, 7, 0};
 
 			int top = (i & 0xF0) + offset[(i / 4) % 4];
