@@ -569,7 +569,7 @@ int Config_PoNet()
 		if(PK_PoNETGetModuleSettings(dev) == PK_OK)
 		{
 
-			PoNET_moduleID(i)=i;
+			PoNET_moduleID[i]=i;
 			PoNET_i2cAddress(i)=dev->PoNETmodule.i2cAddress;
 			PoNET_moduleType(i)=dev->PoNETmodule.moduleType;
 			PoNET_moduleSize(i)=dev->PoNETmodule.moduleSize;
