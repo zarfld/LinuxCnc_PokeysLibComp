@@ -243,10 +243,12 @@ pin out unsigned MatrixKB.matrixKBrowsPins.#[16];			// List of matrix keyboard r
 pin out unsigned MatrixKB.matrixKBvalues.#[128];			// Current state of each matrix keyboard key (assumes fixed width of 8 columns)
 pin out bit MatrixKB.matrixKBPins.#[128];			// matrixKBrowsPins
 
+/*
 pin in unsigned kbd48CNC.#.bitIndex[48];				// adressing 
 pin in unsigned kbd48CNC.#.byteIndex[48];
 pin in bit kbd48CNC.#.LedStatus[48];
 pin out bit kbd48CNC.#.PinStatus[48];
+*/
 
 pin out unsigned Encoders.#.encoderValue [26];       // Encoder current value
 pin io unsigned Encoders.#.encoderOptions [26];      // Encoder options -    bit 0: enable encoder
@@ -260,12 +262,16 @@ pin io unsigned Encoders.#.encoderOptions [26];      // Encoder options -    bit
 pin io unsigned Encoders.#.channelApin [26];         // Channel A encoder pin
 pin io unsigned Encoders.#.channelBpin [26];         // Channel B encoder pin
 
+
+#ifdef POKEYSLIB_USE_EASYSENSORS
 pin out u32 EasySensors.#.sensorValue [16];            // Current sensor value
 pin out unsigned EasySensors.#.sensorType [16];             // Type of the sensor
 pin out unsigned EasySensors.#.sensorRefreshPeriod [16];    // Refresh period in 0.1s
 pin out unsigned EasySensors.#.sensorFailsafeConfig [16];   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
 pin out unsigned EasySensors.#.sensorReadingID [16];        // Sensor reading selection (see Protocol description document for details)
+#endif
 
+#ifdef POKEYSLIB_USE_POSTEP
 pin io unsigned PoStep.EnablePoStepCommunication;
     // Status
 pin out unsigned PoStep.#.SupplyVoltage [8];
@@ -287,6 +293,7 @@ pin io unsigned PoStep.#.TemperatureLimit [8];
 pin io unsigned PoStep.#.AddressI2C [8];
 pin io unsigned PoStep.#.DriverType [8];
 pin io unsigned PoStep.#.UpdateConfig [8];
+#endif
 
 pin io unsigned PWM.PWMperiod;
 pin io unsigned PWM.#.PWMduty [6];
