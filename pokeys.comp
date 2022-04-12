@@ -298,6 +298,7 @@ pin out unsigned PoNET.#.i2cAddress[16];
 pin out unsigned PoNET.#.moduleType[16];
 pin out unsigned PoNET.#.moduleSize[16];
 pin out unsigned PoNET.#.moduleOptions[16];
+
 pin io unsigned PoNET.PWMduty;
 pin io unsigned PoNET.lightValue;
 pin io unsigned PoNET.PoNETstatus;
@@ -343,7 +344,20 @@ int i=0;
 
 
 
-
+typedef struct
+{
+    /* uint8_t statusIn[16];
+    uint8_t statusOut[16];
+    uint8_t moduleID;
+	uint8_t i2cAddress;
+	uint8_t moduleType;
+    uint8_t moduleSize;
+	uint8_t moduleOptions;
+	uint8_t PWMduty;
+	uint8_t lightValue;
+	uint8_t PoNETstatus;*/
+	sPoNETmodule Module[16]
+} PK_PoNET;
 
 
 // Pulse engine v2 information
@@ -537,7 +551,10 @@ typedef struct
 PK_PEv2_Parameters PEv2_params;
 PK_PEv2_Stat PEv2_status;
 sPoKeysEasySensor EasySensors[100];
+sPoNETmodule PoNet[16]
+
 PK_MatrixKB_Parameters MatrixKB;
+bool kbd48CNC_available=false;
 
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
 {
@@ -569,12 +586,20 @@ int Config_PoNet()
 		if(PK_PoNETGetModuleSettings(dev) == PK_OK)
 		{
 
-			PoNET_moduleID[i]=i;
-			PoNET_i2cAddress(i)=dev->PoNETmodule.i2cAddress;
-			PoNET_moduleType(i)=dev->PoNETmodule.moduleType;
-			PoNET_moduleSize(i)=dev->PoNETmodule.moduleSize;
-			PoNET_moduleOptions(i)=dev->PoNETmodule.moduleOptions;
+			PoNET[i].moduleID=i;
+			PoNET[i].i2cAddress=dev->PoNETmodule.i2cAddress;
+			PoNET[i].moduleType=dev->PoNETmodule.moduleType;
+			PoNET[i].moduleSize=dev->PoNETmodule.moduleSize;
+			PoNET[i].moduleOptions=dev->PoNETmodule.moduleOptions;
 
+			if (myDevice->PoNETmodule.moduleType == 0x10)
+			{
+				if ((dev->PoNETmodule.moduleOptions & (1<<7)) != 0)
+				{
+					// kbd48CNC is also detected
+					kbd48CNC_available=true;
+				}
+			}
 		}
 
 
