@@ -251,7 +251,7 @@ pin out bit kbd48CNC.#.PinStatus[48];
 */
 pin out bit kbd48CNC.available;
 pin out unsigned kbd48CNC.PoNetID;
-pin out bit kbd48CNC.#.ID [48];
+pin out unsigned kbd48CNC.#.ID [48];
 pin in bit kbd48CNC.#.LED [48];
 pin out bit kbd48CNC.#.status [48];
 
