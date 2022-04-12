@@ -588,6 +588,7 @@ int Config_PoNet()
 			if ((dev->PoNETmodule.moduleOptions & (1<<7)) != 0)
 			{
 				// kbd48CNC is also detected
+				dev->deviceConfig->iEnableKBD48CNC = 1;
 				kbd48CNC_available=true;
 			}
 		}*/
@@ -1379,11 +1380,21 @@ void user_mainloop(void)
 				Config_PoNet;
 				for (i = 0; i < 16; i++)
 				{
-						PoNET_moduleID(i) = PoNet[i].moduleID;
+
+						dev->PoNETmodule.moduleID = i;
+						PK_PoNETGetModuleSettings(dev);
+
+						PoNET_moduleID(i)i;
+						PoNET_i2cAddress(i) = dev->PoNETmodule.i2cAddress;
+						PoNET_moduleType(i) = dev->PoNETmodule.moduleType;
+						PoNET_moduleSize(i) = dev->PoNETmodule.moduleSize;
+						PoNET_moduleOptions(i) = dev->PoNETmodule.moduleOptions;
+
+						/*PoNET_moduleID(i) = i;
 						PoNET_i2cAddress(i) = PoNet[i].i2cAddress;
 						PoNET_moduleType(i) = PoNet[i].moduleType;
 						PoNET_moduleSize(i) = PoNet[i].moduleSize;
-						PoNET_moduleOptions(i) = PoNet[i].moduleOptions;
+						PoNET_moduleOptions(i) = PoNet[i].moduleOptions;*/
 				}
 			 }
 			 a_debout = 124;
