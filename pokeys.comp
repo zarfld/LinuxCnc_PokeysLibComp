@@ -276,7 +276,7 @@ pin out unsigned EasySensors.#.sensorFailsafeConfig [16];   // Failsafe configur
 pin out unsigned EasySensors.#.sensorReadingID [16];        // Sensor reading selection (see Protocol description document for details)
 
 
-
+/*
 pin io unsigned PoStep.EnablePoStepCommunication;
     // Status
 pin out unsigned PoStep.#.SupplyVoltage [8];
@@ -304,7 +304,7 @@ pin io unsigned PWM.PWMperiod;
 pin io unsigned PWM.#.PWMduty [6];
 pin io unsigned PWM.#.PWMenabledChannels [6];
 pin io unsigned PWM.#.PWMpinIDs [6];
-
+*/
 pin out unsigned PoNET.#.moduleID[16];
 pin out unsigned PoNET.#.i2cAddress[16];
 pin out unsigned PoNET.#.moduleType[16];
