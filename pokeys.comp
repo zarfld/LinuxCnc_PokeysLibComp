@@ -538,7 +538,7 @@ typedef struct
 PK_PEv2_Parameters PEv2_params;
 PK_PEv2_Stat PEv2_status;
 sPoKeysEasySensor EasySensors[100];
-sPoNETmodule PoNet[16]
+sPoNETmodule PoNet[16];
 
 PK_MatrixKB_Parameters MatrixKB;
 bool kbd48CNC_available=false;
@@ -573,13 +573,13 @@ int Config_PoNet()
 		if(PK_PoNETGetModuleSettings(dev) == PK_OK)
 		{
 
-			PoNET[i].moduleID=i;
-			PoNET[i].i2cAddress=dev->PoNETmodule.i2cAddress;
-			PoNET[i].moduleType=dev->PoNETmodule.moduleType;
-			PoNET[i].moduleSize=dev->PoNETmodule.moduleSize;
-			PoNET[i].moduleOptions=dev->PoNETmodule.moduleOptions;
+			PoNet[i].moduleID=i;
+			PoNet[i].i2cAddress=dev->PoNETmodule.i2cAddress;
+			PoNet[i].moduleType=dev->PoNETmodule.moduleType;
+			PoNet[i].moduleSize=dev->PoNETmodule.moduleSize;
+			PoNet[i].moduleOptions=dev->PoNETmodule.moduleOptions;
 
-			if (myDevice->PoNETmodule.moduleType == 0x10)
+			if (PoNet[i].moduleType == 0x10)
 			{
 				if ((dev->PoNETmodule.moduleOptions & (1<<7)) != 0)
 				{
