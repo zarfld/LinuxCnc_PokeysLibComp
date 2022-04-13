@@ -1883,12 +1883,12 @@ void user_mainloop(void)
 				ID = top - y;
 			if ((dev->PoNETmodule.statusIn[ID/8] & (1<<(ID%8))) > 0)
 			{
-				kbd48CNC_status(i) = 1;
+				kbd48CNC_status(i) = true;
 				state = true;
 			}
 			else
 			{
-				kbd48CNC_status(i) = 0;
+				kbd48CNC_status(i) = false;
 			}
 			
 
