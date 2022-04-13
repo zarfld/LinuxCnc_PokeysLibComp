@@ -1827,15 +1827,12 @@ void user_mainloop(void)
 	
 	if (kbd48CNC_available!=0)
 	{
-		PK_PoNETGetPoNETStatus(dev);
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 		PK_PoNETGetModuleSettings(dev);
-		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-		PK_PoNETGetModuleStatusRequest;
+
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 		PK_PoNETGetModuleLight(dev);
-		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-		PK_PoNETGetPoNETStatus(dev);
+
 
 		/*
 		pin io unsigned kbd48CNC.KeyBrightness;
@@ -1852,6 +1849,12 @@ void user_mainloop(void)
 			dev->PoNETmodule.PWMduty = kbd48CNC_KeyBrightness;
 			PK_PoNETSetModulePWM(dev);
 		}
+
+
+		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+		PK_PoNETGetModuleStatusRequest(dev);
+		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+		PK_PoNETGetModuleStatus(dev);
 
 		for (i = 0; i < 16; i++)
 		{
