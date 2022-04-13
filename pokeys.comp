@@ -256,7 +256,7 @@ pin io unsigned kbd48CNC.prevBrightness;
 pin io unsigned kbd48CNC.lightValue;
 pin io unsigned kbd48CNC.#.ID [48];
 pin in bit kbd48CNC.#.LED [48];
-pin out bit kbd48CNC.#.status [48];
+pin io bit kbd48CNC.#.status [48];
 pin io unsigned kbd48CNC.statusIn-#[16];
 pin io unsigned kbd48CNC.statusOut-#[16];
 
@@ -1871,7 +1871,7 @@ void user_mainloop(void)
 			pin in bit kbd48CNC.#.LED [48];
 			pin out bit kbd48CNC.#.status [48]; */
 
-			bool state = kbd48CNC_LED(i);
+			bool state = fasle;
 			// blinking 1Hz for Debug
 			//state=secBlink;
 			int offset[] = {15, 8, 7, 0};
@@ -1891,6 +1891,10 @@ void user_mainloop(void)
 				kbd48CNC_status(i) = false;
 			}
 			
+			if (kbd48CNC_LED(i)!=0)
+			{
+				state = true;
+			}
 
 			int tmp = dev->PoNETmodule.statusOut[ID/8];
 
