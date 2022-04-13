@@ -251,11 +251,15 @@ pin out bit kbd48CNC.#.PinStatus[48];
 */
 pin out bit kbd48CNC.available;
 pin io unsigned kbd48CNC.PoNetID;
+pin io unsigned kbd48CNC.KeyBrightness;
+pin io unsigned kbd48CNC.prevBrightness;
+pin io unsigned kbd48CNC.lightValue;
 pin io unsigned kbd48CNC.#.ID [48];
 pin in bit kbd48CNC.#.LED [48];
 pin out bit kbd48CNC.#.status [48];
 pin io unsigned kbd48CNC.statusIn-#[16];
 pin io unsigned kbd48CNC.statusOut-#[16];
+
 
 pin out unsigned Encoders.#.encoderValue [26];       // Encoder current value
 pin io unsigned Encoders.#.encoderOptions [26];      // Encoder options -    bit 0: enable encoder
@@ -1823,10 +1827,31 @@ void user_mainloop(void)
 	
 	if (kbd48CNC_available!=0)
 	{
+		PK_PoNETGetPoNETStatus(dev);
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 		PK_PoNETGetModuleSettings(dev);
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+		PK_PoNETGetModuleStatusRequest;
+		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+		PK_PoNETGetModuleLight(dev);
+		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 		PK_PoNETGetPoNETStatus(dev);
+
+		/*
+		pin io unsigned kbd48CNC.KeyBrightness;
+		pin io unsigned kbd48CNC.prevBrightness;
+		pin io unsigned kbd48CNC.lightValue;
+		*/
+		kbd48CNC_lightValue = dev->PoNETmodule.lightValue;
+
+		kbd48CNC_KeyBrightness = 255-kbd48CNC_lightValue;
+
+		if (kbd48CNC_prevBrightness != kbd48CNC_KeyBrightness)
+		{
+			dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+			dev->PoNETmodule.PWMduty = kbd48CNC_KeyBrightness;
+			PK_PoNETSetModulePWM(dev);
+		}
 
 		for (i = 0; i < 16; i++)
 		{
