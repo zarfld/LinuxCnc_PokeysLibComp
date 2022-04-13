@@ -441,8 +441,8 @@ net pokeys.0.kbd48CNC.17.status =>	halui.spindle.0.stop
 net pokeys.0.kbd48CNC.18.status =>	halui.spindle.0.reverse		
 net pokeys.0.kbd48CNC.18.LED 	<=	halui.spindle.0.runs-backward
 #FUN_GOTO_0s,
-net pokeys.0.kbd48CNC.19.status =>	halui.joint.N.home	
-net pokeys.0.kbd48CNC.19.LED 	<=	halui.joint.N.is-homed
+#net pokeys.0.kbd48CNC.19.status =>	halui.joint.N.home	
+#net pokeys.0.kbd48CNC.19.LED 	<=	halui.joint.N.is-homed
 #FUN_SPINDLE_SPEED_PLUS, 
 net pokeys.0.kbd48CNC.20.status =>	halui.spindle.0.increase	
 #net pokeys.0.kbd48CNC.20.LED 	<=
