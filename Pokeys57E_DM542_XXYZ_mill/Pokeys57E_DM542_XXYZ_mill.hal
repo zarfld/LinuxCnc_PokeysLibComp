@@ -386,104 +386,147 @@ net in-position               <=  motion.in-position
 net machine-is-enabled        <=  motion.motion-enabled
 
 #  ---digital in / out signals---
-net pokeys.0.kbd48CNC.0.status =>	halui.program.run 	//FUN_CYCLE_START,	
+#FUN_CYCLE_START,
+net pokeys.0.kbd48CNC.0.status =>	halui.program.run 		
 net pokeys.0.kbd48CNC.0.LED =>		halui.program.is-running
-net pokeys.0.kbd48CNC.1.status =>	halui.program.pause	//FUN_FEED_HOLD,		
+#FUN_FEED_HOLD,
+net pokeys.0.kbd48CNC.1.status =>	halui.program.pause			
 net pokeys.0.kbd48CNC.1.LED =>		halui.program.is-paused
-net pokeys.0.kbd48CNC.2.status =>	halui.program.stop	//FUN_STOP,			
+net pokeys.0.kbd48CNC.2.status =>	halui.program.stop			
 net pokeys.0.kbd48CNC.2.LED =>		halui.program.is-idle 
-net pokeys.0.kbd48CNC.3.status =>	halui.abort			//FUN_RESET,
+net pokeys.0.kbd48CNC.3.status =>	halui.abort			
 net pokeys.0.kbd48CNC.3.LED =>
-net pokeys.0.kbd48CNC.4.status =>	halui.program.step	//FUN_SINGLE_STEP,	
+net pokeys.0.kbd48CNC.4.status =>	halui.program.step		
 net pokeys.0.kbd48CNC.4.LED =>
-net pokeys.0.kbd48CNC.5.status =>					//FUN_REVERSE,		
+#FUN_REVERSE,
+net pokeys.0.kbd48CNC.5.status =>							
 net pokeys.0.kbd48CNC.5.LED =>
-net pokeys.0.kbd48CNC.6.status =>	halui.program.optional-stop.on	//FUN_OPTIONAL_STOP, 
+#FUN_OPTIONAL_STOP, 
+net pokeys.0.kbd48CNC.6.status =>	halui.program.optional-stop.on	
 net pokeys.0.kbd48CNC.6.LED =>		halui.program.optional-stop.is-on
-net pokeys.0.kbd48CNC.7.status =>					//FUN_EDIT,
+#FUN_EDIT,
+net pokeys.0.kbd48CNC.7.status =>					
 net pokeys.0.kbd48CNC.7.LED =>
-net pokeys.0.kbd48CNC.8.status =>	halui.machine.on	//FUN_LOAD,			
+#FUN_LOAD,	
+net pokeys.0.kbd48CNC.8.status =>	halui.machine.on			
 net pokeys.0.kbd48CNC.8.LED =>		halui.machine.is-on
-net pokeys.0.kbd48CNC.9.status =>	halui.machine.off 	//FUN_CLOSE_GFILE,	
+#FUN_CLOSE_GFILE,	
+net pokeys.0.kbd48CNC.9.status =>	halui.machine.off 	
 net pokeys.0.kbd48CNC.9.LED =>
-net pokeys.0.kbd48CNC.10.status =>					//FUN_RECENT,		
+#FUN_RECENT,
+net pokeys.0.kbd48CNC.10.status =>							
 net pokeys.0.kbd48CNC.10.LED =>
-net pokeys.0.kbd48CNC.11.status =>					//FUN_SET_NEXT_LINE,
+#FUN_SET_NEXT_LINE,
+net pokeys.0.kbd48CNC.11.status =>					
 net pokeys.0.kbd48CNC.11.LED =>
-net pokeys.0.kbd48CNC.12.status =>					//FUN_REWIND,		
+#FUN_REWIND,	
+net pokeys.0.kbd48CNC.12.status =>						
 net pokeys.0.kbd48CNC.12.LED =>
-net pokeys.0.kbd48CNC.13.status =>					//FUN_RUN_FROM_HERE, 
+#FUN_RUN_FROM_HERE, 
+net pokeys.0.kbd48CNC.13.status =>					
 net pokeys.0.kbd48CNC.13.LED =>
-net pokeys.0.kbd48CNC.14.status =>					//FUN_BLOCK_DELETE,	
+#FUN_BLOCK_DELETE,	
+net pokeys.0.kbd48CNC.14.status =>					
 net pokeys.0.kbd48CNC.14.LED =>
-net pokeys.0.kbd48CNC.15.status =>	halui.joint.selected.home	//FUN_REF,
+#FUN_REF,
+net pokeys.0.kbd48CNC.15.status =>	halui.joint.selected.home	
 net pokeys.0.kbd48CNC.15.LED =>		halui.joint.selected.is-homed
-
-net pokeys.0.kbd48CNC.16.status =>	halui.spindle.0.forward	//FUN_SPINDLE_CW,
+#FUN_SPINDLE_CW,
+net pokeys.0.kbd48CNC.16.status =>	halui.spindle.0.forward	
 net pokeys.0.kbd48CNC.16.LED 	<=	halui.spindle.0.runs-forward 
-net pokeys.0.kbd48CNC.17.status =>	halui.spindle.0.stop	//FUN_SPINDLE_STOP,		
+#FUN_SPINDLE_STOP,	
+net pokeys.0.kbd48CNC.17.status =>	halui.spindle.0.stop		
 net pokeys.0.kbd48CNC.17.LED 	<=
-net pokeys.0.kbd48CNC.18.status =>	halui.spindle.0.reverse//FUN_SPINDLE_CCW,		
+#FUN_SPINDLE_CCW,
+net pokeys.0.kbd48CNC.18.status =>	halui.spindle.0.reverse		
 net pokeys.0.kbd48CNC.18.LED 	<=	halui.spindle.0.runs-backward
-net pokeys.0.kbd48CNC.19.status =>	halui.joint.N.home	//FUN_GOTO_0s,
+#FUN_GOTO_0s,
+net pokeys.0.kbd48CNC.19.status =>	halui.joint.N.home	
 net pokeys.0.kbd48CNC.19.LED 	<=	halui.joint.N.is-homed
-net pokeys.0.kbd48CNC.20.status =>	halui.spindle.0.increase	//FUN_SPINDLE_SPEED_PLUS, 
+#FUN_SPINDLE_SPEED_PLUS, 
+net pokeys.0.kbd48CNC.20.status =>	halui.spindle.0.increase	
 net pokeys.0.kbd48CNC.20.LED 	<=
-net pokeys.0.kbd48CNC.21.status =>					//FUN_SPINDLE_SPEED_RESET, 
+#FUN_SPINDLE_SPEED_RESET, 
+net pokeys.0.kbd48CNC.21.status =>					
 net pokeys.0.kbd48CNC.21.LED 	<=
-net pokeys.0.kbd48CNC.22.status =>	halui.spindle.0.decrease	//FUN_SPINDLE_SPEED_MINUS, 
+#FUN_SPINDLE_SPEED_MINUS, 
+net pokeys.0.kbd48CNC.22.status =>	halui.spindle.0.decrease	
 net pokeys.0.kbd48CNC.22.LED 	<=
-net pokeys.0.kbd48CNC.23.status =>					//FUN_TEACH,
+#FUN_TEACH,
+net pokeys.0.kbd48CNC.23.status =>					
 net pokeys.0.kbd48CNC.23.LED 	<=
-net pokeys.0.kbd48CNC.24.status =>	halui.feed-override.increase	//FUN_FEEDRATE_PLUS,		
+#FUN_FEEDRATE_PLUS,
+net pokeys.0.kbd48CNC.24.status =>	halui.feed-override.increase			
 net pokeys.0.kbd48CNC.24.LED 	<=
-net pokeys.0.kbd48CNC.25.status =>					//FUN_FEEDRATE_RESET,	
+#FUN_FEEDRATE_RESET,	
+net pokeys.0.kbd48CNC.25.status =>					
 net pokeys.0.kbd48CNC.25.LED 	<=
-net pokeys.0.kbd48CNC.26.status =>	halui.feed-override.decrease	//FUN_FEEDRATE_MINUS,	
+#FUN_FEEDRATE_MINUS,	
+net pokeys.0.kbd48CNC.26.status =>	halui.feed-override.decrease	
 net pokeys.0.kbd48CNC.26.LED 	<=
-net pokeys.0.kbd48CNC.27.status =>					//FUN_STOP_TEACH,
+	#FUN_STOP_TEACH,
+net pokeys.0.kbd48CNC.27.status =>				
 net pokeys.0.kbd48CNC.27.LED 	<=
-net pokeys.0.kbd48CNC.28.status =>					//FUN_JOG_TOGGLE,		
+#FUN_JOG_TOGGLE,	
+net pokeys.0.kbd48CNC.28.status =>						
 net pokeys.0.kbd48CNC.28.LED 	<=
-net pokeys.0.kbd48CNC.29.status =>		//FUN_JOGRATE_PLUS,		
+#FUN_JOGRATE_PLUS,	
+net pokeys.0.kbd48CNC.29.status =>			
 net pokeys.0.kbd48CNC.29.LED 	<=
-net pokeys.0.kbd48CNC.30.status =>					//FUN_JOGRATE_MINUS,		
+net pokeys.0.kbd48CNC.30.status =>				
+#FUN_JOGRATE_MINUS,			
 net pokeys.0.kbd48CNC.30.LED 	<=
-net pokeys.0.kbd48CNC.31.status =>					//FUN_SHUTTLE_MODE,
+	#FUN_SHUTTLE_MODE,
+net pokeys.0.kbd48CNC.31.status =>				
 net pokeys.0.kbd48CNC.31.LED 	<=
 
-
-net pokeys.0.kbd48CNC.32.status =>	halui.axis.x.select	//FUN_JOG_X,			
+#FUN_JOG_X,
+net pokeys.0.kbd48CNC.32.status =>	halui.axis.x.select				
 net pokeys.0.kbd48CNC.32.LED 	<=	halui.axis.x.is-selected
-net pokeys.0.kbd48CNC.33.status =>	halui.axis.a.select	//FUN_JOG_A,			
+#FUN_JOG_A,
+net pokeys.0.kbd48CNC.33.status =>	halui.axis.a.select				
 net pokeys.0.kbd48CNC.33.LED 	<=	halui.axis.a.is-selected
-net pokeys.0.kbd48CNC.34.status =>	halui.axis.selected.plus	//FUN_JOG_PLUS,		
+#FUN_JOG_PLUS,	
+net pokeys.0.kbd48CNC.34.status =>	halui.axis.selected.plus		
 net pokeys.0.kbd48CNC.34.LED 	<=
-net pokeys.0.kbd48CNC.35.status =>//FUN_JOG_CONT,
+#FUN_JOG_CONT,
+net pokeys.0.kbd48CNC.35.status =>
 net pokeys.0.kbd48CNC.35.LED 	<=
-net pokeys.0.kbd48CNC.36.status =>	halui.axis.y.select	//FUN_JOG_Y,			
+#FUN_JOG_Y,	
+net pokeys.0.kbd48CNC.36.status =>	halui.axis.y.select			
 net pokeys.0.kbd48CNC.36.LED 	<=	halui.axis.y.is-selected
-net pokeys.0.kbd48CNC.37.status =>	halui.axis.b.select	//FUN_JOG_B,			
+	#FUN_JOG_B,
+net pokeys.0.kbd48CNC.37.status =>	halui.axis.b.select			
 net pokeys.0.kbd48CNC.37.LED 	<=	halui.axis.b.is-selected
-net pokeys.0.kbd48CNC.38.status =>					//FUN_JOG_FAST_TOGGLE, 
+	#FUN_JOG_FAST_TOGGLE, 
+net pokeys.0.kbd48CNC.38.status =>				
 net pokeys.0.kbd48CNC.38.LED 	<=
-net pokeys.0.kbd48CNC.39.status =>					//FUN_JOG_INC,
+#FUN_JOG_INC,
+net pokeys.0.kbd48CNC.39.status =>					
 net pokeys.0.kbd48CNC.39.LED 	<=
-net pokeys.0.kbd48CNC.40.status =>	halui.axis.z.select	//FUN_JOG_Z,			
+	#FUN_JOG_Z,
+net pokeys.0.kbd48CNC.40.status =>	halui.axis.z.select			
 net pokeys.0.kbd48CNC.40.LED 	<=	halui.axis.z.is-selected
-net pokeys.0.kbd48CNC.41.status =>	halui.axis.c.select	//FUN_JOG_C,			
+	#FUN_JOG_C,
+net pokeys.0.kbd48CNC.41.status =>	halui.axis.c.select			
 net pokeys.0.kbd48CNC.41.LED 	<=	halui.axis.c.is-selected
-net pokeys.0.kbd48CNC.42.status =>	halui.axis.selected.minus	//FUN_JOG_MINUS,		
+#FUN_JOG_MINUS,
+net pokeys.0.kbd48CNC.42.status =>	halui.axis.selected.minus			
 net pokeys.0.kbd48CNC.42.LED 	<=
-net pokeys.0.kbd48CNC.43.status =>					//FUN_JOG_MPG,
+#FUN_JOG_MPG,
+net pokeys.0.kbd48CNC.43.status =>					
 net pokeys.0.kbd48CNC.43.LED 	<=
-net pokeys.0.kbd48CNC.44.status =>					//FUN_JOG_STEP_1,	
+#FUN_JOG_STEP_1,	
+net pokeys.0.kbd48CNC.44.status =>					
 net pokeys.0.kbd48CNC.44.LED 	<=
-net pokeys.0.kbd48CNC.45.status =>					//FUN_JOG_STEP_10,	
+#FUN_JOG_STEP_10,
+net pokeys.0.kbd48CNC.45.status =>						
 net pokeys.0.kbd48CNC.45.LED 	<=
-net pokeys.0.kbd48CNC.46.status =>					//FUN_JOG_STEP_100,	
+#FUN_JOG_STEP_100,	
+net pokeys.0.kbd48CNC.46.status =>					
 net pokeys.0.kbd48CNC.46.LED 	<=
-net pokeys.0.kbd48CNC.47.status =>					//FUN_JOG_STEP_1000
+#FUN_JOG_STEP_1000
+net pokeys.0.kbd48CNC.47.status =>					
 net pokeys.0.kbd48CNC.47.LED 	<=
 
 
