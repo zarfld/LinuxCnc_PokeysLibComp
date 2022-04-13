@@ -409,7 +409,7 @@ net pokeys.0.kbd48CNC.6.LED =>		halui.program.optional-stop.is-on
 #net pokeys.0.kbd48CNC.7.LED =>
 #FUN_LOAD,	
 net pokeys.0.kbd48CNC.8.status =>	halui.machine.on			
-net pokeys.0.kbd48CNC.8.LED =>		halui.machine.is-on
+#net pokeys.0.kbd48CNC.8.LED =>		halui.machine.is-on
 #FUN_CLOSE_GFILE,	
 net pokeys.0.kbd48CNC.9.status =>	halui.machine.off 	
 #net pokeys.0.kbd48CNC.9.LED =>
