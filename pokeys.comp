@@ -251,9 +251,9 @@ pin io unsigned kbd48CNC.prevBrightness;
 pin io unsigned kbd48CNC.lightValue;
 //pin io unsigned kbd48CNC.#.ID [48];
 pin in bit kbd48CNC.#.LED [48];
-pin io bit kbd48CNC.#.Button [48];
-pin io unsigned kbd48CNC.statusIn-#[16];
-pin io unsigned kbd48CNC.statusOut-#[16];
+pin out bit kbd48CNC.#.Button [48];
+pin out unsigned kbd48CNC.statusIn-#[16];
+pin out unsigned kbd48CNC.statusOut-#[16];
 
 
 pin out unsigned Encoders.#.encoderValue [26];       // Encoder current value
@@ -1173,42 +1173,7 @@ int Update_MatrixKB()
 }
 
 
-/*
-int kbd48CNC_DecodeButtonPosition(int byteIndex, int bitIndex)
- {
-	 int t = 0);
-	 t.X = (byteIndex ^ 1) * 2;
-	 if (bitIndex < 4)
-	 {
-		 t.X++;
-		 t.Y = bitIndex;
-	 }
-	 else
-	 {
-		t.Y = 7 - bitIndex;
-	 }
-	 return t;
-}
-*/
 
-/*void kbd48CNC_SetLED(int x, int y, bool status)
- {
-	 int byteindex = 1 ^ (int)(x / 2);
-	 int bitindex = y;
-	 if ((x % 2) == 0)
-	 {
-		bitindex = 7 - y;
-	 }
-	 if (status)
-	 {
-		LEDstatus[byteindex] |= (byte)(1 << bitindex);
-	 }
-	 else
-	 {
-		LEDstatus[byteindex] &= (byte)~(1 << bitindex);
-	}
-}
-*/
 
 int Config_LCD()
 {
@@ -1875,21 +1840,19 @@ void user_mainloop(void)
 
 			if (kbd48CNC_LED(i) == true)
 			{
-				state = true;
+				state=true;
 			}
 
 			if ((dev->PoNETmodule.statusIn[ID/8] & (1<<(ID%8))) > 0)
 			{
-				kbd48CNC_Button(i) = true;
+				kbd48CNC_Button(i)=true;
 				state = kbd48CNC_Button(i);
 			}
 			else
 			{
-				kbd48CNC_Button(i) = false;
+				kbd48CNC_Button(i)=false;
 			}
 			
-
-
 			int tmp = dev->PoNETmodule.statusOut[ID/8];
 
 			if (state)
