@@ -389,20 +389,27 @@ net machine-is-enabled        <=  motion.motion-enabled
 
 #  ---digital in / out signals---
 #FUN_CYCLE_START,
-#net pokeys.kbd48CNC.CYCLE_START.Button halui.program.run <=	pokeys.0.kbd48CNC.0.Button
-#net pokeys.kbd48CNC.CYCLE_START.LED pokeys.0.kbd48CNC.0.LED <= halui.program.is-running
+net pokeys.kbd48CNC.CYCLE_START.Button halui.program.run
+net pokeys.kbd48CNC.CYCLE_START.LED pokeys.0.kbd48CNC.0.LED
+
+net pokeys.kbd48CNC.CYCLE_START.Button pokeys.0.kbd48CNC.0.Button
+#net pokeys.kbd48CNC.CYCLE_START.LED halui.program.is-running
+
 #FUN_FEED_HOLD,
 net pokeys.kbd48CNC.FEED_HOLD.Button =>	halui.program.pause			
 net pokeys.kbd48CNC.FEED_HOLD.LED =>		halui.program.is-paused
-net pokeys.0.kbd48CNC.2.Button =>	halui.program.stop			
-net pokeys.0.kbd48CNC.2.LED =>		halui.program.is-idle 
-net pokeys.0.kbd48CNC.3.Button =>	halui.abort			
-#net pokeys.0.kbd48CNC.3.LED =>
-net pokeys.0.kbd48CNC.4.Button =>	halui.program.step		
-#net pokeys.0.kbd48CNC.4.LED =>
+
+net pokeys.kbd48CNC.STOP.Button =>	halui.program.stop			
+net pokeys.kbd48CNC.STOP.LED =>		halui.program.is-idle 
+
+net pokeys.kbd48CNC.RESET.Button =>	halui.abort			
+#net pokeys.kbd48CNC.RESET.LED =>
+
+net pokeys.kbd48CNC.SINGLE_STEP.Button =>	halui.program.step		
+#net pokeys.kbd48CNC.SINGLE_STEP.LED =>
 #FUN_REVERSE,
-#net pokeys.0.kbd48CNC.5.Button =>							
-#net pokeys.0.kbd48CNC.5.LED =>
+#net pokeys.kbd48CNC.REVERSE.Button =>							
+#net pokeys.kbd48CNC.REVERSE.LED =>
 #FUN_OPTIONAL_STOP, 
 net pokeys.kbd48CNC.OPTIONAL_STOP.Button =>	halui.program.optional-stop.on	
 net pokeys.kbd48CNC.OPTIONAL_STOP.LED =>		halui.program.optional-stop.is-on
