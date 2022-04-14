@@ -1095,9 +1095,14 @@ PK_PEv2_Stat Update_PEv2()
 				default:
 					break ;
 			}
-
-
+			tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,PEv2_status.AxisEnabledStates[i]);
 		}
+
+		if (tAxisEnabledMask != status.AxisEnabledMask)
+		{
+			status.AxisEnabledMask = tAxisEnabledMask;
+		}
+
 	}
 
 
@@ -1136,7 +1141,7 @@ PK_PEv2_Stat Update_PEv2()
 
 		dev->PEv2.PulseEngineStateSetup = status.PulseEngineStateSetup;
 		dev->PEv2.LimitOverrideSetup = 0;
-		dev->PEv2.AxisEnabledMask = PEv2_AxisEnabledMask;
+		dev->PEv2.AxisEnabledMask = status.AxisEnabledMask;
 
 		PK_PEv2_PulseEngineStateSet(dev);
 	}
