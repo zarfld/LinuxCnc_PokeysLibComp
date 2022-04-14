@@ -243,18 +243,13 @@ pin out unsigned MatrixKB.matrixKBrowsPins.#[16];			// List of matrix keyboard r
 pin out unsigned MatrixKB.matrixKBvalues.#[128];			// Current state of each matrix keyboard key (assumes fixed width of 8 columns)
 pin out bit MatrixKB.matrixKBPins.#[128];			// matrixKBrowsPins
 
-/*
-pin in unsigned kbd48CNC.#.bitIndex[48];				// adressing 
-pin in unsigned kbd48CNC.#.byteIndex[48];
-pin in bit kbd48CNC.#.LedStatus[48];
-pin out bit kbd48CNC.#.PinStatus[48];
-*/
+
 pin out bit kbd48CNC.available;
 pin io unsigned kbd48CNC.PoNetID;
 pin io unsigned kbd48CNC.KeyBrightness;
 pin io unsigned kbd48CNC.prevBrightness;
 pin io unsigned kbd48CNC.lightValue;
-pin io unsigned kbd48CNC.#.ID [48];
+//pin io unsigned kbd48CNC.#.ID [48];
 pin in bit kbd48CNC.#.LED [48];
 pin io bit kbd48CNC.#.Button [48];
 pin io unsigned kbd48CNC.statusIn-#[16];
