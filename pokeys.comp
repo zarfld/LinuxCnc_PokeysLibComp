@@ -1873,7 +1873,7 @@ void user_mainloop(void)
 			if (((i / 4) % 2) == 0)
 				ID = top - y;
 
-			if (kbd48CNC_LED(i)!=0)
+			if (kbd48CNC_LED(i) == true)
 			{
 				state = true;
 			}
