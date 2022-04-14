@@ -1884,7 +1884,7 @@ void user_mainloop(void)
 			if ((dev->PoNETmodule.statusIn[ID/8] & (1<<(ID%8))) > 0)
 			{
 				kbd48CNC_status(i) = true;
-				kbd48CNC_LED(i) = kbd48CNC_status(i);
+				state = kbd48CNC_status(i);
 			}
 			else
 			{
