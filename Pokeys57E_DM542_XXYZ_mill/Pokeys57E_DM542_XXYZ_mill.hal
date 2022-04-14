@@ -12,7 +12,7 @@ loadusr pokeys
 show pin
 loadrt pid names=pid.x,pid.x2,pid.y,pid.z,pid.s
 show pin
-show parameters
+show parameter
 
 #addf [HMOT](CARD0).read          servo-thread
 addf motion-command-handler   servo-thread
