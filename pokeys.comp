@@ -1424,7 +1424,7 @@ void user_mainloop(void)
 					if (((i / 4) % 2) == 0)
 						ID = top - y;
 
-					kbd48CNC_ID(i) = ID;
+					//kbd48CNC_ID(i) = ID;
 				}
 			 }
 
