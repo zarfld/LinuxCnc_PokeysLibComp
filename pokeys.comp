@@ -416,6 +416,7 @@ typedef struct
 
 	uint8_t         PulseEngineStateSetup;     // Pulse engine new state configuration
 	uint8_t         LimitOverrideSetup;        // Limit override configuration
+	uint8_t         LimitOverride[8];
 
 	bool         ExternalRelayOutput[8] ;      // External relay outputs
     bool         ExternalOCOutput[8];         // External open-collector outputs
@@ -998,6 +999,7 @@ PK_PEv2_Stat Update_PEv2()
 
 	bool doPositionSet = false;
 	bool doMove = false;
+	bool doStateSet = false;
 	if (status.nrOfAxes!=0)
 	{
 		int tAxisEnabledMask = 0;
@@ -1021,14 +1023,15 @@ PK_PEv2_Stat Update_PEv2()
 			{
 				case PK_PEAxisState_axSTOPPED:        // Axis is stopped
 					status.AxisEnabledStates[i] = false;
-
+					status.LimitOverride = false;
 					break ;
 				case PK_PEAxisState_axREADY:        // Axis ready
 					status.AxisEnabledStates[i] = true;
-
+					status.LimitOverride = false;
 					break ;
 				case PK_PEAxisState_axRUNNING:        // Axis is running
 					status.AxisEnabledStates[i] = true;
+					status.LimitOverride = false;
 					if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
 					{
 						if(status.ReferencePositionSpeed[i] != status.joint_vel_cmd[i] * PEv2_params.STEP_SCALE[i])
@@ -1059,50 +1062,69 @@ PK_PEv2_Stat Update_PEv2()
 
 					break ;
 				case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
+					status.LimitOverride = true;
 					status.AxisEnabledStates[i] = true;
 					break ;
 				case PK_PEAxisState_axHOMING_BACKING_OFF:   // Backing off switch
+					status.LimitOverride = true;
 					status.AxisEnabledStates[i] = true;
 					break ;
 				case PK_PEAxisState_axHOME:       // Axis is homed
 					status.AxisEnabledStates[i] = true;
+					status.LimitOverride = true;
 				// PEv2_joint_
 					break ;
 				case PK_PEAxisState_axHOMINGSTART:       // Homing procedure is starting on axis
 					status.AxisEnabledStates[i] = true;
+					status.LimitOverride = true;
 					break ;
 				case PK_PEAxisState_axHOMINGSEARCH:       // Homing procedure first step - going to home
 					status.AxisEnabledStates[i] = true;
+					status.LimitOverride = true;
 					break ;
 				case PK_PEAxisState_axHOMINGBACK:       // Homing procedure second step - slow homing
 					status.AxisEnabledStates[i] = true;
+					status.LimitOverride = true;
 					break ;
 				case PK_PEAxisState_axPROBED:       // Probing completed for this axis
 					status.AxisEnabledStates[i] = true;
+					status.LimitOverride = false;
 					break ;
 				case PK_PEAxisState_axPROBESTART:       // Probing procedure is starting on axis
 					status.AxisEnabledStates[i] = true;
+					status.LimitOverride = false;
 					break ;
 				case PK_PEAxisState_axPROBESEARCH:       // Probing procedure - probing
 					status.AxisEnabledStates[i] = true;
+					status.LimitOverride = false;
 					break ;
 				case PK_PEAxisState_axERROR:       // Axis error
 					status.AxisEnabledStates[i] = false;
+					status.LimitOverride = false;
 					break ;
 				case PK_PEAxisState_axLIMIT:        // Axis limit tripped
 					status.AxisEnabledStates[i] = true;
+					status.LimitOverride = false;
 					break ;
 				default:
 					break ;
 			}
-			tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,PEv2_status.AxisEnabledStates[i]);
+			tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,status.AxisEnabledStates[i]);
+			status.LimitOverrideSetup = Set_BitOfByte(status.LimitOverrideSetup ,i,status.LimitOverride[i]);
+
 		}
+
 
 		if (tAxisEnabledMask != dev->PEv2.AxisEnabledMask)
 		{
 			dev->PEv2.AxisEnabledMask = tAxisEnabledMask;
+			doStateSet=true;
 		}
-
+		if (status.LimitOverrideSetup  != dev->PEv2.LimitOverrideSetup)
+		{
+			dev->PEv2.LimitOverrideSetup = status.LimitOverrideSetup;
+			doStateSet=true;
+		}
 	}
 
 
@@ -1138,11 +1160,19 @@ PK_PEv2_Stat Update_PEv2()
 
 	if (status.PulseEngineState != status.PulseEngineStateSetup)
 	{
-
 		dev->PEv2.PulseEngineStateSetup = status.PulseEngineStateSetup;
-		dev->PEv2.LimitOverrideSetup = 0;
 		//dev->PEv2.AxisEnabledMask = status.AxisEnabledMask;
+		doStateSet=true;
+	}
 
+	if (status.LimitOverrideSetup != dev->PEv2.LimitOverrideSetup)
+	{
+		dev->PEv2.LimitOverrideSetup = status.LimitOverrideSetup;
+		doStateSet=true;
+	}
+
+	if (doStateSet==true)
+	{
 		PK_PEv2_PulseEngineStateSet(dev);
 	}
 
