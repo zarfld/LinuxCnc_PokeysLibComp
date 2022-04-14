@@ -11,6 +11,8 @@ loadrt hostmot2
 loadusr pokeys
 show pin
 loadrt pid names=pid.x,pid.x2,pid.y,pid.z,pid.s
+show pin
+show parameters
 
 #addf [HMOT](CARD0).read          servo-thread
 addf motion-command-handler   servo-thread
@@ -387,8 +389,8 @@ net machine-is-enabled        <=  motion.motion-enabled
 
 #  ---digital in / out signals---
 #FUN_CYCLE_START,
-net pokeys.0.kbd48CNC.FUN_CYCLE_START.Button  pokeys.0.kbd48CNC.0.Button =>	halui.program.run 		
-net pokeys.0.kbd48CNC.FUN_CYCLE_START.LED  pokeys.0.kbd48CNC.0.LED <= halui.program.is-running
+net pokeys.0.kbd48CNC.FUN_CYCLE_START.Button pokeys.0.kbd48CNC.0.Button =>	halui.program.run 		
+net pokeys.0.kbd48CNC.FUN_CYCLE_START.LED pokeys.0.kbd48CNC.0.LED <= halui.program.is-running
 #FUN_FEED_HOLD,
 net pokeys.0.kbd48CNC.1.Button =>	halui.program.pause			
 net pokeys.0.kbd48CNC.1.LED =>		halui.program.is-paused
