@@ -561,13 +561,38 @@ bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
 	return (in_Byte >> Bit_Id) & 1;
 }
 
+int Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value)
+{
+
+	if (value == true)
+	{
+		in_Byte |= 1 << Bit_Id;
+	}
+	else
+	{
+		in_Byte &= ~(1 << Bit_Id);
+	}
+	return in_Byte;
+
+}
+
 uint8_t Merge_8BitsToByte(bool Bit_array[8])
 {
   uint8_t sum = 0;
   for (int i = 0; i < 8; i++)
   {
-    sum += Bit_array[i] - '0';
-    sum<<=1;
+//    sum += Bit_array[i] - '0';
+//    sum<<=1;
+
+	if (Bit_array[i]  == true)
+	{
+		sum |= 1 << i;
+	}
+	else
+	{
+		sum &= ~(1 << i);
+	}
+
   }
   return sum;
 }
@@ -975,6 +1000,7 @@ PK_PEv2_Stat Update_PEv2()
 	bool doMove = false;
 	if (status.nrOfAxes!=0)
 	{
+
 		for (i = 0; i < status.nrOfAxes; i++)
 		{
 			status.AxesState[i] = dev->PEv2.AxesState[i];
@@ -994,15 +1020,15 @@ PK_PEv2_Stat Update_PEv2()
 			switch( status.AxesState[i])
 			{
 				case PK_PEAxisState_axSTOPPED:        // Axis is stopped
-
+					status.AxisEnabledStates[i] = false;
 
 					break ;
 				case PK_PEAxisState_axREADY:        // Axis ready
-
+					status.AxisEnabledStates[i] = true;
 
 					break ;
 				case PK_PEAxisState_axRUNNING:        // Axis is running
-		
+					status.AxisEnabledStates[i] = true;
 					if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
 					{
 						if(status.ReferencePositionSpeed[i] != status.joint_vel_cmd[i] * PEv2_params.STEP_SCALE[i])
@@ -1033,31 +1059,44 @@ PK_PEv2_Stat Update_PEv2()
 
 					break ;
 				case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
+					status.AxisEnabledStates[i] = true;
 					break ;
 				case PK_PEAxisState_axHOMING_BACKING_OFF:   // Backing off switch
+					status.AxisEnabledStates[i] = true;
 					break ;
 				case PK_PEAxisState_axHOME:       // Axis is homed
+					status.AxisEnabledStates[i] = true;
 				// PEv2_joint_
 					break ;
 				case PK_PEAxisState_axHOMINGSTART:       // Homing procedure is starting on axis
+					status.AxisEnabledStates[i] = true;
 					break ;
 				case PK_PEAxisState_axHOMINGSEARCH:       // Homing procedure first step - going to home
+					status.AxisEnabledStates[i] = true;
 					break ;
 				case PK_PEAxisState_axHOMINGBACK:       // Homing procedure second step - slow homing
+					status.AxisEnabledStates[i] = true;
 					break ;
 				case PK_PEAxisState_axPROBED:       // Probing completed for this axis
+					status.AxisEnabledStates[i] = true;
 					break ;
 				case PK_PEAxisState_axPROBESTART:       // Probing procedure is starting on axis
+					status.AxisEnabledStates[i] = true
 					break ;
 				case PK_PEAxisState_axPROBESEARCH:       // Probing procedure - probing
+					status.AxisEnabledStates[i] = true;
 					break ;
 				case PK_PEAxisState_axERROR:       // Axis error
+					status.AxisEnabledStates[i] = false;
 					break ;
 				case PK_PEAxisState_axLIMIT:        // Axis limit tripped
+					status.AxisEnabledStates[i] = true;
 					break ;
 				default:
 					break ;
 			}
+
+
 		}
 	}
 
@@ -1097,7 +1136,7 @@ PK_PEv2_Stat Update_PEv2()
 
 		dev->PEv2.PulseEngineStateSetup = status.PulseEngineStateSetup;
 		dev->PEv2.LimitOverrideSetup = 0;
-		//dev->PEv2.AxisEnabledMask = 0;
+		dev->PEv2.AxisEnabledMask = PEv2_AxisEnabledMask;
 
 		PK_PEv2_PulseEngineStateSet(dev);
 	}
@@ -1410,6 +1449,8 @@ void user_mainloop(void)
 				PEv2_params.CYCLE_TIME = PEv2_params_CYCLE_TIME;
 				PEv2_params.DEFAULT_LINEAR_VELOCITY = PEv2_params_DEFAULT_LINEAR_VELOCITY;
 				PEv2_params.MAX_LINEAR_VELOCITY = PEv2_params_MAX_LINEAR_VELOCITY;
+
+				int tAxisEnabledMask = 0
 				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
 					PEv2_params.TYPE[i] = PEv2_params_TYPE(i);			//LINEAR / ANGULAR
@@ -1446,8 +1487,15 @@ void user_mainloop(void)
 					PEv2_params.HOME_FINAL_VEL[i] = PEv2_params_HOME_FINAL_VEL(i);				// position (mm)
 					PEv2_params.HOME_USE_INDEX[i] = PEv2_params_HOME_USE_INDEX(i);				// YES / NO
 					PEv2_params.HOME_IGNORE_LIMITS[i] = PEv2_params_HOME_IGNORE_LIMITS(i);			// YES / NO
+
+
+					tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,PEv2_params.AxisEnabledStates[i]);
 				}
 				
+				if (tAxisEnabledMask != PEv2_AxisEnabledMask)
+				{
+					PEv2_AxisEnabledMask = tAxisEnabledMask;
+				}
 
 				PEv2_params = GetConfig_PEv2(PEv2_params);
 				// PK_PEv2_PulseEngineSetup   
@@ -1521,7 +1569,7 @@ void user_mainloop(void)
 				a_debout = 134;
 				dev->PEv2.PulseEngineEnabled=8; //Enable 8 axes
 				dev->PEv2.PulseEngineActivated=true;
-				dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
+				//dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
 				PK_PEv2_PulseEngineSetup(dev);
 				
 				for(i=0;i< PEv2_nrOfAxes;i++)
