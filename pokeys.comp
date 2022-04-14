@@ -233,7 +233,7 @@ pin out unsigned Pins.#.MappingType [55];
 //pin out unsigned Pins.#.downKeyModifier [55];
 //pin out unsigned Pins.#.upKeyCodeMacroID [55];
 //pin out unsigned Pins.#.upKeyModifier [55];
-//pin out unsigned Pins.#.preventUpdate [55];
+pin out unsigned Pins.#.preventUpdate [55];
 
 pin out unsigned MatrixKB.matrixKBconfiguration;		// Matrix keyboard configuration (set to 1 to enable matrix keyboard support)
 pin out unsigned MatrixKB.matrixKBwidth;				// Matrix keyboard width (number of columns)
