@@ -387,13 +387,12 @@ net probe-in     =>  motion.probe-input
 net in-position               <=  motion.in-position
 net machine-is-enabled        <=  motion.motion-enabled
 
-#  ---digital in / out signals---
+#  ---pokeys.kbd48CNC / HAL_UI---
 #FUN_CYCLE_START,
 net pokeys.kbd48CNC.CYCLE_START.Button halui.program.run
-net pokeys.kbd48CNC.CYCLE_START.LED pokeys.0.kbd48CNC.0.LED
+net pokeys.kbd48CNC.CYCLE_START.LED halui.program.is-running
 
-net pokeys.kbd48CNC.CYCLE_START.Button pokeys.0.kbd48CNC.0.Button
-#net pokeys.kbd48CNC.CYCLE_START.LED halui.program.is-running
+
 
 #FUN_FEED_HOLD,
 net pokeys.kbd48CNC.FEED_HOLD.Button =>	halui.program.pause			
