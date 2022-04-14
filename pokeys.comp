@@ -1881,12 +1881,6 @@ void user_mainloop(void)
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 		PK_PoNETGetModuleLight(dev);
 
-
-		/*
-		pin io unsigned kbd48CNC.KeyBrightness;
-		pin io unsigned kbd48CNC.prevBrightness;
-		pin io unsigned kbd48CNC.lightValue;
-		*/
 		kbd48CNC_lightValue = dev->PoNETmodule.lightValue;
 
 		kbd48CNC_KeyBrightness = 255-kbd48CNC_lightValue;
@@ -1906,10 +1900,6 @@ void user_mainloop(void)
 
 		for (i = 0; i < 16; i++)
 		{
-			/* 
-			pin io unsigned kbd48CNC.statusIn-#[16];
-			pin io unsigned kbd48CNC.statusOut-#[16];
-			*/
 			kbd48CNC_statusIn(i) = dev->PoNETmodule.statusIn[i];
 			kbd48CNC_statusOut(i) =  dev->PoNETmodule.statusOut[i];
 		}
@@ -1955,7 +1945,8 @@ void user_mainloop(void)
 		}
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 		PK_PoNETSetModuleStatus(dev);
-
+		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+		PK_PoNETSetModuleStatus(dev);
 	}
 
 	if (info_EasySensors!=0)
