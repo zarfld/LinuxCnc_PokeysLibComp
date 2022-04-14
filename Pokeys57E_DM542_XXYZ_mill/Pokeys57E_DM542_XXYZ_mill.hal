@@ -387,10 +387,8 @@ net machine-is-enabled        <=  motion.motion-enabled
 
 #  ---digital in / out signals---
 #FUN_CYCLE_START,
-net pokeys.0.kbd48CNC.0.Button =>	pokeys.0.kbd48CNC.FUN_CYCLE_START.Button 		
-net pokeys.0.kbd48CNC.0.LED <=		pokeys.0.kbd48CNC.FUN_CYCLE_START.LED
-net pokeys.0.kbd48CNC.FUN_CYCLE_START.Button =>	halui.program.run 		
-net pokeys.0.kbd48CNC.FUN_CYCLE_START.LED =>		halui.program.is-running
+net pokeys.0.kbd48CNC.FUN_CYCLE_START.Button  pokeys.0.kbd48CNC.0.Button =>	halui.program.run 		
+net pokeys.0.kbd48CNC.FUN_CYCLE_START.LED  pokeys.0.kbd48CNC.0.LED <= halui.program.is-running
 #FUN_FEED_HOLD,
 net pokeys.0.kbd48CNC.1.Button =>	halui.program.pause			
 net pokeys.0.kbd48CNC.1.LED =>		halui.program.is-paused
