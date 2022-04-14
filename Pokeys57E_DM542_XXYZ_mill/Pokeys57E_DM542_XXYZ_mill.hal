@@ -484,8 +484,8 @@ net pokeys.0.kbd48CNC.26.status =>	halui.feed-override.decrease
 net pokeys.0.kbd48CNC.32.status =>	halui.axis.x.select				
 net pokeys.0.kbd48CNC.32.LED 	<=	halui.axis.x.is-selected
 #FUN_JOG_A,
-net pokeys.0.kbd48CNC.33.status =>	halui.axis.a.select				
-net pokeys.0.kbd48CNC.33.LED 	<=	halui.axis.a.is-selected
+#net pokeys.0.kbd48CNC.33.status =>	halui.axis.a.select				
+#net pokeys.0.kbd48CNC.33.LED 	<=	halui.axis.a.is-selected
 #FUN_JOG_PLUS,	
 net pokeys.0.kbd48CNC.34.status =>	halui.axis.selected.plus		
 #net pokeys.0.kbd48CNC.34.LED 	<=
@@ -496,8 +496,8 @@ net pokeys.0.kbd48CNC.34.status =>	halui.axis.selected.plus
 net pokeys.0.kbd48CNC.36.status =>	halui.axis.y.select			
 net pokeys.0.kbd48CNC.36.LED 	<=	halui.axis.y.is-selected
 	#FUN_JOG_B,
-net pokeys.0.kbd48CNC.37.status =>	halui.axis.b.select			
-net pokeys.0.kbd48CNC.37.LED 	<=	halui.axis.b.is-selected
+#net pokeys.0.kbd48CNC.37.status =>	halui.axis.b.select			
+#net pokeys.0.kbd48CNC.37.LED 	<=	halui.axis.b.is-selected
 	#FUN_JOG_FAST_TOGGLE, 
 #net pokeys.0.kbd48CNC.38.status =>				
 #net pokeys.0.kbd48CNC.38.LED 	<=
@@ -508,8 +508,8 @@ net pokeys.0.kbd48CNC.37.LED 	<=	halui.axis.b.is-selected
 net pokeys.0.kbd48CNC.40.status =>	halui.axis.z.select			
 net pokeys.0.kbd48CNC.40.LED 	<=	halui.axis.z.is-selected
 	#FUN_JOG_C,
-net pokeys.0.kbd48CNC.41.status =>	halui.axis.c.select			
-net pokeys.0.kbd48CNC.41.LED 	<=	halui.axis.c.is-selected
+#net pokeys.0.kbd48CNC.41.status =>	halui.axis.c.select			
+#net pokeys.0.kbd48CNC.41.LED 	<=	halui.axis.c.is-selected
 #FUN_JOG_MINUS,
 net pokeys.0.kbd48CNC.42.status =>	halui.axis.selected.minus			
 #net pokeys.0.kbd48CNC.42.LED 	<=
