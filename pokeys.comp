@@ -1081,7 +1081,7 @@ PK_PEv2_Stat Update_PEv2()
 					status.AxisEnabledStates[i] = true;
 					break ;
 				case PK_PEAxisState_axPROBESTART:       // Probing procedure is starting on axis
-					status.AxisEnabledStates[i] = true
+					status.AxisEnabledStates[i] = true;
 					break ;
 				case PK_PEAxisState_axPROBESEARCH:       // Probing procedure - probing
 					status.AxisEnabledStates[i] = true;
@@ -1098,9 +1098,9 @@ PK_PEv2_Stat Update_PEv2()
 			tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,PEv2_status.AxisEnabledStates[i]);
 		}
 
-		if (tAxisEnabledMask != status.AxisEnabledMask)
+		if (tAxisEnabledMask != dev->PEv2.AxisEnabledMask)
 		{
-			status.AxisEnabledMask = tAxisEnabledMask;
+			dev->PEv2.AxisEnabledMask = tAxisEnabledMask;
 		}
 
 	}
@@ -1141,7 +1141,7 @@ PK_PEv2_Stat Update_PEv2()
 
 		dev->PEv2.PulseEngineStateSetup = status.PulseEngineStateSetup;
 		dev->PEv2.LimitOverrideSetup = 0;
-		dev->PEv2.AxisEnabledMask = status.AxisEnabledMask;
+		//dev->PEv2.AxisEnabledMask = status.AxisEnabledMask;
 
 		PK_PEv2_PulseEngineStateSet(dev);
 	}
