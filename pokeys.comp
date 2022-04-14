@@ -1097,7 +1097,7 @@ PK_PEv2_Stat Update_PEv2()
 
 		dev->PEv2.PulseEngineStateSetup = status.PulseEngineStateSetup;
 		dev->PEv2.LimitOverrideSetup = 0;
-		dev->PEv2.AxisEnabledMask = 0;
+		//dev->PEv2.AxisEnabledMask = 0;
 
 		PK_PEv2_PulseEngineStateSet(dev);
 	}
