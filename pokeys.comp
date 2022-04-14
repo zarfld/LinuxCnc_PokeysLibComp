@@ -255,8 +255,8 @@ pin io unsigned kbd48CNC.KeyBrightness;
 pin io unsigned kbd48CNC.prevBrightness;
 pin io unsigned kbd48CNC.lightValue;
 pin io unsigned kbd48CNC.#.ID [48];
-pin io bit kbd48CNC.#.LED [48];
-pin io bit kbd48CNC.#.status [48];
+pin in bit kbd48CNC.#.LED [48];
+pin out bit kbd48CNC.#.status [48];
 pin io unsigned kbd48CNC.statusIn-#[16];
 pin io unsigned kbd48CNC.statusOut-#[16];
 
