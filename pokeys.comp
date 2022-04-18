@@ -796,6 +796,8 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			PK_PEv2_AxisConfigurationSet(dev);
 			dev->PEv2.param1 = i;
 			PK_PEv2_AxisConfigurationSet(dev);
+			PK_SaveConfiguration(dev);
+			PK_SaveConfiguration(dev);
 		}
 		dev->PEv2.param1 = 0;
 		PK_PEv2_AxisConfigurationGet(dev);
@@ -813,6 +815,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 		{
 			PK_PinConfigurationSet(dev);
 			PK_PinConfigurationSet(dev);
+			PK_SaveConfiguration(dev);
 			setPinConfig=false;
 		}
 	}
