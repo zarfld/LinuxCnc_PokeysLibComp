@@ -688,56 +688,53 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 
 			}
 			params.AxesConfig[i]=0;
-			dev->PEv2.AxesConfig[i]=0;
+
 			// Read the structure
 			/*
-			    PK_AC_ENABLED            = (1 << 0),       // Axis enabled
-				PK_AC_INVERTED           = (1 << 1),       // Axis inverted
-				PK_AC_INTERNAL_PLANNER   = (1 << 2),       // Axis uses internal motion planner
-				PK_AC_POSITION_MODE      = (1 << 3),       // Internal motion planner for this axis is in position mode
-				PK_AC_INVERTED_HOME      = (1 << 4),       // Axis homing direction is inverted
-				PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // Use soft-limits for this axis
-				PK_AC_ENABLED_MASKED     = (1 << 7)        // Use output enable pin masking
+			    PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled 
+				PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
+				PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
+				PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
+				PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
+				PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
+				PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
 			*/
-			params.AxesConfig[i] = PK_AC_ENABLED_MASKED;
-			dev->PEv2.AxesConfig[i]=PK_AC_ENABLED_MASKED;
+			//params.AxesConfig[i] = PK_AC_ENABLED_MASKED;
 			if (params.STEPGEN_MAXVEL[i] !=0)
 			{
-				params.AxesConfig[i] = params.AxesConfig[i] & PK_AC_ENABLED & PK_AC_INTERNAL_PLANNER;
-				dev->PEv2.AxesConfig[i]=dev->PEv2.AxesConfig[i] & PK_AC_ENABLED & PK_AC_INTERNAL_PLANNER;
+				params.AxesConfig[i] = params.AxesConfig[i] + 1 ;  // PK_AC_ENABLED ;
+				params.AxesConfig[i] = params.AxesConfig[i] + 4 ;  // PK_AC_INTERNAL_PLANNER;
 
 			}
 
 			
 			if (params.Feedback_Encoder_Id[i] = 0)
 			{
-				params.AxesConfig[i] = params.AxesConfig[i] | PK_AC_POSITION_MODE;
-				dev->PEv2.AxesConfig[i]=dev->PEv2.AxesConfig[i] & PK_AC_POSITION_MODE;
+				params.AxesConfig[i] = params.AxesConfig[i] |+ 8;  // PK_AC_POSITION_MODE;
 			}
 			
 
 			/*
-			    PK_ASO_SWITCH_LIMIT_N        = (1 << 0),   // Limit- switch
-				PK_ASO_SWITCH_LIMIT_P        = (1 << 1),   // Limit+ switch
-				PK_ASO_SWITCH_HOME           = (1 << 2),   // Home switch
-				PK_ASO_SWITCH_COMBINED_LN_H  = (1 << 3),   // Home switch is shared with Limit- switch
-				PK_ASO_SWITCH_COMBINED_LP_H  = (1 << 4),   // Home switch is shared with Limit+ switch
-				PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // Invert limit- switch polarity
-				PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // Invert limit+ switch polarity
-				PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // Invert home switch polarity
+			    PK_ASO_SWITCH_LIMIT_N        = (1 << 0),   // 1 Limit- switch
+				PK_ASO_SWITCH_LIMIT_P        = (1 << 1),   // 2 Limit+ switch
+				PK_ASO_SWITCH_HOME           = (1 << 2),   // 4 Home switch
+				PK_ASO_SWITCH_COMBINED_LN_H  = (1 << 3),   // 8 Home switch is shared with Limit- switch
+				PK_ASO_SWITCH_COMBINED_LP_H  = (1 << 4),   // 16 Home switch is shared with Limit+ switch
+				PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
+				PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
+				PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
 			*/
 			params.AxesSwitchConfig[i] = 0;
 			
 			if (params.SoftLimitMaximum[i] !=0 && params.SoftLimitMaximum[i] !=0)
 			{
-				params.AxesConfig[i] = params.AxesConfig[i] | PK_AC_SOFT_LIMIT_ENABLED;
-				dev->PEv2.AxesConfig[i]=dev->PEv2.AxesConfig[i] & PK_AC_SOFT_LIMIT_ENABLED;
+				params.AxesConfig[i] = params.AxesConfig[i] +32; // PK_AC_SOFT_LIMIT_ENABLED;
 			}
 
 			dev->PEv2.PinHomeSwitch[i] = params.PinHomeSwitch[i];
 			if ( params.PinHomeSwitch[i]!=0)
 			{	//check if pin is parametrized in HAL
-				params.AxesSwitchConfig[i] = params.AxesSwitchConfig[i] | PK_ASO_SWITCH_HOME;
+				params.AxesSwitchConfig[i] = params.AxesSwitchConfig[i] + 4; // | PK_ASO_SWITCH_HOME;
 				dev->Pins[ params.PinHomeSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
 				PK_SL_SetPinFunction(dev, params.PinHomeSwitch[i]-1, PK_PinCap_digitalInput);
 				setPinConfig=true;
@@ -746,7 +743,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.PinLimitMSwitch[i] = params.PinLimitMSwitch[i];
 			if ( params.PinLimitMSwitch[i]!=0)
 			{	//check if pin is parametrized in HAL
-				params.AxesSwitchConfig[i] = params.AxesSwitchConfig[i] | PK_ASO_SWITCH_LIMIT_N;
+				params.AxesSwitchConfig[i] = params.AxesSwitchConfig[i] + 1; // | PK_ASO_SWITCH_LIMIT_N;
 				dev->Pins[ params.PinLimitMSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
 				PK_SL_SetPinFunction(dev, params.PinLimitMSwitch[i]-1, PK_PinCap_digitalInput);
 				setPinConfig=true;
@@ -755,7 +752,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.PinLimitPSwitch[i] = params.PinLimitPSwitch[i];
 			if ( params.PinLimitPSwitch[i]!=0)
 			{	//check if pin is parametrized in HAL
-				params.AxesSwitchConfig[i] = params.AxesSwitchConfig[i] | PK_ASO_SWITCH_LIMIT_P;
+				params.AxesSwitchConfig[i] = params.AxesSwitchConfig[i] +  2; // | PK_ASO_SWITCH_LIMIT_P;
 				dev->Pins[ params.PinLimitPSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
 				PK_SL_SetPinFunction(dev, params.PinLimitPSwitch[i]-1, PK_PinCap_digitalInput);
 				setPinConfig=true;
@@ -764,7 +761,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.HomingSpeed[i] = params.HomingSpeed[i];
 			dev->PEv2.HomingReturnSpeed[i] = params.HomingReturnSpeed[i];
 
-			dev->PEv2.MPGjogEncoder[i] = params.MPGjogEncoder[i] = dev->response[15];
+			dev->PEv2.MPGjogEncoder[i] = params.MPGjogEncoder[i];
 
 			// Convert parameters... assume little-endian format
 			dev->PEv2.MaxSpeed[i] = params.MaxSpeed[i];
@@ -794,7 +791,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				// MPG 1x mode here
 			dev->PEv2.HomeBackOffDistance[i] = params.HomeBackOffDistance[i];
 			dev->PEv2.MPGjogDivider[i] = params.MPGjogDivider[i];	
-			//dev->PEv2.AxesConfig[i] =params.AxesConfig[i];
+			dev->PEv2.AxesConfig[i] =params.AxesConfig[i];
 			//dev->PEv2.AxesSwitchConfig[i] =params.AxesSwitchConfig[i];
 			dev->PEv2.param1 = i;
 
