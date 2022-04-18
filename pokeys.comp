@@ -739,6 +739,11 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				PK_SL_SetPinFunction(dev, params.PinHomeSwitch[i]-1, PK_PinCap_digitalInput);
 				setPinConfig=true;
 			}
+			else
+			{
+				params.AxesSwitchConfig[i] = params.AxesSwitchConfig[i] + 8; // 8 Home switch is shared with Limit- switch
+			
+			}
 
 			dev->PEv2.PinLimitMSwitch[i] = params.PinLimitMSwitch[i];
 			if ( params.PinLimitMSwitch[i]!=0)
@@ -791,8 +796,8 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				// MPG 1x mode here
 			dev->PEv2.HomeBackOffDistance[i] = params.HomeBackOffDistance[i];
 			dev->PEv2.MPGjogDivider[i] = params.MPGjogDivider[i];	
-			dev->PEv2.AxesConfig[i] =params.AxesConfig[i];
-			//dev->PEv2.AxesSwitchConfig[i] =params.AxesSwitchConfig[i];
+			//dev->PEv2.AxesConfig[i] = params.AxesConfig[i];
+			dev->PEv2.AxesSwitchConfig[i] =params.AxesSwitchConfig[i];
 			dev->PEv2.param1 = i;
 
 			PK_PEv2_AxisConfigurationSet(dev);
