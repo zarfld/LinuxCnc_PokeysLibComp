@@ -667,6 +667,8 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 		//dev->PEv2.PulseEngineBufferSize = params.PulseEngineBufferSize;
 		dev->PEv2.EmergencySwitchPolarity = params.EmergencySwitchPolarity;
 		//dev->PEv2.AxisEnabledStatesMask = params.AxisEnabledStatesMask;
+		PK_PEv2_PulseEngineSetup(dev);
+		PK_PEv2_PulseEngineSetup(dev);
 
 		for (i = 0; i < dev->PEv2.info.nrOfAxes; i++)
 		{
@@ -789,26 +791,27 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.AxesSwitchConfig[i] =params.AxesConfig[i];
 			dev->PEv2.param1 = i;
 
-			
-			dev->PEv2.param1 = i+1;
+			PK_PEv2_AxisConfigurationSet(dev);
+			dev->PEv2.param1 = i;
 			PK_PEv2_AxisConfigurationSet(dev);
 			dev->PEv2.param1 = i;
 			PK_PEv2_AxisConfigurationSet(dev);
 		}
 		dev->PEv2.param1 = 0;
-		PK_PEv2_AxisConfigurationSet(dev);
-		/*
+		PK_PEv2_AxisConfigurationGet(dev);
+		
 		params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 		params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 		params.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 		params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
 		params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
 		params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
-		PK_PEv2_PulseEngineSetup
-		*/
+		
+		
 
 		if (setPinConfig==true)
 		{
+			PK_PinConfigurationSet(dev);
 			PK_PinConfigurationSet(dev);
 			setPinConfig=false;
 		}
@@ -1174,10 +1177,12 @@ PK_PEv2_Stat Update_PEv2()
 	if (doStateSet==true)
 	{
 		PK_PEv2_PulseEngineStateSet(dev);
+		PK_PEv2_PulseEngineStateSet(dev);
 	}
 
 	if (doMove==true)
 	{
+		PK_PEv2_PulseEngineMove(dev);
 		PK_PEv2_PulseEngineMove(dev);
 	}
 
@@ -1851,6 +1856,7 @@ void user_mainloop(void)
 
 		a_debout = 236;
 		PK_DigitalIOSet(dev);
+		PK_DigitalIOSet(dev);
 		a_debout = 237;
 	 }
      else
@@ -1898,11 +1904,6 @@ void user_mainloop(void)
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 		PK_PoNETGetModuleStatus(dev);
 
-		for (i = 0; i < 16; i++)
-		{
-			kbd48CNC_statusIn(i) = dev->PoNETmodule.statusIn[i];
-			kbd48CNC_statusOut(i) =  dev->PoNETmodule.statusOut[i];
-		}
 		for (i = 0; i < 48; i++)
 		{
 			bool state = false;
