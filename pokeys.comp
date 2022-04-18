@@ -663,7 +663,8 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 
 		dev->PEv2.PulseEngineEnabled = params.PulseEngineEnabled;
 		dev->PEv2.ChargePumpEnabled = params.ChargePumpEnabled;
-		dev->PEv2.PulseGeneratorType = params.PulseGeneratorType;
+		//dev->PEv2.PulseGeneratorType = params.PulseGeneratorType;
+		dev->PEv2.PulseGeneratorType = 1;
 		//dev->PEv2.PulseEngineBufferSize = params.PulseEngineBufferSize;
 		dev->PEv2.EmergencySwitchPolarity = params.EmergencySwitchPolarity;
 		//dev->PEv2.AxisEnabledStatesMask = params.AxisEnabledStatesMask;
@@ -722,7 +723,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // Invert home switch polarity
 			*/
 			params.AxesSwitchConfig[i] = 0;
-
+			
 			if (params.SoftLimitMaximum[i] !=0 && params.SoftLimitMaximum[i] !=0)
 			{
 				params.AxesConfig[i] = params.AxesConfig[i] | PK_AC_SOFT_LIMIT_ENABLED;
