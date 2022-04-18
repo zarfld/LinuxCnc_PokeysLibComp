@@ -54,6 +54,26 @@ pin out unsigned info.PulseEngine;                     // Device supports Pulse 
 pin out unsigned info.PulseEnginev2;                   // Device supports Pulse engine v2
 pin out unsigned info.EasySensors;                     // Device supports EasySensors
 
+pin out unsigned PoExtBus.#.DataGet [10];   
+pin out bit PoExtBus.#.In-0 [10];                   
+pin out bit PoExtBus.#.In-1 [10];    
+pin out bit PoExtBus.#.In-2 [10];    
+pin out bit PoExtBus.#.In-3 [10];    
+pin out bit PoExtBus.#.In-4 [10];    
+pin out bit PoExtBus.#.In-5 [10];    
+pin out bit PoExtBus.#.In-6 [10];    
+pin out bit PoExtBus.#.In-7 [10]; 
+
+pin io unsigned PoExtBus.#.DataSet [10];                 
+pin in bit PoExtBus.#.Out-0 [10];                   
+pin in bit PoExtBus.#.Out-1 [10];    
+pin in bit PoExtBus.#.Out-2 [10];    
+pin in bit PoExtBus.#.Out-3 [10];    
+pin in bit PoExtBus.#.Out-4 [10];    
+pin in bit PoExtBus.#.Out-5 [10];    
+pin in bit PoExtBus.#.Out-6 [10];    
+pin in bit PoExtBus.#.Out-7 [10];    
+
 // Pulse engine v2 information
 pin out unsigned PEv2.nrOfAxes;
 pin out unsigned PEv2.maxPulseFrequency;
@@ -562,7 +582,7 @@ bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
 	return (in_Byte >> Bit_Id) & 1;
 }
 
-int Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value)
+uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value)
 {
 
 	if (value == true)
@@ -1971,6 +1991,72 @@ void user_mainloop(void)
 			EasySensors_sensorValue(i) = EasySensors[i].sensorValue;            // Current sensor value
 		}
 	}
+
+	if (info_PoExtBus!=0)
+	{
+		/*
+		info_PoExtBus
+
+		pin out unsigned PoExtBus.#.DataGet [10];   
+		pin out bit PoExtBus.#.In-0 [10];                   
+		pin out bit PoExtBus.#.In-1 [10];    
+		pin out bit PoExtBus.#.In-2 [10];    
+		pin out bit PoExtBus.#.In-3 [10];    
+		pin out bit PoExtBus.#.In-4 [10];    
+		pin out bit PoExtBus.#.In-5 [10];    
+		pin out bit PoExtBus.#.In-6 [10];    
+		pin out bit PoExtBus.#.In-7 [10]; 
+
+		pin io unsigned PoExtBus.#.DataSet [10];                 
+		pin in bit PoExtBus.#.Out-0 [10];                   
+		pin in bit PoExtBus.#.Out-1 [10];    
+		pin in bit PoExtBus.#.Out-2 [10];    
+		pin in bit PoExtBus.#.Out-3 [10];    
+		pin in bit PoExtBus.#.Out-4 [10];    
+		pin in bit PoExtBus.#.Out-5 [10];    
+		pin in bit PoExtBus.#.Out-6 [10];    
+		pin in bit PoExtBus.#.Out-7 [10];  
+
+		uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value)
+
+		*/
+		for (i = 0; i < 10; i++)
+		{
+			PK_PoExtBusGet(dev);
+			PoExtBus_DataGet(i) = dev->PoExtBusData[i];
+
+			PoExtBus_In-0[i] = Get_BitOfByte(PoExtBus_DataGet(i), 0);
+			PoExtBus_In-1[i] = Get_BitOfByte(PoExtBus_DataGet(i), 1);
+			PoExtBus_In-2[i] = Get_BitOfByte(PoExtBus_DataGet(i), 2);
+			PoExtBus_In-3[i] = Get_BitOfByte(PoExtBus_DataGet(i), 3);
+			PoExtBus_In-4[i] = Get_BitOfByte(PoExtBus_DataGet(i), 4);
+			PoExtBus_In-5[i] = Get_BitOfByte(PoExtBus_DataGet(i), 5);
+			PoExtBus_In-6[i] = Get_BitOfByte(PoExtBus_DataGet(i), 6);
+			PoExtBus_In-7[i] = Get_BitOfByte(PoExtBus_DataGet(i), 7);
+
+			PoExtBus_DataSet(i) = Get_BitOfByte(PoExtBus_DataSet(i), 0, PoExtBus_Out-0[i]);
+			PoExtBus_DataSet(i) = Get_BitOfByte(PoExtBus_DataSet(i), 1, PoExtBus_Out-1[i]);
+			PoExtBus_DataSet(i) = Get_BitOfByte(PoExtBus_DataSet(i), 2, PoExtBus_Out-2[i]);
+			PoExtBus_DataSet(i) = Get_BitOfByte(PoExtBus_DataSet(i), 3, PoExtBus_Out-3[i]);
+			PoExtBus_DataSet(i) = Get_BitOfByte(PoExtBus_DataSet(i), 4, PoExtBus_Out-4[i]);
+			PoExtBus_DataSet(i) = Get_BitOfByte(PoExtBus_DataSet(i), 5, PoExtBus_Out-5[i]);
+			PoExtBus_DataSet(i) = Get_BitOfByte(PoExtBus_DataSet(i), 6, PoExtBus_Out-6[i]);
+			PoExtBus_DataSet(i) = Get_BitOfByte(PoExtBus_DataSet(i), 7, PoExtBus_Out-7[i]);
+
+			if (PoExtBus_DataGet(i) != PoExtBus_DataSet(i))
+			{
+				dev->PoExtBusData[i] = PoExtBus_DataSet(i);
+				PK_PoExtBusSet(dev);
+				PK_PoExtBusSet(dev);
+			}
+
+		}
+		
+
+
+	}
+
+
 
 	if (rtc_lastmin!=rtc_min)
 	{
