@@ -1557,7 +1557,7 @@ void user_mainloop(void)
 				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
 					// Read the structure
-						//PEv2_AxesConfig(i) = PEv2_params.AxesConfig[i];             // Axis configuration - see ePK_PEv2_AxisConfig
+						PEv2_AxesConfig(i) = PEv2_params.AxesConfig[i];             // Axis configuration - see ePK_PEv2_AxisConfig
 						//PEv2_AxesConfig(i) = PK_AC_ENABLED | PK_AC_INTERNAL_PLANNER
 						//PEv2_AxesSwitchConfig(i) = PEv2_params.AxesSwitchConfig[i];       // Axis switch configuration - see ePK_PEv2_AxisSwitchOptions
 
