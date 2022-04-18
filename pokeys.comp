@@ -698,6 +698,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // Use soft-limits for this axis
 				PK_AC_ENABLED_MASKED     = (1 << 7)        // Use output enable pin masking
 			*/
+			params.AxesConfig[i] = PK_AC_ENABLED_MASKED;
 			if (params.STEPGEN_MAXVEL[i] !=0)
 			{
 				params.AxesConfig[i] = PK_AC_ENABLED | PK_AC_INTERNAL_PLANNER;
@@ -730,7 +731,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.PinHomeSwitch[i] = params.PinHomeSwitch[i];
 			if ( params.PinHomeSwitch[i]!=0)
 			{	//check if pin is parametrized in HAL
-				params.AxesConfig[i] = params.AxesSwitchConfig[i] | PK_ASO_SWITCH_HOME;
+				params.AxesSwitchConfig[i] = params.AxesSwitchConfig[i] | PK_ASO_SWITCH_HOME;
 				dev->Pins[ params.PinHomeSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
 				PK_SL_SetPinFunction(dev, params.PinHomeSwitch[i]-1, PK_PinCap_digitalInput);
 				setPinConfig=true;
@@ -739,7 +740,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.PinLimitMSwitch[i] = params.PinLimitMSwitch[i];
 			if ( params.PinLimitMSwitch[i]!=0)
 			{	//check if pin is parametrized in HAL
-				params.AxesConfig[i] = params.AxesSwitchConfig[i] | PK_ASO_SWITCH_LIMIT_N;
+				params.AxesSwitchConfig[i] = params.AxesSwitchConfig[i] | PK_ASO_SWITCH_LIMIT_N;
 				dev->Pins[ params.PinLimitMSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
 				PK_SL_SetPinFunction(dev, params.PinLimitMSwitch[i]-1, PK_PinCap_digitalInput);
 				setPinConfig=true;
@@ -748,7 +749,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.PinLimitPSwitch[i] = params.PinLimitPSwitch[i];
 			if ( params.PinLimitPSwitch[i]!=0)
 			{	//check if pin is parametrized in HAL
-				params.AxesConfig[i] = params.AxesSwitchConfig[i] | PK_ASO_SWITCH_LIMIT_P;
+				params.AxesSwitchConfig[i] = params.AxesSwitchConfig[i] | PK_ASO_SWITCH_LIMIT_P;
 				dev->Pins[ params.PinLimitPSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
 				PK_SL_SetPinFunction(dev, params.PinLimitPSwitch[i]-1, PK_PinCap_digitalInput);
 				setPinConfig=true;
@@ -788,7 +789,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.HomeBackOffDistance[i] = params.HomeBackOffDistance[i];
 			dev->PEv2.MPGjogDivider[i] = params.MPGjogDivider[i];	
 			dev->PEv2.AxesConfig[i] =params.AxesConfig[i];
-			dev->PEv2.AxesSwitchConfig[i] =params.AxesConfig[i];
+			dev->PEv2.AxesSwitchConfig[i] =params.AxesSwitchConfig[i];
 			dev->PEv2.param1 = i;
 
 			PK_PEv2_AxisConfigurationSet(dev);
@@ -1530,9 +1531,6 @@ void user_mainloop(void)
 					PEv2_params.HOME_FINAL_VEL[i] = PEv2_params_HOME_FINAL_VEL(i);				// position (mm)
 					PEv2_params.HOME_USE_INDEX[i] = PEv2_params_HOME_USE_INDEX(i);				// YES / NO
 					PEv2_params.HOME_IGNORE_LIMITS[i] = PEv2_params_HOME_IGNORE_LIMITS(i);			// YES / NO
-
-
-					
 				}
 				
 
