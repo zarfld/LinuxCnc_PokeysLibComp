@@ -803,9 +803,9 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 		params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 		params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 		params.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
-		params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
+		//params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
 		params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
-		params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
+		//params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 		
 		
 
