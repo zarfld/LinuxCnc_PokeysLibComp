@@ -798,8 +798,8 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.MPGjogDivider[i] = params.MPGjogDivider[i];	
 			//dev->PEv2.AxesConfig[i] = params.AxesConfig[i];
 			//dev->PEv2.AxesSwitchConfig[i] =params.AxesSwitchConfig[i];
-			dev->PEv2.AxesConfig[i] = 256;
-			dev->PEv2.AxesSwitchConfig[i] =256;
+			dev->PEv2.AxesConfig[i] = 255;
+			dev->PEv2.AxesSwitchConfig[i] =255;
 
 			dev->PEv2.param1 = i;
 
