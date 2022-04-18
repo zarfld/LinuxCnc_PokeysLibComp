@@ -704,7 +704,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			if (params.STEPGEN_MAXVEL[i] !=0)
 			{
 				params.AxesConfig[i] = PK_AC_ENABLED | PK_AC_INTERNAL_PLANNER;
-				dev->PEv2.AxesConfig[i]=dev->PEv2.AxesConfig[i] | PK_AC_ENABLED | PK_AC_INTERNAL_PLANNER;
+				//dev->PEv2.AxesConfig[i]=dev->PEv2.AxesConfig[i] | PK_AC_ENABLED | PK_AC_INTERNAL_PLANNER;
 
 			}
 
@@ -712,7 +712,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			if (params.Feedback_Encoder_Id[i] = 0)
 			{
 				params.AxesConfig[i] = params.AxesConfig[i] | PK_AC_POSITION_MODE;
-				dev->PEv2.AxesConfig[i]=dev->PEv2.AxesConfig[i] | PK_AC_POSITION_MODE;
+				//dev->PEv2.AxesConfig[i]=dev->PEv2.AxesConfig[i] | PK_AC_POSITION_MODE;
 			}
 			
 
@@ -731,7 +731,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			if (params.SoftLimitMaximum[i] !=0 && params.SoftLimitMaximum[i] !=0)
 			{
 				params.AxesConfig[i] = params.AxesConfig[i] | PK_AC_SOFT_LIMIT_ENABLED;
-				dev->PEv2.AxesConfig[i]=dev->PEv2.AxesConfig[i] | PK_AC_SOFT_LIMIT_ENABLED;
+				//dev->PEv2.AxesConfig[i]=dev->PEv2.AxesConfig[i] | PK_AC_SOFT_LIMIT_ENABLED;
 			}
 
 			dev->PEv2.PinHomeSwitch[i] = params.PinHomeSwitch[i];
@@ -795,7 +795,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.HomeBackOffDistance[i] = params.HomeBackOffDistance[i];
 			dev->PEv2.MPGjogDivider[i] = params.MPGjogDivider[i];	
 			//dev->PEv2.AxesConfig[i] =params.AxesConfig[i];
-			dev->PEv2.AxesSwitchConfig[i] =params.AxesSwitchConfig[i];
+			//dev->PEv2.AxesSwitchConfig[i] =params.AxesSwitchConfig[i];
 			dev->PEv2.param1 = i;
 
 			PK_PEv2_AxisConfigurationSet(dev);
