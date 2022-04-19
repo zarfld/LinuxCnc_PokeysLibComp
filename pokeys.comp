@@ -2034,14 +2034,14 @@ void user_mainloop(void)
 			PoExtBus_In-6[i] = Get_BitOfByte(PoExtBus_DataGet(i), 6);
 			PoExtBus_In-7[i] = Get_BitOfByte(PoExtBus_DataGet(i), 7);
 
-			PoExtBus_DataSet(i) = Get_BitOfByte(PoExtBus_DataSet(i), 0, PoExtBus_Out-0[i]);
-			PoExtBus_DataSet(i) = Get_BitOfByte(PoExtBus_DataSet(i), 1, PoExtBus_Out-1[i]);
-			PoExtBus_DataSet(i) = Get_BitOfByte(PoExtBus_DataSet(i), 2, PoExtBus_Out-2[i]);
-			PoExtBus_DataSet(i) = Get_BitOfByte(PoExtBus_DataSet(i), 3, PoExtBus_Out-3[i]);
-			PoExtBus_DataSet(i) = Get_BitOfByte(PoExtBus_DataSet(i), 4, PoExtBus_Out-4[i]);
-			PoExtBus_DataSet(i) = Get_BitOfByte(PoExtBus_DataSet(i), 5, PoExtBus_Out-5[i]);
-			PoExtBus_DataSet(i) = Get_BitOfByte(PoExtBus_DataSet(i), 6, PoExtBus_Out-6[i]);
-			PoExtBus_DataSet(i) = Get_BitOfByte(PoExtBus_DataSet(i), 7, PoExtBus_Out-7[i]);
+			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 0, PoExtBus_Out-0[i]);
+			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 1, PoExtBus_Out-1[i]);
+			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 2, PoExtBus_Out-2[i]);
+			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 3, PoExtBus_Out-3[i]);
+			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 4, PoExtBus_Out-4[i]);
+			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 5, PoExtBus_Out-5[i]);
+			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 6, PoExtBus_Out-6[i]);
+			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 7, PoExtBus_Out-7[i]);
 
 			if (PoExtBus_DataGet(i) != PoExtBus_DataSet(i))
 			{
