@@ -354,6 +354,7 @@ pin io unsigned LCD.line2.# [20];                         // Line 2 buffer
 pin io unsigned LCD.line3.# [20];                         // Line 3 buffer
 pin io unsigned LCD.line4.# [20];                         // Line 4 buffer
 
+pin out unsigned Í2C.#.presentDevices [16];
 
 license "GPL";
 
@@ -1668,6 +1669,28 @@ void user_mainloop(void)
 					EasySensors_sensorReadingID(i)= EasySensors[i].sensorReadingID;        // Sensor reading selection (see Protocol description document for details)
 				}
 			}
+
+			if (info_protI2C!=0)
+			{
+				uint8_t * i_activated;
+				PK_I2CGetStatus(dev, i_activated);
+				
+				PK_I2CBusScanStart(dev);
+
+				uint8_t* i_status = PK_I2C_STAT_IN_PROGRESS;
+				uint8_t* i_presentDevices[16]=0;
+
+				while (i_status == PK_I2C_STAT_IN_PROGRESS)
+				{
+					PK_I2CBusScanGetResults(dev, i_status, i_presentDevices, 16);
+				}
+				//Í2C.#.presentDevices
+				for (i = 0; i < dev->info.iEasySensors; i++)
+				{
+					Í2C_presentDevices(i)=i_presentDevices[i]
+				}
+			}
+
 			 if (setPinConfig==true)
 			 {
 				a_debout = 140;
@@ -2026,6 +2049,10 @@ void user_mainloop(void)
 		}
 	}
 
+	if (info_protI2C!=0)
+	{
+	
+	}
 
 
 	if (rtc_lastmin!=rtc_min)

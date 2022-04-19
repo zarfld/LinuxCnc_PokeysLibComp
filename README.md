@@ -47,6 +47,6 @@ reading:
 [i] PoNET bus support
 
 x ... available
-i ... theoretically implemented but not tested
+i ... implemented but not tested
 ! ... implemented but not working yet
 p ... planned
