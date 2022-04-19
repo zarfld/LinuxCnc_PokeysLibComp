@@ -1994,32 +1994,6 @@ void user_mainloop(void)
 
 	if (info_PoExtBus!=0)
 	{
-		/*
-		info_PoExtBus
-
-		pin out unsigned PoExtBus.#.DataGet [10];   
-		pin out bit PoExtBus.#.In-0 [10];                   
-		pin out bit PoExtBus.#.In-1 [10];    
-		pin out bit PoExtBus.#.In-2 [10];    
-		pin out bit PoExtBus.#.In-3 [10];    
-		pin out bit PoExtBus.#.In-4 [10];    
-		pin out bit PoExtBus.#.In-5 [10];    
-		pin out bit PoExtBus.#.In-6 [10];    
-		pin out bit PoExtBus.#.In-7 [10]; 
-
-		pin io unsigned PoExtBus.#.DataSet [10];                 
-		pin in bit PoExtBus.#.Out-0 [10];                   
-		pin in bit PoExtBus.#.Out-1 [10];    
-		pin in bit PoExtBus.#.Out-2 [10];    
-		pin in bit PoExtBus.#.Out-3 [10];    
-		pin in bit PoExtBus.#.Out-4 [10];    
-		pin in bit PoExtBus.#.Out-5 [10];    
-		pin in bit PoExtBus.#.Out-6 [10];    
-		pin in bit PoExtBus.#.Out-7 [10];  
-
-		uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value)
-
-		*/
 		for (i = 0; i < 10; i++)
 		{
 			PK_PoExtBusGet(dev);
@@ -2049,11 +2023,7 @@ void user_mainloop(void)
 				PK_PoExtBusSet(dev);
 				PK_PoExtBusSet(dev);
 			}
-
 		}
-		
-
-
 	}
 
 

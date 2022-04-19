@@ -15,3 +15,38 @@ reading:
     - Pins (DigitalIn, DigitalOuts, AnalogIn)
     - started implementing PEv2 (see https://www.poscope.com/wp-content/uploads/downloads/Pokeys/Manuals/PoKeys%20Pulse%20engine%20v2%20manual%20(6.3.2016).pdf)
 
+
+
+---- Library status - verified commands ----
+
+[x] Connecting to USB devices
+[x] Connecting to network devices
+[x] Reading device data
+[x] Reading digital inputs
+[x] Writing digital outputs
+[x] Reading analog inputs
+[x] PoExtBus writing
+[x] PoExtBus reading
+[ ] LCD operations
+[p] Matrix LED
+[x] Setting pin functions
+[x] Reading pin functions
+[ ] Setting pin key codes
+[ ] Reading pin key codes
+[p] PWM operations
+[!] Pulse engine operations
+[i] Matrix keyboard setup
+[i] Matrix keyboard reading
+[x] kbd48CNC set LED
+[x] kbd48CNC get Button Status
+[p] Using encoders
+[p] I2C operations
+[p] SPI operation
+[p] PoIL operations
+[i] 1-wire operations
+[i] PoNET bus support
+
+x ... available
+i ... theoretically implemented but not tested
+! ... implemented but not working yet
+p ... planned
