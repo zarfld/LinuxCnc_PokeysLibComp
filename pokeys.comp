@@ -354,7 +354,7 @@ pin io unsigned LCD.line2.# [20];                         // Line 2 buffer
 pin io unsigned LCD.line3.# [20];                         // Line 3 buffer
 pin io unsigned LCD.line4.# [20];                         // Line 4 buffer
 
-pin out unsigned Í2C.#.presentDevices [16];
+pin out unsigned I2C.#.presentDevices [16];
 
 license "GPL";
 
@@ -1684,10 +1684,10 @@ void user_mainloop(void)
 				{
 					PK_I2CBusScanGetResults(dev, i_status, i_presentDevices, 16);
 				}
-				//Í2C.#.presentDevices
+				//I2C.#.presentDevices
 				for (i = 0; i < dev->info.iEasySensors; i++)
 				{
-					Í2C_presentDevices(i)=i_presentDevices[i]
+					I2C_presentDevices(i)=i_presentDevices[i]
 				}
 			}
 
