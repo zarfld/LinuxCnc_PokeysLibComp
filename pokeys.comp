@@ -1681,7 +1681,7 @@ void user_mainloop(void)
 				uint8_t i_presentDevices[16];
 
 				PK_I2CBusScanGetResults(dev, i_status, i_presentDevices, 16);
-				while (i_status = PK_I2C_STAT_IN_PROGRESS)
+				while (i_status = (uint8_t)PK_I2C_STAT_IN_PROGRESS)
 				{
 					PK_I2CBusScanGetResults(dev, i_status, i_presentDevices, 16);
 				}
