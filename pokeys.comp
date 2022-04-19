@@ -1084,6 +1084,7 @@ PK_PEv2_Stat Update_PEv2()
 							dev->PEv2.ReferencePositionSpeed[i] = status.ReferencePositionSpeed[i];
 							dev->PEv2.PositionSetup[i] = status.PositionSetup[i];
 						}
+						status.joint_vel_fb[i] = ( status.joint_pos_fb[i] - (status.CurrentPosition[i] / PEv2_params.STEP_SCALE[i]) )* Loop_Frequ;
 					}
 					else
 					{
@@ -1096,9 +1097,10 @@ PK_PEv2_Stat Update_PEv2()
 							//doPositionSet =true;
 							doMove=true;
 						}
+						status.joint_vel_fb[i] = 0;
 					}
 					// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-					status.joint_vel_fb[i] = ( status.joint_pos_fb[i] - (status.CurrentPosition[i] / PEv2_params.STEP_SCALE[i]) )* Loop_Frequ;
+					
 					status.joint_pos_fb[i] = dev->PEv2.CurrentPosition[i] / PEv2_params.STEP_SCALE[i];
 
 					break ;
