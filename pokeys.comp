@@ -2025,23 +2025,23 @@ void user_mainloop(void)
 			PK_PoExtBusGet(dev);
 			PoExtBus_DataGet(i) = dev->PoExtBusData[i];
 
-			PoExtBus_In_0[i] = Get_BitOfByte(PoExtBus_DataGet(i), 0);
-			PoExtBus_In_1[i] = Get_BitOfByte(PoExtBus_DataGet(i), 1);
-			PoExtBus_In_2[i] = Get_BitOfByte(PoExtBus_DataGet(i), 2);
-			PoExtBus_In_3[i] = Get_BitOfByte(PoExtBus_DataGet(i), 3);
-			PoExtBus_In_4[i] = Get_BitOfByte(PoExtBus_DataGet(i), 4);
-			PoExtBus_In_5[i] = Get_BitOfByte(PoExtBus_DataGet(i), 5);
-			PoExtBus_In_6[i] = Get_BitOfByte(PoExtBus_DataGet(i), 6);
-			PoExtBus_In_7[i] = Get_BitOfByte(PoExtBus_DataGet(i), 7);
+			PoExtBus_In_0(i) = Get_BitOfByte(PoExtBus_DataGet(i), 0);
+			PoExtBus_In_1(i) = Get_BitOfByte(PoExtBus_DataGet(i), 1);
+			PoExtBus_In_2(i) = Get_BitOfByte(PoExtBus_DataGet(i), 2);
+			PoExtBus_In_3(i) = Get_BitOfByte(PoExtBus_DataGet(i), 3);
+			PoExtBus_In_4(i) = Get_BitOfByte(PoExtBus_DataGet(i), 4);
+			PoExtBus_In_5(i) = Get_BitOfByte(PoExtBus_DataGet(i), 5);
+			PoExtBus_In_6(i) = Get_BitOfByte(PoExtBus_DataGet(i), 6);
+			PoExtBus_In_7(i) = Get_BitOfByte(PoExtBus_DataGet(i), 7);
 
-			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 0, PoExtBus_Out_0[i]);
-			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 1, PoExtBus_Out_1[i]);
-			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 2, PoExtBus_Out_2[i]);
-			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 3, PoExtBus_Out_3[i]);
-			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 4, PoExtBus_Out_4[i]);
-			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 5, PoExtBus_Out_5[i]);
-			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 6, PoExtBus_Out_6[i]);
-			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 7, PoExtBus_Out_7[i]);
+			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 0, PoExtBus_Out_0(i));
+			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 1, PoExtBus_Out_1(i));
+			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 2, PoExtBus_Out_2(i));
+			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 3, PoExtBus_Out_3(i));
+			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 4, PoExtBus_Out_4(i));
+			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 5, PoExtBus_Out_5(i));
+			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 6, PoExtBus_Out_6(i));
+			PoExtBus_DataSet(i) = Set_BitOfByte(PoExtBus_DataSet(i), 7, PoExtBus_Out_7(i));
 
 			if (PoExtBus_DataGet(i) != PoExtBus_DataSet(i))
 			{
