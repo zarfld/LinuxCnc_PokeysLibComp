@@ -746,9 +746,6 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				dev->PEv2.HomingSpeed[i] = params.HomingSpeed[i];
 				dev->PEv2.HomingReturnSpeed[i] = params.HomingReturnSpeed[i];
 
-				dev->PEv2.param1 = i;
-				PK_PEv2_AxisConfigurationSet(dev);
-
 			}
 
 
@@ -884,13 +881,10 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.param1 = i;
 
 			PK_PEv2_AxisConfigurationSet(dev);
-			PK_PEv2_AxisConfigurationSet(dev);
 			dev->PEv2.param1 = i;
 			PK_PEv2_AxisConfigurationSet(dev);
-			dev->PEv2.param1 = i;
-			PK_PEv2_AxisConfigurationSet(dev);
-			PK_SaveConfiguration(dev);
-			PK_SaveConfiguration(dev);
+
+
 		}
 		dev->PEv2.param1 = 0;
 		PK_PEv2_AxisConfigurationGet(dev);
@@ -902,13 +896,13 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 		params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
 		//params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 		
-		
+
 
 		if (setPinConfig==true)
 		{
 			PK_PinConfigurationSet(dev);
 			PK_PinConfigurationSet(dev);
-			PK_SaveConfiguration(dev);
+
 			setPinConfig=false;
 		}
 	}
@@ -1789,7 +1783,6 @@ void user_mainloop(void)
 			 if (PEv2_params_ApplyIniSettings !=0 && info_PulseEnginev2!=0 )
 			{
 				PK_SaveConfiguration(dev);
-			  PK_SaveConfiguration(dev);
 			}
 			 a_debout = 141;
 		}
@@ -2365,6 +2358,7 @@ void user_mainloop(void)
 				PEv2_slotTiming=PEv2_status.slotTiming;
 		
 				bool setPeConfig = false;
+				PK_SaveConfiguration(dev);
 				PEv2_params_ApplyIniSettings = 0;
 				
 				a_debout = 136;
