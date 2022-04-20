@@ -87,21 +87,6 @@ net x-pos-cmd       =>  pid.x.command
 net x-pos-fb        =>  pid.x.feedback
 net x-output        <=  pid.x.output
 
-# Step Gen signals/setup
-
-setp   pokeys.0.PEv2.0.params.DIRSETUP        [JOINT_0]DIRSETUP
-setp   pokeys.0.PEv2.0.params.DIRHOLD         [JOINT_0]DIRHOLD
-setp   pokeys.0.PEv2.0.params.STEPLEN         [JOINT_0]STEPLEN
-setp   pokeys.0.PEv2.0.params.STEPSPACE       [JOINT_0]STEPSPACE
-setp   pokeys.0.PEv2.0.params.STEP-SCALE  	   [JOINT_0]STEP_SCALE
-setp   pokeys.0.PEv2.0.params.MIN-LIMIT  	   [JOINT_0]MIN_LIMIT
-setp   pokeys.0.PEv2.0.params.MAX-LIMIT  	   [JOINT_0]MAX_LIMIT
-setp   pokeys.0.PEv2.0.params.HOME-OFFSET  	   [JOINT_0]HOME_OFFSET
-setp   pokeys.0.PEv2.0.params.HOME-SEARCH-VEL  	   [JOINT_0]HOME_SEARCH_VEL
-setp   pokeys.0.PEv2.0.params.HOME-LATCH-VEL  	   [JOINT_0]HOME_LATCH_VEL
-setp   pokeys.0.PEv2.0.params.STEPGEN-MAXVEL         [JOINT_0]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2.0.params.STEPGEN-MAXACCEL           [JOINT_0]STEPGEN_MAXVEL
-
 # ---closedloop stepper signals---
 
 net x-pos-cmd    <= joint.0.motor-pos-cmd
@@ -159,20 +144,6 @@ net x2-pos-cmd       =>  pid.x2.command
 net x2-pos-fb        =>  pid.x2.feedback
 net x2-output        <=  pid.x2.output
 
-# Step Gen signals/setup for tandem axis
-
-setp   pokeys.0.PEv2.6.params.DIRSETUP        [JOINT_1]DIRSETUP
-setp   pokeys.0.PEv2.6.params.DIRHOLD         [JOINT_1]DIRHOLD
-setp   pokeys.0.PEv2.6.params.STEPLEN         [JOINT_1]STEPLEN
-setp   pokeys.0.PEv2.6.params.STEPSPACE       [JOINT_1]STEPSPACE
-setp   pokeys.0.PEv2.6.params.STEP-SCALE  	   [JOINT_1]STEP_SCALE
-setp   pokeys.0.PEv2.6.params.MIN-LIMIT  	   [JOINT_1]MIN_LIMIT
-setp   pokeys.0.PEv2.6.params.MAX-LIMIT  	   [JOINT_1]MAX_LIMIT
-setp   pokeys.0.PEv2.6.params.HOME-OFFSET  	   [JOINT_1]HOME_OFFSET
-setp   pokeys.0.PEv2.6.params.HOME-SEARCH-VEL  	   [JOINT_1]HOME_SEARCH_VEL
-setp   pokeys.0.PEv2.6.params.HOME-LATCH-VEL  	   [JOINT_1]HOME_LATCH_VEL
-setp   pokeys.0.PEv2.6.params.STEPGEN-MAXVEL         [JOINT_1]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2.6.params.STEPGEN-MAXACCEL           [JOINT_1]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
