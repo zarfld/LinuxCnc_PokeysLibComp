@@ -178,11 +178,24 @@ setp   pokeys.0.PEv2.6.params.STEPGEN-MAXACCEL           [JOINT_1]STEPGEN_MAXVEL
 
 net x2-pos-cmd    <= joint.1.motor-pos-cmd
 net x2-vel-cmd    <= joint.1.vel-cmd
+
 net x2-output     <= pokeys.0.PEv2.6.joint-vel-cmd
 net x2-pos-fb     <= pokeys.0.PEv2.6.joint-pos-fb
 net x2-pos-fb     => joint.1.motor-pos-fb
+
 net x2-enable     <= joint.1.amp-enable-out
 net x2-enable     => pokeys.0.PEv2.6.AxisEnableOutput
+
+# ---Encoder feedback signals/setup---
+
+setp    pokeys.0.PEv2.6.params.ENCODER-SCALE  [JOINT_1]ENCODER_SCALE
+
+net x2-pos-fb               <=  pokeys.0.PEv2.6.joint-pos-fb
+net x2-vel-fb               <=  pokeys.0.PEv2.6.joint-vel-fb
+net x2-pos-fb               =>  joint.1.motor-pos-fb
+
+#net x2-index-enable    joint.0.index-enable  <=>  [HMOT](CARD0).encoder.00.index-enable
+#net x2-pos-rawcounts        <=  [HMOT](CARD0).encoder.00.rawcounts
 
 # ---setup home / limit switch signals---
 
