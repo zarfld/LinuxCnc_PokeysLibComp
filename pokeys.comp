@@ -1235,8 +1235,8 @@ PK_PEv2_Stat Update_PEv2()
 		bool OcBit_array[8];
 
 
-		uint8_t ExternalRelayOutputs_set=  Merge_8BitsToByte(status.ExternalRelayOutput);
-		uint8_t ExternalOCOutputs_set=  Merge_8BitsToByte(status.ExternalOCOutput);
+		uint8_t ExternalRelayOutputs_set=  status.ExternalRelayOutput;
+		uint8_t ExternalOCOutputs_set=  status.ExternalOCOutput;
 		bool doSetExtOut = false;
 
 		status.ExternalRelayOutputs = dev->PEv2.ExternalRelayOutputs;
@@ -1862,6 +1862,9 @@ void user_mainloop(void)
 	if (info_PulseEnginev2!=0)
 	{
 		a_debout = 220;
+		PEv2_status.ExternalRelayOutputs = PEv2_ExternalRelayOutputs;
+		PEv2_status.ExternalOCOutputs = PEv2_ExternalOCOutputs;
+
 		PEv2_status = Update_PEv2(PEv2_status);
 		if (0==0)
 		{
@@ -1920,8 +1923,8 @@ void user_mainloop(void)
 			}
 
 			a_debout = 223;
-			PEv2_ExternalRelayOutputs = PEv2_status.ExternalRelayOutputs;
-			PEv2_ExternalOCOutputs = PEv2_status.ExternalOCOutputs;
+			//PEv2_ExternalRelayOutputs = PEv2_status.ExternalRelayOutputs;
+			//PEv2_ExternalOCOutputs = PEv2_status.ExternalOCOutputs;
 
 			if (PEv2_params_ApplyIniSettings==0 && PEv2_nrOfAxes!=PEv2_PulseEngineEnabled )
 			{
