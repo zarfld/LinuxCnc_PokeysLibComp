@@ -1559,7 +1559,7 @@ void user_mainloop(void)
 
 				*/
 				PEv2_PulseGeneratorType=0;
-				PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 0, true)
+				PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 0, true);
 				PEv2_status.PulseGeneratorType = PEv2_PulseGeneratorType;  // Pulse engine generator type (0: external, 1: internal 3ch)
 				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
