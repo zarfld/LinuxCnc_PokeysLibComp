@@ -1606,11 +1606,11 @@ void user_mainloop(void)
 
 
 				// PK_PEv2_PulseEngineSetup   
-				PEv2_PulseEngineEnabled=PEv2_status.PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
-				PEv2_ChargePumpEnabled=PEv2_status.ChargePumpEnabled;         // Charge pump output enabled
-				PEv2_PulseGeneratorType=PEv2_status.PulseGeneratorType;        // Pulse engine generator type (0: external, 1: internal 3ch)
+				//PEv2_PulseEngineEnabled=PEv2_status.PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
+				//PEv2_ChargePumpEnabled=PEv2_status.ChargePumpEnabled;         // Charge pump output enabled
+				//PEv2_PulseGeneratorType=PEv2_status.PulseGeneratorType;        // Pulse engine generator type (0: external, 1: internal 3ch)
 				//dev->request[11] = dev->PEv2.PulseEngineBufferSize;
-				PEv2_EmergencySwitchPolarity=PEv2_status.EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
+				//PEv2_EmergencySwitchPolarity=PEv2_status.EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
 				//dev->request[13] = dev->PEv2.AxisEnabledStatesMask;
 
 				//PK_PEv2_AxisConfigurationGet
@@ -1812,11 +1812,11 @@ void user_mainloop(void)
 			PEv2_LimitOverride = PEv2_status.LimitOverride;
 
 			// Basic engine states
-			PEv2_PulseEngineEnabled = PEv2_status.PulseEngineEnabled;
-			PEv2_PulseEngineActivated = PEv2_status.PulseEngineActivated;
+			//PEv2_PulseEngineEnabled = PEv2_status.PulseEngineEnabled;
+			//PEv2_PulseEngineActivated = PEv2_status.PulseEngineActivated;
 			PEv2_PulseEngineState = PEv2_status.PulseEngineState;
 			PEv2_ChargePumpEnabled = PEv2_status.ChargePumpEnabled;
-			PEv2_PulseGeneratorType = PEv2_status.PulseGeneratorType;
+			//PEv2_PulseGeneratorType = PEv2_status.PulseGeneratorType;
        
 			PEv2_EmergencySwitchPolarity = PEv2_status.EmergencySwitchPolarity;
 
@@ -2194,11 +2194,11 @@ void user_mainloop(void)
 
 
 				// PK_PEv2_PulseEngineSetup   
-				PEv2_PulseEngineEnabled=PEv2_status.PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
-				PEv2_ChargePumpEnabled=PEv2_status.ChargePumpEnabled;         // Charge pump output enabled
-				PEv2_PulseGeneratorType=PEv2_status.PulseGeneratorType;        // Pulse engine generator type (0: external, 1: internal 3ch)
+				//PEv2_PulseEngineEnabled=PEv2_status.PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
+				//PEv2_ChargePumpEnabled=PEv2_status.ChargePumpEnabled;         // Charge pump output enabled
+				//PEv2_PulseGeneratorType=PEv2_status.PulseGeneratorType;        // Pulse engine generator type (0: external, 1: internal 3ch)
 				//dev->request[11] = dev->PEv2.PulseEngineBufferSize;
-				PEv2_EmergencySwitchPolarity=PEv2_status.EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
+				//PEv2_EmergencySwitchPolarity=PEv2_status.EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
 				//dev->request[13] = dev->PEv2.AxisEnabledStatesMask;
 
 				//PK_PEv2_AxisConfigurationGet
