@@ -747,15 +747,15 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			//params.AxesConfig[i] = PK_AC_ENABLED_MASKED;
 			if (params.STEPGEN_MAXVEL[i] !=0)
 			{
-				params.AxesConfig[i] = params.AxesConfig[i] + 1 ;  // PK_AC_ENABLED ;
-				params.AxesConfig[i] = params.AxesConfig[i] + 4 ;  // PK_AC_INTERNAL_PLANNER;
+				params.AxesConfig[i] =Set_BitOfByte(params.AxesConfig[i] , 0, true);  // PK_AC_ENABLED ;
+				params.AxesConfig[i] =Set_BitOfByte(params.AxesConfig[i] , 2, true);  // PK_AC_INTERNAL_PLANNER;
 
 			}
 
 			
 			if (params.Feedback_Encoder_Id[i] = 0)
 			{
-				params.AxesConfig[i] = params.AxesConfig[i] |+ 8;  // PK_AC_POSITION_MODE;
+				params.AxesConfig[i] = Set_BitOfByte(params.AxesConfig[i] , 3, true);  // PK_AC_POSITION_MODE;
 			}
 			
 
@@ -773,26 +773,26 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			
 			if (params.SoftLimitMaximum[i] !=0 && params.SoftLimitMaximum[i] !=0)
 			{
-				params.AxesConfig[i] = params.AxesConfig[i] +32; // PK_AC_SOFT_LIMIT_ENABLED;
+				params.AxesConfig[i] = Set_BitOfByte(params.AxesConfig[i] , 3, true); // PK_AC_SOFT_LIMIT_ENABLED;
 			}
 
 			dev->PEv2.PinHomeSwitch[i] = params.PinHomeSwitch[i];
 			if ( params.PinHomeSwitch[i]!=0)
 			{	//check if pin is parametrized in HAL
-				params.AxesSwitchConfig[i] = params.AxesSwitchConfig[i] + 4; // | PK_ASO_SWITCH_HOME;
+				params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 2, true); // | PK_ASO_SWITCH_HOME;
 				dev->Pins[ params.PinHomeSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
 				PK_SL_SetPinFunction(dev, params.PinHomeSwitch[i]-1, PK_PinCap_digitalInput);
 				setPinConfig=true;
 			}
 			else
 			{
-				params.AxesSwitchConfig[i] = params.AxesSwitchConfig[i] + 8; // 8 Home switch is shared with Limit- switch
+				params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 0, true); // 8 Home switch is shared with Limit- switch
 			}
 
 			dev->PEv2.PinLimitMSwitch[i] = params.PinLimitMSwitch[i];
 			if ( params.PinLimitMSwitch[i]!=0)
 			{	//check if pin is parametrized in HAL
-				params.AxesSwitchConfig[i] = params.AxesSwitchConfig[i] + 1; // | PK_ASO_SWITCH_LIMIT_N;
+				params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 0, true); // | PK_ASO_SWITCH_LIMIT_N;
 				dev->Pins[ params.PinLimitMSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
 				PK_SL_SetPinFunction(dev, params.PinLimitMSwitch[i]-1, PK_PinCap_digitalInput);
 				setPinConfig=true;
@@ -801,7 +801,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.PinLimitPSwitch[i] = params.PinLimitPSwitch[i];
 			if ( params.PinLimitPSwitch[i]!=0)
 			{	//check if pin is parametrized in HAL
-				params.AxesSwitchConfig[i] = params.AxesSwitchConfig[i] +  2; // | PK_ASO_SWITCH_LIMIT_P;
+				params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 1, true); // | PK_ASO_SWITCH_LIMIT_P;
 				dev->Pins[ params.PinLimitPSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
 				PK_SL_SetPinFunction(dev, params.PinLimitPSwitch[i]-1, PK_PinCap_digitalInput);
 				setPinConfig=true;
