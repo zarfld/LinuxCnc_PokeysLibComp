@@ -129,15 +129,15 @@ pin out float PEv2.#.joint_pos_fb [8];
     
 //***********************************************************************
 //[JOINT_n] information in HAL-INI 
-pin in s32 PEv2.#.params.TYPE [8];			//LINEAR / ANGULAR
-pin in float PEv2.#.params.HOME [8];
-pin in float PEv2.#.params.FERROR [8];
-pin in float PEv2.#.params.MIN_FERROR [8];
-pin in float PEv2.#.params.MAX_VELOCITY [8];
-pin in float PEv2.#.params.MAX_ACCELERATION [8];
-pin in float PEv2.#.params.STEPGEN_MAXVEL [8];
-pin in float PEv2.#.params.STEPGEN_MAXACCEL [8];
-pin in float PEv2.#.params.Feedback_Encoder_Id [8];
+pin io s32 PEv2.#.params.TYPE [8];			//LINEAR / ANGULAR
+pin io float PEv2.#.params.HOME [8];
+pin io float PEv2.#.params.FERROR [8];
+pin io float PEv2.#.params.MIN_FERROR [8];
+pin io float PEv2.#.params.MAX_VELOCITY [8];
+pin io float PEv2.#.params.MAX_ACCELERATION [8];
+pin io float PEv2.#.params.STEPGEN_MAXVEL [8];
+pin io float PEv2.#.params.STEPGEN_MAXACCEL [8];
+pin io float PEv2.#.params.Feedback_Encoder_Id [8];
 //pin in float PEv2.#.params.P [8];
 //pin in float PEv2.#.params.I [8];
 //pin in float PEv2.#.params.D [8];
@@ -145,23 +145,23 @@ pin in float PEv2.#.params.Feedback_Encoder_Id [8];
 //pin in float PEv2.#.params.FF1 [8];
 //pin in float PEv2.#.params.FF2 [8];
 //pin in float PEv2.#.params.BIAS [8];
-pin in float PEv2.#.params.DEADBAND [8];
-pin in float PEv2.#.params.MAX_OUTPUT [8];
-pin in float PEv2.#.params.ENCODER_SCALE [8];
+pin io float PEv2.#.params.DEADBAND [8];
+pin io float PEv2.#.params.MAX_OUTPUT [8];
+pin io float PEv2.#.params.ENCODER_SCALE [8];
 // these are in nanoseconds
-pin in float PEv2.#.params.DIRSETUP [8] = 0;					// (ns)
-pin in float PEv2.#.params.DIRHOLD [8] = 0;					// (ns)
-pin in float PEv2.#.params.STEPLEN [8] = 0;					// (ns)
-pin in float PEv2.#.params.STEPSPACE [8] = 0;					// (ns)
-pin in float PEv2.#.params.STEP_SCALE [8] = 0;					// (pulses/mm)
-pin in float PEv2.#.params.MIN_LIMIT [8] = 0;					// position (mm)
-pin in float PEv2.#.params.MAX_LIMIT [8] = 0;					// position (mm)
-pin in float PEv2.#.params.HOME_OFFSET [8] = 0;				// position (mm)
-pin in float PEv2.#.params.HOME_SEARCH_VEL [8] = 0;			// position (mm)
-pin in float PEv2.#.params.HOME_LATCH_VEL [8] = 0;				// position (mm)
-pin in float PEv2.#.params.HOME_FINAL_VEL [8] = 0;				// position (mm)
-pin in s32 PEv2.#.params.HOME_USE_INDEX [8] = 0;				// YES / NO
-pin in s32 PEv2.#.params.HOME_IGNORE_LIMITS [8] = 0;			// YES / NO
+pin io float PEv2.#.params.DIRSETUP [8] = 0;					// (ns)
+pin io float PEv2.#.params.DIRHOLD [8] = 0;					// (ns)
+pin io float PEv2.#.params.STEPLEN [8] = 0;					// (ns)
+pin io float PEv2.#.params.STEPSPACE [8] = 0;					// (ns)
+pin io float PEv2.#.params.STEP_SCALE [8] = 0;					// (pulses/mm)
+pin io float PEv2.#.params.MIN_LIMIT [8] = 0;					// position (mm)
+pin io float PEv2.#.params.MAX_LIMIT [8] = 0;					// position (mm)
+pin io float PEv2.#.params.HOME_OFFSET [8] = 0;				// position (mm)
+pin io float PEv2.#.params.HOME_SEARCH_VEL [8] = 0;			// position (mm)
+pin io float PEv2.#.params.HOME_LATCH_VEL [8] = 0;				// position (mm)
+pin io float PEv2.#.params.HOME_FINAL_VEL [8] = 0;				// position (mm)
+pin io s32 PEv2.#.params.HOME_USE_INDEX [8] = 0;				// YES / NO
+pin io s32 PEv2.#.params.HOME_IGNORE_LIMITS [8] = 0;			// YES / NO
 //***********************************************************************
 
 pin io u32 PEv2.#.MPGjogMultiplier [8];		// MPG jog multiplier value
