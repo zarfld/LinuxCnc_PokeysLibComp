@@ -185,7 +185,7 @@ pin io unsigned PEv2.PulseEngineEnabled;			// Pulse engine enabled status, also 
 pin io unsigned PEv2.PulseGeneratorType;			// Pulse engine generator type (0: external, 1: internal 3ch)
 pin io unsigned PEv2.ChargePumpEnabled;				// Charge pump output enabled
 pin io unsigned PEv2.EmergencySwitchPolarity;		// Emergency switch polarity (set to 1 to invert)
-pin io unsigned PEv2.PulseEngineActivated;			// Pulse engine activation status
+pin out unsigned PEv2.PulseEngineActivated;			// Pulse engine activation status
 pin out unsigned PEv2.#.LimitStatusP[8];					// Limit+ status (NOT bit-mapped)
 pin out unsigned PEv2.#.LimitStatusN[8];					// Limit- status (NOT bit-mapped)
 pin out unsigned PEv2.#.HomeStatus[8];					// Home status (NOT bit-mapped)
@@ -692,9 +692,9 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 		//	dev->PEv2.PulseEngineActivated=true;
 		}
 		
-		dev->PEv2.PulseEngineEnabled = params.PulseEngineEnabled;
+		//dev->PEv2.PulseEngineEnabled = params.PulseEngineEnabled;
 		dev->PEv2.ChargePumpEnabled = params.ChargePumpEnabled;
-		dev->PEv2.PulseGeneratorType = params.PulseGeneratorType;
+		//dev->PEv2.PulseGeneratorType = params.PulseGeneratorType;
 		//dev->PEv2.PulseEngineBufferSize = params.PulseEngineBufferSize;
 		dev->PEv2.EmergencySwitchPolarity = params.EmergencySwitchPolarity;
 		//dev->PEv2.AxisEnabledStatesMask = params.AxisEnabledStatesMask;
@@ -1558,10 +1558,10 @@ void user_mainloop(void)
 				bit 7: use external extended IO features (only for external pulse generator)
 
 				*/
-				PEv2_PulseGeneratorType=0;
+				//PEv2_PulseGeneratorType=0;
 				//PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 0, true); //external ?
-				PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 2, true); 
-				PEv2_status.PulseGeneratorType = PEv2_PulseGeneratorType;  // Pulse engine generator type (0: external, 1: internal 3ch)
+				//PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 2, true); 
+				//PEv2_status.PulseGeneratorType = PEv2_PulseGeneratorType;  // Pulse engine generator type (0: external, 1: internal 3ch)
 				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
 					PEv2_params.TYPE[i] = PEv2_params_TYPE(i);			//LINEAR / ANGULAR
@@ -1674,7 +1674,7 @@ void user_mainloop(void)
 				a_debout = 133;
 
 				a_debout = 134;
-				dev->PEv2.PulseEngineEnabled=8; //Enable 8 axes
+				//dev->PEv2.PulseEngineEnabled=8; //Enable 8 axes
 				//dev->PEv2.PulseEngineActivated=true; not a bool!
 				//dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
 				PK_PEv2_PulseEngineSetup(dev);*/
@@ -1816,7 +1816,7 @@ void user_mainloop(void)
 			PEv2_PulseEngineActivated = PEv2_status.PulseEngineActivated;
 			PEv2_PulseEngineState = PEv2_status.PulseEngineState;
 			PEv2_ChargePumpEnabled = PEv2_status.ChargePumpEnabled;
-			//PEv2_PulseGeneratorType = PEv2_status.PulseGeneratorType;
+			PEv2_PulseGeneratorType = PEv2_status.PulseGeneratorType;
        
 			PEv2_EmergencySwitchPolarity = PEv2_status.EmergencySwitchPolarity;
 
@@ -2252,20 +2252,7 @@ void user_mainloop(void)
 				PEv2_slotTiming=PEv2_status.slotTiming;
 		
 				bool setPeConfig = false;
-/*				//PEv2_EmergencyInputPin = PEv2_params.EmergencyInputPin;
 
-				// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
-				//check if pin is parametrized in HAL
-				dev->PEv2.ProbeInput= PEv2_ProbeInput;
-				//check if pin is parametrized in HAL
-				dev->PEv2.ProbeInputPolarity= PEv2_ProbeInputPolarity;
-				a_debout = 133;
-
-				a_debout = 134;
-				dev->PEv2.PulseEngineEnabled=8; //Enable 8 axes
-				dev->PEv2.PulseEngineActivated=true;
-				//dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
-				PK_PEv2_PulseEngineSetup(dev);*/
 				
 				a_debout = 136;
 			 }
