@@ -1235,21 +1235,18 @@ PK_PEv2_Stat Update_PEv2()
 		bool OcBit_array[8];
 
 
-		uint8_t ExternalRelayOutputs_set=  status.ExternalRelayOutput;
-		uint8_t ExternalOCOutputs_set=  status.ExternalOCOutput;
+		//uint8_t ExternalRelayOutputs_set=  status.ExternalRelayOutput;
+		//uint8_t ExternalOCOutputs_set=  status.ExternalOCOutput;
 		bool doSetExtOut = false;
 
-		status.ExternalRelayOutputs = dev->PEv2.ExternalRelayOutputs;
-		status.ExternalOCOutputs = dev->PEv2.ExternalOCOutputs;
-
-		if (status.ExternalRelayOutputs != ExternalRelayOutputs_set)
+		if (status.ExternalRelayOutputs != dev->PEv2.ExternalRelayOutputs)
 		{
-			dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set;
+			dev->PEv2.ExternalRelayOutputs = status.ExternalRelayOutputs ;
 			doSetExtOut=true;
 		}
-		if (status.ExternalOCOutputs != ExternalOCOutputs_set)
+		if (status.ExternalOCOutputs != dev->PEv2.ExternalOCOutputs)
 		{
-			dev->PEv2.ExternalOCOutputs = ExternalOCOutputs_set;
+			dev->PEv2.ExternalOCOutputs = status.ExternalOCOutputs;
 			doSetExtOut=true;
 		}
 		if (doSetExtOut==true)
