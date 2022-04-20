@@ -708,7 +708,20 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				params.HomingSpeed[i] = params.HOME_SEARCH_VEL[i]*100/ params.MAX_VELOCITY[i] ;			// Homing speed per axis (in %)
 				params.HomingReturnSpeed[i] = params.HOME_LATCH_VEL[i]*100/ params.HOME_SEARCH_VEL[i];	// Homing return speed per axis (in % of the homing speed)
 
+							// Convert parameters... assume little-endian format
+				dev->PEv2.MaxSpeed[i] = params.MaxSpeed[i];
+				dev->PEv2.MaxAcceleration[i] = params.MaxAcceleration[i];
+				dev->PEv2.MaxDecceleration[i] = params.MaxDecceleration[i];
+
+				dev->PEv2.SoftLimitMinimum[i] = params.SoftLimitMinimum[i];
+				dev->PEv2.SoftLimitMaximum[i] = params.SoftLimitMaximum[i];
+				dev->PEv2.HomeOffsets[i] = params.HomeOffsets[i];
+
+				dev->PEv2.HomingSpeed[i] = params.HomingSpeed[i];
+				dev->PEv2.HomingReturnSpeed[i] = params.HomingReturnSpeed[i];
 			}
+
+
 			params.AxesConfig[i]=0;
 
 			// Read the structure
@@ -790,13 +803,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 
 			dev->PEv2.MPGjogEncoder[i] = params.MPGjogEncoder[i];
 
-			// Convert parameters... assume little-endian format
-			dev->PEv2.MaxSpeed[i] = params.MaxSpeed[i];
-			dev->PEv2.MaxAcceleration[i] = params.MaxAcceleration[i];
-			dev->PEv2.MaxDecceleration[i] = params.MaxDecceleration[i];
 
-			dev->PEv2.SoftLimitMinimum[i] = params.SoftLimitMinimum[i];
-			dev->PEv2.SoftLimitMaximum[i] = params.SoftLimitMaximum[i];
 
 			dev->PEv2.MPGjogMultiplier[i] = params.MPGjogMultiplier[i];
 
