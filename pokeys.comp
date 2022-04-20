@@ -1560,7 +1560,7 @@ void user_mainloop(void)
 				*/
 				PEv2_PulseGeneratorType=0;
 				//PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 0, true); //external ?
-				PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 1, true); 
+				PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 2, true); 
 				PEv2_status.PulseGeneratorType = PEv2_PulseGeneratorType;  // Pulse engine generator type (0: external, 1: internal 3ch)
 				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
@@ -2136,7 +2136,7 @@ void user_mainloop(void)
 		 info_EasySensors = dev->info.iEasySensors;                     // Device supports EasySensors
 		 a_debout = 311;
 
-		 			 if ( info_PulseEnginev2!=0 )
+		 if ( info_PulseEnginev2!=0 )
 			 {
 
 				//***************************************************************************
