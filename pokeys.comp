@@ -689,12 +689,18 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 
 		if (params.PulseEngineEnabled != 0)
 		{
-		//	dev->PEv2.PulseEngineActivated=true;
+			params.PulseEngineEnabled=1;
+			params.PulseGeneratorType=0; //external ?
+			//params.PulseGeneratorType=1; //3ch integrated
+			//params.PulseGeneratorType=2; //external smart
+			//params.PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 6, true); // swap step / dir signals
+			//params.PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 7, true); // extended io
+
 		}
 		
-		//dev->PEv2.PulseEngineEnabled = params.PulseEngineEnabled;
+		dev->PEv2.PulseEngineEnabled = params.PulseEngineEnabled;
 		dev->PEv2.ChargePumpEnabled = params.ChargePumpEnabled;
-		//dev->PEv2.PulseGeneratorType = params.PulseGeneratorType;
+		dev->PEv2.PulseGeneratorType = params.PulseGeneratorType;
 		//dev->PEv2.PulseEngineBufferSize = params.PulseEngineBufferSize;
 		dev->PEv2.EmergencySwitchPolarity = params.EmergencySwitchPolarity;
 		//dev->PEv2.AxisEnabledStatesMask = params.AxisEnabledStatesMask;
@@ -1558,9 +1564,11 @@ void user_mainloop(void)
 				bit 7: use external extended IO features (only for external pulse generator)
 
 				*/
-				//PEv2_PulseGeneratorType=0;
-				//PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 0, true); //external ?
-				//PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 2, true); 
+				//PEv2_PulseGeneratorType=0; //external ?
+				//PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 0, true); //3ch integrated
+				//PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 1, true); //external smart
+				//PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 6, true); // swap step / dir signals
+				//PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 7, true); // extended io
 				//PEv2_status.PulseGeneratorType = PEv2_PulseGeneratorType;  // Pulse engine generator type (0: external, 1: internal 3ch)
 				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
@@ -2136,7 +2144,7 @@ void user_mainloop(void)
 		 info_EasySensors = dev->info.iEasySensors;                     // Device supports EasySensors
 		 a_debout = 311;
 
-		 if ( info_PulseEnginev2!=0 )
+		 if ( info_PulseEnginev2!=0 && PEv2_params_ApplyIniSettings!0 )
 			 {
 
 				//***************************************************************************
@@ -2252,7 +2260,7 @@ void user_mainloop(void)
 				PEv2_slotTiming=PEv2_status.slotTiming;
 		
 				bool setPeConfig = false;
-
+				PEv2_params_ApplyIniSettings = 0;
 				
 				a_debout = 136;
 			 }
