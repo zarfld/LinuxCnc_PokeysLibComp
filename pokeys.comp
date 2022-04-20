@@ -183,8 +183,8 @@ pin io unsigned PEv2.#.MPGjogDivider [8];			// Divider for the MPG jogging (enha
 
 pin io unsigned PEv2.PulseEngineEnabled;			// Pulse engine enabled status, also number of enabled axes
 pin io unsigned PEv2.PulseGeneratorType;			// Pulse engine generator type (0: external, 1: internal 3ch)
-pin io unsigned PEv2.PG_swap_stepdir;
-pin io unsigned PEv2.PG_extended_io;
+pin in unsigned PEv2.PG_swap_stepdir;
+pin in unsigned PEv2.PG_extended_io;
 
 pin io unsigned PEv2.ChargePumpEnabled;				// Charge pump output enabled
 pin io unsigned PEv2.EmergencySwitchPolarity;		// Emergency switch polarity (set to 1 to invert)
