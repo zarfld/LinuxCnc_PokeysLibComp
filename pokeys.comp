@@ -800,7 +800,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			if ( params.PinHomeSwitch[i]!=0)
 			{	
 			//check if pin is parametrized in HAL
-				if ( params.PinHomeSwitch[i]!=params.PinLimitMSwitch[i] && params.PinHomeSwitch[i]!=params.PinLimitMSwitch[i])
+				if ( params.PinHomeSwitch[i]!=params.PinLimitMSwitch[i] && params.PinHomeSwitch[i]!=params.PinLimitPSwitch[i])
 				{
 					dev->PEv2.PinHomeSwitch[i] = params.PinHomeSwitch[i];
 				}
