@@ -791,7 +791,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			*/
 			params.AxesSwitchConfig[i] = 0;
 			
-			if (params.SoftLimitMaximum[i] !=0 && params.SoftLimitMaximum[i] !=0)
+			if (params.SoftLimitMaximum[i] !=0 | params.SoftLimitMaximum[i] !=0)
 			{
 				params.AxesConfig[i] = Set_BitOfByte(params.AxesConfig[i] , 3, true); // PK_AC_SOFT_LIMIT_ENABLED;
 			}
@@ -806,7 +806,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			}
 			else
 			{
-				params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 0, true); // 8 Home switch is shared with Limit- switch
+				params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 3, true); // 8 Home switch is shared with Limit- switch
 			}
 
 			dev->PEv2.PinLimitMSwitch[i] = params.PinLimitMSwitch[i];
