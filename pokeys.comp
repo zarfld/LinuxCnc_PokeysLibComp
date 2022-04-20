@@ -1607,6 +1607,23 @@ void user_mainloop(void)
 					PEv2_params.HOME_FINAL_VEL[i] = PEv2_params_HOME_FINAL_VEL(i);				// position (mm)
 					PEv2_params.HOME_USE_INDEX[i] = PEv2_params_HOME_USE_INDEX(i);				// YES / NO
 					PEv2_params.HOME_IGNORE_LIMITS[i] = PEv2_params_HOME_IGNORE_LIMITS(i);			// YES / NO
+	
+					PEv2_params.PinHomeSwitch[i] = PEv2_PinHomeSwitch(i) ;          // Home switch pin (0 for external dedicated input)
+					PEv2_params.PinLimitMSwitch[i] = PEv2_PinLimitMSwitch(i) ;        // Limit- switch pin (0 for external dedicated input)
+					PEv2_params.PinLimitPSwitch[i] = PEv2_PinLimitPSwitch(i) ;        // Limit+ switch pin (0 for external dedicated input)
+					PEv2_params.MPGjogEncoder[i] = PEv2_MPGjogEncoder(i);
+
+					PEv2_params.MPGjogMultiplier[i] = PEv2_MPGjogMultiplier(i) ;       // MPG jog multiplier value
+
+					PEv2_params.AxisEnableOutputPins[i] = PEv2_AxisEnableOutputPins(i);   // Axis enabled output pin (0 for external dedicated output)
+					PEv2_params.InvertAxisEnable[i] = PEv2_InvertAxisEnable(i);       // Invert axis enable signal
+
+					PEv2_params.FilterLimitMSwitch[i] = PEv2_FilterLimitMSwitch(i);	   // Digital filter for limit- switch
+					PEv2_params.FilterLimitPSwitch[i] = PEv2_FilterLimitPSwitch(i);	   // Digital filter for limit+ switch
+					PEv2_params.FilterHomeSwitch[i] = PEv2_FilterHomeSwitch(i);	   // Digital filter for home switch
+
+
+
 				}
 				
 
