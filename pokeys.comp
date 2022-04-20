@@ -658,8 +658,14 @@ int Update_PoNet()
 
 PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 {
+	
 	if (params.ApplyIniSettings!=0)
 	{
+		dev->PEv2.PulseEngineEnabled=8; //Enable 8 axes
+		dev->PEv2.PulseEngineActivated=true;
+		//dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
+		PK_PEv2_PulseEngineSetup(dev);
+
 		if ( params.ProbeInput!=0)
 		{	//check if pin is parametrized in HAL
 			dev->Pins[ params.ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
@@ -828,10 +834,10 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				// MPG 1x mode here
 			dev->PEv2.HomeBackOffDistance[i] = params.HomeBackOffDistance[i];
 			dev->PEv2.MPGjogDivider[i] = params.MPGjogDivider[i];	
-			//dev->PEv2.AxesConfig[i] = params.AxesConfig[i];
-			//dev->PEv2.AxesSwitchConfig[i] =params.AxesSwitchConfig[i];
-			dev->PEv2.AxesConfig[i] = 0;
-			dev->PEv2.AxesSwitchConfig[i] =0;
+			dev->PEv2.AxesConfig[i] = params.AxesConfig[i];
+			dev->PEv2.AxesSwitchConfig[i] =params.AxesSwitchConfig[i];
+			//dev->PEv2.AxesConfig[i] = 0;
+			//dev->PEv2.AxesSwitchConfig[i] =0;
 
 			dev->PEv2.param1 = i;
 
