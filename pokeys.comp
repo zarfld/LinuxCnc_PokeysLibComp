@@ -365,7 +365,7 @@ option extra_link_args "-lPoKeys";
 
 #include <unistd.h>   /* UNIX standard function definitions */
 #include "PoKeysLib.h"
-//#include "PoKeysHal.h"
+#include "PoKeysHal.h"
 
 
 
@@ -719,6 +719,10 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 
 				dev->PEv2.HomingSpeed[i] = params.HomingSpeed[i];
 				dev->PEv2.HomingReturnSpeed[i] = params.HomingReturnSpeed[i];
+
+				dev->PEv2.param1 = i;
+				PK_PEv2_AxisConfigurationSet(dev);
+
 			}
 
 
