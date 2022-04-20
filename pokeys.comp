@@ -702,11 +702,11 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 		{
 			if (params.PG_swap_stepdir != 0)
 			{
-				params.PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 6, true); // swap step / dir signals
+				params.PulseGeneratorType=Set_BitOfByte(params.PulseGeneratorType, 6, true); // swap step / dir signals
 			}
 			if (params.PG_extended_io != 0)
 			{
-				params.PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 7, true); // extended io
+				params.PulseGeneratorType=Set_BitOfByte(params.PulseGeneratorType, 7, true); // extended io
 			}
 		}
 		dev->PEv2.PulseEngineEnabled = params.PulseEngineEnabled;
