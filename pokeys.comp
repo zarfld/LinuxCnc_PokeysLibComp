@@ -1550,6 +1550,16 @@ void user_mainloop(void)
 				PEv2_params.MAX_LINEAR_VELOCITY = PEv2_params_MAX_LINEAR_VELOCITY;
 
 				PEv2_params.PulseEngineEnabled = PEv2_nrOfAxes;
+				/*Pulse generator type
+				
+				bits 0-3: generator type (0 - 8ch external, 1 - 3ch internal, 2 - 8ch smart external)
+				bits 4-5: reserved
+				bit 6: swap step / dir signals
+				bit 7: use external extended IO features (only for external pulse generator)
+
+				*/
+				PEv2_PulseGeneratorType=0;
+				PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 0, true)
 				PEv2_status.PulseGeneratorType = PEv2_PulseGeneratorType;  // Pulse engine generator type (0: external, 1: internal 3ch)
 				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
