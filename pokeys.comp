@@ -689,7 +689,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 
 		if (params.PulseEngineEnabled != 0)
 		{
-			params.PulseEngineActivated=1;
+			dev->PEv2.PulseEngineActivated=1;
 			params.PulseGeneratorType=0; //external ?
 			//params.PulseGeneratorType=1; //3ch integrated
 			//params.PulseGeneratorType=2; //external smart
@@ -697,7 +697,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			//params.PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 7, true); // extended io
 
 		}
-		dev->PEv2.PulseEngineActivated = params.PulseEngineActivated;
+		
 		dev->PEv2.PulseEngineEnabled = params.PulseEngineEnabled;
 		dev->PEv2.ChargePumpEnabled = params.ChargePumpEnabled;
 		dev->PEv2.PulseGeneratorType = params.PulseGeneratorType;
