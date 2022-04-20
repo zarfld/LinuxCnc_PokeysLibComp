@@ -1565,12 +1565,19 @@ void user_mainloop(void)
 				PEv2_params.CYCLE_TIME = PEv2_params_CYCLE_TIME;
 				PEv2_params.DEFAULT_LINEAR_VELOCITY = PEv2_params_DEFAULT_LINEAR_VELOCITY;
 				PEv2_params.MAX_LINEAR_VELOCITY = PEv2_params_MAX_LINEAR_VELOCITY;
-
+				if (PEv2_params_ApplyIniSettings != 0)
+				{
 				//PEv2_params.PulseEngineEnabled = PEv2_nrOfAxes;
 				PEv2_params.PulseGeneratorType = PEv2_PulseGeneratorType;  // Pulse engine generator type (0: external, 1: internal 3ch)
 				PEv2_params.PG_swap_stepdir = PEv2_PG_swap_stepdir;
 				PEv2_params.PG_extended_io = PEv2_PG_extended_io;
 				
+				PEv2_params.EmergencyInputPin = PEv2_EmergencyInputPin;
+				PEv2_status.EmergencySwitchPolarity = PEv2_EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
+				
+				PEv2_params.ProbeInput = PEv2_ProbeInput;
+				PEv2_params.ProbeInputPolarity = PEv2_ProbeInputPolarity;
+				}
 				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
 					PEv2_params.TYPE[i] = PEv2_params_TYPE(i);			//LINEAR / ANGULAR
@@ -1608,7 +1615,7 @@ void user_mainloop(void)
 					PEv2_params.HOME_USE_INDEX[i] = PEv2_params_HOME_USE_INDEX(i);				// YES / NO
 					PEv2_params.HOME_IGNORE_LIMITS[i] = PEv2_params_HOME_IGNORE_LIMITS(i);			// YES / NO
 					if (PEv2_params_ApplyIniSettings != 0)
-						{
+					{
 					PEv2_params.PinHomeSwitch[i] = PEv2_PinHomeSwitch(i) ;          // Home switch pin (0 for external dedicated input)
 					PEv2_params.PinLimitMSwitch[i] = PEv2_PinLimitMSwitch(i) ;        // Limit- switch pin (0 for external dedicated input)
 					PEv2_params.PinLimitPSwitch[i] = PEv2_PinLimitPSwitch(i) ;        // Limit+ switch pin (0 for external dedicated input)
@@ -1632,16 +1639,22 @@ void user_mainloop(void)
 				PEv2_params = GetConfig_PEv2(PEv2_params);
 
 
-				// PK_PEv2_PulseEngineSetup   
-				//PEv2_PulseEngineEnabled=PEv2_status.PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
-				//PEv2_ChargePumpEnabled=PEv2_status.ChargePumpEnabled;         // Charge pump output enabled
-				//PEv2_PulseGeneratorType=PEv2_status.PulseGeneratorType;        // Pulse engine generator type (0: external, 1: internal 3ch)
-				//dev->request[11] = dev->PEv2.PulseEngineBufferSize;
-				//PEv2_EmergencySwitchPolarity=PEv2_status.EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
-				//dev->request[13] = dev->PEv2.AxisEnabledStatesMask;
 
-				//PK_PEv2_AxisConfigurationGet
+				if (PEv2_params_ApplyIniSettings != 0)
+				{
+				PEv2_PulseEngineEnabled=PEv2_status.PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
+				PEv2_ChargePumpEnabled=PEv2_status.ChargePumpEnabled;         // Charge pump output enabled
+				PEv2_PulseGeneratorType=PEv2_status.PulseGeneratorType;        // Pulse engine generator type (0: external, 1: internal 3ch)
+				PEv2_EmergencyInputPin = PEv2_params.EmergencyInputPin;
+				PEv2_EmergencySwitchPolarity=PEv2_status.EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
 				PEv2_BacklashCompensationEnabled=PEv2_params.BacklashCompensationEnabled;
+				PEv2_ProbeInput = PEv2_params.ProbeInput;
+				PEv2_ProbeInputPolarity = PEv2_params.ProbeInputPolarity;
+
+				
+				}
+				//PK_PEv2_AxisConfigurationGet
+
 				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
 					// Read the structure
@@ -1696,7 +1709,7 @@ void user_mainloop(void)
 				PEv2_slotTiming=PEv2_status.slotTiming;
 		
 				bool setPeConfig = false;
-/*				//PEv2_EmergencyInputPin = PEv2_params.EmergencyInputPin;
+/*				//
 
 				// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
 				//check if pin is parametrized in HAL
@@ -1844,6 +1857,9 @@ void user_mainloop(void)
 			PEv2_LimitOverride = PEv2_status.LimitOverride;
 
 			// Basic engine states
+			if (PEv2_params_ApplyIniSettings = 0)
+			{
+
 			PEv2_PulseEngineEnabled = PEv2_status.PulseEngineEnabled;
 			PEv2_PulseEngineActivated = PEv2_status.PulseEngineActivated;
 			PEv2_PulseEngineState = PEv2_status.PulseEngineState;
@@ -1851,7 +1867,7 @@ void user_mainloop(void)
 			PEv2_PulseGeneratorType = PEv2_status.PulseGeneratorType;
        
 			PEv2_EmergencySwitchPolarity = PEv2_status.EmergencySwitchPolarity;
-
+			}
 			// Other inputs
 			PEv2_ErrorInputStatus = PEv2_status.ErrorInputStatus;
 			PEv2_MiscInputStatus = PEv2_status.MiscInputStatus;
@@ -2187,7 +2203,20 @@ void user_mainloop(void)
 				PEv2_params.DEFAULT_LINEAR_VELOCITY = PEv2_params_DEFAULT_LINEAR_VELOCITY;
 				PEv2_params.MAX_LINEAR_VELOCITY = PEv2_params_MAX_LINEAR_VELOCITY;
 
+				if (PEv2_params_ApplyIniSettings != 0)
+				{
+				//PEv2_params.PulseEngineEnabled = PEv2_nrOfAxes;
+				PEv2_params.PulseGeneratorType = PEv2_PulseGeneratorType;  // Pulse engine generator type (0: external, 1: internal 3ch)
+				PEv2_params.PG_swap_stepdir = PEv2_PG_swap_stepdir;
+				PEv2_params.PG_extended_io = PEv2_PG_extended_io;
 				
+				PEv2_params.EmergencyInputPin = PEv2_EmergencyInputPin;
+				PEv2_status.EmergencySwitchPolarity = PEv2_EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
+				
+				PEv2_params.ProbeInput = PEv2_ProbeInput;
+				PEv2_params.ProbeInputPolarity = PEv2_ProbeInputPolarity;
+				}
+
 				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
 					PEv2_params.TYPE[i] = PEv2_params_TYPE(i);			//LINEAR / ANGULAR
