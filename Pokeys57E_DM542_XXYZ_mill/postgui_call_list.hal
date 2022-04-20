@@ -7,6 +7,10 @@ setp pokeys.0.PEv2.ProbeInputPolarity [POKEYS]PEv2_ProbeInputPolarity
 setp pokeys.0.PEv2.EmergencyInputPin [POKEYS]PEv2_EmergencyInputPin
 setp pokeys.0.PEv2.EmergencyOutputPin [POKEYS]PEv2_EmergencyOutputPin
 
+setp pokeys.0.PEv2.PulseGeneratorType [POKEYS]PEv2_PulseGeneratorType
+setp pokeys.0.PEv2.PG_swap_stepdir [POKEYS]PEv2_PG_swap_stepdir
+setp pokeys.0.PEv2.PG_extended_io [POKEYS]PEv2_PG_extended_io
+
 setp pokeys.0.PEv2.0.AxesSwitchConfig  [POKEYS]PEv2_AxesSwitchConfig_0
 setp pokeys.0.PEv2.0.FilterLimitMSwitch  [POKEYS]PEv2_FilterLimitMSwitch_0
 setp pokeys.0.PEv2.0.FilterLimitPSwitch  [POKEYS]PEv2_FilterLimitPSwitch_0

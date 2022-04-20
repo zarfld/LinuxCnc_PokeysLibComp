@@ -183,6 +183,9 @@ pin io unsigned PEv2.#.MPGjogDivider [8];			// Divider for the MPG jogging (enha
 
 pin io unsigned PEv2.PulseEngineEnabled;			// Pulse engine enabled status, also number of enabled axes
 pin io unsigned PEv2.PulseGeneratorType;			// Pulse engine generator type (0: external, 1: internal 3ch)
+pin io bit PEv2.PG_swap_stepdir;
+pin io bit PEv2.PG_extended_io;
+
 pin io unsigned PEv2.ChargePumpEnabled;				// Charge pump output enabled
 pin io unsigned PEv2.EmergencySwitchPolarity;		// Emergency switch polarity (set to 1 to invert)
 pin out unsigned PEv2.PulseEngineActivated;			// Pulse engine activation status
@@ -454,6 +457,8 @@ typedef struct
     uint8_t         PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
     uint8_t         ChargePumpEnabled;         // Charge pump output enabled
     uint8_t         PulseGeneratorType;        // Pulse engine generator type (0: external, 1: internal 3ch)
+	bool			PG_swap_stepdir;
+	bool			PG_extended_io;
     //dev->request[11] = dev->PEv2.PulseEngineBufferSize;
     uint8_t         EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
     //dev->request[13] = dev->PEv2.AxisEnabledStatesMask;
@@ -686,18 +691,24 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			PK_SL_SetPinFunction(dev, params.EmergencyInputPin-1, PK_PinCap_digitalOutput);
 			setPinConfig=true;
 		}
-
+		params.PulseEngineEnabled = dev->PEv2.info.nrOfAxes;
 		if (params.PulseEngineEnabled != 0)
 		{
 			dev->PEv2.PulseEngineActivated=1;
-			params.PulseGeneratorType=0; //external ?
-			//params.PulseGeneratorType=1; //3ch integrated
-			//params.PulseGeneratorType=2; //external smart
-			//params.PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 6, true); // swap step / dir signals
-			//params.PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 7, true); // extended io
+
 
 		}
-		
+		if (params.PulseGeneratorType == 0)
+		{
+			if (params.PG_swap_stepdir != 0)
+			{
+				params.PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 6, true); // swap step / dir signals
+			}
+			if (params.PG_extended_io != 0)
+			{
+				params.PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 7, true); // extended io
+			}
+		}
 		dev->PEv2.PulseEngineEnabled = params.PulseEngineEnabled;
 		dev->PEv2.ChargePumpEnabled = params.ChargePumpEnabled;
 		dev->PEv2.PulseGeneratorType = params.PulseGeneratorType;
@@ -1555,21 +1566,11 @@ void user_mainloop(void)
 				PEv2_params.DEFAULT_LINEAR_VELOCITY = PEv2_params_DEFAULT_LINEAR_VELOCITY;
 				PEv2_params.MAX_LINEAR_VELOCITY = PEv2_params_MAX_LINEAR_VELOCITY;
 
-				PEv2_params.PulseEngineEnabled = PEv2_nrOfAxes;
-				/*Pulse generator type
+				//PEv2_params.PulseEngineEnabled = PEv2_nrOfAxes;
+				PEv2_params.PulseGeneratorType = PEv2_PulseGeneratorType;  // Pulse engine generator type (0: external, 1: internal 3ch)
+				PEv2_params.PG_swap_stepdir = PEv2_PG_swap_stepdir;
+				PEv2_params.PG_extended_io = PEv2_PG_extended_io;
 				
-				bits 0-3: generator type (0 - 8ch external, 1 - 3ch internal, 2 - 8ch smart external)
-				bits 4-5: reserved
-				bit 6: swap step / dir signals
-				bit 7: use external extended IO features (only for external pulse generator)
-
-				*/
-				//PEv2_PulseGeneratorType=0; //external ?
-				//PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 0, true); //3ch integrated
-				//PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 1, true); //external smart
-				//PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 6, true); // swap step / dir signals
-				//PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 7, true); // extended io
-				//PEv2_status.PulseGeneratorType = PEv2_PulseGeneratorType;  // Pulse engine generator type (0: external, 1: internal 3ch)
 				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
 					PEv2_params.TYPE[i] = PEv2_params_TYPE(i);			//LINEAR / ANGULAR
