@@ -89,7 +89,7 @@ pin in float PEv2.params.CYCLE_TIME;
 pin in float PEv2.params.DEFAULT_LINEAR_VELOCITY;
 pin in float PEv2.params.MAX_LINEAR_VELOCITY;
 
-pin in bit PEv2.params.ApplyIniSettings;
+pin io bit PEv2.params.ApplyIniSettings;
 //***********************************************************************
 
 // Pulse engine v2 structure...
@@ -2144,7 +2144,7 @@ void user_mainloop(void)
 		 info_EasySensors = dev->info.iEasySensors;                     // Device supports EasySensors
 		 a_debout = 311;
 
-		 if ( info_PulseEnginev2!=0 && PEv2_params_ApplyIniSettings!0 )
+		 if ( info_PulseEnginev2!=0 && PEv2_params_ApplyIniSettings!=0 )
 			 {
 
 				//***************************************************************************
