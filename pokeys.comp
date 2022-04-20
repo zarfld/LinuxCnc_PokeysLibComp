@@ -689,7 +689,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 
 		if (params.PulseEngineEnabled != 0)
 		{
-			dev->PEv2.PulseEngineActivated=true;
+		//	dev->PEv2.PulseEngineActivated=true;
 		}
 		
 		dev->PEv2.PulseEngineEnabled = params.PulseEngineEnabled;
@@ -1675,7 +1675,7 @@ void user_mainloop(void)
 
 				a_debout = 134;
 				dev->PEv2.PulseEngineEnabled=8; //Enable 8 axes
-				dev->PEv2.PulseEngineActivated=true;
+				//dev->PEv2.PulseEngineActivated=true; not a bool!
 				//dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
 				PK_PEv2_PulseEngineSetup(dev);*/
 				
@@ -1812,8 +1812,8 @@ void user_mainloop(void)
 			PEv2_LimitOverride = PEv2_status.LimitOverride;
 
 			// Basic engine states
-			//PEv2_PulseEngineEnabled = PEv2_status.PulseEngineEnabled;
-			//PEv2_PulseEngineActivated = PEv2_status.PulseEngineActivated;
+			PEv2_PulseEngineEnabled = PEv2_status.PulseEngineEnabled;
+			PEv2_PulseEngineActivated = PEv2_status.PulseEngineActivated;
 			PEv2_PulseEngineState = PEv2_status.PulseEngineState;
 			PEv2_ChargePumpEnabled = PEv2_status.ChargePumpEnabled;
 			//PEv2_PulseGeneratorType = PEv2_status.PulseGeneratorType;
