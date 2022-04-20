@@ -1863,6 +1863,12 @@ void user_mainloop(void)
 			a_debout = 223;
 			PEv2_ExternalRelayOutputs = PEv2_status.ExternalRelayOutputs;
 			PEv2_ExternalOCOutputs = PEv2_status.ExternalOCOutputs;
+
+			if (PEv2_params_ApplyIniSettings==0 && PEv2_nrOfAxes!=PEv2_PulseEngineEnabled )
+			{
+				PEv2_params_ApplyIniSettings=1;
+			}
+
 			a_debout = 224;
 		}
 	}
