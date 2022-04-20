@@ -806,12 +806,12 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				}
 				else if ( params.PinHomeSwitch[i]==params.PinLimitPSwitch[i])
 				{
-					dev->PEv2.PinHomeSwitch[i]=0;
+					//dev->PEv2.PinHomeSwitch[i]=0;
 					params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 4, true); // 16 Home switch is shared with Limit+ switch
 				}
 				else if ( params.PinHomeSwitch[i]==params.PinLimitMSwitch[i])
 				{
-					dev->PEv2.PinHomeSwitch[i]=0;
+					//dev->PEv2.PinHomeSwitch[i]=0;
 					params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 3, true); // 8 Home switch is shared with Limit- switch
 			
 				}
@@ -831,6 +831,9 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 0, true); // | PK_ASO_SWITCH_LIMIT_N;
 				dev->Pins[ params.PinLimitMSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
 				PK_SL_SetPinFunction(dev, params.PinLimitMSwitch[i]-1, PK_PinCap_digitalInput);
+
+				params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 5, true); // 32 Invert limit- switch polarity
+
 				setPinConfig=true;
 			}
 
@@ -840,6 +843,9 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 1, true); // | PK_ASO_SWITCH_LIMIT_P;
 				dev->Pins[ params.PinLimitPSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
 				PK_SL_SetPinFunction(dev, params.PinLimitPSwitch[i]-1, PK_PinCap_digitalInput);
+
+				params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 6, true); // 32 Invert limit+ switch polarity
+
 				setPinConfig=true;
 			}
 
