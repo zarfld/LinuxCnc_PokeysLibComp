@@ -661,8 +661,8 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 	
 	if (params.ApplyIniSettings!=0)
 	{
-		dev->PEv2.PulseEngineEnabled=8; //Enable 8 axes
-		dev->PEv2.PulseEngineActivated=true;
+
+		
 		//dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
 		PK_PEv2_PulseEngineSetup(dev);
 
@@ -687,8 +687,11 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			setPinConfig=true;
 		}
 
-
-
+		if (params.PulseEngineEnabled != 0)
+		{
+			dev->PEv2.PulseEngineActivated=true;
+		}
+		
 		dev->PEv2.PulseEngineEnabled = params.PulseEngineEnabled;
 		dev->PEv2.ChargePumpEnabled = params.ChargePumpEnabled;
 		dev->PEv2.PulseGeneratorType = params.PulseGeneratorType;
@@ -1546,7 +1549,7 @@ void user_mainloop(void)
 				PEv2_params.DEFAULT_LINEAR_VELOCITY = PEv2_params_DEFAULT_LINEAR_VELOCITY;
 				PEv2_params.MAX_LINEAR_VELOCITY = PEv2_params_MAX_LINEAR_VELOCITY;
 
-				
+				PEv2_params.PulseEngineEnabled =PEv2_nrOfAxes;
 				for(i=0;i< PEv2_nrOfAxes;i++)
 				{
 					PEv2_params.TYPE[i] = PEv2_params_TYPE(i);			//LINEAR / ANGULAR
