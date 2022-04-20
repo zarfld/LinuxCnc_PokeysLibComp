@@ -183,8 +183,8 @@ pin io unsigned PEv2.#.MPGjogDivider [8];			// Divider for the MPG jogging (enha
 
 pin io unsigned PEv2.PulseEngineEnabled;			// Pulse engine enabled status, also number of enabled axes
 pin io unsigned PEv2.PulseGeneratorType;			// Pulse engine generator type (0: external, 1: internal 3ch)
-pin io bit PEv2.PG_swap_stepdir;
-pin io bit PEv2.PG_extended_io;
+pin io unsigned PEv2.PG_swap_stepdir;
+pin io unsigned PEv2.PG_extended_io;
 
 pin io unsigned PEv2.ChargePumpEnabled;				// Charge pump output enabled
 pin io unsigned PEv2.EmergencySwitchPolarity;		// Emergency switch polarity (set to 1 to invert)
@@ -457,8 +457,8 @@ typedef struct
     uint8_t         PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
     uint8_t         ChargePumpEnabled;         // Charge pump output enabled
     uint8_t         PulseGeneratorType;        // Pulse engine generator type (0: external, 1: internal 3ch)
-	bool			PG_swap_stepdir;
-	bool			PG_extended_io;
+	uint8_t			PG_swap_stepdir;
+	uint8_t			PG_extended_io;
     //dev->request[11] = dev->PEv2.PulseEngineBufferSize;
     uint8_t         EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
     //dev->request[13] = dev->PEv2.AxisEnabledStatesMask;
