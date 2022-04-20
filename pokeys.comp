@@ -1592,8 +1592,9 @@ void user_mainloop(void)
 					//PEv2_params.PulseEngineEnabled = PEv2_nrOfAxes;
 					PEv2_params.PulseGeneratorType = PEv2_PulseGeneratorType;  // Pulse engine generator type (0: external, 1: internal 3ch)
 					PEv2_params.PG_swap_stepdir = PEv2_PG_swap_stepdir;
+					PEv2_PG_extended_io=1;
 					PEv2_params.PG_extended_io = PEv2_PG_extended_io;
-				
+					PEv2_params.PG_extended_io = 1;
 					PEv2_params.EmergencyInputPin = PEv2_EmergencyInputPin;
 					PEv2_status.EmergencySwitchPolarity = PEv2_EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
 				
