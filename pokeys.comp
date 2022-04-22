@@ -2135,7 +2135,7 @@ void user_mainloop(void)
 	*/
 	
 	
-	//PK_PoRelay8_ReEnablePoExtBus(dev);
+	PK_PoRelay8_ReEnablePoExtBus(dev);
 		for (i = 0; i < 10; i++)
 		{
 			PoRelay8_DataSet(i)=0;
