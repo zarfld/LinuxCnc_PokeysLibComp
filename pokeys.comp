@@ -2171,7 +2171,7 @@ void user_mainloop(void)
 			}
 			else
 			{
-				device->PoRelay8->statusOut[i] = PoRelay8_DataSet(i);
+				dev->PoRelay8->statusOut[i] = PoRelay8_DataSet(i);
 			}
 		}
 		PK_PoRelay8_SetOutputsArray(dev);
