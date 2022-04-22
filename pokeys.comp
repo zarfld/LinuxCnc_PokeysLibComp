@@ -2161,11 +2161,11 @@ void user_mainloop(void)
 			{
 				if (secBlink=true)
 				{
-					device->PoRelay8->statusOut[i] =255;
+					dev->PoRelay8->statusOut[i] =255;
 				}
 				else 
 				{
-					device->PoRelay8->statusOut[i] =0;
+					dev->PoRelay8->statusOut[i] =0;
 				}
 
 			}
