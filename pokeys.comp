@@ -2147,7 +2147,7 @@ void user_mainloop(void)
 			PoRelay8_DataSet(i) = Set_BitOfByte(PoRelay8_DataSet(i), 5, PoRelay8_Out_5(i));
 			PoRelay8_DataSet(i) = Set_BitOfByte(PoRelay8_DataSet(i), 6, PoRelay8_Out_6(i));
 			PoRelay8_DataSet(i) = Set_BitOfByte(PoRelay8_DataSet(i), 7, PoRelay8_Out_7(i));
-			dev->PoRelay8.statusOut[i] = PoRelay8_DataSet(i);
+			//dev->PoRelay8.statusOut[i] = PoRelay8_DataSet(i);
 		}
 		//PK_PoRelay8_SetOutputsArray(dev);
 
