@@ -288,8 +288,6 @@ pin io unsigned kbd48CNC.lightValue;
 //pin io unsigned kbd48CNC.#.ID [48];
 pin in bit kbd48CNC.#.LED [48];
 pin io bit kbd48CNC.#.Button [48];
-pin out unsigned kbd48CNC.statusIn-#[16];
-pin out unsigned kbd48CNC.statusOut-#[16];
 
 
 pin out unsigned Encoders.#.encoderValue [26];       // Encoder current value
@@ -597,6 +595,7 @@ PK_PEv2_Stat PEv2_status;
 sPoKeysEasySensor EasySensors[100];
 sPoNETmodule PoNet[16];
 
+uint32_t sleepdur = 800;
 PK_MatrixKB_Parameters MatrixKB;
 
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
@@ -645,6 +644,7 @@ int Config_PoNet()
 /*	if(PK_PoNETGetPoNETStatus(dev) == PK_OK)
 	{
 				// device->PoNETmodule.PoNETstatus
+				usleep(sleepdur); 
 	}*/
 
 	for (i = 0; i < 16; i++)
@@ -657,7 +657,7 @@ int Config_PoNet()
 		PoNet[i].moduleType=dev->PoNETmodule.moduleType;
 		PoNet[i].moduleSize=dev->PoNETmodule.moduleSize;
 		PoNet[i].moduleOptions=dev->PoNETmodule.moduleOptions;
-
+		usleep(sleepdur); 
 	//	memset(dev->PoNETmodule.statusOut, 0, 10);
 	}
 	return 0;
@@ -667,11 +667,11 @@ int Update_PoNet()
 {
 	if(PK_PoNETGetPoNETStatus(dev) == PK_OK)
 	{
-				
+				usleep(sleepdur); 
 	}
 	if(PK_PoNETGetModuleSettings(dev) == PK_OK)
 	{
-				
+			usleep(sleepdur); 	
 	}
 	return 0;
 }
@@ -684,8 +684,8 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 
 		
 		//dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
-		PK_PEv2_PulseEngineSetup(dev);
-
+		//PK_PEv2_PulseEngineSetup(dev);
+		usleep(sleepdur); 
 		if ( params.ProbeInput!=0)
 		{	//check if pin is parametrized in HAL
 			dev->Pins[ params.ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
@@ -731,8 +731,9 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 		dev->PEv2.EmergencySwitchPolarity = params.EmergencySwitchPolarity;
 		//dev->PEv2.AxisEnabledStatesMask = params.AxisEnabledStatesMask;
 		PK_PEv2_PulseEngineSetup(dev);
+		usleep(sleepdur); 
 		PK_PEv2_PulseEngineSetup(dev);
-
+		usleep(sleepdur); 
 		for (i = 0; i < dev->PEv2.info.nrOfAxes; i++)
 		{
 			// Convert mm/s -> pulses/s
@@ -896,9 +897,10 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			dev->PEv2.param1 = i;
 
 			PK_PEv2_AxisConfigurationSet(dev);
+			usleep(sleepdur); 
 			dev->PEv2.param1 = i;
 			PK_PEv2_AxisConfigurationSet(dev);
-
+			usleep(sleepdur); 
 
 		}
 		dev->PEv2.param1 = 0;
@@ -916,8 +918,9 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 		if (setPinConfig==true)
 		{
 			PK_PinConfigurationSet(dev);
+			usleep(sleepdur); 
 			PK_PinConfigurationSet(dev);
-
+			usleep(sleepdur); 
 			setPinConfig=false;
 		}
 	}
@@ -933,6 +936,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 		if(PK_PEv2_AdditionalParametersGet(dev) == PK_OK)
 		{
 			params.EmergencyInputPin = dev->PEv2.EmergencyInputPin;   
+			usleep(sleepdur); 
 		}
 
 		for (i = 0; i < dev->PEv2.info.nrOfAxes; i++)
@@ -976,6 +980,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				params.HomeBackOffDistance[i] = dev->PEv2.HomeBackOffDistance[i];
 				params.MPGjogDivider[i] = dev->PEv2.MPGjogDivider[i];	
 			}
+			usleep(sleepdur); 
 		}
 
 		params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
@@ -1095,7 +1100,7 @@ PK_PEv2_Stat Update_PEv2()
 		    casePK_PEState_peSTOP_EMERGENCY:          // Pulse engine stopped due to emergency switch
 				break;
 		}
-		
+		usleep(sleepdur); 
 	}
 
 	if(PK_PEv2_Status2Get(dev) == PK_OK)
@@ -1103,6 +1108,7 @@ PK_PEv2_Stat Update_PEv2()
 		bm_DedicatedLimitNInputs = dev->PEv2.DedicatedLimitNInputs;
 		bm_DedicatedLimitPInputs = dev->PEv2.DedicatedLimitPInputs;
 		bm_DedicatedHomeInputs = dev->PEv2.DedicatedHomeInputs;
+		usleep(sleepdur); 
 	}
 
 	bool doPositionSet = false;
@@ -1252,15 +1258,18 @@ PK_PEv2_Stat Update_PEv2()
 		{
 			dev->PEv2.ExternalRelayOutputs = status.ExternalRelayOutputs ;
 			doSetExtOut=true;
+			usleep(sleepdur); 
 		}
 		if (status.ExternalOCOutputs != dev->PEv2.ExternalOCOutputs)
 		{
 			dev->PEv2.ExternalOCOutputs = status.ExternalOCOutputs;
 			doSetExtOut=true;
+			usleep(sleepdur); 
 		}
 		if (doSetExtOut==true)
 		{
 			PK_PEv2_ExternalOutputsSet(dev);
+			usleep(sleepdur); 
 		}
 
 	}
@@ -1282,12 +1291,14 @@ PK_PEv2_Stat Update_PEv2()
 	{
 		PK_PEv2_PulseEngineStateSet(dev);
 		PK_PEv2_PulseEngineStateSet(dev);
+		usleep(sleepdur); 
 	}
 
 	if (doMove==true)
 	{
 		PK_PEv2_PulseEngineMove(dev);
 		PK_PEv2_PulseEngineMove(dev);
+		usleep(sleepdur); 
 	}
 
 	
@@ -1322,6 +1333,7 @@ PK_MatrixKBConfigurationSet(dev);
 			{
 				MatrixKB.macroMappingOptions[i]  = dev->matrixKB.macroMappingOptions[i];
 			}
+			usleep(sleepdur); 
 
 	}
 
@@ -1337,6 +1349,7 @@ int Update_MatrixKB()
 		{
 			MatrixKB.matrixKBvalues[i] = dev->matrixKB.matrixKBvalues[i];
 		}
+		usleep(sleepdur); 
 	}
 	if(PK_MatrixKBConfigurationGet(dev) == PK_OK)
 	{
@@ -1351,6 +1364,7 @@ int Update_MatrixKB()
 				i++;
 			}
 		}
+		usleep(sleepdur); 
 	}
 	return 0;
 }
@@ -1362,6 +1376,7 @@ int Config_LCD()
 {
 	if(PK_LCDConfigurationGet(dev) == PK_OK)
 	{
+	usleep(sleepdur); 
 	}
 
 	//PK_LCDConfigurationSet
@@ -1374,9 +1389,11 @@ int Update_LCD()
 {
 	if(PK_LCDUpdate(dev) == PK_OK)
 	{
+	usleep(sleepdur); 
 	}
 	if(PK_LCDSetCustomCharacters(dev) == PK_OK)
 	{
+	usleep(sleepdur); 
 	}
 	return 0;
 }
@@ -1389,6 +1406,7 @@ int Config_EasySensors()
 		{
 			EasySensors[i] = dev->EasySensors[i];
 		}
+		usleep(sleepdur); 
 	}
 
 	//PK_EasySensorsSetupSet
@@ -1403,6 +1421,7 @@ int Update_EasySensors()
 		{
 			EasySensors[i] = dev->EasySensors[i];
 		}
+		usleep(sleepdur); 
 	}
 	return 0;
 }
@@ -1412,10 +1431,12 @@ int Config_PoStep()
 {
 	if(PK_PoStep_ConfigurationGet(dev) == PK_OK)
 	{
+	usleep(sleepdur); 
 	}
 
 	if(PK_PoStep_DriverConfigurationGet(dev) == PK_OK)
 	{
+	usleep(sleepdur); 
 	}
 
 	//PK_PoStep_ConfigurationSet(dev)
@@ -1427,6 +1448,7 @@ int Update_PoStep()
 {
 	if(PK_PoStep_StatusGet(dev) == PK_OK)
 	{
+	usleep(sleepdur); 
 	}
 	return 0;
 }
@@ -1549,6 +1571,7 @@ void user_mainloop(void)
 								
 							}
 						}
+						usleep(sleepdur); 
 
 				}
 			 }
@@ -1720,6 +1743,7 @@ void user_mainloop(void)
 					// 	PEv2_BacklashWidth(i) = PEv2_params.BacklashWidth[i];			// half of real backlash width
 						PEv2_BacklashRegister(i) = PEv2_params.BacklashRegister[i];		// current value of the backlash register
 						PEv2_BacklashAcceleration(i) = PEv2_params.BacklashAcceleration[i];	// in pulses per ms^2
+					usleep(sleepdur); 
 				}
 			
 				PEv2_nrOfAxes=PEv2_status.nrOfAxes;
@@ -1742,7 +1766,7 @@ void user_mainloop(void)
 				//dev->PEv2.PulseEngineActivated=true; not a bool!
 				//dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
 				PK_PEv2_PulseEngineSetup(dev);*/
-				
+				usleep(sleepdur); 
 				a_debout = 136;
 			 }
 			
@@ -1750,6 +1774,7 @@ void user_mainloop(void)
 			{
 				dev->matrixKB.matrixKBconfiguration = 1;
 				Config_MatrixKB;
+
 			}
 			if (info_EasySensors!=0)
 			{
@@ -1761,6 +1786,7 @@ void user_mainloop(void)
 					EasySensors_sensorRefreshPeriod(i)= EasySensors[i].sensorRefreshPeriod;    // Refresh period in 0.1s
 					EasySensors_sensorFailsafeConfig(i)= EasySensors[i].sensorFailsafeConfig;   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
 					EasySensors_sensorReadingID(i)= EasySensors[i].sensorReadingID;        // Sensor reading selection (see Protocol description document for details)
+					usleep(sleepdur); 
 				}
 			}
 
@@ -1770,6 +1796,7 @@ void user_mainloop(void)
 				PK_I2CGetStatus(dev, i_activated);
 				
 				PK_I2CBusScanStart(dev);
+				usleep(sleepdur); 
 				I2C_scanning=true;
 
 			}*/
@@ -1778,11 +1805,13 @@ void user_mainloop(void)
 			 {
 				a_debout = 140;
 				PK_PinConfigurationSet(dev);
+				usleep(sleepdur); 
 				setPinConfig = false;
 			 }
 			 if (info_PoNET!=0)
 			 {
 				Config_PoNet;
+				usleep(sleepdur); 
 			 }
 			 
 			 
@@ -1792,6 +1821,7 @@ void user_mainloop(void)
 			 if (PEv2_params_ApplyIniSettings !=0 && info_PulseEnginev2!=0 )
 			{
 				PK_SaveConfiguration(dev);
+				usleep(sleepdur*2); 
 			}
 			 a_debout = 141;
 		}
@@ -1834,6 +1864,13 @@ void user_mainloop(void)
 			{
 			secBlink = true;
 			}
+
+			//sleepdur
+			if (rtc_loop_frequ>10)
+			{
+				sleepdur = sleepdur*15 / rtc_loop_frequ;
+			}
+			
 			 
 		}
 		a_debout = 212;
@@ -1995,7 +2032,7 @@ void user_mainloop(void)
 			
 			a_debout = 2330+i;
 		}
-
+		usleep(sleepdur); 
 		if (PEv2_PulseEngineEnabled!=0)
 		{
 			if (dev->PEv2.EmergencyInputPin>0)
@@ -2023,7 +2060,9 @@ void user_mainloop(void)
 
 		a_debout = 236;
 		PK_DigitalIOSet(dev);
+		usleep(sleepdur); 
 		PK_DigitalIOSet(dev);
+		usleep(sleepdur); 
 		a_debout = 237;
 	 }
      else
@@ -2043,18 +2082,21 @@ void user_mainloop(void)
 		{
 			MatrixKB_matrixKBvalues(i) = MatrixKB.matrixKBvalues[i];
 			MatrixKB_matrixKBPins(i) = MatrixKB.matrixKBPins[i];
+			usleep(sleepdur); 
 		}
+		usleep(sleepdur); 
 	}
 	
 	if (kbd48CNC_available!=0)
 	{
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 		PK_PoNETGetModuleSettings(dev);
+				dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+		usleep(sleepdur); 
 
-		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 		PK_PoNETGetModuleLight(dev);
-
 		kbd48CNC_lightValue = dev->PoNETmodule.lightValue;
+		usleep(sleepdur); 
 
 		kbd48CNC_KeyBrightness = 255-kbd48CNC_lightValue;
 
@@ -2063,6 +2105,7 @@ void user_mainloop(void)
 			dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 			dev->PoNETmodule.PWMduty = kbd48CNC_KeyBrightness;
 			PK_PoNETSetModulePWM(dev);
+			usleep(sleepdur); 
 		}
 
 
@@ -2093,16 +2136,9 @@ void user_mainloop(void)
 			if ((dev->PoNETmodule.statusIn[ID/8] & (1<<(ID%8))) > 0)
 			{
 				instate=true;
-				kbd48CNC_Button(i)=1;
-				kbd48CNC_Button(i)=true;
-				
 				state = true;
 			}
-			else
-			{
-				kbd48CNC_Button(i)=0;
-				kbd48CNC_Button(i)=false;
-			}
+
 			kbd48CNC_Button(i)=instate;
 
 			int tmp = dev->PoNETmodule.statusOut[ID/8];
@@ -2119,8 +2155,9 @@ void user_mainloop(void)
 		}
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 		PK_PoNETSetModuleStatus(dev);
-		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-		PK_PoNETSetModuleStatus(dev);
+		usleep(sleepdur); 
+		//dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+		//PK_PoNETSetModuleStatus(dev);
 	}
 
 	if (info_EasySensors!=0)
@@ -2181,6 +2218,7 @@ void user_mainloop(void)
 				dev->PoRelay8.statusOut[i] = PoRelay8_DataSet(i);
 				doSetRel=true;
 			}
+
 		}
 
 		if (doSetRel==true)
@@ -2191,6 +2229,7 @@ void user_mainloop(void)
 			{
 				PoRelay8_DataGet(i) = PoRelay8_DataSet(i);
 			}
+			usleep(sleepdur); 
 		}
 
 
@@ -2224,8 +2263,10 @@ void user_mainloop(void)
 			{
 				dev->PoExtBusData[i] = PoExtBus_DataSet(i);
 				PK_PoExtBusSet(dev);
+				usleep(sleepdur); 
 				PK_PoExtBusSet(dev);
 			}
+			usleep(sleepdur); 
 		}
 	}
 
@@ -2436,13 +2477,14 @@ void user_mainloop(void)
 		
 				bool setPeConfig = false;
 				PK_SaveConfiguration(dev);
+				usleep(sleepdur*2); 
 				PEv2_params_ApplyIniSettings = 0;
 				
 				a_debout = 136;
 			 }
 	}
 	alive=0;
-	usleep(40000); 
+	usleep(sleepdur); 
         }
     }
 
