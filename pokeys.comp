@@ -2153,8 +2153,8 @@ void user_mainloop(void)
 			dev->PoRelay8.statusOut[i] = 128; // PoRelay8_DataSet(i);
 		}
 
-		PK_PoRelay8_SetOutputsX1(dev, 255);
-		//PK_PoRelay8_SetOutputsArray(dev);
+		//PK_PoRelay8_SetOutputsX1(dev, 255);
+		PK_PoRelay8_SetOutputsArray(dev);
 
 
 	if (info_PoExtBus!=0)
