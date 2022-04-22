@@ -2091,12 +2091,12 @@ void user_mainloop(void)
 
 			if ((dev->PoNETmodule.statusIn[ID/8] & (1<<(ID%8))) > 0)
 			{
-				kbd48CNC_Button(i)=true;
-				state = kbd48CNC_Button(i);
+				kbd48CNC_Button(i)=1;
+				state = true;
 			}
 			else
 			{
-				kbd48CNC_Button(i)=false;
+				kbd48CNC_Button(i)=0;
 			}
 			
 			int tmp = dev->PoNETmodule.statusOut[ID/8];
@@ -2161,8 +2161,17 @@ void user_mainloop(void)
 			{
 				PoRelay8_DataSet(i)=0;
 			}
+
 			if (PoRelay8_DataGet(i) != PoRelay8_DataSet(i))
 			{
+				if (dev->PoRelay8.statusOut[i]=0)
+				{
+					dev->PoRelay8.statusOut[i] =255;
+				}
+				else
+				{
+					dev->PoRelay8.statusOut[i] = 0;
+				}
 				dev->PoRelay8.statusOut[i] = PoRelay8_DataSet(i);
 				doSetRel=true;
 			}
