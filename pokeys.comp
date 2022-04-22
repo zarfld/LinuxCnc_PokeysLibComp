@@ -2074,6 +2074,7 @@ void user_mainloop(void)
 		for (i = 0; i < 48; i++)
 		{
 			bool state = false;
+			bool instate = false;
 			// blinking 1Hz for Debug
 			//state=secBlink;
 			int offset[] = {15, 8, 7, 0};
@@ -2091,14 +2092,19 @@ void user_mainloop(void)
 
 			if ((dev->PoNETmodule.statusIn[ID/8] & (1<<(ID%8))) > 0)
 			{
+				instate=true;
 				kbd48CNC_Button(i)=1;
+				kbd48CNC_Button(i)=true;
+				
 				state = true;
 			}
 			else
 			{
 				kbd48CNC_Button(i)=0;
+				kbd48CNC_Button(i)=false;
 			}
-			
+			kbd48CNC_Button(i)=instate;
+
 			int tmp = dev->PoNETmodule.statusOut[ID/8];
 
 			if (state)
