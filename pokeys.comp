@@ -64,6 +64,7 @@ pin out bit PoExtBus.#.In-5 [10];
 pin out bit PoExtBus.#.In-6 [10];    
 pin out bit PoExtBus.#.In-7 [10]; 
 
+
 pin io unsigned PoExtBus.#.DataSet [10];                 
 pin in bit PoExtBus.#.Out-0 [10];                   
 pin in bit PoExtBus.#.Out-1 [10];    
@@ -74,6 +75,7 @@ pin in bit PoExtBus.#.Out-5 [10];
 pin in bit PoExtBus.#.Out-6 [10];    
 pin in bit PoExtBus.#.Out-7 [10];    
 
+pin out unsigned PoRelay8.#.DataGet [10];   
 pin io unsigned PoRelay8.#.DataSet [10];                 
 pin in bit PoRelay8.#.Out-0 [10];                   
 pin in bit PoRelay8.#.Out-1 [10];    
@@ -2138,7 +2140,7 @@ void user_mainloop(void)
 	
 	
 	PK_PoRelay8_ReEnablePoExtBus(dev);
-	
+	bool doSetRel = false;
 		for (i = 0; i < 10; i++)
 		{
 			PoRelay8_DataSet(i)=0;
@@ -2150,11 +2152,32 @@ void user_mainloop(void)
 			PoRelay8_DataSet(i) = Set_BitOfByte(PoRelay8_DataSet(i), 5, PoRelay8_Out_5(i));
 			PoRelay8_DataSet(i) = Set_BitOfByte(PoRelay8_DataSet(i), 6, PoRelay8_Out_6(i));
 			PoRelay8_DataSet(i) = Set_BitOfByte(PoRelay8_DataSet(i), 7, PoRelay8_Out_7(i));
-			dev->PoRelay8.statusOut[i] = 128; // PoRelay8_DataSet(i);
+			
+			if (secBlink=true)
+			{
+				PoRelay8_DataSet(i)=255;
+			}
+			else
+			{
+				PoRelay8_DataSet(i)=0;
+			}
+			if (PoRelay8_DataGet(i) != PoRelay8_DataSet(i))
+			{
+				dev->PoRelay8.statusOut[i] = PoRelay8_DataSet(i);
+				doSetRel=true;
+			}
 		}
 
-		//PK_PoRelay8_SetOutputsX1(dev, 255);
-		PK_PoRelay8_SetOutputsArray(dev);
+		if (doSetRel==true)
+		{
+			//PK_PoRelay8_SetOutputsX1(dev, 255);
+			PK_PoRelay8_SetOutputsArray(dev);
+			for (i = 0; i < 10; i++)
+			{
+				PoRelay8_DataGet(i) = PoRelay8_DataSet(i);
+			}
+		}
+
 
 
 	if (info_PoExtBus!=0)
