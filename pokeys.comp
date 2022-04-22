@@ -384,6 +384,8 @@ option extra_link_args "-lPoKeys";
 
 
 sPoKeysDevice * dev=0;
+sPoRelay8 * PR8;
+
 bool HAL_Machine_On = false;
 bool setPkConfig = false;
 bool setPinConfig = false;
@@ -2136,6 +2138,7 @@ void user_mainloop(void)
 	
 	
 	PK_PoRelay8_ReEnablePoExtBus(dev);
+	PR8 = dev->PoRelay8;
 		for (i = 0; i < 10; i++)
 		{
 			PoRelay8_DataSet(i)=0;
