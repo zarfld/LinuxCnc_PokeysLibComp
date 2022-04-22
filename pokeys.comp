@@ -1760,7 +1760,7 @@ void user_mainloop(void)
 				}
 			}
 
-			if (info_protI2C!=0)
+			/*if (info_protI2C!=0)
 			{
 				uint8_t * i_activated;
 				PK_I2CGetStatus(dev, i_activated);
@@ -1768,7 +1768,7 @@ void user_mainloop(void)
 				PK_I2CBusScanStart(dev);
 				I2C_scanning=true;
 
-			}
+			}*/
 
 			 if (setPinConfig==true)
 			 {
@@ -1835,7 +1835,7 @@ void user_mainloop(void)
 		a_debout = 212;
 	}
 
-	if (info_protI2C!=0 && I2C_scanning!=false)
+	/*if (info_protI2C!=0 && I2C_scanning!=false)
 	{
 			uint8_t* i_status; // = PK_I2C_STAT_IN_PROGRESS;
 			uint8_t i_presentDevices[16];
@@ -1851,7 +1851,7 @@ void user_mainloop(void)
 				}
 				I2C_scanning=false;
 			}
-	}
+	}*/
 	// PulseEnginev2
 	if (info_PulseEnginev2!=0)
 	{
