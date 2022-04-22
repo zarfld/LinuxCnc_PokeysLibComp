@@ -2133,12 +2133,11 @@ void user_mainloop(void)
 	pin in bit PoRelay8.#.Out-6 [10];    
 	pin in bit PoRelay8.#.Out-7 [10];
 	*/
-	uint8_t oldVal;
 	
-	PK_PoRelay8_ReEnablePoExtBus(dev);
+	
+	//PK_PoRelay8_ReEnablePoExtBus(dev);
 		for (i = 0; i < 10; i++)
 		{
-			oldVal = PoRelay8_DataSet(i);
 			PoRelay8_DataSet(i)=0;
 			PoRelay8_DataSet(i) = Set_BitOfByte(PoRelay8_DataSet(i), 0, PoRelay8_Out_0(i));
 			PoRelay8_DataSet(i) = Set_BitOfByte(PoRelay8_DataSet(i), 1, PoRelay8_Out_1(i));
@@ -2150,7 +2149,7 @@ void user_mainloop(void)
 			PoRelay8_DataSet(i) = Set_BitOfByte(PoRelay8_DataSet(i), 7, PoRelay8_Out_7(i));
 			dev->PoRelay8->statusOut[i] = PoRelay8_DataSet(i);
 		}
-		PK_PoRelay8_SetOutputsArray(dev);
+		//PK_PoRelay8_SetOutputsArray(dev);
 
 
 	if (info_PoExtBus!=0)
