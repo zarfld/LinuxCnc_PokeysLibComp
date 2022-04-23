@@ -1959,16 +1959,20 @@ void user_mainloop(void)
 
 	if (info_protI2C!=0 && I2C_scanning!=false)
 	{
+		a_debout = 213;
 			uint8_t* i_status; // = PK_I2C_STAT_IN_PROGRESS;
 			uint8_t i_presentDevices[16];
 
 			if (PK_I2CBusScanGetResults(dev, i_status, i_presentDevices, 16) == PK_OK)
 			{
+				a_debout = 214;
 				if (*i_status == PK_I2C_STAT_COMPLETE)
 				{
+					a_debout = 215;
 					//I2C.#.presentDevices
 					for (i = 0; i < 16; i++)
 					{
+						a_debout = 2150 + i;
 						I2C_presentDevices(i)=i_presentDevices[i];
 					}
 					I2C_scanning=false;
