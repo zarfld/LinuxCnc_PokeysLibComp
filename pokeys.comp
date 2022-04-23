@@ -391,6 +391,7 @@ bool setPkConfig = false;
 bool setPinConfig = false;
 bool secBlink = false;
 unsigned Loop_Frequ =0;
+uint8_t kbd48CNC_Counter[48];
 int i=0;
 
 
@@ -1870,6 +1871,10 @@ void user_mainloop(void)
 			{
 				sleepdur = sleepdur*15 / rtc_loop_frequ;
 			}
+			else
+			{
+				sleepdur=sleepdur/2;
+			}
 			
 			 
 		}
@@ -2137,9 +2142,19 @@ void user_mainloop(void)
 			{
 				instate=true;
 				state = true;
+				kbd48CNC_Counter[i]=0;
 			}
 
-			kbd48CNC_Button(i)=instate;
+			if (kbd48CNC_Counter[i]=0 && kbd48CNC_Button(i)!=instate)
+			{
+				kbd48CNC_Button(i)=instate;
+				kbd48CNC_Counter[i]=10:
+			}
+			else
+			{
+				kbd48CNC_Counter[i]=kbd48CNC_Counter[i]-1;
+			}
+			
 
 			int tmp = dev->PoNETmodule.statusOut[ID/8];
 
@@ -2154,6 +2169,7 @@ void user_mainloop(void)
 			}
 		}
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+		PK_PoNETSetModuleStatus(dev);
 		PK_PoNETSetModuleStatus(dev);
 		usleep(sleepdur); 
 		//dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
