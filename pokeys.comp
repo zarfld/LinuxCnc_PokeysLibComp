@@ -2152,6 +2152,7 @@ void user_mainloop(void)
 			}
 			else
 			{
+				kbd48CNC_Button(i)=kbd48CNC_Button(i);
 				kbd48CNC_Counter[i]=kbd48CNC_Counter[i]-1;
 			}
 			
