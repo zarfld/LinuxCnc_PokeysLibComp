@@ -262,14 +262,14 @@ pin out unsigned Pins.#.CounterOptions [55];
 pin out bit Pins.#.DigitalValueGet [55];
 pin in bit Pins.#.DigitalValueSet [55];
 pin out unsigned Pins.#.DigitalCounterAvailable [55];
-pin out unsigned Pins.#.MappingType [55];
+//pin out unsigned Pins.#.MappingType [55];
 //pin out unsigned Pins.#.KeyCodeMacroID [55];
 //pin out unsigned Pins.#.KeyModifier [55];
 //pin out unsigned Pins.#.downKeyCodeMacroID [55];
 //pin out unsigned Pins.#.downKeyModifier [55];
 //pin out unsigned Pins.#.upKeyCodeMacroID [55];
 //pin out unsigned Pins.#.upKeyModifier [55];
-pin out unsigned Pins.#.preventUpdate [55];
+//pin out unsigned Pins.#.preventUpdate [55];
 
 pin out unsigned MatrixKB.matrixKBconfiguration;		// Matrix keyboard configuration (set to 1 to enable matrix keyboard support)
 pin out unsigned MatrixKB.matrixKBwidth;				// Matrix keyboard width (number of columns)
@@ -2031,14 +2031,14 @@ void user_mainloop(void)
 			}
 			;
 			Pins_DigitalCounterAvailable(i)=dev->Pins[i].DigitalCounterAvailable;
-			Pins_MappingType(i)=dev->Pins[i].MappingType;
+			//Pins_MappingType(i)=dev->Pins[i].MappingType;
 			//Pins_KeyCodeMacroID(i)=dev->Pins[i].KeyCodeMacroID;
 			//Pins_KeyModifier(i)=dev->Pins[i].KeyModifier;
 			//Pins_downKeyCodeMacroID(i)=dev->Pins[i].downKeyCodeMacroID;
 			//Pins_downKeyModifier(i)=dev->Pins[i].downKeyModifier;
 			//Pins_upKeyCodeMacroID(i)=dev->Pins[i].upKeyCodeMacroID;
 			//Pins_upKeyModifier(i)=dev->Pins[i].upKeyModifier;
-			dev->Pins[i].preventUpdate=Pins_preventUpdate(i);
+			//dev->Pins[i].preventUpdate=Pins_preventUpdate(i);
 			
 			a_debout = 2330+i;
 		}
