@@ -254,6 +254,7 @@ pin out unsigned rtc.loopcount;
 pin out unsigned rtc.lastmin;
 pin out unsigned rtc.lastsec;
 pin out unsigned rtc.loop_frequ;
+pin in unsigned rtc.loop_frequ_demand
 
 pin out unsigned Pins.#.DigitalCounterValue [55];
 pin out unsigned Pins.#.AnalogValue [55];
@@ -1939,7 +1940,14 @@ void user_mainloop(void)
 			//sleepdur
 			if (rtc_loop_frequ>5)
 			{
-				sleepdur = sleepdur*rtc_loop_frequ/15;
+				if (rtc_loop_frequ_demand == 0)
+				{
+					sleepdur = sleepdur*rtc_loop_frequ/15;
+				}
+				else
+				{
+					sleepdur = sleepdur*rtc_loop_frequ/rtc_loop_frequ_demand;
+				}
 			}
 			else
 			{
