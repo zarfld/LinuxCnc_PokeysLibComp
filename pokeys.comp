@@ -595,7 +595,7 @@ PK_PEv2_Stat PEv2_status;
 sPoKeysEasySensor EasySensors[100];
 sPoNETmodule PoNet[16];
 
-uint32_t sleepdur = 800;
+uint32_t sleepdur = 200;
 PK_MatrixKB_Parameters MatrixKB;
 
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
@@ -1866,7 +1866,7 @@ void user_mainloop(void)
 			}
 
 			//sleepdur
-			if (rtc_loop_frequ>10)
+			if (rtc_loop_frequ>5)
 			{
 				sleepdur = sleepdur*15 / rtc_loop_frequ;
 			}
