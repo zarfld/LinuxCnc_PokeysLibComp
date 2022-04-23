@@ -2415,6 +2415,11 @@ void user_mainloop(void)
 					PoRelay8_DataGet[i] = PoRelay8_DataSet[i];
 				}
 				usleep(sleepdur); 
+				a_debout = 3570;
+			}
+			else
+			{
+			a_debout = 358;
 			}
 		}
 
