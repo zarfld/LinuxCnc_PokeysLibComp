@@ -2189,6 +2189,7 @@ void user_mainloop(void)
 	
 	if (kbd48CNC_available!=0)
 	{
+		a_debout = 340;
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 		if (PK_PoNETGetModuleSettings(dev) != PK_OK)
 		{
@@ -2272,7 +2273,6 @@ void user_mainloop(void)
 						kbd48CNC_Button(i)=kbd48CNC_Button(i);
 						kbd48CNC_Counter[i]=kbd48CNC_Counter[i]-1;
 					}
-			
 
 					int tmp = dev->PoNETmodule.statusOut[ID/8];
 
@@ -2286,7 +2286,6 @@ void user_mainloop(void)
 						dev->PoNETmodule.statusOut[ID/8] = tmp;
 					}
 				}
-		
 		}
 
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
@@ -2337,9 +2336,10 @@ void user_mainloop(void)
 	*/
 	
 	
-	PK_PoRelay8_ReEnablePoExtBus(dev);
+	a_debout = 350;
 	if (PK_PoRelay8_ReEnablePoExtBus(dev) != PK_OK)
 	{
+		a_debout = 351;
 		PK_PoRelay8_ReEnablePoExtBus(dev);
 		usleep(sleepdur); 
 	}
@@ -2347,6 +2347,7 @@ void user_mainloop(void)
 	
 	for (i = 0; i < 10; i++)
 		{
+			a_debout = 3510+i;
 			PoRelay8_DataSet[i]=0;
 			PoRelay8_DataSet[i] = Set_BitOfByte(PoRelay8_DataSet[i], 0, PoRelay8_Out_0(i));
 			PoRelay8_DataSet[i] = Set_BitOfByte(PoRelay8_DataSet[i], 1, PoRelay8_Out_1(i));
@@ -2366,10 +2367,12 @@ void user_mainloop(void)
 				PoRelay8_DataSet[i]=0;
 			}
 
+			a_debout = 3520+i;
 			if (PK_PoRelay8_SetOutputs(dev) != PK_OK)
 			{
-			
+				a_debout = 3530+i;
 			}
+			a_debout = 3540+i;
 			if (PoRelay8_DataGet[i] != PoRelay8_DataSet[i])
 			{
 				if (dev->PoRelay8.statusOut[i]=0)
@@ -2392,19 +2395,23 @@ void user_mainloop(void)
 
 		if (doSetRel==true)
 		{
+			a_debout = 355;
 			if (PK_PoRelay8_SetOutputsArray(dev) != PK_OK)
 			{
 				usleep(sleepdur); 
+				a_debout = 3551;
 				if (PK_PoRelay8_SetOutputsArray(dev) != PK_OK)
 				{
 					usleep(sleepdur); 
 				}
 			}
-
+			a_debout = 356;
 			if (PK_PoRelay8_SetOutputsArray(dev) == PK_OK)
 			{
+				a_debout = 3560;
 				for (i = 0; i < 10; i++)
 				{
+					a_debout = 356+i;
 					PoRelay8_DataGet[i] = PoRelay8_DataSet[i];
 				}
 				usleep(sleepdur); 
