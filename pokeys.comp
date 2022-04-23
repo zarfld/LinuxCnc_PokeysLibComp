@@ -596,10 +596,10 @@ PK_PEv2_Parameters PEv2_params;
 PK_PEv2_Stat PEv2_status;
 sPoKeysEasySensor EasySensors[100];
 sPoNETmodule PoNet[16];
-uint8_T PoRelay8_DataSet[10]
-uint8_T PoRelay8_DataGet[10]
-uint8_T PoExtBus_DataSet[10]
-uint8_T PoExtBus_DataGet[10]
+uint8_T PoRelay8_DataSet[10];
+uint8_T PoRelay8_DataGet[10];
+uint8_T PoExtBus_DataSet[10];
+uint8_T PoExtBus_DataGet[10];
 
 unsigned int  sleepdur = 2000;
 
