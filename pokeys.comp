@@ -1843,11 +1843,14 @@ void user_mainloop(void)
 			if (info_protI2C!=0)
 			{
 				a_debout = 137;
+				/* Pokeys Protokol Specification - page 65:  deprecated command, I2C bus is always activated
+
 				uint8_t * i_activated;
-				if (PK_I2CGetStatus(dev, i_activated) == PK_OK)
+				if (PK_I2SGetStatus(dev, i_activated) == PK_OK)
 				{
 					usleep(sleepdur); 
-				}
+				} */
+
 
 				a_debout = 138;
 				if (PK_I2CBusScanStart(dev) == PK_OK)
