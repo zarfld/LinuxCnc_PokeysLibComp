@@ -54,7 +54,6 @@ pin out unsigned info.PulseEngine;                     // Device supports Pulse 
 pin out unsigned info.PulseEnginev2;                   // Device supports Pulse engine v2
 pin out unsigned info.EasySensors;                     // Device supports EasySensors
 
-/*
 pin out unsigned PoExtBus.#.DataGet [10];   
 pin out bit PoExtBus.#.In-0 [10];                   
 pin out bit PoExtBus.#.In-1 [10];    
@@ -74,7 +73,7 @@ pin in bit PoExtBus.#.Out-3 [10];
 pin in bit PoExtBus.#.Out-4 [10];    
 pin in bit PoExtBus.#.Out-5 [10];    
 pin in bit PoExtBus.#.Out-6 [10];    
-pin in bit PoExtBus.#.Out-7 [10];    */
+pin in bit PoExtBus.#.Out-7 [10];
 
 pin out unsigned PoRelay8.#.DataGet [10];   
 pin io unsigned PoRelay8.#.DataSet [10];                 
@@ -2163,17 +2162,17 @@ void user_mainloop(void)
 	if (kbd48CNC_available!=0)
 	{
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-		if if (PK_PoNETGetModuleSettings(dev) != PK_OK)
+		if (PK_PoNETGetModuleSettings(dev) != PK_OK)
 		{
 			usleep(sleepdur);
-			if if (PK_PoNETGetModuleSettings(dev) != PK_OK)
+			if (PK_PoNETGetModuleSettings(dev) != PK_OK)
 			{
 				usleep(sleepdur);
 			}
 		}
 
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-		if if (PK_PoNETGetModuleLight(dev) != PK_OK)
+		if (PK_PoNETGetModuleLight(dev) != PK_OK)
 		{
 			kbd48CNC_lightValue = dev->PoNETmodule.lightValue;
 			usleep(sleepdur); 
@@ -2201,7 +2200,7 @@ void user_mainloop(void)
 
 
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-		if if (PK_PoNETGetModuleStatusRequest(dev) != PK_OK)
+		if (PK_PoNETGetModuleStatusRequest(dev) != PK_OK)
 		{
 			usleep(sleepdur);
 		}
@@ -2263,22 +2262,22 @@ void user_mainloop(void)
 		}
 
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-		if if (PK_PoNETSetModuleStatus(dev) != PK_OK)
+		if (PK_PoNETSetModuleStatus(dev) != PK_OK)
 		{
 			usleep(sleepdur);
 			dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-			if if (PK_PoNETSetModuleStatus(dev) != PK_OK)
+			if (PK_PoNETSetModuleStatus(dev) != PK_OK)
 			{
 				usleep(sleepdur);
 			}
 		}
 
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-		if if (PK_PoNETSetModuleStatus(dev) != PK_OK)
+		if (PK_PoNETSetModuleStatus(dev) != PK_OK)
 		{
 			usleep(sleepdur);
 			dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-			if if (PK_PoNETSetModuleStatus(dev) != PK_OK)
+			if (PK_PoNETSetModuleStatus(dev) != PK_OK)
 			{
 				usleep(sleepdur);
 			}
