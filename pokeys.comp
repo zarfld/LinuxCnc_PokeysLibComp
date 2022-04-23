@@ -1842,14 +1842,20 @@ void user_mainloop(void)
 
 			if (info_protI2C!=0)
 			{
+				a_debout = 137;
 				uint8_t * i_activated;
-				PK_I2CGetStatus(dev, i_activated);
+				if (PK_I2CGetStatus(dev, i_activated) == PK_OK)
+				{
+					usleep(sleepdur); 
+				}
 
+				a_debout = 138;
 				if (PK_I2CBusScanStart(dev) == PK_OK)
 				{
 					I2C_scanning=true;
 					usleep(sleepdur); 
 				}
+				a_debout = 139;
 			}
 
 			 if (setPinConfig==true)
@@ -1863,7 +1869,9 @@ void user_mainloop(void)
 			 }
 			 if (info_PoNET!=0)
 			 {
+				a_debout = 141;
 				Config_PoNet;
+					a_debout = 142;
 				usleep(sleepdur); 
 			 }
 			 
@@ -1883,14 +1891,14 @@ void user_mainloop(void)
 				}
 				
 			}
-			 a_debout = 141;
+			 a_debout = 143;
 		}
 		else
 		{
 			connected=0;
 			err=1;
 		}
-		usleep(40000);
+		usleep(sleepdur); 
 	 }
 	 alive=1; 
 
