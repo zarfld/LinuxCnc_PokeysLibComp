@@ -2148,7 +2148,7 @@ void user_mainloop(void)
 			if (kbd48CNC_Counter[i]=0 && kbd48CNC_Button(i)!=instate)
 			{
 				kbd48CNC_Button(i)=instate;
-				kbd48CNC_Counter[i]=10:
+				kbd48CNC_Counter[i]=10;
 			}
 			else
 			{
