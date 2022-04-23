@@ -1959,7 +1959,8 @@ void user_mainloop(void)
 
 	if (info_protI2C!=0 && I2C_scanning!=false)
 	{
-		a_debout = 213;
+		a_debout = 213; 
+		/* it hangs here - but it is necessary to check which components are available (PoRelay8, ....)
 			uint8_t* i_status; // = PK_I2C_STAT_IN_PROGRESS;
 			uint8_t* i_presentDevices;
 
@@ -1978,7 +1979,7 @@ void user_mainloop(void)
 					I2C_scanning=false;
 				}
 			}
-
+		*/
 	}
 	// PulseEnginev2
 	if (info_PulseEnginev2!=0)
