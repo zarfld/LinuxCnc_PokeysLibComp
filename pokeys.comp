@@ -2366,6 +2366,10 @@ void user_mainloop(void)
 				PoRelay8_DataSet[i]=0;
 			}
 
+			if (PK_PoRelay8_SetOutputs(dev) != PK_OK)
+			{
+			
+			}
 			if (PoRelay8_DataGet[i] != PoRelay8_DataSet[i])
 			{
 				if (dev->PoRelay8.statusOut[i]=0)
