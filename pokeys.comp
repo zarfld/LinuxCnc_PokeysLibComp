@@ -645,25 +645,27 @@ uint8_t Merge_8BitsToByte(bool Bit_array[8])
 
 int Config_PoNet()
 {
-/*	if(PK_PoNETGetPoNETStatus(dev) == PK_OK)
+	if(PK_PoNETGetPoNETStatus(dev) == PK_OK)
 	{
-				// device->PoNETmodule.PoNETstatus
+		// device->PoNETmodule.PoNETstatus
+				
+		for (i = 0; i < 16; i++)
+		{
+			dev->PoNETmodule.moduleID = i;
+			if(PK_PoNETGetModuleSettings(dev) == PK_OK)
+			{
+				PoNet[i].moduleID=i;
+				PoNet[i].i2cAddress=dev->PoNETmodule.i2cAddress;
+				PoNet[i].moduleType=dev->PoNETmodule.moduleType;
+				PoNet[i].moduleSize=dev->PoNETmodule.moduleSize;
+				PoNet[i].moduleOptions=dev->PoNETmodule.moduleOptions;
 				usleep(sleepdur); 
-	}*/
-
-	for (i = 0; i < 16; i++)
-	{
-		dev->PoNETmodule.moduleID = i;
-		PK_PoNETGetModuleSettings(dev);
-
-		PoNet[i].moduleID=i;
-		PoNet[i].i2cAddress=dev->PoNETmodule.i2cAddress;
-		PoNet[i].moduleType=dev->PoNETmodule.moduleType;
-		PoNet[i].moduleSize=dev->PoNETmodule.moduleSize;
-		PoNet[i].moduleOptions=dev->PoNETmodule.moduleOptions;
-		usleep(sleepdur); 
-	//	memset(dev->PoNETmodule.statusOut, 0, 10);
+			//	memset(dev->PoNETmodule.statusOut, 0, 10);
+			}
+		}
 	}
+	usleep(sleepdur); 
+
 	return 0;
 }
 
@@ -671,11 +673,11 @@ int Update_PoNet()
 {
 	if(PK_PoNETGetPoNETStatus(dev) == PK_OK)
 	{
-				usleep(sleepdur); 
+		usleep(sleepdur); 
 	}
 	if(PK_PoNETGetModuleSettings(dev) == PK_OK)
 	{
-			usleep(sleepdur); 	
+		usleep(sleepdur); 	
 	}
 	return 0;
 }
@@ -734,10 +736,16 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 		//dev->PEv2.PulseEngineBufferSize = params.PulseEngineBufferSize;
 		dev->PEv2.EmergencySwitchPolarity = params.EmergencySwitchPolarity;
 		//dev->PEv2.AxisEnabledStatesMask = params.AxisEnabledStatesMask;
-		PK_PEv2_PulseEngineSetup(dev);
-		usleep(sleepdur); 
-		PK_PEv2_PulseEngineSetup(dev);
-		usleep(sleepdur); 
+		if(PK_PEv2_PulseEngineSetup(dev) != PK_OK)
+		{
+			usleep(sleepdur); 
+		}
+		if(PK_PEv2_PulseEngineSetup(dev) != PK_OK)
+		{
+			usleep(sleepdur); 
+		}
+
+ 
 		for (i = 0; i < dev->PEv2.info.nrOfAxes; i++)
 		{
 			// Convert mm/s -> pulses/s
@@ -899,43 +907,77 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			//dev->PEv2.AxesSwitchConfig[i] =0;
 
 			dev->PEv2.param1 = i;
+			if(PK_PEv2_AxisConfigurationSet(dev) != PK_OK)
+			{
+				usleep(sleepdur); 
+				dev->PEv2.param1 = i;
+				if(PK_PEv2_AxisConfigurationSet(dev) != PK_OK)
+				{
+					usleep(sleepdur); 
+				}
 
-			PK_PEv2_AxisConfigurationSet(dev);
-			usleep(sleepdur); 
-			dev->PEv2.param1 = i;
-			PK_PEv2_AxisConfigurationSet(dev);
-			usleep(sleepdur); 
+			}
+
+
+
 
 		}
-		dev->PEv2.param1 = 0;
-		PK_PEv2_AxisConfigurationGet(dev);
-		
-		params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-		params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
-		params.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
-		//params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
-		params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
-		//params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
+		//dev->PEv2.param1 = 0;
+		if(PK_PEv2_StatusGet(dev) == PK_OK)
+		{
+			params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+			params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+			params.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
+			//params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
+			params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
+			//params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
+		}
+
 		
 
 
 		if (setPinConfig==true)
 		{
-			PK_PinConfigurationSet(dev);
-			usleep(sleepdur); 
-			PK_PinConfigurationSet(dev);
-			usleep(sleepdur); 
-			setPinConfig=false;
+			if(PK_PinConfigurationSet(dev) != PK_OK)
+			{
+				usleep(sleepdur); 
+				if(PK_PinConfigurationSet(dev) != PK_OK)
+				{
+					usleep(sleepdur); 
+				}
+				else
+				{
+					setPinConfig=false;
+				}
+
+			}
+			else
+			{
+				setPinConfig=false;
+			}
+	
 		}
 	}
 	else
 	{
-		params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-		params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
-		params.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
-		//params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
-		params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
-		//params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
+		if(PK_PEv2_StatusGet(dev) == PK_OK && PK_PEv2_Status2Get(dev) == PK_OK )
+		{
+			params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+			params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+			params.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
+			//params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
+			params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
+			//params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
+
+			params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+			params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+			params.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
+			//params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
+			params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
+			//params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
+
+		}
+
 
 		if(PK_PEv2_AdditionalParametersGet(dev) == PK_OK)
 		{
@@ -983,18 +1025,10 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				// MPG 1x mode here
 				params.HomeBackOffDistance[i] = dev->PEv2.HomeBackOffDistance[i];
 				params.MPGjogDivider[i] = dev->PEv2.MPGjogDivider[i];	
+				usleep(sleepdur); 
 			}
-			usleep(sleepdur); 
 		}
-
-		params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-		params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
-		params.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
-		//params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
-		params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
-		//params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 	}
-
 	return params;
 }
 
@@ -1272,10 +1306,16 @@ PK_PEv2_Stat Update_PEv2()
 		}
 		if (doSetExtOut==true)
 		{
-			PK_PEv2_ExternalOutputsSet(dev);
-			usleep(sleepdur); 
-		}
+			if(PK_PEv2_ExternalOutputsSet(dev) != PK_OK)
+			{
+				usleep(sleepdur); 
+				if(PK_PEv2_ExternalOutputsSet(dev) != PK_OK)
+				{
+					usleep(sleepdur); 
 
+				}
+			}
+		}
 	}
 
 	if (status.PulseEngineState != status.PulseEngineStateSetup)
@@ -1293,16 +1333,26 @@ PK_PEv2_Stat Update_PEv2()
 
 	if (doStateSet==true)
 	{
-		PK_PEv2_PulseEngineStateSet(dev);
-		PK_PEv2_PulseEngineStateSet(dev);
-		usleep(sleepdur); 
+		if(PK_PEv2_PulseEngineStateSet(dev) != PK_OK)
+		{
+			usleep(sleepdur); 
+			if(PK_PEv2_PulseEngineStateSet(dev) != PK_OK)
+			{
+				usleep(sleepdur); 
+			}
+		}
 	}
 
 	if (doMove==true)
 	{
-		PK_PEv2_PulseEngineMove(dev);
-		PK_PEv2_PulseEngineMove(dev);
-		usleep(sleepdur); 
+		if(PK_PEv2_PulseEngineMove(dev) != PK_OK)
+		{
+			usleep(sleepdur); 
+			if(PK_PEv2_PulseEngineMove(dev) != PK_OK)
+			{
+				usleep(sleepdur); 
+			}
+		}
 	}
 
 	
@@ -1313,11 +1363,12 @@ PK_PEv2_Stat Update_PEv2()
 int Config_MatrixKB()
 {
 
+/* no setting
 dev->matrixKB.matrixKBconfiguration = 1;
 dev->matrixKB.matrixKBheight = 6;
 dev->matrixKB.matrixKBwidth = 8;
 PK_MatrixKBConfigurationSet(dev);
-PK_MatrixKBConfigurationSet(dev);
+PK_MatrixKBConfigurationSet(dev);*/
 
 	if(PK_MatrixKBConfigurationGet(dev) == PK_OK)
 	{
@@ -1380,7 +1431,7 @@ int Update_MatrixKB()
 {
 	if(PK_LCDConfigurationGet(dev) == PK_OK)
 	{
-	usleep(sleepdur); 
+		usleep(sleepdur); 
 	}
 
 	//PK_LCDConfigurationSet
@@ -1393,11 +1444,11 @@ int Update_LCD()
 {
 	if(PK_LCDUpdate(dev) == PK_OK)
 	{
-	usleep(sleepdur); 
+		usleep(sleepdur); 
 	}
 	if(PK_LCDSetCustomCharacters(dev) == PK_OK)
 	{
-	usleep(sleepdur); 
+		usleep(sleepdur); 
 	}
 	return 0;
 }
@@ -1435,12 +1486,12 @@ int Config_PoStep()
 {
 	if(PK_PoStep_ConfigurationGet(dev) == PK_OK)
 	{
-	usleep(sleepdur); 
+		usleep(sleepdur); 
 	}
 
 	if(PK_PoStep_DriverConfigurationGet(dev) == PK_OK)
 	{
-	usleep(sleepdur); 
+		usleep(sleepdur); 
 	}
 
 	//PK_PoStep_ConfigurationSet(dev)
@@ -1452,7 +1503,7 @@ int Update_PoStep()
 {
 	if(PK_PoStep_StatusGet(dev) == PK_OK)
 	{
-	usleep(sleepdur); 
+		usleep(sleepdur); 
 	}
 	return 0;
 }
@@ -1487,7 +1538,7 @@ void user_mainloop(void)
 				a_debout = 111;
 				if (enum_usb_dev != 0)
 				{
-				dev = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
+					dev = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
 				}
 				
 				a_debout = 112;
@@ -1560,28 +1611,29 @@ void user_mainloop(void)
 				{
 
 						dev->PoNETmodule.moduleID = i;
-						PK_PoNETGetModuleSettings(dev);
 
-						PoNET_moduleID(i) = i;
-						PoNET_i2cAddress(i) = dev->PoNETmodule.i2cAddress;
-						PoNET_moduleType(i) = dev->PoNETmodule.moduleType;
-						PoNET_moduleSize(i) = dev->PoNETmodule.moduleSize;
-						PoNET_moduleOptions(i) = dev->PoNETmodule.moduleOptions;
-
-						if (PoNET_moduleType(i)== 0x10)
+						if(PK_PoNETGetModuleSettings(dev) == PK_OK)
 						{
-							if ((dev->PoNETmodule.moduleOptions & (1<<7)) != 0)
+							PoNET_moduleID(i) = i;
+							PoNET_i2cAddress(i) = dev->PoNETmodule.i2cAddress;
+							PoNET_moduleType(i) = dev->PoNETmodule.moduleType;
+							PoNET_moduleSize(i) = dev->PoNETmodule.moduleSize;
+							PoNET_moduleOptions(i) = dev->PoNETmodule.moduleOptions;
+
+							if (PoNET_moduleType(i)== 0x10)
 							{
-								// kbd48CNC is also detected
-								kbd48CNC_PoNetID = i;
-								//dev->deviceConfig->iEnableKBD48CNC = 1;
-								kbd48CNC_available=1;
+								if ((dev->PoNETmodule.moduleOptions & (1<<7)) != 0)
+								{
+									// kbd48CNC is also detected
+									kbd48CNC_PoNetID = i;
+									//dev->deviceConfig->iEnableKBD48CNC = 1;
+									kbd48CNC_available=1;
 
 								
+								}
 							}
+							usleep(sleepdur); 
 						}
-						usleep(sleepdur); 
-
 				}
 			 }
 			 a_debout = 124;
@@ -1761,20 +1813,6 @@ void user_mainloop(void)
 				PEv2_slotTiming=PEv2_status.slotTiming;
 		
 				bool setPeConfig = false;
-/*				//
-
-				// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
-				//check if pin is parametrized in HAL
-				dev->PEv2.ProbeInput= PEv2_ProbeInput;
-				//check if pin is parametrized in HAL
-				dev->PEv2.ProbeInputPolarity= PEv2_ProbeInputPolarity;
-				a_debout = 133;
-
-				a_debout = 134;
-				//dev->PEv2.PulseEngineEnabled=8; //Enable 8 axes
-				//dev->PEv2.PulseEngineActivated=true; not a bool!
-				//dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
-				PK_PEv2_PulseEngineSetup(dev);*/
 				usleep(sleepdur); 
 				a_debout = 136;
 			 }
@@ -1799,23 +1837,26 @@ void user_mainloop(void)
 				}
 			}*/
 
-			/*if (info_protI2C!=0)
+			if (info_protI2C!=0)
 			{
 				uint8_t * i_activated;
 				PK_I2CGetStatus(dev, i_activated);
-				
-				PK_I2CBusScanStart(dev);
-				usleep(sleepdur); 
-				I2C_scanning=true;
 
-			}*/
+				if (PK_I2CBusScanStart(dev) == PK_OK)
+				{
+					I2C_scanning=true;
+					usleep(sleepdur); 
+				}
+			}
 
 			 if (setPinConfig==true)
 			 {
 				a_debout = 140;
-				PK_PinConfigurationSet(dev);
-				usleep(sleepdur); 
-				setPinConfig = false;
+				if (PK_PinConfigurationSet(dev) == PK_OK)
+				{
+					usleep(sleepdur); 
+					setPinConfig = false;
+				}
 			 }
 			 if (info_PoNET!=0)
 			 {
@@ -1829,8 +1870,15 @@ void user_mainloop(void)
 
 			 if (PEv2_params_ApplyIniSettings !=0 && info_PulseEnginev2!=0 )
 			{
-				PK_SaveConfiguration(dev);
-				usleep(sleepdur*2); 
+				if (PK_SaveConfiguration(dev) != PK_OK)
+				{
+					usleep(sleepdur*2); 
+					if (PK_SaveConfiguration(dev) != PK_OK)
+					{
+						usleep(sleepdur*2); 
+					}
+				}
+				
 			}
 			 a_debout = 141;
 		}
@@ -1867,11 +1915,11 @@ void user_mainloop(void)
 
 			if (secBlink)
 			{
-			secBlink = false;
+				secBlink = false;
 			}
 			else
 			{
-			secBlink = true;
+				secBlink = true;
 			}
 
 			//sleepdur
@@ -1885,33 +1933,35 @@ void user_mainloop(void)
 			}
 			if (sleepdur>1000000)
 			{
-			sleepdur=1000000;
+				sleepdur=1000000;
 			}
 			if (sleepdur<50)
 			{
-			sleepdur=50;
+				sleepdur=50;
 			}
 		}
 		a_debout = 212;
 	}
 
-	/*if (info_protI2C!=0 && I2C_scanning!=false)
+	if (info_protI2C!=0 && I2C_scanning!=false)
 	{
 			uint8_t* i_status; // = PK_I2C_STAT_IN_PROGRESS;
 			uint8_t i_presentDevices[16];
 
-			PK_I2CBusScanGetResults(dev, i_status, i_presentDevices, 16);
-
-			if (*i_status == PK_I2C_STAT_COMPLETE)
+			if (PK_I2CBusScanGetResults(dev, i_status, i_presentDevices, 16) == PK_OK)
 			{
-				//I2C.#.presentDevices
-				for (i = 0; i < 16; i++)
+				if (*i_status == PK_I2C_STAT_COMPLETE)
 				{
-					I2C_presentDevices(i)=i_presentDevices[i];
+					//I2C.#.presentDevices
+					for (i = 0; i < 16; i++)
+					{
+						I2C_presentDevices(i)=i_presentDevices[i];
+					}
+					I2C_scanning=false;
 				}
-				I2C_scanning=false;
 			}
-	}*/
+
+	}
 	// PulseEnginev2
 	if (info_PulseEnginev2!=0)
 	{
@@ -2078,10 +2128,14 @@ void user_mainloop(void)
 
 
 		a_debout = 236;
-		PK_DigitalIOSet(dev);
-		usleep(sleepdur); 
-		PK_DigitalIOSet(dev);
-		usleep(sleepdur); 
+		if (PK_DigitalIOSet(dev) != PK_OK)
+		{
+			usleep(sleepdur); 
+		}
+		if (PK_DigitalIOSet(dev) != PK_OK)
+		{
+			usleep(sleepdur); 
+		}
 		a_debout = 237;
 	 }
      else
@@ -2109,32 +2163,50 @@ void user_mainloop(void)
 	if (kbd48CNC_available!=0)
 	{
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-		PK_PoNETGetModuleSettings(dev);
-				dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-		usleep(sleepdur); 
-
-		PK_PoNETGetModuleLight(dev);
-		kbd48CNC_lightValue = dev->PoNETmodule.lightValue;
-		usleep(sleepdur); 
-
-		kbd48CNC_KeyBrightness = 255-kbd48CNC_lightValue;
-
-		if (kbd48CNC_prevBrightness != kbd48CNC_KeyBrightness)
+		if if (PK_PoNETGetModuleSettings(dev) != PK_OK)
 		{
-			dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-			dev->PoNETmodule.PWMduty = kbd48CNC_KeyBrightness;
-			PK_PoNETSetModulePWM(dev);
-			if (PK_PoNETSetModulePWM(dev) == PK_OK)
-			{usleep(sleepdur); 
+			usleep(sleepdur);
+			if if (PK_PoNETGetModuleSettings(dev) != PK_OK)
+			{
+				usleep(sleepdur);
 			}
+		}
+
+		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+		if if (PK_PoNETGetModuleLight(dev) != PK_OK)
+		{
+			kbd48CNC_lightValue = dev->PoNETmodule.lightValue;
+			usleep(sleepdur); 
+
+			kbd48CNC_KeyBrightness = 255-kbd48CNC_lightValue;
+
+			if (kbd48CNC_prevBrightness != kbd48CNC_KeyBrightness)
+			{
+				dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+				dev->PoNETmodule.PWMduty = kbd48CNC_KeyBrightness;
+				if (PK_PoNETSetModulePWM(dev) != PK_OK)
+				{
+					usleep(sleepdur); 
+					if (PK_PoNETSetModulePWM(dev) != PK_OK)
+					{
+						usleep(sleepdur); 
+					}
+				}
 			
+			}
+			usleep(sleepdur); 
 		}
 
 
+
+
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-		PK_PoNETGetModuleStatusRequest(dev);
+		if if (PK_PoNETGetModuleStatusRequest(dev) != PK_OK)
+		{
+			usleep(sleepdur);
+		}
+
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-		
 		if (PK_PoNETGetModuleStatus(dev) == PK_OK)
 		{
 				for (i = 0; i < 48; i++)
@@ -2191,12 +2263,25 @@ void user_mainloop(void)
 		}
 
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-		PK_PoNETSetModuleStatus(dev);
-		PK_PoNETSetModuleStatus(dev);
-		if (PK_PoNETSetModuleStatus(dev) != PK_OK)
+		if if (PK_PoNETSetModuleStatus(dev) != PK_OK)
 		{
-			usleep(sleepdur); 
-			PK_PoNETSetModuleStatus(dev);
+			usleep(sleepdur);
+			dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+			if if (PK_PoNETSetModuleStatus(dev) != PK_OK)
+			{
+				usleep(sleepdur);
+			}
+		}
+
+		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+		if if (PK_PoNETSetModuleStatus(dev) != PK_OK)
+		{
+			usleep(sleepdur);
+			dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+			if if (PK_PoNETSetModuleStatus(dev) != PK_OK)
+			{
+				usleep(sleepdur);
+			}
 		}
 		
 		//dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
@@ -2225,14 +2310,14 @@ void user_mainloop(void)
 	*/
 	
 	
-	/*PK_PoRelay8_ReEnablePoExtBus(dev);
+	PK_PoRelay8_ReEnablePoExtBus(dev);
 	if (PK_PoRelay8_ReEnablePoExtBus(dev) != PK_OK)
 	{
 		PK_PoRelay8_ReEnablePoExtBus(dev);
 		usleep(sleepdur); 
-	}*/
+	}
 	bool doSetRel = false;
-		for (i = 0; i < 10; i++)
+	for (i = 0; i < 10; i++)
 		{
 			PoRelay8_DataSet(i)=0;
 			PoRelay8_DataSet(i) = Set_BitOfByte(PoRelay8_DataSet(i), 0, PoRelay8_Out_0(i));
@@ -2277,21 +2362,26 @@ void user_mainloop(void)
 		{
 			if (PK_PoRelay8_SetOutputsArray(dev) != PK_OK)
 			{
-				PK_PoRelay8_SetOutputsArray(dev);
 				usleep(sleepdur); 
+				if (PK_PoRelay8_SetOutputsArray(dev) != PK_OK)
+				{
+					usleep(sleepdur); 
+				}
 			}
 
-			PK_PoRelay8_SetOutputsArray(dev);
-			for (i = 0; i < 10; i++)
+			if (PK_PoRelay8_SetOutputsArray(dev) == PK_OK)
 			{
-				PoRelay8_DataGet(i) = PoRelay8_DataSet(i);
+				for (i = 0; i < 10; i++)
+				{
+					PoRelay8_DataGet(i) = PoRelay8_DataSet(i);
+				}
+				usleep(sleepdur); 
 			}
-			usleep(sleepdur); 
 		}
 
 
 
-	/*if (info_PoExtBus!=0)
+	if (info_PoExtBus!=0)
 	{
 		for (i = 0; i < 10; i++)
 		{
@@ -2325,7 +2415,7 @@ void user_mainloop(void)
 			}
 			usleep(sleepdur); 
 		}
-	}*/
+	}
 
 	if (info_protI2C!=0)
 	{
