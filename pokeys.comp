@@ -1472,6 +1472,11 @@ void user_mainloop(void)
 	 {
 			
 			Loop_Frequ = rtc_loop_frequ;
+			if (PEv2_EmergencyOutput!=true)
+			{
+				usleep(sleepdur); 
+			}
+
 		 if (devSerial!=0 )
 		 {
 				a_debout = 110;
@@ -1770,7 +1775,7 @@ void user_mainloop(void)
 				usleep(sleepdur); 
 				a_debout = 136;
 			 }
-			
+
 			if (info_MatrixKeyboard!=0)
 			{
 				dev->matrixKB.matrixKBconfiguration = 1;
