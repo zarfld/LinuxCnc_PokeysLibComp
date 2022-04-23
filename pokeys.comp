@@ -254,7 +254,7 @@ pin out unsigned rtc.loopcount;
 pin out unsigned rtc.lastmin;
 pin out unsigned rtc.lastsec;
 pin out unsigned rtc.loop_frequ;
-pin in unsigned rtc.loop_frequ_demand
+pin in unsigned rtc.loop_frequ_demand;
 
 pin out unsigned Pins.#.DigitalCounterValue [55];
 pin out unsigned Pins.#.AnalogValue [55];
