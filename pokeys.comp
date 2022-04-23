@@ -1877,14 +1877,20 @@ void user_mainloop(void)
 			//sleepdur
 			if (rtc_loop_frequ>5)
 			{
-				sleepdur = sleepdur*15 / rtc_loop_frequ;
+				sleepdur = sleepdur*rtc_loop_frequ/15;
 			}
 			else
 			{
 				sleepdur=sleepdur/2;
 			}
-			
-			 
+			if (sleepdur>1000000)
+			{
+			sleepdur=1000000;
+			}
+			if (sleepdur<50)
+			{
+			sleepdur=50;
+			}
 		}
 		a_debout = 212;
 	}
