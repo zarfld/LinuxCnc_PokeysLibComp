@@ -1942,7 +1942,7 @@ void user_mainloop(void)
 			{
 				if (rtc_loop_frequ_demand == 0)
 				{
-					sleepdur = sleepdur*rtc_loop_frequ/15;
+					sleepdur = sleepdur*rtc_loop_frequ/10;
 				}
 				else
 				{
