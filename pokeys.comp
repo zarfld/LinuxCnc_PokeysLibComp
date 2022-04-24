@@ -2241,6 +2241,12 @@ void user_mainloop(void)
 				usleep(sleepdur);
 			}
 		}
+		kbd48CNC_Counter[i]=0;
+		while (PK_PoNETGetModuleStatus(dev) != PK_OK && kbd48CNC_Counter[i]<10)
+		{
+			usleep(sleepdur);
+			kbd48CNC_Counter[i]++;
+		}
 
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 		if (PK_PoNETGetModuleStatus(dev) != PK_OK)
@@ -2278,19 +2284,13 @@ void user_mainloop(void)
 			{
 				instate=true;
 				state = true;
-				kbd48CNC_Counter[i]=0;
 			}
 
-			if (kbd48CNC_Counter[i]=0 && kbd48CNC_Button(i)!=instate)
+			if (kbd48CNC_Button(i)!=instate)
 			{
 				kbd48CNC_Button(i)=instate;
-				kbd48CNC_Counter[i]=10;
 			}
-			else
-			{
-				kbd48CNC_Button(i)=kbd48CNC_Button(i);
-				kbd48CNC_Counter[i]=kbd48CNC_Counter[i]-1;
-			}
+			
 
 			int tmp = dev->PoNETmodule.statusOut[ID/8];
 
