@@ -2316,11 +2316,11 @@ void user_mainloop(void)
 			}
 		}
 
-		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+		dev->PoNETmodule.moduleID = 0;
 		if (PK_PoNETSetModuleStatus(dev) != PK_OK)
 		{
 			usleep(sleepdur);
-			dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+			dev->PoNETmodule.moduleID = 0;
 			if (PK_PoNETSetModuleStatus(dev) != PK_OK)
 			{
 				usleep(sleepdur);
