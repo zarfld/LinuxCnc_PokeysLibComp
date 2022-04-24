@@ -2312,6 +2312,7 @@ void user_mainloop(void)
 		}
 
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+		(PK_PoNETSetModuleStatus(dev);
 		if (PK_PoNETSetModuleStatus(dev) != PK_OK)
 		{
 			usleep(sleepdur);
