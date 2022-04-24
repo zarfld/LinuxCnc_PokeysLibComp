@@ -2286,9 +2286,10 @@ void user_mainloop(void)
 				state = true;
 			}
 
-			if (kbd48CNC_Button(i)!=instate)
+			while (kbd48CNC_Button(i)!=instate)
 			{
 				kbd48CNC_Button(i)=instate;
+				usleep(sleepdur);
 			}
 			
 
@@ -2303,9 +2304,10 @@ void user_mainloop(void)
 				tmp &= ~(1<<(ID%8));
 			}
 
-			if (dev->PoNETmodule.statusOut[ID/8] != tmp)
+			while (dev->PoNETmodule.statusOut[ID/8] != tmp)
 			{
 				dev->PoNETmodule.statusOut[ID/8] = tmp;
+				usleep(sleepdur);
 			}
 		}
 
