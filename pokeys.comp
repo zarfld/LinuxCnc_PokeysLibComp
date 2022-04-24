@@ -2191,6 +2191,7 @@ void user_mainloop(void)
 	{
 		a_debout = 340;
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+		PK_PoNETGetModuleSettings(dev);
 		if (PK_PoNETGetModuleSettings(dev) != PK_OK)
 		{
 			usleep(sleepdur);
@@ -2201,6 +2202,7 @@ void user_mainloop(void)
 		}
 
 		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+		PK_PoNETGetModuleLight(dev);
 		if (PK_PoNETGetModuleLight(dev) == PK_OK)
 		{
 			kbd48CNC_lightValue = dev->PoNETmodule.lightValue;
@@ -2235,7 +2237,7 @@ void user_mainloop(void)
 			dev->PoNETmodule.moduleID = 0;
 			if (PK_PoNETGetModuleStatusRequest(dev) != PK_OK)
 			{
-				kbd48CNC_PoNetID ==0;
+				kbd48CNC_PoNetID =0;
 				usleep(sleepdur);
 			}
 		}
