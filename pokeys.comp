@@ -1624,7 +1624,7 @@ void user_mainloop(void)
 							PoNET_moduleSize(i) = dev->PoNETmodule.moduleSize;
 							PoNET_moduleOptions(i) = dev->PoNETmodule.moduleOptions;
 
-							if (PoNET_moduleType(i)== 0x10)
+							if (PoNET_moduleType(i)== 0x10 && kbd48CNC_available ==0)
 							{
 								if ((dev->PoNETmodule.moduleOptions & (1<<7)) != 0)
 								{
@@ -2316,11 +2316,11 @@ void user_mainloop(void)
 			}
 		}
 
-		dev->PoNETmodule.moduleID = 0;
+		dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 		if (PK_PoNETSetModuleStatus(dev) != PK_OK)
 		{
 			usleep(sleepdur);
-			dev->PoNETmodule.moduleID = 0;
+			dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 			if (PK_PoNETSetModuleStatus(dev) != PK_OK)
 			{
 				usleep(sleepdur);
