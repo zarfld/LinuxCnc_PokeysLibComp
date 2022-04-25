@@ -381,7 +381,7 @@ option extra_link_args "-lPoKeys";
 
 #include <unistd.h>   /* UNIX standard function definitions */
 #include "PoKeysLib.h"
-//#include "PoKeysHal.h"
+#include "PoRelay8.h"
 
 
 
@@ -647,31 +647,6 @@ uint8_t Merge_8BitsToByte(bool Bit_array[8])
   return sum;
 }
 
-int Config_PoNet()
-{
-	if(PK_PoNETGetPoNETStatus(dev) == PK_OK)
-	{
-		// device->PoNETmodule.PoNETstatus
-				
-		for (i = 0; i < 16; i++)
-		{
-			dev->PoNETmodule.moduleID = i;
-			if(PK_PoNETGetModuleSettings(dev) == PK_OK)
-			{
-				PoNet[i].moduleID=i;
-				PoNet[i].i2cAddress=dev->PoNETmodule.i2cAddress;
-				PoNet[i].moduleType=dev->PoNETmodule.moduleType;
-				PoNet[i].moduleSize=dev->PoNETmodule.moduleSize;
-				PoNet[i].moduleOptions=dev->PoNETmodule.moduleOptions;
-				usleep(sleepdur); 
-			//	memset(dev->PoNETmodule.statusOut, 0, 10);
-			}
-		}
-	}
-	usleep(sleepdur); 
-
-	return 0;
-}
 
 int Update_PoNet()
 {
@@ -691,8 +666,6 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 	
 	if (params.ApplyIniSettings!=0)
 	{
-
-		
 		//dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
 		//PK_PEv2_PulseEngineSetup(dev);
 		usleep(sleepdur); 
@@ -720,8 +693,6 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 		if (params.PulseEngineEnabled != 0)
 		{
 			dev->PEv2.PulseEngineActivated=1;
-
-
 		}
 		if (params.PulseGeneratorType == 0)
 		{
@@ -766,7 +737,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				params.HomingSpeed[i] = params.HOME_SEARCH_VEL[i]*100/ params.MAX_VELOCITY[i] ;			// Homing speed per axis (in %)
 				params.HomingReturnSpeed[i] = params.HOME_LATCH_VEL[i]*100/ params.HOME_SEARCH_VEL[i];	// Homing return speed per axis (in % of the homing speed)
 
-							// Convert parameters... assume little-endian format
+				// Convert parameters... assume little-endian format
 				dev->PEv2.MaxSpeed[i] = params.MaxSpeed[i];
 				dev->PEv2.MaxAcceleration[i] = params.MaxAcceleration[i];
 				dev->PEv2.MaxDecceleration[i] = params.MaxDecceleration[i];
@@ -780,9 +751,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 
 			}
 
-
 			params.AxesConfig[i]=0;
-
 			// Read the structure
 			/*
 			    PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled 
@@ -921,10 +890,6 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				}
 
 			}
-
-
-
-
 		}
 		//dev->PEv2.param1 = 0;
 		if(PK_PEv2_StatusGet(dev) == PK_OK)
@@ -936,9 +901,6 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
 			//params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 		}
-
-		
-
 
 		if (setPinConfig==true)
 		{
@@ -953,13 +915,11 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 				{
 					setPinConfig=false;
 				}
-
 			}
 			else
 			{
 				setPinConfig=false;
 			}
-	
 		}
 	}
 	else
@@ -979,9 +939,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 			//params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
 			params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
 			//params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
-
 		}
-
 
 		if(PK_PEv2_AdditionalParametersGet(dev) == PK_OK)
 		{
@@ -1048,8 +1006,6 @@ PK_PEv2_Stat Update_PEv2()
 
 	if(PK_PEv2_StatusGet(dev) == PK_OK)
 	{
-
-		
 		// Engine info
 		status.nrOfAxes = dev->PEv2.info.nrOfAxes;
 		status.maxPulseFrequency = dev->PEv2.info.maxPulseFrequency;
@@ -1316,7 +1272,6 @@ PK_PEv2_Stat Update_PEv2()
 				if(PK_PEv2_ExternalOutputsSet(dev) != PK_OK)
 				{
 					usleep(sleepdur); 
-
 				}
 			}
 		}
@@ -1610,12 +1565,11 @@ void user_mainloop(void)
 			 if ( info_PoNET!=0 )
 			 {
 				a_debout = 123;
-				Config_PoNet;
+				
 				for (i = 0; i < 16; i++)
 				{
 
 						dev->PoNETmodule.moduleID = i;
-
 						if(PK_PoNETGetModuleSettings(dev) == PK_OK)
 						{
 							PoNET_moduleID(i) = i;
@@ -1632,8 +1586,6 @@ void user_mainloop(void)
 									kbd48CNC_PoNetID = i;
 									//dev->deviceConfig->iEnableKBD48CNC = 1;
 									kbd48CNC_available=1;
-
-								
 								}
 							}
 							usleep(sleepdur); 
@@ -1653,8 +1605,6 @@ void user_mainloop(void)
 					int ID = top + y;
 					if (((i / 4) % 2) == 0)
 						ID = top - y;
-
-					//kbd48CNC_ID(i) = ID;
 				}
 			 }
 
@@ -1741,15 +1691,9 @@ void user_mainloop(void)
 						PEv2_params.FilterLimitPSwitch[i] = PEv2_FilterLimitPSwitch(i);	   // Digital filter for limit+ switch
 						PEv2_params.FilterHomeSwitch[i] = PEv2_FilterHomeSwitch(i);	   // Digital filter for home switch
 					}
-
-
 				}
-				
-
 
 				PEv2_params = GetConfig_PEv2(PEv2_params);
-
-
 
 				if (PEv2_params_ApplyIniSettings = 0)
 				{
@@ -1874,8 +1818,26 @@ void user_mainloop(void)
 			 if (info_PoNET!=0)
 			 {
 				a_debout = 141;
-				Config_PoNet;
-					a_debout = 142;
+				if(PK_PoNETGetPoNETStatus(dev) == PK_OK)
+				{
+					// device->PoNETmodule.PoNETstatus
+				
+					for (i = 0; i < 16; i++)
+					{
+						dev->PoNETmodule.moduleID = i;
+						if(PK_PoNETGetModuleSettings(dev) == PK_OK)
+						{
+							PoNet[i].moduleID=i;
+							PoNet[i].i2cAddress=dev->PoNETmodule.i2cAddress;
+							PoNet[i].moduleType=dev->PoNETmodule.moduleType;
+							PoNet[i].moduleSize=dev->PoNETmodule.moduleSize;
+							PoNet[i].moduleOptions=dev->PoNETmodule.moduleOptions;
+							usleep(sleepdur); 
+						//	memset(dev->PoNETmodule.statusOut, 0, 10);
+						}
+					}
+				}
+				a_debout = 142;
 				usleep(sleepdur); 
 			 }
 			 
@@ -2273,7 +2235,6 @@ void user_mainloop(void)
 			{
 				ID = top - y;
 			}
-				
 				
 			if (kbd48CNC_LED(i) == true)
 			{
