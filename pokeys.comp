@@ -1879,9 +1879,8 @@ void user_mainloop(void)
 							if(PK_PEv2_AxisConfigurationGet(dev) == PK_OK)
 							{
 								// Read the structure
-								PEv2_params_AxesConfig(i) = dev->PEv2.AxesConfig[i];
-
-								PEv2_params_AxesSwitchConfig(i)  = dev->PEv2.AxesSwitchConfig[i];
+								//PEv2_AxesConfig(i) = dev->PEv2.AxesConfig[i]; readonly
+								//PEv2_AxesSwitchConfig(i)  = dev->PEv2.AxesSwitchConfig[i];
 
 								PEv2_PinHomeSwitch(i)  = dev->PEv2.PinHomeSwitch[i];
 								PEv2_PinLimitMSwitch(i)  = dev->PEv2.PinLimitMSwitch[i];
