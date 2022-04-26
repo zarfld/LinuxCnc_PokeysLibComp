@@ -1854,9 +1854,9 @@ void user_mainloop(void)
 								// MPG 1x mode here
 							dev->PEv2.HomeBackOffDistance[i] = PEv2_HomeBackOffDistance(i);
 							dev->PEv2.MPGjogDivider[i] = PEv2_MPGjogDivider(i);	
-							dev->PEv2.AxesConfig[i] =AxesConfig[i]
-							PEv2_params_AxesConfig(i) =AxesConfig[i]; 
-							PEv2_params_AxesSwitchConfig(i)=AxesSwitchConfig[i];
+							dev->PEv2.AxesConfig[i] =AxesConfig[i];
+							PEv2_AxesConfig(i) =AxesConfig[i]; 
+							PEv2_AxesSwitchConfig(i)=AxesSwitchConfig[i];
 							dev->PEv2.AxesSwitchConfig[i] =AxesSwitchConfig[i];
 							//dev->PEv2.AxesConfig[i] = 0;
 							//dev->PEv2.AxesSwitchConfig[i] =0;
