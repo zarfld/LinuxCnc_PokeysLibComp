@@ -718,7 +718,7 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 		if(PK_PEv2_PulseEngineSetup(dev) == PK_OK)
 		{
 			usleep(sleepdur); 
-			PK_PEv2_PulseEngineReboot(dev)
+			PK_PEv2_PulseEngineReboot(dev);
 			usleep(1000000); 
 		}
 
@@ -1617,46 +1617,46 @@ void user_mainloop(void)
 					//dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
 					//PK_PEv2_PulseEngineSetup(dev);
 					usleep(sleepdur); 
-					if ( PEv2_params_ProbeInput!=0)
+					if ( PEv2_ProbeInput!=0)
 					{	//check if pin is parametrized in HAL
-						dev->Pins[ PEv2_params_ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
-						PK_SL_SetPinFunction(dev, PEv2_params_ProbeInput-1, PK_PinCap_digitalInput);
+						dev->Pins[ PEv2_ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
+						PK_SL_SetPinFunction(dev, PEv2_ProbeInput-1, PK_PinCap_digitalInput);
 						setPinConfig=true;
 					}
 
-					dev->PEv2.EmergencyInputPin = PEv2_params_EmergencyInputPin;
-					if ( PEv2_params_EmergencyInputPin!=0)
+					dev->PEv2.EmergencyInputPin = PEv2_EmergencyInputPin;
+					if ( PEv2_EmergencyInputPin!=0)
 					{	//check if pin is parametrized in HAL
-						dev->Pins[PEv2_params_EmergencyInputPin-1].PinFunction = PK_PinCap_digitalInput;
-						PK_SL_SetPinFunction(dev, PEv2_params_EmergencyInputPin-1, PK_PinCap_digitalInput);
+						dev->Pins[PEv2_EmergencyInputPin-1].PinFunction = PK_PinCap_digitalInput;
+						PK_SL_SetPinFunction(dev, PEv2_EmergencyInputPin-1, PK_PinCap_digitalInput);
 						setPinConfig=true;
 					}
-					if ( PEv2_params_EmergencyOutputPin!=0)
+					if ( PEv2_EmergencyOutputPin!=0)
 					{	//check if pin is parametrized in HAL
-						dev->Pins[ PEv2_params_EmergencyOutputPin-1].PinFunction = PK_PinCap_digitalOutput;
-						PK_SL_SetPinFunction(dev, PEv2_params_EmergencyInputPin-1, PK_PinCap_digitalOutput);
+						dev->Pins[ PEv2_EmergencyOutputPin-1].PinFunction = PK_PinCap_digitalOutput;
+						PK_SL_SetPinFunction(dev, PEv2_EmergencyInputPin-1, PK_PinCap_digitalOutput);
 						setPinConfig=true;
 					}
-					PEv2_params_PulseEngineEnabled = dev->PEv2.info.nrOfAxes;
-					if (PEv2_params_PulseEngineEnabled != 0)
+					PEv2_PulseEngineEnabled = dev->PEv2.info.nrOfAxes;
+					if (PEv2_PulseEngineEnabled != 0)
 					{
 						dev->PEv2.PulseEngineActivated=1;
 					}
-					if (PEv2_params_PulseGeneratorType == 0)
+					if (PEv2_PulseGeneratorType == 0)
 					{
 						
 						if (PEv2_params_PG_swap_stepdir != 0)
 						{
-							PEv2_params_PulseGeneratorType=Set_BitOfByte(PEv2_params_PulseGeneratorType, 6, true); // swap step / dir signals
+							PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 6, true); // swap step / dir signals
 						}
 						if (PEv2_params_PG_extended_io != 0)
 						{
-							PEv2_params_PulseGeneratorType=Set_BitOfByte(PEv2_params_PulseGeneratorType, 7, true); // extended io
+							PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 7, true); // extended io
 						}
 					}
-					dev->PEv2.PulseEngineEnabled = PEv2_params_PulseEngineEnabled;
-					dev->PEv2.ChargePumpEnabled = PEv2_params_ChargePumpEnabled;
-					dev->PEv2.PulseGeneratorType = PEv2_params_PulseGeneratorType;
+					dev->PEv2.PulseEngineEnabled = PEv2_PulseEngineEnabled;
+					dev->PEv2.ChargePumpEnabled = PEv2_ChargePumpEnabled;
+					dev->PEv2.PulseGeneratorType = PEv2_PulseGeneratorType;
 					//dev->PEv2.PulseEngineBufferSize = PEv2_params_PulseEngineBufferSize;
 					dev->PEv2.EmergencySwitchPolarity = PEv2_params_EmergencySwitchPolarity;
 					//dev->PEv2.AxisEnabledStatesMask = PEv2_params_AxisEnabledStatesMask;
@@ -1675,16 +1675,16 @@ void user_mainloop(void)
 				{
 					if(PK_PEv2_StatusGet(dev) == PK_OK && PK_PEv2_Status2Get(dev) == PK_OK )
 					{
-						PEv2_params_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-						PEv2_params_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
-						PEv2_params_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
+						PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+						PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+						PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 						//PEv2_params_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
 						PEv2_params_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
 						//PEv2_params_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 
-						PEv2_params_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-						PEv2_params_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
-						PEv2_params_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
+						PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+						PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+						PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 						//PEv2_params_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
 						PEv2_params_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
 						//PEv2_params_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
@@ -1692,7 +1692,7 @@ void user_mainloop(void)
 
 					if(PK_PEv2_AdditionalParametersGet(dev) == PK_OK)
 					{
-						PEv2_params_EmergencyInputPin = dev->PEv2.EmergencyInputPin;   
+						PEv2_EmergencyInputPin = dev->PEv2.EmergencyInputPin;   
 						usleep(sleepdur); 
 					}	
 				}
@@ -1920,9 +1920,9 @@ void user_mainloop(void)
 					//dev->PEv2.param1 = 0;
 					if(PK_PEv2_StatusGet(dev) == PK_OK)
 					{
-						PEv2_params_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-						PEv2_params_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
-						PEv2_params_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
+						PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+						PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+						PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 						//PEv2_params_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
 						PEv2_params_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
 						//PEv2_params_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
