@@ -1616,40 +1616,40 @@ void user_mainloop(void)
 			
 			PEv2_SoftLimitStatus(i) = Get_BitOfByte(bm_SoftLimitStatus,i);
 
-			switch( PEv2_AxesState[i])
+			switch( PEv2_AxesState(i))
 			{
 				case PK_PEAxisState_axSTOPPED:        // Axis is stopped
-					PEv2_AxisEnabledStates[i] = false;
-					PEv2_AxisLimitOverride[i] = false;
+					PEv2_AxisEnabledStates(i) = false;
+					PEv2_AxisLimitOverride(i) = false;
 					break ;
 				case PK_PEAxisState_axREADY:        // Axis ready
-					PEv2_AxisEnabledStates[i] = true;
-					PEv2_AxisLimitOverride[i] = false;
+					PEv2_AxisEnabledStates(i) = true;
+					PEv2_AxisLimitOverride(i) = false;
 					break ;
 				case PK_PEAxisState_axRUNNING:        // Axis is running
-					PEv2_AxisEnabledStates[i] = true;
-					PEv2_AxisLimitOverride[i] = false;
+					PEv2_AxisEnabledStates(i) = true;
+					PEv2_AxisLimitOverride(i) = false;
 					if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
 					{
-						if(PEv2_ReferencePositionSpeed[i] != PEv2_joint_vel_cmd[i] * PEv2_params.STEP_SCALE[i])
+						if(PEv2_ReferencePositionSpeed(i) != PEv2_joint_vel_cmd(i) * PEv2_params_STEP_SCALE(i))
 						{
-							PEv2_ReferencePositionSpeed[i] = PEv2_joint_vel_cmd[i] * PEv2_params.STEP_SCALE[i];
-							PEv2_PositionSetup[i] = PEv2_joint_pos_cmd[i] * PEv2_params.STEP_SCALE[i];
+							PEv2_ReferencePositionSpeed(i) = PEv2_joint_vel_cmd(i) * PEv2_params_STEP_SCALE(i);
+							PEv2_PositionSetup(i) = PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i);
 
 							doMove=true;
-							dev->PEv2.ReferencePositionSpeed[i] = PEv2_ReferencePositionSpeed[i];
-							dev->PEv2.PositionSetup[i] = PEv2_PositionSetup[i];
+							dev->PEv2.ReferencePositionSpeed[i] = PEv2_ReferencePositionSpeed(i);
+							dev->PEv2.PositionSetup[i] = PEv2_PositionSetup(i);
 						}
-						PEv2_joint_vel_fb[i] = ( PEv2_joint_pos_fb[i] - (PEv2_CurrentPosition[i] / PEv2_params.STEP_SCALE[i]) )* Loop_Frequ;
+						PEv2_joint_vel_fb(i) = ( PEv2_joint_pos_fb(i) - (PEv2_CurrentPosition(i) / PEv2_params.STEP_SCALE(i)) )* Loop_Frequ;
 					}
 					else
 					{
 
 						if ((PEv2_CurrentPosition[i] - PEv2_ReferencePositionSpeed[i]) < 10 )
 						{
-							PEv2_ReferencePositionSpeed[i] = PEv2_joint_pos_cmd[i] * PEv2_params.STEP_SCALE[i];
-							dev->PEv2.ReferencePositionSpeed[i] = PEv2_ReferencePositionSpeed[i];
-							dev->PEv2.PositionSetup[i] = PEv2_PositionSetup[i];
+							PEv2_ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i) * PEv2_params.STEP_SCALE(i);
+							dev->PEv2.ReferencePositionSpeed[i] = PEv2_ReferencePositionSpeed(i);
+							dev->PEv2.PositionSetup[i] = PEv2_PositionSetup(i);
 							//doPositionSet =true;
 							doMove=true;
 						}
@@ -1657,59 +1657,59 @@ void user_mainloop(void)
 					}
 					// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
 					
-					PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_params.STEP_SCALE[i];
+					PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_params_STEP_SCALE(i);
 
 					break ;
 				case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
-					PEv2_AxisLimitOverride[i] = true;
-					PEv2_AxisEnabledStates[i] = true;
+					PEv2_AxisLimitOverride(i) = true;
+					PEv2_AxisEnabledStates(i) = true;
 					break ;
 				case PK_PEAxisState_axHOMING_BACKING_OFF:   // Backing off switch
-					PEv2_AxisLimitOverride[i] = true;
-					PEv2_AxisEnabledStates[i] = true;
+					PEv2_AxisLimitOverride(i) = true;
+					PEv2_AxisEnabledStates(i) = true;
 					break ;
 				case PK_PEAxisState_axHOME:       // Axis is homed
-					PEv2_AxisEnabledStates[i] = true;
-					PEv2_AxisLimitOverride[i] = true;
+					PEv2_AxisEnabledStates(i) = true;
+					PEv2_AxisLimitOverride(i) = true;
 				// PEv2_joint_
 					break ;
 				case PK_PEAxisState_axHOMINGSTART:       // Homing procedure is starting on axis
-					PEv2_AxisEnabledStates[i] = true;
-					PEv2_AxisLimitOverride[i] = true;
+					PEv2_AxisEnabledStates(i) = true;
+					PEv2_AxisLimitOverride(i) = true;
 					break ;
 				case PK_PEAxisState_axHOMINGSEARCH:       // Homing procedure first step - going to home
-					PEv2_AxisEnabledStates[i] = true;
-					PEv2_AxisLimitOverride[i] = true;
+					PEv2_AxisEnabledStates(i) = true;
+					PEv2_AxisLimitOverride(i) = true;
 					break ;
 				case PK_PEAxisState_axHOMINGBACK:       // Homing procedure second step - slow homing
-					PEv2_AxisEnabledStates[i] = true;
-					PEv2_AxisLimitOverride[i] = true;
+					PEv2_AxisEnabledStates(i) = true;
+					PEv2_AxisLimitOverride(i) = true;
 					break ;
 				case PK_PEAxisState_axPROBED:       // Probing completed for this axis
-					PEv2_AxisEnabledStates[i] = true;
-					PEv2_AxisLimitOverride[i] = false;
+					PEv2_AxisEnabledStates(i) = true;
+					PEv2_AxisLimitOverride(i) = false;
 					break ;
 				case PK_PEAxisState_axPROBESTART:       // Probing procedure is starting on axis
-					PEv2_AxisEnabledStates[i] = true;
-					PEv2_AxisLimitOverride[i] = false;
+					PEv2_AxisEnabledStates(i) = true;
+					PEv2_AxisLimitOverride(i) = false;
 					break ;
 				case PK_PEAxisState_axPROBESEARCH:       // Probing procedure - probing
-					PEv2_AxisEnabledStates[i] = true;
-					PEv2_AxisLimitOverride[i] = false;
+					PEv2_AxisEnabledStates(i) = true;
+					PEv2_AxisLimitOverride(i) = false;
 					break ;
 				case PK_PEAxisState_axERROR:       // Axis error
-					PEv2_AxisEnabledStates[i] = false;
-					PEv2_AxisLimitOverride[i] = false;
+					PEv2_AxisEnabledStates(i) = false;
+					PEv2_AxisLimitOverride(i) = false;
 					break ;
 				case PK_PEAxisState_axLIMIT:        // Axis limit tripped
-					PEv2_AxisEnabledStates[i] = true;
-					PEv2_AxisLimitOverride[i] = false;
+					PEv2_AxisEnabledStates(i) = true;
+					PEv2_AxisLimitOverride(i) = false;
 					break ;
 				default:
 					break ;
 			}
-			tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,PEv2_AxisEnabledStates[i]);
-			PEv2_LimitOverrideSetup = Set_BitOfByte(PEv2_LimitOverrideSetup ,i,PEv2_AxisLimitOverride[i]);
+			tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,PEv2_AxisEnabledStates(i));
+			PEv2_LimitOverrideSetup = Set_BitOfByte(PEv2_LimitOverrideSetup ,i,PEv2_AxisLimitOverride(i));
 
 		}
 
