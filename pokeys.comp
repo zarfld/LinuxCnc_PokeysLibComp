@@ -715,9 +715,11 @@ PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
 		{
 			usleep(sleepdur); 
 		}
-		if(PK_PEv2_PulseEngineSetup(dev) != PK_OK)
+		if(PK_PEv2_PulseEngineSetup(dev) == PK_OK)
 		{
 			usleep(sleepdur); 
+			PK_PEv2_PulseEngineReboot(dev)
+			usleep(1000000); 
 		}
 
  
@@ -1608,161 +1610,343 @@ void user_mainloop(void)
 				}
 			 }
 
-			 if (PEv2_params_ApplyIniSettings !=0 && info_PulseEnginev2!=0 )
-			{
-			//	PK_ClearConfiguration(dev);
-			}
-
 			 if ( info_PulseEnginev2!=0 )
 			 {
-
-				//***************************************************************************
-				// Setting Parameters from INI
-				PEv2_params.ApplyIniSettings =PEv2_params_ApplyIniSettings;
-				PEv2_params.COORDINATES = PEv2_params_COORDINATES;
-				PEv2_params.LINEAR_UNITS = PEv2_params_LINEAR_UNITS;
-				PEv2_params.ANGULAR_UNITS = PEv2_params_ANGULAR_UNITS;
-				PEv2_params.CYCLE_TIME = PEv2_params_CYCLE_TIME;
-				PEv2_params.DEFAULT_LINEAR_VELOCITY = PEv2_params_DEFAULT_LINEAR_VELOCITY;
-				PEv2_params.MAX_LINEAR_VELOCITY = PEv2_params_MAX_LINEAR_VELOCITY;
-				if (PEv2_params_ApplyIniSettings != 0)
+				if (PEv2_params_ApplyIniSettings!=0)
 				{
-					//PEv2_params.PulseEngineEnabled = PEv2_nrOfAxes;
-					PEv2_params.PulseGeneratorType = PEv2_PulseGeneratorType;  // Pulse engine generator type (0: external, 1: internal 3ch)
-					PEv2_params.PG_swap_stepdir = PEv2_PG_swap_stepdir;
-					//PEv2_PG_extended_io=1;
-					PEv2_params.PG_extended_io = PEv2_PG_extended_io;
-					PEv2_params.PG_extended_io = 1;
-					PEv2_params.EmergencyInputPin = PEv2_EmergencyInputPin;
-					PEv2_status.EmergencySwitchPolarity = PEv2_EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
-				
-					PEv2_params.ProbeInput = PEv2_ProbeInput;
-					PEv2_params.ProbeInputPolarity = PEv2_ProbeInputPolarity;
-				}
-				for(i=0;i< PEv2_nrOfAxes;i++)
-				{
-					PEv2_params.TYPE[i] = PEv2_params_TYPE(i);			//LINEAR / ANGULAR
-					PEv2_params.HOME[i] = PEv2_params_HOME(i);
-					PEv2_params.FERROR[i] = PEv2_params_FERROR(i);
-					PEv2_params.MIN_FERROR[i] = PEv2_params_MIN_FERROR(i);
-					PEv2_params.MAX_VELOCITY[i] = PEv2_params_MAX_VELOCITY(i);
-					PEv2_params.MAX_ACCELERATION[i] = PEv2_params_MAX_ACCELERATION(i);
-					PEv2_params.STEPGEN_MAXVEL[i] = PEv2_params_STEPGEN_MAXVEL(i);
-					PEv2_params.STEPGEN_MAXACCEL[i] = PEv2_params_STEPGEN_MAXACCEL(i);
-					PEv2_params.Feedback_Encoder_Id[i] = PEv2_params_Feedback_Encoder_Id(i);
+					//dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
+					//PK_PEv2_PulseEngineSetup(dev);
+					usleep(sleepdur); 
+					if ( PEv2_params_ProbeInput!=0)
+					{	//check if pin is parametrized in HAL
+						dev->Pins[ PEv2_params_ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
+						PK_SL_SetPinFunction(dev, PEv2_params_ProbeInput-1, PK_PinCap_digitalInput);
+						setPinConfig=true;
+					}
 
-					//		float P(i);
-					//		float I(i);
-					//		float D(i);
-					//		float FF0(i);
-					//		float FF1(i);
-					//		float FF2(i);
-					//		float BIAS(i);
-					PEv2_params.DEADBAND[i] = PEv2_params_DEADBAND(i);
-					PEv2_params.MAX_OUTPUT[i] = PEv2_params_MAX_OUTPUT(i);
-					PEv2_params.ENCODER_SCALE[i] = PEv2_params_ENCODER_SCALE(i);
-					// these are in nanoseconds
-					PEv2_params.DIRSETUP[i] = PEv2_params_DIRSETUP(i);					// (ns)
-					PEv2_params.DIRHOLD[i] = PEv2_params_DIRHOLD(i);					// (ns)
-					PEv2_params.STEPLEN[i] = PEv2_params_STEPLEN(i);					// (ns)
-					PEv2_params.STEPSPACE[i] = PEv2_params_STEPSPACE(i);					// (ns)
-					PEv2_params.STEP_SCALE[i] = PEv2_params_STEP_SCALE(i);					// (pulses/mm)
-					PEv2_params.MIN_LIMIT[i] = PEv2_params_MIN_LIMIT(i);					// position (mm)
-					PEv2_params.MAX_LIMIT[i] = PEv2_params_MAX_LIMIT(i);					// position (mm)
-					PEv2_params.HOME_OFFSET[i] = PEv2_params_HOME_OFFSET(i);				// position (mm)
-					PEv2_params.HOME_SEARCH_VEL[i] = PEv2_params_HOME_SEARCH_VEL(i);			// position (mm)
-					PEv2_params.HOME_FINAL_VEL[i] = PEv2_params_HOME_FINAL_VEL(i);				// position (mm)
-					PEv2_params.HOME_FINAL_VEL[i] = PEv2_params_HOME_FINAL_VEL(i);				// position (mm)
-					PEv2_params.HOME_USE_INDEX[i] = PEv2_params_HOME_USE_INDEX(i);				// YES / NO
-					PEv2_params.HOME_IGNORE_LIMITS[i] = PEv2_params_HOME_IGNORE_LIMITS(i);			// YES / NO
-					if (PEv2_params_ApplyIniSettings != 0)
+					dev->PEv2.EmergencyInputPin = PEv2_params_EmergencyInputPin;
+					if ( PEv2_params_EmergencyInputPin!=0)
+					{	//check if pin is parametrized in HAL
+						dev->Pins[PEv2_params_EmergencyInputPin-1].PinFunction = PK_PinCap_digitalInput;
+						PK_SL_SetPinFunction(dev, PEv2_params_EmergencyInputPin-1, PK_PinCap_digitalInput);
+						setPinConfig=true;
+					}
+					if ( PEv2_params_EmergencyOutputPin!=0)
+					{	//check if pin is parametrized in HAL
+						dev->Pins[ PEv2_params_EmergencyOutputPin-1].PinFunction = PK_PinCap_digitalOutput;
+						PK_SL_SetPinFunction(dev, PEv2_params_EmergencyInputPin-1, PK_PinCap_digitalOutput);
+						setPinConfig=true;
+					}
+					PEv2_params_PulseEngineEnabled = dev->PEv2.info.nrOfAxes;
+					if (PEv2_params_PulseEngineEnabled != 0)
 					{
-						PEv2_params.PinHomeSwitch[i] = PEv2_PinHomeSwitch(i) ;          // Home switch pin (0 for external dedicated input)
-						PEv2_params.PinLimitMSwitch[i] = PEv2_PinLimitMSwitch(i) ;        // Limit- switch pin (0 for external dedicated input)
-						PEv2_params.PinLimitPSwitch[i] = PEv2_PinLimitPSwitch(i) ;        // Limit+ switch pin (0 for external dedicated input)
-						PEv2_params.MPGjogEncoder[i] = PEv2_MPGjogEncoder(i);
-
-						PEv2_params.MPGjogMultiplier[i] = PEv2_MPGjogMultiplier(i) ;       // MPG jog multiplier value
-
-						PEv2_params.AxisEnableOutputPins[i] = PEv2_AxisEnableOutputPins(i);   // Axis enabled output pin (0 for external dedicated output)
-						PEv2_params.InvertAxisEnable[i] = PEv2_InvertAxisEnable(i);       // Invert axis enable signal
-
-						PEv2_params.FilterLimitMSwitch[i] = PEv2_FilterLimitMSwitch(i);	   // Digital filter for limit- switch
-						PEv2_params.FilterLimitPSwitch[i] = PEv2_FilterLimitPSwitch(i);	   // Digital filter for limit+ switch
-						PEv2_params.FilterHomeSwitch[i] = PEv2_FilterHomeSwitch(i);	   // Digital filter for home switch
+						dev->PEv2.PulseEngineActivated=1;
+					}
+					if (PEv2_params_PulseGeneratorType == 0)
+					{
+						
+						if (PEv2_params_PG_swap_stepdir != 0)
+						{
+							PEv2_params_PulseGeneratorType=Set_BitOfByte(PEv2_params_PulseGeneratorType, 6, true); // swap step / dir signals
+						}
+						if (PEv2_params_PG_extended_io != 0)
+						{
+							PEv2_params_PulseGeneratorType=Set_BitOfByte(PEv2_params_PulseGeneratorType, 7, true); // extended io
+						}
+					}
+					dev->PEv2.PulseEngineEnabled = PEv2_params_PulseEngineEnabled;
+					dev->PEv2.ChargePumpEnabled = PEv2_params_ChargePumpEnabled;
+					dev->PEv2.PulseGeneratorType = PEv2_params_PulseGeneratorType;
+					//dev->PEv2.PulseEngineBufferSize = PEv2_params_PulseEngineBufferSize;
+					dev->PEv2.EmergencySwitchPolarity = PEv2_params_EmergencySwitchPolarity;
+					//dev->PEv2.AxisEnabledStatesMask = PEv2_params_AxisEnabledStatesMask;
+					if(PK_PEv2_PulseEngineSetup(dev) != PK_OK)
+					{
+						usleep(sleepdur); 
+					}
+					if(PK_PEv2_PulseEngineSetup(dev) == PK_OK)
+					{
+						usleep(sleepdur); 
+						PK_PEv2_PulseEngineReboot(dev)
+						usleep(1000000); 
 					}
 				}
-
-				PEv2_params = GetConfig_PEv2(PEv2_params);
-
-				if (PEv2_params_ApplyIniSettings = 0)
+				else
 				{
-					PEv2_PulseEngineEnabled=PEv2_status.PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
-					PEv2_ChargePumpEnabled=PEv2_status.ChargePumpEnabled;         // Charge pump output enabled
-					PEv2_PulseGeneratorType=PEv2_status.PulseGeneratorType;        // Pulse engine generator type (0: external, 1: internal 3ch)
-					PEv2_EmergencyInputPin = PEv2_params.EmergencyInputPin;
-					PEv2_EmergencySwitchPolarity=PEv2_status.EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
-					PEv2_BacklashCompensationEnabled=PEv2_params.BacklashCompensationEnabled;
-					PEv2_ProbeInput = PEv2_params.ProbeInput;
-					PEv2_ProbeInputPolarity = PEv2_params.ProbeInputPolarity;
+					if(PK_PEv2_StatusGet(dev) == PK_OK && PK_PEv2_Status2Get(dev) == PK_OK )
+					{
+						PEv2_params_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+						PEv2_params_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+						PEv2_params_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
+						//PEv2_params_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
+						PEv2_params_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
+						//PEv2_params_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
+
+						PEv2_params_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+						PEv2_params_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+						PEv2_params_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
+						//PEv2_params_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
+						PEv2_params_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
+						//PEv2_params_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
+					}
+
+					if(PK_PEv2_AdditionalParametersGet(dev) == PK_OK)
+					{
+						PEv2_params_EmergencyInputPin = dev->PEv2.EmergencyInputPin;   
+						usleep(sleepdur); 
+					}	
 				}
-				//PK_PEv2_AxisConfigurationGet
 
-				for(i=0;i< PEv2_nrOfAxes;i++)
+				uint8_t AxesConfig[8];
+				uint8_t AxesSwitchConfig[8];
+				for (i = 0; i < dev->PEv2.info.nrOfAxes; i++)
 				{
-					// Read the structure
-						PEv2_AxesConfig(i) = PEv2_params.AxesConfig[i];             // Axis configuration - see ePK_PEv2_AxisConfig
-						//PEv2_AxesConfig(i) = PK_AC_ENABLED | PK_AC_INTERNAL_PLANNER
-						//PEv2_AxesSwitchConfig(i) = PEv2_params.AxesSwitchConfig[i];       // Axis switch configuration - see ePK_PEv2_AxisSwitchOptions
-
-						if (PEv2_params_ApplyIniSettings = 0)
+						if (PEv2_params_ApplyIniSettings!=0)
 						{
-							PEv2_PinHomeSwitch(i) = PEv2_params.PinHomeSwitch[i];          // Home switch pin (0 for external dedicated input)
-							PEv2_PinLimitMSwitch(i) = PEv2_params.PinLimitMSwitch[i];        // Limit- switch pin (0 for external dedicated input)
-							PEv2_PinLimitPSwitch(i) = PEv2_params.PinLimitPSwitch[i];        // Limit+ switch pin (0 for external dedicated input)
+							// Convert mm/s -> pulses/s
+							if(PEv2_params_STEP_SCALE(i)!=0)
+							{
+								PEv2_params_MaxSpeed(i) = PEv2_params_STEPGEN_MAXVEL(i)* PEv2_params_STEP_SCALE(i)/1000;				// Maximum axis speed convert (mm/s) to (pulses per ms)
+								PEv2_params_MaxAcceleration(i) = PEv2_params_STEPGEN_MAXACCEL(i)* PEv2_params_STEP_SCALE(i) /1000000;	// Maximum axis acceleration convert (mm/s�) to (in pulses/ms/ms)
+								PEv2_params_MaxDecceleration(i) = PEv2_params_STEPGEN_MAXACCEL(i)* PEv2_params_STEP_SCALE(i) /1000000;	// Maximum axis deceleration convert (mm/s�) to (in pulses/ms/ms)
 
-							PEv2_MPGjogEncoder(i) = PEv2_params.MPGjogEncoder[i];          // MPG jog encoder ID
+								PEv2_params_SoftLimitMaximum(i) = PEv2_params_MAX_LIMIT(i)* PEv2_params_STEP_SCALE(i);		// Soft limit maximum position
+								PEv2_params_SoftLimitMinimum(i) = PEv2_params_MIN_LIMIT(i)* PEv2_params_STEP_SCALE(i);		// Soft limit minimum position
+								PEv2_params_HomeOffsets(i) = PEv2_params_HOME_OFFSET(i)* PEv2_params_STEP_SCALE(i);		// Home position offset
+
+								PEv2_params_HomingSpeed(i) = PEv2_params_HOME_SEARCH_VEL(i)*100/ PEv2_params_MAX_VELOCITY(i) ;			// Homing speed per axis (in %)
+								PEv2_params_HomingReturnSpeed(i) = PEv2_params_HOME_LATCH_VEL(i)*100/ PEv2_params_HOME_SEARCH_VEL(i);	// Homing return speed per axis (in % of the homing speed)
+
+								// Convert parameters... assume little-endian format
+								dev->PEv2.MaxSpeed[i] = PEv2_params_MaxSpeed(i);
+								dev->PEv2.MaxAcceleration[i] = PEv2_params_MaxAcceleration(i);
+								dev->PEv2.MaxDecceleration[i] = PEv2_params_MaxDecceleration(i);
+
+								dev->PEv2.SoftLimitMinimum[i] = PEv2_params_SoftLimitMinimum(i);
+								dev->PEv2.SoftLimitMaximum[i] = PEv2_params_SoftLimitMaximum(i);
+								dev->PEv2.HomeOffsets[i] = PEv2_params_HomeOffsets(i);
+
+								dev->PEv2.HomingSpeed[i] = PEv2_params_HomingSpeed(i);
+								dev->PEv2.HomingReturnSpeed[i] = PEv2_params_HomingReturnSpeed(i);
+
+							}
+
+							 AxesConfig[i]=0;
+							// Read the structure
+							/*
+								PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled 
+								PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
+								PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
+								PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
+								PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
+								PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
+								PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
+							*/
+							//PEv2_params_AxesConfig(i) = PK_AC_ENABLED_MASKED;
+							if (PEv2_params_STEPGEN_MAXVEL(i) !=0)
+							{
+								AxesConfig[i] =Set_BitOfByte(AxesConfig[i] , 0, true);  // PK_AC_ENABLED ;
+								AxesConfig[i] =Set_BitOfByte(AxesConfig[i] , 2, true);  // PK_AC_INTERNAL_PLANNER;
+
+							}
+
+				
+							if (PEv2_params_Feedback_Encoder_Id(i) = 0)
+							{
+								AxesConfig[i] =Set_BitOfByte(AxesConfig[i] , 3, true);  // PK_AC_POSITION_MODE;
+							}
+				
+
+							/*
+								PK_ASO_SWITCH_LIMIT_N        = (1 << 0),   // 1 Limit- switch
+								PK_ASO_SWITCH_LIMIT_P        = (1 << 1),   // 2 Limit+ switch
+								PK_ASO_SWITCH_HOME           = (1 << 2),   // 4 Home switch
+								PK_ASO_SWITCH_COMBINED_LN_H  = (1 << 3),   // 8 Home switch is shared with Limit- switch
+								PK_ASO_SWITCH_COMBINED_LP_H  = (1 << 4),   // 16 Home switch is shared with Limit+ switch
+								PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
+								PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
+								PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
+							*/
+							AxesSwitchConfig[i] = 0;
+				
+							if (PEv2_params_SoftLimitMaximum(i) !=0 | PEv2_params_SoftLimitMaximum(i) !=0)
+							{
+								AxesConfig[i] =Set_BitOfByte(AxesConfig[i] , 3, true); // PK_AC_SOFT_LIMIT_ENABLED;
+							}
+
+				
+							if ( PEv2_params_PinHomeSwitch(i)!=0)
+							{	
+							//check if pin is parametrized in HAL
+								if ( PEv2_params_PinHomeSwitch(i)!=PEv2_params_PinLimitMSwitch(i) && PEv2_params_PinHomeSwitch(i)!=PEv2_params_PinLimitPSwitch(i))
+								{
+									dev->PEv2.PinHomeSwitch[i] = PEv2_params_PinHomeSwitch(i);
+								}
+								else if ( PEv2_params_PinHomeSwitch(i)==PEv2_params_PinLimitPSwitch(i))
+								{
+									//dev->PEv2.PinHomeSwitch[i]=0;
+									AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i] , 4, true); // 16 Home switch is shared with Limit+ switch
+								}
+								else if ( PEv2_params_PinHomeSwitch(i)==PEv2_params_PinLimitMSwitch(i))
+								{
+									//dev->PEv2.PinHomeSwitch(i)=0;
+									AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i] , 3, true); // 8 Home switch is shared with Limit- switch
+				
+								}
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i] , 2, true); // | PK_ASO_SWITCH_HOME;
+								dev->Pins[ PEv2_params_PinHomeSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
+								PK_SL_SetPinFunction(dev, PEv2_params_PinHomeSwitch(i)-1, PK_PinCap_digitalInput);
+								setPinConfig=true;
+							}
+							else
+							{
+								dev->PEv2.PinHomeSwitch[i]=0;
+							}
+
+							dev->PEv2.PinLimitMSwitch[i] = PEv2_params_PinLimitMSwitch(i);
+							if ( PEv2_params_PinLimitMSwitch(i)!=0)
+							{	//check if pin is parametrized in HAL
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i] , 0, true); // | PK_ASO_SWITCH_LIMIT_N;
+								dev->Pins[ PEv2_params_PinLimitMSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
+								PK_SL_SetPinFunction(dev, PEv2_params_PinLimitMSwitch(i)-1, PK_PinCap_digitalInput);
+
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i] , 5, true); // 32 Invert limit- switch polarity
+
+								setPinConfig=true;
+							}
+
+							dev->PEv2.PinLimitPSwitch[i] = PEv2_params_PinLimitPSwitch(i);
+							if ( PEv2_params_PinLimitPSwitch(i)!=0)
+							{	//check if pin is parametrized in HAL
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i] , 1, true); // | PK_ASO_SWITCH_LIMIT_P;
+								dev->Pins[ PEv2_params_PinLimitPSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
+								PK_SL_SetPinFunction(dev, PEv2_params_PinLimitPSwitch(i)-1, PK_PinCap_digitalInput);
+
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i] , 6, true); // 32 Invert limit+ switch polarity
+
+								setPinConfig=true;
+							}
+
+							dev->PEv2.HomingSpeed[i] = PEv2_params_HomingSpeed(i);
+							dev->PEv2.HomingReturnSpeed[i] = PEv2_params_HomingReturnSpeed(i);
+
+							dev->PEv2.MPGjogEncoder[i] = PEv2_params_MPGjogEncoder(i);
 
 
-							PEv2_MPGjogMultiplier(i) = PEv2_params.MPGjogMultiplier[i];       // MPG jog multiplier value
 
-							PEv2_AxisEnableOutputPins(i) = PEv2_params.AxisEnableOutputPins[i];   // Axis enabled output pin (0 for external dedicated output)
-							PEv2_InvertAxisEnable(i) = PEv2_params.InvertAxisEnable[i];       // Invert axis enable signal
+							dev->PEv2.MPGjogMultiplier[i] = PEv2_params_MPGjogMultiplier(i);
 
-							PEv2_FilterLimitMSwitch(i) = PEv2_params.FilterLimitMSwitch[i];	   // Digital filter for limit- switch
-							PEv2_FilterLimitPSwitch(i) = PEv2_params.FilterLimitPSwitch[i];	   // Digital filter for limit+ switch
-							PEv2_FilterHomeSwitch(i) = PEv2_params.FilterHomeSwitch[i];	   // Digital filter for home switch
+							dev->PEv2.AxisEnableOutputPins[i] = PEv2_params_AxisEnableOutputPins(i);
+							if ( PEv2_params_AxisEnableOutputPins(i)!=0)
+							{	//check if pin is parametrized in HAL
+								dev->Pins[ PEv2_params_AxisEnableOutputPins(i)-1].PinFunction = PK_PinCap_digitalOutput;
+								PK_SL_SetPinFunction(dev, PEv2_params_AxisEnableOutputPins(i)-1, PK_PinCap_digitalOutput);
+								setPinConfig=true;
+							}
+							
+							dev->PEv2.InvertAxisEnable[i] = PEv2_params_InvertAxisEnable(i);
 
-							PEv2_HomingAlgorithm(i) = PEv2_params.HomingAlgorithm[i];		   // Homing algorithm configuration
+							dev->PEv2.FilterLimitMSwitch[i] = PEv2_params_FilterLimitMSwitch(i);
+							dev->PEv2.FilterLimitPSwitch[i] = PEv2_params_FilterLimitPSwitch(i);
+							dev->PEv2.FilterHomeSwitch[i] = PEv2_params_FilterHomeSwitch(i);
+
+							dev->PEv2.HomingAlgorithm[i] = PEv2_params_HomingAlgorithm(i);
+								// MPG 1x mode here
+							dev->PEv2.HomeBackOffDistance[i] = PEv2_params_HomeBackOffDistance(i);
+							dev->PEv2.MPGjogDivider[i] = PEv2_params_MPGjogDivider(i);	
+							dev->PEv2.AxesConfig[i] =AxesConfig[i]
+							PEv2_params_AxesConfig(i) =AxesConfig[i]; 
+							PEv2_params_AxesSwitchConfig(i)=AxesSwitchConfig[i];
+							dev->PEv2.AxesSwitchConfig[i] =AxesSwitchConfig[i];
+							//dev->PEv2.AxesConfig[i] = 0;
+							//dev->PEv2.AxesSwitchConfig[i] =0;
+
+							dev->PEv2.param1 = i;
+							if(PK_PEv2_AxisConfigurationSet(dev) != PK_OK)
+							{
+								usleep(sleepdur); 
+								dev->PEv2.param1 = i;
+								if(PK_PEv2_AxisConfigurationSet(dev) != PK_OK)
+								{
+									usleep(sleepdur); 
+								}
+
+							}
 						}
-						PEv2_HomingSpeed(i) = PEv2_params.HomingSpeed[i];            // Homing speed per axis (in %)
-						PEv2_HomingReturnSpeed(i) = PEv2_params.HomingReturnSpeed[i];      // Homing return speed per axis (in % of the homing speed)
+						else
+						{
+							dev->PEv2.param1 = i;
+							if(PK_PEv2_AxisConfigurationGet(dev) == PK_OK)
+							{
+								// Read the structure
+								PEv2_params_AxesConfig(i) = dev->PEv2.AxesConfig[i];
 
-						// Convert parameters... assume little-endian format
-						PEv2_MaxSpeed(i) = PEv2_params.MaxSpeed[i];               // Maximum axis speed (in pulses per ms)
-						PEv2_MaxAcceleration(i) = PEv2_params.MaxAcceleration[i];        // Maximum axis acceleration (in pulses/ms/ms)
-						PEv2_MaxDecceleration(i) = PEv2_params.MaxDecceleration[i];       // Maximum axis deceleration (in pulses/ms/ms)
+								PEv2_params_AxesSwitchConfig(i)  = dev->PEv2.AxesSwitchConfig[i];
 
-						PEv2_SoftLimitMaximum(i) = PEv2_params.SoftLimitMaximum[i];       // Soft limit maximum position
-						PEv2_SoftLimitMinimum(i) = PEv2_params.SoftLimitMinimum[i];       // Soft limit minimum position
-						// MPG 1x mode here
-						PEv2_HomeBackOffDistance(i) = PEv2_params.HomeBackOffDistance[i];	   // Back-off distance after homing
-						PEv2_MPGjogDivider(i) = PEv2_params.MPGjogDivider[i];          // Divider for the MPG jogging (enhanced encoder resolution)
+								PEv2_params_PinHomeSwitch(i)  = dev->PEv2.PinHomeSwitch[i];
+								PEv2_params_PinLimitMSwitch(i)  = dev->PEv2.PinLimitMSwitch[i];
+								PEv2_params_PinLimitPSwitch(i)  = dev->PEv2.PinLimitPSwitch[i];
 
-					// 	PEv2_BacklashWidth(i) = PEv2_params.BacklashWidth[i];			// half of real backlash width
-						PEv2_BacklashRegister(i) = PEv2_params.BacklashRegister[i];		// current value of the backlash register
-						PEv2_BacklashAcceleration(i) = PEv2_params.BacklashAcceleration[i];	// in pulses per ms^2
-					usleep(sleepdur); 
-				}
-			
-				PEv2_nrOfAxes=PEv2_status.nrOfAxes;
-				PEv2_maxPulseFrequency=PEv2_status.maxPulseFrequency;
-				PEv2_bufferDepth=PEv2_status.bufferDepth;
-				PEv2_slotTiming=PEv2_status.slotTiming;
-		
-				bool setPeConfig = false;
-				usleep(sleepdur); 
-				a_debout = 136;
+								PEv2_params_HomingSpeed(i)  = dev->PEv2.HomingSpeed[i];
+								PEv2_params_HomingReturnSpeed(i)  = dev->PEv2.HomingReturnSpeed[i];
+
+								PEv2_params_MPGjogEncoder(i)  = dev->PEv2.MPGjogEncoder[i];
+
+								// Convert parameters... assume little-endian format
+								PEv2_params_MaxSpeed(i)  = dev->PEv2.MaxSpeed[i];
+								PEv2_params_MaxAcceleration(i)  = dev->PEv2.MaxAcceleration[i];
+								PEv2_params_MaxDecceleration(i)  = dev->PEv2.MaxDecceleration[i];
+
+								PEv2_params_SoftLimitMinimum(i)  = dev->PEv2.SoftLimitMinimum[i];
+								PEv2_params_SoftLimitMaximum(i)  = dev->PEv2.SoftLimitMaximum[i];
+
+								PEv2_params_MPGjogMultiplier(i)  = dev->PEv2.MPGjogMultiplier[i];
+
+								PEv2_params_AxisEnableOutputPins(i)  = dev->PEv2.AxisEnableOutputPins[i];
+								PEv2_params_InvertAxisEnable(i)  = dev->PEv2.InvertAxisEnable[i];
+
+								PEv2_params_FilterLimitMSwitch(i)  = dev->PEv2.FilterLimitMSwitch[i];
+								PEv2_params_FilterLimitPSwitch(i)  = dev->PEv2.FilterLimitPSwitch[i];
+								PEv2_params_FilterHomeSwitch(i)  = dev->PEv2.FilterHomeSwitch[i];
+
+								PEv2_params_HomingAlgorithm(i)  = dev->PEv2.HomingAlgorithm[i];
+								// MPG 1x mode here
+								PEv2_params_HomeBackOffDistance(i)  = dev->PEv2.HomeBackOffDistance[i];
+								PEv2_params_MPGjogDivider(i)  = dev->PEv2.MPGjogDivider[i];	
+								usleep(sleepdur); 
+							}
+						}
+					}
+					//dev->PEv2.param1 = 0;
+					if(PK_PEv2_StatusGet(dev) == PK_OK)
+					{
+						PEv2_params_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+						PEv2_params_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+						PEv2_params_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
+						//PEv2_params_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
+						PEv2_params_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
+						//PEv2_params_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
+					}
+
+					if (setPinConfig==true)
+					{
+						if(PK_PinConfigurationSet(dev) != PK_OK)
+						{
+							usleep(sleepdur); 
+							if(PK_PinConfigurationSet(dev) != PK_OK)
+							{
+								usleep(sleepdur); 
+							}
+							else
+							{
+								setPinConfig=false;
+							}
+						}
+						else
+						{
+							setPinConfig=false;
+						}
+					}
 			 }
 			 
 			 /*	if (info_MatrixKeyboard!=0)
@@ -2499,157 +2683,7 @@ void user_mainloop(void)
 		 if ( info_PulseEnginev2!=0 && PEv2_params_ApplyIniSettings!=0 )
 			 {
 
-				//***************************************************************************
-				// Setting Parameters from INI
-				PEv2_params.ApplyIniSettings =PEv2_params_ApplyIniSettings;
-				PEv2_params.COORDINATES = PEv2_params_COORDINATES;
-				PEv2_params.LINEAR_UNITS = PEv2_params_LINEAR_UNITS;
-				PEv2_params.ANGULAR_UNITS = PEv2_params_ANGULAR_UNITS;
-				PEv2_params.CYCLE_TIME = PEv2_params_CYCLE_TIME;
-				PEv2_params.DEFAULT_LINEAR_VELOCITY = PEv2_params_DEFAULT_LINEAR_VELOCITY;
-				PEv2_params.MAX_LINEAR_VELOCITY = PEv2_params_MAX_LINEAR_VELOCITY;
 
-				if (PEv2_params_ApplyIniSettings != 0)
-				{
-					//PEv2_params.PulseEngineEnabled = PEv2_nrOfAxes;
-					PEv2_params.PulseGeneratorType = PEv2_PulseGeneratorType;  // Pulse engine generator type (0: external, 1: internal 3ch)
-					PEv2_params.PG_swap_stepdir = PEv2_PG_swap_stepdir;
-					PEv2_params.PG_extended_io = PEv2_PG_extended_io;
-				
-					PEv2_params.EmergencyInputPin = PEv2_EmergencyInputPin;
-					PEv2_status.EmergencySwitchPolarity = PEv2_EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
-				
-					PEv2_params.ProbeInput = PEv2_ProbeInput;
-					PEv2_params.ProbeInputPolarity = PEv2_ProbeInputPolarity;
-				}
-
-				for(i=0;i< PEv2_nrOfAxes;i++)
-				{
-					PEv2_params.TYPE[i] = PEv2_params_TYPE(i);			//LINEAR / ANGULAR
-					PEv2_params.HOME[i] = PEv2_params_HOME(i);
-					PEv2_params.FERROR[i] = PEv2_params_FERROR(i);
-					PEv2_params.MIN_FERROR[i] = PEv2_params_MIN_FERROR(i);
-					PEv2_params.MAX_VELOCITY[i] = PEv2_params_MAX_VELOCITY(i);
-					PEv2_params.MAX_ACCELERATION[i] = PEv2_params_MAX_ACCELERATION(i);
-					PEv2_params.STEPGEN_MAXVEL[i] = PEv2_params_STEPGEN_MAXVEL(i);
-					PEv2_params.STEPGEN_MAXACCEL[i] = PEv2_params_STEPGEN_MAXACCEL(i);
-					PEv2_params.Feedback_Encoder_Id[i] = PEv2_params_Feedback_Encoder_Id(i);
-
-					//		float P(i);
-					//		float I(i);
-					//		float D(i);
-					//		float FF0(i);
-					//		float FF1(i);
-					//		float FF2(i);
-					//		float BIAS(i);
-					PEv2_params.DEADBAND[i] = PEv2_params_DEADBAND(i);
-					PEv2_params.MAX_OUTPUT[i] = PEv2_params_MAX_OUTPUT(i);
-					PEv2_params.ENCODER_SCALE[i] = PEv2_params_ENCODER_SCALE(i);
-					// these are in nanoseconds
-					PEv2_params.DIRSETUP[i] = PEv2_params_DIRSETUP(i);					// (ns)
-					PEv2_params.DIRHOLD[i] = PEv2_params_DIRHOLD(i);					// (ns)
-					PEv2_params.STEPLEN[i] = PEv2_params_STEPLEN(i);					// (ns)
-					PEv2_params.STEPSPACE[i] = PEv2_params_STEPSPACE(i);					// (ns)
-					PEv2_params.STEP_SCALE[i] = PEv2_params_STEP_SCALE(i);					// (pulses/mm)
-					PEv2_params.MIN_LIMIT[i] = PEv2_params_MIN_LIMIT(i);					// position (mm)
-					PEv2_params.MAX_LIMIT[i] = PEv2_params_MAX_LIMIT(i);					// position (mm)
-					PEv2_params.HOME_OFFSET[i] = PEv2_params_HOME_OFFSET(i);				// position (mm)
-					PEv2_params.HOME_SEARCH_VEL[i] = PEv2_params_HOME_SEARCH_VEL(i);			// position (mm)
-					PEv2_params.HOME_FINAL_VEL[i] = PEv2_params_HOME_FINAL_VEL(i);				// position (mm)
-					PEv2_params.HOME_FINAL_VEL[i] = PEv2_params_HOME_FINAL_VEL(i);				// position (mm)
-					PEv2_params.HOME_USE_INDEX[i] = PEv2_params_HOME_USE_INDEX(i);				// YES / NO
-					PEv2_params.HOME_IGNORE_LIMITS[i] = PEv2_params_HOME_IGNORE_LIMITS(i);			// YES / NO
-					if (PEv2_params_ApplyIniSettings != 0)
-					{
-						PEv2_params.PinHomeSwitch[i] = PEv2_PinHomeSwitch(i) ;          // Home switch pin (0 for external dedicated input)
-						PEv2_params.PinLimitMSwitch[i] = PEv2_PinLimitMSwitch(i) ;        // Limit- switch pin (0 for external dedicated input)
-						PEv2_params.PinLimitPSwitch[i] = PEv2_PinLimitPSwitch(i) ;        // Limit+ switch pin (0 for external dedicated input)
-						PEv2_params.MPGjogEncoder[i] = PEv2_MPGjogEncoder(i);
-
-						PEv2_params.MPGjogMultiplier[i] = PEv2_MPGjogMultiplier(i) ;       // MPG jog multiplier value
-
-						PEv2_params.AxisEnableOutputPins[i] = PEv2_AxisEnableOutputPins(i);   // Axis enabled output pin (0 for external dedicated output)
-						PEv2_params.InvertAxisEnable[i] = PEv2_InvertAxisEnable(i);       // Invert axis enable signal
-
-						PEv2_params.FilterLimitMSwitch[i] = PEv2_FilterLimitMSwitch(i);	   // Digital filter for limit- switch
-						PEv2_params.FilterLimitPSwitch[i] = PEv2_FilterLimitPSwitch(i);	   // Digital filter for limit+ switch
-						PEv2_params.FilterHomeSwitch[i] = PEv2_FilterHomeSwitch(i);	   // Digital filter for home switch
-					}
-				}
-				
-
-
-				PEv2_params = GetConfig_PEv2(PEv2_params);
-
-
-				//PK_PEv2_AxisConfigurationGet
-				PEv2_BacklashCompensationEnabled=PEv2_params.BacklashCompensationEnabled;
-				if (PEv2_params_ApplyIniSettings = 0)
-				{
-					PEv2_PulseEngineEnabled=PEv2_status.PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
-					PEv2_ChargePumpEnabled=PEv2_status.ChargePumpEnabled;         // Charge pump output enabled
-					PEv2_PulseGeneratorType=PEv2_status.PulseGeneratorType;        // Pulse engine generator type (0: external, 1: internal 3ch)
-					PEv2_EmergencyInputPin = PEv2_params.EmergencyInputPin;
-					PEv2_EmergencySwitchPolarity=PEv2_status.EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
-					PEv2_BacklashCompensationEnabled=PEv2_params.BacklashCompensationEnabled;
-					PEv2_ProbeInput = PEv2_params.ProbeInput;
-					PEv2_ProbeInputPolarity = PEv2_params.ProbeInputPolarity;
-				}
-
-				
-				
-				for(i=0;i< PEv2_nrOfAxes;i++)
-				{
-					// Read the structure
-						PEv2_AxesConfig(i) = PEv2_params.AxesConfig[i];             // Axis configuration - see ePK_PEv2_AxisConfig
-						//PEv2_AxesConfig(i) = PK_AC_ENABLED | PK_AC_INTERNAL_PLANNER
-						//PEv2_AxesSwitchConfig(i) = PEv2_params.AxesSwitchConfig[i];       // Axis switch configuration - see ePK_PEv2_AxisSwitchOptions
-
-						if (PEv2_params_ApplyIniSettings = 0)
-						{
-							PEv2_PinHomeSwitch(i) = PEv2_params.PinHomeSwitch[i];          // Home switch pin (0 for external dedicated input)
-							PEv2_PinLimitMSwitch(i) = PEv2_params.PinLimitMSwitch[i];        // Limit- switch pin (0 for external dedicated input)
-							PEv2_PinLimitPSwitch(i) = PEv2_params.PinLimitPSwitch[i];        // Limit+ switch pin (0 for external dedicated input)
-
-							PEv2_MPGjogEncoder(i) = PEv2_params.MPGjogEncoder[i];          // MPG jog encoder ID
-
-
-							PEv2_MPGjogMultiplier(i) = PEv2_params.MPGjogMultiplier[i];       // MPG jog multiplier value
-
-							PEv2_AxisEnableOutputPins(i) = PEv2_params.AxisEnableOutputPins[i];   // Axis enabled output pin (0 for external dedicated output)
-							PEv2_InvertAxisEnable(i) = PEv2_params.InvertAxisEnable[i];       // Invert axis enable signal
-
-							PEv2_FilterLimitMSwitch(i) = PEv2_params.FilterLimitMSwitch[i];	   // Digital filter for limit- switch
-							PEv2_FilterLimitPSwitch(i) = PEv2_params.FilterLimitPSwitch[i];	   // Digital filter for limit+ switch
-							PEv2_FilterHomeSwitch(i) = PEv2_params.FilterHomeSwitch[i];	   // Digital filter for home switch
-
-							PEv2_HomingAlgorithm(i) = PEv2_params.HomingAlgorithm[i];		   // Homing algorithm configuration
-
-
-						}
-						PEv2_HomingSpeed(i) = PEv2_params.HomingSpeed[i];            // Homing speed per axis (in %)
-						PEv2_HomingReturnSpeed(i) = PEv2_params.HomingReturnSpeed[i];      // Homing return speed per axis (in % of the homing speed)
-
-						// Convert parameters... assume little-endian format
-						PEv2_MaxSpeed(i) = PEv2_params.MaxSpeed[i];               // Maximum axis speed (in pulses per ms)
-						PEv2_MaxAcceleration(i) = PEv2_params.MaxAcceleration[i];        // Maximum axis acceleration (in pulses/ms/ms)
-						PEv2_MaxDecceleration(i) = PEv2_params.MaxDecceleration[i];       // Maximum axis deceleration (in pulses/ms/ms)
-
-						PEv2_SoftLimitMaximum(i) = PEv2_params.SoftLimitMaximum[i];       // Soft limit maximum position
-						PEv2_SoftLimitMinimum(i) = PEv2_params.SoftLimitMinimum[i];       // Soft limit minimum position
-						// MPG 1x mode here
-						PEv2_HomeBackOffDistance(i) = PEv2_params.HomeBackOffDistance[i];	   // Back-off distance after homing
-						PEv2_MPGjogDivider(i) = PEv2_params.MPGjogDivider[i];          // Divider for the MPG jogging (enhanced encoder resolution)
-
-					// 	PEv2_BacklashWidth(i) = PEv2_params.BacklashWidth[i];			// half of real backlash width
-						PEv2_BacklashRegister(i) = PEv2_params.BacklashRegister[i];		// current value of the backlash register
-						PEv2_BacklashAcceleration(i) = PEv2_params.BacklashAcceleration[i];	// in pulses per ms^2
-				}
-			
-				PEv2_nrOfAxes=PEv2_status.nrOfAxes;
-				PEv2_maxPulseFrequency=PEv2_status.maxPulseFrequency;
-				PEv2_bufferDepth=PEv2_status.bufferDepth;
-				PEv2_slotTiming=PEv2_status.slotTiming;
 		
 				bool setPeConfig = false;
 				PK_SaveConfiguration(dev);

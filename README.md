@@ -25,7 +25,7 @@ reading:
 - [x] Reading digital inputs
 - [x] Writing digital outputs
 - [x] Reading analog inputs
-- [x] PoExtBus writing (PoRleay8 does not work as PoExtBus-Smart should be used acc to manual)
+- [x] PoExtBus writing
 - [x] PoExtBus reading
 - [ ] LCD operations
 - [p] Matrix LED
@@ -51,3 +51,7 @@ x ... available
 i ... implemented but not tested
 ! ... implemented but not working yet
 p ... planned
+
+
+PoRelay8
+PoRelay
