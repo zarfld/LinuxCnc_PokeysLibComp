@@ -1679,14 +1679,14 @@ void user_mainloop(void)
 						PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 						PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 						//PEv2_params_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
-						PEv2_params_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
+						PEv2_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
 						//PEv2_params_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 
 						PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 						PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 						PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 						//PEv2_params_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
-						PEv2_params_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
+						PEv2_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
 						//PEv2_params_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 					}
 
@@ -1775,27 +1775,27 @@ void user_mainloop(void)
 							}
 
 				
-							if ( PEv2_params_PinHomeSwitch(i)!=0)
+							if ( PEv2_PinHomeSwitch(i)!=0)
 							{	
 							//check if pin is parametrized in HAL
-								if ( PEv2_params_PinHomeSwitch(i)!=PEv2_params_PinLimitMSwitch(i) && PEv2_params_PinHomeSwitch(i)!=PEv2_params_PinLimitPSwitch(i))
+								if ( PEv2_PinHomeSwitch(i)!=PEv2_PinLimitMSwitch(i) && PEv2_PinHomeSwitch(i)!=PEv2_params_PinLimitPSwitch(i))
 								{
-									dev->PEv2.PinHomeSwitch[i] = PEv2_params_PinHomeSwitch(i);
+									dev->PEv2.PinHomeSwitch[i] = PEv2_PinHomeSwitch(i);
 								}
-								else if ( PEv2_params_PinHomeSwitch(i)==PEv2_params_PinLimitPSwitch(i))
+								else if ( PEv2_PinHomeSwitch(i)==PEv2_params_PinLimitPSwitch(i))
 								{
 									//dev->PEv2.PinHomeSwitch[i]=0;
 									AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i] , 4, true); // 16 Home switch is shared with Limit+ switch
 								}
-								else if ( PEv2_params_PinHomeSwitch(i)==PEv2_params_PinLimitMSwitch(i))
+								else if ( PEv2_PinHomeSwitch(i)==PEv2_PinLimitMSwitch(i))
 								{
 									//dev->PEv2.PinHomeSwitch(i)=0;
 									AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i] , 3, true); // 8 Home switch is shared with Limit- switch
 				
 								}
 								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i] , 2, true); // | PK_ASO_SWITCH_HOME;
-								dev->Pins[ PEv2_params_PinHomeSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
-								PK_SL_SetPinFunction(dev, PEv2_params_PinHomeSwitch(i)-1, PK_PinCap_digitalInput);
+								dev->Pins[ PEv2_PinHomeSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
+								PK_SL_SetPinFunction(dev, PEv2_PinHomeSwitch(i)-1, PK_PinCap_digitalInput);
 								setPinConfig=true;
 							}
 							else
@@ -1803,12 +1803,12 @@ void user_mainloop(void)
 								dev->PEv2.PinHomeSwitch[i]=0;
 							}
 
-							dev->PEv2.PinLimitMSwitch[i] = PEv2_params_PinLimitMSwitch(i);
-							if ( PEv2_params_PinLimitMSwitch(i)!=0)
+							dev->PEv2.PinLimitMSwitch[i] = PEv2_PinLimitMSwitch(i);
+							if ( PEv2_PinLimitMSwitch(i)!=0)
 							{	//check if pin is parametrized in HAL
 								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i] , 0, true); // | PK_ASO_SWITCH_LIMIT_N;
-								dev->Pins[ PEv2_params_PinLimitMSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
-								PK_SL_SetPinFunction(dev, PEv2_params_PinLimitMSwitch(i)-1, PK_PinCap_digitalInput);
+								dev->Pins[ PEv2_PinLimitMSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
+								PK_SL_SetPinFunction(dev, PEv2_PinLimitMSwitch(i)-1, PK_PinCap_digitalInput);
 
 								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i] , 5, true); // 32 Invert limit- switch polarity
 
@@ -1883,8 +1883,8 @@ void user_mainloop(void)
 
 								PEv2_params_AxesSwitchConfig(i)  = dev->PEv2.AxesSwitchConfig[i];
 
-								PEv2_params_PinHomeSwitch(i)  = dev->PEv2.PinHomeSwitch[i];
-								PEv2_params_PinLimitMSwitch(i)  = dev->PEv2.PinLimitMSwitch[i];
+								PEv2_PinHomeSwitch(i)  = dev->PEv2.PinHomeSwitch[i];
+								PEv2_PinLimitMSwitch(i)  = dev->PEv2.PinLimitMSwitch[i];
 								PEv2_params_PinLimitPSwitch(i)  = dev->PEv2.PinLimitPSwitch[i];
 
 								PEv2_params_HomingSpeed(i)  = dev->PEv2.HomingSpeed[i];
@@ -1924,7 +1924,7 @@ void user_mainloop(void)
 						PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 						PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 						//PEv2_params_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
-						PEv2_params_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
+						PEv2_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
 						//PEv2_params_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 					}
 
