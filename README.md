@@ -45,7 +45,6 @@ reading:
 - [p] PoIL operations
 - [i] 1-wire operations
 - [i] PoNET bus support
-- [!] PoRelay8 & PoExtBus-Smart (missing in pokeyslib - see PoRelay Manual for  ommand-reference)
 
 x ... available
 i ... implemented but not tested
@@ -53,5 +52,9 @@ i ... implemented but not tested
 p ... planned
 
 
-PoRelay8
-PoRelay
+PoRelay8:
+- needs to be connected in Parallel to kbd48CNC with white PoExt Cable OR using Canbus (connecting it using the Red PoExtBus cable to the i2C extender which is delivered with kbd48CNC will not work)
+- for CanBus Firmware update to Version6 or higher is necessary on all devices (See manuals or information on PoLabs homepage for more detailed information)
+
+kbd48CNC:
+- currently it is used as PoNetDevice
