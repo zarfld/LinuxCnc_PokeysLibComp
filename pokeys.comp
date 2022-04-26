@@ -1712,10 +1712,10 @@ void user_mainloop(void)
 
 								PEv2_SoftLimitMaximum(i) = PEv2_params_MAX_LIMIT(i)* PEv2_params_STEP_SCALE(i);		// Soft limit maximum position
 								PEv2_SoftLimitMinimum(i) = PEv2_params_MIN_LIMIT(i)* PEv2_params_STEP_SCALE(i);		// Soft limit minimum position
-								PEv2_params_HomeOffsets(i) = PEv2_params_HOME_OFFSET(i)* PEv2_params_STEP_SCALE(i);		// Home position offset
+								PEv2_HomeOffsets(i) = PEv2_params_HOME_OFFSET(i)* PEv2_params_STEP_SCALE(i);		// Home position offset
 
-								PEv2_params_HomingSpeed(i) = PEv2_params_HOME_SEARCH_VEL(i)*100/ PEv2_params_MAX_VELOCITY(i) ;			// Homing speed per axis (in %)
-								PEv2_params_HomingReturnSpeed(i) = PEv2_params_HOME_LATCH_VEL(i)*100/ PEv2_params_HOME_SEARCH_VEL(i);	// Homing return speed per axis (in % of the homing speed)
+								PEv2_HomingSpeed(i) = PEv2_params_HOME_SEARCH_VEL(i)*100/ PEv2_params_MAX_VELOCITY(i) ;			// Homing speed per axis (in %)
+								PEv2_HomingReturnSpeed(i) = PEv2_params_HOME_LATCH_VEL(i)*100/ PEv2_params_HOME_SEARCH_VEL(i);	// Homing return speed per axis (in % of the homing speed)
 
 								// Convert parameters... assume little-endian format
 								dev->PEv2.MaxSpeed[i] = PEv2_MaxSpeed(i);
@@ -1724,10 +1724,10 @@ void user_mainloop(void)
 
 								dev->PEv2.SoftLimitMinimum[i] = PEv2_SoftLimitMinimum(i);
 								dev->PEv2.SoftLimitMaximum[i] = PEv2_SoftLimitMaximum(i);
-								dev->PEv2.HomeOffsets[i] = PEv2_params_HomeOffsets(i);
+								dev->PEv2.HomeOffsets[i] = PEv2_HomeOffsets(i);
 
-								dev->PEv2.HomingSpeed[i] = PEv2_params_HomingSpeed(i);
-								dev->PEv2.HomingReturnSpeed[i] = PEv2_params_HomingReturnSpeed(i);
+								dev->PEv2.HomingSpeed[i] = PEv2_HomingSpeed(i);
+								dev->PEv2.HomingReturnSpeed[i] = PEv2_HomingReturnSpeed(i);
 
 							}
 
@@ -1827,14 +1827,14 @@ void user_mainloop(void)
 								setPinConfig=true;
 							}
 
-							dev->PEv2.HomingSpeed[i] = PEv2_params_HomingSpeed(i);
-							dev->PEv2.HomingReturnSpeed[i] = PEv2_params_HomingReturnSpeed(i);
+							dev->PEv2.HomingSpeed[i] = PEv2_HomingSpeed(i);
+							dev->PEv2.HomingReturnSpeed[i] = PEv2_HomingReturnSpeed(i);
 
-							dev->PEv2.MPGjogEncoder[i] = PEv2_params_MPGjogEncoder(i);
+							dev->PEv2.MPGjogEncoder[i] = PEv2_MPGjogEncoder(i);
 
 
 
-							dev->PEv2.MPGjogMultiplier[i] = PEv2_params_MPGjogMultiplier(i);
+							dev->PEv2.MPGjogMultiplier[i] = PEv2_MPGjogMultiplier(i);
 
 							dev->PEv2.AxisEnableOutputPins[i] = PEv2_params_AxisEnableOutputPins(i);
 							if ( PEv2_params_AxisEnableOutputPins(i)!=0)
@@ -1887,10 +1887,10 @@ void user_mainloop(void)
 								PEv2_PinLimitMSwitch(i)  = dev->PEv2.PinLimitMSwitch[i];
 								PEv2_params_PinLimitPSwitch(i)  = dev->PEv2.PinLimitPSwitch[i];
 
-								PEv2_params_HomingSpeed(i)  = dev->PEv2.HomingSpeed[i];
-								PEv2_params_HomingReturnSpeed(i)  = dev->PEv2.HomingReturnSpeed[i];
+								PEv2_HomingSpeed(i)  = dev->PEv2.HomingSpeed[i];
+								PEv2_HomingReturnSpeed(i)  = dev->PEv2.HomingReturnSpeed[i];
 
-								PEv2_params_MPGjogEncoder(i)  = dev->PEv2.MPGjogEncoder[i];
+								PEv2_MPGjogEncoder(i)  = dev->PEv2.MPGjogEncoder[i];
 
 								// Convert parameters... assume little-endian format
 								PEv2_MaxSpeed(i)  = dev->PEv2.MaxSpeed[i];
@@ -1900,7 +1900,7 @@ void user_mainloop(void)
 								PEv2_SoftLimitMinimum(i)  = dev->PEv2.SoftLimitMinimum[i];
 								PEv2_SoftLimitMaximum(i)  = dev->PEv2.SoftLimitMaximum[i];
 
-								PEv2_params_MPGjogMultiplier(i)  = dev->PEv2.MPGjogMultiplier[i];
+								PEv2_MPGjogMultiplier(i)  = dev->PEv2.MPGjogMultiplier[i];
 
 								PEv2_params_AxisEnableOutputPins(i)  = dev->PEv2.AxisEnableOutputPins[i];
 								PEv2_params_InvertAxisEnable(i)  = dev->PEv2.InvertAxisEnable[i];
