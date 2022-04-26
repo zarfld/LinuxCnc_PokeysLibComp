@@ -223,6 +223,12 @@ pin io unsigned PEv2.param3;
 pin io unsigned PEv2.AxisEnabledStatesMask;		// Bit-mapped states, where axis enabled and charge pump signals are active
 pin io unsigned PEv2.PulseEngineStateSetup;		// Pulse engine new state configuration
 pin out unsigned PEv2.#.SoftLimitStatus [8] ;				// Bit-mapped soft-limit statuses per axes
+/* 			PEv2_DedicatedLimitNInputs(i) =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
+			PEv2_DedicatedLimitPInputs(i) =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
+			PEv2_DedicatedHomeInputs(i) =  Get_BitOfByte(bm_DedicatedHomeInputs,i);*/
+pin out unsigned PEv2.#.DedicatedLimitNInputs [8] ;
+pin out unsigned PEv2.#.DedicatedLimitPInputs [8] ;
+pin out unsigned PEv2.#.DedicatedHomeInputs [8] ;
 pin io unsigned PEv2.ExternalRelayOutputs;			// External relay outputs
 pin io unsigned PEv2.ExternalOCOutputs;			// External open-collector outputs
 pin io unsigned PEv2.PulseEngineBufferSize;		// Buffer size information...
@@ -1645,9 +1651,9 @@ void user_mainloop(void)
 					else
 					{
 
-						if ((PEv2_CurrentPosition[i] - PEv2_ReferencePositionSpeed[i]) < 10 )
+						if ((PEv2_CurrentPosition(i) - PEv2_ReferencePositionSpeed(i)) < 10 )
 						{
-							PEv2_ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i) * PEv2_params.STEP_SCALE(i);
+							PEv2_ReferencePositionSpeed(i) = PEv2_joint_pos_cmd(i) * PEv2_params.STEP_SCALE(i);
 							dev->PEv2.ReferencePositionSpeed[i] = PEv2_ReferencePositionSpeed(i);
 							dev->PEv2.PositionSetup[i] = PEv2_PositionSetup(i);
 							//doPositionSet =true;
