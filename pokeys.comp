@@ -661,665 +661,7 @@ int Update_PoNet()
 	return 0;
 }
 
-PK_PEv2_Parameters GetConfig_PEv2(PK_PEv2_Parameters params)
-{
-	
-	if (params.ApplyIniSettings!=0)
-	{
-		//dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
-		//PK_PEv2_PulseEngineSetup(dev);
-		usleep(sleepdur); 
-		if ( params.ProbeInput!=0)
-		{	//check if pin is parametrized in HAL
-			dev->Pins[ params.ProbeInput-1].PinFunction = PK_PinCap_digitalInput;
-			PK_SL_SetPinFunction(dev, params.ProbeInput-1, PK_PinCap_digitalInput);
-			setPinConfig=true;
-		}
 
-		dev->PEv2.EmergencyInputPin = params.EmergencyInputPin;
-		if ( params.EmergencyInputPin!=0)
-		{	//check if pin is parametrized in HAL
-			dev->Pins[params.EmergencyInputPin-1].PinFunction = PK_PinCap_digitalInput;
-			PK_SL_SetPinFunction(dev, params.EmergencyInputPin-1, PK_PinCap_digitalInput);
-			setPinConfig=true;
-		}
-		if ( params.EmergencyOutputPin!=0)
-		{	//check if pin is parametrized in HAL
-			dev->Pins[ params.EmergencyOutputPin-1].PinFunction = PK_PinCap_digitalOutput;
-			PK_SL_SetPinFunction(dev, params.EmergencyInputPin-1, PK_PinCap_digitalOutput);
-			setPinConfig=true;
-		}
-		params.PulseEngineEnabled = dev->PEv2.info.nrOfAxes;
-		if (params.PulseEngineEnabled != 0)
-		{
-			dev->PEv2.PulseEngineActivated=1;
-		}
-		if (params.PulseGeneratorType == 0)
-		{
-			if (params.PG_swap_stepdir != 0)
-			{
-				params.PulseGeneratorType=Set_BitOfByte(params.PulseGeneratorType, 6, true); // swap step / dir signals
-			}
-			if (params.PG_extended_io != 0)
-			{
-				params.PulseGeneratorType=Set_BitOfByte(params.PulseGeneratorType, 7, true); // extended io
-			}
-		}
-		dev->PEv2.PulseEngineEnabled = params.PulseEngineEnabled;
-		dev->PEv2.ChargePumpEnabled = params.ChargePumpEnabled;
-		dev->PEv2.PulseGeneratorType = params.PulseGeneratorType;
-		//dev->PEv2.PulseEngineBufferSize = params.PulseEngineBufferSize;
-		dev->PEv2.EmergencySwitchPolarity = params.EmergencySwitchPolarity;
-		//dev->PEv2.AxisEnabledStatesMask = params.AxisEnabledStatesMask;
-		if(PK_PEv2_PulseEngineSetup(dev) != PK_OK)
-		{
-			usleep(sleepdur); 
-		}
-		if(PK_PEv2_PulseEngineSetup(dev) == PK_OK)
-		{
-			usleep(sleepdur); 
-			PK_PEv2_PulseEngineReboot(dev);
-			usleep(1000000); 
-		}
-
- 
-		for (i = 0; i < dev->PEv2.info.nrOfAxes; i++)
-		{
-			// Convert mm/s -> pulses/s
-			if(params.STEP_SCALE[i]!=0)
-			{
-				params.MaxSpeed[i] = params.STEPGEN_MAXVEL[i]* params.STEP_SCALE[i]/1000;				// Maximum axis speed convert (mm/s) to (pulses per ms)
-				params.MaxAcceleration[i] = params.STEPGEN_MAXACCEL[i]* params.STEP_SCALE[i] /1000000;	// Maximum axis acceleration convert (mm/s�) to (in pulses/ms/ms)
-				params.MaxDecceleration[i] = params.STEPGEN_MAXACCEL[i]* params.STEP_SCALE[i] /1000000;	// Maximum axis deceleration convert (mm/s�) to (in pulses/ms/ms)
-
-				params.SoftLimitMaximum[i] = params.MAX_LIMIT[i]* params.STEP_SCALE[i];		// Soft limit maximum position
-				params.SoftLimitMinimum[i] = params.MIN_LIMIT[i]* params.STEP_SCALE[i];		// Soft limit minimum position
-				params.HomeOffsets[i] = params.HOME_OFFSET[i]* params.STEP_SCALE[i];		// Home position offset
-
-				params.HomingSpeed[i] = params.HOME_SEARCH_VEL[i]*100/ params.MAX_VELOCITY[i] ;			// Homing speed per axis (in %)
-				params.HomingReturnSpeed[i] = params.HOME_LATCH_VEL[i]*100/ params.HOME_SEARCH_VEL[i];	// Homing return speed per axis (in % of the homing speed)
-
-				// Convert parameters... assume little-endian format
-				dev->PEv2.MaxSpeed[i] = params.MaxSpeed[i];
-				dev->PEv2.MaxAcceleration[i] = params.MaxAcceleration[i];
-				dev->PEv2.MaxDecceleration[i] = params.MaxDecceleration[i];
-
-				dev->PEv2.SoftLimitMinimum[i] = params.SoftLimitMinimum[i];
-				dev->PEv2.SoftLimitMaximum[i] = params.SoftLimitMaximum[i];
-				dev->PEv2.HomeOffsets[i] = params.HomeOffsets[i];
-
-				dev->PEv2.HomingSpeed[i] = params.HomingSpeed[i];
-				dev->PEv2.HomingReturnSpeed[i] = params.HomingReturnSpeed[i];
-
-			}
-
-			params.AxesConfig[i]=0;
-			// Read the structure
-			/*
-			    PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled 
-				PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
-				PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
-				PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
-				PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
-				PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
-				PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
-			*/
-			//params.AxesConfig[i] = PK_AC_ENABLED_MASKED;
-			if (params.STEPGEN_MAXVEL[i] !=0)
-			{
-				params.AxesConfig[i] =Set_BitOfByte(params.AxesConfig[i] , 0, true);  // PK_AC_ENABLED ;
-				params.AxesConfig[i] =Set_BitOfByte(params.AxesConfig[i] , 2, true);  // PK_AC_INTERNAL_PLANNER;
-
-			}
-
-			
-			if (params.Feedback_Encoder_Id[i] = 0)
-			{
-				params.AxesConfig[i] = Set_BitOfByte(params.AxesConfig[i] , 3, true);  // PK_AC_POSITION_MODE;
-			}
-			
-
-			/*
-			    PK_ASO_SWITCH_LIMIT_N        = (1 << 0),   // 1 Limit- switch
-				PK_ASO_SWITCH_LIMIT_P        = (1 << 1),   // 2 Limit+ switch
-				PK_ASO_SWITCH_HOME           = (1 << 2),   // 4 Home switch
-				PK_ASO_SWITCH_COMBINED_LN_H  = (1 << 3),   // 8 Home switch is shared with Limit- switch
-				PK_ASO_SWITCH_COMBINED_LP_H  = (1 << 4),   // 16 Home switch is shared with Limit+ switch
-				PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
-				PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
-				PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
-			*/
-			params.AxesSwitchConfig[i] = 0;
-			
-			if (params.SoftLimitMaximum[i] !=0 | params.SoftLimitMaximum[i] !=0)
-			{
-				params.AxesConfig[i] = Set_BitOfByte(params.AxesConfig[i] , 3, true); // PK_AC_SOFT_LIMIT_ENABLED;
-			}
-
-			
-			if ( params.PinHomeSwitch[i]!=0)
-			{	
-			//check if pin is parametrized in HAL
-				if ( params.PinHomeSwitch[i]!=params.PinLimitMSwitch[i] && params.PinHomeSwitch[i]!=params.PinLimitPSwitch[i])
-				{
-					dev->PEv2.PinHomeSwitch[i] = params.PinHomeSwitch[i];
-				}
-				else if ( params.PinHomeSwitch[i]==params.PinLimitPSwitch[i])
-				{
-					//dev->PEv2.PinHomeSwitch[i]=0;
-					params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 4, true); // 16 Home switch is shared with Limit+ switch
-				}
-				else if ( params.PinHomeSwitch[i]==params.PinLimitMSwitch[i])
-				{
-					//dev->PEv2.PinHomeSwitch[i]=0;
-					params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 3, true); // 8 Home switch is shared with Limit- switch
-			
-				}
-				params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 2, true); // | PK_ASO_SWITCH_HOME;
-				dev->Pins[ params.PinHomeSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
-				PK_SL_SetPinFunction(dev, params.PinHomeSwitch[i]-1, PK_PinCap_digitalInput);
-				setPinConfig=true;
-			}
-			else
-			{
-				dev->PEv2.PinHomeSwitch[i]=0;
-			}
-
-			dev->PEv2.PinLimitMSwitch[i] = params.PinLimitMSwitch[i];
-			if ( params.PinLimitMSwitch[i]!=0)
-			{	//check if pin is parametrized in HAL
-				params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 0, true); // | PK_ASO_SWITCH_LIMIT_N;
-				dev->Pins[ params.PinLimitMSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
-				PK_SL_SetPinFunction(dev, params.PinLimitMSwitch[i]-1, PK_PinCap_digitalInput);
-
-				params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 5, true); // 32 Invert limit- switch polarity
-
-				setPinConfig=true;
-			}
-
-			dev->PEv2.PinLimitPSwitch[i] = params.PinLimitPSwitch[i];
-			if ( params.PinLimitPSwitch[i]!=0)
-			{	//check if pin is parametrized in HAL
-				params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 1, true); // | PK_ASO_SWITCH_LIMIT_P;
-				dev->Pins[ params.PinLimitPSwitch[i]-1].PinFunction = PK_PinCap_digitalInput;
-				PK_SL_SetPinFunction(dev, params.PinLimitPSwitch[i]-1, PK_PinCap_digitalInput);
-
-				params.AxesSwitchConfig[i] = Set_BitOfByte(params.AxesSwitchConfig[i] , 6, true); // 32 Invert limit+ switch polarity
-
-				setPinConfig=true;
-			}
-
-			dev->PEv2.HomingSpeed[i] = params.HomingSpeed[i];
-			dev->PEv2.HomingReturnSpeed[i] = params.HomingReturnSpeed[i];
-
-			dev->PEv2.MPGjogEncoder[i] = params.MPGjogEncoder[i];
-
-
-
-			dev->PEv2.MPGjogMultiplier[i] = params.MPGjogMultiplier[i];
-
-			dev->PEv2.AxisEnableOutputPins[i] = params.AxisEnableOutputPins[i];
-			if ( params.AxisEnableOutputPins[i]!=0)
-			{	//check if pin is parametrized in HAL
-				dev->Pins[ params.AxisEnableOutputPins[i]-1].PinFunction = PK_PinCap_digitalOutput;
-				PK_SL_SetPinFunction(dev, params.AxisEnableOutputPins[i]-1, PK_PinCap_digitalOutput);
-				setPinConfig=true;
-			}
-
-			dev->PEv2.InvertAxisEnable[i] = params.InvertAxisEnable[i];
-
-			dev->PEv2.FilterLimitMSwitch[i] = params.FilterLimitMSwitch[i];
-			dev->PEv2.FilterLimitPSwitch[i] = params.FilterLimitPSwitch[i];
-			dev->PEv2.FilterHomeSwitch[i] = params.FilterHomeSwitch[i];
-
-			dev->PEv2.HomingAlgorithm[i] = params.HomingAlgorithm[i];
-				// MPG 1x mode here
-			dev->PEv2.HomeBackOffDistance[i] = params.HomeBackOffDistance[i];
-			dev->PEv2.MPGjogDivider[i] = params.MPGjogDivider[i];	
-			dev->PEv2.AxesConfig[i] = params.AxesConfig[i];
-			dev->PEv2.AxesSwitchConfig[i] =params.AxesSwitchConfig[i];
-			//dev->PEv2.AxesConfig[i] = 0;
-			//dev->PEv2.AxesSwitchConfig[i] =0;
-
-			dev->PEv2.param1 = i;
-			if(PK_PEv2_AxisConfigurationSet(dev) != PK_OK)
-			{
-				usleep(sleepdur); 
-				dev->PEv2.param1 = i;
-				if(PK_PEv2_AxisConfigurationSet(dev) != PK_OK)
-				{
-					usleep(sleepdur); 
-				}
-
-			}
-		}
-		//dev->PEv2.param1 = 0;
-		if(PK_PEv2_StatusGet(dev) == PK_OK)
-		{
-			params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-			params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
-			params.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
-			//params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
-			params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
-			//params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
-		}
-
-		if (setPinConfig==true)
-		{
-			if(PK_PinConfigurationSet(dev) != PK_OK)
-			{
-				usleep(sleepdur); 
-				if(PK_PinConfigurationSet(dev) != PK_OK)
-				{
-					usleep(sleepdur); 
-				}
-				else
-				{
-					setPinConfig=false;
-				}
-			}
-			else
-			{
-				setPinConfig=false;
-			}
-		}
-	}
-	else
-	{
-		if(PK_PEv2_StatusGet(dev) == PK_OK && PK_PEv2_Status2Get(dev) == PK_OK )
-		{
-			params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-			params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
-			params.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
-			//params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
-			params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
-			//params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
-
-			params.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-			params.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
-			params.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
-			//params.PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
-			params.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
-			//params.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
-		}
-
-		if(PK_PEv2_AdditionalParametersGet(dev) == PK_OK)
-		{
-			params.EmergencyInputPin = dev->PEv2.EmergencyInputPin;   
-			usleep(sleepdur); 
-		}
-
-		for (i = 0; i < dev->PEv2.info.nrOfAxes; i++)
-		{
-			dev->PEv2.param1 = i;
-			if(PK_PEv2_AxisConfigurationGet(dev) == PK_OK)
-			{
-				// Read the structure
-				params.AxesConfig[i] = dev->PEv2.AxesConfig[i];
-
-				params.AxesSwitchConfig[i] = dev->PEv2.AxesSwitchConfig[i];
-
-				params.PinHomeSwitch[i] = dev->PEv2.PinHomeSwitch[i];
-				params.PinLimitMSwitch[i] = dev->PEv2.PinLimitMSwitch[i];
-				params.PinLimitPSwitch[i] = dev->PEv2.PinLimitPSwitch[i];
-
-				params.HomingSpeed[i] = dev->PEv2.HomingSpeed[i];
-				params.HomingReturnSpeed[i] = dev->PEv2.HomingReturnSpeed[i];
-
-				params.MPGjogEncoder[i] = dev->PEv2.MPGjogEncoder[i] = dev->response[15];
-
-				// Convert parameters... assume little-endian format
-				params.MaxSpeed[i] = dev->PEv2.MaxSpeed[i];
-				params.MaxAcceleration[i] = dev->PEv2.MaxAcceleration[i];
-				params.MaxDecceleration[i] = dev->PEv2.MaxDecceleration[i];
-
-				params.SoftLimitMinimum[i] = dev->PEv2.SoftLimitMinimum[i];
-				params.SoftLimitMaximum[i] = dev->PEv2.SoftLimitMaximum[i];
-
-				params.MPGjogMultiplier[i] = dev->PEv2.MPGjogMultiplier[i];
-
-				params.AxisEnableOutputPins[i] = dev->PEv2.AxisEnableOutputPins[i];
-				params.InvertAxisEnable[i] = dev->PEv2.InvertAxisEnable[i];
-
-				params.FilterLimitMSwitch[i] = dev->PEv2.FilterLimitMSwitch[i];
-				params.FilterLimitPSwitch[i] = dev->PEv2.FilterLimitPSwitch[i];
-				params.FilterHomeSwitch[i] = dev->PEv2.FilterHomeSwitch[i];
-
-				params.HomingAlgorithm[i] = dev->PEv2.HomingAlgorithm[i];
-				// MPG 1x mode here
-				params.HomeBackOffDistance[i] = dev->PEv2.HomeBackOffDistance[i];
-				params.MPGjogDivider[i] = dev->PEv2.MPGjogDivider[i];	
-				usleep(sleepdur); 
-			}
-		}
-	}
-	return params;
-}
-
-PK_PEv2_Stat Update_PEv2()
-{
-	uint8_t         bm_LimitStatusP;              // Limit+ status (bit-mapped)
-	uint8_t         bm_LimitStatusN;              // Limit- status (bit-mapped)
-	uint8_t         bm_HomeStatus;                // Home status (bit-mapped)
-	uint8_t			bm_DedicatedLimitNInputs;
-	uint8_t			bm_DedicatedLimitPInputs;
-	uint8_t			bm_DedicatedHomeInputs;
-	PK_PEv2_Stat status;
-
-	if(PK_PEv2_StatusGet(dev) == PK_OK)
-	{
-		// Engine info
-		status.nrOfAxes = dev->PEv2.info.nrOfAxes;
-		status.maxPulseFrequency = dev->PEv2.info.maxPulseFrequency;
-		status.bufferDepth = dev->PEv2.info.bufferDepth;
-		status.slotTiming = dev->PEv2.info.slotTiming;
-		
-		status.AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
-		status.LimitOverride = dev->PEv2.LimitOverride;
-		
-		// Basic engine states
-		status.PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-		status.PulseEngineActivated = dev->PEv2.PulseEngineActivated;
-		status.PulseEngineState = dev->PEv2.PulseEngineState;
-		status.ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
-		status.PulseGeneratorType = dev->PEv2.PulseGeneratorType;
-
-		// Switch states
-		bm_LimitStatusP = dev->PEv2.LimitStatusP;              // Limit+ status (bit-mapped)
-		bm_LimitStatusN = dev->PEv2.LimitStatusN;              // Limit- status (bit-mapped)
-		bm_HomeStatus = dev->PEv2.HomeStatus;                // Home status (bit-mapped)
-
-		status.EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
-
-		// Other inputs
-		status.ErrorInputStatus = dev->PEv2.ErrorInputStatus;
-		status.MiscInputStatus = dev->PEv2.MiscInputStatus;
-
-		if(HAL_Machine_On==true)
-		{
-		/*
-		    PK_PEState_peSTOPPED        = 0,           // Pulse engine is stopped
-			PK_PEState_peINTERNAL       = 1,           // PEv1: Internal motion controller is in use, PEv2: not used
-			PK_PEState_peBUFFER         = 2,           // PEv1: Buffered operation mode is in use, PEv2: not used
-			PK_PEState_peRUNNING        = 3,           // Pulse engine is activated
-
-			PK_PEState_peJOGGING        = 10,          // Jogging mode enabled
-			PK_PEState_peSTOPPING       = 11,          // Pulse engine is stopping
-
-			PK_PEState_peHOME           = 20,          // All axes are homed
-			PK_PEState_peHOMING         = 21,          // Axes homing is in progress
-
-			PK_PEState_pePROBECOMPLETE  = 30,          // All axes are homed
-			PK_PEState_pePROBE          = 31,          // Axes probing is in progress
-			PK_PEState_pePROBEERROR     = 32,          // Error occured during probing
-
-			PK_PEState_peHYBRIDPROBE_STOPPING = 40,
-			PK_PEState_peHYBRIDPROBE_COMPLETE = 41,
-
-			PK_PEState_peSTOP_LIMIT     = 100,         // Pulse engine stopped due to limit reached
-			PK_PEState_peSTOP_EMERGENCY = 101          // Pulse engine stopped due to emergency switch
-		*/
-			status.PulseEngineStateSetup = PK_PEState_peRUNNING;
-		}
-		else
-		{
-			status.PulseEngineStateSetup = PK_PEState_peSTOPPED;
-		}
-
-		switch (status.PulseEngineState)
-		{
-		    case PK_PEState_peSTOPPED:           // Pulse engine is stopped
-				break;
-		    casePK_PEState_peINTERNAL:           // PEv1: Internal motion controller is in use, PEv2: not used
-				break;
-		    casePK_PEState_peBUFFER:           // PEv1: Buffered operation mode is in use, PEv2: not used
-				break;
-		    casePK_PEState_peRUNNING:           // Pulse engine is activated
-				break;
-		    casePK_PEState_peJOGGING:          // Jogging mode enabled
-				break;
-		    casePK_PEState_peSTOPPING:          // Pulse engine is stopping
-				break;
-		    casePK_PEState_peHOME:          // All axes are homed
-				break;
-		    casePK_PEState_peHOMING:          // Axes homing is in progress
-				break;
-		    casePK_PEState_pePROBECOMPLETE:          // All axes are homed
-				break;
-		    casePK_PEState_pePROBE:          // Axes probing is in progress
-				break;
-		    casePK_PEState_pePROBEERROR:          // Error occured during probing
-
-				break;
-		    casePK_PEState_peHYBRIDPROBE_STOPPING:
-				break;
-		    casePK_PEState_peHYBRIDPROBE_COMPLETE:
-				break;
-		    casePK_PEState_peSTOP_LIMIT:         // Pulse engine stopped due to limit reached
-				break;
-		    casePK_PEState_peSTOP_EMERGENCY:          // Pulse engine stopped due to emergency switch
-				break;
-		}
-		usleep(sleepdur); 
-	}
-
-	if(PK_PEv2_Status2Get(dev) == PK_OK)
-	{
-		bm_DedicatedLimitNInputs = dev->PEv2.DedicatedLimitNInputs;
-		bm_DedicatedLimitPInputs = dev->PEv2.DedicatedLimitPInputs;
-		bm_DedicatedHomeInputs = dev->PEv2.DedicatedHomeInputs;
-		usleep(sleepdur); 
-	}
-
-	bool doPositionSet = false;
-	bool doMove = false;
-	bool doStateSet = false;
-	if (status.nrOfAxes!=0)
-	{
-		int tAxisEnabledMask = 0;
-		for (i = 0; i < status.nrOfAxes; i++)
-		{
-			status.AxesState[i] = dev->PEv2.AxesState[i];
-			status.CurrentPosition[i] = dev->PEv2.CurrentPosition[i];
-
-			status.LimitStatusP[i] = Get_BitOfByte(bm_LimitStatusP,i);
-			status.LimitStatusN[i] = Get_BitOfByte(bm_LimitStatusN,i);
-			status.HomeStatus[i] =  Get_BitOfByte(bm_HomeStatus,i);
-
-			status.DedicatedLimitNInputs[i] =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
-			status.DedicatedLimitPInputs[i] =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
-			status.DedicatedHomeInputs[i] =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
-
-			uint8_t  bm_SoftLimitStatus = dev->PEv2.SoftLimitStatus;
-			status.SoftLimitStatus[i] = Get_BitOfByte(dev->PEv2.SoftLimitStatus,i);
-
-			switch( status.AxesState[i])
-			{
-				case PK_PEAxisState_axSTOPPED:        // Axis is stopped
-					status.AxisEnabledStates[i] = false;
-					status.AxisLimitOverride[i] = false;
-					break ;
-				case PK_PEAxisState_axREADY:        // Axis ready
-					status.AxisEnabledStates[i] = true;
-					status.AxisLimitOverride[i] = false;
-					break ;
-				case PK_PEAxisState_axRUNNING:        // Axis is running
-					status.AxisEnabledStates[i] = true;
-					status.AxisLimitOverride[i] = false;
-					if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
-					{
-						if(status.ReferencePositionSpeed[i] != status.joint_vel_cmd[i] * PEv2_params.STEP_SCALE[i])
-						{
-							status.ReferencePositionSpeed[i] = status.joint_vel_cmd[i] * PEv2_params.STEP_SCALE[i];
-							status.PositionSetup[i] = status.joint_pos_cmd[i] * PEv2_params.STEP_SCALE[i];
-
-							doMove=true;
-							dev->PEv2.ReferencePositionSpeed[i] = status.ReferencePositionSpeed[i];
-							dev->PEv2.PositionSetup[i] = status.PositionSetup[i];
-						}
-						status.joint_vel_fb[i] = ( status.joint_pos_fb[i] - (status.CurrentPosition[i] / PEv2_params.STEP_SCALE[i]) )* Loop_Frequ;
-					}
-					else
-					{
-
-						if ((status.CurrentPosition[i] - status.ReferencePositionSpeed[i]) < 10 )
-						{
-							status.ReferencePositionSpeed[i] = status.joint_pos_cmd[i] * PEv2_params.STEP_SCALE[i];
-							dev->PEv2.ReferencePositionSpeed[i] = status.ReferencePositionSpeed[i];
-							dev->PEv2.PositionSetup[i] = status.PositionSetup[i];
-							//doPositionSet =true;
-							doMove=true;
-						}
-						status.joint_vel_fb[i] = 0;
-					}
-					// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-					
-					status.joint_pos_fb[i] = dev->PEv2.CurrentPosition[i] / PEv2_params.STEP_SCALE[i];
-
-					break ;
-				case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
-					status.AxisLimitOverride[i] = true;
-					status.AxisEnabledStates[i] = true;
-					break ;
-				case PK_PEAxisState_axHOMING_BACKING_OFF:   // Backing off switch
-					status.AxisLimitOverride[i] = true;
-					status.AxisEnabledStates[i] = true;
-					break ;
-				case PK_PEAxisState_axHOME:       // Axis is homed
-					status.AxisEnabledStates[i] = true;
-					status.AxisLimitOverride[i] = true;
-				// PEv2_joint_
-					break ;
-				case PK_PEAxisState_axHOMINGSTART:       // Homing procedure is starting on axis
-					status.AxisEnabledStates[i] = true;
-					status.AxisLimitOverride[i] = true;
-					break ;
-				case PK_PEAxisState_axHOMINGSEARCH:       // Homing procedure first step - going to home
-					status.AxisEnabledStates[i] = true;
-					status.AxisLimitOverride[i] = true;
-					break ;
-				case PK_PEAxisState_axHOMINGBACK:       // Homing procedure second step - slow homing
-					status.AxisEnabledStates[i] = true;
-					status.AxisLimitOverride[i] = true;
-					break ;
-				case PK_PEAxisState_axPROBED:       // Probing completed for this axis
-					status.AxisEnabledStates[i] = true;
-					status.AxisLimitOverride[i] = false;
-					break ;
-				case PK_PEAxisState_axPROBESTART:       // Probing procedure is starting on axis
-					status.AxisEnabledStates[i] = true;
-					status.AxisLimitOverride[i] = false;
-					break ;
-				case PK_PEAxisState_axPROBESEARCH:       // Probing procedure - probing
-					status.AxisEnabledStates[i] = true;
-					status.AxisLimitOverride[i] = false;
-					break ;
-				case PK_PEAxisState_axERROR:       // Axis error
-					status.AxisEnabledStates[i] = false;
-					status.AxisLimitOverride[i] = false;
-					break ;
-				case PK_PEAxisState_axLIMIT:        // Axis limit tripped
-					status.AxisEnabledStates[i] = true;
-					status.AxisLimitOverride[i] = false;
-					break ;
-				default:
-					break ;
-			}
-			tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,status.AxisEnabledStates[i]);
-			status.LimitOverrideSetup = Set_BitOfByte(status.LimitOverrideSetup ,i,status.AxisLimitOverride[i]);
-
-		}
-
-
-		if (tAxisEnabledMask != dev->PEv2.AxisEnabledMask)
-		{
-			dev->PEv2.AxisEnabledMask = tAxisEnabledMask;
-			doStateSet=true;
-		}
-		if (status.LimitOverrideSetup != dev->PEv2.LimitOverrideSetup)
-		{
-			dev->PEv2.LimitOverrideSetup = status.LimitOverrideSetup;
-			doStateSet=true;
-		}
-	}
-
-
-	if(PK_PEv2_ExternalOutputsGet(dev) == PK_OK)
-	{
-		bool RelBit_array[8];
-		bool OcBit_array[8];
-
-
-		//uint8_t ExternalRelayOutputs_set=  status.ExternalRelayOutput;
-		//uint8_t ExternalOCOutputs_set=  status.ExternalOCOutput;
-		bool doSetExtOut = false;
-
-		if (status.ExternalRelayOutputs != dev->PEv2.ExternalRelayOutputs)
-		{
-			dev->PEv2.ExternalRelayOutputs = status.ExternalRelayOutputs ;
-			doSetExtOut=true;
-			usleep(sleepdur); 
-		}
-		if (status.ExternalOCOutputs != dev->PEv2.ExternalOCOutputs)
-		{
-			dev->PEv2.ExternalOCOutputs = status.ExternalOCOutputs;
-			doSetExtOut=true;
-			usleep(sleepdur); 
-		}
-		if (doSetExtOut==true)
-		{
-			if(PK_PEv2_ExternalOutputsSet(dev) != PK_OK)
-			{
-				usleep(sleepdur); 
-				if(PK_PEv2_ExternalOutputsSet(dev) != PK_OK)
-				{
-					usleep(sleepdur); 
-				}
-			}
-		}
-	}
-
-	if (status.PulseEngineState != status.PulseEngineStateSetup)
-	{
-		dev->PEv2.PulseEngineStateSetup = status.PulseEngineStateSetup;
-		//dev->PEv2.AxisEnabledMask = status.AxisEnabledMask;
-		doStateSet=true;
-	}
-
-	if (status.LimitOverrideSetup != dev->PEv2.LimitOverrideSetup)
-	{
-		dev->PEv2.LimitOverrideSetup = status.LimitOverrideSetup;
-		doStateSet=true;
-	}
-
-	if (doStateSet==true)
-	{
-		if(PK_PEv2_PulseEngineStateSet(dev) != PK_OK)
-		{
-			usleep(sleepdur); 
-			if(PK_PEv2_PulseEngineStateSet(dev) != PK_OK)
-			{
-				usleep(sleepdur); 
-			}
-		}
-	}
-
-	if (doMove==true)
-	{
-		if(PK_PEv2_PulseEngineMove(dev) != PK_OK)
-		{
-			usleep(sleepdur); 
-			if(PK_PEv2_PulseEngineMove(dev) != PK_OK)
-			{
-				usleep(sleepdur); 
-			}
-		}
-	}
-
-	
-	//PK_PEv2_PositionSet
-	return status;
-}
 
 int Config_MatrixKB()
 {
@@ -2137,70 +1479,323 @@ void user_mainloop(void)
 	// PulseEnginev2
 	if (info_PulseEnginev2!=0)
 	{
-		a_debout = 220;
-		PEv2_status.ExternalRelayOutputs = PEv2_ExternalRelayOutputs;
-		PEv2_status.ExternalOCOutputs = PEv2_ExternalOCOutputs;
+	uint8_t         bm_LimitStatusP;              // Limit+ status (bit-mapped)
+	uint8_t         bm_LimitStatusN;              // Limit- status (bit-mapped)
+	uint8_t         bm_HomeStatus;                // Home status (bit-mapped)
+	uint8_t			bm_DedicatedLimitNInputs;
+	uint8_t			bm_DedicatedLimitPInputs;
+	uint8_t			bm_DedicatedHomeInputs;
+	PK_PEv2_Stat status;
 
-		PEv2_status = Update_PEv2(PEv2_status);
-		if (0==0)
-		{
-			a_debout = 221;
-			// Engine info
-			PEv2_nrOfAxes = PEv2_status.nrOfAxes;
-			PEv2_maxPulseFrequency = PEv2_status.maxPulseFrequency;
-			PEv2_bufferDepth = PEv2_status.bufferDepth;
-			PEv2_slotTiming = PEv2_status.slotTiming;
-	
-			PEv2_AxisEnabledStatesMask = PEv2_status.AxisEnabledStatesMask;
-			PEv2_LimitOverride = PEv2_status.LimitOverride;
-
-			// Basic engine states
-			if (PEv2_params_ApplyIniSettings = 0)
-			{
-
-				PEv2_PulseEngineEnabled = PEv2_status.PulseEngineEnabled;
-				PEv2_PulseEngineActivated = PEv2_status.PulseEngineActivated;
-				PEv2_PulseEngineState = PEv2_status.PulseEngineState;
-				PEv2_ChargePumpEnabled = PEv2_status.ChargePumpEnabled;
-				PEv2_PulseGeneratorType = PEv2_status.PulseGeneratorType;
-       
-				PEv2_EmergencySwitchPolarity = PEv2_status.EmergencySwitchPolarity;
-			}
-			// Other inputs
-			PEv2_ErrorInputStatus = PEv2_status.ErrorInputStatus;
-			PEv2_MiscInputStatus = PEv2_status.MiscInputStatus;
-			int tAxisEnabledMask = 0;
-			a_debout = 222;
-			for (i = 0; i < PEv2_nrOfAxes; i++)
-			{
-				a_debout = 2220 + i;
-				PEv2_AxesState(i) = PEv2_status.AxesState[i];
-				PEv2_CurrentPosition(i) = PEv2_status.CurrentPosition[i];
-
-				PEv2_LimitStatusP(i) = PEv2_status.LimitStatusP[i];			// Limit+ status 
-				PEv2_LimitStatusN(i) = PEv2_status.LimitStatusN[i];	// Limit- status 
-				PEv2_HomeStatus(i) = PEv2_status.HomeStatus[i];		// Home status 
-
-				//PEv2_status.DedicatedLimitNInputs[i];
-				//PEv2_status.DedicatedLimitPInputs[i];
-				//PEv2_status.DedicatedHomeInputs[i];
+	if(PK_PEv2_StatusGet(dev) == PK_OK)
+	{
+		// Engine info
+		PEv2_nrOfAxes = dev->PEv2.info.nrOfAxes;
+		PEv2_maxPulseFrequency = dev->PEv2.info.maxPulseFrequency;
+		PEv2_bufferDepth = dev->PEv2.info.bufferDepth;
+		PEv2_slotTiming = dev->PEv2.info.slotTiming;
 		
-				PEv2_SoftLimitStatus(i) = PEv2_status.SoftLimitStatus[i];
+		PEv2_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
+		PEv2_LimitOverride = dev->PEv2.LimitOverride;
+		
+		// Basic engine states
+		PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+		PEv2_PulseEngineActivated = dev->PEv2.PulseEngineActivated;
+		PEv2_PulseEngineState = dev->PEv2.PulseEngineState;
+		PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+		PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 
-				PEv2_joint_vel_fb(i) = PEv2_status.joint_vel_fb[i];
-				PEv2_joint_pos_fb(i) = PEv2_status.joint_pos_fb[i];
+		// Switch states
+		bm_LimitStatusP = dev->PEv2.LimitStatusP;              // Limit+ status (bit-mapped)
+		bm_LimitStatusN = dev->PEv2.LimitStatusN;              // Limit- status (bit-mapped)
+		bm_HomeStatus = dev->PEv2.HomeStatus;                // Home status (bit-mapped)
 
-				tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,PEv2_status.AxisEnabledStates[i]);
-			}
+		PEv2_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
 
-			if (tAxisEnabledMask != PEv2_AxisEnabledMask)
+		// Other inputs
+		PEv2_ErrorInputStatus = dev->PEv2.ErrorInputStatus;
+		PEv2_MiscInputStatus = dev->PEv2.MiscInputStatus;
+
+		if(HAL_Machine_On==true)
+		{
+		/*
+		    PK_PEState_peSTOPPED        = 0,           // Pulse engine is stopped
+			PK_PEState_peINTERNAL       = 1,           // PEv1: Internal motion controller is in use, PEv2: not used
+			PK_PEState_peBUFFER         = 2,           // PEv1: Buffered operation mode is in use, PEv2: not used
+			PK_PEState_peRUNNING        = 3,           // Pulse engine is activated
+
+			PK_PEState_peJOGGING        = 10,          // Jogging mode enabled
+			PK_PEState_peSTOPPING       = 11,          // Pulse engine is stopping
+
+			PK_PEState_peHOME           = 20,          // All axes are homed
+			PK_PEState_peHOMING         = 21,          // Axes homing is in progress
+
+			PK_PEState_pePROBECOMPLETE  = 30,          // All axes are homed
+			PK_PEState_pePROBE          = 31,          // Axes probing is in progress
+			PK_PEState_pePROBEERROR     = 32,          // Error occured during probing
+
+			PK_PEState_peHYBRIDPROBE_STOPPING = 40,
+			PK_PEState_peHYBRIDPROBE_COMPLETE = 41,
+
+			PK_PEState_peSTOP_LIMIT     = 100,         // Pulse engine stopped due to limit reached
+			PK_PEState_peSTOP_EMERGENCY = 101          // Pulse engine stopped due to emergency switch
+		*/
+			PEv2_PulseEngineStateSetup = PK_PEState_peRUNNING;
+		}
+		else
+		{
+			PEv2_PulseEngineStateSetup = PK_PEState_peSTOPPED;
+		}
+
+		switch (PEv2_PulseEngineState)
+		{
+		    case PK_PEState_peSTOPPED:           // Pulse engine is stopped
+				break;
+		    casePK_PEState_peINTERNAL:           // PEv1: Internal motion controller is in use, PEv2: not used
+				break;
+		    casePK_PEState_peBUFFER:           // PEv1: Buffered operation mode is in use, PEv2: not used
+				break;
+		    casePK_PEState_peRUNNING:           // Pulse engine is activated
+				break;
+		    casePK_PEState_peJOGGING:          // Jogging mode enabled
+				break;
+		    casePK_PEState_peSTOPPING:          // Pulse engine is stopping
+				break;
+		    casePK_PEState_peHOME:          // All axes are homed
+				break;
+		    casePK_PEState_peHOMING:          // Axes homing is in progress
+				break;
+		    casePK_PEState_pePROBECOMPLETE:          // All axes are homed
+				break;
+		    casePK_PEState_pePROBE:          // Axes probing is in progress
+				break;
+		    casePK_PEState_pePROBEERROR:          // Error occured during probing
+
+				break;
+		    casePK_PEState_peHYBRIDPROBE_STOPPING:
+				break;
+		    casePK_PEState_peHYBRIDPROBE_COMPLETE:
+				break;
+		    casePK_PEState_peSTOP_LIMIT:         // Pulse engine stopped due to limit reached
+				break;
+		    casePK_PEState_peSTOP_EMERGENCY:          // Pulse engine stopped due to emergency switch
+				break;
+		}
+		usleep(sleepdur); 
+	}
+
+	if(PK_PEv2_Status2Get(dev) == PK_OK)
+	{
+		bm_DedicatedLimitNInputs = dev->PEv2.DedicatedLimitNInputs;
+		bm_DedicatedLimitPInputs = dev->PEv2.DedicatedLimitPInputs;
+		bm_DedicatedHomeInputs = dev->PEv2.DedicatedHomeInputs;
+		usleep(sleepdur); 
+	}
+
+	bool doPositionSet = false;
+	bool doMove = false;
+	bool doStateSet = false;
+	if (PEv2_nrOfAxes!=0)
+	{
+		int tAxisEnabledMask = 0;
+		for (i = 0; i < PEv2_nrOfAxes; i++)
+		{
+			PEv2_AxesState[i] = dev->PEv2.AxesState[i];
+			PEv2_CurrentPosition[i] = dev->PEv2.CurrentPosition[i];
+
+			PEv2_LimitStatusP[i] = Get_BitOfByte(bm_LimitStatusP,i);
+			PEv2_LimitStatusN[i] = Get_BitOfByte(bm_LimitStatusN,i);
+			PEv2_HomeStatus[i] =  Get_BitOfByte(bm_HomeStatus,i);
+
+			PEv2_DedicatedLimitNInputs[i] =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
+			PEv2_DedicatedLimitPInputs[i] =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
+			PEv2_DedicatedHomeInputs[i] =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
+
+			uint8_t  bm_SoftLimitStatus = dev->PEv2.SoftLimitStatus;
+			PEv2_SoftLimitStatus[i] = Get_BitOfByte(dev->PEv2.SoftLimitStatus,i);
+
+			switch( PEv2_AxesState[i])
 			{
-				PEv2_AxisEnabledMask = tAxisEnabledMask;
-			}
+				case PK_PEAxisState_axSTOPPED:        // Axis is stopped
+					PEv2_AxisEnabledStates[i] = false;
+					PEv2_AxisLimitOverride[i] = false;
+					break ;
+				case PK_PEAxisState_axREADY:        // Axis ready
+					PEv2_AxisEnabledStates[i] = true;
+					PEv2_AxisLimitOverride[i] = false;
+					break ;
+				case PK_PEAxisState_axRUNNING:        // Axis is running
+					PEv2_AxisEnabledStates[i] = true;
+					PEv2_AxisLimitOverride[i] = false;
+					if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
+					{
+						if(PEv2_ReferencePositionSpeed[i] != PEv2_joint_vel_cmd[i] * PEv2_params.STEP_SCALE[i])
+						{
+							PEv2_ReferencePositionSpeed[i] = PEv2_joint_vel_cmd[i] * PEv2_params.STEP_SCALE[i];
+							PEv2_PositionSetup[i] = PEv2_joint_pos_cmd[i] * PEv2_params.STEP_SCALE[i];
 
-			a_debout = 223;
-			//PEv2_ExternalRelayOutputs = PEv2_status.ExternalRelayOutputs;
-			//PEv2_ExternalOCOutputs = PEv2_status.ExternalOCOutputs;
+							doMove=true;
+							dev->PEv2.ReferencePositionSpeed[i] = PEv2_ReferencePositionSpeed[i];
+							dev->PEv2.PositionSetup[i] = PEv2_PositionSetup[i];
+						}
+						PEv2_joint_vel_fb[i] = ( PEv2_joint_pos_fb[i] - (PEv2_CurrentPosition[i] / PEv2_params.STEP_SCALE[i]) )* Loop_Frequ;
+					}
+					else
+					{
+
+						if ((PEv2_CurrentPosition[i] - PEv2_ReferencePositionSpeed[i]) < 10 )
+						{
+							PEv2_ReferencePositionSpeed[i] = PEv2_joint_pos_cmd[i] * PEv2_params.STEP_SCALE[i];
+							dev->PEv2.ReferencePositionSpeed[i] = PEv2_ReferencePositionSpeed[i];
+							dev->PEv2.PositionSetup[i] = PEv2_PositionSetup[i];
+							//doPositionSet =true;
+							doMove=true;
+						}
+						PEv2_joint_vel_fb[i] = 0;
+					}
+					// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
+					
+					PEv2_joint_pos_fb[i] = dev->PEv2.CurrentPosition[i] / PEv2_params.STEP_SCALE[i];
+
+					break ;
+				case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
+					PEv2_AxisLimitOverride[i] = true;
+					PEv2_AxisEnabledStates[i] = true;
+					break ;
+				case PK_PEAxisState_axHOMING_BACKING_OFF:   // Backing off switch
+					PEv2_AxisLimitOverride[i] = true;
+					PEv2_AxisEnabledStates[i] = true;
+					break ;
+				case PK_PEAxisState_axHOME:       // Axis is homed
+					PEv2_AxisEnabledStates[i] = true;
+					PEv2_AxisLimitOverride[i] = true;
+				// PEv2_joint_
+					break ;
+				case PK_PEAxisState_axHOMINGSTART:       // Homing procedure is starting on axis
+					PEv2_AxisEnabledStates[i] = true;
+					PEv2_AxisLimitOverride[i] = true;
+					break ;
+				case PK_PEAxisState_axHOMINGSEARCH:       // Homing procedure first step - going to home
+					PEv2_AxisEnabledStates[i] = true;
+					PEv2_AxisLimitOverride[i] = true;
+					break ;
+				case PK_PEAxisState_axHOMINGBACK:       // Homing procedure second step - slow homing
+					PEv2_AxisEnabledStates[i] = true;
+					PEv2_AxisLimitOverride[i] = true;
+					break ;
+				case PK_PEAxisState_axPROBED:       // Probing completed for this axis
+					PEv2_AxisEnabledStates[i] = true;
+					PEv2_AxisLimitOverride[i] = false;
+					break ;
+				case PK_PEAxisState_axPROBESTART:       // Probing procedure is starting on axis
+					PEv2_AxisEnabledStates[i] = true;
+					PEv2_AxisLimitOverride[i] = false;
+					break ;
+				case PK_PEAxisState_axPROBESEARCH:       // Probing procedure - probing
+					PEv2_AxisEnabledStates[i] = true;
+					PEv2_AxisLimitOverride[i] = false;
+					break ;
+				case PK_PEAxisState_axERROR:       // Axis error
+					PEv2_AxisEnabledStates[i] = false;
+					PEv2_AxisLimitOverride[i] = false;
+					break ;
+				case PK_PEAxisState_axLIMIT:        // Axis limit tripped
+					PEv2_AxisEnabledStates[i] = true;
+					PEv2_AxisLimitOverride[i] = false;
+					break ;
+				default:
+					break ;
+			}
+			tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,PEv2_AxisEnabledStates[i]);
+			PEv2_LimitOverrideSetup = Set_BitOfByte(PEv2_LimitOverrideSetup ,i,PEv2_AxisLimitOverride[i]);
+
+		}
+
+
+		if (tAxisEnabledMask != dev->PEv2.AxisEnabledMask)
+		{
+			dev->PEv2.AxisEnabledMask = tAxisEnabledMask;
+			doStateSet=true;
+		}
+		if (PEv2_LimitOverrideSetup != dev->PEv2.LimitOverrideSetup)
+		{
+			dev->PEv2.LimitOverrideSetup = PEv2_LimitOverrideSetup;
+			doStateSet=true;
+		}
+	}
+
+
+	if(PK_PEv2_ExternalOutputsGet(dev) == PK_OK)
+	{
+		bool RelBit_array[8];
+		bool OcBit_array[8];
+
+
+		//uint8_t ExternalRelayOutputs_set=  PEv2_ExternalRelayOutput;
+		//uint8_t ExternalOCOutputs_set=  PEv2_ExternalOCOutput;
+		bool doSetExtOut = false;
+
+		if (PEv2_ExternalRelayOutputs != dev->PEv2.ExternalRelayOutputs)
+		{
+			dev->PEv2.ExternalRelayOutputs = PEv2_ExternalRelayOutputs ;
+			doSetExtOut=true;
+			usleep(sleepdur); 
+		}
+		if (PEv2_ExternalOCOutputs != dev->PEv2.ExternalOCOutputs)
+		{
+			dev->PEv2.ExternalOCOutputs = PEv2_ExternalOCOutputs;
+			doSetExtOut=true;
+			usleep(sleepdur); 
+		}
+		if (doSetExtOut==true)
+		{
+			if(PK_PEv2_ExternalOutputsSet(dev) != PK_OK)
+			{
+				usleep(sleepdur); 
+				if(PK_PEv2_ExternalOutputsSet(dev) != PK_OK)
+				{
+					usleep(sleepdur); 
+				}
+			}
+		}
+	}
+
+	if (PEv2_PulseEngineState != PEv2_PulseEngineStateSetup)
+	{
+		dev->PEv2.PulseEngineStateSetup = PEv2_PulseEngineStateSetup;
+		//dev->PEv2.AxisEnabledMask = PEv2_AxisEnabledMask;
+		doStateSet=true;
+	}
+
+	if (PEv2_LimitOverrideSetup != dev->PEv2.LimitOverrideSetup)
+	{
+		dev->PEv2.LimitOverrideSetup = PEv2_LimitOverrideSetup;
+		doStateSet=true;
+	}
+
+	if (doStateSet==true)
+	{
+		if(PK_PEv2_PulseEngineStateSet(dev) != PK_OK)
+		{
+			usleep(sleepdur); 
+			if(PK_PEv2_PulseEngineStateSet(dev) != PK_OK)
+			{
+				usleep(sleepdur); 
+			}
+		}
+	}
+
+	if (doMove==true)
+	{
+		if(PK_PEv2_PulseEngineMove(dev) != PK_OK)
+		{
+			usleep(sleepdur); 
+			if(PK_PEv2_PulseEngineMove(dev) != PK_OK)
+			{
+				usleep(sleepdur); 
+			}
+		}
+	}
 
 			if (PEv2_params_ApplyIniSettings==0 && PEv2_nrOfAxes!=PEv2_PulseEngineEnabled )
 			{
