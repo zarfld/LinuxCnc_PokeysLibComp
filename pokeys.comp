@@ -225,10 +225,16 @@ pin io unsigned PEv2.PulseEngineStateSetup;		// Pulse engine new state configura
 pin out unsigned PEv2.#.SoftLimitStatus [8] ;				// Bit-mapped soft-limit statuses per axes
 /* 			PEv2_DedicatedLimitNInputs(i) =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
 			PEv2_DedicatedLimitPInputs(i) =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
-			PEv2_DedicatedHomeInputs(i) =  Get_BitOfByte(bm_DedicatedHomeInputs,i);*/
-pin out unsigned PEv2.#.DedicatedLimitNInputs [8] ;
-pin out unsigned PEv2.#.DedicatedLimitPInputs [8] ;
-pin out unsigned PEv2.#.DedicatedHomeInputs [8] ;
+			PEv2_DedicatedHomeInputs(i) =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
+								PEv2_AxisEnabledStates(i) = false;
+					PEv2_AxisLimitOverride(i) = false;
+			*/
+pin out bit PEv2.#.DedicatedLimitNInputs [8] ;
+pin out bit PEv2.#.DedicatedLimitPInputs [8] ;
+pin out bit PEv2.#.DedicatedHomeInputs [8] ;
+pin out bit PEv2.#.AxisEnabledStates [8] ;
+pin out bit PEv2.#.AxisLimitOverride [8] ;
+
 pin io unsigned PEv2.ExternalRelayOutputs;			// External relay outputs
 pin io unsigned PEv2.ExternalOCOutputs;			// External open-collector outputs
 pin io unsigned PEv2.PulseEngineBufferSize;		// Buffer size information...
