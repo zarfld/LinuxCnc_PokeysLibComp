@@ -301,7 +301,7 @@ pin io unsigned kbd48CNC.prevBrightness;
 pin io unsigned kbd48CNC.lightValue;
 //pin io unsigned kbd48CNC.#.ID [48];
 pin in bit kbd48CNC.#.LED [48];
-pin io bit kbd48CNC.#.Button [48];
+pin out bit kbd48CNC.#.Button [48];
 
 
 pin out unsigned Encoders.#.encoderValue [26];       // Encoder current value
@@ -2045,7 +2045,7 @@ void user_mainloop(void)
 						//usleep(sleepdur/10);
 					}*/
 					
-
+					kbd48CNC_Button(i)=instate;
 					int tmp = dev->PoNETmodule.statusOut[ID/8];
 
 					if (state)
