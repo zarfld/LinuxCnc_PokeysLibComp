@@ -1778,11 +1778,11 @@ void user_mainloop(void)
 							if ( PEv2_PinHomeSwitch(i)!=0)
 							{	
 							//check if pin is parametrized in HAL
-								if ( PEv2_PinHomeSwitch(i)!=PEv2_PinLimitMSwitch(i) && PEv2_PinHomeSwitch(i)!=PEv2_params_PinLimitPSwitch(i))
+								if ( PEv2_PinHomeSwitch(i)!=PEv2_PinLimitMSwitch(i) && PEv2_PinHomeSwitch(i)!=PEv2_PinLimitPSwitch(i))
 								{
 									dev->PEv2.PinHomeSwitch[i] = PEv2_PinHomeSwitch(i);
 								}
-								else if ( PEv2_PinHomeSwitch(i)==PEv2_params_PinLimitPSwitch(i))
+								else if ( PEv2_PinHomeSwitch(i)==PEv2_PinLimitPSwitch(i))
 								{
 									//dev->PEv2.PinHomeSwitch[i]=0;
 									AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i] , 4, true); // 16 Home switch is shared with Limit+ switch
@@ -1815,12 +1815,12 @@ void user_mainloop(void)
 								setPinConfig=true;
 							}
 
-							dev->PEv2.PinLimitPSwitch[i] = PEv2_params_PinLimitPSwitch(i);
-							if ( PEv2_params_PinLimitPSwitch(i)!=0)
+							dev->PEv2.PinLimitPSwitch[i] = PEv2_PinLimitPSwitch(i);
+							if ( PEv2_PinLimitPSwitch(i)!=0)
 							{	//check if pin is parametrized in HAL
 								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i] , 1, true); // | PK_ASO_SWITCH_LIMIT_P;
-								dev->Pins[ PEv2_params_PinLimitPSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
-								PK_SL_SetPinFunction(dev, PEv2_params_PinLimitPSwitch(i)-1, PK_PinCap_digitalInput);
+								dev->Pins[ PEv2_PinLimitPSwitch(i)-1].PinFunction = PK_PinCap_digitalInput;
+								PK_SL_SetPinFunction(dev, PEv2_PinLimitPSwitch(i)-1, PK_PinCap_digitalInput);
 
 								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i] , 6, true); // 32 Invert limit+ switch polarity
 
@@ -1836,24 +1836,24 @@ void user_mainloop(void)
 
 							dev->PEv2.MPGjogMultiplier[i] = PEv2_MPGjogMultiplier(i);
 
-							dev->PEv2.AxisEnableOutputPins[i] = PEv2_params_AxisEnableOutputPins(i);
-							if ( PEv2_params_AxisEnableOutputPins(i)!=0)
+							dev->PEv2.AxisEnableOutputPins[i] = PEv2_AxisEnableOutputPins(i);
+							if ( PEv2_AxisEnableOutputPins(i)!=0)
 							{	//check if pin is parametrized in HAL
-								dev->Pins[ PEv2_params_AxisEnableOutputPins(i)-1].PinFunction = PK_PinCap_digitalOutput;
-								PK_SL_SetPinFunction(dev, PEv2_params_AxisEnableOutputPins(i)-1, PK_PinCap_digitalOutput);
+								dev->Pins[ PEv2_AxisEnableOutputPins(i)-1].PinFunction = PK_PinCap_digitalOutput;
+								PK_SL_SetPinFunction(dev, PEv2_AxisEnableOutputPins(i)-1, PK_PinCap_digitalOutput);
 								setPinConfig=true;
 							}
 							
-							dev->PEv2.InvertAxisEnable[i] = PEv2_params_InvertAxisEnable(i);
+							dev->PEv2.InvertAxisEnable[i] = PEv2_InvertAxisEnable(i);
 
-							dev->PEv2.FilterLimitMSwitch[i] = PEv2_params_FilterLimitMSwitch(i);
-							dev->PEv2.FilterLimitPSwitch[i] = PEv2_params_FilterLimitPSwitch(i);
-							dev->PEv2.FilterHomeSwitch[i] = PEv2_params_FilterHomeSwitch(i);
+							dev->PEv2.FilterLimitMSwitch[i] = PEv2_FilterLimitMSwitch(i);
+							dev->PEv2.FilterLimitPSwitch[i] = PEv2_FilterLimitPSwitch(i);
+							dev->PEv2.FilterHomeSwitch[i] = PEv2_FilterHomeSwitch(i);
 
-							dev->PEv2.HomingAlgorithm[i] = PEv2_params_HomingAlgorithm(i);
+							dev->PEv2.HomingAlgorithm[i] = PEv2_HomingAlgorithm(i);
 								// MPG 1x mode here
-							dev->PEv2.HomeBackOffDistance[i] = PEv2_params_HomeBackOffDistance(i);
-							dev->PEv2.MPGjogDivider[i] = PEv2_params_MPGjogDivider(i);	
+							dev->PEv2.HomeBackOffDistance[i] = PEv2_HomeBackOffDistance(i);
+							dev->PEv2.MPGjogDivider[i] = PEv2_MPGjogDivider(i);	
 							dev->PEv2.AxesConfig[i] =AxesConfig[i]
 							PEv2_params_AxesConfig(i) =AxesConfig[i]; 
 							PEv2_params_AxesSwitchConfig(i)=AxesSwitchConfig[i];
@@ -1885,7 +1885,7 @@ void user_mainloop(void)
 
 								PEv2_PinHomeSwitch(i)  = dev->PEv2.PinHomeSwitch[i];
 								PEv2_PinLimitMSwitch(i)  = dev->PEv2.PinLimitMSwitch[i];
-								PEv2_params_PinLimitPSwitch(i)  = dev->PEv2.PinLimitPSwitch[i];
+								PEv2_PinLimitPSwitch(i)  = dev->PEv2.PinLimitPSwitch[i];
 
 								PEv2_HomingSpeed(i)  = dev->PEv2.HomingSpeed[i];
 								PEv2_HomingReturnSpeed(i)  = dev->PEv2.HomingReturnSpeed[i];
@@ -1902,17 +1902,17 @@ void user_mainloop(void)
 
 								PEv2_MPGjogMultiplier(i)  = dev->PEv2.MPGjogMultiplier[i];
 
-								PEv2_params_AxisEnableOutputPins(i)  = dev->PEv2.AxisEnableOutputPins[i];
-								PEv2_params_InvertAxisEnable(i)  = dev->PEv2.InvertAxisEnable[i];
+								PEv2_AxisEnableOutputPins(i)  = dev->PEv2.AxisEnableOutputPins[i];
+								PEv2_InvertAxisEnable(i)  = dev->PEv2.InvertAxisEnable[i];
 
-								PEv2_params_FilterLimitMSwitch(i)  = dev->PEv2.FilterLimitMSwitch[i];
-								PEv2_params_FilterLimitPSwitch(i)  = dev->PEv2.FilterLimitPSwitch[i];
-								PEv2_params_FilterHomeSwitch(i)  = dev->PEv2.FilterHomeSwitch[i];
+								PEv2_FilterLimitMSwitch(i)  = dev->PEv2.FilterLimitMSwitch[i];
+								PEv2_FilterLimitPSwitch(i)  = dev->PEv2.FilterLimitPSwitch[i];
+								PEv2_FilterHomeSwitch(i)  = dev->PEv2.FilterHomeSwitch[i];
 
-								PEv2_params_HomingAlgorithm(i)  = dev->PEv2.HomingAlgorithm[i];
+								PEv2_HomingAlgorithm(i)  = dev->PEv2.HomingAlgorithm[i];
 								// MPG 1x mode here
-								PEv2_params_HomeBackOffDistance(i)  = dev->PEv2.HomeBackOffDistance[i];
-								PEv2_params_MPGjogDivider(i)  = dev->PEv2.MPGjogDivider[i];	
+								PEv2_HomeBackOffDistance(i)  = dev->PEv2.HomeBackOffDistance[i];
+								PEv2_MPGjogDivider(i)  = dev->PEv2.MPGjogDivider[i];	
 								usleep(sleepdur); 
 							}
 						}
