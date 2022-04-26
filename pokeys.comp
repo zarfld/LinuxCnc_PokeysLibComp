@@ -263,10 +263,13 @@ pin out unsigned rtc.month;
 pin out unsigned rtc.year;
 pin out unsigned rtc.loopcount;
 
+
 pin out unsigned rtc.lastmin;
 pin out unsigned rtc.lastsec;
 pin out unsigned rtc.loop_frequ;
 pin in unsigned rtc.loop_frequ_demand;
+pin in unsigned rtc.sec_ret;
+pin out unsigned rtc.hal_latency;
 
 pin out unsigned Pins.#.DigitalCounterValue [55];
 pin out unsigned Pins.#.AnalogValue [55];
@@ -406,6 +409,8 @@ bool setPinConfig = false;
 bool secBlink = false;
 unsigned Loop_Frequ =0;
 uint8_t kbd48CNC_Counter[48];
+uint8_t rtc_latencycheck_set = 0;
+int rtc_latencyCounter = 0;
 int i=0;
 
 
@@ -1460,7 +1465,28 @@ void user_mainloop(void)
 					{
 						sleepdur=50;
 					}
+
+					if (rtc_latencycheck_set = -1)
+					{
+						rtc_latencyCounter=0;
+						rtc_latencycheck_set=rtc_sec;
+					}
 				}
+				
+				if (rtc.sec_ret >= rtc_latencycheck_set && rtc_latencycheck_set>0 )
+				{
+					rtc_hal_latency = rtc_latencyCounter / rtc_loop_frequ;
+					rtc_latencycheck_set = -1;
+				}
+				else if (rtc_latencycheck_set != -1)
+				{
+					rtc_latencyCounter ++;
+				}
+
+
+
+				
+
 				a_debout = 212;
 			}
 
