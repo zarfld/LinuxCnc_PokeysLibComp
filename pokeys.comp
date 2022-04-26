@@ -1645,11 +1645,11 @@ void user_mainloop(void)
 					if (PEv2_PulseGeneratorType == 0)
 					{
 						
-						if (PEv2_params_PG_swap_stepdir != 0)
+						if (PEv2_PG_swap_stepdir != 0)
 						{
 							PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 6, true); // swap step / dir signals
 						}
-						if (PEv2_params_PG_extended_io != 0)
+						if (PEv2_PG_extended_io != 0)
 						{
 							PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 7, true); // extended io
 						}
@@ -1658,7 +1658,7 @@ void user_mainloop(void)
 					dev->PEv2.ChargePumpEnabled = PEv2_ChargePumpEnabled;
 					dev->PEv2.PulseGeneratorType = PEv2_PulseGeneratorType;
 					//dev->PEv2.PulseEngineBufferSize = PEv2_params_PulseEngineBufferSize;
-					dev->PEv2.EmergencySwitchPolarity = PEv2_params_EmergencySwitchPolarity;
+					dev->PEv2.EmergencySwitchPolarity = PEv2_EmergencySwitchPolarity;
 					//dev->PEv2.AxisEnabledStatesMask = PEv2_params_AxisEnabledStatesMask;
 					if(PK_PEv2_PulseEngineSetup(dev) != PK_OK)
 					{
@@ -1667,7 +1667,7 @@ void user_mainloop(void)
 					if(PK_PEv2_PulseEngineSetup(dev) == PK_OK)
 					{
 						usleep(sleepdur); 
-						PK_PEv2_PulseEngineReboot(dev)
+						PK_PEv2_PulseEngineReboot(dev);
 						usleep(1000000); 
 					}
 				}
