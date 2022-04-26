@@ -1706,24 +1706,24 @@ void user_mainloop(void)
 							// Convert mm/s -> pulses/s
 							if(PEv2_params_STEP_SCALE(i)!=0)
 							{
-								PEv2_params_MaxSpeed(i) = PEv2_params_STEPGEN_MAXVEL(i)* PEv2_params_STEP_SCALE(i)/1000;				// Maximum axis speed convert (mm/s) to (pulses per ms)
-								PEv2_params_MaxAcceleration(i) = PEv2_params_STEPGEN_MAXACCEL(i)* PEv2_params_STEP_SCALE(i) /1000000;	// Maximum axis acceleration convert (mm/s�) to (in pulses/ms/ms)
-								PEv2_params_MaxDecceleration(i) = PEv2_params_STEPGEN_MAXACCEL(i)* PEv2_params_STEP_SCALE(i) /1000000;	// Maximum axis deceleration convert (mm/s�) to (in pulses/ms/ms)
+								PEv2_MaxSpeed(i) = PEv2_params_STEPGEN_MAXVEL(i)* PEv2_params_STEP_SCALE(i)/1000;				// Maximum axis speed convert (mm/s) to (pulses per ms)
+								PEv2_MaxAcceleration(i) = PEv2_params_STEPGEN_MAXACCEL(i)* PEv2_params_STEP_SCALE(i) /1000000;	// Maximum axis acceleration convert (mm/s�) to (in pulses/ms/ms)
+								PEv2_MaxDecceleration(i) = PEv2_params_STEPGEN_MAXACCEL(i)* PEv2_params_STEP_SCALE(i) /1000000;	// Maximum axis deceleration convert (mm/s�) to (in pulses/ms/ms)
 
-								PEv2_params_SoftLimitMaximum(i) = PEv2_params_MAX_LIMIT(i)* PEv2_params_STEP_SCALE(i);		// Soft limit maximum position
-								PEv2_params_SoftLimitMinimum(i) = PEv2_params_MIN_LIMIT(i)* PEv2_params_STEP_SCALE(i);		// Soft limit minimum position
+								PEv2_SoftLimitMaximum(i) = PEv2_params_MAX_LIMIT(i)* PEv2_params_STEP_SCALE(i);		// Soft limit maximum position
+								PEv2_SoftLimitMinimum(i) = PEv2_params_MIN_LIMIT(i)* PEv2_params_STEP_SCALE(i);		// Soft limit minimum position
 								PEv2_params_HomeOffsets(i) = PEv2_params_HOME_OFFSET(i)* PEv2_params_STEP_SCALE(i);		// Home position offset
 
 								PEv2_params_HomingSpeed(i) = PEv2_params_HOME_SEARCH_VEL(i)*100/ PEv2_params_MAX_VELOCITY(i) ;			// Homing speed per axis (in %)
 								PEv2_params_HomingReturnSpeed(i) = PEv2_params_HOME_LATCH_VEL(i)*100/ PEv2_params_HOME_SEARCH_VEL(i);	// Homing return speed per axis (in % of the homing speed)
 
 								// Convert parameters... assume little-endian format
-								dev->PEv2.MaxSpeed[i] = PEv2_params_MaxSpeed(i);
-								dev->PEv2.MaxAcceleration[i] = PEv2_params_MaxAcceleration(i);
-								dev->PEv2.MaxDecceleration[i] = PEv2_params_MaxDecceleration(i);
+								dev->PEv2.MaxSpeed[i] = PEv2_MaxSpeed(i);
+								dev->PEv2.MaxAcceleration[i] = PEv2_MaxAcceleration(i);
+								dev->PEv2.MaxDecceleration[i] = PEv2_MaxDecceleration(i);
 
-								dev->PEv2.SoftLimitMinimum[i] = PEv2_params_SoftLimitMinimum(i);
-								dev->PEv2.SoftLimitMaximum[i] = PEv2_params_SoftLimitMaximum(i);
+								dev->PEv2.SoftLimitMinimum[i] = PEv2_SoftLimitMinimum(i);
+								dev->PEv2.SoftLimitMaximum[i] = PEv2_SoftLimitMaximum(i);
 								dev->PEv2.HomeOffsets[i] = PEv2_params_HomeOffsets(i);
 
 								dev->PEv2.HomingSpeed[i] = PEv2_params_HomingSpeed(i);
@@ -1769,7 +1769,7 @@ void user_mainloop(void)
 							*/
 							AxesSwitchConfig[i] = 0;
 				
-							if (PEv2_params_SoftLimitMaximum(i) !=0 | PEv2_params_SoftLimitMaximum(i) !=0)
+							if (PEv2_SoftLimitMaximum(i) !=0 | PEv2_SoftLimitMinimum(i) !=0)
 							{
 								AxesConfig[i] =Set_BitOfByte(AxesConfig[i] , 3, true); // PK_AC_SOFT_LIMIT_ENABLED;
 							}
@@ -1893,12 +1893,12 @@ void user_mainloop(void)
 								PEv2_params_MPGjogEncoder(i)  = dev->PEv2.MPGjogEncoder[i];
 
 								// Convert parameters... assume little-endian format
-								PEv2_params_MaxSpeed(i)  = dev->PEv2.MaxSpeed[i];
-								PEv2_params_MaxAcceleration(i)  = dev->PEv2.MaxAcceleration[i];
-								PEv2_params_MaxDecceleration(i)  = dev->PEv2.MaxDecceleration[i];
+								PEv2_MaxSpeed(i)  = dev->PEv2.MaxSpeed[i];
+								PEv2_MaxAcceleration(i)  = dev->PEv2.MaxAcceleration[i];
+								PEv2_MaxDecceleration(i)  = dev->PEv2.MaxDecceleration[i];
 
-								PEv2_params_SoftLimitMinimum(i)  = dev->PEv2.SoftLimitMinimum[i];
-								PEv2_params_SoftLimitMaximum(i)  = dev->PEv2.SoftLimitMaximum[i];
+								PEv2_SoftLimitMinimum(i)  = dev->PEv2.SoftLimitMinimum[i];
+								PEv2_SoftLimitMaximum(i)  = dev->PEv2.SoftLimitMaximum[i];
 
 								PEv2_params_MPGjogMultiplier(i)  = dev->PEv2.MPGjogMultiplier[i];
 
