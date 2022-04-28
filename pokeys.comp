@@ -1475,7 +1475,7 @@ void user_mainloop(void)
 				
 				if (rtc_sec_ret >= rtc_latencycheck_set && rtc_latencycheck_set>0 )
 				{
-					rtc_hal_latency = rtc_latencyCounter / rtc_loop_frequ;
+					rtc_hal_latency = rtc_latencyCounter;
 					rtc_latencycheck_set = -1;
 				}
 				else if (rtc_latencycheck_set != -1)
