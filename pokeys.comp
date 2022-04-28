@@ -1451,13 +1451,14 @@ void user_mainloop(void)
 						sleepdur=50;
 					}
 
+					if (rtc_latencycheck_set = -1)
+					{
+						rtc_latencyCounter=0;
+						rtc_latencycheck_set=dev->RTC.SEC;
+					}
 				}
 				
-				if ( rtc_latencycheck_set==dev->RTC.SEC  && rtc_latencycheck_set = -1)
-				{
-					rtc_latencyCounter=0;
-					rtc_latencycheck_set=dev->RTC.SEC;
-				}
+
 
 
 				if (rtc_sec_ret >= rtc_latencycheck_set && rtc_latencycheck_set>0 )
