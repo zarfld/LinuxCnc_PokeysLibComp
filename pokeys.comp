@@ -1451,26 +1451,24 @@ void user_mainloop(void)
 						sleepdur=50;
 					}
 
-					if (rtc_latencycheck_set = -1)
-					{
-						rtc_latencyCounter=0;
-						rtc_latencycheck_set=rtc_sec;
-					}
 				}
 				
+				if (dev->RTC.SEC == rtc_latencycheck_set && rtc_latencycheck_set = -1)
+				{
+					rtc_latencyCounter=0;
+					rtc_latencycheck_set=dev->RTC.SEC;
+				}
+
+
 				if (rtc_sec_ret >= rtc_latencycheck_set && rtc_latencycheck_set>0 )
 				{
 					rtc_hal_latency = rtc_latencyCounter;
 					rtc_latencycheck_set = -1;
 				}
-				else if (rtc_latencycheck_set != -1)
+				else if (rtc_latencycheck_set >= -0)
 				{
 					rtc_latencyCounter ++;
 				}
-
-
-
-				
 
 				a_debout = 212;
 			}
