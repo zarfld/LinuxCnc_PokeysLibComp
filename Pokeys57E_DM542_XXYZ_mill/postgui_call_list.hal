@@ -177,4 +177,4 @@ net pokeys.kbd48CNC.JOG_STEP_1000.Button <=	pokeys.0.kbd48CNC.47.Button
 net pokeys.kbd48CNC.JOG_STEP_1000.LED 	=> pokeys.0.kbd48CNC.47.LED
 
 net pokeys.rtc.sec <=	pokeys.0.rtc.sec
-net pokeys.rtc.sec 	=> pokeys.0.rtc.sec_ret
+#net pokeys.rtc.sec 	=> pokeys.0.rtc.sec_ret
