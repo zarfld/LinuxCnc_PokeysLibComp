@@ -6,16 +6,12 @@ https://forum.linuxcnc.org/24-hal-components/29816-pokeys?start=90#162953
 
 currently under development using following HW
 - RaspberryPi4 (for LinuxCnc)
-- Pokeys57E (see https://www.poscope.com/product/pokeys57e/)
-- PoExtBusOC16CNC for Axes-Stepper Enable/Pulse/Dir (see https://www.poscope.com/product/poextbusoc16cnc/)
-- CNC keyboard – PoNETkbd48CNC (not tested yet - see https://www.poscope.com/product/ponet-kbd48cnc/)
-- PoRelay8 – Relay extension board (not tested yet - see https://www.poscope.com/product/porelay8/) 
-
-reading:
-    - Pins (DigitalIn, DigitalOuts, AnalogIn)
-    - started implementing PEv2 (see https://www.poscope.com/wp-content/uploads/downloads/Pokeys/Manuals/PoKeys%20Pulse%20engine%20v2%20manual%20(6.3.2016).pdf)
-
-
+- [x] Pokeys57E (see https://www.poscope.com/product/pokeys57e/)
+- [x] PoExtBusOC16CNC for Axes-Stepper Enable/Pulse/Dir (see https://www.poscope.com/product/poextbusoc16cnc/)
+- [x] CNC keyboard – PoNETkbd48CNC (see https://www.poscope.com/product/ponet-kbd48cnc/)
+- [x] PoRelay8 – Relay extension board (see https://www.poscope.com/product/porelay8/) 
+- [x] PoExtBusOC16
+- [] Pokeys57CNC 
 
 ---- Library status - verified commands ----
 
@@ -38,7 +34,7 @@ reading:
 - [i] Matrix keyboard setup
 - [i] Matrix keyboard reading
 - [x] kbd48CNC set LED
-- [x] kbd48CNC get Button Status (currently poor perfromance on Sapberry)
+- [x] kbd48CNC get Button Status
 - [p] Using encoders
 - [p] I2C operations
 - [p] SPI operation
@@ -54,7 +50,7 @@ p ... planned
 
 PoRelay8:
 - needs to be connected in Parallel to kbd48CNC with white PoExt Cable OR using Canbus (connecting it using the Red PoExtBus cable to the i2C extender which is delivered with kbd48CNC will not work)
-- for CanBus Firmware update to Version6 or higher is necessary on all devices (See manuals or information on PoLabs homepage for more detailed information)
+- if it is used together with "non smart" PoExtBus devices (e.g. PoExtBusOC16) use "PoExtBus - Smart" page on Pokeys-SW to set "Sequence ID"
 
 kbd48CNC:
 - currently it is used as PoNetDevice
