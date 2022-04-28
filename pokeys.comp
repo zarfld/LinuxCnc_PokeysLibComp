@@ -1473,7 +1473,7 @@ void user_mainloop(void)
 					}
 				}
 				
-				if (rtc.sec_ret >= rtc_latencycheck_set && rtc_latencycheck_set>0 )
+				if (rtc_sec_ret >= rtc_latencycheck_set && rtc_latencycheck_set>0 )
 				{
 					rtc_hal_latency = rtc_latencyCounter / rtc_loop_frequ;
 					rtc_latencycheck_set = -1;
