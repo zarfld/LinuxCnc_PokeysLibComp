@@ -36,9 +36,9 @@ currently under development using following HW
 - [x] kbd48CNC set LED
 - [x] kbd48CNC get Button Status
 - [p] Using encoders
-- [p] I2C operations
+- [] I2C operations
 - [p] SPI operation
-- [p] PoIL operations
+- [] PoIL operations
 - [i] 1-wire operations
 - [i] PoNET bus support
 
@@ -53,4 +53,11 @@ PoRelay8:
 - if it is used together with "non smart" PoExtBus devices (e.g. PoExtBusOC16) use "PoExtBus - Smart" page on Pokeys-SW to set "Sequence ID"
 
 kbd48CNC:
-- currently it is used as PoNetDevice
+- [x] using as PoNet-extension buard attached to Pokeys57E
+- [x] using CanBus (6Pin MicroMatch Connector) directly on Pokeys57CNC
+
+
+Pokeys57CNC
+- [x] connected using USB
+- [x] connected using Ethernet
+- [] LinuxCNC example config in Work
