@@ -49,8 +49,13 @@ p ... planned
 
 
 PoRelay8:
-- needs to be connected in Parallel to kbd48CNC with white PoExt Cable OR using Canbus (connecting it using the Red PoExtBus cable to the i2C extender which is delivered with kbd48CNC will not work)
-- if it is used together with "non smart" PoExtBus devices (e.g. PoExtBusOC16) use "PoExtBus - Smart" page on Pokeys-SW to set "Sequence ID"
+- [x] needs to be connected in Parallel to kbd48CNC with white PoExt Cable OR using Canbus (connecting it using the Red PoExtBus cable to the i2C extender which is delivered with kbd48CNC will not work)
+- [x] if it is used together with "non smart" PoExtBus devices (e.g. PoExtBusOC16) use "PoExtBus - Smart" page on Pokeys-SW to set "Sequence ID"
+- [ ] inputs not available (yet?)
+
+PoExtBusOC16
+- [x] can be set using pokeys.0.PoExtBus.[id].Out-0..15
+- [ ] inputs not available
 
 kbd48CNC:
 - [x] using as PoNet-extension buard attached to Pokeys57E
@@ -60,8 +65,16 @@ kbd48CNC:
 Pokeys57CNC
 - [x] connected using USB
 - [x] connected using Ethernet
-- [ ] LinuxCNC example config in Work
+- [ ] LinuxCNC example config in Work (using the pinsetup as available on PCB)
+- [x] Switchng OC Outputs  pokeys.0.PEv2.ExternalOCOutput.0..3
+- [x] Switchng Relay Outputs (SSR1 & 2 -> pokeys.0.PEv2.ExternalRelayOutput.0 & 1) (SSR1 & 2 -> pokeys.0.PEv2.ExternalRelayOutput.0 & 1)
+- using USB connection seems "faster" than using ethernet - may depend on networksetup (networkswitch vs. direct connection)
 
 
 PulseEnginev2
-- [x] connected using USB
+- [x] Setting Status Running/Stop depending on LinuxCNC state ("machine-on")
+- [x] Reading Status of Limit+/- and Home switches
+- [x] setting External OC and RelayOutputs - in case that "Extended IO" is available and activated (Pokeys57CNC)
+- [!] setting PinConfiguration for Limits, Home, Probe & Emergency switches based in LinuxCNC-INI configuration
+- [x] parametrizing MaxSpeed, MaxAccelleration, ... based on LinuxCNC configuarion (mm/sec to pulses/sec conversion is being done using JOINT.*.STEPSCALE)
+- [ ] moving axis currently doesn't work yet due to FollowingError (FERROR)

@@ -1800,36 +1800,6 @@ void user_mainloop(void)
 					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,5,PEv2_ExternalOCOutput(2));
 					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,6,PEv2_ExternalOCOutput(3));
 
-					/*
-					if (PEv2_ExternalRelayOutput(0)=true)
-					{
-						ExternalRelayOutputs_set += 1;
-					}
-					if (PEv2_ExternalRelayOutput(1)=true)
-					{
-						ExternalRelayOutputs_set += 2;
-					}
-					if (PEv2_ExternalRelayOutput(2)=true)
-					{
-						ExternalRelayOutputs_set += 4;
-					}
-					if (PEv2_ExternalOCOutput(0)=true)
-					{
-						ExternalOCOutputs_set += 8;
-					}
-					if (PEv2_ExternalOCOutput(1)=true)
-					{
-						ExternalOCOutputs_set += 16;
-					}
-					if (PEv2_ExternalOCOutput(2)=true)
-					{
-						ExternalOCOutputs_set += 32;
-					}
-					if (PEv2_ExternalOCOutput(3)=true)
-					{
-						ExternalOCOutputs_set += 64;
-					}
-					*/
 
 					if (ExternalOCOutputs_set != dev->PEv2.ExternalOCOutputs)
 					{
@@ -1840,7 +1810,13 @@ void user_mainloop(void)
 
 					
 				}
-				if (PEv2_PulseEngineState != PEv2_PulseEngineStateSetup)
+				if (PEv2_PulseEngineState != PEv2_PulseEngineStateSetup )
+				{
+					dev->PEv2.PulseEngineStateSetup = PEv2_PulseEngineStateSetup;
+					//dev->PEv2.AxisEnabledMask = PEv2_AxisEnabledMask;
+					doStateSet=true;
+				}
+				else if (rtc_loopcount==0)
 				{
 					dev->PEv2.PulseEngineStateSetup = PEv2_PulseEngineStateSetup;
 					//dev->PEv2.AxisEnabledMask = PEv2_AxisEnabledMask;
