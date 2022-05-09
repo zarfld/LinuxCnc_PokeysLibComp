@@ -909,6 +909,21 @@ void user_mainloop(void)
 			 info_PulseEnginev2 = dev->info.iPulseEnginev2;                   // Device supports Pulse engine v2
 			 info_EasySensors = dev->info.iEasySensors;                     // Device supports EasySensors
 
+			 switch (dev->DeviceData.DeviceTypeID)
+			{
+				case PK_DeviceID_PoKeys57CNC:           // Pulse engine is stopped
+					PEv2_PG_extended_io=true;
+					break;
+				case PK_DeviceID_PoKeys57CNCdb25:           // Pulse engine is stopped
+					PEv2_PG_extended_io=false;
+					break;
+				case PK_DeviceID_57U:           // Pulse engine is stopped
+					PEv2_PG_extended_io=false;
+					break;
+				case PK_DeviceID_57E:           // Pulse engine is stopped
+					PEv2_PG_extended_io=false;
+					break;
+			}
 			 a_debout = 122;
 			 if ( info_PoNET!=0 )
 			 {
@@ -995,10 +1010,15 @@ void user_mainloop(void)
 						{
 							PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 6, true); // swap step / dir signals
 						}
+
+
 						if (PEv2_PG_extended_io != 0)
 						{
 							PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 7, true); // extended io
 						}
+
+
+
 					}
 					dev->PEv2.PulseEngineEnabled = PEv2_PulseEngineEnabled;
 					dev->PEv2.ChargePumpEnabled = PEv2_ChargePumpEnabled;
