@@ -1789,6 +1789,15 @@ void user_mainloop(void)
 					uint8_t ExternalRelayOutputs_set=  0;
 					uint8_t ExternalOCOutputs_set=  0;
 
+					for(i=0;i<3;i++)
+					{
+						ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set ,i,PEv2_ExternalRelayOutput(i));
+					}
+					for(i=0;i<4;i++)
+					{
+						ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,i+3,PEv2_ExternalOCOutput(i));
+					}
+					/*
 					if (PEv2_ExternalRelayOutput(0)=true)
 					{
 						ExternalRelayOutputs_set += 1;
@@ -1817,6 +1826,7 @@ void user_mainloop(void)
 					{
 						ExternalOCOutputs_set += 64;
 					}
+					*/
 
 					//uint8_t ExternalRelayOutputs_set=  PEv2_ExternalRelayOutput;
 					//uint8_t ExternalOCOutputs_set=  PEv2_ExternalOCOutput;
