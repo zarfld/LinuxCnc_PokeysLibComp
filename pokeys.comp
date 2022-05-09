@@ -1811,6 +1811,8 @@ void user_mainloop(void)
 							doSetExtOut=true;
 							usleep(sleepdur); 
 						}
+						PK_PEv2_ExternalOutputsSet(dev);
+						PK_PEv2_ExternalOutputsSet(dev);
 						if (doSetExtOut==true)
 						{
 							if(PK_PEv2_ExternalOutputsSet(dev) != PK_OK)
