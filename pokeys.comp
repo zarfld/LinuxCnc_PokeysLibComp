@@ -1007,13 +1007,13 @@ void user_mainloop(void)
 					if (PEv2_PulseGeneratorType == 0)
 					{
 						
-						if (PEv2_PG_swap_stepdir != 0)
+						if (PEv2_PG_swap_stepdir != false)
 						{
 							PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 6, true); // swap step / dir signals
 						}
 
 
-						if (PEv2_PG_extended_io != 0)
+						if (PEv2_PG_extended_io != false)
 						{
 							PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 7, true); // extended io
 						}
@@ -1771,68 +1771,67 @@ void user_mainloop(void)
 					}
 				}
 
-				if (PEv2_PG_extended_io != 0)
+
+				if(PK_PEv2_ExternalOutputsGet(dev) == PK_OK)
 				{
-					if(PK_PEv2_ExternalOutputsGet(dev) == PK_OK)
-					{
-						PEv2_ExternalRelayOutputs= dev->PEv2.ExternalRelayOutputs;
-						PEv2_ExternalOCOutputs= dev->PEv2.ExternalOCOutputs ;
-					}
+					PEv2_ExternalRelayOutputs= dev->PEv2.ExternalRelayOutputs;
+					PEv2_ExternalOCOutputs= dev->PEv2.ExternalOCOutputs ;
+				}
 						
 
+				if (PEv2_PG_extended_io != false)
+				{
+					/*
+					pin out bit PEv2.ExternalRelayOutput.#[4];			// External relay outputs
+					pin out bit PEv2.ExternalOCOutput.#[4];			// External open-collector outputs
+					*/
 
-						/*
-						pin out bit PEv2.ExternalRelayOutput.#[4];			// External relay outputs
-						pin out bit PEv2.ExternalOCOutput.#[4];			// External open-collector outputs
-						*/
+					uint8_t ExternalRelayOutputs_set=  0;
+					uint8_t ExternalOCOutputs_set=  0;
 
-						uint8_t ExternalRelayOutputs_set=  0;
-						uint8_t ExternalOCOutputs_set=  0;
+					for (i = 0; i < 4; i++)
+					{
+						ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set,i,PEv2_ExternalRelayOutput(i));
+						ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set,i,PEv2_ExternalOCOutput(i));
+					}
 
-						for (i = 0; i < 4; i++)
+					//uint8_t ExternalRelayOutputs_set=  PEv2_ExternalRelayOutput;
+					//uint8_t ExternalOCOutputs_set=  PEv2_ExternalOCOutput;
+					bool doSetExtOut = false;
+
+					if (ExternalRelayOutputs_set != dev->PEv2.ExternalRelayOutputs)
+					{
+						dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set ;
+						doSetExtOut=true;
+						usleep(sleepdur); 
+					}
+					if (ExternalOCOutputs_set != dev->PEv2.ExternalOCOutputs)
+					{
+						dev->PEv2.ExternalOCOutputs = ExternalOCOutputs_set;
+						doSetExtOut=true;
+						usleep(sleepdur); 
+					}
+					PK_PEv2_ExternalOutputsSet(dev);
+					PK_PEv2_ExternalOutputsSet(dev);
+					if (doSetExtOut==true)
+					{
+						if(PK_PEv2_ExternalOutputsSet(dev) != PK_OK)
 						{
-							ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set,i,PEv2_ExternalRelayOutput(i));
-							ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set,i,PEv2_ExternalOCOutput(i));
-						}
-
-						//uint8_t ExternalRelayOutputs_set=  PEv2_ExternalRelayOutput;
-						//uint8_t ExternalOCOutputs_set=  PEv2_ExternalOCOutput;
-						bool doSetExtOut = false;
-
-						if (ExternalRelayOutputs_set != dev->PEv2.ExternalRelayOutputs)
-						{
-							dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set ;
-							doSetExtOut=true;
 							usleep(sleepdur); 
-						}
-						if (ExternalOCOutputs_set != dev->PEv2.ExternalOCOutputs)
-						{
-							dev->PEv2.ExternalOCOutputs = ExternalOCOutputs_set;
-							doSetExtOut=true;
-							usleep(sleepdur); 
-						}
-						PK_PEv2_ExternalOutputsSet(dev);
-						PK_PEv2_ExternalOutputsSet(dev);
-						if (doSetExtOut==true)
-						{
 							if(PK_PEv2_ExternalOutputsSet(dev) != PK_OK)
 							{
 								usleep(sleepdur); 
-								if(PK_PEv2_ExternalOutputsSet(dev) != PK_OK)
-								{
-									usleep(sleepdur); 
-								}
 							}
+						}
+						if(PK_PEv2_ExternalOutputsSet(dev) != PK_OK)
+						{
+							usleep(sleepdur); 
 							if(PK_PEv2_ExternalOutputsSet(dev) != PK_OK)
 							{
 								usleep(sleepdur); 
-								if(PK_PEv2_ExternalOutputsSet(dev) != PK_OK)
-								{
-									usleep(sleepdur); 
-								}
 							}
 						}
-					
+					}
 				}
 				if (PEv2_PulseEngineState != PEv2_PulseEngineStateSetup)
 				{
