@@ -225,7 +225,7 @@ pin out bit PEv2.#.AxisLimitOverride [8] ;
 
 pin out unsigned PEv2.ExternalRelayOutputs;			// External relay outputs
 pin out unsigned PEv2.ExternalOCOutputs;			// External open-collector outputs
-pin in bit PEv2.ExternalRelayOutput.#[3];			// External relay outputs
+pin in bit PEv2.ExternalRelayOutput.#[4];			// External relay outputs
 pin in bit PEv2.ExternalOCOutput.#[4];			// External open-collector outputs
 pin io unsigned PEv2.PulseEngineBufferSize;		// Buffer size information...
 pin io unsigned PEv2.motionBufferEntriesAccepted;
@@ -1791,7 +1791,14 @@ void user_mainloop(void)
 
 					for(i=0;i<3;i++)
 					{
-						ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set ,i,PEv2_ExternalRelayOutput(i));
+						if(i==0)
+						{
+							ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set ,7,PEv2_ExternalRelayOutput(i));
+						}
+						else
+						{
+							ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set ,i,PEv2_ExternalRelayOutput(i));
+						}
 					}
 					for(i=0;i<4;i++)
 					{
