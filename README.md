@@ -38,7 +38,7 @@ currently under development using following HW
 - [p] Using encoders
 - [] I2C operations
 - [p] SPI operation
-- [] PoIL operations
+- [ ] PoIL operations
 - [i] 1-wire operations
 - [i] PoNET bus support
 
@@ -60,4 +60,8 @@ kbd48CNC:
 Pokeys57CNC
 - [x] connected using USB
 - [x] connected using Ethernet
-- [] LinuxCNC example config in Work
+- [ ] LinuxCNC example config in Work
+
+
+PulseEnginev2
+- [x] connected using USB
