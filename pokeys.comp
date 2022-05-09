@@ -1770,8 +1770,8 @@ void user_mainloop(void)
 							ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set,i,PEv2_ExternalRelayOutput(i));
 							ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set,i,PEv2_ExternalOCOutput(i));
 						}
-						PEv2_ExternalRelayOutput= dev->PEv2.ExternalRelayOutputs;
-						PEv2_ExternalOCOutput= dev->PEv2.ExternalOCOutputs ;
+						PEv2_ExternalRelayOutputs= dev->PEv2.ExternalRelayOutputs;
+						PEv2_ExternalOCOutputs= dev->PEv2.ExternalOCOutputs ;
 						//uint8_t ExternalRelayOutputs_set=  PEv2_ExternalRelayOutput;
 						//uint8_t ExternalOCOutputs_set=  PEv2_ExternalOCOutput;
 						bool doSetExtOut = false;
