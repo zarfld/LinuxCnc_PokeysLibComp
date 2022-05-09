@@ -223,10 +223,10 @@ pin out bit PEv2.#.DedicatedHomeInputs [8] ;
 pin out bit PEv2.#.AxisEnabledStates [8] ;
 pin out bit PEv2.#.AxisLimitOverride [8] ;
 
-pin in unsigned PEv2.ExternalRelayOutputs;			// External relay outputs
-pin in unsigned PEv2.ExternalOCOutputs;			// External open-collector outputs
-pin out bit PEv2.ExternalRelayOutput.#[4];			// External relay outputs
-pin out bit PEv2.ExternalOCOutput.#[4];			// External open-collector outputs
+pin out unsigned PEv2.ExternalRelayOutputs;			// External relay outputs
+pin out unsigned PEv2.ExternalOCOutputs;			// External open-collector outputs
+pin in bit PEv2.ExternalRelayOutput.#[4];			// External relay outputs
+pin in bit PEv2.ExternalOCOutput.#[4];			// External open-collector outputs
 pin io unsigned PEv2.PulseEngineBufferSize;		// Buffer size information...
 pin io unsigned PEv2.motionBufferEntriesAccepted;
 pin io unsigned PEv2.newMotionBufferEntries;
