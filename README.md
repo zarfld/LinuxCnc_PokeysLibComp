@@ -84,6 +84,6 @@ PulseEnginev2
 - [x] Setting Status Running/Stop depending on LinuxCNC state ("machine-on")
 - [x] Reading Status of Limit+/- and Home switches
 - [x] setting External OC and RelayOutputs - in case that "Extended IO" is available and activated (Pokeys57CNC)
-- [ ! ] setting PinConfiguration for Limits, Home, Probe & Emergency switches based in LinuxCNC-INI configuration
+- [ ! ] setting PinConfiguration for Limits, Home, Probe & Emergency switches based in LinuxCNC-INI configuration - not yet reliable
 - [x] parametrizing MaxSpeed, MaxAccelleration, ... based on LinuxCNC configuarion (mm/sec to pulses/sec conversion is being done using JOINT.*.STEPSCALE)
 - [ ] moving axis currently doesn't work yet due to FollowingError (FERROR). Trying to use "PositionMode"(STEPSCALE converted) with Pos-Cmd as shown in pokeys "PoKeysUsage.py" assume that Pos-Fb is to slow
