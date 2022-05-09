@@ -1889,7 +1889,7 @@ void user_mainloop(void)
 				{
 					a_debout = 2320+i;
 					Pins_DigitalCounterValue(i)=dev->Pins[i].DigitalCounterValue;
-					Pins_AnalogValue(i)=dev->Pins[i].AnalogValue;
+					Pins_AnalogValue(i)= 3.3 * dev->Pins[i].AnalogValue /4096;
 					Pins_PinFunction(i)=dev->Pins[i].PinFunction;
 					Pins_CounterOptions(i)=dev->Pins[i].CounterOptions;
 					if (dev->Pins[i].DigitalValueGet==0)
