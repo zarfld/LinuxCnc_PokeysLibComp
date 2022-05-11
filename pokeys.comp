@@ -408,9 +408,9 @@ typedef struct
 The canonical digital input (I/O type field: digin) is quite simple.
 */
 //Pins
-	hal_bit_t in; 
+	hal_bit_t **in; 
 	//hal_bit_t in-not;
-	hal_bit_t inverted;
+	hal_bit_t **inverted;
 //Parameters
 
 //Functions
