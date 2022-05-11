@@ -387,7 +387,7 @@ option extra_link_args "-lPoKeys";
 #include <unistd.h>   /* UNIX standard function definitions */
 #include "hal.h"
 #include "PoKeysLib.h"
-
+#include "PoKeysLibCore.h"
 
 
 sPoKeysDevice * dev=0;
@@ -416,6 +416,7 @@ The canonical digital input (I/O type field: digin) is quite simple.
 //Functions
 // read
 }HALCDI_DigitalInput;
+HALCDI_DigitalInput * DigitalInput;
 
 typedef struct
 {
@@ -473,6 +474,11 @@ PWM generators
 //Functions
 // write
 }HALCDI_AnalogOutput;
+
+
+
+
+
 
 
 // Pulse engine v2 information
