@@ -748,7 +748,7 @@ int Init_IOPins()
 			for (i = 0; i < PinCount; i++)
 			{
 				const char *PinName = "digin.in-"+i;
-				hal_pin_bit_new(PinName, 16 , DigitalInput[i]->in, comp_id);
+				hal_pin_bit_new(PinName, 16 , DigitalInput[i].in, comp_id);
 				//hal_pin_bit_newf(HAL_OUT, base + (2 * n), comp_id, "pokeys.%d.pin-%02d-in", portnum, pin);
 			}
 
