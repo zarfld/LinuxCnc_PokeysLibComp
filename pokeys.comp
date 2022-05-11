@@ -414,7 +414,7 @@ The canonical digital input (I/O type field: digin) is quite simple.
 
 //Functions
 // read
-}HALCDI_DigitalInput
+}HALCDI_DigitalInput;
 
 typedef struct
 {
@@ -428,7 +428,7 @@ The canonical digital output (I/O type field: digout) is also very simple.
 	hal_bit_t invert;
 //Functions
 // read
-}HALCDI_DigitalOutput
+}HALCDI_DigitalOutput;
 
 typedef struct
 {
@@ -447,7 +447,7 @@ converters, which convert e.g. voltage to a continuous range of values.
 	hal_float_t hw_offset;
 //Functions
 // read
-}HALCDI_AnalogInput
+}HALCDI_AnalogInput;
 
 typedef struct
 {
@@ -471,7 +471,7 @@ PWM generators
 
 //Functions
 // write
-}HALCDI_AnalogOutput
+}HALCDI_AnalogOutput;
 
 
 // Pulse engine v2 information
