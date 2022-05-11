@@ -969,7 +969,7 @@ void user_mainloop(void)
 		{
 			a_debout = 121;
 			connected=1;
-
+			Init_IOPins();
 			 info_PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
 			 info_PWMCount = dev->info.iPWMCount;                        // Number of pins that support PWM output
 			 info_BasicEncoderCount = dev->info.iBasicEncoderCount;               // Number of basic encoders
