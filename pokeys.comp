@@ -1486,25 +1486,25 @@ void user_mainloop(void)
 					}
 
 
-					// hope to get loopfrequency more stable - as on everyminute additional actions
-					if (use_sleepdur1==false)
-					{
-						sleepdur2=sleepdur;
-						sleepdur=sleepdur1;
-						use_sleepdur1=true;
-					}
-					else
-					{
-						sleepdur1=sleepdur;
-					}
-					if (rtc_lastmin!=rtc_min)
-					{ 
-						use_sleepdur1=false;
-						sleepdur1=sleepdur;
-						sleepdur=sleepdur2;
-					}
+
 				}
-				
+				// hope to get loopfrequency more stable - as on everyminute additional actions
+				if (use_sleepdur1==false)
+				{
+					sleepdur2=sleepdur;
+					sleepdur=sleepdur1;
+					use_sleepdur1=true;
+				}
+				else
+				{
+					sleepdur1=sleepdur;
+				}
+				if (rtc_lastmin!=rtc_min)
+				{ 
+					use_sleepdur1=false;
+					sleepdur1=sleepdur;
+					sleepdur=sleepdur2;
+				}
 
 
 
