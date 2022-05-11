@@ -607,7 +607,7 @@ uint8_t PoExtBus_DataSet[10];
 uint8_t PoExtBus_DataGet[10];
 
 unsigned int  sleepdur = 2000;
-unsigned bool  use_sleepdur1 = 2000;
+bool  use_sleepdur1 = 2000;
 unsigned int  sleepdur1 = 2000;
 unsigned int  sleepdur2 = 2000;
 
