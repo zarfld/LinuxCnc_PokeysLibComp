@@ -391,6 +391,7 @@ option extra_link_args "-lPoKeys";
 
 
 sPoKeysDevice * dev=0;
+static int comp_id;		/* component ID */
 
 bool HAL_Machine_On = false;
 bool setPkConfig = false;
@@ -741,11 +742,14 @@ int Init_IOPins()
 			 int PWMinternalFrequency = dev->info.PWMinternalFrequency;             // Main PWM peripheral clock
 			 int AnalogInCount = dev->info.iAnalogInputs;                    // Number of available analog inputs
 
+			 int retval;
+
+			DigitalInput = hal_malloc(PinCount * sizeof(HALCDI_DigitalInput));
 			for (i = 0; i < PinCount; i++)
 			{
-				HALCDI_DigitalInput *NextDI;
 				const char *PinName = "digin.in-"+i;
-				hal_pin_bit_new(PinName, 16 , NextDI->in, 0);
+				hal_pin_bit_new(PinName, 16 , DigitalInput[i]->in, comp_id);
+				//hal_pin_bit_newf(HAL_OUT, base + (2 * n), comp_id, "pokeys.%d.pin-%02d-in", portnum, pin);
 			}
 
 
@@ -921,7 +925,7 @@ int Update_PoStep()
 void user_mainloop(void) 
 { 
 
-
+comp_id = hal_init("pokeys");
     while(0xb){
        FOR_ALL_INSTS() {
 	   rtc_loopcount++;
