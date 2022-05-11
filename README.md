@@ -70,6 +70,7 @@ Pokeys57E
 - [x] Readt of AnalogValue IO on HalPins pokeys.0.Pins.*.AnalogValue on the pins that support that
 - periphals listed above was tested on this device.
 
+changing structure of IOs to "Canonical Device Interface" in work
 
 Pokeys57CNC
 - [x] connected using USB
