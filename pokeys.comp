@@ -749,7 +749,7 @@ int Init_IOPins()
 			{
 				const char *PinName = "digin.in-"+i;
 				hal_pin_bit_new(PinName, 16 , DigitalInput[i].in, comp_id);
-				//hal_pin_bit_newf(HAL_OUT, base + (2 * n), comp_id, "pokeys.%d.pin-%02d-in", portnum, pin);
+				//hal_pin_bit_newf(HAL_OUT, base + (2 * n), comp_id, "pokeys57.%d.pin-%02d-in", portnum, pin);
 			}
 
 
@@ -925,7 +925,7 @@ int Update_PoStep()
 void user_mainloop(void) 
 { 
 
-comp_id = hal_init("pokeys");
+comp_id = hal_init("pokeys57");
     while(0xb){
        FOR_ALL_INSTS() {
 	   rtc_loopcount++;
