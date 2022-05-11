@@ -184,8 +184,8 @@ pin io unsigned PEv2.#.MPGjogDivider [8];			// Divider for the MPG jogging (enha
 
 pin io unsigned PEv2.PulseEngineEnabled;			// Pulse engine enabled status, also number of enabled axes
 pin io unsigned PEv2.PulseGeneratorType;			// Pulse engine generator type (0: external, 1: internal 3ch)
-pin in unsigned PEv2.PG_swap_stepdir;
-pin in unsigned PEv2.PG_extended_io;
+pin in bit PEv2.PG_swap_stepdir;
+pin io bit PEv2.PG_extended_io;
 
 pin io unsigned PEv2.ChargePumpEnabled;				// Charge pump output enabled
 pin io unsigned PEv2.EmergencySwitchPolarity;		// Emergency switch polarity (set to 1 to invert)
@@ -223,8 +223,10 @@ pin out bit PEv2.#.DedicatedHomeInputs [8] ;
 pin out bit PEv2.#.AxisEnabledStates [8] ;
 pin out bit PEv2.#.AxisLimitOverride [8] ;
 
-pin io unsigned PEv2.ExternalRelayOutputs;			// External relay outputs
-pin io unsigned PEv2.ExternalOCOutputs;			// External open-collector outputs
+pin out unsigned PEv2.ExternalRelayOutputs;			// External relay outputs
+pin out unsigned PEv2.ExternalOCOutputs;			// External open-collector outputs
+pin in bit PEv2.ExternalRelayOutput.#[4];			// External relay outputs
+pin in bit PEv2.ExternalOCOutput.#[4];			// External open-collector outputs
 pin io unsigned PEv2.PulseEngineBufferSize;		// Buffer size information...
 pin io unsigned PEv2.motionBufferEntriesAccepted;
 pin io unsigned PEv2.newMotionBufferEntries;
@@ -605,6 +607,11 @@ uint8_t PoExtBus_DataSet[10];
 uint8_t PoExtBus_DataGet[10];
 
 unsigned int  sleepdur = 2000;
+bool  use_sleepdur1 = true;
+unsigned int  sleepdur1 = 2000;
+unsigned int  sleepdur2 = 2000;
+
+
 
 PK_MatrixKB_Parameters MatrixKB;
 
@@ -907,6 +914,22 @@ void user_mainloop(void)
 			 info_PulseEnginev2 = dev->info.iPulseEnginev2;                   // Device supports Pulse engine v2
 			 info_EasySensors = dev->info.iEasySensors;                     // Device supports EasySensors
 
+			 switch (dev->DeviceData.DeviceTypeID)
+			{
+				case PK_DeviceID_PoKeys57CNC:           // Pulse engine is stopped
+					PEv2_PulseEngineEnabled=8;
+					PEv2_PG_extended_io=true;
+					break;
+				case PK_DeviceID_PoKeys57CNCdb25:           // Pulse engine is stopped
+					PEv2_PG_extended_io=false;
+					break;
+				case PK_DeviceID_57U:           // Pulse engine is stopped
+					PEv2_PG_extended_io=false;
+					break;
+				case PK_DeviceID_57E:           // Pulse engine is stopped
+					PEv2_PG_extended_io=false;
+					break;
+			}
 			 a_debout = 122;
 			 if ( info_PoNET!=0 )
 			 {
@@ -989,14 +1012,19 @@ void user_mainloop(void)
 					if (PEv2_PulseGeneratorType == 0)
 					{
 						
-						if (PEv2_PG_swap_stepdir != 0)
+						if (PEv2_PG_swap_stepdir != false)
 						{
 							PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 6, true); // swap step / dir signals
 						}
-						if (PEv2_PG_extended_io != 0)
+
+
+						if (PEv2_PG_extended_io != false)
 						{
 							PEv2_PulseGeneratorType=Set_BitOfByte(PEv2_PulseGeneratorType, 7, true); // extended io
 						}
+
+
+
 					}
 					dev->PEv2.PulseEngineEnabled = PEv2_PulseEngineEnabled;
 					dev->PEv2.ChargePumpEnabled = PEv2_ChargePumpEnabled;
@@ -1456,8 +1484,27 @@ void user_mainloop(void)
 						rtc_latencyCounter=0;
 						rtc_latencycheck_set=dev->RTC.SEC;
 					}
+
+
+
 				}
-				
+				// hope to get loopfrequency more stable - as on everyminute additional actions
+				if (use_sleepdur1==false)
+				{
+					sleepdur2=sleepdur;
+					sleepdur=sleepdur1;
+					use_sleepdur1=true;
+				}
+				else
+				{
+					sleepdur1=sleepdur;
+				}
+				if (rtc_lastmin!=rtc_min)
+				{ 
+					use_sleepdur1=false;
+					sleepdur1=sleepdur;
+					sleepdur=sleepdur2;
+				}
 
 
 
@@ -1751,40 +1798,49 @@ void user_mainloop(void)
 
 				if(PK_PEv2_ExternalOutputsGet(dev) == PK_OK)
 				{
-					bool RelBit_array[8];
-					bool OcBit_array[8];
-
-
-					//uint8_t ExternalRelayOutputs_set=  PEv2_ExternalRelayOutput;
-					//uint8_t ExternalOCOutputs_set=  PEv2_ExternalOCOutput;
-					bool doSetExtOut = false;
-
-					if (PEv2_ExternalRelayOutputs != dev->PEv2.ExternalRelayOutputs)
-					{
-						dev->PEv2.ExternalRelayOutputs = PEv2_ExternalRelayOutputs ;
-						doSetExtOut=true;
-						usleep(sleepdur); 
-					}
-					if (PEv2_ExternalOCOutputs != dev->PEv2.ExternalOCOutputs)
-					{
-						dev->PEv2.ExternalOCOutputs = PEv2_ExternalOCOutputs;
-						doSetExtOut=true;
-						usleep(sleepdur); 
-					}
-					if (doSetExtOut==true)
-					{
-						if(PK_PEv2_ExternalOutputsSet(dev) != PK_OK)
-						{
-							usleep(sleepdur); 
-							if(PK_PEv2_ExternalOutputsSet(dev) != PK_OK)
-							{
-								usleep(sleepdur); 
-							}
-						}
-					}
+					PEv2_ExternalRelayOutputs= dev->PEv2.ExternalRelayOutputs;
+					PEv2_ExternalOCOutputs= dev->PEv2.ExternalOCOutputs ;
 				}
+						
 
-				if (PEv2_PulseEngineState != PEv2_PulseEngineStateSetup)
+				if (PEv2_PG_extended_io != false)
+				{
+					/*
+					pin out bit PEv2.ExternalRelayOutput.#[4];			// External relay outputs
+					pin out bit PEv2.ExternalOCOutput.#[4];			// External open-collector outputs
+					*/
+
+					uint8_t ExternalRelayOutputs_set=  0;
+					uint8_t ExternalOCOutputs_set=  0;
+
+
+					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,7,PEv2_ExternalRelayOutput(0));
+					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,0,PEv2_ExternalRelayOutput(1));
+					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,2,PEv2_ExternalRelayOutput(2));
+					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,1,PEv2_ExternalRelayOutput(3));
+
+					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,3,PEv2_ExternalOCOutput(0));
+					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,4,PEv2_ExternalOCOutput(1));
+					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,5,PEv2_ExternalOCOutput(2));
+					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,6,PEv2_ExternalOCOutput(3));
+
+
+					if (ExternalOCOutputs_set != dev->PEv2.ExternalOCOutputs)
+					{
+						dev->PEv2.ExternalOCOutputs = ExternalOCOutputs_set;
+							PK_PEv2_ExternalOutputsSet(dev);
+							PK_PEv2_ExternalOutputsSet(dev);
+					}
+
+					
+				}
+				if (PEv2_PulseEngineState != PEv2_PulseEngineStateSetup )
+				{
+					dev->PEv2.PulseEngineStateSetup = PEv2_PulseEngineStateSetup;
+					//dev->PEv2.AxisEnabledMask = PEv2_AxisEnabledMask;
+					doStateSet=true;
+				}
+				else if (rtc_loopcount==0)
 				{
 					dev->PEv2.PulseEngineStateSetup = PEv2_PulseEngineStateSetup;
 					//dev->PEv2.AxisEnabledMask = PEv2_AxisEnabledMask;
@@ -1857,7 +1913,7 @@ void user_mainloop(void)
 				{
 					a_debout = 2320+i;
 					Pins_DigitalCounterValue(i)=dev->Pins[i].DigitalCounterValue;
-					Pins_AnalogValue(i)=dev->Pins[i].AnalogValue;
+					Pins_AnalogValue(i)= 3.3 * dev->Pins[i].AnalogValue /4096;
 					Pins_PinFunction(i)=dev->Pins[i].PinFunction;
 					Pins_CounterOptions(i)=dev->Pins[i].CounterOptions;
 					if (dev->Pins[i].DigitalValueGet==0)
