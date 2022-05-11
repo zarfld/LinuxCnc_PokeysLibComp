@@ -745,7 +745,7 @@ int Init_IOPins()
 			{
 				HALCDI_DigitalInput *NextDI;
 				const char *PinName = "digin.in-"+i;
-				extern int hal_pin_bit_new(PinName, 16 , NextDI->in, 0);
+				hal_pin_bit_new(PinName, 16 , NextDI->in, 0);
 			}
 
 
