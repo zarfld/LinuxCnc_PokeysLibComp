@@ -385,11 +385,13 @@ option extra_link_args "-lPoKeys";
 ;;
 
 #include <unistd.h>   /* UNIX standard function definitions */
+#include "hal.h"
 #include "PoKeysLib.h"
-
+#include "PoKeysLibCore.h"
 
 
 sPoKeysDevice * dev=0;
+static int comp_id;		/* component ID */
 
 bool HAL_Machine_On = false;
 bool setPkConfig = false;
@@ -400,6 +402,79 @@ uint8_t kbd48CNC_Counter[48];
 uint8_t rtc_latencycheck_set = 0;
 int rtc_latencyCounter = 0;
 int i=0;
+
+typedef struct
+{
+/*
+The canonical digital input (I/O type field: digin) is quite simple.
+*/
+//Pins
+	hal_bit_t **in; 
+	//hal_bit_t in-not;
+	hal_bit_t **inverted;
+//Parameters
+
+//Functions
+// read
+}HALCDI_DigitalInput;
+HALCDI_DigitalInput * DigitalInput;
+
+typedef struct
+{
+/*
+The canonical digital output (I/O type field: digout) is also very simple.
+*/
+//Pins
+	hal_bit_t out; 
+
+//Parameters
+	hal_bit_t invert;
+//Functions
+// read
+}HALCDI_DigitalOutput;
+
+typedef struct
+{
+/*
+The canonical analog input (I/O type: adcin). This is expected to be used for analog to digital
+converters, which convert e.g. voltage to a continuous range of values.
+*/
+
+//Pins
+	hal_float_t value; 
+
+//Parameters
+	hal_float_t scale; 
+	hal_float_t offset;
+	hal_float_t bit_weight;
+	hal_float_t hw_offset;
+//Functions
+// read
+}HALCDI_AnalogInput;
+
+typedef struct
+{
+/*
+The canonical analog output (I/O Type: adcout). This is intended for any kind of hardware that
+can output a more-or-less continuous range of values. Examples are digital to analog converters or
+PWM generators
+*/
+
+//Pins
+	hal_float_t value; 
+	hal_bit_t enable;
+
+//Parameters
+	hal_float_t scale; 
+	hal_float_t offset;
+	hal_float_t bit_weight;
+	hal_float_t hw_offset;
+	hal_float_t high_limit;
+	hal_float_t low_limit;
+
+//Functions
+// write
+}HALCDI_AnalogOutput;
 
 
 
@@ -656,6 +731,29 @@ uint8_t Merge_8BitsToByte(bool Bit_array[8])
   return sum;
 }
 
+int Init_IOPins()
+{
+			 int PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
+			 int PWMCount = dev->info.iPWMCount;                        // Number of pins that support PWM output
+			 int BasicEncoderCount = dev->info.iBasicEncoderCount;               // Number of basic encoders
+			 int EncodersCount = dev->info.iEncodersCount;                   // Number of encoder slots available
+			 int FastEncoders = dev->info.iFastEncoders;                    // Number of fast encoders supported
+			 int UltraFastEncoders = dev->info.iUltraFastEncoders;               // Number of available ultra fast encoders
+			 int PWMinternalFrequency = dev->info.PWMinternalFrequency;             // Main PWM peripheral clock
+			 int AnalogInCount = dev->info.iAnalogInputs;                    // Number of available analog inputs
+
+			 int retval;
+
+			DigitalInput = hal_malloc(PinCount * sizeof(HALCDI_DigitalInput));
+			for (i = 0; i < PinCount; i++)
+			{
+				const char *PinName = "digin.in-"+i;
+				hal_pin_bit_new(PinName, 16 , DigitalInput[i].in, comp_id);
+				//hal_pin_bit_newf(HAL_OUT, base + (2 * n), comp_id, "pokeys57.%d.pin-%02d-in", portnum, pin);
+			}
+
+
+}
 
 int Update_PoNet()
 {
@@ -827,6 +925,8 @@ int Update_PoStep()
 void user_mainloop(void) 
 { 
 
+	comp_id = hal_init("pokeys");
+
 
     while(0xb){
        FOR_ALL_INSTS() {
@@ -875,7 +975,7 @@ void user_mainloop(void)
 		{
 			a_debout = 121;
 			connected=1;
-
+			Init_IOPins();
 			 info_PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
 			 info_PWMCount = dev->info.iPWMCount;                        // Number of pins that support PWM output
 			 info_BasicEncoderCount = dev->info.iBasicEncoderCount;               // Number of basic encoders
