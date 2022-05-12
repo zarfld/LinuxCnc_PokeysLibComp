@@ -1,9 +1,9 @@
-component pokeys "PoKeys IO driver, by Mit Zot";
+//component pokeys "PoKeys IO driver, by Mit Zot";
 #include <unistd.h>   /* UNIX standard function definitions */
 #include "hal.h"
 #include "PoKeysLib.h"
 #include "PoKeysLibCore.h"
-option userspace yes;
+//option userspace yes;
 
 hal_u32_t enum_usb_dev;
 hal_u32_t enum_fusb_dev;
@@ -58,25 +58,25 @@ hal_u32_t info_PulseEnginev2;                   // Device supports Pulse engine 
 hal_u32_t info_EasySensors;                     // Device supports EasySensors
 
 //hal_u32_t PoExtBus_DataGet [10];   
-hal_bit_t PoExtBus_In-0 [10];                   
-hal_bit_t PoExtBus_In-1 [10];    
-hal_bit_t PoExtBus_In-2 [10];    
-hal_bit_t PoExtBus_In-3 [10];    
-hal_bit_t PoExtBus_In-4 [10];    
-hal_bit_t PoExtBus_In-5 [10];    
-hal_bit_t PoExtBus_In-6 [10];    
-hal_bit_t PoExtBus_In-7 [10]; 
+hal_bit_t PoExtBus_In0 [10];                   
+hal_bit_t PoExtBus_In1 [10];    
+hal_bit_t PoExtBus_In2 [10];    
+hal_bit_t PoExtBus_In3 [10];    
+hal_bit_t PoExtBus_In4 [10];    
+hal_bit_t PoExtBus_In5 [10];    
+hal_bit_t PoExtBus_In6 [10];    
+hal_bit_t PoExtBus_In7 [10]; 
 
 
 //hal_u32_t PoExtBus_DataSet [10];                 
-hal_bit_t PoExtBus_Out-0 [10];                   
-hal_bit_t PoExtBus_Out-1 [10];    
-hal_bit_t PoExtBus_Out-2 [10];    
-hal_bit_t PoExtBus_Out-3 [10];    
-hal_bit_t PoExtBus_Out-4 [10];    
-hal_bit_t PoExtBus_Out-5 [10];    
-hal_bit_t PoExtBus_Out-6 [10];    
-hal_bit_t PoExtBus_Out-7 [10];
+hal_bit_t PoExtBus_Out0 [10];                   
+hal_bit_t PoExtBus_Out1 [10];    
+hal_bit_t PoExtBus_Out2 [10];    
+hal_bit_t PoExtBus_Out3 [10];    
+hal_bit_t PoExtBus_Out4 [10];    
+hal_bit_t PoExtBus_Out5 [10];    
+hal_bit_t PoExtBus_Out6 [10];    
+hal_bit_t PoExtBus_Out7 [10];
 
 // Pulse engine v2 information
 hal_u32_t PEv2_nrOfAxes;
@@ -153,10 +153,10 @@ hal_float_t PEv2_params_DEADBAND [8];
 hal_float_t PEv2_params_MAX_OUTPUT [8];
 hal_float_t PEv2_params_ENCODER_SCALE [8];
 // these are in nanoseconds
-hal_float_t PEv2_params_DIRSETUP [8] = 0;					// (ns)
-hal_float_t PEv2_params_DIRHOLD [8] = 0;					// (ns)
-hal_float_t PEv2_params_STEPLEN [8] = 0;					// (ns)
-hal_float_t PEv2_params_STEPSPACE [8] = 0;					// (ns)
+hal_float_t PEv2_params_DIRSETUP [8] = 0.0;					// (ns)
+hal_float_t PEv2_params_DIRHOLD [8] = 0.0;					// (ns)
+hal_float_t PEv2_params_STEPLEN [8] = 0.0;					// (ns)
+hal_float_t PEv2_params_STEPSPACE [8] = 0.0;					// (ns)
 hal_float_t PEv2_params_STEP_SCALE [8] = 0;					// (pulses/mm)
 hal_float_t PEv2_params_MIN_LIMIT [8] = 0;					// position (mm)
 hal_float_t PEv2_params_MAX_LIMIT [8] = 0;					// position (mm)
