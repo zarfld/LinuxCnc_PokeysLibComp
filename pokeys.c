@@ -16,43 +16,43 @@ hal_bit_t machine_is_on;
 
 // PoKeys device information
 //sPoKeysDevice_Info info;
-hal_u32_t info.PinCount;                        // Number of pins, physically on the device
-hal_u32_t info.PWMCount;                        // Number of pins that support PWM output
-hal_u32_t info.BasicEncoderCount;               // Number of basic encoders
-hal_u32_t info.EncodersCount;                   // Number of encoder slots available
-hal_u32_t info.FastEncoders;                    // Number of fast encoders supported
-hal_u32_t info.UltraFastEncoders;               // Number of available ultra fast encoders
-hal_u32_t info.PWMinternalFrequency;             // Main PWM peripheral clock
-hal_u32_t info.AnalogInputs;                    // Number of available analog inputs
-hal_u32_t info.KeyMapping;                      // Device supports key mapping (acts as a USB keyboard)
-hal_u32_t info.TriggeredKeyMapping;             // Device supports triggered key mapping
-hal_u32_t info.KeyRepeatDelay;                  // Device supports user customizable key repeat rates and delays
-hal_u32_t info.DigitalCounters;                 // Device supports digital counters
-hal_u32_t info.JoystickButtonAxisMapping;       // Device supports mapping of joystick buttons
-hal_u32_t info.JoystickAnalogToDigitalMapping;  // Device supports mapping of analog inputs to digital keys
-hal_u32_t info.Macros;                          // Device supports customizable macro sequences
-hal_u32_t info.MatrixKeyboard;                  // Device supports matrix keyboard
-hal_u32_t info.MatrixKeyboardTriggeredMapping;  // Device supports matrix keyboard triggered key mapping
-hal_u32_t info.LCD;                             // Device supports alphanumeric LCD display
-hal_u32_t info.MatrixLED;                       // Device supports matrix LED display
-hal_u32_t info.ConnectionSignal;                // Device supports connection signal output
-hal_u32_t info.PoExtBus;                        // Device supports PoExtBus digital outputs
-hal_u32_t info.PoNET;                           // Device supports PoNET bus devices
-hal_u32_t info.AnalogFiltering;                 // Device supports analog inputs low-pass digital filtering
-hal_u32_t info.InitOutputsStart;                // Device supports initializing outputs at startup
-hal_u32_t info.protI2C;                         // Device supports I2C bus (master)
-hal_u32_t info.prot1wire;                       // Device supports 1-wire bus (master)
-hal_u32_t info.AdditionalOptions;               // Device supports additional options with activation keys
-hal_u32_t info.LoadStatus;                      // Device supports reporting load status
-hal_u32_t info.CustomDeviceName;                // Device supports specifying custom device names
-hal_u32_t info.PoTLog27support;                 // Device supports PoTLog27 firmware
-hal_u32_t info.SensorList;                      // Device supports sensor lists
-hal_u32_t info.WebInterface;                    // Device supports web interface
-hal_u32_t info.FailSafeSettings;                // Device supports fail-safe mode
-hal_u32_t info.JoystickHATswitch;               // Device supports joystick HAT switch mapping
-hal_u32_t info.PulseEngine;                     // Device supports Pulse engine
-hal_u32_t info.PulseEnginev2;                   // Device supports Pulse engine v2
-hal_u32_t info.EasySensors;                     // Device supports EasySensors
+hal_u32_t info_PinCount;                        // Number of pins, physically on the device
+hal_u32_t info_PWMCount;                        // Number of pins that support PWM output
+hal_u32_t info_BasicEncoderCount;               // Number of basic encoders
+hal_u32_t info_EncodersCount;                   // Number of encoder slots available
+hal_u32_t info_FastEncoders;                    // Number of fast encoders supported
+hal_u32_t info_UltraFastEncoders;               // Number of available ultra fast encoders
+hal_u32_t info_PWMinternalFrequency;             // Main PWM peripheral clock
+hal_u32_t info_AnalogInputs;                    // Number of available analog inputs
+hal_u32_t info_KeyMapping;                      // Device supports key mapping (acts as a USB keyboard)
+hal_u32_t info_TriggeredKeyMapping;             // Device supports triggered key mapping
+hal_u32_t info_KeyRepeatDelay;                  // Device supports user customizable key repeat rates and delays
+hal_u32_t info_DigitalCounters;                 // Device supports digital counters
+hal_u32_t info_JoystickButtonAxisMapping;       // Device supports mapping of joystick buttons
+hal_u32_t info_JoystickAnalogToDigitalMapping;  // Device supports mapping of analog inputs to digital keys
+hal_u32_t info_Macros;                          // Device supports customizable macro sequences
+hal_u32_t info_MatrixKeyboard;                  // Device supports matrix keyboard
+hal_u32_t info_MatrixKeyboardTriggeredMapping;  // Device supports matrix keyboard triggered key mapping
+hal_u32_t info_LCD;                             // Device supports alphanumeric LCD display
+hal_u32_t info_MatrixLED;                       // Device supports matrix LED display
+hal_u32_t info_ConnectionSignal;                // Device supports connection signal output
+hal_u32_t info_PoExtBus;                        // Device supports PoExtBus digital outputs
+hal_u32_t info_PoNET;                           // Device supports PoNET bus devices
+hal_u32_t info_AnalogFiltering;                 // Device supports analog inputs low-pass digital filtering
+hal_u32_t info_InitOutputsStart;                // Device supports initializing outputs at startup
+hal_u32_t info_protI2C;                         // Device supports I2C bus (master)
+hal_u32_t info_prot1wire;                       // Device supports 1-wire bus (master)
+hal_u32_t info_AdditionalOptions;               // Device supports additional options with activation keys
+hal_u32_t info_LoadStatus;                      // Device supports reporting load status
+hal_u32_t info_CustomDeviceName;                // Device supports specifying custom device names
+hal_u32_t info_PoTLog27support;                 // Device supports PoTLog27 firmware
+hal_u32_t info_SensorList;                      // Device supports sensor lists
+hal_u32_t info_WebInterface;                    // Device supports web interface
+hal_u32_t info_FailSafeSettings;                // Device supports fail-safe mode
+hal_u32_t info_JoystickHATswitch;               // Device supports joystick HAT switch mapping
+hal_u32_t info_PulseEngine;                     // Device supports Pulse engine
+hal_u32_t info_PulseEnginev2;                   // Device supports Pulse engine v2
+hal_u32_t info_EasySensors;                     // Device supports EasySensors
 
 //hal_u32_t PoExtBus_DataGet [10];   
 hal_bit_t PoExtBus_In-0 [10];                   
@@ -76,21 +76,21 @@ hal_bit_t PoExtBus_Out-6 [10];
 hal_bit_t PoExtBus_Out-7 [10];
 
 // Pulse engine v2 information
-hal_u32_t PEv2.nrOfAxes;
-hal_u32_t PEv2.maxPulseFrequency;
-hal_u32_t PEv2.bufferDepth;
-hal_u32_t PEv2.slotTiming;
+hal_u32_t PEv2_nrOfAxes;
+hal_u32_t PEv2_maxPulseFrequency;
+hal_u32_t PEv2_bufferDepth;
+hal_u32_t PEv2_slotTiming;
 
 //***********************************************************************
 //[TRAJ] information in HAL-INI 
-hal_s32_t PEv2.params.COORDINATES;
-hal_s32_t PEv2.params.LINEAR_UNITS;
-hal_s32_t PEv2.params.ANGULAR_UNITS;
-hal_float_t PEv2.params.CYCLE_TIME;
-hal_float_t PEv2.params.DEFAULT_LINEAR_VELOCITY;
-hal_float_t PEv2.params.MAX_LINEAR_VELOCITY;
+hal_s32_t PEv2_params_COORDINATES;
+hal_s32_t PEv2_params_LINEAR_UNITS;
+hal_s32_t PEv2_params_ANGULAR_UNITS;
+hal_float_t PEv2_params_CYCLE_TIME;
+hal_float_t PEv2_params_DEFAULT_LINEAR_VELOCITY;
+hal_float_t PEv2_params_MAX_LINEAR_VELOCITY;
 
-hal_bit_t PEv2.params.ApplyIniSettings;
+hal_bit_t PEv2_params_ApplyIniSettings;
 //***********************************************************************
 
 // Pulse engine v2 structure...
@@ -130,39 +130,39 @@ hal_float_t PEv2_joint_pos_fb [8];
     
 //***********************************************************************
 //[JOINT_n] information in HAL-INI 
-hal_s32_t PEv2_params.TYPE [8];			//LINEAR / ANGULAR
-hal_float_t PEv2_params.HOME [8];
-hal_float_t PEv2_params.FERROR [8];
-hal_float_t PEv2_params.MIN_FERROR [8];
-hal_float_t PEv2_params.MAX_VELOCITY [8];
-hal_float_t PEv2_params.MAX_ACCELERATION [8];
-hal_float_t PEv2_params.STEPGEN_MAXVEL [8];
-hal_float_t PEv2_params.STEPGEN_MAXACCEL [8];
-hal_float_t PEv2_params.Feedback_Encoder_Id [8];
-//hal_float_t PEv2_params.P [8];
-//hal_float_t PEv2_params.I [8];
-//hal_float_t PEv2_params.D [8];
-//hal_float_t PEv2_params.FF0 [8];
-//hal_float_t PEv2_params.FF1 [8];
-//hal_float_t PEv2_params.FF2 [8];
-//hal_float_t PEv2_params.BIAS [8];
-hal_float_t PEv2_params.DEADBAND [8];
-hal_float_t PEv2_params.MAX_OUTPUT [8];
-hal_float_t PEv2_params.ENCODER_SCALE [8];
+hal_s32_t PEv2_params_TYPE [8];			//LINEAR / ANGULAR
+hal_float_t PEv2_params_HOME [8];
+hal_float_t PEv2_params_FERROR [8];
+hal_float_t PEv2_params_MIN_FERROR [8];
+hal_float_t PEv2_params_MAX_VELOCITY [8];
+hal_float_t PEv2_params_MAX_ACCELERATION [8];
+hal_float_t PEv2_params_STEPGEN_MAXVEL [8];
+hal_float_t PEv2_params_STEPGEN_MAXACCEL [8];
+hal_float_t PEv2_params_Feedback_Encoder_Id [8];
+//hal_float_t PEv2_params_P [8];
+//hal_float_t PEv2_params_I [8];
+//hal_float_t PEv2_params_D [8];
+//hal_float_t PEv2_params_FF0 [8];
+//hal_float_t PEv2_params_FF1 [8];
+//hal_float_t PEv2_params_FF2 [8];
+//hal_float_t PEv2_params_BIAS [8];
+hal_float_t PEv2_params_DEADBAND [8];
+hal_float_t PEv2_params_MAX_OUTPUT [8];
+hal_float_t PEv2_params_ENCODER_SCALE [8];
 // these are in nanoseconds
-hal_float_t PEv2_params.DIRSETUP [8] = 0;					// (ns)
-hal_float_t PEv2_params.DIRHOLD [8] = 0;					// (ns)
-hal_float_t PEv2_params.STEPLEN [8] = 0;					// (ns)
-hal_float_t PEv2_params.STEPSPACE [8] = 0;					// (ns)
-hal_float_t PEv2_params.STEP_SCALE [8] = 0;					// (pulses/mm)
-hal_float_t PEv2_params.MIN_LIMIT [8] = 0;					// position (mm)
-hal_float_t PEv2_params.MAX_LIMIT [8] = 0;					// position (mm)
-hal_float_t PEv2_params.HOME_OFFSET [8] = 0;				// position (mm)
-hal_float_t PEv2_params.HOME_SEARCH_VEL [8] = 0;			// position (mm)
-hal_float_t PEv2_params.HOME_LATCH_VEL [8] = 0;				// position (mm)
-hal_float_t PEv2_params.HOME_FINAL_VEL [8] = 0;				// position (mm)
-hal_s32_t PEv2_params.HOME_USE_INDEX [8] = 0;				// YES / NO
-hal_s32_t PEv2_params.HOME_IGNORE_LIMITS [8] = 0;			// YES / NO
+hal_float_t PEv2_params_DIRSETUP [8] = 0;					// (ns)
+hal_float_t PEv2_params_DIRHOLD [8] = 0;					// (ns)
+hal_float_t PEv2_params_STEPLEN [8] = 0;					// (ns)
+hal_float_t PEv2_params_STEPSPACE [8] = 0;					// (ns)
+hal_float_t PEv2_params_STEP_SCALE [8] = 0;					// (pulses/mm)
+hal_float_t PEv2_params_MIN_LIMIT [8] = 0;					// position (mm)
+hal_float_t PEv2_params_MAX_LIMIT [8] = 0;					// position (mm)
+hal_float_t PEv2_params_HOME_OFFSET [8] = 0;				// position (mm)
+hal_float_t PEv2_params_HOME_SEARCH_VEL [8] = 0;			// position (mm)
+hal_float_t PEv2_params_HOME_LATCH_VEL [8] = 0;				// position (mm)
+hal_float_t PEv2_params_HOME_FINAL_VEL [8] = 0;				// position (mm)
+hal_s32_t PEv2_params_HOME_USE_INDEX [8] = 0;				// YES / NO
+hal_s32_t PEv2_params_HOME_IGNORE_LIMITS [8] = 0;			// YES / NO
 //***********************************************************************
 
 hal_u32_t PEv2_MPGjogMultiplier [8];		// MPG jog multiplier value
@@ -177,39 +177,39 @@ hal_bit_t PEv2_HomeSwitchStat [8];				// Home switch
 hal_bit_t PEv2_LimitMSwitch [8];			// Limit- switch
 hal_bit_t PEv2_LimitPSwitch [8];			// Limit+ switch
 hal_bit_t PEv2_AxisEnableOutput [8];		// Axis enabled output
-hal_bit_t PEv2.HomeSwitch;				// Home switch
+hal_bit_t PEv2_HomeSwitch;				// Home switch
 
 hal_u32_t PEv2_HomeBackOffDistance [8];		// Back-off distance after homing
 hal_u32_t PEv2_MPGjogDivider [8];			// Divider for the MPG jogging (enhanced encoder resolution)
 
-hal_u32_t PEv2.PulseEngineEnabled;			// Pulse engine enabled status, also number of enabled axes
-hal_u32_t PEv2.PulseGeneratorType;			// Pulse engine generator type (0: external, 1: internal 3ch)
-hal_bit_t PEv2.PG_swap_stepdir;
-hal_bit_t PEv2.PG_extended_io;
+hal_u32_t PEv2_PulseEngineEnabled;			// Pulse engine enabled status, also number of enabled axes
+hal_u32_t PEv2_PulseGeneratorType;			// Pulse engine generator type (0: external, 1: internal 3ch)
+hal_bit_t PEv2_PG_swap_stepdir;
+hal_bit_t PEv2_PG_extended_io;
 
-hal_u32_t PEv2.ChargePumpEnabled;				// Charge pump output enabled
-hal_u32_t PEv2.EmergencySwitchPolarity;		// Emergency switch polarity (set to 1 to invert)
-hal_u32_t PEv2.PulseEngineActivated;			// Pulse engine activation status
+hal_u32_t PEv2_ChargePumpEnabled;				// Charge pump output enabled
+hal_u32_t PEv2_EmergencySwitchPolarity;		// Emergency switch polarity (set to 1 to invert)
+hal_u32_t PEv2_PulseEngineActivated;			// Pulse engine activation status
 hal_u32_t PEv2_LimitStatusP[8];					// Limit+ status (NOT bit-mapped)
 hal_u32_t PEv2_LimitStatusN[8];					// Limit- status (NOT bit-mapped)
 hal_u32_t PEv2_HomeStatus[8];					// Home status (NOT bit-mapped)
-hal_u32_t PEv2.ErrorInputStatus;				// Stepper motor driver error inputs status (bit-mapped)
-hal_u32_t PEv2.MiscInputStatus;				// Miscelenous digital inputs...
-hal_u32_t PEv2.LimitOverride;					// Limit override status
-hal_u32_t PEv2.LimitOverrideSetup;			// Limit override configuration
-hal_u32_t PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
-hal_u32_t PEv2.AxisEnabledMask;				// Bit-mapped ouput enabled mask
+hal_u32_t PEv2_ErrorInputStatus;				// Stepper motor driver error inputs status (bit-mapped)
+hal_u32_t PEv2_MiscInputStatus;				// Miscelenous digital inputs...
+hal_u32_t PEv2_LimitOverride;					// Limit override status
+hal_u32_t PEv2_LimitOverrideSetup;			// Limit override configuration
+hal_u32_t PEv2_PulseEngineState;				// State of pulse engine - see ePoKeysPEState
+hal_u32_t PEv2_AxisEnabledMask;				// Bit-mapped ouput enabled mask
 
-hal_u32_t PEv2.EmergencyInputPin;
-hal_bit_t PEv2.EmergencyInput;
-hal_u32_t PEv2.EmergencyOutputPin;				//added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)
-hal_bit_t PEv2.EmergencyOutput;
+hal_u32_t PEv2_EmergencyInputPin;
+hal_bit_t PEv2_EmergencyInput;
+hal_u32_t PEv2_EmergencyOutputPin;				//added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)
+hal_bit_t PEv2_EmergencyOutput;
 
-hal_u32_t PEv2.param1;
-hal_u32_t PEv2.param2;
-hal_u32_t PEv2.param3;
-hal_u32_t PEv2.AxisEnabledStatesMask;		// Bit-mapped states, where axis enabled and charge pump signals are active
-hal_u32_t PEv2.PulseEngineStateSetup;		// Pulse engine new state configuration
+hal_u32_t PEv2_param1;
+hal_u32_t PEv2_param2;
+hal_u32_t PEv2_param3;
+hal_u32_t PEv2_AxisEnabledStatesMask;		// Bit-mapped states, where axis enabled and charge pump signals are active
+hal_u32_t PEv2_PulseEngineStateSetup;		// Pulse engine new state configuration
 hal_u32_t PEv2_SoftLimitStatus [8] ;				// Bit-mapped soft-limit statuses per axes
 /* 			PEv2_DedicatedLimitNInputs(i) =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
 			PEv2_DedicatedLimitPInputs(i) =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
@@ -223,24 +223,24 @@ hal_bit_t PEv2_DedicatedHomeInputs [8] ;
 hal_bit_t PEv2_AxisEnabledStates [8] ;
 hal_bit_t PEv2_AxisLimitOverride [8] ;
 
-hal_u32_t PEv2.ExternalRelayOutputs;			// External relay outputs
-hal_u32_t PEv2.ExternalOCOutputs;			// External open-collector outputs
-hal_bit_t PEv2.ExternalRelayOutput.#[4];			// External relay outputs
-hal_bit_t PEv2.ExternalOCOutput.#[4];			// External open-collector outputs
-hal_u32_t PEv2.PulseEngineBufferSize;		// Buffer size information...
-hal_u32_t PEv2.motionBufferEntriesAccepted;
-hal_u32_t PEv2.newMotionBufferEntries;
-hal_u32_t PEv2.HomingStartMaskSetup;			// Bit-mapped axes indexes to be homed
-hal_u32_t PEv2.ProbeStartMaskSetup;			// Bit-mapped axis indexes for probing
-hal_u32_t PEv2.ProbeInput;					// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
-hal_u32_t PEv2.ProbeInputPolarity;			// Probe input polarity
-hal_u32_t PEv2.ProbeStatus;					// Probe status (probe completion bit-mapped status)
-//hal_u32_t PEv2.MotionBuffer[448];			// Motion buffer
-hal_float_t PEv2.ProbeSpeed;						// Probe speed (ratio of the maximum speed)
+hal_u32_t PEv2_ExternalRelayOutputs;			// External relay outputs
+hal_u32_t PEv2_ExternalOCOutputs;			// External open-collector outputs
+hal_bit_t PEv2_ExternalRelayOutput.#[4];			// External relay outputs
+hal_bit_t PEv2_ExternalOCOutput.#[4];			// External open-collector outputs
+hal_u32_t PEv2_PulseEngineBufferSize;		// Buffer size information...
+hal_u32_t PEv2_motionBufferEntriesAccepted;
+hal_u32_t PEv2_newMotionBufferEntries;
+hal_u32_t PEv2_HomingStartMaskSetup;			// Bit-mapped axes indexes to be homed
+hal_u32_t PEv2_ProbeStartMaskSetup;			// Bit-mapped axis indexes for probing
+hal_u32_t PEv2_ProbeInput;					// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
+hal_u32_t PEv2_ProbeInputPolarity;			// Probe input polarity
+hal_u32_t PEv2_ProbeStatus;					// Probe status (probe completion bit-mapped status)
+//hal_u32_t PEv2_MotionBuffer[448];			// Motion buffer
+hal_float_t PEv2_ProbeSpeed;						// Probe speed (ratio of the maximum speed)
 hal_u32_t PEv2_BacklashWidth [8];			// half of real backlash width
 hal_u32_t PEv2_BacklashRegister [8];		// current value of the backlash register
 hal_u32_t PEv2_BacklashAcceleration [8];	// in pulses per ms^2
-hal_u32_t PEv2.BacklashCompensationEnabled;
+hal_u32_t PEv2_BacklashCompensationEnabled;
 
 hal_u32_t rtc.sec;
 hal_u32_t rtc.min;
