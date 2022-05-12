@@ -381,7 +381,7 @@ hal_u32_t LCD.line4.# [20];                         // Line 4 buffer
 hal_u32_t I2C_presentDevices [16];
 hal_bit_t I2C_scanning ;
 
-license "GPL";
+//license "GPL";
 
 //option extra_link_args "-lPoKeys";
 
@@ -2367,7 +2367,7 @@ void user_mainloop(void)
         }
     }
 
-    exit(0);
+    hal_exit(comp_id);
 };
 
 
