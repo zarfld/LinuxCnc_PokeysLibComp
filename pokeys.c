@@ -242,24 +242,24 @@ hal_u32_t PEv2_BacklashRegister [8];		// current value of the backlash register
 hal_u32_t PEv2_BacklashAcceleration [8];	// in pulses per ms^2
 hal_u32_t PEv2_BacklashCompensationEnabled;
 
-hal_u32_t rtc.sec;
-hal_u32_t rtc.min;
-hal_u32_t rtc.hour;
-hal_u32_t rtc.dow;
-hal_u32_t rtc.dom;
-hal_u32_t rtc.tmp;
-hal_u32_t rtc.doy;
-hal_u32_t rtc.month;
-hal_u32_t rtc.year;
-hal_u32_t rtc.loopcount;
+hal_u32_t rtc_sec;
+hal_u32_t rtc_min;
+hal_u32_t rtc_hour;
+hal_u32_t rtc_dow;
+hal_u32_t rtc_dom;
+hal_u32_t rtc_tmp;
+hal_u32_t rtc_doy;
+hal_u32_t rtc_month;
+hal_u32_t rtc_year;
+hal_u32_t rtc_loopcount;
 
 
-hal_u32_t rtc.lastmin;
-hal_u32_t rtc.lastsec;
-hal_u32_t rtc.loop_frequ;
-hal_u32_t rtc.loop_frequ_demand;
-hal_u32_t rtc.sec_ret;
-hal_u32_t rtc.hal_latency;
+hal_u32_t rtc_lastmin;
+hal_u32_t rtc_lastsec;
+hal_u32_t rtc_loop_frequ;
+hal_u32_t rtc_loop_frequ_demand;
+hal_u32_t rtc_sec_ret;
+hal_u32_t rtc_hal_latency;
 
 hal_u32_t Pins_DigitalCounterValue [55];
 hal_u32_t Pins_AnalogValue [55];
@@ -288,10 +288,10 @@ hal_u32_t MatrixKB.matrixKBrowsPins.#[16];			// List of matrix keyboard row conn
 */
 
 hal_bit_t kbd48CNC_available;
-hal_u32_t kbd48CNC.PoNetID;
-hal_u32_t kbd48CNC.KeyBrightness;
-hal_u32_t kbd48CNC.prevBrightness;
-hal_u32_t kbd48CNC.lightValue;
+hal_u32_t kbd48CNC_PoNetID;
+hal_u32_t kbd48CNC_KeyBrightness;
+hal_u32_t kbd48CNC_prevBrightness;
+hal_u32_t kbd48CNC_lightValue;
 //hal_u32_t kbd48CNC_ID [48];
 hal_bit_t kbd48CNC_LED [48];
 hal_bit_t kbd48CNC_Button [48];
@@ -353,9 +353,9 @@ hal_u32_t PoNET_moduleType[16];
 hal_u32_t PoNET_moduleSize[16];
 hal_u32_t PoNET_moduleOptions[16];
 
-hal_u32_t PoNET.PWMduty;
-hal_u32_t PoNET.lightValue;
-hal_u32_t PoNET.PoNETstatus;
+hal_u32_t PoNET_PWMduty;
+hal_u32_t PoNET_lightValue;
+hal_u32_t PoNET_PoNETstatus;
 hal_u32_t PoNET_statusIn [16];
 hal_u32_t PoNET_statusOut [16];
 /*
@@ -376,7 +376,7 @@ hal_u32_t LCD.line3.# [20];                         // Line 3 buffer
 hal_u32_t LCD.line4.# [20];                         // Line 4 buffer
 */
 hal_u32_t I2C_presentDevices [16];
-hal_bit_t I2C.scanning ;
+hal_bit_t I2C_scanning ;
 
 license "GPL";
 
