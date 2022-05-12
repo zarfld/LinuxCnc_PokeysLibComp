@@ -86,9 +86,9 @@ hal_u32_t PEv2_slotTiming;
 hal_s32_t PEv2_params_COORDINATES;
 hal_s32_t PEv2_params_LINEAR_UNITS;
 hal_s32_t PEv2_params_ANGULAR_UNITS;
-hal_float_t PEv2_params_CYCLE_TIME;
-hal_float_t PEv2_params_DEFAULT_LINEAR_VELOCITY;
-hal_float_t PEv2_params_MAX_LINEAR_VELOCITY;
+real_t PEv2_params_CYCLE_TIME;
+real_t PEv2_params_DEFAULT_LINEAR_VELOCITY;
+real_t PEv2_params_MAX_LINEAR_VELOCITY;
 
 hal_bit_t PEv2_params_ApplyIniSettings;
 //***********************************************************************
@@ -114,53 +114,53 @@ hal_u32_t PEv2_ProbeMaxPosition [8];		// Maximum position to travel to until sto
 hal_u32_t PEv2_CurrentPosition [8];			// Current position
 hal_u32_t PEv2_PositionSetup [8];			// Position to be set as current position
 hal_u32_t PEv2_ReferencePositionSpeed [8];	// Reference position or speed (position or pulses/s)
-hal_float_t PEv2_MaxSpeed [8];					// Maximum axis speed (in pulses per ms)
-hal_float_t PEv2_MaxAcceleration [8];			// Maximum axis acceleration (in pulses/ms/ms)
-hal_float_t PEv2_MaxDecceleration [8];			// Maximum axis deceleration (in pulses/ms/ms)
+real_t PEv2_MaxSpeed [8];					// Maximum axis speed (in pulses per ms)
+real_t PEv2_MaxAcceleration [8];			// Maximum axis acceleration (in pulses/ms/ms)
+real_t PEv2_MaxDecceleration [8];			// Maximum axis deceleration (in pulses/ms/ms)
 
-hal_float_t PEv2_MaxSpeed_mm_per_sec [8];			// Maximum axis speed (mm/s)
-hal_float_t PEv2_MaxAcceleration_mm_per_sec2 [8];	// Maximum axis acceleration (in mm/s�)
-hal_float_t PEv2_MaxDecceleration_mm_per_sec2 [8];	// Maximum axis deceleration (in mm/s�)
+real_t PEv2_MaxSpeed_mm_per_sec [8];			// Maximum axis speed (mm/s)
+real_t PEv2_MaxAcceleration_mm_per_sec2 [8];	// Maximum axis acceleration (in mm/s�)
+real_t PEv2_MaxDecceleration_mm_per_sec2 [8];	// Maximum axis deceleration (in mm/s�)
 
 	
-hal_float_t PEv2_joint_vel_cmd [8];				
-hal_float_t PEv2_joint_vel_fb [8];				
-hal_float_t PEv2_joint_pos_cmd [8];				
-hal_float_t PEv2_joint_pos_fb [8];				
+real_t PEv2_joint_vel_cmd [8];				
+real_t PEv2_joint_vel_fb [8];				
+real_t PEv2_joint_pos_cmd [8];				
+real_t PEv2_joint_pos_fb [8];				
     
 //***********************************************************************
 //[JOINT_n] information in HAL-INI 
 hal_s32_t PEv2_params_TYPE [8];			//LINEAR / ANGULAR
-hal_float_t PEv2_params_HOME [8];
-hal_float_t PEv2_params_FERROR [8];
-hal_float_t PEv2_params_MIN_FERROR [8];
-hal_float_t PEv2_params_MAX_VELOCITY [8];
-hal_float_t PEv2_params_MAX_ACCELERATION [8];
-hal_float_t PEv2_params_STEPGEN_MAXVEL [8];
-hal_float_t PEv2_params_STEPGEN_MAXACCEL [8];
-hal_float_t PEv2_params_Feedback_Encoder_Id [8];
-//hal_float_t PEv2_params_P [8];
-//hal_float_t PEv2_params_I [8];
-//hal_float_t PEv2_params_D [8];
-//hal_float_t PEv2_params_FF0 [8];
-//hal_float_t PEv2_params_FF1 [8];
-//hal_float_t PEv2_params_FF2 [8];
-//hal_float_t PEv2_params_BIAS [8];
-hal_float_t PEv2_params_DEADBAND [8];
-hal_float_t PEv2_params_MAX_OUTPUT [8];
-hal_float_t PEv2_params_ENCODER_SCALE [8];
+real_t PEv2_params_HOME [8];
+real_t PEv2_params_FERROR [8];
+real_t PEv2_params_MIN_FERROR [8];
+real_t PEv2_params_MAX_VELOCITY [8];
+real_t PEv2_params_MAX_ACCELERATION [8];
+real_t PEv2_params_STEPGEN_MAXVEL [8];
+real_t PEv2_params_STEPGEN_MAXACCEL [8];
+real_t PEv2_params_Feedback_Encoder_Id [8];
+//real_t PEv2_params_P [8];
+//real_t PEv2_params_I [8];
+//real_t PEv2_params_D [8];
+//real_t PEv2_params_FF0 [8];
+//real_t PEv2_params_FF1 [8];
+//real_t PEv2_params_FF2 [8];
+//real_t PEv2_params_BIAS [8];
+real_t PEv2_params_DEADBAND [8];
+real_t PEv2_params_MAX_OUTPUT [8];
+real_t PEv2_params_ENCODER_SCALE [8];
 // these are in nanoseconds
-hal_float_t PEv2_params_DIRSETUP [8] = 0;					// (ns)
-hal_float_t PEv2_params_DIRHOLD [8] = 0;					// (ns)
-hal_float_t PEv2_params_STEPLEN [8] = 0;					// (ns)
-hal_float_t PEv2_params_STEPSPACE [8] = 0;					// (ns)
-hal_float_t PEv2_params_STEP_SCALE [8] = 0;					// (pulses/mm)
-hal_float_t PEv2_params_MIN_LIMIT [8] = 0;					// position (mm)
-hal_float_t PEv2_params_MAX_LIMIT [8] = 0;					// position (mm)
-hal_float_t PEv2_params_HOME_OFFSET [8] = 0;				// position (mm)
-hal_float_t PEv2_params_HOME_SEARCH_VEL [8] = 0;			// position (mm)
-hal_float_t PEv2_params_HOME_LATCH_VEL [8] = 0;				// position (mm)
-hal_float_t PEv2_params_HOME_FINAL_VEL [8] = 0;				// position (mm)
+real_t PEv2_params_DIRSETUP [8] = 0;					// (ns)
+real_t PEv2_params_DIRHOLD [8] = 0;					// (ns)
+real_t PEv2_params_STEPLEN [8] = 0;					// (ns)
+real_t PEv2_params_STEPSPACE [8] = 0;					// (ns)
+real_t PEv2_params_STEP_SCALE [8] = 0;					// (pulses/mm)
+real_t PEv2_params_MIN_LIMIT [8] = 0;					// position (mm)
+real_t PEv2_params_MAX_LIMIT [8] = 0;					// position (mm)
+real_t PEv2_params_HOME_OFFSET [8] = 0;				// position (mm)
+real_t PEv2_params_HOME_SEARCH_VEL [8] = 0;			// position (mm)
+real_t PEv2_params_HOME_LATCH_VEL [8] = 0;				// position (mm)
+real_t PEv2_params_HOME_FINAL_VEL [8] = 0;				// position (mm)
 hal_s32_t PEv2_params_HOME_USE_INDEX [8] = 0;				// YES / NO
 hal_s32_t PEv2_params_HOME_IGNORE_LIMITS [8] = 0;			// YES / NO
 //***********************************************************************
@@ -236,7 +236,7 @@ hal_u32_t PEv2_ProbeInput;					// Probe input (0:disabled, 1-8:external inputs, 
 hal_u32_t PEv2_ProbeInputPolarity;			// Probe input polarity
 hal_u32_t PEv2_ProbeStatus;					// Probe status (probe completion bit-mapped status)
 //hal_u32_t PEv2_MotionBuffer[448];			// Motion buffer
-hal_float_t PEv2_ProbeSpeed;						// Probe speed (ratio of the maximum speed)
+real_t PEv2_ProbeSpeed;						// Probe speed (ratio of the maximum speed)
 hal_u32_t PEv2_BacklashWidth [8];			// half of real backlash width
 hal_u32_t PEv2_BacklashRegister [8];		// current value of the backlash register
 hal_u32_t PEv2_BacklashAcceleration [8];	// in pulses per ms^2
@@ -441,13 +441,13 @@ converters, which convert e.g. voltage to a continuous range of values.
 */
 
 //Pins
-	hal_float_t value; 
+	real_t value; 
 
 //Parameters
-	hal_float_t scale; 
-	hal_float_t offset;
-	hal_float_t bit_weight;
-	hal_float_t hw_offset;
+	real_t scale; 
+	real_t offset;
+	real_t bit_weight;
+	real_t hw_offset;
 //Functions
 // read
 }HALCDI_AnalogInput;
@@ -461,16 +461,16 @@ PWM generators
 */
 
 //Pins
-	hal_float_t value; 
+	real_t value; 
 	hal_bit_t enable;
 
 //Parameters
-	hal_float_t scale; 
-	hal_float_t offset;
-	hal_float_t bit_weight;
-	hal_float_t hw_offset;
-	hal_float_t high_limit;
-	hal_float_t low_limit;
+	real_t scale; 
+	real_t offset;
+	real_t bit_weight;
+	real_t hw_offset;
+	real_t high_limit;
+	real_t low_limit;
 
 //Functions
 // write
