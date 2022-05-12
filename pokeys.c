@@ -2,303 +2,303 @@ component pokeys "PoKeys IO driver, by Mit Zot";
 
 option userspace yes;
 
-pin out unsigned enum_usb_dev;
-pin out unsigned enum_fusb_dev;
-pin out unsigned enum_udp_dev;
-pin out s32 a_debout;
+hal_u32_t enum_usb_dev;
+hal_u32_t enum_fusb_dev;
+hal_u32_t enum_udp_dev;
+hal_s32_t a_debout;
 
-pin out bit err;
-pin out bit connected;
-pin in unsigned devSerial;
-pin out bit alive;
+hal_bit_t err;
+hal_bit_t connected;
+hal_u32_t devSerial;
+hal_bit_t alive;
 
-pin in bit machine_is_on;
+hal_bit_t machine_is_on;
 
 // PoKeys device information
 //sPoKeysDevice_Info info;
-pin out unsigned info.PinCount;                        // Number of pins, physically on the device
-pin out unsigned info.PWMCount;                        // Number of pins that support PWM output
-pin out unsigned info.BasicEncoderCount;               // Number of basic encoders
-pin out unsigned info.EncodersCount;                   // Number of encoder slots available
-pin out unsigned info.FastEncoders;                    // Number of fast encoders supported
-pin out unsigned info.UltraFastEncoders;               // Number of available ultra fast encoders
-pin out unsigned info.PWMinternalFrequency;             // Main PWM peripheral clock
-pin out unsigned info.AnalogInputs;                    // Number of available analog inputs
-pin out unsigned info.KeyMapping;                      // Device supports key mapping (acts as a USB keyboard)
-pin out unsigned info.TriggeredKeyMapping;             // Device supports triggered key mapping
-pin out unsigned info.KeyRepeatDelay;                  // Device supports user customizable key repeat rates and delays
-pin out unsigned info.DigitalCounters;                 // Device supports digital counters
-pin out unsigned info.JoystickButtonAxisMapping;       // Device supports mapping of joystick buttons
-pin out unsigned info.JoystickAnalogToDigitalMapping;  // Device supports mapping of analog inputs to digital keys
-pin out unsigned info.Macros;                          // Device supports customizable macro sequences
-pin out unsigned info.MatrixKeyboard;                  // Device supports matrix keyboard
-pin out unsigned info.MatrixKeyboardTriggeredMapping;  // Device supports matrix keyboard triggered key mapping
-pin out unsigned info.LCD;                             // Device supports alphanumeric LCD display
-pin out unsigned info.MatrixLED;                       // Device supports matrix LED display
-pin out unsigned info.ConnectionSignal;                // Device supports connection signal output
-pin out unsigned info.PoExtBus;                        // Device supports PoExtBus digital outputs
-pin out unsigned info.PoNET;                           // Device supports PoNET bus devices
-pin out unsigned info.AnalogFiltering;                 // Device supports analog inputs low-pass digital filtering
-pin out unsigned info.InitOutputsStart;                // Device supports initializing outputs at startup
-pin out unsigned info.protI2C;                         // Device supports I2C bus (master)
-pin out unsigned info.prot1wire;                       // Device supports 1-wire bus (master)
-pin out unsigned info.AdditionalOptions;               // Device supports additional options with activation keys
-pin out unsigned info.LoadStatus;                      // Device supports reporting load status
-pin out unsigned info.CustomDeviceName;                // Device supports specifying custom device names
-pin out unsigned info.PoTLog27support;                 // Device supports PoTLog27 firmware
-pin out unsigned info.SensorList;                      // Device supports sensor lists
-pin out unsigned info.WebInterface;                    // Device supports web interface
-pin out unsigned info.FailSafeSettings;                // Device supports fail-safe mode
-pin out unsigned info.JoystickHATswitch;               // Device supports joystick HAT switch mapping
-pin out unsigned info.PulseEngine;                     // Device supports Pulse engine
-pin out unsigned info.PulseEnginev2;                   // Device supports Pulse engine v2
-pin out unsigned info.EasySensors;                     // Device supports EasySensors
+hal_u32_t info.PinCount;                        // Number of pins, physically on the device
+hal_u32_t info.PWMCount;                        // Number of pins that support PWM output
+hal_u32_t info.BasicEncoderCount;               // Number of basic encoders
+hal_u32_t info.EncodersCount;                   // Number of encoder slots available
+hal_u32_t info.FastEncoders;                    // Number of fast encoders supported
+hal_u32_t info.UltraFastEncoders;               // Number of available ultra fast encoders
+hal_u32_t info.PWMinternalFrequency;             // Main PWM peripheral clock
+hal_u32_t info.AnalogInputs;                    // Number of available analog inputs
+hal_u32_t info.KeyMapping;                      // Device supports key mapping (acts as a USB keyboard)
+hal_u32_t info.TriggeredKeyMapping;             // Device supports triggered key mapping
+hal_u32_t info.KeyRepeatDelay;                  // Device supports user customizable key repeat rates and delays
+hal_u32_t info.DigitalCounters;                 // Device supports digital counters
+hal_u32_t info.JoystickButtonAxisMapping;       // Device supports mapping of joystick buttons
+hal_u32_t info.JoystickAnalogToDigitalMapping;  // Device supports mapping of analog inputs to digital keys
+hal_u32_t info.Macros;                          // Device supports customizable macro sequences
+hal_u32_t info.MatrixKeyboard;                  // Device supports matrix keyboard
+hal_u32_t info.MatrixKeyboardTriggeredMapping;  // Device supports matrix keyboard triggered key mapping
+hal_u32_t info.LCD;                             // Device supports alphanumeric LCD display
+hal_u32_t info.MatrixLED;                       // Device supports matrix LED display
+hal_u32_t info.ConnectionSignal;                // Device supports connection signal output
+hal_u32_t info.PoExtBus;                        // Device supports PoExtBus digital outputs
+hal_u32_t info.PoNET;                           // Device supports PoNET bus devices
+hal_u32_t info.AnalogFiltering;                 // Device supports analog inputs low-pass digital filtering
+hal_u32_t info.InitOutputsStart;                // Device supports initializing outputs at startup
+hal_u32_t info.protI2C;                         // Device supports I2C bus (master)
+hal_u32_t info.prot1wire;                       // Device supports 1-wire bus (master)
+hal_u32_t info.AdditionalOptions;               // Device supports additional options with activation keys
+hal_u32_t info.LoadStatus;                      // Device supports reporting load status
+hal_u32_t info.CustomDeviceName;                // Device supports specifying custom device names
+hal_u32_t info.PoTLog27support;                 // Device supports PoTLog27 firmware
+hal_u32_t info.SensorList;                      // Device supports sensor lists
+hal_u32_t info.WebInterface;                    // Device supports web interface
+hal_u32_t info.FailSafeSettings;                // Device supports fail-safe mode
+hal_u32_t info.JoystickHATswitch;               // Device supports joystick HAT switch mapping
+hal_u32_t info.PulseEngine;                     // Device supports Pulse engine
+hal_u32_t info.PulseEnginev2;                   // Device supports Pulse engine v2
+hal_u32_t info.EasySensors;                     // Device supports EasySensors
 
-//pin out unsigned PoExtBus.#.DataGet [10];   
-pin out bit PoExtBus.#.In-0 [10];                   
-pin out bit PoExtBus.#.In-1 [10];    
-pin out bit PoExtBus.#.In-2 [10];    
-pin out bit PoExtBus.#.In-3 [10];    
-pin out bit PoExtBus.#.In-4 [10];    
-pin out bit PoExtBus.#.In-5 [10];    
-pin out bit PoExtBus.#.In-6 [10];    
-pin out bit PoExtBus.#.In-7 [10]; 
+//hal_u32_t PoExtBus_DataGet [10];   
+hal_bit_t PoExtBus_In-0 [10];                   
+hal_bit_t PoExtBus_In-1 [10];    
+hal_bit_t PoExtBus_In-2 [10];    
+hal_bit_t PoExtBus_In-3 [10];    
+hal_bit_t PoExtBus_In-4 [10];    
+hal_bit_t PoExtBus_In-5 [10];    
+hal_bit_t PoExtBus_In-6 [10];    
+hal_bit_t PoExtBus_In-7 [10]; 
 
 
-//pin io unsigned PoExtBus.#.DataSet [10];                 
-pin in bit PoExtBus.#.Out-0 [10];                   
-pin in bit PoExtBus.#.Out-1 [10];    
-pin in bit PoExtBus.#.Out-2 [10];    
-pin in bit PoExtBus.#.Out-3 [10];    
-pin in bit PoExtBus.#.Out-4 [10];    
-pin in bit PoExtBus.#.Out-5 [10];    
-pin in bit PoExtBus.#.Out-6 [10];    
-pin in bit PoExtBus.#.Out-7 [10];
+//hal_u32_t PoExtBus_DataSet [10];                 
+hal_bit_t PoExtBus_Out-0 [10];                   
+hal_bit_t PoExtBus_Out-1 [10];    
+hal_bit_t PoExtBus_Out-2 [10];    
+hal_bit_t PoExtBus_Out-3 [10];    
+hal_bit_t PoExtBus_Out-4 [10];    
+hal_bit_t PoExtBus_Out-5 [10];    
+hal_bit_t PoExtBus_Out-6 [10];    
+hal_bit_t PoExtBus_Out-7 [10];
 
 // Pulse engine v2 information
-pin out unsigned PEv2.nrOfAxes;
-pin out unsigned PEv2.maxPulseFrequency;
-pin out unsigned PEv2.bufferDepth;
-pin out unsigned PEv2.slotTiming;
+hal_u32_t PEv2.nrOfAxes;
+hal_u32_t PEv2.maxPulseFrequency;
+hal_u32_t PEv2.bufferDepth;
+hal_u32_t PEv2.slotTiming;
 
 //***********************************************************************
 //[TRAJ] information in HAL-INI 
-pin in s32 PEv2.params.COORDINATES;
-pin in s32 PEv2.params.LINEAR_UNITS;
-pin in s32 PEv2.params.ANGULAR_UNITS;
-pin in float PEv2.params.CYCLE_TIME;
-pin in float PEv2.params.DEFAULT_LINEAR_VELOCITY;
-pin in float PEv2.params.MAX_LINEAR_VELOCITY;
+hal_s32_t PEv2.params.COORDINATES;
+hal_s32_t PEv2.params.LINEAR_UNITS;
+hal_s32_t PEv2.params.ANGULAR_UNITS;
+hal_float_t PEv2.params.CYCLE_TIME;
+hal_float_t PEv2.params.DEFAULT_LINEAR_VELOCITY;
+hal_float_t PEv2.params.MAX_LINEAR_VELOCITY;
 
-pin io bit PEv2.params.ApplyIniSettings;
+hal_bit_t PEv2.params.ApplyIniSettings;
 //***********************************************************************
 
 // Pulse engine v2 structure...
-pin out unsigned PEv2.#.AxesState [8];				// Axis states (bit-mapped) - see ePK_PEAxisState
-pin out unsigned PEv2.#.AxesConfig [8];				// Axis configuration - see ePK_PEv2_AxisConfig
-pin in unsigned PEv2.#.AxesSwitchConfig [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
+hal_u32_t PEv2_AxesState [8];				// Axis states (bit-mapped) - see ePK_PEAxisState
+hal_u32_t PEv2_AxesConfig [8];				// Axis configuration - see ePK_PEv2_AxisConfig
+hal_u32_t PEv2_AxesSwitchConfig [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
 
-pin io u32 PEv2.#.InvertAxisEnable [8];		// Invert axis enable signal
-pin io u32 PEv2.#.SoftLimitMaximum [8];		// Soft limit maximum position
-pin io u32 PEv2.#.SoftLimitMinimum [8];		// Soft limit minimum position
-pin io unsigned PEv2.#.HomingSpeed [8];			// Homing speed per axis (in %)
-pin io unsigned PEv2.#.HomingReturnSpeed [8];		// Homing return speed per axis (in % of the homing speed)
-pin io u32 PEv2.#.HomeOffsets [8];				// Home position offset
-pin io unsigned PEv2.#.HomingAlgorithm [8];		// Homing algorithm configuration
-pin io unsigned PEv2.#.FilterLimitMSwitch [8];		// Digital filter for limit- switch
-pin io unsigned PEv2.#.FilterLimitPSwitch [8];		// Digital filter for limit+ switch
-pin io unsigned PEv2.#.FilterHomeSwitch [8];		// Digital filter for home switch
-pin io u32 PEv2.#.ProbePosition [8];			// Position where probe detected change
-pin io u32 PEv2.#.ProbeMaxPosition [8];		// Maximum position to travel to until stopping and returning error
+hal_u32_t PEv2_InvertAxisEnable [8];		// Invert axis enable signal
+hal_u32_t PEv2_SoftLimitMaximum [8];		// Soft limit maximum position
+hal_u32_t PEv2_SoftLimitMinimum [8];		// Soft limit minimum position
+hal_u32_t PEv2_HomingSpeed [8];			// Homing speed per axis (in %)
+hal_u32_t PEv2_HomingReturnSpeed [8];		// Homing return speed per axis (in % of the homing speed)
+hal_u32_t PEv2_HomeOffsets [8];				// Home position offset
+hal_u32_t PEv2_HomingAlgorithm [8];		// Homing algorithm configuration
+hal_u32_t PEv2_FilterLimitMSwitch [8];		// Digital filter for limit- switch
+hal_u32_t PEv2_FilterLimitPSwitch [8];		// Digital filter for limit+ switch
+hal_u32_t PEv2_FilterHomeSwitch [8];		// Digital filter for home switch
+hal_u32_t PEv2_ProbePosition [8];			// Position where probe detected change
+hal_u32_t PEv2_ProbeMaxPosition [8];		// Maximum position to travel to until stopping and returning error
 
-pin out u32 PEv2.#.CurrentPosition [8];			// Current position
-pin io u32 PEv2.#.PositionSetup [8];			// Position to be set as current position
-pin io u32 PEv2.#.ReferencePositionSpeed [8];	// Reference position or speed (position or pulses/s)
-pin io float PEv2.#.MaxSpeed [8];					// Maximum axis speed (in pulses per ms)
-pin io float PEv2.#.MaxAcceleration [8];			// Maximum axis acceleration (in pulses/ms/ms)
-pin io float PEv2.#.MaxDecceleration [8];			// Maximum axis deceleration (in pulses/ms/ms)
+hal_u32_t PEv2_CurrentPosition [8];			// Current position
+hal_u32_t PEv2_PositionSetup [8];			// Position to be set as current position
+hal_u32_t PEv2_ReferencePositionSpeed [8];	// Reference position or speed (position or pulses/s)
+hal_float_t PEv2_MaxSpeed [8];					// Maximum axis speed (in pulses per ms)
+hal_float_t PEv2_MaxAcceleration [8];			// Maximum axis acceleration (in pulses/ms/ms)
+hal_float_t PEv2_MaxDecceleration [8];			// Maximum axis deceleration (in pulses/ms/ms)
 
-pin io float PEv2.#.MaxSpeed_mm_per_sec [8];			// Maximum axis speed (mm/s)
-pin io float PEv2.#.MaxAcceleration_mm_per_sec2 [8];	// Maximum axis acceleration (in mm/s�)
-pin io float PEv2.#.MaxDecceleration_mm_per_sec2 [8];	// Maximum axis deceleration (in mm/s�)
+hal_float_t PEv2_MaxSpeed_mm_per_sec [8];			// Maximum axis speed (mm/s)
+hal_float_t PEv2_MaxAcceleration_mm_per_sec2 [8];	// Maximum axis acceleration (in mm/s�)
+hal_float_t PEv2_MaxDecceleration_mm_per_sec2 [8];	// Maximum axis deceleration (in mm/s�)
 
 	
-pin in float PEv2.#.joint_vel_cmd [8];				
-pin out float PEv2.#.joint_vel_fb [8];				
-pin in float PEv2.#.joint_pos_cmd [8];				
-pin out float PEv2.#.joint_pos_fb [8];				
+hal_float_t PEv2_joint_vel_cmd [8];				
+hal_float_t PEv2_joint_vel_fb [8];				
+hal_float_t PEv2_joint_pos_cmd [8];				
+hal_float_t PEv2_joint_pos_fb [8];				
     
 //***********************************************************************
 //[JOINT_n] information in HAL-INI 
-pin io s32 PEv2.#.params.TYPE [8];			//LINEAR / ANGULAR
-pin io float PEv2.#.params.HOME [8];
-pin io float PEv2.#.params.FERROR [8];
-pin io float PEv2.#.params.MIN_FERROR [8];
-pin io float PEv2.#.params.MAX_VELOCITY [8];
-pin io float PEv2.#.params.MAX_ACCELERATION [8];
-pin io float PEv2.#.params.STEPGEN_MAXVEL [8];
-pin io float PEv2.#.params.STEPGEN_MAXACCEL [8];
-pin io float PEv2.#.params.Feedback_Encoder_Id [8];
-//pin in float PEv2.#.params.P [8];
-//pin in float PEv2.#.params.I [8];
-//pin in float PEv2.#.params.D [8];
-//pin in float PEv2.#.params.FF0 [8];
-//pin in float PEv2.#.params.FF1 [8];
-//pin in float PEv2.#.params.FF2 [8];
-//pin in float PEv2.#.params.BIAS [8];
-pin io float PEv2.#.params.DEADBAND [8];
-pin io float PEv2.#.params.MAX_OUTPUT [8];
-pin io float PEv2.#.params.ENCODER_SCALE [8];
+hal_s32_t PEv2_params.TYPE [8];			//LINEAR / ANGULAR
+hal_float_t PEv2_params.HOME [8];
+hal_float_t PEv2_params.FERROR [8];
+hal_float_t PEv2_params.MIN_FERROR [8];
+hal_float_t PEv2_params.MAX_VELOCITY [8];
+hal_float_t PEv2_params.MAX_ACCELERATION [8];
+hal_float_t PEv2_params.STEPGEN_MAXVEL [8];
+hal_float_t PEv2_params.STEPGEN_MAXACCEL [8];
+hal_float_t PEv2_params.Feedback_Encoder_Id [8];
+//hal_float_t PEv2_params.P [8];
+//hal_float_t PEv2_params.I [8];
+//hal_float_t PEv2_params.D [8];
+//hal_float_t PEv2_params.FF0 [8];
+//hal_float_t PEv2_params.FF1 [8];
+//hal_float_t PEv2_params.FF2 [8];
+//hal_float_t PEv2_params.BIAS [8];
+hal_float_t PEv2_params.DEADBAND [8];
+hal_float_t PEv2_params.MAX_OUTPUT [8];
+hal_float_t PEv2_params.ENCODER_SCALE [8];
 // these are in nanoseconds
-pin io float PEv2.#.params.DIRSETUP [8] = 0;					// (ns)
-pin io float PEv2.#.params.DIRHOLD [8] = 0;					// (ns)
-pin io float PEv2.#.params.STEPLEN [8] = 0;					// (ns)
-pin io float PEv2.#.params.STEPSPACE [8] = 0;					// (ns)
-pin io float PEv2.#.params.STEP_SCALE [8] = 0;					// (pulses/mm)
-pin io float PEv2.#.params.MIN_LIMIT [8] = 0;					// position (mm)
-pin io float PEv2.#.params.MAX_LIMIT [8] = 0;					// position (mm)
-pin io float PEv2.#.params.HOME_OFFSET [8] = 0;				// position (mm)
-pin io float PEv2.#.params.HOME_SEARCH_VEL [8] = 0;			// position (mm)
-pin io float PEv2.#.params.HOME_LATCH_VEL [8] = 0;				// position (mm)
-pin io float PEv2.#.params.HOME_FINAL_VEL [8] = 0;				// position (mm)
-pin io s32 PEv2.#.params.HOME_USE_INDEX [8] = 0;				// YES / NO
-pin io s32 PEv2.#.params.HOME_IGNORE_LIMITS [8] = 0;			// YES / NO
+hal_float_t PEv2_params.DIRSETUP [8] = 0;					// (ns)
+hal_float_t PEv2_params.DIRHOLD [8] = 0;					// (ns)
+hal_float_t PEv2_params.STEPLEN [8] = 0;					// (ns)
+hal_float_t PEv2_params.STEPSPACE [8] = 0;					// (ns)
+hal_float_t PEv2_params.STEP_SCALE [8] = 0;					// (pulses/mm)
+hal_float_t PEv2_params.MIN_LIMIT [8] = 0;					// position (mm)
+hal_float_t PEv2_params.MAX_LIMIT [8] = 0;					// position (mm)
+hal_float_t PEv2_params.HOME_OFFSET [8] = 0;				// position (mm)
+hal_float_t PEv2_params.HOME_SEARCH_VEL [8] = 0;			// position (mm)
+hal_float_t PEv2_params.HOME_LATCH_VEL [8] = 0;				// position (mm)
+hal_float_t PEv2_params.HOME_FINAL_VEL [8] = 0;				// position (mm)
+hal_s32_t PEv2_params.HOME_USE_INDEX [8] = 0;				// YES / NO
+hal_s32_t PEv2_params.HOME_IGNORE_LIMITS [8] = 0;			// YES / NO
 //***********************************************************************
 
-pin io u32 PEv2.#.MPGjogMultiplier [8];		// MPG jog multiplier value
-pin io unsigned PEv2.#.MPGjogEncoder [8];			// MPG jog encoder ID
+hal_u32_t PEv2_MPGjogMultiplier [8];		// MPG jog multiplier value
+hal_u32_t PEv2_MPGjogEncoder [8];			// MPG jog encoder ID
 
-pin io unsigned PEv2.#.PinHomeSwitch [8];			// Home switch pin (0 for external dedicated input)
-pin io unsigned PEv2.#.PinLimitMSwitch [8];			// Limit- switch pin (0 for external dedicated input)
-pin io unsigned PEv2.#.PinLimitPSwitch [8];			// Limit+ switch pin (0 for external dedicated input)
-pin io unsigned PEv2.#.AxisEnableOutputPins [8];		// Axis enabled output pin (0 for external dedicated output)
+hal_u32_t PEv2_PinHomeSwitch [8];			// Home switch pin (0 for external dedicated input)
+hal_u32_t PEv2_PinLimitMSwitch [8];			// Limit- switch pin (0 for external dedicated input)
+hal_u32_t PEv2_PinLimitPSwitch [8];			// Limit+ switch pin (0 for external dedicated input)
+hal_u32_t PEv2_AxisEnableOutputPins [8];		// Axis enabled output pin (0 for external dedicated output)
 
-pin out bit PEv2.#.HomeSwitchStat [8];				// Home switch
-pin out bit PEv2.#.LimitMSwitch [8];			// Limit- switch
-pin out bit PEv2.#.LimitPSwitch [8];			// Limit+ switch
-pin in bit PEv2.#.AxisEnableOutput [8];		// Axis enabled output
-pin out bit PEv2.HomeSwitch;				// Home switch
+hal_bit_t PEv2_HomeSwitchStat [8];				// Home switch
+hal_bit_t PEv2_LimitMSwitch [8];			// Limit- switch
+hal_bit_t PEv2_LimitPSwitch [8];			// Limit+ switch
+hal_bit_t PEv2_AxisEnableOutput [8];		// Axis enabled output
+hal_bit_t PEv2.HomeSwitch;				// Home switch
 
-pin io unsigned PEv2.#.HomeBackOffDistance [8];		// Back-off distance after homing
-pin io unsigned PEv2.#.MPGjogDivider [8];			// Divider for the MPG jogging (enhanced encoder resolution)
+hal_u32_t PEv2_HomeBackOffDistance [8];		// Back-off distance after homing
+hal_u32_t PEv2_MPGjogDivider [8];			// Divider for the MPG jogging (enhanced encoder resolution)
 
-pin io unsigned PEv2.PulseEngineEnabled;			// Pulse engine enabled status, also number of enabled axes
-pin io unsigned PEv2.PulseGeneratorType;			// Pulse engine generator type (0: external, 1: internal 3ch)
-pin in bit PEv2.PG_swap_stepdir;
-pin io bit PEv2.PG_extended_io;
+hal_u32_t PEv2.PulseEngineEnabled;			// Pulse engine enabled status, also number of enabled axes
+hal_u32_t PEv2.PulseGeneratorType;			// Pulse engine generator type (0: external, 1: internal 3ch)
+hal_bit_t PEv2.PG_swap_stepdir;
+hal_bit_t PEv2.PG_extended_io;
 
-pin io unsigned PEv2.ChargePumpEnabled;				// Charge pump output enabled
-pin io unsigned PEv2.EmergencySwitchPolarity;		// Emergency switch polarity (set to 1 to invert)
-pin out unsigned PEv2.PulseEngineActivated;			// Pulse engine activation status
-pin out unsigned PEv2.#.LimitStatusP[8];					// Limit+ status (NOT bit-mapped)
-pin out unsigned PEv2.#.LimitStatusN[8];					// Limit- status (NOT bit-mapped)
-pin out unsigned PEv2.#.HomeStatus[8];					// Home status (NOT bit-mapped)
-pin out unsigned PEv2.ErrorInputStatus;				// Stepper motor driver error inputs status (bit-mapped)
-pin out unsigned PEv2.MiscInputStatus;				// Miscelenous digital inputs...
-pin io unsigned PEv2.LimitOverride;					// Limit override status
-pin io unsigned PEv2.LimitOverrideSetup;			// Limit override configuration
-pin io unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
-pin io unsigned PEv2.AxisEnabledMask;				// Bit-mapped ouput enabled mask
+hal_u32_t PEv2.ChargePumpEnabled;				// Charge pump output enabled
+hal_u32_t PEv2.EmergencySwitchPolarity;		// Emergency switch polarity (set to 1 to invert)
+hal_u32_t PEv2.PulseEngineActivated;			// Pulse engine activation status
+hal_u32_t PEv2_LimitStatusP[8];					// Limit+ status (NOT bit-mapped)
+hal_u32_t PEv2_LimitStatusN[8];					// Limit- status (NOT bit-mapped)
+hal_u32_t PEv2_HomeStatus[8];					// Home status (NOT bit-mapped)
+hal_u32_t PEv2.ErrorInputStatus;				// Stepper motor driver error inputs status (bit-mapped)
+hal_u32_t PEv2.MiscInputStatus;				// Miscelenous digital inputs...
+hal_u32_t PEv2.LimitOverride;					// Limit override status
+hal_u32_t PEv2.LimitOverrideSetup;			// Limit override configuration
+hal_u32_t PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
+hal_u32_t PEv2.AxisEnabledMask;				// Bit-mapped ouput enabled mask
 
-pin io unsigned PEv2.EmergencyInputPin;
-pin out bit PEv2.EmergencyInput;
-pin io unsigned PEv2.EmergencyOutputPin;				//added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)
-pin in bit PEv2.EmergencyOutput;
+hal_u32_t PEv2.EmergencyInputPin;
+hal_bit_t PEv2.EmergencyInput;
+hal_u32_t PEv2.EmergencyOutputPin;				//added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)
+hal_bit_t PEv2.EmergencyOutput;
 
-pin io unsigned PEv2.param1;
-pin io unsigned PEv2.param2;
-pin io unsigned PEv2.param3;
-pin io unsigned PEv2.AxisEnabledStatesMask;		// Bit-mapped states, where axis enabled and charge pump signals are active
-pin io unsigned PEv2.PulseEngineStateSetup;		// Pulse engine new state configuration
-pin out unsigned PEv2.#.SoftLimitStatus [8] ;				// Bit-mapped soft-limit statuses per axes
+hal_u32_t PEv2.param1;
+hal_u32_t PEv2.param2;
+hal_u32_t PEv2.param3;
+hal_u32_t PEv2.AxisEnabledStatesMask;		// Bit-mapped states, where axis enabled and charge pump signals are active
+hal_u32_t PEv2.PulseEngineStateSetup;		// Pulse engine new state configuration
+hal_u32_t PEv2_SoftLimitStatus [8] ;				// Bit-mapped soft-limit statuses per axes
 /* 			PEv2_DedicatedLimitNInputs(i) =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
 			PEv2_DedicatedLimitPInputs(i) =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
 			PEv2_DedicatedHomeInputs(i) =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
 								PEv2_AxisEnabledStates(i) = false;
 					PEv2_AxisLimitOverride(i) = false;
 			*/
-pin out bit PEv2.#.DedicatedLimitNInputs [8] ;
-pin out bit PEv2.#.DedicatedLimitPInputs [8] ;
-pin out bit PEv2.#.DedicatedHomeInputs [8] ;
-pin out bit PEv2.#.AxisEnabledStates [8] ;
-pin out bit PEv2.#.AxisLimitOverride [8] ;
+hal_bit_t PEv2_DedicatedLimitNInputs [8] ;
+hal_bit_t PEv2_DedicatedLimitPInputs [8] ;
+hal_bit_t PEv2_DedicatedHomeInputs [8] ;
+hal_bit_t PEv2_AxisEnabledStates [8] ;
+hal_bit_t PEv2_AxisLimitOverride [8] ;
 
-pin out unsigned PEv2.ExternalRelayOutputs;			// External relay outputs
-pin out unsigned PEv2.ExternalOCOutputs;			// External open-collector outputs
-pin in bit PEv2.ExternalRelayOutput.#[4];			// External relay outputs
-pin in bit PEv2.ExternalOCOutput.#[4];			// External open-collector outputs
-pin io unsigned PEv2.PulseEngineBufferSize;		// Buffer size information...
-pin io unsigned PEv2.motionBufferEntriesAccepted;
-pin io unsigned PEv2.newMotionBufferEntries;
-pin io unsigned PEv2.HomingStartMaskSetup;			// Bit-mapped axes indexes to be homed
-pin io unsigned PEv2.ProbeStartMaskSetup;			// Bit-mapped axis indexes for probing
-pin io unsigned PEv2.ProbeInput;					// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
-pin io unsigned PEv2.ProbeInputPolarity;			// Probe input polarity
-pin out unsigned PEv2.ProbeStatus;					// Probe status (probe completion bit-mapped status)
-//pin out unsigned PEv2.MotionBuffer[448];			// Motion buffer
-pin io float PEv2.ProbeSpeed;						// Probe speed (ratio of the maximum speed)
-pin io unsigned PEv2.#.BacklashWidth [8];			// half of real backlash width
-pin io unsigned PEv2.#.BacklashRegister [8];		// current value of the backlash register
-pin io unsigned PEv2.#.BacklashAcceleration [8];	// in pulses per ms^2
-pin io unsigned PEv2.BacklashCompensationEnabled;
+hal_u32_t PEv2.ExternalRelayOutputs;			// External relay outputs
+hal_u32_t PEv2.ExternalOCOutputs;			// External open-collector outputs
+hal_bit_t PEv2.ExternalRelayOutput.#[4];			// External relay outputs
+hal_bit_t PEv2.ExternalOCOutput.#[4];			// External open-collector outputs
+hal_u32_t PEv2.PulseEngineBufferSize;		// Buffer size information...
+hal_u32_t PEv2.motionBufferEntriesAccepted;
+hal_u32_t PEv2.newMotionBufferEntries;
+hal_u32_t PEv2.HomingStartMaskSetup;			// Bit-mapped axes indexes to be homed
+hal_u32_t PEv2.ProbeStartMaskSetup;			// Bit-mapped axis indexes for probing
+hal_u32_t PEv2.ProbeInput;					// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
+hal_u32_t PEv2.ProbeInputPolarity;			// Probe input polarity
+hal_u32_t PEv2.ProbeStatus;					// Probe status (probe completion bit-mapped status)
+//hal_u32_t PEv2.MotionBuffer[448];			// Motion buffer
+hal_float_t PEv2.ProbeSpeed;						// Probe speed (ratio of the maximum speed)
+hal_u32_t PEv2_BacklashWidth [8];			// half of real backlash width
+hal_u32_t PEv2_BacklashRegister [8];		// current value of the backlash register
+hal_u32_t PEv2_BacklashAcceleration [8];	// in pulses per ms^2
+hal_u32_t PEv2.BacklashCompensationEnabled;
 
-pin out unsigned rtc.sec;
-pin out unsigned rtc.min;
-pin out unsigned rtc.hour;
-pin out unsigned rtc.dow;
-pin out unsigned rtc.dom;
-pin out unsigned rtc.tmp;
-pin out unsigned rtc.doy;
-pin out unsigned rtc.month;
-pin out unsigned rtc.year;
-pin out unsigned rtc.loopcount;
+hal_u32_t rtc.sec;
+hal_u32_t rtc.min;
+hal_u32_t rtc.hour;
+hal_u32_t rtc.dow;
+hal_u32_t rtc.dom;
+hal_u32_t rtc.tmp;
+hal_u32_t rtc.doy;
+hal_u32_t rtc.month;
+hal_u32_t rtc.year;
+hal_u32_t rtc.loopcount;
 
 
-pin out unsigned rtc.lastmin;
-pin out unsigned rtc.lastsec;
-pin out unsigned rtc.loop_frequ;
-pin in unsigned rtc.loop_frequ_demand;
-pin in unsigned rtc.sec_ret;
-pin out unsigned rtc.hal_latency;
+hal_u32_t rtc.lastmin;
+hal_u32_t rtc.lastsec;
+hal_u32_t rtc.loop_frequ;
+hal_u32_t rtc.loop_frequ_demand;
+hal_u32_t rtc.sec_ret;
+hal_u32_t rtc.hal_latency;
 
-pin out unsigned Pins.#.DigitalCounterValue [55];
-pin out unsigned Pins.#.AnalogValue [55];
-pin out unsigned Pins.#.PinFunction [55];
-pin out unsigned Pins.#.CounterOptions [55];
-pin out bit Pins.#.DigitalValueGet [55];
-pin in bit Pins.#.DigitalValueSet [55];
-pin out unsigned Pins.#.DigitalCounterAvailable [55];
-//pin out unsigned Pins.#.MappingType [55];
-//pin out unsigned Pins.#.KeyCodeMacroID [55];
-//pin out unsigned Pins.#.KeyModifier [55];
-//pin out unsigned Pins.#.downKeyCodeMacroID [55];
-//pin out unsigned Pins.#.downKeyModifier [55];
-//pin out unsigned Pins.#.upKeyCodeMacroID [55];
-//pin out unsigned Pins.#.upKeyModifier [55];
-//pin out unsigned Pins.#.preventUpdate [55];
+hal_u32_t Pins_DigitalCounterValue [55];
+hal_u32_t Pins_AnalogValue [55];
+hal_u32_t Pins_PinFunction [55];
+hal_u32_t Pins_CounterOptions [55];
+hal_bit_t Pins_DigitalValueGet [55];
+hal_bit_t Pins_DigitalValueSet [55];
+hal_u32_t Pins_DigitalCounterAvailable [55];
+//hal_u32_t Pins_MappingType [55];
+//hal_u32_t Pins_KeyCodeMacroID [55];
+//hal_u32_t Pins_KeyModifier [55];
+//hal_u32_t Pins_downKeyCodeMacroID [55];
+//hal_u32_t Pins_downKeyModifier [55];
+//hal_u32_t Pins_upKeyCodeMacroID [55];
+//hal_u32_t Pins_upKeyModifier [55];
+//hal_u32_t Pins_preventUpdate [55];
 
 /*
-pin out unsigned MatrixKB.matrixKBconfiguration;		// Matrix keyboard configuration (set to 1 to enable matrix keyboard support)
-pin out unsigned MatrixKB.matrixKBwidth;				// Matrix keyboard width (number of columns)
-pin out unsigned MatrixKB.matrixKBheight;				// Matrix keyboard height (number of rows)
-pin out unsigned MatrixKB.matrixKBcolumnsPins.#[8];		// List of matrix keyboard column connections
-pin out unsigned MatrixKB.matrixKBrowsPins.#[16];			// List of matrix keyboard row connections
-//pin out unsigned MatrixKB.matrixKBvalues.#[128];			// Current state of each matrix keyboard key (assumes fixed width of 8 columns)
-//pin out bit MatrixKB.matrixKBPins.#[128];			// matrixKBrowsPins
+hal_u32_t MatrixKB.matrixKBconfiguration;		// Matrix keyboard configuration (set to 1 to enable matrix keyboard support)
+hal_u32_t MatrixKB.matrixKBwidth;				// Matrix keyboard width (number of columns)
+hal_u32_t MatrixKB.matrixKBheight;				// Matrix keyboard height (number of rows)
+hal_u32_t MatrixKB.matrixKBcolumnsPins.#[8];		// List of matrix keyboard column connections
+hal_u32_t MatrixKB.matrixKBrowsPins.#[16];			// List of matrix keyboard row connections
+//hal_u32_t MatrixKB.matrixKBvalues.#[128];			// Current state of each matrix keyboard key (assumes fixed width of 8 columns)
+//hal_bit_t MatrixKB.matrixKBPins.#[128];			// matrixKBrowsPins
 */
 
-pin out bit kbd48CNC.available;
-pin io unsigned kbd48CNC.PoNetID;
-pin io unsigned kbd48CNC.KeyBrightness;
-pin io unsigned kbd48CNC.prevBrightness;
-pin io unsigned kbd48CNC.lightValue;
-//pin io unsigned kbd48CNC.#.ID [48];
-pin in bit kbd48CNC.#.LED [48];
-pin out bit kbd48CNC.#.Button [48];
+hal_bit_t kbd48CNC_available;
+hal_u32_t kbd48CNC.PoNetID;
+hal_u32_t kbd48CNC.KeyBrightness;
+hal_u32_t kbd48CNC.prevBrightness;
+hal_u32_t kbd48CNC.lightValue;
+//hal_u32_t kbd48CNC_ID [48];
+hal_bit_t kbd48CNC_LED [48];
+hal_bit_t kbd48CNC_Button [48];
 
 
-pin out unsigned Encoders.#.encoderValue [26];       // Encoder current value
-pin io unsigned Encoders.#.encoderOptions [26];      // Encoder options -    bit 0: enable encoder
+hal_u32_t Encoders_encoderValue [26];       // Encoder current value
+hal_u32_t Encoders_encoderOptions [26];      // Encoder options -    bit 0: enable encoder
 													//                      bit 1: 4x sampling
 													//                      bit 2: 2x sampling
 													//                      bit 3: reserved
@@ -306,77 +306,77 @@ pin io unsigned Encoders.#.encoderOptions [26];      // Encoder options -    bit
 													//                      bit 5: mapped to macro for direction A
 													//                      bit 6: direct key mapping for direction B
 													//                      bit 7: mapped to macro for direction B
-pin io unsigned Encoders.#.channelApin [26];         // Channel A encoder pin
-pin io unsigned Encoders.#.channelBpin [26];         // Channel B encoder pin
+hal_u32_t Encoders_channelApin [26];         // Channel A encoder pin
+hal_u32_t Encoders_channelBpin [26];         // Channel B encoder pin
 
 
 
-pin out u32 EasySensors.#.sensorValue [16];            // Current sensor value
-pin out unsigned EasySensors.#.sensorType [16];             // Type of the sensor
-pin out unsigned EasySensors.#.sensorRefreshPeriod [16];    // Refresh period in 0.1s
-pin out unsigned EasySensors.#.sensorFailsafeConfig [16];   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
-pin out unsigned EasySensors.#.sensorReadingID [16];        // Sensor reading selection (see Protocol description document for details)
+hal_u32_t EasySensors_sensorValue [16];            // Current sensor value
+hal_u32_t EasySensors_sensorType [16];             // Type of the sensor
+hal_u32_t EasySensors_sensorRefreshPeriod [16];    // Refresh period in 0.1s
+hal_u32_t EasySensors_sensorFailsafeConfig [16];   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
+hal_u32_t EasySensors_sensorReadingID [16];        // Sensor reading selection (see Protocol description document for details)
 
 
 /*
-pin io unsigned PoStep.EnablePoStepCommunication;
+hal_u32_t PoStep.EnablePoStepCommunication;
     // Status
-pin out unsigned PoStep.#.SupplyVoltage [8];
-pin out unsigned PoStep.#.Temperature [8];
-pin out unsigned PoStep.#.InputStatus [8];
-pin out unsigned PoStep.#.DriverStatus [8];
-pin out unsigned PoStep.#.FaultStatus [8];
-pin out unsigned PoStep.#.UpdateState [8];
+hal_u32_t PoStep_SupplyVoltage [8];
+hal_u32_t PoStep_Temperature [8];
+hal_u32_t PoStep_InputStatus [8];
+hal_u32_t PoStep_DriverStatus [8];
+hal_u32_t PoStep_FaultStatus [8];
+hal_u32_t PoStep_UpdateState [8];
 
     // Settings
-pin io unsigned PoStep.#.DriverMode [8];
-pin io unsigned PoStep.#.StepMode [8];
-pin io unsigned PoStep.#.Current_FS [8];
-pin io unsigned PoStep.#.Current_Idle [8];
-pin io unsigned PoStep.#.Current_Overheat [8];
-pin io unsigned PoStep.#.TemperatureLimit [8];
+hal_u32_t PoStep_DriverMode [8];
+hal_u32_t PoStep_StepMode [8];
+hal_u32_t PoStep_Current_FS [8];
+hal_u32_t PoStep_Current_Idle [8];
+hal_u32_t PoStep_Current_Overheat [8];
+hal_u32_t PoStep_TemperatureLimit [8];
 
     // Configuration
-pin io unsigned PoStep.#.AddressI2C [8];
-pin io unsigned PoStep.#.DriverType [8];
-pin io unsigned PoStep.#.UpdateConfig [8];
+hal_u32_t PoStep_AddressI2C [8];
+hal_u32_t PoStep_DriverType [8];
+hal_u32_t PoStep_UpdateConfig [8];
 
 
-pin io unsigned PWM.PWMperiod;
-pin io unsigned PWM.#.PWMduty [6];
-pin io unsigned PWM.#.PWMenabledChannels [6];
-pin io unsigned PWM.#.PWMpinIDs [6];
+hal_u32_t PWM.PWMperiod;
+hal_u32_t PWM_PWMduty [6];
+hal_u32_t PWM_PWMenabledChannels [6];
+hal_u32_t PWM_PWMpinIDs [6];
 */
-pin out unsigned PoNET.#.moduleID[16];
-pin out unsigned PoNET.#.i2cAddress[16];
-pin out unsigned PoNET.#.moduleType[16];
-pin out unsigned PoNET.#.moduleSize[16];
-pin out unsigned PoNET.#.moduleOptions[16];
+hal_u32_t PoNET_moduleID[16];
+hal_u32_t PoNET_i2cAddress[16];
+hal_u32_t PoNET_moduleType[16];
+hal_u32_t PoNET_moduleSize[16];
+hal_u32_t PoNET_moduleOptions[16];
 
-pin io unsigned PoNET.PWMduty;
-pin io unsigned PoNET.lightValue;
-pin io unsigned PoNET.PoNETstatus;
-pin out unsigned PoNET.#.statusIn [16];
-pin in unsigned PoNET.#.statusOut [16];
+hal_u32_t PoNET.PWMduty;
+hal_u32_t PoNET.lightValue;
+hal_u32_t PoNET.PoNETstatus;
+hal_u32_t PoNET_statusIn [16];
+hal_u32_t PoNET_statusOut [16];
 /*
-pin io unsigned MatrixLED.displayEnabled;                    // Display enabled byte - set to 1 to enable the display
-pin io unsigned MatrixLED.rows;                              // Number of Matrix LED rows
-pin io unsigned MatrixLED.columns;                           // Number of Matrix LED columns
-pin io unsigned MatrixLED.RefreshFlag;                       // Flag for refreshing data - set to 1 to refresh the display
-pin io unsigned MatrixLED.#.data [8];                           // Matrix LED buffer - one byte per row (assumes 8 columns)
+hal_u32_t MatrixLED.displayEnabled;                    // Display enabled byte - set to 1 to enable the display
+hal_u32_t MatrixLED.rows;                              // Number of Matrix LED rows
+hal_u32_t MatrixLED.columns;                           // Number of Matrix LED columns
+hal_u32_t MatrixLED.RefreshFlag;                       // Flag for refreshing data - set to 1 to refresh the display
+hal_u32_t MatrixLED_data [8];                           // Matrix LED buffer - one byte per row (assumes 8 columns)
 
-pin io unsigned LCD.Configuration;                     // LCD configuration byte - 0: disabled, 1: enabled on primary pins, 2: enabled on secondary pins
-pin io unsigned LCD.Rows;                              // Number of LCD module rows
-pin io unsigned LCD.Columns;                           // Number of LCD module columns
-pin io unsigned LCD.RowRefreshFlags;                   // Flag for refreshing data - bit 0: row 1, bit 1: row 2, bit 2: row 3, bit 3: row 4
+hal_u32_t LCD.Configuration;                     // LCD configuration byte - 0: disabled, 1: enabled on primary pins, 2: enabled on secondary pins
+hal_u32_t LCD.Rows;                              // Number of LCD module rows
+hal_u32_t LCD.Columns;                           // Number of LCD module columns
+hal_u32_t LCD.RowRefreshFlags;                   // Flag for refreshing data - bit 0: row 1, bit 1: row 2, bit 2: row 3, bit 3: row 4
     
-pin io unsigned LCD.line1.# [20];                         // Line 1 buffer
-pin io unsigned LCD.line2.# [20];                         // Line 2 buffer
-pin io unsigned LCD.line3.# [20];                         // Line 3 buffer
-pin io unsigned LCD.line4.# [20];                         // Line 4 buffer
+hal_u32_t LCD.line1.# [20];                         // Line 1 buffer
+hal_u32_t LCD.line2.# [20];                         // Line 2 buffer
+hal_u32_t LCD.line3.# [20];                         // Line 3 buffer
+hal_u32_t LCD.line4.# [20];                         // Line 4 buffer
 */
-pin out unsigned I2C.#.presentDevices [16];
-pin io bit I2C.scanning ;
+hal_u32_t I2C_presentDevices [16];
+hal_bit_t I2C.scanning ;
 
 license "GPL";
 
@@ -1634,7 +1634,7 @@ void user_mainloop(void)
 						if (*i_status == PK_I2C_STAT_COMPLETE)
 						{
 							a_debout = 215;
-							//I2C.#.presentDevices
+							//I2C_presentDevices
 							for (i = 0; i < 16; i++)
 							{
 								a_debout = 2150 + i;
@@ -1906,8 +1906,8 @@ void user_mainloop(void)
 				if (PEv2_PG_extended_io != false)
 				{
 					/*
-					pin out bit PEv2.ExternalRelayOutput.#[4];			// External relay outputs
-					pin out bit PEv2.ExternalOCOutput.#[4];			// External open-collector outputs
+					hal_bit_t PEv2.ExternalRelayOutput.#[4];			// External relay outputs
+					hal_bit_t PEv2.ExternalOCOutput.#[4];			// External open-collector outputs
 					*/
 
 					uint8_t ExternalRelayOutputs_set=  0;
