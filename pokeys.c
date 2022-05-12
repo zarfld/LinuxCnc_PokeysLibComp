@@ -153,19 +153,19 @@ hal_float_t PEv2_params_DEADBAND [8];
 hal_float_t PEv2_params_MAX_OUTPUT [8];
 hal_float_t PEv2_params_ENCODER_SCALE [8];
 // these are in nanoseconds
-hal_float_t PEv2_params_DIRSETUP [8] = 0.0;					// (ns)
-hal_float_t PEv2_params_DIRHOLD [8] = 0.0;					// (ns)
-hal_float_t PEv2_params_STEPLEN [8] = 0.0;					// (ns)
-hal_float_t PEv2_params_STEPSPACE [8] = 0.0;					// (ns)
-hal_float_t PEv2_params_STEP_SCALE [8] = 0;					// (pulses/mm)
-hal_float_t PEv2_params_MIN_LIMIT [8] = 0;					// position (mm)
-hal_float_t PEv2_params_MAX_LIMIT [8] = 0;					// position (mm)
-hal_float_t PEv2_params_HOME_OFFSET [8] = 0;				// position (mm)
-hal_float_t PEv2_params_HOME_SEARCH_VEL [8] = 0;			// position (mm)
-hal_float_t PEv2_params_HOME_LATCH_VEL [8] = 0;				// position (mm)
-hal_float_t PEv2_params_HOME_FINAL_VEL [8] = 0;				// position (mm)
-hal_s32_t PEv2_params_HOME_USE_INDEX [8] = 0;				// YES / NO
-hal_s32_t PEv2_params_HOME_IGNORE_LIMITS [8] = 0;			// YES / NO
+hal_float_t PEv2_params_DIRSETUP [8];					// (ns)
+hal_float_t PEv2_params_DIRHOLD [8];					// (ns)
+hal_float_t PEv2_params_STEPLEN [8];					// (ns)
+hal_float_t PEv2_params_STEPSPACE [8];					// (ns)
+hal_float_t PEv2_params_STEP_SCALE [8];					// (pulses/mm)
+hal_float_t PEv2_params_MIN_LIMIT [8];					// position (mm)
+hal_float_t PEv2_params_MAX_LIMIT [8];					// position (mm)
+hal_float_t PEv2_params_HOME_OFFSET [8];				// position (mm)
+hal_float_t PEv2_params_HOME_SEARCH_VEL [8];			// position (mm)
+hal_float_t PEv2_params_HOME_LATCH_VEL [8];				// position (mm)
+hal_float_t PEv2_params_HOME_FINAL_VEL [8];				// position (mm)
+hal_s32_t PEv2_params_HOME_USE_INDEX [8];				// YES / NO
+hal_s32_t PEv2_params_HOME_IGNORE_LIMITS [8];			// YES / NO
 //***********************************************************************
 
 hal_u32_t PEv2_MPGjogMultiplier [8];		// MPG jog multiplier value
@@ -228,8 +228,8 @@ hal_bit_t PEv2_AxisLimitOverride [8] ;
 
 hal_u32_t PEv2_ExternalRelayOutputs;			// External relay outputs
 hal_u32_t PEv2_ExternalOCOutputs;			// External open-collector outputs
-hal_bit_t PEv2_ExternalRelayOutput.#[4];			// External relay outputs
-hal_bit_t PEv2_ExternalOCOutput.#[4];			// External open-collector outputs
+hal_bit_t PEv2_ExternalRelayOutput[4];			// External relay outputs
+hal_bit_t PEv2_ExternalOCOutput[4];			// External open-collector outputs
 hal_u32_t PEv2_PulseEngineBufferSize;		// Buffer size information...
 hal_u32_t PEv2_motionBufferEntriesAccepted;
 hal_u32_t PEv2_newMotionBufferEntries;
@@ -383,7 +383,7 @@ hal_bit_t I2C_scanning ;
 
 license "GPL";
 
-option extra_link_args "-lPoKeys";
+//option extra_link_args "-lPoKeys";
 
 ;;
 
