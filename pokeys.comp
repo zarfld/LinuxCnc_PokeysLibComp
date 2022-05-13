@@ -661,30 +661,6 @@ uint8_t Merge_8BitsToByte(bool Bit_array[8])
   return sum;
 }
 
-int Init_IOPins()
-{
-			 int PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
-			 int PWMCount = dev->info.iPWMCount;                        // Number of pins that support PWM output
-			 int BasicEncoderCount = dev->info.iBasicEncoderCount;               // Number of basic encoders
-			 int EncodersCount = dev->info.iEncodersCount;                   // Number of encoder slots available
-			 int FastEncoders = dev->info.iFastEncoders;                    // Number of fast encoders supported
-			 int UltraFastEncoders = dev->info.iUltraFastEncoders;               // Number of available ultra fast encoders
-			 int PWMinternalFrequency = dev->info.PWMinternalFrequency;             // Main PWM peripheral clock
-			 int AnalogInCount = dev->info.iAnalogInputs;                    // Number of available analog inputs
-
-			 int retval;
-
-			DigitalInput = hal_malloc(PinCount * sizeof(HALCDI_DigitalInput));
-			for (i = 0; i < PinCount; i++)
-			{
-				const char *PinName = "digin.in-"+i;
-				hal_pin_bit_new(PinName, 16 , DigitalInput[i].in, comp_id);
-				//hal_pin_bit_newf(HAL_OUT, base + (2 * n), comp_id, "pokeys57.%d.pin-%02d-in", portnum, pin);
-			}
-
-
-}
-
 int Update_PoNet()
 {
 	if(PK_PoNETGetPoNETStatus(dev) == PK_OK)
