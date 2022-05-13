@@ -403,78 +403,8 @@ uint8_t rtc_latencycheck_set = 0;
 int rtc_latencyCounter = 0;
 int i=0;
 
-typedef struct
-{
-/*
-The canonical digital input (I/O type field: digin) is quite simple.
-*/
-//Pins
-	hal_bit_t **in; 
-	//hal_bit_t in-not;
-	hal_bit_t **inverted;
-//Parameters
 
-//Functions
-// read
-}HALCDI_DigitalInput;
-HALCDI_DigitalInput * DigitalInput;
 
-typedef struct
-{
-/*
-The canonical digital output (I/O type field: digout) is also very simple.
-*/
-//Pins
-	hal_bit_t out; 
-
-//Parameters
-	hal_bit_t invert;
-//Functions
-// read
-}HALCDI_DigitalOutput;
-
-typedef struct
-{
-/*
-The canonical analog input (I/O type: adcin). This is expected to be used for analog to digital
-converters, which convert e.g. voltage to a continuous range of values.
-*/
-
-//Pins
-	hal_float_t value; 
-
-//Parameters
-	hal_float_t scale; 
-	hal_float_t offset;
-	hal_float_t bit_weight;
-	hal_float_t hw_offset;
-//Functions
-// read
-}HALCDI_AnalogInput;
-
-typedef struct
-{
-/*
-The canonical analog output (I/O Type: adcout). This is intended for any kind of hardware that
-can output a more-or-less continuous range of values. Examples are digital to analog converters or
-PWM generators
-*/
-
-//Pins
-	hal_float_t value; 
-	hal_bit_t enable;
-
-//Parameters
-	hal_float_t scale; 
-	hal_float_t offset;
-	hal_float_t bit_weight;
-	hal_float_t hw_offset;
-	hal_float_t high_limit;
-	hal_float_t low_limit;
-
-//Functions
-// write
-}HALCDI_AnalogOutput;
 
 
 
