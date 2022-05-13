@@ -385,9 +385,9 @@ option extra_link_args "-lPoKeys";
 ;;
 
 #include <unistd.h>   /* UNIX standard function definitions */
-#include "hal.h"
+
 #include "PoKeysLib.h"
-#include "PoKeysLibCore.h"
+
 
 
 sPoKeysDevice * dev=0;
