@@ -671,6 +671,7 @@ static int pins_and_params(char *argv[])
                 devSerial = 53386;
             }
 
+
             if (devSerial != 0)
             {
     
