@@ -669,14 +669,11 @@ static int pins_and_params(char *argv[])
         }
 
 	/* config addr and direction */
-	port_data_array[n].base_addr = port_data_array[n].portdata.base;
+	//port_data_array[n].base_addr = port_data_array[n].portdata.base;
 	port_data_array[n].data_dir = data_dir[n];
 	port_data_array[n].use_control_in = use_control_in[n];
 
-        if(force_epp[n] && port_data_array[n].portdata.base_hi) {
-            /* select EPP mode in ECR */
-            rtapi_outb(0x94, port_data_array[n].portdata.base_hi + 2);
-        }
+
 
 	/* set data port (pins 2-9) direction to "in" if needed */
 	if (data_dir[n]) {
@@ -755,9 +752,9 @@ static int export_port(int portnum, pokeys_t * port)
     uint32_t n;
     for (n = 0; n < port->device->info.iPinCount; n++)
     {
-        retval += export_input_pin(portnum, n, port->DigitalInput[i], i);
+        retval += export_input_pin(portnum, n, port->DigitalInput[n].in, i);
         retval += export_output_pin(portnum, n,
-            port->DigitalOutput[i], port->data_inv, port->data_reset, i);
+            port->DigitalOutput[n].out, port->data_inv, port->data_reset, i);
     }
     /* restore saved message level */
     rtapi_set_msg_level(msg);
