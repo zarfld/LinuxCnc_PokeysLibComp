@@ -658,6 +658,9 @@ static int pins_and_params(char *argv[])
             int modes = 0;
 
             unsigned devSerial;
+            unsigned enum_usb_dev;
+            unsigned enum_fusb_dev;
+            unsigned enum_udp_dev;
 
             if (n = 0)
             { //temporary use hc values 57E
@@ -686,8 +689,7 @@ static int pins_and_params(char *argv[])
             }
             else
             {
-                a_debout = 114;
-                sPoKeysNetworkDeviceSummary* udp_devices;
+                 sPoKeysNetworkDeviceSummary* udp_devices;
                 enum_usb_dev = PK_EnumerateUSBDevices();
                 enum_fusb_dev = PK_EnumerateUSBDevices();
                 //enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices,180); // does not work - it hangs here
