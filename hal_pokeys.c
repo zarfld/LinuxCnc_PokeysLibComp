@@ -109,7 +109,7 @@
 MODULE_AUTHOR("Dominik Zarfl");
 MODULE_DESCRIPTION("Pokeys Driver for EMC HAL");
 MODULE_LICENSE("GPL");
-static char *cfg = "0x0000";	/* config string, default 1 output port at 278 */
+static char *cfg = "27295";	/* config string, default 1 output port at 27295 */
 RTAPI_MP_STRING(cfg, "config string");
 
 /***********************************************************************
@@ -238,7 +238,7 @@ typedef struct {
 } pokeys_t;
 
 /* pointer to array of pokeys_t structs in shared memory, 1 per port */
-static pokeys_t *port_data_array;
+static pokeys_t *device_array;
 
 /* other globals */
 static int comp_id;		/* component ID */
@@ -304,8 +304,8 @@ int rtapi_app_main(void)
 
     /* test for config string */
     if (cfg == 0) {
-	rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: no config string\n");
-	return -1;
+	    rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: no config string\n");
+	    return -1;
     }
 rtapi_print ( "config string '%s'\n", cfg );
     /* as a RT module, we don't get a nice argc/argv command line, we only
@@ -315,84 +315,78 @@ rtapi_print ( "config string '%s'\n", cfg );
        an alternate token separator. */
     cp = cfg;
     for (n = 0; n < MAX_TOK; n++) {
-	/* strip leading whitespace */
-	while ((*cp != '\0') && ( isspace(*cp) || ( *cp == '_') ))
-	    cp++;
-	/* mark beginning of token */
-	argv[n] = cp;
-	/* find end of token */
-	while ((*cp != '\0') && !( isspace(*cp) || ( *cp == '_') ))
-	    cp++;
-	/* mark end of this token, prepare to search for next one */
-	if (*cp != '\0') {
-	    *cp = '\0';
-	    cp++;
-	}
+	    /* strip leading whitespace */
+	    while ((*cp != '\0') && ( isspace(*cp) || ( *cp == '_') ))
+	        cp++;
+	    /* mark beginning of token */
+	    argv[n] = cp;
+	    /* find end of token */
+	    while ((*cp != '\0') && !( isspace(*cp) || ( *cp == '_') ))
+	        cp++;
+	    /* mark end of this token, prepare to search for next one */
+	    if (*cp != '\0') {
+	        *cp = '\0';
+	        cp++;
+	    }
     }
     for (n = 0; n < MAX_TOK; n++) {
-	/* is token empty? */
-	if (argv[n][0] == '\0') {
-	    /* yes - make pointer NULL */
-	    argv[n] = NULL;
-	}
+	    /* is token empty? */
+	    if (argv[n][0] == '\0') {
+	        /* yes - make pointer NULL */
+	        argv[n] = NULL;
+	    }
     }
     /* parse "command line", set up pins and parameters */
     retval = pins_and_params(argv);
     if (retval != 0) {
-	return retval;
+    	return retval;
     }
     /* export functions for each port */
     for (n = 0; n < num_ports; n++) {
-	/* make read function name */
-	rtapi_snprintf(name, sizeof(name), "pokeys.%d.read", n);
-	/* export read function */
-	retval = hal_export_funct(name, read_port, &(port_data_array[n]),
-	    0, 0, comp_id);
-	if (retval != 0) {
-	    rtapi_print_msg(RTAPI_MSG_ERR,
-		"POKEYS: ERROR: port %d read funct export failed\n", n);
-	    hal_exit(comp_id);
-	    return -1;
-	}
-	/* make write function name */
-	rtapi_snprintf(name, sizeof(name), "pokeys.%d.write", n);
-	/* export write function */
-	retval = hal_export_funct(name, write_port, &(port_data_array[n]),
-	    0, 0, comp_id);
-	if (retval != 0) {
-	    rtapi_print_msg(RTAPI_MSG_ERR,
-		"POKEYS: ERROR: port %d write funct export failed\n", n);
-	    hal_exit(comp_id);
-	    return -1;
-	}
-	/* make reset function name */
-	rtapi_snprintf(name, sizeof(name), "pokeys.%d.reset", n);
-	/* export write function */
-	retval = hal_export_funct(name, reset_port, &(port_data_array[n]),
-	    0, 0, comp_id);
-	if (retval != 0) {
-	    rtapi_print_msg(RTAPI_MSG_ERR,
-		"POKEYS: ERROR: port %d reset funct export failed\n", n);
-	    hal_exit(comp_id);
-	    return -1;
-	}
+	    /* make read function name */
+	    rtapi_snprintf(name, sizeof(name), "pokeys.%d.read", n);
+	    /* export read function */
+	    retval = hal_export_funct(name, read_port, &(device_array[n]),
+	        0, 0, comp_id);
+	    if (retval != 0) {
+	        rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: port %d read funct export failed\n", n);
+	        hal_exit(comp_id);
+	        return -1;
+	    }
+	    /* make write function name */
+	    rtapi_snprintf(name, sizeof(name), "pokeys.%d.write", n);
+	    /* export write function */
+	    retval = hal_export_funct(name, write_port, &(device_array[n]), 0, 0, comp_id);
+	    if (retval != 0) {
+	        rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: port %d write funct export failed\n", n);
+	        hal_exit(comp_id);
+	        return -1;
+	    }
+	    /* make reset function name */
+	    rtapi_snprintf(name, sizeof(name), "pokeys.%d.reset", n);
+	    /* export write function */
+	    retval = hal_export_funct(name, reset_port, &(device_array[n]), 0, 0, comp_id);
+	    if (retval != 0) {
+	        rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: port %d reset funct export failed\n", n);
+	        hal_exit(comp_id);
+	        return -1;
+	    }
     }
     /* export functions that read and write all ports */
     retval = hal_export_funct("pokeys.read-all", read_all,
-	port_data_array, 0, 0, comp_id);
+	device_array, 0, 0, comp_id);
     if (retval != 0) {
-	rtapi_print_msg(RTAPI_MSG_ERR,
-	    "POKEYS: ERROR: read all funct export failed\n");
-	hal_exit(comp_id);
-	return -1;
+	    rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: read all funct export failed\n");
+	    hal_exit(comp_id);
+	    return -1;
     }
     retval = hal_export_funct("pokeys.write-all", write_all,
-	port_data_array, 0, 0, comp_id);
+	device_array, 0, 0, comp_id);
     if (retval != 0) {
-	rtapi_print_msg(RTAPI_MSG_ERR,
-	    "POKEYS: ERROR: write all funct export failed\n");
-	hal_exit(comp_id);
-	return -1;
+	    rtapi_print_msg(RTAPI_MSG_ERR,
+	        "POKEYS: ERROR: write all funct export failed\n");
+	    hal_exit(comp_id);
+	    return -1;
     }
     rtapi_print_msg(RTAPI_MSG_INFO,
 	"POKEYS: installed driver for %d ports\n", num_ports);
@@ -404,7 +398,7 @@ void rtapi_app_exit(void)
 {
     int n;
     for (n = 0; n < num_ports; n++) {
- //       hal_parport_release(&port_data_array[n].portdata);
+ //       hal_parport_release(&device_array[n].portdata);
     }
     hal_exit(comp_id);
 }
@@ -588,113 +582,129 @@ static int pins_and_params(char *argv[])
 
     /* clear port_addr and data_dir arrays */
     for (n = 0; n < MAX_PORTS; n++) {
-	port_addr[n] = 0;
-	data_dir[n] = 0;
-	use_control_in[n] = 0;
-	force_epp[n] = 0;
+	    port_addr[n] = 0;
+	    data_dir[n] = 0;
+	    use_control_in[n] = 0;
+	    force_epp[n] = 0;
     }
     /* parse config string, results in port_addr[] and data_dir[] arrays */
     num_ports = 0;
     n = 0;
     while ((num_ports < MAX_PORTS) && (argv[n] != 0)) {
-	port_addr[num_ports] = parse_port_addr(argv[n]);
-	if (port_addr[num_ports] < 0) {
-	    rtapi_print_msg(RTAPI_MSG_ERR,
-		"POKEYS: ERROR: bad port address '%s'\n", argv[n]);
-	    return -1;
-	}
-	n++;
-	if (argv[n] != 0) {
-	    /* is the next token 'in' or 'out' ? */
-	    if ((argv[n][0] == 'i') || (argv[n][0] == 'I')) {
-		/* we aren't picky, anything starting with 'i' means 'in' ;-) 
-		 */
-		data_dir[num_ports] = 1;
-                use_control_in[num_ports] = 0;
-		n++;
-	    } else if ((argv[n][0] == 'o') || (argv[n][0] == 'O')) {
-		/* anything starting with 'o' means 'out' */
-		data_dir[num_ports] = 0;
-                use_control_in[num_ports] = 0;
-		n++;
-	    } else if ((argv[n][0] == 'e') || (argv[n][0] == 'E')) {
-		/* anything starting with 'e' means 'epp', which is just
-                   like 'out' but with EPP mode requested, primarily for
-                   the G540 with its charge pump missing-pullup drive
-                   issue */
-                data_dir[num_ports] = 0;
-                use_control_in[num_ports] = 0;
-                force_epp[num_ports] = 1;
-		n++;
-	    } else if ((argv[n][0] == 'x') || (argv[n][0] == 'X')) {
-                /* experimental: some parports support a bidirectional
-                 * control port.  Enable this with pins 2-9 in output mode, 
-                 * which gives a very nice 8 outs and 9 ins. */
-                data_dir[num_ports] = 0;
-                use_control_in[num_ports] = 1;
-		n++;
-            }
-	}
-	num_ports++;
+	    port_addr[num_ports] = parse_port_addr(argv[n]);
+	    if (port_addr[num_ports] < 0) {
+	        rtapi_print_msg(RTAPI_MSG_ERR,
+		    "POKEYS: ERROR: bad port address '%s'\n", argv[n]);
+	        return -1;
+	    }
+	    n++;
+	    if (argv[n] != 0) {
+	        /* is the next token 'in' or 'out' ? */
+	        if ((argv[n][0] == 'i') || (argv[n][0] == 'I')) {
+		    /* we aren't picky, anything starting with 'i' means 'in' ;-) 
+		     */
+		    data_dir[num_ports] = 1;
+                    use_control_in[num_ports] = 0;
+		    n++;
+	        } else if ((argv[n][0] == 'o') || (argv[n][0] == 'O')) {
+		    /* anything starting with 'o' means 'out' */
+		    data_dir[num_ports] = 0;
+                    use_control_in[num_ports] = 0;
+		    n++;
+	        } else if ((argv[n][0] == 'e') || (argv[n][0] == 'E')) {
+		    /* anything starting with 'e' means 'epp', which is just
+                       like 'out' but with EPP mode requested, primarily for
+                       the G540 with its charge pump missing-pullup drive
+                       issue */
+                    data_dir[num_ports] = 0;
+                    use_control_in[num_ports] = 0;
+                    force_epp[num_ports] = 1;
+		    n++;
+	        } else if ((argv[n][0] == 'x') || (argv[n][0] == 'X')) {
+                    /* experimental: some parports support a bidirectional
+                     * control port.  Enable this with pins 2-9 in output mode, 
+                     * which gives a very nice 8 outs and 9 ins. */
+                    data_dir[num_ports] = 0;
+                    use_control_in[num_ports] = 1;
+		    n++;
+                }
+	    }
+	    num_ports++;
     }
     /* OK, now we've parsed everything */
     if (num_ports == 0) {
-	rtapi_print_msg(RTAPI_MSG_ERR,
-	    "POKEYS: ERROR: no ports configured\n");
-	return -1;
+	    rtapi_print_msg(RTAPI_MSG_ERR,
+	        "POKEYS: ERROR: no ports configured\n");
+	    return -1;
     }
     /* have good config info, connect to the HAL */
     comp_id = hal_init("hal_pokeys");
     if (comp_id < 0) {
-	rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: hal_init() failed\n");
-	return -1;
+	    rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: hal_init() failed\n");
+	    return -1;
     }
     /* allocate shared memory for parport data */
-    port_data_array = hal_malloc(num_ports * sizeof(pokeys_t));
-    if (port_data_array == 0) {
-	rtapi_print_msg(RTAPI_MSG_ERR,
-	    "POKEYS: ERROR: hal_malloc() failed\n");
-	hal_exit(comp_id);
-	return -1;
+    device_array = hal_malloc(num_ports * sizeof(pokeys_t));
+    if (device_array == 0) {
+	    rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: hal_malloc() failed\n");
+	    hal_exit(comp_id);
+	    return -1;
     }
     /* export all the pins and params for each port */
     for (n = 0; n < num_ports; n++) {
-        int modes = 0;
+            int modes = 0;
+            if (devSerial != 0)
+            {
+                a_debout = 110;
+                enum_usb_dev = PK_EnumerateUSBDevices();
+                a_debout = 111;
+                if (enum_usb_dev != 0)
+                {
+                    device_array[n].device = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
+                }
 
-        if(use_control_in[n]) {
-     //       modes = PARPORT_MODE_TRISTATE;
-        } else if(force_epp[n]) {
-        //    modes = PARPORT_MODE_EPP;
-        }
+                a_debout = 112;
+                if (dev == NULL)
+                {
+                    a_debout = 113;
+                    device_array[n].device = PK_ConnectToDeviceWSerial_UDP(devSerial, 5000);  //waits for usb device
+                }
+
+            }
+            else
+            {
+                a_debout = 114;
+                sPoKeysNetworkDeviceSummary* udp_devices;
+                enum_usb_dev = PK_EnumerateUSBDevices();
+                enum_fusb_dev = PK_EnumerateUSBDevices();
+                //enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices,180); // does not work - it hangs here
+
+            }
 
 
-    //    retval = hal_parport_get(comp_id, &port_data_array[n].portdata, port_addr[n], -1, modes);
-        if(retval < 0) {
-            // failure message already printed by hal_parport_get
-	    hal_exit(comp_id);
-            return retval;
-        }
-
-	/* config addr and direction */
-	//port_data_array[n].base_addr = port_data_array[n].portdata.base;
-	port_data_array[n].data_dir = data_dir[n];
-	port_data_array[n].use_control_in = use_control_in[n];
 
 
 
-	/* set data port (pins 2-9) direction to "in" if needed */
-	if (data_dir[n]) {
-	    rtapi_outb(rtapi_inb(port_data_array[n].base_addr+2) | 0x20, port_data_array[n].base_addr+2);
-	}
+	    /* config addr and direction */
+	    //device_array[n].base_addr = device_array[n].portdata.base;
+	    device_array[n].data_dir = data_dir[n];
+	    device_array[n].use_control_in = use_control_in[n];
 
-	/* export all vars */
-	retval = export_device(n, &(port_data_array[n]));
-	if (retval != 0) {
-	    rtapi_print_msg(RTAPI_MSG_ERR,
-		"POKEYS: ERROR: port %d var export failed\n", n);
-	    hal_exit(comp_id);
-	    return retval;
-	}
+
+
+	    /* set data port (pins 2-9) direction to "in" if needed */
+	    if (data_dir[n]) {
+	        rtapi_outb(rtapi_inb(device_array[n].base_addr+2) | 0x20, device_array[n].base_addr+2);
+	    }
+
+	    /* export all vars */
+	    retval = export_device(n, &(device_array[n]));
+	    if (retval != 0) {
+	        rtapi_print_msg(RTAPI_MSG_ERR,
+		    "POKEYS: ERROR: port %d var export failed\n", n);
+	        hal_exit(comp_id);
+	        return retval;
+	    }
     }
     return 0;
 }
