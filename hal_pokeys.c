@@ -644,6 +644,9 @@ static int pins_and_params(char *argv[])
 	    return -1;
     }
     /* allocate shared memory for parport data */
+
+    num_ports = 2;
+
     device_array = hal_malloc(num_ports * sizeof(pokeys_t));
     if (device_array == 0) {
 	    rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: hal_malloc() failed\n");
@@ -653,20 +656,30 @@ static int pins_and_params(char *argv[])
     /* export all the pins and params for each port */
     for (n = 0; n < num_ports; n++) {
             int modes = 0;
+
+            unsigned devSerial;
+
+            if (n = 0)
+            { //temporary use hc values 57E
+                devSerial = 27295;
+            }
+            else
+            {//temporary use hc values 57CNC
+                devSerial = 53386;
+            }
+
             if (devSerial != 0)
             {
-                a_debout = 110;
+    
                 enum_usb_dev = PK_EnumerateUSBDevices();
-                a_debout = 111;
+
                 if (enum_usb_dev != 0)
                 {
                     device_array[n].device = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
                 }
 
-                a_debout = 112;
-                if (dev == NULL)
+                if (device_array[n].device == NULL)
                 {
-                    a_debout = 113;
                     device_array[n].device = PK_ConnectToDeviceWSerial_UDP(devSerial, 5000);  //waits for usb device
                 }
 
