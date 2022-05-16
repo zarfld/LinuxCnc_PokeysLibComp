@@ -150,7 +150,7 @@ typedef struct
     hal_bit_t** out;
 
     //Parameters
-    hal_bit_t** invert;
+    hal_bit_t* invert;
     //Functions
     // read
 }pokeys_DigitalOutput_t;
