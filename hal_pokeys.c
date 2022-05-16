@@ -144,7 +144,7 @@ typedef struct
     /*
     The canonical digital output (I/O type field: digout) is also very simple.
     */
-    char32_t IO_type_field = "digout"
+    char8_t IO_type_field = "digout"
 
     //Pins
     hal_bit_t** out;
