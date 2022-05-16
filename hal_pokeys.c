@@ -752,9 +752,9 @@ static int export_port(int portnum, pokeys_t * port)
     uint32_t n;
     for (n = 0; n < port->device->info.iPinCount; n++)
     {
-        retval += export_input_pin(portnum, n, port->DigitalInput[n].in, i);
+        retval += export_input_pin(portnum, n, port->DigitalInput[n]->in, n);
         retval += export_output_pin(portnum, n,
-            port->DigitalOutput[n].out, port->data_inv, port->data_reset, i);
+            port->DigitalOutput[n]->out, port->data_inv, port->data_reset, n);
     }
     /* restore saved message level */
     rtapi_set_msg_level(msg);
