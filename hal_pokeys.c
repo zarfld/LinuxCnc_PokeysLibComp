@@ -799,7 +799,7 @@ static int export_DigitalOutput(int devicenum, int pin, pokeys_DigitalOutput_t* 
         return retval;
     }
     /* export parameter for polarity */
-    retval = hal_param_bit_newf(HAL_RW, pbase + n, comp_id, "pokeys.%d.digout.%02d.invert", devicenum, pin);
+    retval = hal_param_bit_newf(HAL_RW, pt_IoObject->invert + n, comp_id, "pokeys.%d.digout.%02d.invert", devicenum, pin);
 
    return retval;
 
