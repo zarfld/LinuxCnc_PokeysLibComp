@@ -38,17 +38,17 @@
     The driver creates HAL pins and parameters for each port pin
     as follows:
     Each physical output has a corresponding HAL pin, named
-    'pokeys.<portnum>.pin-<pinnum>-out', and a HAL parameter
-    'pokeys.<portnum>.pin-<pinnum>-out-invert'.
+    'pokeys.<devicenum>.pin-<pinnum>-out', and a HAL parameter
+    'pokeys.<devicenum>.pin-<pinnum>-out-invert'.
     Each physical input has two corresponding HAL pins, named
-    'pokeys.<portnum>.pin-<pinnum>-in' and
-    'pokeys.<portnum>.pin-<pinnum>-in-not'.
+    'pokeys.<devicenum>.pin-<pinnum>-in' and
+    'pokeys.<devicenum>.pin-<pinnum>-in-not'.
 
-    <portnum> is the port number, starting from zero.  <pinnum> is
+    <devicenum> is the port number, starting from zero.  <pinnum> is
     the physical pin number on the DB-25 connector.
 
     The realtime version of the driver exports two HAL functions for
-    each port, 'pokeys.<portnum>.read' and 'pokeys.<portnum>.write'.
+    each port, 'pokeys.<devicenum>.read' and 'pokeys.<devicenum>.write'.
     It also exports two additional functions, 'pokeys.read-all' and
     'pokeys.write-all'.  Any or all of these functions can be added
     to realtime HAL threads to update the port data periodically.
@@ -125,6 +125,9 @@ typedef struct
     /*
     The canonical digital input (I/O type field: digin) is quite simple.
     */
+
+    char32_t IO_type_field = "digin"
+
     //Pins
     hal_bit_t** in;
     //hal_bit_t in-not;
@@ -141,11 +144,13 @@ typedef struct
     /*
     The canonical digital output (I/O type field: digout) is also very simple.
     */
+    char32_t IO_type_field = "digout"
+
     //Pins
-    hal_bit_t out;
+    hal_bit_t** out;
 
     //Parameters
-    hal_bit_t invert;
+    hal_bit_t** invert;
     //Functions
     // read
 }pokeys_DigitalOutput_t;
@@ -266,9 +271,11 @@ static void write_all(void *arg, long period);
 static int pins_and_params(char *argv[]);
 
 static unsigned short parse_port_addr(char *cp);
-static int export_port(int portnum, pokeys_t * addr);
-static int export_input_pin(int portnum, int pin, hal_bit_t ** base, int n);
-static int export_output_pin(int portnum, int pin, hal_bit_t ** dbase,
+static int export_device(int devicenum, pokeys_t * addr);
+static int export_DigitalInput(int devicenum, int pin, pokeys_DigitalInput_t* pt_IoObject, int n);
+static int export_DigitalOutput(int devicenum, int pin, pokeys_DigitalOutput_t* pt_IoObject, int n);
+static int export_input_pin(int devicenum, int pin, hal_bit_t ** base, int n);
+static int export_output_pin(int devicenum, int pin, hal_bit_t ** dbase,
     hal_bit_t * pbase, hal_bit_t * rbase, int n);
 
 /***********************************************************************
@@ -681,7 +688,7 @@ static int pins_and_params(char *argv[])
 	}
 
 	/* export all vars */
-	retval = export_port(n, &(port_data_array[n]));
+	retval = export_device(n, &(port_data_array[n]));
 	if (retval != 0) {
 	    rtapi_print_msg(RTAPI_MSG_ERR,
 		"POKEYS: ERROR: port %d var export failed\n", n);
@@ -728,7 +735,7 @@ static unsigned short parse_port_addr(char *cp)
     return result;
 }
 
-static int export_port(int portnum, pokeys_t * port)
+static int export_device(int devicenum, pokeys_t * port)
 {
     int retval, msg;
 
@@ -740,20 +747,13 @@ static int export_port(int portnum, pokeys_t * port)
     rtapi_set_msg_level(RTAPI_MSG_WARN);
 
     retval = 0;
-    /* declare input pins (status port) */
-    retval += export_input_pin(portnum, 15, port->status_in, 0);
-    retval += export_input_pin(portnum, 13, port->status_in, 1);
-    retval += export_input_pin(portnum, 12, port->status_in, 2);
-    retval += export_input_pin(portnum, 10, port->status_in, 3);
-    retval += export_input_pin(portnum, 11, port->status_in, 4);
 
     /* declare input pins (data port) */
-
     uint32_t n;
     for (n = 0; n < port->device->info.iPinCount; n++)
     {
-        retval += export_input_pin(portnum, n, port->DigitalInput[n]->in, n);
-       // retval += export_DigitalOutput(portnum, n, port->DigitalOutput[n], port->data_inv, port->data_reset, n);
+        retval += export_DigitalInput(devicenum, n, port->DigitalInput[n] , n);
+        retval += export_DigitalOutput(devicenum, n, port->DigitalOutput[n], n);
     }
     /* restore saved message level */
     rtapi_set_msg_level(msg);
@@ -761,59 +761,81 @@ static int export_port(int portnum, pokeys_t * port)
 }
 
 
-static int export_DigitalInput(int portnum, int pin, hal_bit_t** base, int n)
+static int export_DigitalInput(int devicenum, int pin, pokeys_DigitalInput_t * pt_IoObject, int n)
 {
     int retval;
 
-    /* export write only HAL pin for the input bit */
-    retval = hal_pin_bit_newf(HAL_OUT, base + (2 * n), comp_id,
-        "pokeys.%d.pin-%02d-in", portnum, pin);
+    /* export write only HAL pin for the input bit 
+    
+    <device-name>.<device-num>.<io-type>.<chan-num>.<specific-name>
+    
+    */
+
+
+    retval = hal_pin_bit_newf(HAL_OUT, pt_IoObject->in + (2 * n), comp_id,
+        "pokeys.%d.digin.%02d.in", devicenum, pin);
     if (retval != 0) {
         return retval;
     }
     /* export another write only HAL pin for the same bit inverted */
-    retval = hal_pin_bit_newf(HAL_OUT, base + (2 * n) + 1, comp_id,
-        "pokeys.%d.pin-%02d-in-not", portnum, pin);
+    retval = hal_pin_bit_newf(HAL_OUT, pt_IoObject->inverted + (2 * n) + 1, comp_id,
+        "pokeys.%d.digin.%02d.in-not", devicenum, pin);
     return retval;
 }
 
+static int export_DigitalOutput(int devicenum, int pin, pokeys_DigitalOutput_t* pt_IoObject, int n)
+{
+    int retval;
 
-static int export_input_pin(int portnum, int pin, hal_bit_t ** base, int n)
+    /* export write only HAL pin for the input bit
+
+    <device-name>.<device-num>.<io-type>.<chan-num>.<specific-name>
+
+    */
+
+
+    retval = hal_pin_bit_newf(HAL_OUT, pt_IoObject->out + (2 * n), comp_id, "pokeys.%d.digout.%02d.out", devicenum, pin);
+    if (retval != 0) {
+        return retval;
+    }
+    /* export parameter for polarity */
+    retval = hal_param_bit_newf(HAL_RW, pbase + n, comp_id, "pokeys.%d.digout.%02d.invert", devicenum, pin);
+
+   return retval;
+
+}
+
+static int export_input_pin(int devicenum, int pin, hal_bit_t ** base, int n)
 {
     int retval;
 
     /* export write only HAL pin for the input bit */
     retval = hal_pin_bit_newf(HAL_OUT, base + (2 * n), comp_id,
-            "pokeys.%d.pin-%02d-in", portnum, pin);
+            "pokeys.%d.pin-%02d-in", devicenum, pin);
     if (retval != 0) {
 	return retval;
     }
     /* export another write only HAL pin for the same bit inverted */
     retval = hal_pin_bit_newf(HAL_OUT, base + (2 * n) + 1, comp_id,
-            "pokeys.%d.pin-%02d-in-not", portnum, pin);
+            "pokeys.%d.pin-%02d-in-not", devicenum, pin);
     return retval;
 }
 
-static int export_output_pin(int portnum, int pin, hal_bit_t ** dbase,
+static int export_output_pin(int devicenum, int pin, hal_bit_t ** dbase,
     hal_bit_t * pbase, hal_bit_t * rbase, int n)
 {
     int retval;
 
     /* export read only HAL pin for output data */
     retval = hal_pin_bit_newf(HAL_IN, dbase + n, comp_id,
-            "pokeys.%d.pin-%02d-out", portnum, pin);
+            "pokeys.%d.pin-%02d-out", devicenum, pin);
     if (retval != 0) {
 	return retval;
     }
-    /* export parameter for polarity */
-    retval = hal_param_bit_newf(HAL_RW, pbase + n, comp_id,
-            "pokeys.%d.pin-%02d-out-invert", portnum, pin);
-    if (retval != 0) {
-	return retval;
-    }
+
     /* export parameter for reset */
     if (rbase)
 	retval = hal_param_bit_newf(HAL_RW, rbase + n, comp_id,
-		"pokeys.%d.pin-%02d-out-reset", portnum, pin);
+		"pokeys.%d.pin-%02d-out-reset", devicenum, pin);
     return retval;
 }
