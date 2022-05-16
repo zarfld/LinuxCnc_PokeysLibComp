@@ -229,7 +229,7 @@ typedef struct {
     unsigned char outdata_ctrl;
     unsigned char reset_mask_ctrl;  /* reset flag for pin 1, 14, 16, 17 */
     unsigned char reset_val_ctrl;   /* reset values for pin 1, 14, 16, 17 */
-    struct hal_parport_t portdata;
+   // struct hal_parport_t portdata;
 } pokeys_t;
 
 /* pointer to array of pokeys_t structs in shared memory, 1 per port */
@@ -397,7 +397,7 @@ void rtapi_app_exit(void)
 {
     int n;
     for (n = 0; n < num_ports; n++) {
-        hal_parport_release(&port_data_array[n].portdata);
+ //       hal_parport_release(&port_data_array[n].portdata);
     }
     hal_exit(comp_id);
 }
@@ -655,13 +655,12 @@ static int pins_and_params(char *argv[])
         int modes = 0;
 
         if(use_control_in[n]) {
-            modes = PARPORT_MODE_TRISTATE;
+     //       modes = PARPORT_MODE_TRISTATE;
         } else if(force_epp[n]) {
-            modes = PARPORT_MODE_EPP;
+        //    modes = PARPORT_MODE_EPP;
         }
 
-        retval = hal_parport_get(comp_id, &port_data_array[n].portdata,
-                port_addr[n], -1, modes);
+    //    retval = hal_parport_get(comp_id, &port_data_array[n].portdata, port_addr[n], -1, modes);
 
         if(retval < 0) {
             // failure message already printed by hal_parport_get
@@ -745,7 +744,7 @@ static int export_port(int portnum, pokeys_t * port)
 
     retval = 0;
     /* declare input pins (status port) */
-    retval += export_input_pin(portnum, 15, port->DigitalInput[i], 0);
+    retval += export_input_pin(portnum, 15, port->status_in, 0);
     retval += export_input_pin(portnum, 13, port->status_in, 1);
     retval += export_input_pin(portnum, 12, port->status_in, 2);
     retval += export_input_pin(portnum, 10, port->status_in, 3);
@@ -753,7 +752,7 @@ static int export_port(int portnum, pokeys_t * port)
 
     /* declare input pins (data port) */
 
-
+    uint32_t n;
     for (n = 0; n < port->device->info.iPinCount; n++)
     {
         retval += export_input_pin(portnum, n, port->DigitalInput[i], i);
