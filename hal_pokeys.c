@@ -660,8 +660,8 @@ static int pins_and_params(char *argv[])
         //    modes = PARPORT_MODE_EPP;
         }
 
-    //    retval = hal_parport_get(comp_id, &port_data_array[n].portdata, port_addr[n], -1, modes);
 
+    //    retval = hal_parport_get(comp_id, &port_data_array[n].portdata, port_addr[n], -1, modes);
         if(retval < 0) {
             // failure message already printed by hal_parport_get
 	    hal_exit(comp_id);
