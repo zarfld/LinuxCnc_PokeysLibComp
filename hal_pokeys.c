@@ -126,7 +126,7 @@ typedef struct
     The canonical digital input (I/O type field: digin) is quite simple.
     */
 
-    char32_t IO_type_field = "digin"
+   // char32_t IO_type_field = "digin"
 
     //Pins
     hal_bit_t** in;
@@ -144,7 +144,7 @@ typedef struct
     /*
     The canonical digital output (I/O type field: digout) is also very simple.
     */
-    char8_t IO_type_field = "digout"
+   // char8_t IO_type_field = "digout"
 
     //Pins
     hal_bit_t** out;
