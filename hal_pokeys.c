@@ -406,7 +406,7 @@ static void DigitalIOGet(void *arg, long period)
             halDev->device->Pins[i].DigitalValueGet = ((unsigned char)(halDev->device->response[8 + i / 8] & (1 << (i % 8))) > 0) ? 1 : 0;
             if (halDev->device->Pins[i].DigitalValueGet != 0)
             {
-                halDev->DigitalInput[i]->in = 1;
+                halDev->DigitalInput[i]->in = <**hal_bit>1;
                 halDev->DigitalInput[i]->inverted = 0;
             }
             else
@@ -434,7 +434,7 @@ static void DigitalIOSet(void* arg, long period)
     CreateRequest(halDev->device->request, 0xCC, 1, 0, 0, 0);
     for (i = 0; i < halDev->device->info.iPinCount; i++)
     {
-        if (halDev->DigitalOutput[i]->out == *1)
+        if (halDev->DigitalOutput[i]->out != 1)
         {
             halDev->device->Pins[i].DigitalValueSet = 1;
         }
