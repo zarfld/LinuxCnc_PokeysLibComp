@@ -1615,35 +1615,51 @@ void user_mainloop(void)
 					{
 						case PK_PEState_peSTOPPED:           // Pulse engine is stopped
 							break;
-						casePK_PEState_peINTERNAL:           // PEv1: Internal motion controller is in use, PEv2: not used
+						case PK_PEState_peINTERNAL:           // PEv1: Internal motion controller is in use, PEv2: not used
 							break;
-						casePK_PEState_peBUFFER:           // PEv1: Buffered operation mode is in use, PEv2: not used
+						case PK_PEState_peBUFFER:           // PEv1: Buffered operation mode is in use, PEv2: not used
 							break;
-						casePK_PEState_peRUNNING:           // Pulse engine is activated
+						case PK_PEState_peRUNNING:           // Pulse engine is activated
 							break;
-						casePK_PEState_peJOGGING:          // Jogging mode enabled
+						case PK_PEState_peJOGGING:          // Jogging mode enabled
 							break;
-						casePK_PEState_peSTOPPING:          // Pulse engine is stopping
+						case PK_PEState_peSTOPPING:          // Pulse engine is stopping
 							break;
-						casePK_PEState_peHOME:          // All axes are homed
+						case PK_PEState_peHOME:          // All axes are homed
 							break;
-						casePK_PEState_peHOMING:          // Axes homing is in progress
+						case PK_PEState_peHOMING:          // Axes homing is in progress
 							break;
-						casePK_PEState_pePROBECOMPLETE:          // All axes are homed
+						case PK_PEState_pePROBECOMPLETE:          // All axes are homed
 							break;
-						casePK_PEState_pePROBE:          // Axes probing is in progress
+						case PK_PEState_pePROBE:          // Axes probing is in progress
 							break;
-						casePK_PEState_pePROBEERROR:          // Error occured during probing
+						case PK_PEState_pePROBEERROR:          // Error occured during probing
 							break;
-						casePK_PEState_peHYBRIDPROBE_STOPPING:
+						case PK_PEState_peHYBRIDPROBE_STOPPING:
 							break;
-						casePK_PEState_peHYBRIDPROBE_COMPLETE:
+						case PK_PEState_peHYBRIDPROBE_COMPLETE:
 							break;
-						casePK_PEState_peSTOP_LIMIT:         // Pulse engine stopped due to limit reached
+						case PK_PEState_peSTOP_LIMIT:         // Pulse engine stopped due to limit reached
 							break;
-						casePK_PEState_peSTOP_EMERGENCY:          // Pulse engine stopped due to emergency switch
+						case PK_PEState_peSTOP_EMERGENCY:          // Pulse engine stopped due to emergency switch
+							PEv2_EmergencyInput = true;
 							break;
 					}
+					if (dev->DeviceData.DeviceTypeID = PK_DeviceID_PoKeys57CNC)
+					{
+
+						// PK_PEState_peSTOP_EMERGENCY
+
+						if (PEv2_PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
+						{
+							PEv2_EmergencyInput = true;
+						}
+						else
+						{
+							PEv2_EmergencyInput = false;
+						}
+					}
+
 					usleep(sleepdur); 
 				}
 
