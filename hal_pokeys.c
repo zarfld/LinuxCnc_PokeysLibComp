@@ -434,7 +434,7 @@ static void DigitalIOSet(void* arg, long period)
     CreateRequest(halDev->device->request, 0xCC, 1, 0, 0, 0);
     for (i = 0; i < halDev->device->info.iPinCount; i++)
     {
-        if (halDev->DigitalOutput[i]->out == *true)
+        if (halDev->DigitalOutput[i]->out == 1)
         {
             halDev->device->Pins[i].DigitalValueSet = 1;
         }
