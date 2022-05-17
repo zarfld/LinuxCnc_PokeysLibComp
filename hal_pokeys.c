@@ -570,15 +570,17 @@ static int pins_and_params(char *argv[])
             if (devSerial != 0)
             {
     
-                enum_usb_dev = PK_EnumerateUSBDevices();
-                rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: port %d var export failed\n", n);
+                //enum_usb_dev = PK_EnumerateUSBDevices();
+               
                 if (enum_usb_dev != 0)
                 {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: connecting to %d via USB \n", devSerial);
                     device_array[n].device = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
                 }
 
                 if (device_array[n].device == NULL)
                 {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: connecting to %d via UDP \n", devSerial);
                     device_array[n].device = PK_ConnectToDeviceWSerial_UDP(devSerial, 5000);  //waits for usb device
                 }
 
@@ -586,8 +588,8 @@ static int pins_and_params(char *argv[])
             else
             {
                  sPoKeysNetworkDeviceSummary* udp_devices;
-                enum_usb_dev = PK_EnumerateUSBDevices();
-                enum_fusb_dev = PK_EnumerateUSBDevices();
+                //enum_usb_dev = PK_EnumerateUSBDevices();
+                //enum_fusb_dev = PK_EnumerateUSBDevices();
                 //enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices,180); // does not work - it hangs here
 
             }
