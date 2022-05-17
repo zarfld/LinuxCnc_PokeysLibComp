@@ -155,7 +155,7 @@ typedef struct
     //Functions
     // read
 
-    hal_s32_t* read *= 0;
+    hal_s32_t* read;
 }pokeys_DigitalOutput_t;
 
 typedef struct
