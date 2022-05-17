@@ -100,7 +100,7 @@
 #include <rtapi_io.h>
 
 /* PoKeysLib */
-#include "<PoKeysLib.h>"   /* installed by pokeyslib */
+#include "PoKeysLib.h"   /* installed by pokeyslib */
 #include "<PoKeysLibCore.h>"  /* needs manualy copy to in pokeys-folder 
                                             cp PoKeysLib.h /usr/include */
 
