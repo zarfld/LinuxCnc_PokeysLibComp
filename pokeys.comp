@@ -404,14 +404,6 @@ int rtc_latencyCounter = 0;
 int i=0;
 
 
-
-
-
-
-
-
-
-
 // Pulse engine v2 information
 typedef struct
 {
@@ -473,9 +465,6 @@ typedef struct
     bool         ExternalOCOutput[8];         // External open-collector outputs
 
 } PK_PEv2_Stat;
-
-
-
 
 typedef struct
 {
@@ -1645,7 +1634,6 @@ void user_mainloop(void)
 						casePK_PEState_pePROBE:          // Axes probing is in progress
 							break;
 						casePK_PEState_pePROBEERROR:          // Error occured during probing
-
 							break;
 						casePK_PEState_peHYBRIDPROBE_STOPPING:
 							break;
@@ -1957,7 +1945,7 @@ void user_mainloop(void)
 					usleep(sleepdur); 
 					if (PEv2_PulseEngineEnabled!=0)
 					{
-						if (dev->PEv2.EmergencyInputPin>0)
+						if (dev->PEv2.EmergencyInputPin>0 || dev->DeviceData.DeviceTypeID = PK_DeviceID_PoKeys57CNC)
 						{
 							a_debout = 234;
 							PEv2_EmergencyInput=Pins_DigitalValueGet(dev->PEv2.EmergencyInputPin-1);
