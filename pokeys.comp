@@ -1945,10 +1945,24 @@ void user_mainloop(void)
 					usleep(sleepdur); 
 					if (PEv2_PulseEngineEnabled!=0)
 					{
-						if (dev->PEv2.EmergencyInputPin>0 || dev->DeviceData.DeviceTypeID = PK_DeviceID_PoKeys57CNC)
+						if (dev->PEv2.EmergencyInputPin>0)
 						{
 							a_debout = 234;
 							PEv2_EmergencyInput=Pins_DigitalValueGet(dev->PEv2.EmergencyInputPin-1);
+						}
+						else if (dev->DeviceData.DeviceTypeID = PK_DeviceID_PoKeys57CNC)
+						{
+
+							// PK_PEState_peSTOP_EMERGENCY
+							
+								if (dev->PEv2.PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
+								{
+									PEv2_EmergencyInput = true;
+								}
+								else
+								{
+									PEv2_EmergencyInput = false;
+								}
 						}
 						else
 						{
