@@ -31,21 +31,20 @@
     user:        hal_pokeys <Device_ID>
     realtime:    insmod hal_pokeys.o cfg="<Device_ID>"
 
-    Both of these commands install the driver and configure parports
-    at base addresses 0x0378 (using data port as input) and 0x0278
-    (using data port as output).
+    Both of these commands install the driver and configure pokeys
+    at with provided SerialNumber (USB or UDP/ethernet)
 
     The driver creates HAL pins and parameters for each port pin
     as follows:
     Each physical output has a corresponding HAL pin, named
-    'pokeys.<devicenum>.pin-<pinnum>-out', and a HAL parameter
-    'pokeys.<devicenum>.pin-<pinnum>-out-invert'.
+    'pokeys.<device-num>.digout.<chan-num>.out', and a HAL parameter
+    'pokeys.<device-num>.digout.<chan-num>.out-invert'.
     Each physical input has two corresponding HAL pins, named
-    'pokeys.<devicenum>.pin-<pinnum>-in' and
-    'pokeys.<devicenum>.pin-<pinnum>-in-not'.
+    'pokeys.<device-num>.digin.<chan-num>.in' and
+    'pokeys.<device-num>.digin.<chan-num>.in-not'
 
-    <devicenum> is the port number, starting from zero.  <pinnum> is
-    the physical pin number on the DB-25 connector.
+    <devicenum> is the number, starting from zero. <pinnum> is
+    the physical pin number on the pokeys device.
 
     The realtime version of the driver exports two HAL functions for
     each port, 'pokeys.<devicenum>.read' and 'pokeys.<devicenum>.write'.
@@ -125,6 +124,7 @@ typedef struct
     /*
     The canonical digital input (I/O type field: digin) is quite simple.
     */
+    sPoKeysDevice* device;
 
    // char32_t IO_type_field = "digin"
 
@@ -145,6 +145,7 @@ typedef struct
     The canonical digital output (I/O type field: digout) is also very simple.
     */
    // char8_t IO_type_field = "digout"
+    sPoKeysDevice* device;
 
     //Pins
     hal_bit_t** out;
@@ -153,6 +154,8 @@ typedef struct
     hal_bit_t* invert;
     //Functions
     // read
+
+    hal_s32_t* read = 0;
 }pokeys_DigitalOutput_t;
 
 typedef struct
@@ -161,6 +164,7 @@ typedef struct
     The canonical analog input (I/O type: adcin). This is expected to be used for analog to digital
     converters, which convert e.g. voltage to a continuous range of values.
     */
+    sPoKeysDevice* device;
 
     //Pins
     hal_float_t value;
@@ -181,6 +185,7 @@ typedef struct
     can output a more-or-less continuous range of values. Examples are digital to analog converters or
     PWM generators
     */
+    sPoKeysDevice* device;
 
     //Pins
     hal_float_t value;
@@ -200,6 +205,7 @@ typedef struct
 
 typedef struct
 {
+    sPoKeysDevice* device;
 
 }pokeys_Info_t;
 
@@ -255,11 +261,8 @@ static unsigned long ns2tsc_factor;
    everything else is just init code
 */
 
-static void read_port(void *arg, long period);
-static void reset_port(void *arg, long period);
-static void write_port(void *arg, long period);
-static void read_all(void *arg, long period);
-static void write_all(void *arg, long period);
+static void DigitalIOGet(void* arg, long period);
+static void DigitalIOSet(void* arg, long period);
 
 /* 'pins_and_params()' does most of the work involved in setting up
    the driver.  It parses the command line (argv[]), then if the
@@ -316,6 +319,7 @@ rtapi_print ( "config string '%s'\n", cfg );
     cp = cfg;
     for (n = 0; n < MAX_TOK; n++) {
 	    /* strip leading whitespace */
+       
 	    while ((*cp != '\0') && ( isspace(*cp) || ( *cp == '_') ))
 	        cp++;
 	    /* mark beginning of token */
@@ -344,50 +348,29 @@ rtapi_print ( "config string '%s'\n", cfg );
     /* export functions for each port */
     for (n = 0; n < num_ports; n++) {
 	    /* make read function name */
-	    rtapi_snprintf(name, sizeof(name), "pokeys.%d.read", n);
+	    rtapi_snprintf(name, sizeof(name), "pokeys.%d.digin.read", n);
 	    /* export read function */
-	    retval = hal_export_funct(name, read_port, &(device_array[n]),
+	    retval = hal_export_funct(name, DigitalIOGet, &(device_array[n]),
 	        0, 0, comp_id);
 	    if (retval != 0) {
 	        rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: port %d read funct export failed\n", n);
 	        hal_exit(comp_id);
 	        return -1;
 	    }
+
 	    /* make write function name */
-	    rtapi_snprintf(name, sizeof(name), "pokeys.%d.write", n);
+	    rtapi_snprintf(name, sizeof(name), "pokeys.%d.digout.write", n);
 	    /* export write function */
-	    retval = hal_export_funct(name, write_port, &(device_array[n]), 0, 0, comp_id);
+	    retval = hal_export_funct(name, DigitalIOSet(void* arg, long period), &(device_array[n]), 0, 0, comp_id);
 	    if (retval != 0) {
 	        rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: port %d write funct export failed\n", n);
 	        hal_exit(comp_id);
 	        return -1;
 	    }
-	    /* make reset function name */
-	    rtapi_snprintf(name, sizeof(name), "pokeys.%d.reset", n);
-	    /* export write function */
-	    retval = hal_export_funct(name, reset_port, &(device_array[n]), 0, 0, comp_id);
-	    if (retval != 0) {
-	        rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: port %d reset funct export failed\n", n);
-	        hal_exit(comp_id);
-	        return -1;
-	    }
+
     }
     /* export functions that read and write all ports */
-    retval = hal_export_funct("pokeys.read-all", read_all,
-	device_array, 0, 0, comp_id);
-    if (retval != 0) {
-	    rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: read all funct export failed\n");
-	    hal_exit(comp_id);
-	    return -1;
-    }
-    retval = hal_export_funct("pokeys.write-all", write_all,
-	device_array, 0, 0, comp_id);
-    if (retval != 0) {
-	    rtapi_print_msg(RTAPI_MSG_ERR,
-	        "POKEYS: ERROR: write all funct export failed\n");
-	    hal_exit(comp_id);
-	    return -1;
-    }
+
     rtapi_print_msg(RTAPI_MSG_INFO,
 	"POKEYS: installed driver for %d ports\n", num_ports);
     hal_ready(comp_id);
@@ -407,166 +390,66 @@ void rtapi_app_exit(void)
 *                  REALTIME PORT READ AND WRITE FUNCTIONS              *
 ************************************************************************/
 
-static void read_port(void *arg, long period)
+static void DigitalIOGet(void *arg, long period)
 {
-    pokeys_t *port;
-    int b;
-    unsigned char indata, mask;
+    pokeys_t * halDev;
+    halDev = arg;
 
-    port = arg;
-    /* read the status port */
-    indata = rtapi_inb(port->base_addr + 1);
-    /* invert bit 7 (pin 11) to compensate for hardware inverter */
-    indata ^= 0x80;
-    /* split the bits into 10 variables (5 regular, 5 inverted) */
-    mask = 0x08;
-    for (b = 0; b < 10; b += 2) {
-	*(port->status_in[b]) = indata & mask;
-	*(port->status_in[b + 1]) = !(indata & mask);
-	mask <<= 1;
-    }
-    /* are we using the data port for input? */
-    if (port->data_dir != 0) {
-	/* yes, read the data port */
-	indata = rtapi_inb(port->base_addr);
-	/* split the bits into 16 variables (8 regular, 8 inverted) */
-	mask = 0x01;
-	for (b = 0; b < 16; b += 2) {
-	    *(port->data_in[b]) = indata & mask;
-	    *(port->data_in[b + 1]) = !(indata & mask);
-	    mask <<= 1;
-	}
-    }
-    /* are we using the control port for input? */
-    if(port->use_control_in) {
-        mask = 0x01;
-        /* correct for hardware inverters on pins 1, 14, & 17 */
-        indata = rtapi_inb(port->base_addr + 2) ^ 0x0B;
-        for (b = 0; b < 8; b += 2) {
-            *(port->control_in[b]) = indata & mask;
-            *(port->control_in[b + 1]) = !(indata & mask);
-	    mask <<= 1;
+    uint32_t i;
+
+    // Get digital inputs
+    CreateRequest(halDev->device->request, 0xCC, 0, 0, 0, 0);
+    if (SendRequest(device) != PK_OK) return PK_ERR_TRANSFER;
+
+    for (i = 0; i < device->info.iPinCount; i++)
+    {
+        halDev->device->Pins[i].DigitalValueGet = ((unsigned char)(device->response[8 + i / 8] & (1 << (i % 8))) > 0) ? 1 : 0;
+        if (halDev->device->Pins[i].DigitalValueGet != 0)
+        {
+            halDev->DigitalInput[i]->in = true;
+        }
+        else
+        {
+            halDev->DigitalInput[i]->in = false;
         }
     }
 }
 
-static void reset_port(void *arg, long period) {
-    pokeys_t *port = arg;
-    long long deadline, reset_time_tsc;
-    unsigned char outdata = (port->outdata&~port->reset_mask) ^ port->reset_val;
-   
-    if(port->reset_time > period/4) port->reset_time = period/4;
-    reset_time_tsc = ns2tsc(port->reset_time);
-
-    if(outdata != port->outdata) {
-        deadline = port->write_time + reset_time_tsc;
-        while(rtapi_get_clocks() < deadline) {}
-        rtapi_outb(outdata, port->base_addr);
-    }
-
-    outdata = (port->outdata_ctrl&~port->reset_mask_ctrl)^port->reset_val_ctrl;
-
-    if(outdata != port->outdata_ctrl) {
-	/* correct for hardware inverters on pins 1, 14, & 17 */
-	outdata ^= 0x0B;
-        deadline = port->write_time_ctrl + reset_time_tsc;
-        while(rtapi_get_clocks() < deadline) {}
-        rtapi_outb(outdata, port->base_addr + 2);
-    }
-}
-
-static void write_port(void *arg, long period)
+static void DigitalIOSet(void* arg, long period)
 {
-    pokeys_t *port;
-    int b;
-    unsigned char outdata, mask;
+    pokeys_t* halDev;
+    halDev = arg;
 
-    port = arg;
-    /* are we using the data port for output? */
-    if (port->data_dir == 0) {
-	int reset_mask=0, reset_val=0;
-	/* yes */
-	outdata = 0x00;
-	mask = 0x01;
-	/* assemble output byte for data port from 8 source variables */
-	for (b = 0; b < 8; b++) {
-	    /* get the data, add to output byte */
-	    if ((*(port->data_out[b])) && (!port->data_inv[b])) {
-		outdata |= mask;
-	    }
-	    if ((!*(port->data_out[b])) && (port->data_inv[b])) {
-		outdata |= mask;
-	    }
-	    if (port->data_reset[b]) {
-		reset_mask |= mask;
-		if(port->data_inv[b]) reset_val |= mask;
-	    }
-	    mask <<= 1;
-	}
-	/* write it to the hardware */
-	rtapi_outb(outdata, port->base_addr);
-	port->write_time = rtapi_get_clocks();
-	port->reset_val = reset_val;
-	port->reset_mask = reset_mask;
-	port->outdata = outdata;
-	/* prepare to build control port byte, with direction bit clear */
-	outdata = 0x00;
-    } else {
-	/* prepare to build control port byte, with direction bit set */
-	outdata = 0x20;
+    uint32_t i;
+
+    // Set digital outputs
+    CreateRequest(halDev->device->request, 0xCC, 1, 0, 0, 0);
+    for (i = 0; i < halDev->device->info.iPinCount; i++)
+    {
+        if (halDev->DigitalOutput[i]->out == true)
+        {
+            halDev->device->Pins[i].DigitalValueSet = 1;
+        }
+        else
+        {
+            halDev->device->Pins[i].DigitalValueSet = 0;
+        }
+        if (halDev->device->Pins[i].preventUpdate > 0)
+        {
+            halDev->device->request[20 + i / 8] |= (unsigned char)(1 << (i % 8));
+        }
+        else if (halDev->device->Pins[i].DigitalValueSet > 0)
+        {
+            halDev->device->request[8 + i / 8] |= (unsigned char)(1 << (i % 8));
+        }
     }
-    /* are we using the control port for input? */
-    if (port->use_control_in) {
-	/* yes, force those pins high */
-	outdata |= 0x0F;
-    } else {
-	int reset_mask=0, reset_val=0;
-	/* no, assemble output byte from 4 source variables */
-	mask = 0x01;
-	for (b = 0; b < 4; b++) {
-	    /* get the data, add to output byte */
-	    if ((*(port->control_out[b])) && (!port->control_inv[b])) {
-		outdata |= mask;
-	    }
-	    if ((!*(port->control_out[b])) && (port->control_inv[b])) {
-		outdata |= mask;
-	    }
-	    if (port->control_reset[b]) {
-		reset_mask |= mask;
-		if(port->control_inv[b]) reset_val |= mask;
-	    }
-	    mask <<= 1;
-	}
-        port->reset_mask_ctrl = reset_mask;
-        port->reset_val_ctrl = reset_val;
-	port->outdata_ctrl = outdata;
+    if (SendRequest(halDev->device) != PK_OK)
+    {
+        rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: DigitalIOSet");
     }
-    /* correct for hardware inverters on pins 1, 14, & 17 */
-    outdata ^= 0x0B;
-    /* write it to the hardware */
-    rtapi_outb(outdata, port->base_addr + 2);
-    port->write_time_ctrl = rtapi_get_clocks();
+
 }
 
-void read_all(void *arg, long period)
-{
-    pokeys_t *port;
-    int n;
-    port = arg;
-    for (n = 0; n < num_ports; n++) {
-	read_port(&(port[n]), period);
-    }
-}
-
-void write_all(void *arg, long period)
-{
-    pokeys_t *port;
-    int n;
-    port = arg;
-    for (n = 0; n < num_ports; n++) {
-	write_port(&(port[n]), period);
-    }
-}
 
 /***********************************************************************
 *                   LOCAL FUNCTION DEFINITIONS                         *
@@ -676,7 +559,7 @@ static int pins_and_params(char *argv[])
             {
     
                 enum_usb_dev = PK_EnumerateUSBDevices();
-
+                rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: port %d var export failed\n", n);
                 if (enum_usb_dev != 0)
                 {
                     device_array[n].device = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
@@ -716,8 +599,7 @@ static int pins_and_params(char *argv[])
 	    /* export all vars */
 	    retval = export_device(n, &(device_array[n]));
 	    if (retval != 0) {
-	        rtapi_print_msg(RTAPI_MSG_ERR,
-		    "POKEYS: ERROR: port %d var export failed\n", n);
+	        rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: port %d var export failed\n", n);
 	        hal_exit(comp_id);
 	        return retval;
 	    }
@@ -778,6 +660,8 @@ static int export_device(int devicenum, pokeys_t * port)
     uint32_t n;
     for (n = 0; n < port->device->info.iPinCount; n++)
     {
+        port->DigitalInput[n]->device = port->device;
+        port->DigitalOutput[n]->device = port->device;
         retval += export_DigitalInput(devicenum, n, port->DigitalInput[n] , n);
         retval += export_DigitalOutput(devicenum, n, port->DigitalOutput[n], n);
     }
@@ -793,8 +677,8 @@ static int export_DigitalInput(int devicenum, int pin, pokeys_DigitalInput_t * p
 
     /* export write only HAL pin for the input bit 
     
-    <device-name>.<device-num>.<io-type>.<chan-num>.<specific-name>
-    
+    pokeys.<device-num>.digin.<chan-num>.in
+    pokeys.<device-num>.digin.<chan-num>.in-not
     */
 
 
