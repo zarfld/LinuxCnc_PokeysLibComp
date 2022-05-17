@@ -397,6 +397,8 @@ static void DigitalIOGet(void *arg, long period)
 
     uint32_t i;
 
+    bool bl_true = true;
+    bool bl_false = false;
     // Get digital inputs
     CreateRequest(halDev->device->request, 0xCC, 0, 0, 0, 0);
     if (SendRequest(halDev->device) == PK_OK)
@@ -406,7 +408,7 @@ static void DigitalIOGet(void *arg, long period)
             halDev->device->Pins[i].DigitalValueGet = ((unsigned char)(halDev->device->response[8 + i / 8] & (1 << (i % 8))) > 0) ? 1 : 0;
             if (halDev->device->Pins[i].DigitalValueGet != 0)
             {
-                halDev->DigitalInput[i]->in = <**hal_bit>(1);
+                halDev->DigitalInput[i]->in = <**hal_bit>bl_true;
                 halDev->DigitalInput[i]->inverted = 0;
             }
             else
