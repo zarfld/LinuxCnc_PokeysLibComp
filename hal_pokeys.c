@@ -399,20 +399,26 @@ static void DigitalIOGet(void *arg, long period)
 
     // Get digital inputs
     CreateRequest(halDev->device->request, 0xCC, 0, 0, 0, 0);
-    if (SendRequest(device) != PK_OK) return PK_ERR_TRANSFER;
-
-    for (i = 0; i < device->info.iPinCount; i++)
+    if (SendRequest(halDev->device) = PK_OK)
     {
-        halDev->device->Pins[i].DigitalValueGet = ((unsigned char)(device->response[8 + i / 8] & (1 << (i % 8))) > 0) ? 1 : 0;
-        if (halDev->device->Pins[i].DigitalValueGet != 0)
+        for (i = 0; i < halDev->device->info.iPinCount; i++)
         {
-            halDev->DigitalInput[i]->in = true;
-        }
-        else
-        {
-            halDev->DigitalInput[i]->in = false;
+            halDev->device->Pins[i].DigitalValueGet = ((unsigned char)(device->response[8 + i / 8] & (1 << (i % 8))) > 0) ? 1 : 0;
+            if (halDev->device->Pins[i].DigitalValueGet != 0)
+            {
+                halDev->DigitalInput[i]->in *= true;
+            }
+            else
+            {
+                halDev->DigitalInput[i]->in = false;
+            }
         }
     }
+    else
+    {
+        rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: DigitalIOGet");
+    }
+
 }
 
 static void DigitalIOSet(void* arg, long period)
@@ -426,7 +432,7 @@ static void DigitalIOSet(void* arg, long period)
     CreateRequest(halDev->device->request, 0xCC, 1, 0, 0, 0);
     for (i = 0; i < halDev->device->info.iPinCount; i++)
     {
-        if (halDev->DigitalOutput[i]->out == true)
+        if (halDev->DigitalOutput[i]->out *= true)
         {
             halDev->device->Pins[i].DigitalValueSet = 1;
         }
