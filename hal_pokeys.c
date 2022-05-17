@@ -119,6 +119,9 @@ RTAPI_MP_STRING(cfg, "config string");
    parallel port driver for a single port
 */
 
+bool bl_true = true;
+bool bl_false = false;
+
 typedef struct
 {
     /*
@@ -397,8 +400,7 @@ static void DigitalIOGet(void *arg, long period)
 
     uint32_t i;
 
-    bool bl_true = true;
-    bool bl_false = false;
+
     // Get digital inputs
     CreateRequest(halDev->device->request, 0xCC, 0, 0, 0, 0);
     if (SendRequest(halDev->device) == PK_OK)
@@ -409,12 +411,12 @@ static void DigitalIOGet(void *arg, long period)
             if (halDev->device->Pins[i].DigitalValueGet != 0)
             {
                 halDev->DigitalInput[i]->in = (hal_bit_t **)bl_true;
-                halDev->DigitalInput[i]->inverted = 0;
+                halDev->DigitalInput[i]->inverted = (hal_bit_t**)bl_false;
             }
             else
             {
-                halDev->DigitalInput[i]->in = 0;
-                halDev->DigitalInput[i]->inverted = 1;
+                halDev->DigitalInput[i]->in = (hal_bit_t**)bl_false;
+                halDev->DigitalInput[i]->inverted = (hal_bit_t**)bl_true;
             }
         }
     }
@@ -436,7 +438,7 @@ static void DigitalIOSet(void* arg, long period)
     CreateRequest(halDev->device->request, 0xCC, 1, 0, 0, 0);
     for (i = 0; i < halDev->device->info.iPinCount; i++)
     {
-        if (halDev->DigitalOutput[i]->out != 1)
+        if (halDev->DigitalOutput[i]->out == (hal_bit_t**)bl_true)
         {
             halDev->device->Pins[i].DigitalValueSet = 1;
         }
