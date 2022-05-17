@@ -101,7 +101,7 @@
 
 /* PoKeysLib */
 #include "PoKeysLib.h"   /* installed by pokeyslib */
-#include "<PoKeysLibCore.h>"  /* needs manualy copy to in pokeys-folder 
+#include "PoKeysLibCore.h"  /* needs manualy copy to in pokeys-folder 
                                             cp PoKeysLib.h /usr/include */
 
 /* module information */
