@@ -408,7 +408,7 @@ static void DigitalIOGet(void *arg, long period)
             halDev->device->Pins[i].DigitalValueGet = ((unsigned char)(halDev->device->response[8 + i / 8] & (1 << (i % 8))) > 0) ? 1 : 0;
             if (halDev->device->Pins[i].DigitalValueGet != 0)
             {
-                halDev->DigitalInput[i]->in = (**hal_bit)bl_true;
+                halDev->DigitalInput[i]->in = (hal_bit_t **)bl_true;
                 halDev->DigitalInput[i]->inverted = 0;
             }
             else
