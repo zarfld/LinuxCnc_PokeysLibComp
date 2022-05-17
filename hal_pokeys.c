@@ -361,7 +361,7 @@ rtapi_print ( "config string '%s'\n", cfg );
 	    /* make write function name */
 	    rtapi_snprintf(name, sizeof(name), "pokeys.%d.digout.write", n);
 	    /* export write function */
-	    retval = hal_export_funct(name, DigitalIOSet(void* arg, long period), &(device_array[n]), 0, 0, comp_id);
+	    retval = hal_export_funct(name, DigitalIOSet, &(device_array[n]), 0, 0, comp_id);
 	    if (retval != 0) {
 	        rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: port %d write funct export failed\n", n);
 	        hal_exit(comp_id);
@@ -403,14 +403,16 @@ static void DigitalIOGet(void *arg, long period)
     {
         for (i = 0; i < halDev->device->info.iPinCount; i++)
         {
-            halDev->device->Pins[i].DigitalValueGet = ((unsigned char)(device->response[8 + i / 8] & (1 << (i % 8))) > 0) ? 1 : 0;
+            halDev->device->Pins[i].DigitalValueGet = ((unsigned char)(halDev->device->response[8 + i / 8] & (1 << (i % 8))) > 0) ? 1 : 0;
             if (halDev->device->Pins[i].DigitalValueGet != 0)
             {
-                halDev->DigitalInput[i]->in *= true;
+                halDev->DigitalInput[i]->in = 1;
+                halDev->DigitalInput[i]->inverted = 0;
             }
             else
             {
-                halDev->DigitalInput[i]->in = false;
+                halDev->DigitalInput[i]->in = 0;
+                halDev->DigitalInput[i]->inverted = 1;
             }
         }
     }
