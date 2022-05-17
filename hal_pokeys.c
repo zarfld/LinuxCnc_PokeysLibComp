@@ -155,7 +155,7 @@ typedef struct
     //Functions
     // read
 
-    hal_s32_t* read = 0;
+    hal_s32_t* read *= 0;
 }pokeys_DigitalOutput_t;
 
 typedef struct
@@ -399,7 +399,7 @@ static void DigitalIOGet(void *arg, long period)
 
     // Get digital inputs
     CreateRequest(halDev->device->request, 0xCC, 0, 0, 0, 0);
-    if (SendRequest(halDev->device) = PK_OK)
+    if (SendRequest(halDev->device) == PK_OK)
     {
         for (i = 0; i < halDev->device->info.iPinCount; i++)
         {
