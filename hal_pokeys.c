@@ -492,6 +492,7 @@ static int pins_and_params(char *argv[])
     for (n = 0; n < num_ports; n++) 
     {
             int modes = 0;
+            int retval;
 
             unsigned devSerial;
             unsigned enum_usb_dev;
