@@ -280,9 +280,7 @@ static unsigned short parse_port_addr(char *cp);
 static int export_device(int devicenum, pokeys_t * addr);
 static int export_DigitalInput(int devicenum, int pin, pokeys_DigitalInput_t* pt_IoObject, int n);
 static int export_DigitalOutput(int devicenum, int pin, pokeys_DigitalOutput_t* pt_IoObject, int n);
-static int export_input_pin(int devicenum, int pin, hal_bit_t ** base, int n);
-static int export_output_pin(int devicenum, int pin, hal_bit_t ** dbase,
-    hal_bit_t * pbase, hal_bit_t * rbase, int n);
+
 
 /***********************************************************************
 *                       INIT AND EXIT CODE                             *
@@ -670,39 +668,4 @@ static int export_DigitalOutput(int devicenum, int pin, pokeys_DigitalOutput_t* 
 
    return retval;
 
-}
-
-static int export_input_pin(int devicenum, int pin, hal_bit_t ** base, int n)
-{
-    int retval;
-
-    /* export write only HAL pin for the input bit */
-    retval = hal_pin_bit_newf(HAL_OUT, base + (2 * n), comp_id,
-            "pokeys.%d.pin-%02d-in", devicenum, pin);
-    if (retval != 0) {
-	return retval;
-    }
-    /* export another write only HAL pin for the same bit inverted */
-    retval = hal_pin_bit_newf(HAL_OUT, base + (2 * n) + 1, comp_id,
-            "pokeys.%d.pin-%02d-in-not", devicenum, pin);
-    return retval;
-}
-
-static int export_output_pin(int devicenum, int pin, hal_bit_t ** dbase,
-    hal_bit_t * pbase, hal_bit_t * rbase, int n)
-{
-    int retval;
-
-    /* export read only HAL pin for output data */
-    retval = hal_pin_bit_newf(HAL_IN, dbase + n, comp_id,
-            "pokeys.%d.pin-%02d-out", devicenum, pin);
-    if (retval != 0) {
-	return retval;
-    }
-
-    /* export parameter for reset */
-    if (rbase)
-	retval = hal_param_bit_newf(HAL_RW, rbase + n, comp_id,
-		"pokeys.%d.pin-%02d-out-reset", devicenum, pin);
-    return retval;
 }
