@@ -1652,11 +1652,11 @@ void user_mainloop(void)
 
 						if (PEv2_PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
 						{
-							PEv2_EmergencyInput = true;
+							PEv2_EmergencyInput = 1;
 						}
-						else
+						else if (PEv2_EmergencyInputPin==0)
 						{
-							PEv2_EmergencyInput = false;
+							PEv2_EmergencyInput = 0;
 						}
 					}
 
@@ -1973,11 +1973,11 @@ void user_mainloop(void)
 							
 								if (dev->PEv2.PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
 								{
-									PEv2_EmergencyInput = true;
+									PEv2_EmergencyInput = 0;
 								}
 								else
 								{
-									PEv2_EmergencyInput = false;
+									PEv2_EmergencyInput = 1;
 								}
 						}
 						else
@@ -1989,7 +1989,7 @@ void user_mainloop(void)
 							}
 							else
 							{
-								PEv2_EmergencyInput=false;
+								PEv2_EmergencyInput=0;
 							}
 						}
 					}
