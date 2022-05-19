@@ -358,8 +358,7 @@ rtapi_print ( "config string '%s'\n", cfg );
     }
     /* export functions that read and write all ports */
 
-    rtapi_print_msg(RTAPI_MSG_INFO,
-	"POKEYS: installed driver for %d ports\n", num_ports);
+    rtapi_print_msg(RTAPI_MSG_INFO,	"POKEYS: installed driver for %d ports\n", num_ports);
     hal_ready(comp_id);
     return 0;
 }
@@ -381,7 +380,7 @@ static void DigitalIOGet(void *arg, long period)
 {
     pokeys_t * halDev;
     halDev = arg;
-
+    rtapi_print_msg(RTAPI_MSG_DBG, "POKEYS: ->DigitalIOGet");
     uint32_t i;
 
 
@@ -408,14 +407,14 @@ static void DigitalIOGet(void *arg, long period)
     {
         rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: DigitalIOGet");
     }
-
+    rtapi_print_msg(RTAPI_MSG_DBG, "POKEYS: <-DigitalIOGet");
 }
 
 static void DigitalIOSet(void* arg, long period)
 {
     pokeys_t* halDev;
     halDev = arg;
-
+    rtapi_print_msg(RTAPI_MSG_DBG, "POKEYS: ->DigitalIOSet");
     uint32_t i;
 
     // Set digital outputs
@@ -443,7 +442,7 @@ static void DigitalIOSet(void* arg, long period)
     {
         rtapi_print_msg(RTAPI_MSG_ERR, "POKEYS: ERROR: DigitalIOSet");
     }
-
+    rtapi_print_msg(RTAPI_MSG_DBG, "POKEYS: <-DigitalIOSet");
 }
 
 
@@ -456,7 +455,7 @@ static int pins_and_params(char *argv[])
     /* parse config string, results in port_addr[] and data_dir[] arrays */
     num_ports = 0;
     unsigned n = 0;
-
+    rtapi_print_msg(RTAPI_MSG_DBG, "POKEYS: ->pins_and_params");
     for (n = 0; n < MAX_TOK; n++)
     {
         if (argv[n] != 0)
@@ -558,6 +557,7 @@ static int pins_and_params(char *argv[])
 	        return retval;
 	    }
     }
+    rtapi_print_msg(RTAPI_MSG_DBG, "POKEYS: <-pins_and_params");
     return 0;
 }
 
@@ -600,7 +600,7 @@ static unsigned short parse_port_addr(char *cp)
 static int export_device(int devicenum, pokeys_t * port)
 {
     int retval, msg;
-
+    rtapi_print_msg(RTAPI_MSG_DBG, "POKEYS: ->export_device");
     /* This function exports a lot of stuff, which results in a lot of
        logging if msg_level is at INFO or ALL. So we save the current value
        of msg_level and restore it later.  If you actually need to log this
@@ -621,6 +621,8 @@ static int export_device(int devicenum, pokeys_t * port)
     }
     /* restore saved message level */
     rtapi_set_msg_level(msg);
+
+    rtapi_print_msg(RTAPI_MSG_DBG, "POKEYS: <-export_device");
     return retval;
 }
 
@@ -628,7 +630,7 @@ static int export_device(int devicenum, pokeys_t * port)
 static int export_DigitalInput(int devicenum, int pin, pokeys_DigitalInput_t * pt_IoObject, int n)
 {
     int retval;
-
+    rtapi_print_msg(RTAPI_MSG_DBG, "POKEYS: ->export_DigitalInput");
     /* export write only HAL pin for the input bit 
     
     pokeys.<device-num>.digin.<chan-num>.in
@@ -644,6 +646,7 @@ static int export_DigitalInput(int devicenum, int pin, pokeys_DigitalInput_t * p
     /* export another write only HAL pin for the same bit inverted */
     retval = hal_pin_bit_newf(HAL_OUT, pt_IoObject->inverted + (2 * n) + 1, comp_id,
         "pokeys.%d.digin.%02d.in-not", devicenum, pin);
+    rtapi_print_msg(RTAPI_MSG_DBG, "POKEYS: <-export_DigitalInput");
     return retval;
 }
 
