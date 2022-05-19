@@ -559,42 +559,6 @@ static int pins_and_params(char *argv[])
     return 0;
 }
 
-static unsigned short parse_port_addr(char *cp)
-{
-    unsigned short result;
-
-    /* initial value */
-    result = 0;
-    /* test for leading '0x' */
-    if (cp[0] == '0') {
-	if ((cp[1] == 'X') || (cp[1] == 'x')) {
-	    /* leading '0x', skip it */
-	    cp += 2;
-	}
-    }
-    /* ok, now parse digits */
-    while (*cp != '\0') {
-	/* if char is a hex digit, add it to result */
-	if ((*cp >= '0') && (*cp <= '9')) {
-	    result <<= 4;
-	    result += *cp - '0';
-	} else if ((*cp >= 'A') && (*cp <= 'F')) {
-	    result <<= 4;
-	    result += (*cp - 'A') + 10;
-	} else if ((*cp >= 'a') && (*cp <= 'f')) {
-	    result <<= 4;
-	    result += (*cp - 'a') + 10;
-	} else {
-	    /* not a valid hex digit */
-	    return -1;
-	}
-	/* next char */
-	cp++;
-    }
-
-    return result;
-}
-
 static int export_device(int devicenum, pokeys_t * port)
 {
     int retval, msg;
