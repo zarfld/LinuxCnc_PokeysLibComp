@@ -321,28 +321,11 @@ rtapi_print ( "config string '%s'\n", cfg );
        an alternate token separator. */
     cp = cfg;
     for (n = 0; n < MAX_TOK; n++) {
-	    /* strip leading whitespace */
-       
-	    while ((*cp != '\0') && ( isspace(*cp) || ( *cp == '_') ))
-	        cp++;
-	    /* mark beginning of token */
-	    argv[n] = cp;
-	    /* find end of token */
-	    while ((*cp != '\0') && !( isspace(*cp) || ( *cp == '_') ))
-	        cp++;
-	    /* mark end of this token, prepare to search for next one */
-	    if (*cp != '\0') {
-	        *cp = '\0';
-	        cp++;
-	    }
+
     }
-    for (n = 0; n < MAX_TOK; n++) {
-	    /* is token empty? */
-	    if (argv[n][0] == '\0') {
-	        /* yes - make pointer NULL */
-	        argv[n] = NULL;
-	    }
-    }
+    argv[0] = "27295"
+    argv[1] = "53386"
+
     /* parse "command line", set up pins and parameters */
     retval = pins_and_params(argv);
     if (retval != 0) {
@@ -469,63 +452,19 @@ static void DigitalIOSet(void* arg, long period)
 
 static int pins_and_params(char *argv[])
 {
-    long port_addr[MAX_PORTS];
-    int data_dir[MAX_PORTS];
-    int use_control_in[MAX_PORTS];
-    int force_epp[MAX_PORTS];
-    int n, retval;
-
-    /* clear port_addr and data_dir arrays */
-    for (n = 0; n < MAX_PORTS; n++) {
-	    port_addr[n] = 0;
-	    data_dir[n] = 0;
-	    use_control_in[n] = 0;
-	    force_epp[n] = 0;
-    }
     /* parse config string, results in port_addr[] and data_dir[] arrays */
     num_ports = 0;
     n = 0;
-    while ((num_ports < MAX_PORTS) && (argv[n] != 0)) {
-	    port_addr[num_ports] = parse_port_addr(argv[n]);
-	    if (port_addr[num_ports] < 0) {
-	        rtapi_print_msg(RTAPI_MSG_ERR,
-		    "POKEYS: ERROR: bad port address '%s'\n", argv[n]);
-	        return -1;
-	    }
-	    n++;
-	    if (argv[n] != 0) {
-	        /* is the next token 'in' or 'out' ? */
-	        if ((argv[n][0] == 'i') || (argv[n][0] == 'I')) {
-		    /* we aren't picky, anything starting with 'i' means 'in' ;-) 
-		     */
-		    data_dir[num_ports] = 1;
-                    use_control_in[num_ports] = 0;
-		    n++;
-	        } else if ((argv[n][0] == 'o') || (argv[n][0] == 'O')) {
-		    /* anything starting with 'o' means 'out' */
-		    data_dir[num_ports] = 0;
-                    use_control_in[num_ports] = 0;
-		    n++;
-	        } else if ((argv[n][0] == 'e') || (argv[n][0] == 'E')) {
-		    /* anything starting with 'e' means 'epp', which is just
-                       like 'out' but with EPP mode requested, primarily for
-                       the G540 with its charge pump missing-pullup drive
-                       issue */
-                    data_dir[num_ports] = 0;
-                    use_control_in[num_ports] = 0;
-                    force_epp[num_ports] = 1;
-		    n++;
-	        } else if ((argv[n][0] == 'x') || (argv[n][0] == 'X')) {
-                    /* experimental: some parports support a bidirectional
-                     * control port.  Enable this with pins 2-9 in output mode, 
-                     * which gives a very nice 8 outs and 9 ins. */
-                    data_dir[num_ports] = 0;
-                    use_control_in[num_ports] = 1;
-		    n++;
-                }
-	    }
-	    num_ports++;
+
+    for (n = 0; n < MAX_TOK; n++)
+    {
+        if (argv[n] != 0)
+        {
+            num_ports++;
+        }
     }
+
+
     /* OK, now we've parsed everything */
     if (num_ports == 0) {
 	    rtapi_print_msg(RTAPI_MSG_ERR,
@@ -549,7 +488,8 @@ static int pins_and_params(char *argv[])
 	    return -1;
     }
     /* export all the pins and params for each port */
-    for (n = 0; n < num_ports; n++) {
+    for (n = 0; n < num_ports; n++) 
+    {
             int modes = 0;
 
             unsigned devSerial;
