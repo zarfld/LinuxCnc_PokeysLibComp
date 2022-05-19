@@ -320,11 +320,12 @@ rtapi_print ( "config string '%s'\n", cfg );
        a string parameter at the first whitespace.  So we allow '_' as
        an alternate token separator. */
     cp = cfg;
-    for (n = 0; n < MAX_TOK; n++) {
+    /* for (n = 0; n < MAX_TOK; n++) {
 
     }
-    argv[0] = "27295"
-    argv[1] = "53386"
+    */
+    argv[0] = "27295";
+    argv[1] = "53386";
 
     /* parse "command line", set up pins and parameters */
     retval = pins_and_params(argv);
@@ -454,7 +455,7 @@ static int pins_and_params(char *argv[])
 {
     /* parse config string, results in port_addr[] and data_dir[] arrays */
     num_ports = 0;
-    n = 0;
+    unsigned n = 0;
 
     for (n = 0; n < MAX_TOK; n++)
     {
@@ -540,15 +541,13 @@ static int pins_and_params(char *argv[])
 
 	    /* config addr and direction */
 	    //device_array[n].base_addr = device_array[n].portdata.base;
-	    device_array[n].data_dir = data_dir[n];
-	    device_array[n].use_control_in = use_control_in[n];
+	    //device_array[n].data_dir = data_dir[n];
+	    //device_array[n].use_control_in = use_control_in[n];
 
 
 
 	    /* set data port (pins 2-9) direction to "in" if needed */
-	    if (data_dir[n]) {
-	        rtapi_outb(rtapi_inb(device_array[n].base_addr+2) | 0x20, device_array[n].base_addr+2);
-	    }
+
 
 	    /* export all vars */
 	    retval = export_device(n, &(device_array[n]));
