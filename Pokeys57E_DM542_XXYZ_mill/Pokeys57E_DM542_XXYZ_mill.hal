@@ -182,7 +182,7 @@ setp   pokeys.0.PEv2.6.params.STEPGEN-MAXACCEL           [JOINT_1]STEPGEN_MAXVEL
 
 
 net x2-pos-cmd    <= joint.1.motor-pos-cmd
-net x-pos-cmd       =>  pokeys.0.PEv2.0.joint-pos-cmd
+net x2-pos-cmd       =>  pokeys.0.PEv2.6.joint-pos-cmd
 
 net x2-pos-fb     <= pokeys.0.PEv2.6.joint-pos-fb
 net x2-pos-fb     => joint.1.motor-pos-fb
