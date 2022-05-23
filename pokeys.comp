@@ -1727,7 +1727,7 @@ void user_mainloop(void)
 
 								bool POSITION_MODE_active = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 								float vlcmd = PEv2_joint_vel_cmd(i);
-								float poscmd = PEv2_joint_pos_cmd(i)
+								float poscmd = PEv2_joint_pos_cmd(i);
 								if (vlcmd  = 0 )
 								{
 									if (poscmd != 0)
