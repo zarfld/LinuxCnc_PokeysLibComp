@@ -1726,9 +1726,11 @@ void user_mainloop(void)
 								PEv2_AxisLimitOverride(i) = false;
 
 								bool POSITION_MODE_active = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-								if (PEv2_joint_vel_cmd(i) = 0 )
+								float vlcmd = PEv2_joint_vel_cmd(i);
+								float poscmd = PEv2_joint_pos_cmd(i)
+								if (vlcmd  = 0 )
 								{
-									if (PEv2_joint_pos_cmd(i) != 0) 
+									if (poscmd != 0)
 									{
 										posMode[i] = true;
 
@@ -1742,9 +1744,9 @@ void user_mainloop(void)
 									}
 
 								}
-								else if(PEv2_joint_vel_cmd(i) != 0)
+								else if(vlcmd != 0)
 								{
-									if (PEv2_joint_pos_cmd(i) = 0)
+									if (poscmd = 0)
 									{
 										posMode[i] = false;
 										if (POSITION_MODE_active = true)
