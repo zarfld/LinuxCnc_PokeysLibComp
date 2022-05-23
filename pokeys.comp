@@ -400,6 +400,7 @@ bool secBlink = false;
 unsigned Loop_Frequ =0;
 uint8_t kbd48CNC_Counter[48];
 bool posMode[8] ;
+float last_joint_pos_cmd[8]
 uint8_t rtc_latencycheck_set = 0;
 int rtc_latencyCounter = 0;
 int i=0;
@@ -1783,28 +1784,34 @@ void user_mainloop(void)
 								}
 								else
 								{
-									if (PEv2_params_STEP_SCALE(i) != 0)
+									if (last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i))
 									{
-										dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i);
-										PEv2_ReferencePositionSpeed(i) = PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i);
-									}
-									else 
-									{
-										dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i);
-										PEv2_ReferencePositionSpeed(i) = PEv2_joint_pos_cmd(i);
-									}
-										
-									//dev->PEv2.ReferencePositionSpeed[i] = PEv2_ReferencePositionSpeed(i);
-									//dev->PEv2.PositionSetup[i] = PEv2_PositionSetup(i);
-									//doPositionSet =true;
+										if (PEv2_params_STEP_SCALE(i) != 0)
+										{
+											dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i);
+											PEv2_ReferencePositionSpeed(i) = PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i);
+										}
+										else
+										{
+											dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i);
+											PEv2_ReferencePositionSpeed(i) = PEv2_joint_pos_cmd(i);
+										}
 
-									if (abs(dev->PEv2.CurrentPosition[0] - dev->PEv2.ReferencePositionSpeed[0]) > 0)
-									{
-										PK_PEv2_PulseEngineMove(dev);
-										usleep(sleepdur);
-										PK_PEv2_StatusGet(dev);
-										doMove = false;
+										//dev->PEv2.ReferencePositionSpeed[i] = PEv2_ReferencePositionSpeed(i);
+										//dev->PEv2.PositionSetup[i] = PEv2_PositionSetup(i);
+										//doPositionSet =true;
+
+										//if (abs(dev->PEv2.CurrentPosition[0] - dev->PEv2.ReferencePositionSpeed[0]) > 0)
+										//{
+											PK_PEv2_PulseEngineMove(dev);
+											usleep(sleepdur);
+											PK_PEv2_StatusGet(dev);
+											doMove = false;
+										//}
+
+										last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i);
 									}
+
 									//PEv2_joint_vel_fb(i) = 0;
 								}
 								// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
