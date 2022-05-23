@@ -1701,6 +1701,16 @@ void user_mainloop(void)
 						
 						PEv2_SoftLimitStatus(i) = Get_BitOfByte(bm_SoftLimitStatus,i);
 
+						// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
+						if (PEv2_params_STEP_SCALE(i) != 0)
+						{
+							PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_params_STEP_SCALE(i);
+						}
+						else
+						{
+							PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i];
+						}
+
 						switch( PEv2_AxesState(i))
 						{
 							case PK_PEAxisState_axSTOPPED:        // Axis is stopped
