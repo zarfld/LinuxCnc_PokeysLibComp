@@ -1798,7 +1798,7 @@ void user_mainloop(void)
 									//dev->PEv2.PositionSetup[i] = PEv2_PositionSetup(i);
 									//doPositionSet =true;
 
-									if (abs(dev->PEv2.CurrentPosition[0] - dev->PEv2.ReferencePositionSpeed[0]) > 10)
+									if (abs(dev->PEv2.CurrentPosition[0] - dev->PEv2.ReferencePositionSpeed[0]) > (dev->PEv2.ReferencePositionSpeed[0]/10000))
 									{
 										PK_PEv2_PulseEngineMove(dev);
 										usleep(sleepdur);
