@@ -1732,31 +1732,28 @@ void user_mainloop(void)
 								}
 								else
 								{
-
-									if ((PEv2_CurrentPosition(i) - PEv2_ReferencePositionSpeed(i)) < 10 )
+									if (PEv2_params_STEP_SCALE(i) != 0)
 									{
-										if (PEv2_params_STEP_SCALE(i) != 0)
-										{
-											dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i);
-										}
-										else 
-										{
-											dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i);
-										}
-										
-										//dev->PEv2.ReferencePositionSpeed[i] = PEv2_ReferencePositionSpeed(i);
-										//dev->PEv2.PositionSetup[i] = PEv2_PositionSetup(i);
-										//doPositionSet =true;
-
-										if (abs(dev->PEv2.CurrentPosition[0] - dev->PEv2.ReferencePositionSpeed[0]) > 10)
-										{
-											PK_PEv2_PulseEngineMove(dev);
-											usleep(sleepdur);
-											doMove = false;
-										}
-										
+										dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i);
+										PEv2_ReferencePositionSpeed(i) = PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i);
 									}
-									PEv2_joint_vel_fb(i) = 0;
+									else 
+									{
+										dev->PEv2.ReferencePositionSpeed[i] = PEv2_joint_pos_cmd(i);
+										PEv2_ReferencePositionSpeed(i) = PEv2_joint_pos_cmd(i);
+									}
+										
+									//dev->PEv2.ReferencePositionSpeed[i] = PEv2_ReferencePositionSpeed(i);
+									//dev->PEv2.PositionSetup[i] = PEv2_PositionSetup(i);
+									//doPositionSet =true;
+
+									if (abs(dev->PEv2.CurrentPosition[0] - dev->PEv2.ReferencePositionSpeed[0]) > 10)
+									{
+										PK_PEv2_PulseEngineMove(dev);
+										usleep(sleepdur);
+										doMove = false;
+									}
+									//PEv2_joint_vel_fb(i) = 0;
 								}
 								// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
 								if (PEv2_params_STEP_SCALE(i) != 0) 
