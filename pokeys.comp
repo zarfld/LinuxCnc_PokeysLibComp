@@ -1715,7 +1715,28 @@ void user_mainloop(void)
 								PEv2_AxisEnabledStates(i) = true;
 								PEv2_AxisLimitOverride(i) = false;
 
-								
+								if (PEv2_joint_vel_cmd(i) = 0 && PEv2_joint_pos_cmd(i) != 0)
+								{
+									posMode[i] = true;
+									
+
+									if (Get_BitOfByte(dev->PEv2.AxesConfig[i], 3) = false) 
+									{
+										Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
+										dev->PEv2.param1 = i;
+										PK_PEv2_AxisConfigurationSet(dev);
+									}
+								}
+								elseif(PEv2_joint_vel_cmd(i) != 0)
+								{
+									posMode[i] = false;
+									if (Get_BitOfByte(dev->PEv2.AxesConfig[i], 3) = true)
+									{
+										Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
+										dev->PEv2.param1 = i;
+										PK_PEv2_AxisConfigurationSet(dev);
+									}
+								}
 								//if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
 								if (posMode[i] != true)
 								{
@@ -1760,6 +1781,7 @@ void user_mainloop(void)
 									{
 										PK_PEv2_PulseEngineMove(dev);
 										usleep(sleepdur);
+										PK_PEv2_StatusGet(dev);
 										doMove = false;
 									}
 									//PEv2_joint_vel_fb(i) = 0;
