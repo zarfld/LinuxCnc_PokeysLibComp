@@ -1792,8 +1792,8 @@ void user_mainloop(void)
 
 
 										doMove=true;
-										dev->PEv2.ReferencePositionSpeed[i] = (int)ReferenceSpeed );
-										dev->PEv2.PositionSetup[i] = (int)(PEv2_PositionSetup(i));
+										dev->PEv2.ReferencePositionSpeed[i] = (int)ReferenceSpeed;
+										//dev->PEv2.PositionSetup[i] = (int)PEv2_PositionSetup(i);
 									}
 									PEv2_joint_vel_fb(i) = ( PEv2_joint_pos_fb(i) - (PEv2_CurrentPosition(i) / PEv2_params_STEP_SCALE(i)) )* Loop_Frequ;
 								}
