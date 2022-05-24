@@ -825,7 +825,7 @@ void user_mainloop(void)
 { 
 
 	comp_id = hal_init("pokeys");
-	SimOn = false;
+	SimOn = 0;
 
     while(0xb){
        FOR_ALL_INSTS() {
@@ -990,7 +990,7 @@ void user_mainloop(void)
 						setPinConfig=true;
 					}
 
-					if (SimOn = false)
+					if (SimOn = 0)
 					{
 
 					}
@@ -1662,7 +1662,7 @@ void user_mainloop(void)
 					{
 
 						// PK_PEState_peSTOP_EMERGENCY
-						if (SimOn = false)
+						if (SimOn = 0)
 						{
 							if (PEv2_PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
 							{
@@ -2064,7 +2064,7 @@ void user_mainloop(void)
 						if (dev->PEv2.EmergencyInputPin>0)
 						{
 							a_debout = 234;
-							if (SimOn = false)
+							if (SimOn = 0)
 							{
 								PEv2_EmergencyInput = Pins_DigitalValueGet(dev->PEv2.EmergencyInputPin - 1);
 							}
@@ -2078,7 +2078,7 @@ void user_mainloop(void)
 						{
 
 							// PK_PEState_peSTOP_EMERGENCY
-							if (SimOn = false)
+							if (SimOn = 0)
 							{
 								if (dev->PEv2.PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
 								{
@@ -2097,6 +2097,8 @@ void user_mainloop(void)
 						else
 						{
 							a_debout = 235;
+							if (SimOn = 0)
+							{
 							if ( PEv2_EmergencyOutputPin!=0)
 							{
 								PEv2_EmergencyInput=PEv2_EmergencyOutput;
@@ -2104,6 +2106,11 @@ void user_mainloop(void)
 							else
 							{
 								PEv2_EmergencyInput=0;
+							}
+							}
+							else
+							{
+								PEv2_EmergencyInput = 1;
 							}
 						}
 					}
