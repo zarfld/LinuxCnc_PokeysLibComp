@@ -1781,7 +1781,7 @@ void user_mainloop(void)
 									{
 										if (PEv2_params_STEP_SCALE(i) != 0)
 										{
-											PEv2_ReferencePositionSpeed(i) = PEv2_joint_vel_cmd(i) * PEv2_params_STEP_SCALE(i);
+											PEv2_ReferencePositionSpeed(i) = (int)ReferenceSpeed;
 											//PEv2_PositionSetup(i) = PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i);
 										}
 										else
@@ -1792,7 +1792,7 @@ void user_mainloop(void)
 
 
 										doMove=true;
-										dev->PEv2.ReferencePositionSpeed[i] = (int)(ReferenceSpeed(i));
+										dev->PEv2.ReferencePositionSpeed[i] = (int)ReferenceSpeed );
 										dev->PEv2.PositionSetup[i] = (int)(PEv2_PositionSetup(i));
 									}
 									PEv2_joint_vel_fb(i) = ( PEv2_joint_pos_fb(i) - (PEv2_CurrentPosition(i) / PEv2_params_STEP_SCALE(i)) )* Loop_Frequ;
