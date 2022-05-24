@@ -1772,8 +1772,8 @@ void user_mainloop(void)
 
 								}
 								//if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
-								float ReferenceSpeed = PEv2_joint_vel_cmd(i) * PEv2_params_STEP_SCALE(i)
-								float ReferencePosition = PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i)
+								float ReferenceSpeed = PEv2_joint_vel_cmd(i) * PEv2_params_STEP_SCALE(i);
+								float ReferencePosition = PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i);
 
 								if (posMode[i] != true)
 								{
