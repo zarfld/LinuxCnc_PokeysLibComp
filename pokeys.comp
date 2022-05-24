@@ -1732,27 +1732,30 @@ void user_mainloop(void)
 						PEv2_LimitStatusP(i) = Get_BitOfByte(bm_LimitStatusP,i);
 						PEv2_LimitStatusN(i) = Get_BitOfByte(bm_LimitStatusN,i);
 						PEv2_HomeStatus(i) =  Get_BitOfByte(bm_HomeStatus,i);
-
+						a_debPEv2out = 280 + i;
 						PEv2_DedicatedLimitNInputs(i) =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
 						PEv2_DedicatedLimitPInputs(i) =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
 						PEv2_DedicatedHomeInputs(i) =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
 
 						
 						PEv2_SoftLimitStatus(i) = Get_BitOfByte(bm_SoftLimitStatus,i);
-
+						a_debPEv2out = 290 + i;
 						
 
-						switch( PEv2_AxesState(i))
+						switch(dev->PEv2.AxesState[i])
 						{
 							case PK_PEAxisState_axSTOPPED:        // Axis is stopped
+								a_debPEv2out = 310 + i;
 								PEv2_AxisEnabledStates(i) = false;
 								PEv2_AxisLimitOverride(i) = false;
 								break ;
 							case PK_PEAxisState_axREADY:        // Axis ready
+								a_debPEv2out = 320 + i;
 								PEv2_AxisEnabledStates(i) = true;
 								PEv2_AxisLimitOverride(i) = false;
 								break ;
 							case PK_PEAxisState_axRUNNING:        // Axis is running
+								a_debPEv2out = 330 + i;
 								PEv2_AxisEnabledStates(i) = true;
 								PEv2_AxisLimitOverride(i) = false;
 
