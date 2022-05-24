@@ -386,7 +386,7 @@ option extra_link_args "-lPoKeys";
 
 #include <unistd.h>   /* UNIX standard function definitions */
 
-#include "<math.h>"
+//#include "<math.h>"
 #include "PoKeysLib.h"
 
 
@@ -1778,8 +1778,8 @@ void user_mainloop(void)
 
 
 										doMove=true;
-										dev->PEv2.ReferencePositionSpeed[i] = round(PEv2_ReferencePositionSpeed(i));
-										dev->PEv2.PositionSetup[i] = round(PEv2_PositionSetup(i));
+										dev->PEv2.ReferencePositionSpeed[i] = (int)(PEv2_ReferencePositionSpeed(i));
+										dev->PEv2.PositionSetup[i] = (int)(PEv2_PositionSetup(i));
 									}
 									PEv2_joint_vel_fb(i) = ( PEv2_joint_pos_fb(i) - (PEv2_CurrentPosition(i) / PEv2_params_STEP_SCALE(i)) )* Loop_Frequ;
 								}
@@ -1789,13 +1789,13 @@ void user_mainloop(void)
 									{
 										if (PEv2_params_STEP_SCALE(i) != 0)
 										{
-											dev->PEv2.ReferencePositionSpeed[i] = round(PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i));
-											PEv2_ReferencePositionSpeed(i) = round(PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i));
+											dev->PEv2.ReferencePositionSpeed[i] = (int)(PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i));
+											PEv2_ReferencePositionSpeed(i) = (int)(PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i));
 										}
 										else
 										{
-											dev->PEv2.ReferencePositionSpeed[i] = round(PEv2_joint_pos_cmd(i));
-											PEv2_ReferencePositionSpeed(i) = round(PEv2_joint_pos_cmd(i));
+											dev->PEv2.ReferencePositionSpeed[i] = (int)(PEv2_joint_pos_cmd(i));
+											PEv2_ReferencePositionSpeed(i) = (int)(PEv2_joint_pos_cmd(i));
 										}
 
 										//dev->PEv2.ReferencePositionSpeed[i] = PEv2_ReferencePositionSpeed(i);
