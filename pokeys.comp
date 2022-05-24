@@ -1786,15 +1786,39 @@ void user_mainloop(void)
 								{
 									ReferenceSpeed = PEv2_joint_vel_cmd(i) * StepScale[i];
 									ReferencePosition = PEv2_joint_pos_cmd(i) * StepScale[i];
+									if (PEv2_joint_pos_cmd(i) = 0)
+									{
+										PEv2_ReferencePositionSpeed(i) = 1;
+									}
+									if (ReferencePosition = 0)
+									{
+										PEv2_ReferencePositionSpeed(i) = 2;
+									}
+									else
+									{
+										PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
+									}
 								}
 								else
 								{
-									ReferenceSpeed = PEv2_joint_pos_cmd(i);
+									ReferenceSpeed = PEv2_joint_vel_cmd(i);
 									ReferencePosition = PEv2_joint_pos_cmd(i);
+									if (PEv2_joint_pos_cmd(i) = 0) 
+									{
+										PEv2_ReferencePositionSpeed(i) = 11;
+									}
+									if (ReferencePosition = 0)
+									{
+										PEv2_ReferencePositionSpeed(i) = 12;
+									}
+									else
+									{
+										PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
+									}
 								}
-
+								
 								dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferencePosition;
-								PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
+								
 
 								/*
 								if (posMode[i] != true)
