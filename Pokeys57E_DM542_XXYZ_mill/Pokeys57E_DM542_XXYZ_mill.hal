@@ -110,7 +110,7 @@ setp   pokeys.0.PEv2.0.params.STEPGEN-MAXACCEL           [JOINT_0]STEPGEN_MAXVEL
 # ---closedloop stepper signals---
 
 net x-pos-cmd    <= joint.0.motor-pos-cmd
-net x-pos-cmd       =>  pokeys.0.PEv2.0.joint-pos-cmd
+net x-pos-cmd     =>  pokeys.0.PEv2.0.joint-pos-cmd
 
 net x-pos-fb     <= pokeys.0.PEv2.0.joint-pos-fb
 net x-pos-fb     => joint.0.motor-pos-fb
