@@ -8,7 +8,7 @@ pin out unsigned enum_udp_dev;
 pin out s32 a_debout;
 
 pin out s32 a_debPEv2out;
-
+pin out s32 a_debPEv2.#.axxisout[8];
 pin out bit err;
 pin out bit connected;
 pin in unsigned devSerial;
@@ -156,8 +156,8 @@ pin io float PEv2.#.params.ENCODER_SCALE [8];
 pin io float PEv2.#.params.DIRSETUP [8] = 0;					// (ns)
 pin io float PEv2.#.params.DIRHOLD [8] = 0;					// (ns)
 pin io float PEv2.#.params.STEPLEN [8] = 0;					// (ns)
-pin io float PEv2.#.params.STEPSPACE [8] = 0;					// (ns)
-pin io float PEv2.#.params.STEP_SCALE [8] = 0;					// (pulses/mm)
+pin in float PEv2.#.params.STEPSPACE [8] = 0;					// (ns)
+pin in float PEv2.#.params.STEP_SCALE [8] = 0;					// (pulses/mm)
 pin io float PEv2.#.params.MIN_LIMIT [8] = 0;					// position (mm)
 pin io float PEv2.#.params.MAX_LIMIT [8] = 0;					// position (mm)
 pin io float PEv2.#.params.HOME_OFFSET [8] = 0;				// position (mm)
@@ -1706,40 +1706,40 @@ void user_mainloop(void)
 					for (i = 0; i < PEv2_nrOfAxes; i++)
 					{
 						PEv2_AxesState(i) = dev->PEv2.AxesState[i];
-						a_debPEv2out = 200 + i;
+						a_debPEv2_axxisout(i) = 200 + i;
 						StepScale[8] = PEv2_params_STEP_SCALE(i);
-						a_debPEv2out = 210 + i;
+						a_debPEv2_axxisout(i) = 210 + i;
 						// PEv2_CurrentPosition(i) = dev->PEv2.CurrentPosition[i];
 						intCurrentPosition[i] = dev->PEv2.CurrentPosition[i];
-						a_debPEv2out = 220 + i;
+						a_debPEv2_axxisout(i) = 220 + i;
 						// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
 						if (StepScale[i] != 0)
 						{
-							a_debPEv2out = 230 + i;
+							a_debPEv2_axxisout(i) = 230 + i;
 							PosFb[i] = intCurrentPosition[i] / StepScale[i];
 						}
 						else
 						{
-							a_debPEv2out = 240 + i;
+							a_debPEv2_axxisout(i) = 240 + i;
 							PosFb[i] = intCurrentPosition[i];
 						}
-						a_debPEv2out = 250 + i;
+						a_debPEv2_axxisout(i) = 250 + i;
 						PEv2_joint_pos_fb(i) = PosFb[i];
-						a_debPEv2out = 260 + i;
+						a_debPEv2_axxisout(i) = 260 + i;
 						PEv2_CurrentPosition(i) = intCurrentPosition[i];
-						a_debPEv2out = 270 + i;
+						a_debPEv2_axxisout(i) = 270 + i;
 
 						PEv2_LimitStatusP(i) = Get_BitOfByte(bm_LimitStatusP,i);
 						PEv2_LimitStatusN(i) = Get_BitOfByte(bm_LimitStatusN,i);
 						PEv2_HomeStatus(i) =  Get_BitOfByte(bm_HomeStatus,i);
-						a_debPEv2out = 280 + i;
+						a_debPEv2_axxisout(i) = 280 ;
 						PEv2_DedicatedLimitNInputs(i) =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
 						PEv2_DedicatedLimitPInputs(i) =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
 						PEv2_DedicatedHomeInputs(i) =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
 
 						
 						PEv2_SoftLimitStatus(i) = Get_BitOfByte(bm_SoftLimitStatus,i);
-						a_debPEv2out = 290 + i;
+						a_debPEv2_axxisout(i) = 290 + i;
 						
 
 						switch(dev->PEv2.AxesState[i])
@@ -1911,33 +1911,33 @@ void user_mainloop(void)
 
 						float ReferenceSpeed;
 						float ReferencePosition;
-						a_debPEv2out = 1000;
+						a_debPEv2_axxisout(i) = 1000;
 
 						if (StepScale[i] != 0)
 						{
-							a_debPEv2out = 1100 + i;
+							a_debPEv2_axxisout(i) = 1100 + i;
 							ReferenceSpeed = VelCmd * StepScale[i];
-							a_debPEv2out = 1110 + i;
+							a_debPEv2_axxisout(i) = 1110 + i;
 							ReferencePosition = PosCmd * StepScale[i];
-							a_debPEv2out = 1120 + i;
+							a_debPEv2_axxisout(i) = 1120 + i;
 
 						}
 						else
 						{
-							a_debPEv2out = 1200 + i;
+							a_debPEv2_axxisout(i) = 1200 + i;
 							ReferenceSpeed = VelCmd*800;
-							a_debPEv2out = 1210 + i;
+							a_debPEv2_axxisout(i) = 1210 + i;
 							ReferencePosition = PosCmd *800;
-							a_debPEv2out = 1220 + i;
+							a_debPEv2_axxisout(i) = 1220 + i;
 
 						}
-						a_debPEv2out = 1300 + i;
+						a_debPEv2_axxisout(i) = 1300 + i;
 						dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferencePosition;
-						a_debPEv2out = 1310 + i;
+						a_debPEv2_axxisout(i) = 1310 + i;
 						PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
-						a_debPEv2out = 1320 + i;
+						a_debPEv2_axxisout(i) = 1320 + i;
 						PK_PEv2_PulseEngineMove(dev);
-						a_debPEv2out = 1330 + i;
+						a_debPEv2_axxisout(i) = 1330 + i;
 
 					}
 
