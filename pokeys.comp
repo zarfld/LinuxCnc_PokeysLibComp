@@ -114,7 +114,7 @@ pin io u32 PEv2.#.ProbeMaxPosition [8];		// Maximum position to travel to until 
 
 pin out u32 PEv2.#.CurrentPosition [8];			// Current position
 pin io u32 PEv2.#.PositionSetup [8];			// Position to be set as current position
-pin io u32 PEv2.#.ReferencePositionSpeed [8];	// Reference position or speed (position or pulses/s)
+pin out u32 PEv2.#.ReferencePositionSpeed [8];	// Reference position or speed (position or pulses/s)
 pin io float PEv2.#.MaxSpeed [8];					// Maximum axis speed (in pulses per ms)
 pin io float PEv2.#.MaxAcceleration [8];			// Maximum axis acceleration (in pulses/ms/ms)
 pin io float PEv2.#.MaxDecceleration [8];			// Maximum axis deceleration (in pulses/ms/ms)
@@ -125,9 +125,9 @@ pin io float PEv2.#.MaxDecceleration_mm_per_sec2 [8];	// Maximum axis decelerati
 
 	
 pin in float PEv2.#.joint_vel_cmd [8];				
-pin io float PEv2.#.joint_vel_fb [8];				
+pin out float PEv2.#.joint_vel_fb [8];				
 pin in float PEv2.#.joint_pos_cmd [8];				
-pin io float PEv2.#.joint_pos_fb [8];				
+pin out float PEv2.#.joint_pos_fb [8];				
     
 //***********************************************************************
 //[JOINT_n] information in HAL-INI 
