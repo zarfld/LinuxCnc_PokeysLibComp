@@ -1952,8 +1952,15 @@ void user_mainloop(void)
 						a_debPEv2_axxisout(i) = 1310 + i;
 						PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
 						a_debPEv2_axxisout(i) = 1320 + i;
-						PK_PEv2_PulseEngineMove(dev);
-						a_debPEv2_axxisout(i) = 1330 + i;
+						if (dev->PEv2.AxesState[i] = PK_PEState_peRUNNING)
+						{
+							PK_PEv2_PulseEngineMove(dev);
+							a_debPEv2_axxisout(i) = 1330 + i;
+						}
+						else
+						{
+							a_debPEv2_axxisout(i) = 1340 + i;
+						}
 
 					}
 
