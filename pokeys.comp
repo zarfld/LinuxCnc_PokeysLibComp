@@ -1785,7 +1785,7 @@ void user_mainloop(void)
 								if (StepScale[i] != 0)
 								{
 									ReferenceSpeed = PEv2_joint_vel_cmd(i) * StepScale[i];
-									ReferencePosition = PEv2_joint_pos_cmd(i) * StepScale[i]
+									ReferencePosition = PEv2_joint_pos_cmd(i) * StepScale[i];
 								}
 								else
 								{
