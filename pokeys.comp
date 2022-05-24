@@ -608,7 +608,7 @@ unsigned int  sleepdur = 2000;
 bool  use_sleepdur1 = true;
 unsigned int  sleepdur1 = 2000;
 unsigned int  sleepdur2 = 2000;
-
+float StepScale[8];
 
 
 PK_MatrixKB_Parameters MatrixKB;
@@ -1698,7 +1698,7 @@ void user_mainloop(void)
 				{
 					uint8_t  bm_SoftLimitStatus = dev->PEv2.SoftLimitStatus;
 					int tAxisEnabledMask = 0;
-					float StepScale[8];
+					
 					int32_t         intCurrentPosition[8];
 					for (i = 0; i < PEv2_nrOfAxes; i++)
 					{
@@ -1746,11 +1746,14 @@ void user_mainloop(void)
 								PEv2_AxisLimitOverride(i) = false;
 
 								bool POSITION_MODE_active = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-								float vlcmd = PEv2_joint_vel_cmd(i);
-								float poscmd = PEv2_joint_pos_cmd(i);
-								if (vlcmd  = 0 )
+								
+	
+								float VelCmd = PEv2_joint_vel_cmd(i);
+								float PosCmd = PEv2_joint_pos_cmd(i);
+
+								if (VelCmd  = 0 )
 								{
-									if (poscmd != 0)
+									if (PosCmd != 0)
 									{
 										posMode[i] = true;
 
@@ -1764,9 +1767,9 @@ void user_mainloop(void)
 									}
 
 								}
-								else if(vlcmd != 0)
+								else if(VelCmd != 0)
 								{
-									if (poscmd = 0)
+									if (PosCmd = 0)
 									{
 										posMode[i] = false;
 										if (POSITION_MODE_active = true)
@@ -1779,8 +1782,7 @@ void user_mainloop(void)
 
 								}
 								//if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
-								float VelCmd = PEv2_joint_vel_cmd(i);
-								float PosCmd = PEv2_joint_pos_cmd(i);
+								
 								float ReferenceSpeed;
 								float ReferencePosition;
 
