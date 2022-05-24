@@ -1749,7 +1749,7 @@ void user_mainloop(void)
 								PEv2_AxisEnabledStates(i) = false;
 								PEv2_AxisLimitOverride(i) = false;
 
-								if (machine_is_on = true) 
+								if (HAL_Machine_On = true)
 								{
 									dev->PEv2.PulseEngineStateSetup = PK_PEState_peRUNNING;
 									PK_PEv2_PulseEngineStateSet(dev);
@@ -1759,7 +1759,7 @@ void user_mainloop(void)
 								a_debPEv2out = 320 + i;
 								PEv2_AxisEnabledStates(i) = true;
 								PEv2_AxisLimitOverride(i) = false;
-								if (machine_is_on = true)
+								if (HAL_Machine_On = true)
 								{
 									dev->PEv2.PulseEngineStateSetup = PK_PEState_peRUNNING;
 									PK_PEv2_PulseEngineStateSet(dev);
@@ -1871,7 +1871,7 @@ void user_mainloop(void)
 							case PK_PEAxisState_axERROR:       // Axis error
 								PEv2_AxisEnabledStates(i) = false;
 								PEv2_AxisLimitOverride(i) = false;
-								if (machine_is_on = true)
+								if (HAL_Machine_On = true)
 								{
 									dev->PEv2.PulseEngineStateSetup = PK_PEState_peRUNNING;
 									PK_PEv2_PulseEngineStateSet(dev);
