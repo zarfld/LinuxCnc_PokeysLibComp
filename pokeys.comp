@@ -1779,9 +1779,24 @@ void user_mainloop(void)
 
 								}
 								//if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
-								float ReferenceSpeed = PEv2_joint_vel_cmd(i) * PEv2_params_STEP_SCALE(i);
-								float ReferencePosition = PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i);
+								float ReferenceSpeed = PEv2_joint_vel_cmd(i) * StepScale[i];
+								float ReferencePosition = PEv2_joint_pos_cmd(i) * StepScale[i];
 
+								if (StepScale[i] != 0)
+								{
+									ReferenceSpeed = PEv2_joint_vel_cmd(i) * StepScale[i];
+									ReferencePosition = PEv2_joint_pos_cmd(i) * StepScale[i]
+								}
+								else
+								{
+									ReferenceSpeed = PEv2_joint_pos_cmd(i);
+									ReferencePosition = PEv2_joint_pos_cmd(i);
+								}
+
+								dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferencePosition;
+								PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
+
+								/*
 								if (posMode[i] != true)
 								{
 									if(PEv2_ReferencePositionSpeed(i) != (int) ReferenceSpeed)
@@ -1802,7 +1817,7 @@ void user_mainloop(void)
 										dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferenceSpeed;
 										//dev->PEv2.PositionSetup[i] = (int)PEv2_PositionSetup(i);
 									}
-									PEv2_joint_vel_fb(i) = ( PEv2_joint_pos_fb(i) - (PEv2_CurrentPosition(i) / PEv2_params_STEP_SCALE(i)) )* Loop_Frequ;
+									//PEv2_joint_vel_fb(i) = ( PEv2_joint_pos_fb(i) - (PEv2_CurrentPosition(i) / PEv2_params_STEP_SCALE(i)) )* Loop_Frequ;
 								}
 								else
 								{
@@ -1836,15 +1851,7 @@ void user_mainloop(void)
 
 									//PEv2_joint_vel_fb(i) = 0;
 								}
-								// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-								if (PEv2_params_STEP_SCALE(i) != 0) 
-								{
-									PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_params_STEP_SCALE(i);
-								}
-								else
-								{
-									PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i];
-								}
+								*/
 								usleep(sleepdur);
 
 
