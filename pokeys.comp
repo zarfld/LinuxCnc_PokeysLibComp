@@ -825,7 +825,7 @@ void user_mainloop(void)
 { 
 
 	comp_id = hal_init("pokeys");
-	SimOn = 0;
+	//SimOn = 0;
 
     while(0xb){
        FOR_ALL_INSTS() {
