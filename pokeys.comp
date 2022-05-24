@@ -1759,93 +1759,7 @@ void user_mainloop(void)
 								PEv2_AxisEnabledStates(i) = true;
 								PEv2_AxisLimitOverride(i) = false;
 
-								bool POSITION_MODE_active = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-								
-	
-								float VelCmd = PEv2_joint_vel_cmd(i);
-								float PosCmd = PEv2_joint_pos_cmd(i);
 
-								if (VelCmd  = 0 )
-								{
-									if (PosCmd != 0)
-									{
-										posMode[i] = true;
-
-
-										if (POSITION_MODE_active = false)
-										{
-											Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
-											dev->PEv2.param1 = i;
-											PK_PEv2_AxisConfigurationSet(dev);
-										}
-									}
-
-								}
-								else if(VelCmd != 0)
-								{
-									if (PosCmd = 0)
-									{
-										posMode[i] = false;
-										if (POSITION_MODE_active = true)
-										{
-											Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
-											dev->PEv2.param1 = i;
-											PK_PEv2_AxisConfigurationSet(dev);
-										}
-									}
-
-								}
-								//if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
-								
-								float ReferenceSpeed;
-								float ReferencePosition;
-								a_debPEv2out = 1000;
-
-								if (StepScale[i] != 0)
-								{
-									a_debPEv2out = 1100+i;
-									ReferenceSpeed = VelCmd * StepScale[i];
-									a_debPEv2out = 1110 + i;
-									ReferencePosition = PosCmd * StepScale[i];
-									a_debPEv2out = 1120 + i;
-									if (PosCmd = 0)
-									{
-										PEv2_ReferencePositionSpeed(i) = 1;
-									}
-									if (ReferencePosition = 0)
-									{
-										PEv2_ReferencePositionSpeed(i) = 2;
-									}
-									else
-									{
-										PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
-									}
-								}
-								else
-								{
-									a_debPEv2out = 1200+i;
-									ReferenceSpeed = VelCmd;
-									a_debPEv2out = 1210 + i;
-									ReferencePosition = PosCmd;
-									a_debPEv2out = 1220 + i;
-									if (PosCmd = 0)
-									{
-										PEv2_ReferencePositionSpeed(i) = 11;
-									}
-									if (ReferencePosition = 0)
-									{
-										PEv2_ReferencePositionSpeed(i) = 12;
-									}
-									else
-									{
-										PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
-									}
-								}
-								a_debPEv2out = 1300 + i;
-								dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferencePosition;
-								a_debPEv2out = 1310 + i;
-								PK_PEv2_PulseEngineMove(dev);
-								a_debPEv2out = 1310 + i;
 								/*
 								if (posMode[i] != true)
 								{
@@ -1956,6 +1870,94 @@ void user_mainloop(void)
 						}
 						tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,PEv2_AxisEnabledStates(i));
 						PEv2_LimitOverrideSetup = Set_BitOfByte(PEv2_LimitOverrideSetup ,i,PEv2_AxisLimitOverride(i));
+
+						bool POSITION_MODE_active = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
+
+
+						float VelCmd = PEv2_joint_vel_cmd(i);
+						float PosCmd = PEv2_joint_pos_cmd(i);
+
+						if (VelCmd = 0)
+						{
+							if (PosCmd != 0)
+							{
+								posMode[i] = true;
+
+
+								if (POSITION_MODE_active = false)
+								{
+									Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
+									dev->PEv2.param1 = i;
+									PK_PEv2_AxisConfigurationSet(dev);
+								}
+							}
+
+						}
+						else if (VelCmd != 0)
+						{
+							if (PosCmd = 0)
+							{
+								posMode[i] = false;
+								if (POSITION_MODE_active = true)
+								{
+									Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
+									dev->PEv2.param1 = i;
+									PK_PEv2_AxisConfigurationSet(dev);
+								}
+							}
+
+						}
+						//if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
+
+						float ReferenceSpeed;
+						float ReferencePosition;
+						a_debPEv2out = 1000;
+
+						if (StepScale[i] != 0)
+						{
+							a_debPEv2out = 1100 + i;
+							ReferenceSpeed = VelCmd * StepScale[i];
+							a_debPEv2out = 1110 + i;
+							ReferencePosition = PosCmd * StepScale[i];
+							a_debPEv2out = 1120 + i;
+							if (PosCmd = 0)
+							{
+								PEv2_ReferencePositionSpeed(i) = 1;
+							}
+							if (ReferencePosition = 0)
+							{
+								PEv2_ReferencePositionSpeed(i) = 2;
+							}
+							else
+							{
+								PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
+							}
+						}
+						else
+						{
+							a_debPEv2out = 1200 + i;
+							ReferenceSpeed = VelCmd;
+							a_debPEv2out = 1210 + i;
+							ReferencePosition = PosCmd;
+							a_debPEv2out = 1220 + i;
+							if (PosCmd = 0)
+							{
+								PEv2_ReferencePositionSpeed(i) = 11;
+							}
+							if (ReferencePosition = 0)
+							{
+								PEv2_ReferencePositionSpeed(i) = 12;
+							}
+							else
+							{
+								PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
+							}
+						}
+						a_debPEv2out = 1300 + i;
+						dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferencePosition;
+						a_debPEv2out = 1310 + i;
+						PK_PEv2_PulseEngineMove(dev);
+						a_debPEv2out = 1310 + i;
 
 					}
 
