@@ -112,8 +112,8 @@ pin io unsigned PEv2.#.FilterHomeSwitch [8];		// Digital filter for home switch
 pin io u32 PEv2.#.ProbePosition [8];			// Position where probe detected change
 pin io u32 PEv2.#.ProbeMaxPosition [8];		// Maximum position to travel to until stopping and returning error
 
-pin out u32 PEv2.#.CurrentPosition [8];			// Current position
-pin io u32 PEv2.#.PositionSetup [8];			// Position to be set as current position
+pin out s32 PEv2.#.CurrentPosition [8];			// Current position
+pin io s32 PEv2.#.PositionSetup [8];			// Position to be set as current position
 pin out u32 PEv2.#.ReferencePositionSpeed [8];	// Reference position or speed (position or pulses/s)
 pin io float PEv2.#.MaxSpeed [8];					// Maximum axis speed (in pulses per ms)
 pin io float PEv2.#.MaxAcceleration [8];			// Maximum axis acceleration (in pulses/ms/ms)
@@ -1698,10 +1698,25 @@ void user_mainloop(void)
 				{
 					uint8_t  bm_SoftLimitStatus = dev->PEv2.SoftLimitStatus;
 					int tAxisEnabledMask = 0;
+					float StepScale[8];
+					int32_t         intCurrentPosition[8];
 					for (i = 0; i < PEv2_nrOfAxes; i++)
 					{
 						PEv2_AxesState(i) = dev->PEv2.AxesState[i];
-						PEv2_CurrentPosition(i) = dev->PEv2.CurrentPosition[i];
+						StepScale[8] = PEv2_params_STEP_SCALE(i);
+
+						// PEv2_CurrentPosition(i) = dev->PEv2.CurrentPosition[i];
+						intCurrentPosition[i] = dev->PEv2.CurrentPosition[i];
+						// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
+						if (StepScale[i] != 0)
+						{
+							PEv2_joint_pos_fb(i) = intCurrentPosition[i] / StepScale[i];
+						}
+						else
+						{
+							PEv2_joint_pos_fb(i) = intCurrentPosition[i];
+						}
+						PEv2_CurrentPosition(i) = intCurrentPosition[i];
 
 						PEv2_LimitStatusP(i) = Get_BitOfByte(bm_LimitStatusP,i);
 						PEv2_LimitStatusN(i) = Get_BitOfByte(bm_LimitStatusN,i);
@@ -1714,15 +1729,7 @@ void user_mainloop(void)
 						
 						PEv2_SoftLimitStatus(i) = Get_BitOfByte(bm_SoftLimitStatus,i);
 
-						// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-						if (PEv2_params_STEP_SCALE(i) != 0)
-						{
-							PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i] / PEv2_params_STEP_SCALE(i);
-						}
-						else
-						{
-							PEv2_joint_pos_fb(i) = dev->PEv2.CurrentPosition[i];
-						}
+						
 
 						switch( PEv2_AxesState(i))
 						{
