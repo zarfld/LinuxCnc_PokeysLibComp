@@ -11,7 +11,7 @@ pin out bit err;
 pin out bit connected;
 pin in unsigned devSerial;
 pin out bit alive;
-pin in bit SimOn;
+pin io bit SimOn;
 
 pin in bit machine_is_on;
 
@@ -608,7 +608,7 @@ unsigned int  sleepdur = 2000;
 bool  use_sleepdur1 = true;
 unsigned int  sleepdur1 = 2000;
 unsigned int  sleepdur2 = 2000;
-SimOn = false;
+
 
 
 PK_MatrixKB_Parameters MatrixKB;
@@ -825,7 +825,7 @@ void user_mainloop(void)
 { 
 
 	comp_id = hal_init("pokeys");
-
+	SimOn = false;
 
     while(0xb){
        FOR_ALL_INSTS() {
