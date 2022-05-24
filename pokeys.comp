@@ -1748,11 +1748,22 @@ void user_mainloop(void)
 								a_debPEv2out = 310 + i;
 								PEv2_AxisEnabledStates(i) = false;
 								PEv2_AxisLimitOverride(i) = false;
+
+								if (machine_is_on = true) 
+								{
+									dev->PEv2.PulseEngineStateSetup = PK_PEState_peRUNNING;
+									PK_PEv2_PulseEngineStateSet(dev);
+								}
 								break ;
 							case PK_PEAxisState_axREADY:        // Axis ready
 								a_debPEv2out = 320 + i;
 								PEv2_AxisEnabledStates(i) = true;
 								PEv2_AxisLimitOverride(i) = false;
+								if (machine_is_on = true)
+								{
+									dev->PEv2.PulseEngineStateSetup = PK_PEState_peRUNNING;
+									PK_PEv2_PulseEngineStateSet(dev);
+								}
 								break ;
 							case PK_PEAxisState_axRUNNING:        // Axis is running
 								a_debPEv2out = 330 + i;
@@ -1860,6 +1871,11 @@ void user_mainloop(void)
 							case PK_PEAxisState_axERROR:       // Axis error
 								PEv2_AxisEnabledStates(i) = false;
 								PEv2_AxisLimitOverride(i) = false;
+								if (machine_is_on = true)
+								{
+									dev->PEv2.PulseEngineStateSetup = PK_PEState_peRUNNING;
+									PK_PEv2_PulseEngineStateSet(dev);
+								}
 								break ;
 							case PK_PEAxisState_axLIMIT:        // Axis limit tripped
 								PEv2_AxisEnabledStates(i) = true;
