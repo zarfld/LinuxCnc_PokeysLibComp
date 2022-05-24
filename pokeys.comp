@@ -7,6 +7,8 @@ pin out unsigned enum_fusb_dev;
 pin out unsigned enum_udp_dev;
 pin out s32 a_debout;
 
+pin out s32 a_debPEv2out;
+
 pin out bit err;
 pin out bit connected;
 pin in unsigned devSerial;
@@ -1699,24 +1701,33 @@ void user_mainloop(void)
 					uint8_t  bm_SoftLimitStatus = dev->PEv2.SoftLimitStatus;
 					int tAxisEnabledMask = 0;
 					
-					int32_t         intCurrentPosition[8];
+					int32_t intCurrentPosition[8];
+					float PosFb[8];
 					for (i = 0; i < PEv2_nrOfAxes; i++)
 					{
 						PEv2_AxesState(i) = dev->PEv2.AxesState[i];
+						a_debPEv2out = 200 + i;
 						StepScale[8] = PEv2_params_STEP_SCALE(i);
-
+						a_debPEv2out = 210 + i;
 						// PEv2_CurrentPosition(i) = dev->PEv2.CurrentPosition[i];
 						intCurrentPosition[i] = dev->PEv2.CurrentPosition[i];
+						a_debPEv2out = 220 + i;
 						// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
 						if (StepScale[i] != 0)
 						{
-							PEv2_joint_pos_fb(i) = intCurrentPosition[i] / StepScale[i];
+							a_debPEv2out = 230 + i;
+							PosFb[i] = intCurrentPosition[i] / StepScale[i];
 						}
 						else
 						{
-							PEv2_joint_pos_fb(i) = intCurrentPosition[i];
+							a_debPEv2out = 240 + i;
+							PosFb[i] = intCurrentPosition[i];
 						}
+						a_debPEv2out = 250 + i;
+						PEv2_joint_pos_fb(i) = PosFb[i];
+						a_debPEv2out = 260 + i;
 						PEv2_CurrentPosition(i) = intCurrentPosition[i];
+						a_debPEv2out = 270 + i;
 
 						PEv2_LimitStatusP(i) = Get_BitOfByte(bm_LimitStatusP,i);
 						PEv2_LimitStatusN(i) = Get_BitOfByte(bm_LimitStatusN,i);
@@ -1785,11 +1796,15 @@ void user_mainloop(void)
 								
 								float ReferenceSpeed;
 								float ReferencePosition;
+								a_debPEv2out = 1000;
 
 								if (StepScale[i] != 0)
 								{
+									a_debPEv2out = 1100+i;
 									ReferenceSpeed = VelCmd * StepScale[i];
+									a_debPEv2out = 1110 + i;
 									ReferencePosition = PosCmd * StepScale[i];
+									a_debPEv2out = 1120 + i;
 									if (PosCmd = 0)
 									{
 										PEv2_ReferencePositionSpeed(i) = 1;
@@ -1805,8 +1820,11 @@ void user_mainloop(void)
 								}
 								else
 								{
+									a_debPEv2out = 1200+i;
 									ReferenceSpeed = VelCmd;
+									a_debPEv2out = 1210 + i;
 									ReferencePosition = PosCmd;
+									a_debPEv2out = 1220 + i;
 									if (PosCmd = 0)
 									{
 										PEv2_ReferencePositionSpeed(i) = 11;
@@ -1820,10 +1838,11 @@ void user_mainloop(void)
 										PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
 									}
 								}
-								
+								a_debPEv2out = 1300 + i;
 								dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferencePosition;
-								
-
+								a_debPEv2out = 1310 + i;
+								PK_PEv2_PulseEngineMove(dev);
+								a_debPEv2out = 1310 + i;
 								/*
 								if (posMode[i] != true)
 								{
