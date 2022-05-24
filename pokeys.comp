@@ -126,7 +126,7 @@ pin io float PEv2.#.MaxDecceleration_mm_per_sec2 [8];	// Maximum axis decelerati
 	
 pin in float PEv2.#.joint_vel_cmd [8];				
 pin out float PEv2.#.joint_vel_fb [8];				
-pin in float PEv2.#.joint_pos_cmd [8];				
+pin io float PEv2.#.joint_pos_cmd [8];				
 pin out float PEv2.#.joint_pos_fb [8];				
     
 //***********************************************************************
@@ -1779,14 +1779,16 @@ void user_mainloop(void)
 
 								}
 								//if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
-								float ReferenceSpeed = PEv2_joint_vel_cmd(i) * StepScale[i];
-								float ReferencePosition = PEv2_joint_pos_cmd(i) * StepScale[i];
+								float VelCmd = PEv2_joint_vel_cmd(i);
+								float PosCmd = PEv2_joint_pos_cmd(i)
+								float ReferenceSpeed;
+								float ReferencePosition;
 
 								if (StepScale[i] != 0)
 								{
-									ReferenceSpeed = PEv2_joint_vel_cmd(i) * StepScale[i];
-									ReferencePosition = PEv2_joint_pos_cmd(i) * StepScale[i];
-									if (PEv2_joint_pos_cmd(i) = 0)
+									ReferenceSpeed = VelCmd * StepScale[i];
+									ReferencePosition = PosCmd * StepScale[i];
+									if (PosCmd = 0)
 									{
 										PEv2_ReferencePositionSpeed(i) = 1;
 									}
@@ -1801,9 +1803,9 @@ void user_mainloop(void)
 								}
 								else
 								{
-									ReferenceSpeed = PEv2_joint_vel_cmd(i);
-									ReferencePosition = PEv2_joint_pos_cmd(i);
-									if (PEv2_joint_pos_cmd(i) = 0) 
+									ReferenceSpeed = VelCmd;
+									ReferencePosition = PosCmd;
+									if (PosCmd = 0)
 									{
 										PEv2_ReferencePositionSpeed(i) = 11;
 									}
