@@ -126,7 +126,7 @@ pin io float PEv2.#.MaxDecceleration_mm_per_sec2 [8];	// Maximum axis decelerati
 	
 pin in float PEv2.#.joint_vel_cmd [8];				
 pin out float PEv2.#.joint_vel_fb [8];				
-pin io float PEv2.#.joint_pos_cmd [8];				
+pin in float PEv2.#.joint_pos_cmd [8];				
 pin out float PEv2.#.joint_pos_fb [8];				
     
 //***********************************************************************
