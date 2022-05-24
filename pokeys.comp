@@ -11,7 +11,7 @@ pin out bit err;
 pin out bit connected;
 pin in unsigned devSerial;
 pin out bit alive;
-pin in SimOn;
+pin in bit SimOn;
 
 pin in bit machine_is_on;
 
