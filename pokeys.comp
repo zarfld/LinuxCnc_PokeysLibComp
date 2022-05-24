@@ -1920,44 +1920,24 @@ void user_mainloop(void)
 							a_debPEv2out = 1110 + i;
 							ReferencePosition = PosCmd * StepScale[i];
 							a_debPEv2out = 1120 + i;
-							if (PosCmd = 0)
-							{
-								PEv2_ReferencePositionSpeed(i) = 1;
-							}
-							if (ReferencePosition = 0)
-							{
-								PEv2_ReferencePositionSpeed(i) = 2;
-							}
-							else
-							{
-								PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
-							}
+
 						}
 						else
 						{
 							a_debPEv2out = 1200 + i;
-							ReferenceSpeed = VelCmd;
+							ReferenceSpeed = VelCmd*800;
 							a_debPEv2out = 1210 + i;
-							ReferencePosition = PosCmd;
+							ReferencePosition = PosCmd *800;
 							a_debPEv2out = 1220 + i;
-							if (PosCmd = 0)
-							{
-								PEv2_ReferencePositionSpeed(i) = 11;
-							}
-							if (ReferencePosition = 0)
-							{
-								PEv2_ReferencePositionSpeed(i) = 12;
-							}
-							else
-							{
-								PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
-							}
+
 						}
 						a_debPEv2out = 1300 + i;
 						dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferencePosition;
 						a_debPEv2out = 1310 + i;
+						PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
+						a_debPEv2out = 1320 + i;
 						PK_PEv2_PulseEngineMove(dev);
-						a_debPEv2out = 1310 + i;
+						a_debPEv2out = 1330 + i;
 
 					}
 
