@@ -2141,7 +2141,7 @@ void user_mainloop(void)
 
 						 }
 
-						 if (dev->PEv2.EmergencyInputPin != PEv2_EmergencyInputPin;)
+						 if (dev->PEv2.EmergencyInputPin != PEv2_EmergencyInputPin)
 						 {
 							 dev->PEv2.EmergencyInputPin = PEv2_EmergencyInputPin;
 							 DoPeSetup = true;
@@ -2194,15 +2194,15 @@ void user_mainloop(void)
 
 						 }
 
-						 if (dev->PEv2.ChargePumpEnabled != PEv2_ChargePumpEnabled;) {
+						 if (dev->PEv2.ChargePumpEnabled != PEv2_ChargePumpEnabled) {
 							dev->PEv2.ChargePumpEnabled = PEv2_ChargePumpEnabled;
 							DoPeSetup = true;
 						 }
-						 if (dev->PEv2.PulseGeneratorType != PEv2_PulseGeneratorType;) {
+						 if (dev->PEv2.PulseGeneratorType != PEv2_PulseGeneratorType) {
 							 dev->PEv2.PulseGeneratorType = PEv2_PulseGeneratorType;
 							 DoPeSetup = true;
 						 }
-						 if (dev->PEv2.EmergencySwitchPolarity != PEv2_EmergencySwitchPolarity;) {
+						 if (dev->PEv2.EmergencySwitchPolarity != PEv2_EmergencySwitchPolarity) {
 							 dev->PEv2.EmergencySwitchPolarity = PEv2_EmergencySwitchPolarity;
 							 DoPeSetup = true;
 						 }
@@ -2282,43 +2282,43 @@ void user_mainloop(void)
 									 dev->PEv2.MaxSpeed[i] = PEv2_MaxSpeed(i);
 									 doAxisConfig = true;
 								 }
-								 if (dev->PEv2.MaxAcceleration[i] != PEv2_MaxAcceleration(i);)
+								 if (dev->PEv2.MaxAcceleration[i] != PEv2_MaxAcceleration(i))
 								 {
 									 dev->PEv2.MaxAcceleration[i] = PEv2_MaxAcceleration(i);
 									 doAxisConfig = true;
 								 }
 								 
-								 if ()
+								 if (dev->PEv2.MaxDecceleration[i] != PEv2_MaxDecceleration(i))
 								 {
-									 dev->PEv2.MaxDecceleration[i] != PEv2_MaxDecceleration(i);
+									 dev->PEv2.MaxDecceleration[i] = PEv2_MaxDecceleration(i);
 									 doAxisConfig = true;
 								 }
 								 
-								 if (dev->PEv2.SoftLimitMinimum[i] != PEv2_SoftLimitMinimum(i);)
+								 if (dev->PEv2.SoftLimitMinimum[i] != PEv2_SoftLimitMinimum(i))
 								 {
 									 dev->PEv2.SoftLimitMinimum[i] = PEv2_SoftLimitMinimum(i);
 									 doAxisConfig = true;
 								 }
 								 
-								 if (dev->PEv2.SoftLimitMaximum[i] != PEv2_SoftLimitMaximum(i);)
+								 if (dev->PEv2.SoftLimitMaximum[i] != PEv2_SoftLimitMaximum(i))
 								 {
 									 dev->PEv2.SoftLimitMaximum[i] = PEv2_SoftLimitMaximum(i);
 									 doAxisConfig = true;
 								 }
 								 
-								 if (dev->PEv2.HomeOffsets[i] != PEv2_HomeOffsets(i);)
+								 if (dev->PEv2.HomeOffsets[i] != PEv2_HomeOffsets(i))
 								 {
 									 dev->PEv2.HomeOffsets[i] = PEv2_HomeOffsets(i);
 									 doAxisConfig = true;
 								 }
 								 
-								 if (dev->PEv2.HomingSpeed[i] != PEv2_HomingSpeed(i);)
+								 if (dev->PEv2.HomingSpeed[i] != PEv2_HomingSpeed(i))
 								 {
 									 dev->PEv2.HomingSpeed[i] = PEv2_HomingSpeed(i);
 									 doAxisConfig = true;
 								 }
 								 
-								 if (dev->PEv2.HomingReturnSpeed[i] != PEv2_HomingReturnSpeed(i);)
+								 if (dev->PEv2.HomingReturnSpeed[i] != PEv2_HomingReturnSpeed(i))
 								 {
 									 dev->PEv2.HomingReturnSpeed[i] = PEv2_HomingReturnSpeed(i);
 									 doAxisConfig = true;
@@ -2488,44 +2488,44 @@ void user_mainloop(void)
 								 }
 							 }
 
-							 if (dev->PEv2.InvertAxisEnable[i] != PEv2_InvertAxisEnable(i);)
+							 if (dev->PEv2.InvertAxisEnable[i] != PEv2_InvertAxisEnable(i))
 							 {
 								 dev->PEv2.InvertAxisEnable[i] = PEv2_InvertAxisEnable(i);
 								 doAxisConfig = true;
 							 }
 							 
-							 if (dev->PEv2.FilterLimitMSwitch[i] != PEv2_FilterLimitMSwitch(i);)
+							 if (dev->PEv2.FilterLimitMSwitch[i] != PEv2_FilterLimitMSwitch(i))
 							 {
 								 dev->PEv2.FilterLimitMSwitch[i] = PEv2_FilterLimitMSwitch(i);
 								 doAxisConfig = true;
 							 }
 							 
-							 if (dev->PEv2.FilterLimitPSwitch[i] != PEv2_FilterLimitPSwitch(i);)
+							 if (dev->PEv2.FilterLimitPSwitch[i] != PEv2_FilterLimitPSwitch(i))
 							 {
 								 dev->PEv2.FilterLimitPSwitch[i] = PEv2_FilterLimitPSwitch(i);
 								 doAxisConfig = true;
 							 }
 							 
-							 if (dev->PEv2.FilterHomeSwitch[i] != PEv2_FilterHomeSwitch(i);)
+							 if (dev->PEv2.FilterHomeSwitch[i] != PEv2_FilterHomeSwitch(i))
 							 {
 								 dev->PEv2.FilterHomeSwitch[i] = PEv2_FilterHomeSwitch(i);
 								 doAxisConfig = true;
 							 }
 							 
-							 if (dev->PEv2.HomingAlgorithm[i] != PEv2_HomingAlgorithm(i);)
+							 if (dev->PEv2.HomingAlgorithm[i] != PEv2_HomingAlgorithm(i))
 							 {
 								 dev->PEv2.HomingAlgorithm[i] = PEv2_HomingAlgorithm(i);
 								 doAxisConfig = true;
 							 }
 							 
 							 // MPG 1x mode here
-							 if (dev->PEv2.HomeBackOffDistance[i] != PEv2_HomeBackOffDistance(i);)
+							 if (dev->PEv2.HomeBackOffDistance[i] != PEv2_HomeBackOffDistance(i))
 							 {
 								 dev->PEv2.HomeBackOffDistance[i] = PEv2_HomeBackOffDistance(i);
 								 doAxisConfig = true;
 							 }
 							 
-							 if (dev->PEv2.MPGjogDivider[i] != PEv2_MPGjogDivider(i);)
+							 if (dev->PEv2.MPGjogDivider[i] != PEv2_MPGjogDivider(i))
 							 {
 								 dev->PEv2.MPGjogDivider[i] = PEv2_MPGjogDivider(i);
 								 doAxisConfig = true;
