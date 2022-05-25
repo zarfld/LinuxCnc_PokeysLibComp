@@ -2531,7 +2531,7 @@ void user_mainloop(void)
 								 doAxisConfig = true;
 							 }
 							 
-							 if (dev->PEv2.AxesConfig[i] != AxesConfig[i];)
+							 if (dev->PEv2.AxesConfig[i] != AxesConfig[i])
 							 {
 								 dev->PEv2.AxesConfig[i] = AxesConfig[i];
 								 doAxisConfig = true;
