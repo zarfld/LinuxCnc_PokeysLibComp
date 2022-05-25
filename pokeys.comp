@@ -1705,9 +1705,10 @@ void user_mainloop(void)
 					float PosFb[8];
 					for (i = 0; i < PEv2_nrOfAxes; i++)
 					{
-						PEv2_AxesState(i) = dev->PEv2.AxesState[i];
+						uint8_t intAxesState = dev->PEv2.AxesState[i];
+						PEv2_AxesState(i) = intAxesState;
 						a_debPEv2_axxisout(i) = 200 + i;
-						StepScale[8] = PEv2_params_STEP_SCALE(i);
+						StepScale[i] = PEv2_params_STEP_SCALE(i);
 						a_debPEv2_axxisout(i) = 210 + i;
 						// PEv2_CurrentPosition(i) = dev->PEv2.CurrentPosition[i];
 						intCurrentPosition[i] = dev->PEv2.CurrentPosition[i];
@@ -1742,28 +1743,20 @@ void user_mainloop(void)
 						a_debPEv2_axxisout(i) = 290 + i;
 						
 
-						switch(dev->PEv2.AxesState[i])
+						switch(intAxesState)
 						{
 							case PK_PEAxisState_axSTOPPED:        // Axis is stopped
 								a_debPEv2out = 310 + i;
 								PEv2_AxisEnabledStates(i) = false;
 								PEv2_AxisLimitOverride(i) = false;
 
-								if (HAL_Machine_On = true)
-								{
-									dev->PEv2.PulseEngineStateSetup = PK_PEState_peRUNNING;
-									PK_PEv2_PulseEngineStateSet(dev);
-								}
+		
 								break ;
 							case PK_PEAxisState_axREADY:        // Axis ready
 								a_debPEv2out = 320 + i;
 								PEv2_AxisEnabledStates(i) = true;
 								PEv2_AxisLimitOverride(i) = false;
-								if (HAL_Machine_On = true)
-								{
-									dev->PEv2.PulseEngineStateSetup = PK_PEState_peRUNNING;
-									PK_PEv2_PulseEngineStateSet(dev);
-								}
+	
 								break ;
 							case PK_PEAxisState_axRUNNING:        // Axis is running
 								a_debPEv2out = 330 + i;
@@ -1871,11 +1864,7 @@ void user_mainloop(void)
 							case PK_PEAxisState_axERROR:       // Axis error
 								PEv2_AxisEnabledStates(i) = false;
 								PEv2_AxisLimitOverride(i) = false;
-								if (HAL_Machine_On = true)
-								{
-									dev->PEv2.PulseEngineStateSetup = PK_PEState_peRUNNING;
-									PK_PEv2_PulseEngineStateSet(dev);
-								}
+	
 								break ;
 							case PK_PEAxisState_axLIMIT:        // Axis limit tripped
 								PEv2_AxisEnabledStates(i) = true;
@@ -1954,7 +1943,8 @@ void user_mainloop(void)
 						a_debPEv2_axxisout(i) = 1320 + i;
 						if (dev->PEv2.AxesState[i] = PK_PEState_peRUNNING)
 						{
-							PK_PEv2_PulseEngineMove(dev);
+							//PK_PEv2_PulseEngineMove(dev);
+							doMove = true;
 							a_debPEv2_axxisout(i) = 1330 + i;
 						}
 						else
@@ -1962,6 +1952,11 @@ void user_mainloop(void)
 							a_debPEv2_axxisout(i) = 1340 + i;
 						}
 
+					}
+
+					if (doMove = true)
+					{
+						PK_PEv2_PulseEngineMove(dev);
 					}
 
 
