@@ -1548,17 +1548,16 @@ void user_mainloop(void)
 						}
 						else if (VelCmd != 0)
 						{
-							if (PosCmd = 0)
-							{
-								posMode[i] = false;
+							posMode[i] = false;
+					
+								
 								if (POSITION_MODE_active = true)
 								{
 									Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
 									dev->PEv2.param1 = i;
 									PK_PEv2_AxisConfigurationSet(dev);
 								}
-							}
-
+		
 						}
 						//if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
 

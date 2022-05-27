@@ -112,6 +112,9 @@ setp   pokeys.0.PEv2.0.params.STEPGEN-MAXACCEL           [JOINT_0]STEPGEN_MAXVEL
 net x-pos-cmd    <= joint.0.motor-pos-cmd
 net x-pos-cmd     =>  pokeys.0.PEv2.0.joint-pos-cmd
 
+net x-vel-cmd    <= joint.0.vel-cmd
+net x-vel-cmd     =>  pokeys.0.PEv2.0.joint-vel-cmd
+
 net x-pos-fb     <= pokeys.0.PEv2.0.joint-pos-fb
 net x-pos-fb     => joint.0.motor-pos-fb
 
@@ -184,6 +187,10 @@ setp   pokeys.0.PEv2.6.params.STEPGEN-MAXACCEL           [JOINT_1]STEPGEN_MAXVEL
 net x2-pos-cmd    <= joint.1.motor-pos-cmd
 net x2-pos-cmd       =>  pokeys.0.PEv2.6.joint-pos-cmd
 
+
+net x2-vel-cmd    <= joint.1.vel-cmd
+net x2-vel-cmd     =>  pokeys.0.PEv2.6.joint-vel-cmd
+
 net x2-pos-fb     <= pokeys.0.PEv2.6.joint-pos-fb
 net x2-pos-fb     => joint.1.motor-pos-fb
 
@@ -252,6 +259,10 @@ setp   pokeys.0.PEv2.1.params.STEPGEN-MAXACCEL           [JOINT_2]STEPGEN_MAXVEL
 net y-pos-cmd    <= joint.2.motor-pos-cmd
 net y-pos-cmd       =>  pokeys.0.PEv2.1.joint-pos-cmd
 
+
+net y-vel-cmd    <= joint.1.vel-cmd
+net y-vel-cmd     =>  pokeys.0.PEv2.1.joint-vel-cmd
+
 net y-pos-fb     <= pokeys.0.PEv2.1.joint-pos-fb
 net y-pos-fb     => joint.2.motor-pos-fb
 
@@ -308,6 +319,9 @@ setp   pokeys.0.PEv2.2.params.STEPGEN-MAXACCEL           [JOINT_3]STEPGEN_MAXVEL
 
 net z-pos-cmd    <= joint.3.motor-pos-cmd
 net z-pos-cmd       =>  pokeys.0.PEv2.2.joint-pos-cmd
+
+net z-vel-cmd    <= joint.3.vel-cmd
+net z-vel-cmd     =>  pokeys.0.PEv2.2.joint-vel-cmd
 
 net z-pos-fb     <= pokeys.0.PEv2.2.joint-pos-fb
 net z-pos-fb     => joint.3.motor-pos-fb
