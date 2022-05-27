@@ -260,7 +260,7 @@ net y-pos-cmd    <= joint.2.motor-pos-cmd
 net y-pos-cmd       =>  pokeys.0.PEv2.1.joint-pos-cmd
 
 
-net y-vel-cmd    <= joint.1.vel-cmd
+net y-vel-cmd    <= joint.2.vel-cmd
 net y-vel-cmd     =>  pokeys.0.PEv2.1.joint-vel-cmd
 
 net y-pos-fb     <= pokeys.0.PEv2.1.joint-pos-fb
