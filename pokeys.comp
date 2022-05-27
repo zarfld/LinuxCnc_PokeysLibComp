@@ -127,10 +127,17 @@ pin io float PEv2.#.MaxDecceleration_mm_per_sec2 [8];	// Maximum axis decelerati
 
 	
 pin in float PEv2.#.joint-vel-cmd [8];				
-pin out float PEv2.#.joint-vel-fb [8];				
+//pin out float PEv2.#.joint-vel-fb [8];	 -> remove			
 pin in float PEv2.#.joint-pos-cmd [8];				
 pin out float PEv2.#.joint-pos-fb [8];				
-    
+
+pin in bit PEv2.#.joint-in-homing[8];
+pin in bit PEv2.#.joint-in-homed[8];
+pin in bit PEv2.#.joint-in-position[8];
+
+pin in bit PEv2.#.joint-kb-jog-active[8];
+pin in bit PEv2.#.joint-wheel-jog-active[8];
+
 //***********************************************************************
 //[JOINT_n] information in HAL-INI 
 pin io s32 PEv2.#.params.TYPE [8];			//LINEAR / ANGULAR
@@ -1395,21 +1402,21 @@ void user_mainloop(void)
 						{
 							case PK_PEAxisState_axSTOPPED:        // Axis is stopped
 								a_debPEv2out = 310 + i;
-								PEv2_AxisEnabledStates(i) = false;
-								PEv2_AxisLimitOverride(i) = false;
+								//PEv2_AxisEnabledStates(i) = false;
+								//PEv2_AxisLimitOverride(i) = false;
 
 		
 								break ;
 							case PK_PEAxisState_axREADY:        // Axis ready
 								a_debPEv2out = 320 + i;
-								PEv2_AxisEnabledStates(i) = true;
-								PEv2_AxisLimitOverride(i) = false;
+								//PEv2_AxisEnabledStates(i) = true;
+								//PEv2_AxisLimitOverride(i) = false;
 	
 								break ;
 							case PK_PEAxisState_axRUNNING:        // Axis is running
 								a_debPEv2out = 330 + i;
-								PEv2_AxisEnabledStates(i) = true;
-								PEv2_AxisLimitOverride(i) = false;
+								//PEv2_AxisEnabledStates(i) = true;
+								//PEv2_AxisLimitOverride(i) = false;
 
 
 								/*
@@ -1473,50 +1480,50 @@ void user_mainloop(void)
 
 								break ;
 							case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
-								PEv2_AxisLimitOverride(i) = true;
-								PEv2_AxisEnabledStates(i) = true;
+								//PEv2_AxisLimitOverride(i) = true;
+								//PEv2_AxisEnabledStates(i) = true;
 								break ;
 							case PK_PEAxisState_axHOMING_BACKING_OFF:   // Backing off switch
-								PEv2_AxisLimitOverride(i) = true;
-								PEv2_AxisEnabledStates(i) = true;
+								//PEv2_AxisLimitOverride(i) = true;
+								//PEv2_AxisEnabledStates(i) = true;
 								break ;
 							case PK_PEAxisState_axHOME:       // Axis is homed
-								PEv2_AxisEnabledStates(i) = true;
-								PEv2_AxisLimitOverride(i) = true;
+								//PEv2_AxisEnabledStates(i) = true;
+								//PEv2_AxisLimitOverride(i) = true;
 							// PEv2_joint_
 								break ;
 							case PK_PEAxisState_axHOMINGSTART:       // Homing procedure is starting on axis
-								PEv2_AxisEnabledStates(i) = true;
-								PEv2_AxisLimitOverride(i) = true;
+								//PEv2_AxisEnabledStates(i) = true;
+								//PEv2_AxisLimitOverride(i) = true;
 								break ;
 							case PK_PEAxisState_axHOMINGSEARCH:       // Homing procedure first step - going to home
-								PEv2_AxisEnabledStates(i) = true;
-								PEv2_AxisLimitOverride(i) = true;
+								//PEv2_AxisEnabledStates(i) = true;
+								//PEv2_AxisLimitOverride(i) = true;
 								break ;
 							case PK_PEAxisState_axHOMINGBACK:       // Homing procedure second step - slow homing
-								PEv2_AxisEnabledStates(i) = true;
-								PEv2_AxisLimitOverride(i) = true;
+								//PEv2_AxisEnabledStates(i) = true;
+								//PEv2_AxisLimitOverride(i) = true;
 								break ;
 							case PK_PEAxisState_axPROBED:       // Probing completed for this axis
-								PEv2_AxisEnabledStates(i) = true;
-								PEv2_AxisLimitOverride(i) = false;
+								//PEv2_AxisEnabledStates(i) = true;
+								//PEv2_AxisLimitOverride(i) = false;
 								break ;
 							case PK_PEAxisState_axPROBESTART:       // Probing procedure is starting on axis
-								PEv2_AxisEnabledStates(i) = true;
-								PEv2_AxisLimitOverride(i) = false;
+								//PEv2_AxisEnabledStates(i) = true;
+								//PEv2_AxisLimitOverride(i) = false;
 								break ;
 							case PK_PEAxisState_axPROBESEARCH:       // Probing procedure - probing
-								PEv2_AxisEnabledStates(i) = true;
-								PEv2_AxisLimitOverride(i) = false;
+								//PEv2_AxisEnabledStates(i) = true;
+								//PEv2_AxisLimitOverride(i) = false;
 								break ;
 							case PK_PEAxisState_axERROR:       // Axis error
-								PEv2_AxisEnabledStates(i) = false;
-								PEv2_AxisLimitOverride(i) = false;
+								//PEv2_AxisEnabledStates(i) = false;
+								//PEv2_AxisLimitOverride(i) = false;
 	
 								break ;
 							case PK_PEAxisState_axLIMIT:        // Axis limit tripped
-								PEv2_AxisEnabledStates(i) = true;
-								PEv2_AxisLimitOverride(i) = false;
+								//PEv2_AxisEnabledStates(i) = true;
+								//PEv2_AxisLimitOverride(i) = false;
 								break ;
 							default:
 								break ;
@@ -1526,85 +1533,124 @@ void user_mainloop(void)
 
 						bool POSITION_MODE_active = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 
+						/*PEv2.#.joint-in-homing*/
+						bool IsHoming = PEv2_joint_vel_cmd(i);
 
-						float VelCmd = PEv2_joint_vel_cmd(i);
-						float PosCmd = PEv2_joint_pos_cmd(i);
-
-						if (VelCmd = 0)
+						if (IsHoming != true)
 						{
-							if (PosCmd != 0)
+							float VelCmd = PEv2_joint_vel_cmd(i);
+							float PosCmd = PEv2_joint_pos_cmd(i);
+
+							if (VelCmd = 0)
 							{
-								posMode[i] = true;
-
-
-								if (POSITION_MODE_active = false)
+								if (PosCmd != 0)
 								{
-									Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
-									dev->PEv2.param1 = i;
-									PK_PEv2_AxisConfigurationSet(dev);
-								}
-							}
+									posMode[i] = true;
 
-						}
-						else if (VelCmd != 0)
-						{
-							posMode[i] = false;
-					
-								
+
+									if (POSITION_MODE_active = false)
+									{
+										Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
+										dev->PEv2.param1 = i;
+										PK_PEv2_AxisConfigurationSet(dev);
+									}
+								}
+
+							}
+							else if (VelCmd != 0)
+							{
+								posMode[i] = false;
+
+
 								if (POSITION_MODE_active = true)
 								{
 									Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
 									dev->PEv2.param1 = i;
 									PK_PEv2_AxisConfigurationSet(dev);
 								}
-		
-						}
-						//if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
 
-						float ReferenceSpeed;
-						float ReferencePosition;
-						a_debPEv2_axxisout(i) = 1000;
+							}
+							//if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
 
-						if (StepScale[i] != 0)
-						{
-							a_debPEv2_axxisout(i) = 1100 + i;
-							ReferenceSpeed = VelCmd * StepScale[i];
-							a_debPEv2_axxisout(i) = 1110 + i;
-							ReferencePosition = PosCmd * StepScale[i];
-							a_debPEv2_axxisout(i) = 1120 + i;
+							float ReferenceSpeed;
+							float ReferencePosition;
+							a_debPEv2_axxisout(i) = 1000;
 
-						}
-						else
-						{
-							a_debPEv2_axxisout(i) = 1200 + i;
-							ReferenceSpeed = VelCmd;
-							a_debPEv2_axxisout(i) = 1210 + i;
-							ReferencePosition = PosCmd;
-							a_debPEv2_axxisout(i) = 1220 + i;
-
-						}
-						a_debPEv2_axxisout(i) = 1300 + i;
-
-						if (last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i))
-						{
-							dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferencePosition;
-							a_debPEv2_axxisout(i) = 1310 + i;
-							PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
-							a_debPEv2_axxisout(i) = 1320 + i;
-							last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i);
-							if (dev->PEv2.AxesState[i] = PK_PEState_peRUNNING)
+							if (StepScale[i] != 0)
 							{
-								//PK_PEv2_PulseEngineMove(dev);
-								doMove = true;
-								a_debPEv2_axxisout(i) = 1330 + i;
+								a_debPEv2_axxisout(i) = 1100 + i;
+								ReferenceSpeed = VelCmd * StepScale[i];
+								a_debPEv2_axxisout(i) = 1110 + i;
+								ReferencePosition = PosCmd * StepScale[i];
+								a_debPEv2_axxisout(i) = 1120 + i;
+
 							}
 							else
 							{
-								a_debPEv2_axxisout(i) = 1340 + i;
+								a_debPEv2_axxisout(i) = 1200 + i;
+								ReferenceSpeed = VelCmd;
+								a_debPEv2_axxisout(i) = 1210 + i;
+								ReferencePosition = PosCmd;
+								a_debPEv2_axxisout(i) = 1220 + i;
+
+							}
+							a_debPEv2_axxisout(i) = 1300 + i;
+
+							if (last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i))
+							{
+								dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferencePosition;
+								a_debPEv2_axxisout(i) = 1310 + i;
+								PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
+								a_debPEv2_axxisout(i) = 1320 + i;
+								last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i);
+								if (dev->PEv2.AxesState[i] = PK_PEState_peRUNNING)
+								{
+									//PK_PEv2_PulseEngineMove(dev);
+									doMove = true;
+									a_debPEv2_axxisout(i) = 1330 + i;
+								}
+								else
+								{
+									a_debPEv2_axxisout(i) = 1340 + i;
+								}
 							}
 						}
+						else
+						{
+							switch (intAxesState)
+							{
+							case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
+								//PEv2_AxisLimitOverride(i) = true;
+								//PEv2_AxisEnabledStates(i) = true;
+								break;
+							case PK_PEAxisState_axHOMING_BACKING_OFF:   // Backing off switch
+								//PEv2_AxisLimitOverride(i) = true;
+								//PEv2_AxisEnabledStates(i) = true;
+								break;
+							case PK_PEAxisState_axHOME:       // Axis is homed
+								//PEv2_AxisEnabledStates(i) = true;
+								//PEv2_AxisLimitOverride(i) = true;
+								// PEv2_joint_
+								break;
+							case PK_PEAxisState_axHOMINGSTART:       // Homing procedure is starting on axis
+								//PEv2_AxisEnabledStates(i) = true;
+								//PEv2_AxisLimitOverride(i) = true;
+								break;
+							case PK_PEAxisState_axHOMINGSEARCH:       // Homing procedure first step - going to home
+								//PEv2_AxisEnabledStates(i) = true;
+								//PEv2_AxisLimitOverride(i) = true;
+								break;
+							case PK_PEAxisState_axHOMINGBACK:       // Homing procedure second step - slow homing
+								//PEv2_AxisEnabledStates(i) = true;
+								//PEv2_AxisLimitOverride(i) = true;
+								break;
 
-
+							default:
+								dev->PEv2.PulseEngineStateSetup = PK_PEAxisState_axHOMINGSTART;
+								doStateSet = true;
+								break;
+							}
+						}
 					}
 
 					if (doMove = true)
