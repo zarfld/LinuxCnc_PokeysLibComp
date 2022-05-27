@@ -1350,7 +1350,8 @@ void user_mainloop(void)
 				bool doPositionSet = false;
 				bool doMove = false;
 				bool doStateSet = false;
-	
+				bool doHomingStart = false;
+				int HomingStartMaskSetup = 0;
 				if (PEv2_nrOfAxes!=0)
 				{
 					uint8_t  bm_SoftLimitStatus = dev->PEv2.SoftLimitStatus;
@@ -1646,8 +1647,10 @@ void user_mainloop(void)
 								break;
 
 							default:
-								dev->PEv2.PulseEngineStateSetup = PK_PEAxisState_axHOMINGSTART;
-								doStateSet = true;
+								//dev->PEv2.PulseEngineStateSetup = PK_PEAxisState_axHOMINGSTART;
+								
+								HomingStartMaskSetup = (1 << i); // Home axis 1 only (bit 0)
+								doHomingStart = true;
 								break;
 							}
 						}
@@ -1752,7 +1755,15 @@ void user_mainloop(void)
 						}
 					}
 				}
+				if (doHomingStart = true)
+				{
+					if (dev->PEv2.HomingStartMaskSetup != HomingStartMaskSetup) {
+						dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup; 
+					}
+					
 
+					PK_PEv2_HomingStart(dev);
+				}
 				if (PEv2_params_ApplyIniSettings==0 && PEv2_nrOfAxes!=PEv2_PulseEngineEnabled )
 				{
 					PEv2_params_ApplyIniSettings=1;
