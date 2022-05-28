@@ -178,10 +178,10 @@ pin io s32 PEv2.#.params.HOME_IGNORE_LIMITS [8] = 0;			// YES / NO
 pin io u32 PEv2.#.MPGjogMultiplier [8];		// MPG jog multiplier value
 pin io unsigned PEv2.#.MPGjogEncoder [8];			// MPG jog encoder ID
 
-pin io unsigned PEv2.#.PinHomeSwitch [8];			// Home switch pin (0 for external dedicated input)
-pin io unsigned PEv2.#.PinLimitMSwitch [8];			// Limit- switch pin (0 for external dedicated input)
-pin io unsigned PEv2.#.PinLimitPSwitch [8];			// Limit+ switch pin (0 for external dedicated input)
-pin io unsigned PEv2.#.AxisEnableOutputPins [8];		// Axis enabled output pin (0 for external dedicated output)
+pin in unsigned PEv2.#.PinHomeSwitch [8];			// Home switch pin (0 for external dedicated input)
+pin in unsigned PEv2.#.PinLimitMSwitch [8];			// Limit- switch pin (0 for external dedicated input)
+pin in unsigned PEv2.#.PinLimitPSwitch [8];			// Limit+ switch pin (0 for external dedicated input)
+pin in unsigned PEv2.#.AxisEnableOutputPins [8];		// Axis enabled output pin (0 for external dedicated output)
 
 pin out bit PEv2.#.HomeSwitchStat [8];				// Home switch
 pin out bit PEv2.#.LimitMSwitch [8];			// Limit- switch
@@ -2448,29 +2448,33 @@ void user_mainloop(void)
 							 if (PEv2_PinHomeSwitch(i) != 0)
 							 {
 								 //check if pin is parametrized in HAL
-								 if (PEv2_PinHomeSwitch(i) != PEv2_PinLimitMSwitch(i) && PEv2_PinHomeSwitch(i) != PEv2_PinLimitPSwitch(i))
+								 int Home = PEv2_PinHomeSwitch(i);
+								 int LimP = PEv2_PinLimitPSwitch(i);
+								 int LimM = PEv2_PinLimitMSwitch(i);
+
+								 if (Home != LimM && Home != LimP)
 								 {
-									 if (dev->PEv2.PinHomeSwitch[i] != PEv2_PinHomeSwitch(i)) {
-										 dev->PEv2.PinHomeSwitch[i] = PEv2_PinHomeSwitch(i);
+									 if (dev->PEv2.PinHomeSwitch[i] != Home) {
+										 dev->PEv2.PinHomeSwitch[i] = Home;
 										 doAxisConfig = true;
 									 }
 								 }
-								 else if (PEv2_PinHomeSwitch(i) == PEv2_PinLimitPSwitch(i))
+								 else if (Home == LimP)
 								 {
 									 //dev->PEv2.PinHomeSwitch[i]=0;
 									 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 4, true); // 16 Home switch is shared with Limit+ switch
 								 }
-								 else if (PEv2_PinHomeSwitch(i) == PEv2_PinLimitMSwitch(i))
+								 else if (Home == LimM)
 								 {
 									 //dev->PEv2.PinHomeSwitch(i)=0;
 									 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 3, true); // 8 Home switch is shared with Limit- switch
 
 								 }
 								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 2, true); // | PK_ASO_SWITCH_HOME;
-								 if (dev->Pins[PEv2_PinHomeSwitch(i) - 1].PinFunction != PK_PinCap_digitalInput)
+								 if (dev->Pins[Home - 1].PinFunction != PK_PinCap_digitalInput)
 								 {
-									 dev->Pins[PEv2_PinHomeSwitch(i) - 1].PinFunction = PK_PinCap_digitalInput;
-									 PK_SL_SetPinFunction(dev, PEv2_PinHomeSwitch(i) - 1, PK_PinCap_digitalInput);
+									 dev->Pins[Home - 1].PinFunction = PK_PinCap_digitalInput;
+									 PK_SL_SetPinFunction(dev, Home - 1, PK_PinCap_digitalInput);
 									 setPinConfig = true;
 								 }
 							 }
