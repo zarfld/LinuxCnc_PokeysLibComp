@@ -1676,38 +1676,43 @@ void user_mainloop(void)
 					doStateSet=true;
 				}
 
-				if (doStateSet==true)
-				{
-					if(PK_PEv2_PulseEngineStateSet(dev) != PK_OK)
+				if (HAL_Machine_On == true) {
+
+					if (doStateSet == true)
 					{
-						usleep(sleepdur); 
-						if(PK_PEv2_PulseEngineStateSet(dev) != PK_OK)
+						if (PK_PEv2_PulseEngineStateSet(dev) != PK_OK)
 						{
-							usleep(sleepdur); 
+							usleep(sleepdur);
+							if (PK_PEv2_PulseEngineStateSet(dev) != PK_OK)
+							{
+								usleep(sleepdur);
+							}
 						}
 					}
-				}
 
-				if (doMove==true)
-				{
-					if(PK_PEv2_PulseEngineMove(dev) != PK_OK)
+					if (doMove == true)
 					{
-						usleep(sleepdur); 
-						if(PK_PEv2_PulseEngineMove(dev) != PK_OK)
+						if (PK_PEv2_PulseEngineMove(dev) != PK_OK)
 						{
-							usleep(sleepdur); 
+							usleep(sleepdur);
+							if (PK_PEv2_PulseEngineMove(dev) != PK_OK)
+							{
+								usleep(sleepdur);
+							}
 						}
 					}
-				}
-				if (doHomingStart = true)
-				{
-					if (dev->PEv2.HomingStartMaskSetup != HomingStartMaskSetup) {
-						dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup; 
-					}
-					
+					if (doHomingStart = true)
+					{
+						if (dev->PEv2.HomingStartMaskSetup != HomingStartMaskSetup) {
+							dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
+						}
 
-					PK_PEv2_HomingStart(dev);
+
+						PK_PEv2_HomingStart(dev);
+					}
+
 				}
+				
 				if (PEv2_params_ApplyIniSettings==0 && PEv2_nrOfAxes!=PEv2_PulseEngineEnabled )
 				{
 					PEv2_params_ApplyIniSettings=1;
