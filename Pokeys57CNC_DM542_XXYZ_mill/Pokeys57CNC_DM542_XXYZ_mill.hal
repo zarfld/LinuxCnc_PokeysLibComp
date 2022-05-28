@@ -81,8 +81,14 @@ setp   pid.x.error-previous-target true
 # feedback sample time jitter.
 setp   pid.x.maxerror 0.012700
 
-net x-index-enable  <=> pid.x.index-enable
-net x-enable        =>  pid.x.enable
+#net x-index-enable  <=> pid.x.index-enable
+#net x-enable        =>  pid.x.enable
+#net x-pos-cmd       =>  pid.x.command
+#net x-pos-fb        =>  pid.x.feedback
+#net x-output        <=  pid.x.output
+
+
+
 
 
 
@@ -104,15 +110,13 @@ setp   pokeys.0.PEv2.0.params.STEPGEN-MAXACCEL           [JOINT_0]STEPGEN_MAXVEL
 # ---closedloop stepper signals---
 
 net x-pos-cmd    <= joint.0.motor-pos-cmd
-net x-pos-cmd    =>  pid.x.command
+net x-pos-cmd     =>  pokeys.0.PEv2.0.joint-pos-cmd
 
 net x-vel-cmd    <= joint.0.vel-cmd
-net x-output     <=  pid.x.output
-net x-output     => pokeys.0.PEv2.0.joint-vel-cmd
+net x-vel-cmd     =>  pokeys.0.PEv2.0.joint-vel-cmd
 
 net x-pos-fb     <= pokeys.0.PEv2.0.joint-pos-fb
 net x-pos-fb     => joint.0.motor-pos-fb
-net x-pos-fb     =>  pid.x.feedback
 
 net x-enable     <= joint.0.amp-enable-out
 net x-enable     => pokeys.0.PEv2.0.AxisEnableOutput
@@ -164,6 +168,9 @@ setp   pid.x2.maxerror 0.012700
 
 net x2-index-enable  <=> pid.x2.index-enable
 net x2-enable        =>  pid.x2.enable
+net x2-pos-cmd       =>  pid.x2.command
+net x2-pos-fb        =>  pid.x2.feedback
+net x2-output        <=  pid.x2.output
 
 # Step Gen signals/setup for tandem axis
 setp   pokeys.0.PEv2.6.params.DIRSETUP        [JOINT_1]DIRSETUP
@@ -181,16 +188,13 @@ setp   pokeys.0.PEv2.6.params.STEPGEN-MAXACCEL           [JOINT_1]STEPGEN_MAXVEL
 # ---closedloop stepper signals---
 
 net x2-pos-cmd    <= joint.1.motor-pos-cmd
-net x2-pos-cmd       =>  pid.x2.command
-
+net x2-pos-cmd       =>  pokeys.0.PEv2.6.joint-pos-cmd
 
 net x2-vel-cmd    <= joint.1.vel-cmd
-net x2-output     <=  pid.x2.output
-net x2-output     => pokeys.0.PEv2.6.joint-vel-cmd
+net x2-vel-cmd     =>  pokeys.0.PEv2.6.joint-vel-cmd
 
 net x2-pos-fb     <= pokeys.0.PEv2.6.joint-pos-fb
 net x2-pos-fb     => joint.1.motor-pos-fb
-net x2-pos-fb     =>  pid.x2.feedback
 
 net x2-enable     <= joint.1.amp-enable-out
 net x2-enable     => pokeys.0.PEv2.6.AxisEnableOutput
@@ -257,12 +261,19 @@ setp   pokeys.0.PEv2.1.params.STEPGEN-MAXACCEL           [JOINT_2]STEPGEN_MAXVEL
 # ---closedloop stepper signals---
 
 net y-pos-cmd    <= joint.2.motor-pos-cmd
+net y-pos-cmd       =>  pokeys.0.PEv2.1.joint-pos-cmd
+
 net y-vel-cmd    <= joint.2.vel-cmd
-net y-output     <= pokeys.0.PEv2.1.joint-vel-cmd
+net y-vel-cmd     =>  pokeys.0.PEv2.1.joint-vel-cmd
+
 net y-pos-fb     <= pokeys.0.PEv2.1.joint-pos-fb
 net y-pos-fb     => joint.2.motor-pos-fb
+
 net y-enable     <= joint.2.amp-enable-out
 net y-enable     => pokeys.0.PEv2.1.AxisEnableOutput
+
+net y-homing     <= joint.2.homing
+net y-homing     => pokeys.0.PEv2.1.joint-in-homing
 
 # ---setup home / limit switch signals---
 
@@ -291,8 +302,8 @@ setp   pid.z.maxerror 0.012700
 
 net z-index-enable  <=> pid.z.index-enable
 net z-enable        =>  pid.z.enable
-
-
+net z-pos-cmd       =>  pid.z.command
+net z-pos-fb        =>  pid.z.feedback
 net z-output        <=  pid.z.output
 
 # Step Gen signals/setup
@@ -313,14 +324,13 @@ setp   pokeys.0.PEv2.2.params.STEPGEN-MAXACCEL           [JOINT_3]STEPGEN_MAXVEL
 # ---closedloop stepper signals---
 
 net z-pos-cmd    <= joint.3.motor-pos-cmd
-net z-pos-cmd       =>  pid.z.command
+net z-pos-cmd       =>  pokeys.0.PEv2.2.joint-pos-cmd
 
 net z-vel-cmd    <= joint.3.vel-cmd
-net z-output     => pokeys.0.PEv2.2.joint-vel-cmd
+net z-vel-cmd     =>  pokeys.0.PEv2.2.joint-vel-cmd
 
 net z-pos-fb     <= pokeys.0.PEv2.2.joint-pos-fb
 net z-pos-fb     => joint.3.motor-pos-fb
-net z-pos-fb        =>  pid.z.feedback
 
 net z-enable     <= joint.3.amp-enable-out
 net z-enable     => pokeys.0.PEv2.2.AxisEnableOutput
@@ -514,7 +524,7 @@ net pokeys.kbd48CNC.FEEDRATE_MINUS.Button =>	halui.feed-override.decrease
 #net pokeys.kbd48CNC.JOGRATE_PLUS.LED 	<=
 #net pokeys.kbd48CNC.JOGRATE_MINUS.Button =>				
 #net pokeys.kbd48CNC.JOGRATE_MINUS.LED 	<=
-	#FUN_SHUTTLE_MODE,
+#FUN_SHUTTLE_MODE,
 #net pokeys.kbd48CNC.SHUTTLE_MODE.Button =>				
 #net pokeys.kbd48CNC.SHUTTLE_MODE.LED 	<=
 
