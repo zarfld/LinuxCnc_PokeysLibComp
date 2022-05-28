@@ -1535,7 +1535,7 @@ void user_mainloop(void)
 						bool POSITION_MODE_active = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 
 						/*PEv2.#.joint-in-homing*/
-						bool IsHoming = PEv2_joint_vel_cmd(i);
+						bool IsHoming = PEv2_joint_in_homing(i);
 
 						if (IsHoming != true)
 						{
