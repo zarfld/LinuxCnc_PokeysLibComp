@@ -83,9 +83,9 @@ setp   pid.x.maxerror 0.012700
 
 net x-index-enable  <=> pid.x.index-enable
 net x-enable        =>  pid.x.enable
-net x-pos-cmd       =>  pid.x.command
-net x-pos-fb        =>  pid.x.feedback
-net x-output        <=  pid.x.output
+
+
+
 
 # Step Gen signals/setup
 setp   pokeys.0.PEv2.0.params.DIRSETUP        [JOINT_0]DIRSETUP
@@ -100,16 +100,26 @@ setp   pokeys.0.PEv2.0.params.HOME-SEARCH-VEL  	   [JOINT_0]HOME_SEARCH_VEL
 setp   pokeys.0.PEv2.0.params.HOME-LATCH-VEL  	   [JOINT_0]HOME_LATCH_VEL
 setp   pokeys.0.PEv2.0.params.STEPGEN-MAXVEL         [JOINT_0]STEPGEN_MAXACCEL
 setp   pokeys.0.PEv2.0.params.STEPGEN-MAXACCEL           [JOINT_0]STEPGEN_MAXVEL
+
 # ---closedloop stepper signals---
 
 net x-pos-cmd    <= joint.0.motor-pos-cmd
-net x-vel-cmd    <= joint.0.vel-cmd
+net x-pos-cmd    =>  pid.x.command
 
-net x-output     <= pokeys.0.PEv2.0.joint-vel-cmd
+net x-vel-cmd    <= joint.0.vel-cmd
+net x-output     <=  pid.x.output
+net x-output     => pokeys.0.PEv2.0.joint-vel-cmd
+
 net x-pos-fb     <= pokeys.0.PEv2.0.joint-pos-fb
 net x-pos-fb     => joint.0.motor-pos-fb
+net x-pos-fb     =>  pid.x.feedback
+
 net x-enable     <= joint.0.amp-enable-out
 net x-enable     => pokeys.0.PEv2.0.AxisEnableOutput
+
+
+net x-homing     <= joint.0.homing
+net x-homing     => pokeys.0.PEv2.0.joint-in-homing
 
 # ---Encoder feedback signals/setup---
 
@@ -121,8 +131,9 @@ net x-enable     => pokeys.0.PEv2.0.AxisEnableOutput
 setp    pokeys.0.PEv2.0.params.ENCODER-SCALE  [JOINT_0]ENCODER_SCALE
 
 net x-pos-fb               <=  pokeys.0.PEv2.0.joint-pos-fb
-
 net x-pos-fb               =>  joint.0.motor-pos-fb
+
+
 #net x-index-enable    joint.0.index-enable  <=>  [HMOT](CARD0).encoder.00.index-enable
 #net x-pos-rawcounts        <=  [HMOT](CARD0).encoder.00.rawcounts
 
@@ -153,9 +164,6 @@ setp   pid.x2.maxerror 0.012700
 
 net x2-index-enable  <=> pid.x2.index-enable
 net x2-enable        =>  pid.x2.enable
-net x2-pos-cmd       =>  pid.x2.command
-net x2-pos-fb        =>  pid.x2.feedback
-net x2-output        <=  pid.x2.output
 
 # Step Gen signals/setup for tandem axis
 setp   pokeys.0.PEv2.6.params.DIRSETUP        [JOINT_1]DIRSETUP
@@ -173,21 +181,28 @@ setp   pokeys.0.PEv2.6.params.STEPGEN-MAXACCEL           [JOINT_1]STEPGEN_MAXVEL
 # ---closedloop stepper signals---
 
 net x2-pos-cmd    <= joint.1.motor-pos-cmd
-net x2-vel-cmd    <= joint.1.vel-cmd
+net x2-pos-cmd       =>  pid.x2.command
 
-net x2-output     <= pokeys.0.PEv2.6.joint-vel-cmd
+
+net x2-vel-cmd    <= joint.1.vel-cmd
+net x2-output     <=  pid.x2.output
+net x2-output     => pokeys.0.PEv2.6.joint-vel-cmd
+
 net x2-pos-fb     <= pokeys.0.PEv2.6.joint-pos-fb
 net x2-pos-fb     => joint.1.motor-pos-fb
+net x2-pos-fb     =>  pid.x2.feedback
 
 net x2-enable     <= joint.1.amp-enable-out
 net x2-enable     => pokeys.0.PEv2.6.AxisEnableOutput
+
+net x2-homing     <= joint.1.homing
+net x2-homing     => pokeys.0.PEv2.6.joint-in-homing
 
 # ---Encoder feedback signals/setup---
 
 setp    pokeys.0.PEv2.6.params.ENCODER-SCALE  [JOINT_1]ENCODER_SCALE
 
 net x2-pos-fb               <=  pokeys.0.PEv2.6.joint-pos-fb
-
 net x2-pos-fb               =>  joint.1.motor-pos-fb
 
 #net x2-index-enable    joint.0.index-enable  <=>  [HMOT](CARD0).encoder.00.index-enable
@@ -276,8 +291,8 @@ setp   pid.z.maxerror 0.012700
 
 net z-index-enable  <=> pid.z.index-enable
 net z-enable        =>  pid.z.enable
-net z-pos-cmd       =>  pid.z.command
-net z-pos-fb        =>  pid.z.feedback
+
+
 net z-output        <=  pid.z.output
 
 # Step Gen signals/setup
@@ -298,13 +313,20 @@ setp   pokeys.0.PEv2.2.params.STEPGEN-MAXACCEL           [JOINT_3]STEPGEN_MAXVEL
 # ---closedloop stepper signals---
 
 net z-pos-cmd    <= joint.3.motor-pos-cmd
+net z-pos-cmd       =>  pid.z.command
+
 net z-vel-cmd    <= joint.3.vel-cmd
-net z-output     <= pokeys.0.PEv2.2.joint-vel-cmd
+net z-output     => pokeys.0.PEv2.2.joint-vel-cmd
+
 net z-pos-fb     <= pokeys.0.PEv2.2.joint-pos-fb
 net z-pos-fb     => joint.3.motor-pos-fb
+net z-pos-fb        =>  pid.z.feedback
+
 net z-enable     <= joint.3.amp-enable-out
 net z-enable     => pokeys.0.PEv2.2.AxisEnableOutput
 
+net z-homing     <= joint.3.homing
+net z-homing     => pokeys.0.PEv2.2.joint-in-homing
 # ---setup home / limit switch signals---
 
 net z-home-sw     =>  joint.3.home-sw-in
