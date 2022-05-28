@@ -2644,9 +2644,9 @@ void user_mainloop(void)
 								 //PEv2_AxesConfig(i) = dev->PEv2.AxesConfig[i]; readonly
 								 //PEv2_AxesSwitchConfig(i)  = dev->PEv2.AxesSwitchConfig[i];
 
-								 PEv2_PinHomeSwitch(i) = dev->PEv2.PinHomeSwitch[i];
-								 PEv2_PinLimitMSwitch(i) = dev->PEv2.PinLimitMSwitch[i];
-								 PEv2_PinLimitPSwitch(i) = dev->PEv2.PinLimitPSwitch[i];
+								 //PEv2_PinHomeSwitch(i) = dev->PEv2.PinHomeSwitch[i];
+								 //PEv2_PinLimitMSwitch(i) = dev->PEv2.PinLimitMSwitch[i];
+								 //PEv2_PinLimitPSwitch(i) = dev->PEv2.PinLimitPSwitch[i];
 
 								 PEv2_HomingSpeed(i) = dev->PEv2.HomingSpeed[i];
 								 PEv2_HomingReturnSpeed(i) = dev->PEv2.HomingReturnSpeed[i];
@@ -2663,7 +2663,7 @@ void user_mainloop(void)
 
 								 PEv2_MPGjogMultiplier(i) = dev->PEv2.MPGjogMultiplier[i];
 
-								 PEv2_AxisEnableOutputPins(i) = dev->PEv2.AxisEnableOutputPins[i];
+								 //PEv2_AxisEnableOutputPins(i) = dev->PEv2.AxisEnableOutputPins[i];
 								 PEv2_InvertAxisEnable(i) = dev->PEv2.InvertAxisEnable[i];
 
 								 PEv2_FilterLimitMSwitch(i) = dev->PEv2.FilterLimitMSwitch[i];
