@@ -1618,6 +1618,7 @@ void user_mainloop(void)
 						}
 						else
 						{
+							dev->PEv2.ReferencePositionSpeed[i] = 0;
 							switch (intAxesState)
 							{
 							case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
