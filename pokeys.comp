@@ -1479,7 +1479,7 @@ void user_mainloop(void)
 								IsHoming = true;
 							}
 
-							if (PEv2_joint_in_homing(i) != true)
+							if (PEv2_joint_in_homing(i) = 0)
 							{
 								float VelCmd = PEv2_joint_vel_cmd(i);
 								float PosCmd = PEv2_joint_pos_cmd(i);
