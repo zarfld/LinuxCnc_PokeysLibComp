@@ -1250,7 +1250,7 @@ void user_mainloop(void)
 					PEv2_ErrorInputStatus = dev->PEv2.ErrorInputStatus;
 					PEv2_MiscInputStatus = dev->PEv2.MiscInputStatus;
 
-					if(HAL_Machine_On==true)
+					if(HAL_Machine_On!=0)
 					{
 					/*
 						PK_PEState_peSTOPPED        = 0,           // Pulse engine is stopped
@@ -1416,69 +1416,6 @@ void user_mainloop(void)
 								break ;
 							case PK_PEAxisState_axRUNNING:        // Axis is running
 								a_debPEv2out = 330 + i;
-								//PEv2_AxisEnabledStates(i) = true;
-								//PEv2_AxisLimitOverride(i) = false;
-
-
-								/*
-								if (posMode[i] != true)
-								{
-									if(PEv2_ReferencePositionSpeed(i) != (int) ReferenceSpeed)
-									{
-										if (PEv2_params_STEP_SCALE(i) != 0)
-										{
-											PEv2_ReferencePositionSpeed(i) = (int)ReferenceSpeed;
-											//PEv2_PositionSetup(i) = PEv2_joint_pos_cmd(i) * PEv2_params_STEP_SCALE(i);
-										}
-										else
-										{
-											PEv2_ReferencePositionSpeed(i) = PEv2_joint_vel_cmd(i);
-											//PEv2_PositionSetup(i) = PEv2_joint_pos_cmd(i);
-										}
-
-
-										doMove=true;
-										dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferenceSpeed;
-										//dev->PEv2.PositionSetup[i] = (int)PEv2_PositionSetup(i);
-									}
-									//PEv2_joint_vel_fb(i) = ( PEv2_joint_pos_fb(i) - (PEv2_CurrentPosition(i) / PEv2_params_STEP_SCALE(i)) )* Loop_Frequ;
-								}
-								else
-								{
-									if (last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i))
-									{
-										if (PEv2_params_STEP_SCALE(i) != 0)
-										{
-											dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferencePosition;
-											PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
-										}
-										else
-										{
-											dev->PEv2.ReferencePositionSpeed[i] = (int32_t)(PEv2_joint_pos_cmd(i));
-											PEv2_ReferencePositionSpeed(i) = (int)(PEv2_joint_pos_cmd(i));
-										}
-
-										//dev->PEv2.ReferencePositionSpeed[i] = PEv2_ReferencePositionSpeed(i);
-										//dev->PEv2.PositionSetup[i] = PEv2_PositionSetup(i);
-										//doPositionSet =true;
-
-										//if (abs(dev->PEv2.CurrentPosition[0] - dev->PEv2.ReferencePositionSpeed[0]) > 0)
-										//{
-											PK_PEv2_PulseEngineMove(dev);
-											usleep(sleepdur);
-											PK_PEv2_StatusGet(dev);
-											doMove = false;
-										//}
-
-										last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i);
-									}
-
-									//PEv2_joint_vel_fb(i) = 0;
-								}
-								*/
-								usleep(sleepdur);
-
-
 								break ;
 							case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
 								//PEv2_AxisLimitOverride(i) = true;
@@ -1537,7 +1474,7 @@ void user_mainloop(void)
 						/*PEv2.#.joint-in-homing*/
 						bool IsHoming = false;
 						
-						if (HAL_Machine_On == true) {
+						if (HAL_Machine_On !=0) {
 							if (PEv2_joint_in_homing(i) != 0) {
 								IsHoming = true;
 							}
