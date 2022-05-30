@@ -9,6 +9,11 @@ pin out s32 a_debout;
 
 pin out s32 a_debPEv2out;
 pin out s32 a_debPEv2.#.axxisout[8];
+pin out bit a_debPEv2.#.ishoming[8];
+pin out bit a_debPEv2.#.PosMode[8];
+pin out float a_debPEv2.#.RefSpeed[8];
+pin out float a_debPEv2.#.RefPos[8];
+
 pin out bit err;
 pin out bit connected;
 pin in unsigned devSerial;
@@ -1519,6 +1524,8 @@ void user_mainloop(void)
 								float ReferenceSpeed;
 								float ReferencePosition;
 								a_debPEv2_axxisout(i) = 1000;
+								a_debPEv2_ishoming(i) = IsHoming;
+
 
 								if (StepScale[i] != 0)
 								{
@@ -1539,6 +1546,10 @@ void user_mainloop(void)
 
 								}
 								a_debPEv2_axxisout(i) = 1300 + i;
+								a_debPEv2_RefSpeed(i) = ReferenceSpeed;
+								a_debPEv2_RefPos(i) = ReferencePosition;
+								a_debPEv2_PosMode(i) = posMode;
+
 								if (posMode[i] = true) {
 									if (last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i))
 									{
