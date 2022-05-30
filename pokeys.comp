@@ -1576,7 +1576,7 @@ void user_mainloop(void)
 
 								if (posMode[i]=true) {
 									a_debPEv2_axxisout(i) = 13100 + i;
-									if (InPosition = false) 
+									if (InPosition=false) 
 									{
 										if (last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i))
 										{
@@ -1624,7 +1624,7 @@ void user_mainloop(void)
 								}
 								else
 								{
-									if (InPosition = false)
+									if (InPosition=false)
 									{
 										a_debPEv2_axxisout(i) = 14100 + i;
 										if (last_joint_vel_cmd[i] != PEv2_joint_vel_cmd(i))
