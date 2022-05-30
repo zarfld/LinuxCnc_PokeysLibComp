@@ -1486,9 +1486,9 @@ void user_mainloop(void)
 						}
 						tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,PEv2_AxisEnabledStates(i));
 						PEv2_LimitOverrideSetup = Set_BitOfByte(PEv2_LimitOverrideSetup ,i,PEv2_AxisLimitOverride(i));
-
+						a_debPEv2_axxisout(i) = 2900 + i;
 						bool POSITION_MODE_active = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-
+						a_debPEv2_axxisout(i) = 29000 + i;
 						/*PEv2.#.joint-in-homing*/
 						bool IsHoming = false;
 						
