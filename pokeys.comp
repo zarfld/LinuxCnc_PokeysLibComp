@@ -1519,9 +1519,9 @@ void user_mainloop(void)
 
 								if (InPosition!=false)
 								{
-									if (VelCmd=0)
+									if (VelCmd=0.00000)
 									{
-										if (PosCmd!=0)
+										if (PosCmd!=0.00000)
 										{
 											posMode[i] = true;
 
@@ -1535,7 +1535,7 @@ void user_mainloop(void)
 										}
 
 									}
-									else if (VelCmd!=0)
+									else if (VelCmd!=0.00000)
 									{
 										posMode[i] = false;
 
