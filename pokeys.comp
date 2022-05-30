@@ -1563,7 +1563,7 @@ void user_mainloop(void)
 
 
 								*/
-								if (InPosition[i]!= false && VelCmd=0.00000 && PosCmd!=PosFb[i])
+								if ((InPosition[i]!=false) && (VelCmd=0.00000) && (PosCmd!=PosFb[i]))
 								{
 									posMode[i] = true;
 									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
