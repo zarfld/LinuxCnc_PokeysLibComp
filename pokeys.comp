@@ -1563,10 +1563,10 @@ void user_mainloop(void)
 
 
 								*/
-								if (InPosition[i] != false && VelCmd = 0.00000 && PosCmd != PosFb[i])
+								if (InPosition[i]!= false && VelCmd=0.00000 && PosCmd!=PosFb[i])
 								{
 									posMode[i] = true;
-									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3)
+									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 									if (POSITION_MODE_active[i] = false)
 									{
 										dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
@@ -1579,7 +1579,7 @@ void user_mainloop(void)
 								else
 								{
 									posMode[i] = false;
-									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3)
+									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 									if (POSITION_MODE_active[i] = true)
 									{
 										dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
@@ -1646,7 +1646,7 @@ void user_mainloop(void)
 											//PEv2_joint_pos_fb(i) = PEv2_joint_pos_cmd(i);
 										}
 
-										POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3)
+										POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 										if (POSITION_MODE_active[i] = true)
 										{
 											dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
