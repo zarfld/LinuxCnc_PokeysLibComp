@@ -1515,34 +1515,39 @@ void user_mainloop(void)
 								float VelCmd = PEv2_joint_vel_cmd(i);
 								float PosCmd = PEv2_joint_pos_cmd(i);
 								a_debPEv2out = 400 + i;
-								if (VelCmd = 0)
+
+								if (InPosition != false)
 								{
-									if (PosCmd != 0)
+									if (VelCmd = 0)
 									{
-										posMode[i] = true;
-
-
-										if (POSITION_MODE_active = false)
+										if (PosCmd != 0)
 										{
-											Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
+											posMode[i] = true;
+
+
+											if (POSITION_MODE_active = false)
+											{
+												Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
+												dev->PEv2.param1 = i;
+												PK_PEv2_AxisConfigurationSet(dev);
+											}
+										}
+
+									}
+									else if (VelCmd != 0)
+									{
+										posMode[i] = false;
+
+										if (POSITION_MODE_active = true)
+										{
+											Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
 											dev->PEv2.param1 = i;
 											PK_PEv2_AxisConfigurationSet(dev);
 										}
+
 									}
-
 								}
-								else if (VelCmd != 0)
-								{
-									posMode[i] = false;
 
-									if (POSITION_MODE_active = true)
-									{
-										Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
-										dev->PEv2.param1 = i;
-										PK_PEv2_AxisConfigurationSet(dev);
-									}
-
-								}
 								//if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
 
 								float ReferenceSpeed;
