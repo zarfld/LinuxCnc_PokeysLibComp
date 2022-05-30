@@ -1565,8 +1565,8 @@ void user_mainloop(void)
 								a_debPEv2_RefPos(i) = ReferencePosition;
 								a_debPEv2_PosMode(i) = posMode;
 
-								if (posMode[i] = true) {
-									if (last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i))
+								if (posMode[i]=true) {
+									if (last_joint_pos_cmd[i]!=PEv2_joint_pos_cmd(i))
 									{
 										dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferencePosition;
 										a_debPEv2_axxisout(i) = 1310 + i;
@@ -1587,7 +1587,7 @@ void user_mainloop(void)
 								}
 								else
 								{
-									if (last_joint_vel_cmd[i] != PEv2_joint_vel_cmd(i))
+									if (last_joint_vel_cmd[i]!=PEv2_joint_vel_cmd(i))
 									{
 										dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferenceSpeed;
 										a_debPEv2_axxisout(i) = 1410 + i;
@@ -1610,7 +1610,8 @@ void user_mainloop(void)
 							}
 							else
 							{
-								dev->PEv2.ReferencePositionSpeed[i] = 0;
+								a_debPEv2_axxisout(i) = 2400 + i;
+								dev->PEv2.ReferencePositionSpeed[i]=0;
 								switch (intAxesState)
 								{
 								case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
@@ -1646,7 +1647,9 @@ void user_mainloop(void)
 									doHomingStart = true;
 									break;
 								}
+								a_debPEv2_axxisout(i) = 2410 + i;
 							}
+
 						}
 						else
 						{
@@ -1744,7 +1747,7 @@ void user_mainloop(void)
 						}
 					}
 
-					if (doMove == true)
+					if (doMove==true)
 					{
 						if (PK_PEv2_PulseEngineMove(dev) != PK_OK)
 						{
