@@ -1589,13 +1589,16 @@ void user_mainloop(void)
 									a_debPEv2_axxisout(i) = 1220 + i;
 
 								}
+								
+								POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
+
 								a_debPEv2_axxisout(i) = 1300 + i;
 								a_debPEv2_RefSpeed(i) = ReferenceSpeed;
 								a_debPEv2_RefPos(i) = ReferencePosition;
 								a_debPEv2_PosMode(i) = posMode[i];
 								a_debPEv2_PosModeAct(i) = POSITION_MODE_active[i];
 
-								if (posMode[i]==true) {
+								if (POSITION_MODE_active[i] ==true) {
 									a_debPEv2_axxisout(i) = 13100 + i;
 									if (InPosition[i] ==false)
 									{
