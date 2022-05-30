@@ -1364,6 +1364,7 @@ void user_mainloop(void)
 				int HomingStartMaskSetup = 0;
 				bool IsHoming[8];
 				bool InPosition[8];
+				bool POSITION_MODE_active[8];
 				if (PEv2_nrOfAxes!=0)
 				{
 					uint8_t  bm_SoftLimitStatus = dev->PEv2.SoftLimitStatus;
@@ -1497,7 +1498,7 @@ void user_mainloop(void)
 						tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,PEv2_AxisEnabledStates(i));
 						PEv2_LimitOverrideSetup = Set_BitOfByte(PEv2_LimitOverrideSetup ,i,PEv2_AxisLimitOverride(i));
 						a_debPEv2_axxisout(i) = 2900 + i;
-						bool POSITION_MODE_active = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
+						bool POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 						a_debPEv2_axxisout(i) = 29000 + i;
 						/*PEv2.#.joint-in-homing*/
 						
@@ -1539,7 +1540,7 @@ void user_mainloop(void)
 											posMode[i] = true;
 
 
-											if (POSITION_MODE_active=false)
+											if (POSITION_MODE_active[i]=false)
 											{
 												dev->PEv2.AxesConfig[i]=Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
 												dev->PEv2.param1 = i;
@@ -1552,7 +1553,7 @@ void user_mainloop(void)
 									{
 										posMode[i] = false;
 
-										if (POSITION_MODE_active=true)
+										if (POSITION_MODE_active[i]=true)
 										{
 											dev->PEv2.AxesConfig[i]=Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
 											dev->PEv2.param1 = i;
@@ -1592,7 +1593,7 @@ void user_mainloop(void)
 								a_debPEv2_RefSpeed(i) = ReferenceSpeed;
 								a_debPEv2_RefPos(i) = ReferencePosition;
 								a_debPEv2_PosMode(i) = posMode[i];
-								a_debPEv2_PosModeAct(i) = POSITION_MODE_active;
+								a_debPEv2_PosModeAct(i) = POSITION_MODE_active[i];
 
 								if (posMode[i]==true) {
 									a_debPEv2_axxisout(i) = 13100 + i;
@@ -1664,6 +1665,9 @@ void user_mainloop(void)
 											{
 												a_debPEv2_axxisout(i) = 1440 + i;
 											}
+
+
+
 										}
 									}
 									else
