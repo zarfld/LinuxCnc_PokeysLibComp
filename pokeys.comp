@@ -10,6 +10,7 @@ pin out s32 a_debout;
 pin out s32 a_debPEv2out;
 pin out s32 a_debPEv2.#.axxisout[8];
 pin out bit a_debPEv2.#.ishoming[8];
+pin out bit a_debPEv2.#.inposition[8];
 pin out bit a_debPEv2.#.PosMode[8];
 pin out float a_debPEv2.#.RefSpeed[8];
 pin out float a_debPEv2.#.RefPos[8];
@@ -1492,13 +1493,22 @@ void user_mainloop(void)
 						a_debPEv2_axxisout(i) = 29000 + i;
 						/*PEv2.#.joint-in-homing*/
 						bool IsHoming = false;
-						
+						bool InPosition = false;
+
+						 //PEv2.#.joint-in-position
+						if (PEv2_joint_in_homing(i)!= 0) {
+							IsHoming = true;
+						}
+						if (PEv2_joint_in_position(i)!= 0) {
+							InPosition = true;
+						}
+						a_debPEv2_ishoming(i) = IsHoming;
+						a_debPEv2_inposition(i) = InPosition;
+
 						if (HAL_Machine_On==true)
 						{
 							a_debPEv2out = 390 + i;
-							if (PEv2_joint_in_homing(i) != 0) {
-								IsHoming = true;
-							}
+
 
 							if (IsHoming==false)
 							{
@@ -1525,7 +1535,6 @@ void user_mainloop(void)
 								{
 									posMode[i] = false;
 
-
 									if (POSITION_MODE_active = true)
 									{
 										Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
@@ -1539,7 +1548,7 @@ void user_mainloop(void)
 								float ReferenceSpeed;
 								float ReferencePosition;
 								a_debPEv2_axxisout(i) = 1000;
-								a_debPEv2_ishoming(i) = IsHoming;
+								
 
 
 								if (StepScale[i] != 0)
@@ -1566,43 +1575,84 @@ void user_mainloop(void)
 								a_debPEv2_PosMode(i) = posMode;
 
 								if (posMode[i]=true) {
-									if (last_joint_pos_cmd[i]!=PEv2_joint_pos_cmd(i))
+									
+									if (InPosition = false) 
 									{
-										dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferencePosition;
-										a_debPEv2_axxisout(i) = 1310 + i;
-										PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
-										a_debPEv2_axxisout(i) = 1320 + i;
-										last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i);
-										if (dev->PEv2.AxesState[i] = PK_PEState_peRUNNING)
+										if (last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i))
 										{
-											//PK_PEv2_PulseEngineMove(dev);
-											doMove = true;
-											a_debPEv2_axxisout(i) = 1330 + i;
-										}
-										else
-										{
-											a_debPEv2_axxisout(i) = 1340 + i;
+											dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferencePosition;
+											a_debPEv2_axxisout(i) = 1310 + i;
+											PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
+											a_debPEv2_axxisout(i) = 1320 + i;
+											last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i);
+											if (dev->PEv2.AxesState[i] = PK_PEState_peRUNNING)
+											{
+												//PK_PEv2_PulseEngineMove(dev);
+												doMove = true;
+												a_debPEv2_axxisout(i) = 1330 + i;
+											}
+											else
+											{
+												a_debPEv2_axxisout(i) = 1340 + i;
+											}
 										}
 									}
+									else
+									{
+										//stop axis
+										/* 
+										Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
+										dev->PEv2.param1 = i;
+										PK_PEv2_AxisConfigurationSet(dev);
+										*/
+
+										if (dev->PEv2.ReferencePositionSpeed[i] != dev->PEv2.CurrentPosition[i]) 
+										{
+											Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
+											dev->PEv2.param1 = i;
+											PK_PEv2_AxisConfigurationSet(dev);
+
+											dev->PEv2.ReferencePositionSpeed[i] = 0;
+											PEv2_ReferencePositionSpeed(i) = 0;
+											last_joint_vel_cmd[i] = 0;
+											doMove = true;
+
+										}
+									}
+
 								}
 								else
 								{
-									if (last_joint_vel_cmd[i]!=PEv2_joint_vel_cmd(i))
+									if (InPosition = false)
 									{
-										dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferenceSpeed;
-										a_debPEv2_axxisout(i) = 1410 + i;
-										PEv2_ReferencePositionSpeed(i) = (int)ReferenceSpeed;
-										a_debPEv2_axxisout(i) = 1420 + i;
-										last_joint_vel_cmd[i] != PEv2_joint_vel_cmd(i);
-										if (dev->PEv2.AxesState[i] = PK_PEState_peRUNNING)
+										if (last_joint_vel_cmd[i] != PEv2_joint_vel_cmd(i))
 										{
-											//PK_PEv2_PulseEngineMove(dev);
-											doMove = true;
-											a_debPEv2_axxisout(i) = 1430 + i;
+											dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferenceSpeed;
+											a_debPEv2_axxisout(i) = 1410 + i;
+											PEv2_ReferencePositionSpeed(i) = (int)ReferenceSpeed;
+											a_debPEv2_axxisout(i) = 1420 + i;
+											last_joint_vel_cmd[i] != PEv2_joint_vel_cmd(i);
+											if (dev->PEv2.AxesState[i] = PK_PEState_peRUNNING)
+											{
+												//PK_PEv2_PulseEngineMove(dev);
+												doMove = true;
+												a_debPEv2_axxisout(i) = 1430 + i;
+											}
+											else
+											{
+												a_debPEv2_axxisout(i) = 1440 + i;
+											}
 										}
-										else
+									}
+									else
+									{
+										//InPosition -> StopAxis
+										if (dev->PEv2.ReferencePositionSpeed[i] != 0)
 										{
-											a_debPEv2_axxisout(i) = 1440 + i;
+											dev->PEv2.ReferencePositionSpeed[i] = 0;
+											PEv2_ReferencePositionSpeed(i) = 0;
+											last_joint_vel_cmd[i] = 0;
+											doMove = true;
 										}
 									}
 								}
