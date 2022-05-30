@@ -1575,13 +1575,13 @@ void user_mainloop(void)
 								a_debPEv2_PosMode(i) = posMode;
 
 								if (posMode[i]=true) {
-									
+									a_debPEv2_axxisout(i) = 13100 + i;
 									if (InPosition = false) 
 									{
 										if (last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i))
 										{
-											dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferencePosition;
 											a_debPEv2_axxisout(i) = 1310 + i;
+											dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferencePosition;
 											PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
 											a_debPEv2_axxisout(i) = 1320 + i;
 											last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i);
@@ -1605,9 +1605,10 @@ void user_mainloop(void)
 										dev->PEv2.param1 = i;
 										PK_PEv2_AxisConfigurationSet(dev);
 										*/
-
+										a_debPEv2_axxisout(i) = 1600 + i;
 										if (dev->PEv2.ReferencePositionSpeed[i] != dev->PEv2.CurrentPosition[i]) 
 										{
+											a_debPEv2_axxisout(i) = 160 + i;
 											Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
 											dev->PEv2.param1 = i;
 											PK_PEv2_AxisConfigurationSet(dev);
@@ -1625,10 +1626,11 @@ void user_mainloop(void)
 								{
 									if (InPosition = false)
 									{
+										a_debPEv2_axxisout(i) = 14100 + i;
 										if (last_joint_vel_cmd[i] != PEv2_joint_vel_cmd(i))
 										{
-											dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferenceSpeed;
 											a_debPEv2_axxisout(i) = 1410 + i;
+											dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferenceSpeed;
 											PEv2_ReferencePositionSpeed(i) = (int)ReferenceSpeed;
 											a_debPEv2_axxisout(i) = 1420 + i;
 											last_joint_vel_cmd[i] != PEv2_joint_vel_cmd(i);
@@ -1646,6 +1648,7 @@ void user_mainloop(void)
 									}
 									else
 									{
+										a_debPEv2_axxisout(i) = 1700 + i;
 										//InPosition -> StopAxis
 										if (dev->PEv2.ReferencePositionSpeed[i] != 0)
 										{
