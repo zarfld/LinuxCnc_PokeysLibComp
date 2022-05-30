@@ -1537,7 +1537,7 @@ void user_mainloop(void)
 									{
 										if (PosCmd!=0.00000)
 										{
-											posMode[i] = true;
+											//posMode[i] = true;
 
 
 											if (POSITION_MODE_active[i]=false)
