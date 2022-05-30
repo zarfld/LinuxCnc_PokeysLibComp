@@ -1578,19 +1578,19 @@ void user_mainloop(void)
 								a_debPEv2_axxisout(i) = 1300 + i;
 								a_debPEv2_RefSpeed(i) = ReferenceSpeed;
 								a_debPEv2_RefPos(i) = ReferencePosition;
-								a_debPEv2_PosMode(i) = posMode;
+								a_debPEv2_PosMode(i) = posMode[i];
 
-								if (posMode[i]=true) {
+								if (posMode[i]==true) {
 									a_debPEv2_axxisout(i) = 13100 + i;
-									if (InPosition!=true) 
+									if (InPosition==false) 
 									{
-										if (last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i))
+										if (last_joint_pos_cmd[i]!=PEv2_joint_pos_cmd(i))
 										{
 											a_debPEv2_axxisout(i) = 1310 + i;
 											dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferencePosition;
 											PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
 											a_debPEv2_axxisout(i) = 1320 + i;
-											last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i);
+											last_joint_pos_cmd[i]=PEv2_joint_pos_cmd(i);
 											if (dev->PEv2.AxesState[i] = PK_PEState_peRUNNING)
 											{
 												//PK_PEv2_PulseEngineMove(dev);
@@ -1630,7 +1630,7 @@ void user_mainloop(void)
 								}
 								else
 								{
-									if (InPosition=false)
+									if (InPosition!=true)
 									{
 										a_debPEv2_axxisout(i) = 14100 + i;
 										if (last_joint_vel_cmd[i] != PEv2_joint_vel_cmd(i))
@@ -1639,7 +1639,7 @@ void user_mainloop(void)
 											dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferenceSpeed;
 											PEv2_ReferencePositionSpeed(i) = (int)ReferenceSpeed;
 											a_debPEv2_axxisout(i) = 1420 + i;
-											last_joint_vel_cmd[i] != PEv2_joint_vel_cmd(i);
+											last_joint_vel_cmd[i]=PEv2_joint_vel_cmd(i);
 											if (dev->PEv2.AxesState[i] = PK_PEState_peRUNNING)
 											{
 												//PK_PEv2_PulseEngineMove(dev);
@@ -1672,7 +1672,7 @@ void user_mainloop(void)
 							else
 							{
 								a_debPEv2_axxisout(i) = 2400 + i;
-								dev->PEv2.ReferencePositionSpeed[i]=0;
+								//dev->PEv2.ReferencePositionSpeed[i]=0;
 								switch (intAxesState)
 								{
 								case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
