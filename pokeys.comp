@@ -2522,7 +2522,7 @@ void user_mainloop(void)
 
 							 if (PEv2_params_Feedback_Encoder_Id(i) = 0)
 							 {
-								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 3, true);  // PK_AC_POSITION_MODE;
+								// AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 3, true);  // PK_AC_POSITION_MODE;
 								 posMode[i] = true;
 							 }
 							 else
@@ -2545,7 +2545,8 @@ void user_mainloop(void)
 
 							 if (PEv2_SoftLimitMaximum(i) != 0 | PEv2_SoftLimitMinimum(i) != 0)
 							 {
-								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 3, true); // PK_AC_SOFT_LIMIT_ENABLED;
+								// AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 3, true); // PK_AC_SOFT_LIMIT_ENABLED;
+								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 3, true); // PK_AC_SOFT_LIMIT_ENABLED;
 							 }
 
 
