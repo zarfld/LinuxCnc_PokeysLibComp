@@ -1509,23 +1509,22 @@ void user_mainloop(void)
 						{
 							a_debPEv2out = 390 + i;
 
-
 							if (IsHoming==false)
 							{
 								float VelCmd = PEv2_joint_vel_cmd(i);
 								float PosCmd = PEv2_joint_pos_cmd(i);
 								a_debPEv2out = 400 + i;
 
-								if (InPosition != false)
+								if (InPosition!=false)
 								{
-									if (VelCmd = 0)
+									if (VelCmd=0)
 									{
-										if (PosCmd != 0)
+										if (PosCmd!=0)
 										{
 											posMode[i] = true;
 
 
-											if (POSITION_MODE_active = false)
+											if (POSITION_MODE_active=false)
 											{
 												Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
 												dev->PEv2.param1 = i;
@@ -1534,11 +1533,11 @@ void user_mainloop(void)
 										}
 
 									}
-									else if (VelCmd != 0)
+									else if (VelCmd!=0)
 									{
 										posMode[i] = false;
 
-										if (POSITION_MODE_active = true)
+										if (POSITION_MODE_active=true)
 										{
 											Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
 											dev->PEv2.param1 = i;
@@ -1556,7 +1555,7 @@ void user_mainloop(void)
 								
 
 
-								if (StepScale[i] != 0)
+								if (StepScale[i]!=0)
 								{
 									a_debPEv2_axxisout(i) = 1100 + i;
 									ReferenceSpeed = VelCmd * StepScale[i];
