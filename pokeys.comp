@@ -1492,7 +1492,8 @@ void user_mainloop(void)
 						/*PEv2.#.joint-in-homing*/
 						bool IsHoming = false;
 						
-						if (HAL_Machine_On !=0) {
+						if (HAL_Machine_On !=0)
+						{
 							a_debPEv2out = 390 + i;
 							if (PEv2_joint_in_homing(i) != 0) {
 								IsHoming = true;
@@ -1645,6 +1646,10 @@ void user_mainloop(void)
 									break;
 								}
 							}
+						}
+						else
+						{
+							a_debPEv2out = 3900 + i;
 						}
 					}
 
