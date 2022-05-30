@@ -1576,7 +1576,7 @@ void user_mainloop(void)
 
 								if (posMode[i]=true) {
 									a_debPEv2_axxisout(i) = 13100 + i;
-									if (InPosition=false) 
+									if (InPosition!=true) 
 									{
 										if (last_joint_pos_cmd[i] != PEv2_joint_pos_cmd(i))
 										{
@@ -1606,7 +1606,7 @@ void user_mainloop(void)
 										PK_PEv2_AxisConfigurationSet(dev);
 										*/
 										a_debPEv2_axxisout(i) = 1600 + i;
-										if (dev->PEv2.ReferencePositionSpeed[i] != dev->PEv2.CurrentPosition[i]) 
+										if (dev->PEv2.ReferencePositionSpeed[i]!=dev->PEv2.CurrentPosition[i]) 
 										{
 											a_debPEv2_axxisout(i) = 160 + i;
 											Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
