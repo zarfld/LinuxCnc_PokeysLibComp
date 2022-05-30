@@ -1720,7 +1720,9 @@ void user_mainloop(void)
 
 					if (doMove = true)
 					{
+						a_debPEv2out = 4000 + i;
 						PK_PEv2_PulseEngineMove(dev);
+						a_debPEv2out = 4100 + i;
 					}
 					a_debPEv2_doMove(i) = doMove;
 					a_debPEv2_RefPosSpeed(i) = dev->PEv2.ReferencePositionSpeed[i];
