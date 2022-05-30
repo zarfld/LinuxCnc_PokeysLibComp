@@ -1616,7 +1616,7 @@ void user_mainloop(void)
 											PEv2_ReferencePositionSpeed(i) = 0;
 											last_joint_vel_cmd[i] = 0;
 											doMove = true;
-
+											PEv2_joint_pos_fb(i) = PEv2_joint_pos_cmd(i);
 										}
 									}
 
@@ -1653,7 +1653,9 @@ void user_mainloop(void)
 											PEv2_ReferencePositionSpeed(i) = 0;
 											last_joint_vel_cmd[i] = 0;
 											doMove = true;
+											PEv2_joint_pos_fb(i) = PEv2_joint_pos_cmd(i);
 										}
+										
 									}
 								}
 
