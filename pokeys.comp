@@ -1528,7 +1528,7 @@ void user_mainloop(void)
 
 											if (POSITION_MODE_active=false)
 											{
-												Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
+												dev->PEv2.AxesConfig[i]=Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
 												dev->PEv2.param1 = i;
 												PK_PEv2_AxisConfigurationSet(dev);
 											}
@@ -1541,7 +1541,7 @@ void user_mainloop(void)
 
 										if (POSITION_MODE_active=true)
 										{
-											Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
+											dev->PEv2.AxesConfig[i]=Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
 											dev->PEv2.param1 = i;
 											PK_PEv2_AxisConfigurationSet(dev);
 										}
@@ -1579,6 +1579,7 @@ void user_mainloop(void)
 								a_debPEv2_RefSpeed(i) = ReferenceSpeed;
 								a_debPEv2_RefPos(i) = ReferencePosition;
 								a_debPEv2_PosMode(i) = posMode[i];
+								a_debPEv2_PosModeAct(i) = POSITION_MODE_active;
 
 								if (posMode[i]==true) {
 									a_debPEv2_axxisout(i) = 13100 + i;
@@ -1615,7 +1616,7 @@ void user_mainloop(void)
 										if (dev->PEv2.ReferencePositionSpeed[i]!=dev->PEv2.CurrentPosition[i]) 
 										{
 											a_debPEv2_axxisout(i) = 160 + i;
-											Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
+											dev->PEv2.AxesConfig[i]=Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
 											dev->PEv2.param1 = i;
 											PK_PEv2_AxisConfigurationSet(dev);
 
