@@ -1716,6 +1716,9 @@ void user_mainloop(void)
 						{
 							a_debPEv2out = 3900 + i;
 						}
+					
+						a_debPEv2_doMove(i) = doMove;
+						a_debPEv2_RefPosSpeed(i) = dev->PEv2.ReferencePositionSpeed[i];
 					}
 
 					if (doMove=true)
@@ -1724,8 +1727,7 @@ void user_mainloop(void)
 						PK_PEv2_PulseEngineMove(dev);
 						a_debPEv2out = 4100;
 					}
-					a_debPEv2_doMove(i) = doMove;
-					a_debPEv2_RefPosSpeed(i) = dev->PEv2.ReferencePositionSpeed[i];
+
 
 					if (tAxisEnabledMask != dev->PEv2.AxisEnabledMask)
 					{
