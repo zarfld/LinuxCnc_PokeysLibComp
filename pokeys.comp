@@ -1484,6 +1484,8 @@ void user_mainloop(void)
 								a_debPEv2out = 380 + i;
 								break ;
 						}
+						*/
+
 						tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,PEv2_AxisEnabledStates(i));
 						PEv2_LimitOverrideSetup = Set_BitOfByte(PEv2_LimitOverrideSetup ,i,PEv2_AxisLimitOverride(i));
 						a_debPEv2_axxisout(i) = 2900 + i;
@@ -1492,14 +1494,14 @@ void user_mainloop(void)
 						/*PEv2.#.joint-in-homing*/
 						bool IsHoming = false;
 						
-						if (HAL_Machine_On != false)
+						if (HAL_Machine_On==true)
 						{
 							a_debPEv2out = 390 + i;
 							if (PEv2_joint_in_homing(i) != 0) {
 								IsHoming = true;
 							}
 
-							if (IsHoming = false)
+							if (IsHoming==false)
 							{
 								float VelCmd = PEv2_joint_vel_cmd(i);
 								float PosCmd = PEv2_joint_pos_cmd(i);
