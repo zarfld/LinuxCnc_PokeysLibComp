@@ -1380,7 +1380,7 @@ void user_mainloop(void)
 						intCurrentPosition[i] = dev->PEv2.CurrentPosition[i];
 						a_debPEv2_axxisout(i) = 220 + i;
 						// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-						if (StepScale[i] != 0)
+						if (StepScale[i]!=0)
 						{
 							a_debPEv2_axxisout(i) = 230 + i;
 							PosFb[i] = intCurrentPosition[i] / StepScale[i];
@@ -1725,7 +1725,8 @@ void user_mainloop(void)
 
 					if (doMove=true)
 					{
-						a_debPEv2out = 4000;
+
+						PK_PEv2_PulseEngineMove(dev);
 						PK_PEv2_PulseEngineMove(dev);
 						a_debPEv2out = 4100;
 					}
@@ -1817,10 +1818,12 @@ void user_mainloop(void)
 
 					if (doMove==true)
 					{
-						if (PK_PEv2_PulseEngineMove(dev) != PK_OK)
+						a_debPEv2out = 4000;
+						if (PK_PEv2_PulseEngineMove(dev)!=PK_OK)
 						{
+							a_debPEv2out = 4200;
 							usleep(sleepdur);
-							if (PK_PEv2_PulseEngineMove(dev) != PK_OK)
+							if (PK_PEv2_PulseEngineMove(dev)!=PK_OK)
 							{
 								usleep(sleepdur);
 							}
@@ -1828,14 +1831,24 @@ void user_mainloop(void)
 					}
 					if (doHomingStart = true)
 					{
+						a_debPEv2out = 5000;
 						if (dev->PEv2.HomingStartMaskSetup != HomingStartMaskSetup) {
+							a_debPEv2out = 5100;
 							dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
 						}
+						//PK_PEv2_HomingStart(dev);
 
+						if (PK_PEv2_HomingStart(dev) != PK_OK)
+						{
+							a_debPEv2out = 4200;
+							usleep(sleepdur);
+							if (PK_PEv2_HomingStart(dev) != PK_OK)
+							{
+								usleep(sleepdur);
+							}
+						}
 
-						PK_PEv2_HomingStart(dev);
 					}
-
 				}
 				
 				if (PEv2_params_ApplyIniSettings==0 && PEv2_nrOfAxes!=PEv2_PulseEngineEnabled )
