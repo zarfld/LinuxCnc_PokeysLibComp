@@ -1506,8 +1506,16 @@ void user_mainloop(void)
 						if (PEv2_joint_in_homing(i)!= 0) {
 							IsHoming[i] = true;
 						}
+						else
+						{
+							IsHoming[i] = false;
+						}
 						if (PEv2_joint_in_position(i)!= 0) {
-							InPosition = true;
+							InPosition[i] = true;
+						}
+						else
+						{
+							InPosition[i] = false;
 						}
 						a_debPEv2_ishoming(i) = IsHoming[i];
 						a_debPEv2_inposition(i) = InPosition;
@@ -1516,7 +1524,7 @@ void user_mainloop(void)
 						{
 							a_debPEv2out = 390 + i;
 							posMode[i] = false;
-							if (IsHoming[i] ==false)
+							if (IsHoming[i]==false)
 							{
 								float VelCmd = PEv2_joint_vel_cmd(i);
 								float PosCmd = PEv2_joint_pos_cmd(i);
