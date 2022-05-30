@@ -1651,14 +1651,17 @@ void user_mainloop(void)
 										{
 											dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
 											dev->PEv2.param1 = i;
-											if (PK_PEv2_AxisConfigurationSet(dev) = PK_OK) 
-											{
+											PK_PEv2_AxisConfigurationSet(dev);
+											PK_PEv2_AxisConfigurationSet(dev);
+
+											//if (PK_PEv2_AxisConfigurationSet(dev) = PK_OK) 
+											//{
 												dev->PEv2.ReferencePositionSpeed[i] = 0;
 												PEv2_ReferencePositionSpeed(i) = 0;
 												last_joint_vel_cmd[i] = 0;
 												doMove = true;
-											}
-											else 
+											//}
+											/*else
 											{
 												dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
 												dev->PEv2.param1 = i;
@@ -1667,7 +1670,7 @@ void user_mainloop(void)
 												PEv2_ReferencePositionSpeed(i) = 0;
 												last_joint_vel_cmd[i] = 0;
 												doMove = true;
-											}
+											}*/
 										}
 
 									}
