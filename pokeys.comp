@@ -1542,9 +1542,9 @@ void user_mainloop(void)
 
 											if (POSITION_MODE_active[i]=false)
 											{
-												dev->PEv2.AxesConfig[i]=Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
-												dev->PEv2.param1 = i;
-												PK_PEv2_AxisConfigurationSet(dev);
+												//dev->PEv2.AxesConfig[i]=Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
+												//dev->PEv2.param1 = i;
+												//PK_PEv2_AxisConfigurationSet(dev);
 											}
 										}
 
@@ -1555,9 +1555,9 @@ void user_mainloop(void)
 
 										if (POSITION_MODE_active[i]=true)
 										{
-											dev->PEv2.AxesConfig[i]=Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
-											dev->PEv2.param1 = i;
-											PK_PEv2_AxisConfigurationSet(dev);
+											//dev->PEv2.AxesConfig[i]=Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
+											//dev->PEv2.param1 = i;
+											//PK_PEv2_AxisConfigurationSet(dev);
 										}
 
 									}
