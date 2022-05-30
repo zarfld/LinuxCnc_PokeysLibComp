@@ -12,8 +12,10 @@ pin out s32 a_debPEv2.#.axxisout[8];
 pin out bit a_debPEv2.#.ishoming[8];
 pin out bit a_debPEv2.#.inposition[8];
 pin out bit a_debPEv2.#.PosMode[8];
+pin out bit a_debPEv2.#.doMove[8];
 pin out float a_debPEv2.#.RefSpeed[8];
 pin out float a_debPEv2.#.RefPos[8];
+pin out float a_debPEv2.#.RefPosSpeed[8];
 
 pin out bit err;
 pin out bit connected;
@@ -1720,7 +1722,8 @@ void user_mainloop(void)
 					{
 						PK_PEv2_PulseEngineMove(dev);
 					}
-
+					a_debPEv2_doMove(i) = doMove;
+					a_debPEv2_RefPosSpeed(i) = dev->PEv2.ReferencePositionSpeed[i];
 
 					if (tAxisEnabledMask != dev->PEv2.AxisEnabledMask)
 					{
@@ -1792,7 +1795,7 @@ void user_mainloop(void)
 					doStateSet=true;
 				}
 
-				if (HAL_Machine_On == true) {
+				if (HAL_Machine_On==true) {
 
 					if (doStateSet == true)
 					{
