@@ -1719,7 +1719,7 @@ void user_mainloop(void)
 									//dev->PEv2.PulseEngineStateSetup = PK_PEAxisState_axHOMINGSTART;
 
 									HomingStartMaskSetup = (1 << i); // Home axis 1 only (bit 0)
-									doHomingStart=true;
+									//doHomingStart=true;
 									break;
 								}
 								a_debPEv2_axxisout(i) = 2410 + i;
@@ -1735,13 +1735,15 @@ void user_mainloop(void)
 						a_debPEv2_RefPosSpeed(i) = dev->PEv2.ReferencePositionSpeed[i];
 					}
 
-					if (doMove=true)
+					/*
+					move is done later anyway					
+					if (doMove = true)
 					{
 
 						PK_PEv2_PulseEngineMove(dev);
 						PK_PEv2_PulseEngineMove(dev);
 						a_debPEv2out = 4100;
-					}
+					}*/
 
 
 					if (tAxisEnabledMask != dev->PEv2.AxisEnabledMask)
@@ -1840,8 +1842,11 @@ void user_mainloop(void)
 								usleep(sleepdur);
 							}
 						}
+						else {
+							a_debPEv2out = 4500;
+						}
 					}
-					if (doHomingStart=true)
+					if (doHomingStart==true)
 					{
 						a_debPEv2out = 5000;
 						if (dev->PEv2.HomingStartMaskSetup != HomingStartMaskSetup) {
@@ -1852,7 +1857,7 @@ void user_mainloop(void)
 
 						if (PK_PEv2_HomingStart(dev) != PK_OK)
 						{
-							a_debPEv2out = 4200;
+							a_debPEv2out = 5200;
 							usleep(sleepdur);
 							if (PK_PEv2_HomingStart(dev) != PK_OK)
 							{
