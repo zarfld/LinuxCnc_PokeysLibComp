@@ -1518,7 +1518,7 @@ void user_mainloop(void)
 							InPosition[i] = false;
 						}
 						a_debPEv2_ishoming(i) = IsHoming[i];
-						a_debPEv2_inposition(i) = InPosition;
+						a_debPEv2_inposition(i) = InPosition[i];
 
 						if (HAL_Machine_On==true)
 						{
@@ -1530,7 +1530,7 @@ void user_mainloop(void)
 								float PosCmd = PEv2_joint_pos_cmd(i);
 								a_debPEv2out = 400 + i;
 
-								if (InPosition!=false)
+								if (InPosition[i] !=false)
 								{
 									if (VelCmd=0.00000)
 									{
@@ -1596,7 +1596,7 @@ void user_mainloop(void)
 
 								if (posMode[i]==true) {
 									a_debPEv2_axxisout(i) = 13100 + i;
-									if (InPosition==false) 
+									if (InPosition[i] ==false)
 									{
 										if (last_joint_pos_cmd[i]!=PEv2_joint_pos_cmd(i))
 										{
@@ -1644,7 +1644,7 @@ void user_mainloop(void)
 								}
 								else
 								{
-									if (InPosition!=true)
+									if (InPosition[i] !=true)
 									{
 										a_debPEv2_axxisout(i) = 14100 + i;
 										if (last_joint_vel_cmd[i] != PEv2_joint_vel_cmd(i))
