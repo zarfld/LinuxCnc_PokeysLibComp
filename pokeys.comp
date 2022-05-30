@@ -1508,7 +1508,7 @@ void user_mainloop(void)
 						if (HAL_Machine_On==true)
 						{
 							a_debPEv2out = 390 + i;
-
+							posMode[i] = false;
 							if (IsHoming==false)
 							{
 								float VelCmd = PEv2_joint_vel_cmd(i);
