@@ -1484,8 +1484,7 @@ void user_mainloop(void)
 								a_debPEv2out = 380 + i;
 								break ;
 						}
-						*/
-
+						
 						tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,PEv2_AxisEnabledStates(i));
 						PEv2_LimitOverrideSetup = Set_BitOfByte(PEv2_LimitOverrideSetup ,i,PEv2_AxisLimitOverride(i));
 						a_debPEv2_axxisout(i) = 2900 + i;
