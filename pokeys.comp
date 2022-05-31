@@ -1563,10 +1563,8 @@ void user_mainloop(void)
 
 								/*
 								for the last short move before in-position is reached switch to positionmode for more precise positioning
-
-
 								*/
-								if ((InPosition[i]!=false) && (VelCmd=0))
+								/*if ((InPosition[i] != false) && (VelCmd = 0))
 								{
 									
 									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
@@ -1604,7 +1602,7 @@ void user_mainloop(void)
 
 									}
 
-								}
+								}*/
 
 
 								POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
