@@ -1680,26 +1680,20 @@ void user_mainloop(void)
 									if (InPosition[i]!=true)
 									{
 										a_debPEv2_axxisout(i) = 14100 + i;
-										if (last_joint_vel_cmd[i]!=PEv2_joint_vel_cmd(i))
-										{
+										//if (last_joint_vel_cmd[i]!=PEv2_joint_vel_cmd(i))
+										//{
 											a_debPEv2_axxisout(i) = 1410 + i;
+
+											
 											dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferenceSpeed;
 											PEv2_ReferencePositionSpeed(i) = (int)ReferenceSpeed;
 											a_debPEv2_axxisout(i) = 1420 + i;
 											last_joint_vel_cmd[i]=PEv2_joint_vel_cmd(i);
 											if (dev->PEv2.AxesState[i] = PK_PEState_peRUNNING)
 											{
-												//PK_PEv2_PulseEngineMove(dev);
-												if (last_joint_vel_cmd[i]=0)
-												{ 
+
 													doMove = true;
 													a_debPEv2_axxisout(i) = 1430 + i;
-												}
-												else
-												{
-													
-													a_debPEv2_axxisout(i) = 1430;
-												}
 											}
 											else
 											{
@@ -1708,7 +1702,7 @@ void user_mainloop(void)
 
 
 
-										}
+										//}
 									}
 									else
 									{
