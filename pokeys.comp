@@ -424,6 +424,8 @@ float last_joint_pos_cmd[8];
 float last_joint_vel_cmd[8];
 uint8_t rtc_latencycheck_set = 0;
 int rtc_latencyCounter = 0;
+
+bool Pins_DigitalValueSet_ignore[55];
 int i=0;
 
 
@@ -1952,16 +1954,16 @@ void user_mainloop(void)
 					}
 					
 
-
-					if (Pins_DigitalValueSet(i)==1)
-					{
-						dev->Pins[i].DigitalValueSet=1;
+					if (Pins_DigitalValueSet_ignore[i] = false) {
+						if (Pins_DigitalValueSet(i) == 1)
+						{
+							dev->Pins[i].DigitalValueSet = 1;
+						}
+						else
+						{
+							dev->Pins[i].DigitalValueSet = 0;
+						}
 					}
-					else
-					{
-						dev->Pins[i].DigitalValueSet=0;
-					}
-					;
 					Pins_DigitalCounterAvailable(i)=dev->Pins[i].DigitalCounterAvailable;
 					//Pins_MappingType(i)=dev->Pins[i].MappingType;
 					//Pins_KeyCodeMacroID(i)=dev->Pins[i].KeyCodeMacroID;
@@ -2360,6 +2362,7 @@ void user_mainloop(void)
 							 {
 								 dev->Pins[PEv2_EmergencyOutputPin - 1].PinFunction = PK_PinCap_digitalOutput;
 								 PK_SL_SetPinFunction(dev, PEv2_EmergencyInputPin - 1, PK_PinCap_digitalOutput);
+								 Pins_DigitalValueSet_ignore[PEv2_EmergencyInputPin - 1] = true;
 								 setPinConfig = true;
 							 }
 
@@ -2687,6 +2690,7 @@ void user_mainloop(void)
 									 PK_SL_SetPinFunction(dev, PEv2_AxisEnableOutputPins(i) - 1, PK_PinCap_digitalOutput);
 									 setPinConfig = true;
 								 }
+								 Pins_DigitalValueSet_ignore[PEv2_AxisEnableOutputPins(i) - 1] = true;
 							 }
 
 							 if (dev->PEv2.InvertAxisEnable[i] != PEv2_InvertAxisEnable(i))
