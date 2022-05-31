@@ -1862,7 +1862,7 @@ void user_mainloop(void)
 					doStateSet=true;
 				}
 
-				if (doStateSet == true)
+				if ((doStateSet == true) && (doMove == false))
 				{
 					if (PK_PEv2_PulseEngineStateSet(dev) != PK_OK)
 					{
