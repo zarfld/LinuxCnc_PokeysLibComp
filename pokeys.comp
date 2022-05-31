@@ -1566,17 +1566,17 @@ void user_mainloop(void)
 
 
 								*/
-								if ((InPosition[i]!=false) && (VelCmd=0) && (PosCmd!=PosFb[i]))
+								if ((InPosition[i]!=false) && (VelCmd=0))
 								{
 									
 									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 									if (POSITION_MODE_active[i] = false)
 									{
-										// first Top Axis
+										// first Stop Axis
 										dev->PEv2.ReferencePositionSpeed[i] = 0;
 										PK_PEv2_PulseEngineMove(dev);
 
-
+										//then switch to Position Mode
 										dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
 										dev->PEv2.param1 = i;
 										if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK) {
