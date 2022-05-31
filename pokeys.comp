@@ -1689,8 +1689,15 @@ void user_mainloop(void)
 											if (dev->PEv2.AxesState[i] = PK_PEState_peRUNNING)
 											{
 												//PK_PEv2_PulseEngineMove(dev);
-												doMove = true;
-												a_debPEv2_axxisout(i) = 1430 + i;
+												if (last_joint_vel_cmd[i]>0)
+												{ 
+													doMove = true;
+													a_debPEv2_axxisout(i) = 1430 + i;
+												}
+												else
+												{
+													a_debPEv2_axxisout(i) = 1430;
+												}
 											}
 											else
 											{
