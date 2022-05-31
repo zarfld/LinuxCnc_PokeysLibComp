@@ -1361,6 +1361,7 @@ void user_mainloop(void)
 
 				bool doPositionSet = false;
 				bool doMove = false;
+				bool isMoving = false;
 				bool doStateSet = false;
 				bool doHomingStart = false;
 				int HomingStartMaskSetup = 0;
@@ -1567,7 +1568,7 @@ void user_mainloop(void)
 								*/
 								if ((InPosition[i]!=false) && (VelCmd=0) && (PosCmd!=PosFb[i]))
 								{
-									posMode[i] = true;
+									/*posMode[i] = true;
 									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 									if (POSITION_MODE_active[i] = false)
 									{
@@ -1576,12 +1577,12 @@ void user_mainloop(void)
 										if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK) {
 											PK_PEv2_AxisConfigurationSet(dev);
 										}
-									}
+									}*/
 								}
 								else
 								{
 									posMode[i] = false;
-									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
+									/*POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 									if (POSITION_MODE_active[i]=true)
 									{
 										dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
@@ -1589,7 +1590,7 @@ void user_mainloop(void)
 										if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK) {
 											PK_PEv2_AxisConfigurationSet(dev);
 										}
-									}
+									}*/
 
 								}
 
@@ -1689,13 +1690,14 @@ void user_mainloop(void)
 											if (dev->PEv2.AxesState[i] = PK_PEState_peRUNNING)
 											{
 												//PK_PEv2_PulseEngineMove(dev);
-												if (last_joint_vel_cmd[i]>0)
+												if (last_joint_vel_cmd[i]=0)
 												{ 
 													doMove = true;
 													a_debPEv2_axxisout(i) = 1430 + i;
 												}
 												else
 												{
+													
 													a_debPEv2_axxisout(i) = 1430;
 												}
 											}
