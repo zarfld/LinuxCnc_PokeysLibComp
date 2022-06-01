@@ -15,7 +15,7 @@ pin out bit a_debPEv2.#.PosMode[8];
 pin out bit a_debPEv2.#.PosModeAct[8];
 pin out s32 a_debPEv2.#.velmode_count[8];
 pin out s32 a_debPEv2.#.posmode_count[8];
-pin out s32 a_debPEv2.#.axxisout[8];
+
 pin out bit a_debPEv2.#.doMove[8];
 pin out float a_debPEv2.#.RefSpeed[8];
 pin out float a_debPEv2.#.RefPos[8];
