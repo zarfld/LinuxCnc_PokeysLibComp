@@ -1569,7 +1569,7 @@ void user_mainloop(void)
 								/*
 								for the last short move before in-position is reached switch to positionmode for more precise positioning
 								*/
-								if (InPosition[i]!= false)
+								if (InPosition[i]=false)
 								{
 									dev->PEv2.param1 = i;
 									PK_PEv2_AxisConfigurationGet(dev);
@@ -1588,12 +1588,15 @@ void user_mainloop(void)
 										PK_PEv2_AxisConfigurationGet(dev);
 										POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 
-										if ((POSITION_MODE_active[i] == false))
+										if ((POSITION_MODE_active[i] == false) )
 										{
 											posCount[i]++;
-											// first Stop Axis
-											dev->PEv2.ReferencePositionSpeed[i] = 0;
-											PK_PEv2_PulseEngineMove(dev);
+											// first ensure stopped Axis
+											if (dev->PEv2.ReferencePositionSpeed[i] != 0)
+											{
+												dev->PEv2.ReferencePositionSpeed[i] = 0;
+												PK_PEv2_PulseEngineMove(dev);
+											}
 
 											//then switch to Position Mode
 											dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
