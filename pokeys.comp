@@ -13,6 +13,9 @@ pin out bit a_debPEv2.#.ishoming[8];
 pin out bit a_debPEv2.#.inposition[8];
 pin out bit a_debPEv2.#.PosMode[8];
 pin out bit a_debPEv2.#.PosModeAct[8];
+pin out s32 a_debPEv2.#.velmode_count[8];
+pin out s32 a_debPEv2.#.posmode_count[8];
+pin out s32 a_debPEv2.#.axxisout[8];
 pin out bit a_debPEv2.#.doMove[8];
 pin out float a_debPEv2.#.RefSpeed[8];
 pin out float a_debPEv2.#.RefPos[8];
@@ -420,6 +423,8 @@ bool secBlink = false;
 unsigned Loop_Frequ =0;
 uint8_t kbd48CNC_Counter[48];
 bool posMode[8] ;
+uint8_t  posCount[8];
+uint8_t  velCount[8];
 float last_joint_pos_cmd[8];
 float last_joint_vel_cmd[8];
 uint8_t rtc_latencycheck_set = 0;
@@ -1564,12 +1569,13 @@ void user_mainloop(void)
 								/*
 								for the last short move before in-position is reached switch to positionmode for more precise positioning
 								*/
-								/*if ((InPosition[i] != false) && (VelCmd = 0))
+								if ((InPosition[i] != false) && (VelCmd = 0))
 								{
 									
 									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 									if (POSITION_MODE_active[i] = false)
 									{
+										posCount[i]++;
 										// first Stop Axis
 										dev->PEv2.ReferencePositionSpeed[i] = 0;
 										PK_PEv2_PulseEngineMove(dev);
@@ -1577,6 +1583,7 @@ void user_mainloop(void)
 										//then switch to Position Mode
 										dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
 										dev->PEv2.param1 = i;
+										
 										if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK) {
 											PK_PEv2_AxisConfigurationSet(dev);
 								
@@ -1587,10 +1594,11 @@ void user_mainloop(void)
 								}
 								else
 								{
-									posMode[i] = false;
+									//posMode[i] = false;
 									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 									if (POSITION_MODE_active[i]=true)
 									{
+										velCount[i]++;
 										dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
 										dev->PEv2.param1 = i;
 										if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK) {
@@ -1602,11 +1610,12 @@ void user_mainloop(void)
 
 									}
 
-								}*/
+								}
 
 
 								POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-
+								a_debPEv2_posmode_count(i) = posCount[i];
+								a_debPEv2_velmode_count(i) = velCount[i];
 								a_debPEv2_axxisout(i) = 1300 + i;
 								a_debPEv2_RefSpeed(i) = ReferenceSpeed;
 								a_debPEv2_RefPos(i) = ReferencePosition;
