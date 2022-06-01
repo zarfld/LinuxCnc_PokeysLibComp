@@ -641,7 +641,7 @@ PK_MatrixKB_Parameters MatrixKB;
 
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
 {
-	return (in_Byte >> Bit_Id) & 1;
+	return (in_Byte >> Bit_Id) & 0x01;
 }
 
 uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value)
@@ -1519,7 +1519,7 @@ void user_mainloop(void)
 						{
 							IsHoming[i] = false;
 						}
-						if (PEv2_joint_in_position(i)!= 0) {
+						if (PEv2_joint_in_position(i)!=false) {
 							InPosition[i] = true;
 						}
 						else
@@ -1569,7 +1569,7 @@ void user_mainloop(void)
 								/*
 								for the last short move before in-position is reached switch to positionmode for more precise positioning
 								*/
-								if (InPosition[i] != false)
+								if (InPosition[i]!= false)
 								{
 									dev->PEv2.param1 = i;
 									PK_PEv2_AxisConfigurationGet(dev);
