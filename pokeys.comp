@@ -1572,14 +1572,22 @@ void user_mainloop(void)
 								if (InPosition[i] != false)
 								{
 									dev->PEv2.param1 = i;
-									if (PK_PEv2_AxisConfigurationGet(dev) = PK_OK)
-									{
-										POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-									}
+									PK_PEv2_AxisConfigurationGet(dev);
 									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
+
+									dev->PEv2.param1 = i;
+									PK_PEv2_AxisConfigurationGet(dev);
+									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
+									
+									
 									if ((VelCmd = 0))
 									{
 										posMode[i] = true;
+
+										dev->PEv2.param1 = i;
+										PK_PEv2_AxisConfigurationGet(dev);
+										POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
+
 										if ((POSITION_MODE_active[i] == false))
 										{
 											posCount[i]++;
@@ -1594,11 +1602,7 @@ void user_mainloop(void)
 											if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK) {
 												PK_PEv2_AxisConfigurationSet(dev);
 											}
-											dev->PEv2.param1 = i;
-											if (PK_PEv2_AxisConfigurationGet(dev) = PK_OK)
-											{
-												POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-											}
+											
 											
 										}
 									}
@@ -1607,11 +1611,9 @@ void user_mainloop(void)
 								{
 									//posMode[i] = false;
 									dev->PEv2.param1 = i;
-									if (PK_PEv2_AxisConfigurationGet(dev) = PK_OK)
-									{
-										POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-									}
+									PK_PEv2_AxisConfigurationGet(dev);
 									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
+									
 									if (POSITION_MODE_active[i]==true)
 									{
 										velCount[i]++;
@@ -1621,18 +1623,18 @@ void user_mainloop(void)
 											PK_PEv2_AxisConfigurationSet(dev);
 										}
 
-										dev->PEv2.param1 = i;
-										if (PK_PEv2_AxisConfigurationGet(dev) = PK_OK)
-										{
-											POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-										}
+										
 										posMode[i] = false;
 
 									}
 
 								}
 
-
+								dev->PEv2.param1 = i;
+								PK_PEv2_AxisConfigurationGet(dev);
+								POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
+								dev->PEv2.param1 = i;
+								PK_PEv2_AxisConfigurationGet(dev);
 								POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 								a_debPEv2_posmode_count(i) = posCount[i];
 								a_debPEv2_velmode_count(i) = velCount[i];
