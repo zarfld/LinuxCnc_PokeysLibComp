@@ -377,7 +377,8 @@ pin out unsigned PoNET.#.moduleOptions[16];
 
 pin io unsigned PoNET.PWMduty;
 pin io unsigned PoNET.lightValue;
-pin io unsigned PoNET.PoNETstatus;
+pin out unsigned PoNET.PoNETstatus;
+pin out unsigned PoNET.DevCount;
 pin out unsigned PoNET.#.statusIn [16];
 pin in unsigned PoNET.#.statusOut [16];
 /*
@@ -422,6 +423,7 @@ bool setPinConfig = false;
 bool secBlink = false;
 unsigned Loop_Frequ =0;
 uint8_t kbd48CNC_Counter[48];
+uint8_t PoNet_Count=0;
 bool posMode[8] ;
 uint8_t  posCount[8];
 uint8_t  velCount[8];
@@ -908,7 +910,7 @@ void user_mainloop(void)
 			 info_FastEncoders = dev->info.iFastEncoders;                    // Number of fast encoders supported
 			 info_UltraFastEncoders = dev->info.iUltraFastEncoders;               // Number of available ultra fast encoders
 			 info_PWMinternalFrequency = dev->info.PWMinternalFrequency;             // Main PWM peripheral clock
-			 info_AnalogInputs = dev->info.iAnalogInputs;                    // Number of available analog inputs
+			 info_AnalogInputs = dev->info.iAnalogInputs;                    // Number of info_protI2Cavailable analog inputs
 			 info_KeyMapping = dev->info.iKeyMapping;                      // Device supports key mapping (acts as a USB keyboard)
 			 info_TriggeredKeyMapping = dev->info.iTriggeredKeyMapping;             // Device supports triggered key mapping
 			 info_KeyRepeatDelay = dev->info.iKeyRepeatDelay;                  // Device supports user customizable key repeat rates and delays
@@ -960,6 +962,7 @@ void user_mainloop(void)
 			 {
 				a_debout = 123;
 				
+				PoNet_Count = 0
 				for (i = 0; i < 16; i++)
 				{
 
@@ -971,8 +974,11 @@ void user_mainloop(void)
 							PoNET_moduleType(i) = dev->PoNETmodule.moduleType;
 							PoNET_moduleSize(i) = dev->PoNETmodule.moduleSize;
 							PoNET_moduleOptions(i) = dev->PoNETmodule.moduleOptions;
-
-							if (PoNET_moduleType(i)== 0x10 && kbd48CNC_available ==0)
+							if (dev->PoNETmodule.moduleType!=0)
+							{
+								PoNet_Count++;
+							}
+							if (dev->PoNETmodule.moduleType == 0x10 && kbd48CNC_available ==0)
 							{
 								if ((dev->PoNETmodule.moduleOptions & (1<<7)) != 0)
 								{
@@ -984,6 +990,7 @@ void user_mainloop(void)
 							}
 							usleep(sleepdur); 
 						}
+						PoNET_DevCount = PoNet_Count;
 				}
 			 }
 			 a_debout = 124;
@@ -1203,12 +1210,12 @@ void user_mainloop(void)
 				a_debout = 212;
 			}
 
-			if (info_protI2C!=0 && I2C_scanning!=false)
+			if (I2C_scanning!=true)
 			{
 				a_debout = 213; 
-				/* it hangs here - but it is necessary to check which components are available (PoRelay8, ....)
+				 it hangs here - but it is necessary to check which components are available (PoRelay8, ....)
 					uint8_t* i_status; // = PK_I2C_STAT_IN_PROGRESS;
-					uint8_t* i_presentDevices;
+					uint8_t* i_presentDevices[16];
 
 					if (PK_I2CBusScanGetResults(dev, i_status, i_presentDevices, 16) == PK_OK)
 					{
@@ -1225,7 +1232,7 @@ void user_mainloop(void)
 							I2C_scanning=false;
 						}
 					}
-				*/
+				
 			}
 			// PulseEnginev2
 			if (info_PulseEnginev2!=0)
