@@ -1222,7 +1222,7 @@ void user_mainloop(void)
 					a_debout = 215;
 					//*i_status= PK_I2C_STAT_IN_PROGRESS;
 					a_debout = 216;
-					PK_I2CBusScanGetResults(dev, i_status, i_presentDevices, 16);
+					PK_I2CBusScanGetResults(dev, i_status, i_presentDevices, 3);
 					//if (PK_I2CBusScanGetResults(dev, i_status, i_presentDevices, 16) == PK_OK)
 					//{
 						a_debout = 217;

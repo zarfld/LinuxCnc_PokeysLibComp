@@ -38,10 +38,10 @@ currently under development using following HW
 - [x] kbd48CNC get Button Status
 - [p] Using encoders
 - [ ] I2C operations
-- [p] SPI operation
+- [ ] SPI operation
 - [ ] PoIL operations
 - [i] 1-wire operations
-- [i] PoNET bus support
+- [ ] PoNET bus support 
 
 x ... available
 i ... implemented but not tested
