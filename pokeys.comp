@@ -1223,7 +1223,7 @@ void user_mainloop(void)
 					//*i_status= PK_I2C_STAT_IN_PROGRESS;
 					uint8_t iMaxDevices = 3;
 					a_debout = 216;
-					PK_I2CBusScanGetResults(dev, i_status, i_presentDevices, iMaxDevices);
+					//PK_I2CBusScanGetResults(dev, i_status, i_presentDevices, iMaxDevices);
 					//if (PK_I2CBusScanGetResults(dev, i_status, i_presentDevices, 16) == PK_OK)
 					//{
 						a_debout = 217;
