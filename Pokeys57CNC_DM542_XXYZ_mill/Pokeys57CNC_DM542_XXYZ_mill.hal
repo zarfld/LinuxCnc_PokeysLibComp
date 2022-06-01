@@ -19,7 +19,7 @@ addf motion-controller        servo-thread
 #addf pid.x2.do-pid-calcs       servo-thread
 #addf pid.y.do-pid-calcs       servo-thread
 #addf pid.z.do-pid-calcs       servo-thread
-#addf pid.s.do-pid-calcs       servo-thread
+addf pid.s.do-pid-calcs       servo-thread
 #addf [HMOT](CARD0).write         servo-thread
 
 # external output signals
