@@ -399,7 +399,7 @@ pin io unsigned LCD.line3.# [20];                         // Line 3 buffer
 pin io unsigned LCD.line4.# [20];                         // Line 4 buffer
 */
 pin out unsigned I2C.#.presentDevices [16];
-pin io bit I2C.scanning ;
+pin out bit I2C.scanning ;
 
 license "GPL";
 
@@ -420,6 +420,7 @@ static int comp_id;		/* component ID */
 bool HAL_Machine_On = false;
 bool setPkConfig = false;
 bool setPinConfig = false;
+bool I2C_isscanning = false;
 bool secBlink = false;
 unsigned Loop_Frequ =0;
 uint8_t kbd48CNC_Counter[48];
@@ -1045,7 +1046,8 @@ void user_mainloop(void)
 				a_debout = 138;
 				if (PK_I2CBusScanStart(dev) == PK_OK)
 				{
-					I2C_scanning=true;
+					//I2C_scanning=true;
+					I2C_isscanning = true;
 					usleep(sleepdur); 
 				}
 				a_debout = 139;
@@ -1210,7 +1212,7 @@ void user_mainloop(void)
 				a_debout = 212;
 			}
 
-			if (I2C_scanning!=true)
+			if (I2C_isscanning=true)
 			{
 				a_debout = 213; 
 				 //it hangs here - but it is necessary to check which components are available (PoRelay8, ....)
@@ -1229,11 +1231,11 @@ void user_mainloop(void)
 								a_debout = 2150 + i;
 								I2C_presentDevices(i)=i_presentDevices[i];
 							}
-							I2C_scanning=false;
+							I2C_isscanning =false;
 						}
 					}
-				
 			}
+			I2C_scanning = I2C_isscanning;
 			// PulseEnginev2
 			if (info_PulseEnginev2!=0)
 			{
