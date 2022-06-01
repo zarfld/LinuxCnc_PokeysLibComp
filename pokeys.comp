@@ -1569,37 +1569,50 @@ void user_mainloop(void)
 								/*
 								for the last short move before in-position is reached switch to positionmode for more precise positioning
 								*/
-								if ((InPosition[i] != false) && (VelCmd = 0))
+								if (InPosition[i] != false)
 								{
 									dev->PEv2.param1 = i;
-									PK_PEv2_AxisConfigurationGet(dev);
-									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-									if (POSITION_MODE_active[i] = false)
+									if (PK_PEv2_AxisConfigurationGet(dev) = PK_OK)
 									{
-										posCount[i]++;
-										// first Stop Axis
-										dev->PEv2.ReferencePositionSpeed[i] = 0;
-										PK_PEv2_PulseEngineMove(dev);
-
-										//then switch to Position Mode
-										dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
-										dev->PEv2.param1 = i;
-										
-										if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK) {
-											PK_PEv2_AxisConfigurationSet(dev);
-								
-										}
 										POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-										posMode[i] = POSITION_MODE_active[i];
+									}
+									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
+									if ((VelCmd = 0))
+									{
+										posMode[i] = true;
+										if ((POSITION_MODE_active[i] == false))
+										{
+											posCount[i]++;
+											// first Stop Axis
+											dev->PEv2.ReferencePositionSpeed[i] = 0;
+											PK_PEv2_PulseEngineMove(dev);
+
+											//then switch to Position Mode
+											dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
+											dev->PEv2.param1 = i;
+
+											if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK) {
+												PK_PEv2_AxisConfigurationSet(dev);
+											}
+											dev->PEv2.param1 = i;
+											if (PK_PEv2_AxisConfigurationGet(dev) = PK_OK)
+											{
+												POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
+											}
+											
+										}
 									}
 								}
 								else
 								{
 									//posMode[i] = false;
 									dev->PEv2.param1 = i;
-									PK_PEv2_AxisConfigurationGet(dev);
+									if (PK_PEv2_AxisConfigurationGet(dev) = PK_OK)
+									{
+										POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
+									}
 									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-									if (POSITION_MODE_active[i]=true)
+									if (POSITION_MODE_active[i]==true)
 									{
 										velCount[i]++;
 										dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
@@ -1608,8 +1621,12 @@ void user_mainloop(void)
 											PK_PEv2_AxisConfigurationSet(dev);
 										}
 
-										POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-										posMode[i] = POSITION_MODE_active[i];
+										dev->PEv2.param1 = i;
+										if (PK_PEv2_AxisConfigurationGet(dev) = PK_OK)
+										{
+											POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
+										}
+										posMode[i] = false;
 
 									}
 
