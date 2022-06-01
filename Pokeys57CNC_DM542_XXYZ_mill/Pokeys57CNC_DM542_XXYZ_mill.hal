@@ -270,8 +270,12 @@ net y-pos-cmd    <= joint.2.motor-pos-cmd
 net y-pos-cmd       =>  pokeys.0.PEv2.1.joint-pos-cmd
 
 net y-vel-cmd    <= joint.2.vel-cmd
-#net y-vel-cmd     =>  pokeys.0.PEv2.1.joint-vel-cmd
-net y-output     =>  pokeys.0.PEv2.1.joint-vel-cmd
+
+#if no pid is used
+net y-vel-cmd     =>  pokeys.0.PEv2.1.joint-vel-cmd
+
+# if PID is used
+#net y-output     =>  pokeys.0.PEv2.1.joint-vel-cmd
 
 net y-pos-fb     <= pokeys.0.PEv2.1.joint-pos-fb
 net y-pos-fb     => joint.2.motor-pos-fb
