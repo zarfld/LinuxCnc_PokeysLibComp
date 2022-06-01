@@ -1519,7 +1519,7 @@ void user_mainloop(void)
 						{
 							IsHoming[i] = false;
 						}
-						if (PEv2_joint_in_position(i)!=false) {
+						if (PEv2_joint_in_position(i)!=0) {
 							InPosition[i] = true;
 						}
 						else
