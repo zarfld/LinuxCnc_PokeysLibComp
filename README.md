@@ -11,7 +11,8 @@ currently under development using following HW
 - [x] CNC keyboard – PoNETkbd48CNC (see https://www.poscope.com/product/ponet-kbd48cnc/)
 - [x] PoRelay8 – Relay extension board (see https://www.poscope.com/product/porelay8/) 
 - [x] PoExtBusOC16
-- [] Pokeys57CNC 
+- [x] Pokeys57CNC 
+- [ ] PoStep25-32 (v1.3) 
 
 ---- Library status - verified commands ----
 
@@ -24,19 +25,19 @@ currently under development using following HW
 - [x] PoExtBus writing
 - [x] PoExtBus reading
 - [ ] LCD operations
-- [p] Matrix LED
+- [ ] Matrix LED
 - [x] Setting pin functions
 - [x] Reading pin functions
 - [ ] Setting pin key codes
 - [ ] Reading pin key codes
 - [p] PWM operations
-- [!] Pulse engine operations
+- [x] Pulse engine operations
 - [i] Matrix keyboard setup
 - [i] Matrix keyboard reading
 - [x] kbd48CNC set LED
 - [x] kbd48CNC get Button Status
 - [p] Using encoders
-- [] I2C operations
+- [ ] I2C operations
 - [p] SPI operation
 - [ ] PoIL operations
 - [i] 1-wire operations
