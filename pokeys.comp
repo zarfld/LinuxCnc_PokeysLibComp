@@ -1580,7 +1580,7 @@ void user_mainloop(void)
 									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 									
 									
-									if ((VelCmd = 0))
+									if ((ReferenceSpeed = 0))
 									{
 										posMode[i] = true;
 
@@ -2367,7 +2367,7 @@ void user_mainloop(void)
 					 bool DoPeSetup = false;
 					 bool DoPeReboot = false;
 					 setPinConfig = false;
-					 if (PEv2_params_ApplyIniSettings != 0)
+					 if ((PEv2_params_ApplyIniSettings != 0) && (HAL_Machine_On==false))
 					 {
 						 //dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
 						 //PK_PEv2_PulseEngineSetup(dev);
