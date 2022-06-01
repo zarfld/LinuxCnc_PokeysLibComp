@@ -445,7 +445,7 @@ net coolant-mist      <=  iocontrol.0.coolant-mist
 net coolant-flood     <=  iocontrol.0.coolant-flood
 
 #  ---probe signal---
-net probe-in     <=  pokeys.0.PEv2.ProbeInput
+#net probe-in     <=  pokeys.0.PEv2.ProbeInput
 net probe-in     =>  motion.probe-input
 
 #  ---motion control signals---
