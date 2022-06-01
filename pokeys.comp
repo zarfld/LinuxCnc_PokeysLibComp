@@ -1608,6 +1608,14 @@ void user_mainloop(void)
 											
 											
 										}
+										else 
+										{
+											posCount[i]+=1000;
+										}
+									}
+									else
+									{
+										posCount[i] += 100000;
 									}
 								}
 								else
