@@ -1571,7 +1571,8 @@ void user_mainloop(void)
 								*/
 								if ((InPosition[i] != false) && (VelCmd = 0))
 								{
-									
+									dev->PEv2.param1 = i;
+									PK_PEv2_AxisConfigurationGet(dev)
 									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 									if (POSITION_MODE_active[i] = false)
 									{
@@ -1595,6 +1596,8 @@ void user_mainloop(void)
 								else
 								{
 									//posMode[i] = false;
+									dev->PEv2.param1 = i;
+									PK_PEv2_AxisConfigurationGet(dev)
 									POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 									if (POSITION_MODE_active[i]=true)
 									{
