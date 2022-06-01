@@ -1218,7 +1218,7 @@ void user_mainloop(void)
 				 //it hangs here - but it is necessary to check which components are available (PoRelay8, ....)
 				uint8_t* i_status;// = *PK_I2C_STAT_IN_PROGRESS;
 				a_debout = 214;
-					uint8_t* i_presentDevices;
+					uint8_t i_presentDevices[16];
 					a_debout = 215;
 					*i_status= PK_I2C_STAT_IN_PROGRESS;
 					a_debout = 216;
