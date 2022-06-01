@@ -125,6 +125,9 @@ net x-enable     => pokeys.0.PEv2.0.AxisEnableOutput
 net x-homing     <= joint.0.homing
 net x-homing     => pokeys.0.PEv2.0.joint-in-homing
 
+net x-in-position     <= joint.0.in-position
+net x-in-position     => pokeys.0.PEv2.0.joint-in-position
+
 # ---Encoder feedback signals/setup---
 
 #setp    [HMOT](CARD0).encoder.00.counter-mode 0
@@ -202,6 +205,9 @@ net x2-enable     => pokeys.0.PEv2.6.AxisEnableOutput
 net x2-homing     <= joint.1.homing
 net x2-homing     => pokeys.0.PEv2.6.joint-in-homing
 
+net x2-in-position     <= joint.1.in-position
+net x2-in-position     => pokeys.0.PEv2.6.joint-in-position
+
 # ---Encoder feedback signals/setup---
 
 setp    pokeys.0.PEv2.6.params.ENCODER-SCALE  [JOINT_1]ENCODER_SCALE
@@ -264,7 +270,12 @@ net y-pos-cmd    <= joint.2.motor-pos-cmd
 net y-pos-cmd       =>  pokeys.0.PEv2.1.joint-pos-cmd
 
 net y-vel-cmd    <= joint.2.vel-cmd
+
+#if no pid is used
 net y-vel-cmd     =>  pokeys.0.PEv2.1.joint-vel-cmd
+
+# if PID is used
+#net y-output     =>  pokeys.0.PEv2.1.joint-vel-cmd
 
 net y-pos-fb     <= pokeys.0.PEv2.1.joint-pos-fb
 net y-pos-fb     => joint.2.motor-pos-fb
@@ -274,6 +285,9 @@ net y-enable     => pokeys.0.PEv2.1.AxisEnableOutput
 
 net y-homing     <= joint.2.homing
 net y-homing     => pokeys.0.PEv2.1.joint-in-homing
+
+net y-in-position     <= joint.2.in-position
+net y-in-position     => pokeys.0.PEv2.1.joint-in-position
 
 # ---setup home / limit switch signals---
 
@@ -337,6 +351,10 @@ net z-enable     => pokeys.0.PEv2.2.AxisEnableOutput
 
 net z-homing     <= joint.3.homing
 net z-homing     => pokeys.0.PEv2.2.joint-in-homing
+
+net z-in-position     <= joint.3.in-position
+net z-in-position     => pokeys.0.PEv2.2.joint-in-position
+
 # ---setup home / limit switch signals---
 
 net z-home-sw     =>  joint.3.home-sw-in
