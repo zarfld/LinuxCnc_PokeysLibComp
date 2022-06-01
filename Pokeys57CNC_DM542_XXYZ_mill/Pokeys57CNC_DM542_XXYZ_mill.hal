@@ -20,6 +20,27 @@ addf motion-controller        servo-thread
 #addf pid.y.do-pid-calcs       servo-thread
 #addf pid.z.do-pid-calcs       servo-thread
 addf pid.s.do-pid-calcs       servo-thread
+show pin
+show parameter
+
+show pin
+show parameter
+show pin
+show parameter
+show pin
+show parameter
+show pin
+show parameter
+show pin
+show parameter
+show pin
+show parameter
+show pin
+show parameter
+show pin
+show parameter
+show pin
+show parameter
 
 # external output signals
 #net estop-out     => pokeys.0.PEv2.EmergencyOutput
