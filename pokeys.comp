@@ -1236,35 +1236,7 @@ void user_mainloop(void)
 				a_debout = 212;
 			}
 
-			if (I2C_isscanning=true)
-			{
-				a_debout = 213; 
-				 //it hangs here - but it is necessary to check which components are available (PoRelay8, ....)
-				uint8_t* i_status;// = *PK_I2C_STAT_IN_PROGRESS;
-				a_debout = 214;
-					uint8_t* i_presentDevices;
-					a_debout = 215;
-					//*i_status= PK_I2C_STAT_IN_PROGRESS;
-					uint8_t iMaxDevices = 3;
-					a_debout = 216;
-					//PK_I2CBusScanGetResults(dev, i_status, i_presentDevices, iMaxDevices);
-					//if (PK_I2CBusScanGetResults(dev, i_status, i_presentDevices, 16) == PK_OK)
-					//{
-						a_debout = 217;
-						/*if (*i_status == PK_I2C_STAT_COMPLETE)
-						{
-							a_debout = 215;
-							//I2C.#.presentDevices
-							for (i = 0; i < 16; i++)
-							{
-								a_debout = 2150 + i;
-								I2C_presentDevices(i)=i_presentDevices[i];
-							}
-							I2C_isscanning =false;
-						}*/
-					//}
-			}
-			I2C_scanning = I2C_isscanning;
+
 			// PulseEnginev2
 			if (info_PulseEnginev2!=0)
 			{
@@ -2035,20 +2007,24 @@ void user_mainloop(void)
 			 info_DigitalCounters = dev->info.iDigitalCounters;                 // Device supports digital counters			*/
 			if (dev->info.iPinCount > 0)
 			{
+				a_debout = 210;
 				if (PK_PinConfigurationGet(dev) == PK_OK)
 				{
 					PinConfigurationGet = true;
+					a_debout = 211;
 					loopPins = true;
 				}
 
 				if (PK_DigitalIOGet(dev) == PK_OK)
 				{
+					a_debout = 212;
 					DigitalIOGet = true;
 					loopPins = true;
 				}
 
 				if (PK_AnalogIOGet(dev) == PK_OK)
 				{
+					a_debout = 213;
 					AnalogIOGet = true;
 					loopPins = true;
 				}
@@ -2056,8 +2032,10 @@ void user_mainloop(void)
 
 			if (dev->info.iDigitalCounters > 0)
 			{
+				a_debout = 214;
 				if (PK_DigitalCounterGet(dev) == PK_OK)
 				{
+					a_debout = 215;
 					DigitalCounterGet = true;
 					loopPins = true;
 				}
@@ -2065,17 +2043,23 @@ void user_mainloop(void)
 
 			if (dev->info.iBasicEncoderCount)
 			{
+				a_debout = 216;
 				if (PK_EncoderValuesGet(dev) == PK_OK)
 				{
+					a_debout = 217;
 					EncoderValuesGet = true;
 					for (i = 0; i < dev->info.iBasicEncoderCount; i++)
 					{
+						a_debout = 218;
 						encoder_count(i)=dev->Encoders[i].encoderValue;
 					}
+					a_debout = 219;
 					if (dev->info.iUltraFastEncoders)
 					{
+						a_debout = 220;
 						for (i = dev->info.iBasicEncoderCount; i < (dev->info.iBasicEncoderCount + dev->info.iUltraFastEncoders); i++)
 						{
+							a_debout = 221;
 							encoder_count(i) = dev->Encoders[i].encoderValue;
 						}
 					}
