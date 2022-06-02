@@ -283,11 +283,13 @@ pin in unsigned rtc.loop_frequ_demand;
 pin in unsigned rtc.sec_ret;
 pin out unsigned rtc.hal_latency;
 
-pin out unsigned Pins.#.PinFunction[55];
+//pin out unsigned Pins.#.PinFunction[55];
 
-pin out unsigned Pins.#.DigitalCounterAvailable[55];
-pin out unsigned Pins.#.DigitalCounterValue [55];
-pin out unsigned Pins.#.CounterOptions[55];
+//pin out unsigned Pins.#.DigitalCounterAvailable[55];
+//pin out unsigned Pins.#.DigitalCounterValue [55];
+pin out unsigned counter.#.value[55];
+//pin out unsigned Pins.#.CounterOptions[55];
+
 
 //pin out unsigned Pins.#.AnalogValue [55];
 pin out float adcin.#.value-raw[7];
@@ -2130,7 +2132,7 @@ void user_mainloop(void)
 						adcin_value(AinNr) = ainVal * adcin_scale(AinNr) - adcin_offset(AinNr);
 					}
 
-					Pins_PinFunction(i)=dev->Pins[i].PinFunction;
+					//Pins_PinFunction(i)=dev->Pins[i].PinFunction;
 					
 
 					if (DigitalIOGet = true)
@@ -2179,11 +2181,12 @@ void user_mainloop(void)
 						}
 					}
 
-					Pins_DigitalCounterAvailable(i)=dev->Pins[i].DigitalCounterAvailable;
+					//Pins_DigitalCounterAvailable(i)=dev->Pins[i].DigitalCounterAvailable;
 					if(dev->Pins[i].DigitalCounterAvailable)
 					{
-						Pins_DigitalCounterValue(i) = dev->Pins[i].DigitalCounterValue;
-						Pins_CounterOptions(i) = dev->Pins[i].CounterOptions;
+						//Pins_DigitalCounterValue(i) = dev->Pins[i].DigitalCounterValue;
+						counter_value(i) = dev->Pins[i].DigitalCounterValue;
+						//Pins_CounterOptions(i) = dev->Pins[i].CounterOptions;
 					}
 
 
