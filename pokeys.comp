@@ -2085,12 +2085,16 @@ void user_mainloop(void)
 				{
 					a_debout = 2320+i;
 					int AinNr = i - AnalogPinOffset;
+					if (adcin_scale(AinNr) = 0) 
+					{
+						adcin_scale(AinNr) = 1;
+					}
 					if ((AnalogIOGet = true) && (AinNr >=0) && (AinNr < AnalogPinCount))
 					{
 						float ainVal = 3.3 * dev->Pins[i].AnalogValue / 4096;
 						
 						Pins_AnalogValue(AinNr) = ainVal;
-
+						
 						adcin_value(AinNr) = ainVal * adcin_scale(AinNr) - adcin_offset(AinNr);
 						/*adcin_scale [7];
 						adcin_offset [7];
