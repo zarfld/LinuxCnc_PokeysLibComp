@@ -7,11 +7,14 @@ loadrt [KINS]KINEMATICS
 loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS
 loadusr pokeys
 show pin
+show parameter
 #loadrt pid names=pid.x,pid.x2,pid.y,pid.z,pid.s
 loadrt pid names=pid.s
 show pin
 show parameter
-
+loadusr -W xhc-whb04b-6 -HsfB
+show pin
+show parameter
 
 addf motion-command-handler   servo-thread
 addf motion-controller        servo-thread
