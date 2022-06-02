@@ -289,21 +289,28 @@ pin out unsigned Pins.#.DigitalCounterAvailable[55];
 pin out unsigned Pins.#.DigitalCounterValue [55];
 pin out unsigned Pins.#.CounterOptions[55];
 
-pin out unsigned Pins.#.AnalogValue [55];
+//pin out unsigned Pins.#.AnalogValue [55];
+pin out float adcin.#.value-raw[7];
 pin out float adcin.#.value[7];
 param rw float adcin.#.scale[7]  "";
 param rw float adcin.#.offset[7] "";
 param rw float adcin.#.bit_weight[7] "";
 param rw float adcin.#.hw_offset[7] "";
 
-pin out bit Pins.#.DigitalValueGet [55];
+//pin out bit Pins.#.DigitalValueGet [55];
 pin out bit digin.#.in[55];
 pin out bit digin.#.in-not[55];
 
-pin in bit Pins.#.DigitalValueSet [55];
-pin out bit digout.#.out[55];
+//pin in bit Pins.#.DigitalValueSet [55];
+pin in bit digout.#.out[55];
 param rw bit digout.#.invert[55] "";
 
+pin out s32 encoder.#.count[29];
+pin out float encoder.#.position[29];
+pin out float encoder.#.velocity[29];
+pin in bit encoder.#.reset[29];
+pin in bit encoder.#.index-enable[29];
+param rw float encoder.#.scale[29]  "";
 
 //pin out unsigned Pins.#.MappingType [55];
 //pin out unsigned Pins.#.KeyCodeMacroID [55];
@@ -334,8 +341,8 @@ pin in bit kbd48CNC.#.LED [48];
 pin out bit kbd48CNC.#.Button [48];
 
 
-pin out unsigned Encoders.#.encoderValue [26];       // Encoder current value
-pin io unsigned Encoders.#.encoderOptions [26];      // Encoder options -    bit 0: enable encoder
+//pin out unsigned Encoders.#.encoderValue [26];       // Encoder current value
+//pin io unsigned Encoders.#.encoderOptions [26];      // Encoder options -    bit 0: enable encoder
 													//                      bit 1: 4x sampling
 													//                      bit 2: 2x sampling
 													//                      bit 3: reserved
@@ -343,8 +350,8 @@ pin io unsigned Encoders.#.encoderOptions [26];      // Encoder options -    bit
 													//                      bit 5: mapped to macro for direction A
 													//                      bit 6: direct key mapping for direction B
 													//                      bit 7: mapped to macro for direction B
-pin io unsigned Encoders.#.channelApin [26];         // Channel A encoder pin
-pin io unsigned Encoders.#.channelBpin [26];         // Channel B encoder pin
+//pin io unsigned Encoders.#.channelApin [26];         // Channel A encoder pin
+//pin io unsigned Encoders.#.channelBpin [26];         // Channel B encoder pin
 
 
 
@@ -2009,6 +2016,7 @@ void user_mainloop(void)
 			bool AnalogIOGet = false;
 			bool DigitalCounterGet = false;
 			bool DigitalIOSet = false;
+			bool EncoderValuesGet = false; 
 			bool loopPins = false;
 			/* 
 			info_PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
@@ -2022,8 +2030,7 @@ void user_mainloop(void)
 			 info_KeyMapping = dev->info.iKeyMapping;                      // Device supports key mapping (acts as a USB keyboard)
 			 info_TriggeredKeyMapping = dev->info.iTriggeredKeyMapping;             // Device supports triggered key mapping
 			 info_KeyRepeatDelay = dev->info.iKeyRepeatDelay;                  // Device supports user customizable key repeat rates and delays
-			 info_DigitalCounters = dev->info.iDigitalCounters;                 // Device supports digital counters
-			*/
+			 info_DigitalCounters = dev->info.iDigitalCounters;                 // Device supports digital counters			*/
 			if (dev->info.iPinCount > 0)
 			{
 				if (PK_PinConfigurationGet(dev) == PK_OK)
@@ -2054,6 +2061,31 @@ void user_mainloop(void)
 				}
 			}
 
+			if (device->info.iBasicEncoderCount)
+			{
+				if (PK_EncoderValuesGet(dev) == PK_OK)
+				{
+					EncoderValuesGet = true;
+					for (i = 0; i < dev->info.iBasicEncoderCount; i++)
+					{
+						encoder_count(i)=dev->Encoders[i].encoderValue;
+					}
+					if (dev->info.iUltraFastEncoders)
+					{
+						for (i = dev->info.iBasicEncoderCount; i < (dev->info.iBasicEncoderCount + dev->info.iUltraFastEncoders); i++)
+						{
+							encoder_count(i) = dev->Encoders[i].encoderValue;
+						}
+					}
+					/*if (dev->info.iFastEncoders)
+					{
+						for (i = dev->info.iBasicEncoderCount+ dev->info.iUltraFastEncoders; i < (dev->info.iBasicEncoderCount + dev->info.iUltraFastEncoders + dev->info.iFastEncoders ); i++)
+						{
+							encoder_value(i) = dev->Encoders[i].encoderValue;
+						}
+					}*/
+				}
+			}
 
 			if (loopPins = true){  //gets IO data and checks return value 
 				err=0;
@@ -2093,15 +2125,9 @@ void user_mainloop(void)
 					{
 						float ainVal = 3.3 * dev->Pins[i].AnalogValue / 4096;
 						
-						Pins_AnalogValue(AinNr) = ainVal;
+						adcin_value_raw(AinNr) = ainVal;
 						
 						adcin_value(AinNr) = ainVal * adcin_scale(AinNr) - adcin_offset(AinNr);
-						/*adcin_scale [7];
-						adcin_offset [7];
-						adcin_bit_weight [7];
-						adcin_hw_offset [7];*/
-
-
 					}
 
 					Pins_PinFunction(i)=dev->Pins[i].PinFunction;
