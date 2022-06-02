@@ -283,13 +283,28 @@ pin in unsigned rtc.loop_frequ_demand;
 pin in unsigned rtc.sec_ret;
 pin out unsigned rtc.hal_latency;
 
+pin out unsigned Pins.#.PinFunction[55];
+
+pin out unsigned Pins.#.DigitalCounterAvailable[55];
 pin out unsigned Pins.#.DigitalCounterValue [55];
+pin out unsigned Pins.#.CounterOptions[55];
+
 pin out unsigned Pins.#.AnalogValue [55];
-pin out unsigned Pins.#.PinFunction [55];
-pin out unsigned Pins.#.CounterOptions [55];
+pin out float adcin.#.value[7];
+param rw float adcin.#.scale [7];
+param rw float adcin.#.offset [7];
+param rw float adcin.#.bit_weight [7];
+param rw float adcin.#.hw_offset [7];
+
 pin out bit Pins.#.DigitalValueGet [55];
+pin out bit digin.#.in[55];
+pin out bit digin.#.in-not[55];
+
 pin in bit Pins.#.DigitalValueSet [55];
-pin out unsigned Pins.#.DigitalCounterAvailable [55];
+pin out bit digout.#.out[55];
+param rw bit digout.#.invert[55];
+
+
 //pin out unsigned Pins.#.MappingType [55];
 //pin out unsigned Pins.#.KeyCodeMacroID [55];
 //pin out unsigned Pins.#.KeyModifier [55];
@@ -1988,9 +2003,59 @@ void user_mainloop(void)
 
 				a_debout = 224;
 			}
-	
+			
+			bool PinConfigurationGet = false;
+			bool DigitalIOGet = false;
+			bool AnalogIOGet = false;
+			bool DigitalCounterGet = false;
+			bool DigitalIOSet = false;
+			bool loopPins = false;
+			/* 
+			info_PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
+			 info_PWMCount = dev->info.iPWMCount;                        // Number of pins that support PWM output
+			 info_BasicEncoderCount = dev->info.iBasicEncoderCount;               // Number of basic encoders
+			 info_EncodersCount = dev->info.iEncodersCount;                   // Number of encoder slots available
+			 info_FastEncoders = dev->info.iFastEncoders;                    // Number of fast encoders supported
+			 info_UltraFastEncoders = dev->info.iUltraFastEncoders;               // Number of available ultra fast encoders
+			 info_PWMinternalFrequency = dev->info.PWMinternalFrequency;             // Main PWM peripheral clock
+			 info_AnalogInputs = dev->info.iAnalogInputs;                    // Number of info_protI2Cavailable analog inputs
+			 info_KeyMapping = dev->info.iKeyMapping;                      // Device supports key mapping (acts as a USB keyboard)
+			 info_TriggeredKeyMapping = dev->info.iTriggeredKeyMapping;             // Device supports triggered key mapping
+			 info_KeyRepeatDelay = dev->info.iKeyRepeatDelay;                  // Device supports user customizable key repeat rates and delays
+			 info_DigitalCounters = dev->info.iDigitalCounters;                 // Device supports digital counters
+			*/
+			if (dev->info.iPinCount > 0)
+			{
+				if (PK_PinConfigurationGet(dev) == PK_OK)
+				{
+					PinConfigurationGet = true;
+					loopPins = true;
+				}
 
-			if ((PK_DigitalIOGet(dev) == PK_OK) && (PK_AnalogIOGet(dev) == PK_OK) && (PK_PinConfigurationGet(dev) == PK_OK)){  //gets IO data and checks return value 
+				if (PK_DigitalIOGet(dev) == PK_OK)
+				{
+					DigitalIOGet = true;
+					loopPins = true;
+				}
+
+				if (PK_AnalogIOGet(dev) == PK_OK)
+				{
+					AnalogIOGet = true;
+					loopPins = true;
+				}
+			}
+
+			if (dev->info.iDigitalCounters > 0)
+			{
+				if (PK_DigitalCounterGet(dev) == PK_OK)
+				{
+					DigitalCounterGet = true;
+					loopPins = true;
+				}
+			}
+
+
+			if (loopPins = true){  //gets IO data and checks return value 
 				err=0;
 				sPoKeysPinData iPin;
 				a_debout = 230;
@@ -2013,34 +2078,85 @@ void user_mainloop(void)
 				}*/
 
 				a_debout = 232;
+				int AnalogPinOffset = 40; 
+					int AnalogPinCount = 7;
+
 				for(i=0;i<info_PinCount-1;i++)
 				{
 					a_debout = 2320+i;
-					Pins_DigitalCounterValue(i)=dev->Pins[i].DigitalCounterValue;
-					Pins_AnalogValue(i)= 3.3 * dev->Pins[i].AnalogValue /4096;
+					int AinNr = i - AnalogPinOffset;
+					if ((AnalogIOGet = true) && (AinNr >=0) && (AinNr < AnalogPinCount))
+					{
+						float ainVal = 3.3 * dev->Pins[i].AnalogValue / 4096;
+						
+						Pins_AnalogValue(AinNr) = ainVal;
+
+						adcin_value(AinNr) = ainVal * adcin_scale(AinNr) - adcin_offset(AinNr);
+						/*adcin_scale [7];
+						adcin_offset [7];
+						adcin_bit_weight [7];
+						adcin_hw_offset [7];*/
+
+
+					}
+
 					Pins_PinFunction(i)=dev->Pins[i].PinFunction;
-					Pins_CounterOptions(i)=dev->Pins[i].CounterOptions;
-					if (dev->Pins[i].DigitalValueGet==0)
-					{
-						Pins_DigitalValueGet(i)=false;
-					}
-					else
-					{
-						Pins_DigitalValueGet(i)=true;
-					}
 					
 
-					if (Pins_DigitalValueSet_ignore[i] = false) {
-						if (Pins_DigitalValueSet(i) == 1)
+					if (DigitalIOGet = true;)
+					{
+						if (dev->Pins[i].DigitalValueGet == 0)
 						{
-							dev->Pins[i].DigitalValueSet = 1;
+							//Pins_DigitalValueGet(i)=false;
+							digin_in(i) = false;
+							digin_in_not(i) = true;
 						}
 						else
 						{
-							dev->Pins[i].DigitalValueSet = 0;
+							//Pins_DigitalValueGet(i)=true;
+							digin_in(i) = true;
+							digin_in_not(i) = false;
 						}
 					}
+
+
+					if (Pins_DigitalValueSet_ignore[i] = false) {
+						bool setDigoutvalue = false;
+						if (digout_out(i) == 1)
+						{
+							if (digout_invert(i) == 0)
+							{
+								setDigoutvalue=true;
+							}
+						}
+						else
+						{
+							if (digout_invert(i) == 1)
+							{
+								setDigoutvalue = true;
+							}
+						}
+
+						if ((setDigoutvalue = true) && (dev->Pins[i].DigitalValueSet = 0))
+						{
+							dev->Pins[i].DigitalValueSet = 1;
+							DigitalIOSet = true;
+						}
+						else if ((setDigoutvalue = false) && (dev->Pins[i].DigitalValueSet = 1)) 
+						{
+							dev->Pins[i].DigitalValueSet = 0;
+							DigitalIOSet = true;
+						}
+					}
+
 					Pins_DigitalCounterAvailable(i)=dev->Pins[i].DigitalCounterAvailable;
+					if(dev->Pins[i].DigitalCounterAvailable)
+					{
+						Pins_DigitalCounterValue(i) = dev->Pins[i].DigitalCounterValue;
+						Pins_CounterOptions(i) = dev->Pins[i].CounterOptions;
+					}
+
+
 					//Pins_MappingType(i)=dev->Pins[i].MappingType;
 					//Pins_KeyCodeMacroID(i)=dev->Pins[i].KeyCodeMacroID;
 					//Pins_KeyModifier(i)=dev->Pins[i].KeyModifier;
@@ -2093,14 +2209,14 @@ void user_mainloop(void)
 							a_debout = 235;
 							if (SimOn = 0)
 							{
-							if ( PEv2_EmergencyOutputPin!=0)
-							{
-								PEv2_EmergencyInput=PEv2_EmergencyOutput;
-							}
-							else
-							{
-								PEv2_EmergencyInput=0;
-							}
+								if (PEv2_EmergencyOutputPin != 0)
+								{
+									PEv2_EmergencyInput = PEv2_EmergencyOutput;
+								}
+								else
+								{
+									PEv2_EmergencyInput = 0;
+								}
 							}
 							else
 							{
@@ -2114,14 +2230,18 @@ void user_mainloop(void)
 
 
 				a_debout = 236;
-				if (PK_DigitalIOSet(dev) != PK_OK)
+				if (DigitalIOSet = true)
 				{
-					usleep(sleepdur); 
+					if (PK_DigitalIOSet(dev) != PK_OK)
+					{
+						usleep(sleepdur);
+					}
+					if (PK_DigitalIOSet(dev) != PK_OK)
+					{
+						usleep(sleepdur);
+					}
 				}
-				if (PK_DigitalIOSet(dev) != PK_OK)
-				{
-					usleep(sleepdur); 
-				}
+
 				a_debout = 237;
 			 }
 			 else
