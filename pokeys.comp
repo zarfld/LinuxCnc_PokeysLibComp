@@ -2061,7 +2061,7 @@ void user_mainloop(void)
 				}
 			}
 
-			if (device->info.iBasicEncoderCount)
+			if (dev->info.iBasicEncoderCount)
 			{
 				if (PK_EncoderValuesGet(dev) == PK_OK)
 				{
