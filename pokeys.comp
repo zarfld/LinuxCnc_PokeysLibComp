@@ -291,10 +291,10 @@ pin out unsigned Pins.#.CounterOptions[55];
 
 pin out unsigned Pins.#.AnalogValue [55];
 pin out float adcin.#.value[7];
-param HAL_RW float adcin.#.scale [7];
-param HAL_RW float adcin.#.offset [7];
-param HAL_RW float adcin.#.bit_weight [7];
-param HAL_RW float adcin.#.hw_offset [7];
+param rw float adcin.#.scale [7];
+param rw float adcin.#.offset [7];
+param rw float adcin.#.bit_weight [7];
+param rw float adcin.#.hw_offset [7];
 
 pin out bit Pins.#.DigitalValueGet [55];
 pin out bit digin.#.in[55];
@@ -302,7 +302,7 @@ pin out bit digin.#.in-not[55];
 
 pin in bit Pins.#.DigitalValueSet [55];
 pin out bit digout.#.out[55];
-param HAL_RW bit digout.#.invert[55];
+param rw bit digout.#.invert[55];
 
 
 //pin out unsigned Pins.#.MappingType [55];
