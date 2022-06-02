@@ -2206,7 +2206,7 @@ void user_mainloop(void)
 							a_debout = 234;
 							if (SimOn = 0)
 							{
-								PEv2_EmergencyInput = Pins_DigitalValueGet(dev->PEv2.EmergencyInputPin - 1);
+								PEv2_EmergencyInput = dev->Pins[dev->PEv2.EmergencyInputPin - 1].DigitalValueGet;
 							}
 							else
 							{
