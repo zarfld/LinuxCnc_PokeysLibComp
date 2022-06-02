@@ -548,8 +548,8 @@ net pokeys.kbd48CNC.FEEDRATE_MINUS.Button =>	halui.feed-override.decrease
 net pokeys.kbd48CNC.JOGRATE_PLUS.Button =>	halui.joint.selected.increment-plus		
 net pokeys.kbd48CNC.JOGRATE_PLUS.Button =>	halui.axis.selected.increment-plus	
 #net pokeys.kbd48CNC.JOGRATE_PLUS.LED 	<=
-net pokeys.kbd48CNC.JOGRATE_MINUS.Button =>	halui.joint.selected.increment-plus		
-net pokeys.kbd48CNC.JOGRATE_MINUS.Button =>	halui.axis.selected.increment-plus	
+net pokeys.kbd48CNC.JOGRATE_MINUS.Button =>	halui.joint.selected.increment-minus		
+net pokeys.kbd48CNC.JOGRATE_MINUS.Button =>	halui.axis.selected.increment-minus	
 #net pokeys.kbd48CNC.JOGRATE_MINUS.LED 	<=
 #FUN_SHUTTLE_MODE,
 #net pokeys.kbd48CNC.SHUTTLE_MODE.Button =>				
