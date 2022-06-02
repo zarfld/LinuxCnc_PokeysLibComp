@@ -15,10 +15,10 @@ show parameter
 
 addf motion-command-handler   servo-thread
 addf motion-controller        servo-thread
-addf pid.x.do-pid-calcs       servo-thread
-addf pid.x2.do-pid-calcs       servo-thread
-addf pid.y.do-pid-calcs       servo-thread
-addf pid.z.do-pid-calcs       servo-thread
+#addf pid.x.do-pid-calcs       servo-thread
+#addf pid.x2.do-pid-calcs       servo-thread
+#addf pid.y.do-pid-calcs       servo-thread
+#addf pid.z.do-pid-calcs       servo-thread
 addf pid.s.do-pid-calcs       servo-thread
 show pin
 show parameter
