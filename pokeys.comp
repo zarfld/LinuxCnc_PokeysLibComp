@@ -218,7 +218,7 @@ pin out bit PEv2.#.HomeSwitch.in[8];					// Home status (NOT bit-mapped)
 pin out bit PEv2.#.HomeSwitch.in-not[8];					// inverted Home status (NOT bit-mapped)
 param rw unsigned PEv2.#.HomeSwitch.Pin[8] "Home switch pin (0 for external dedicated input)";			// Home switch pin (0 for external dedicated input)
 param rw unsigned PEv2.#.HomeSwitch.Filter[8] "Digital filter for home-switch";
-
+param rw bit PEv2.#.HomeSwitch.invert[8] "Invert home-switch";
 
 pin out bit PEv2.#.LimitMSwitch [8];			// Limit- switch
 pin out bit PEv2.#.LimitPSwitch [8];			// Limit+ switch
