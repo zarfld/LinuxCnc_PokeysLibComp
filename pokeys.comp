@@ -113,16 +113,14 @@ pin out unsigned PEv2.#.AxesState [8];				// Axis states (bit-mapped) - see ePK_
 pin out unsigned PEv2.#.AxesConfig [8];				// Axis configuration - see ePK_PEv2_AxisConfig
 pin in unsigned PEv2.#.AxesSwitchConfig [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
 
-pin io u32 PEv2.#.InvertAxisEnable [8];		// Invert axis enable signal
+
 pin io u32 PEv2.#.SoftLimitMaximum [8];		// Soft limit maximum position
 pin io u32 PEv2.#.SoftLimitMinimum [8];		// Soft limit minimum position
 pin io unsigned PEv2.#.HomingSpeed [8];			// Homing speed per axis (in %)
 pin io unsigned PEv2.#.HomingReturnSpeed [8];		// Homing return speed per axis (in % of the homing speed)
 pin io u32 PEv2.#.HomeOffsets [8];				// Home position offset
 pin io unsigned PEv2.#.HomingAlgorithm [8];		// Homing algorithm configuration
-pin io unsigned PEv2.#.FilterLimitMSwitch [8];		// Digital filter for limit- switch
-pin io unsigned PEv2.#.FilterLimitPSwitch [8];		// Digital filter for limit+ switch
-pin io unsigned PEv2.#.FilterHomeSwitch [8];		// Digital filter for home switch
+
 pin io u32 PEv2.#.ProbePosition [8];			// Position where probe detected change
 pin io u32 PEv2.#.ProbeMaxPosition [8];		// Maximum position to travel to until stopping and returning error
 
@@ -190,16 +188,42 @@ pin io s32 PEv2.#.params.HOME_IGNORE_LIMITS [8] = 0;			// YES / NO
 pin io u32 PEv2.#.MPGjogMultiplier [8];		// MPG jog multiplier value
 pin io unsigned PEv2.#.MPGjogEncoder [8];			// MPG jog encoder ID
 
-param rw unsigned PEv2.#.PinHomeSwitch [8] "Home switch pin (0 for external dedicated input)";			// Home switch pin (0 for external dedicated input)
-param rw unsigned PEv2.#.PinLimitMSwitch [8] "Limit- switch pin (0 for external dedicated input)";			// Limit- switch pin (0 for external dedicated input)
-param rw unsigned PEv2.#.PinLimitPSwitch [8] "Limit+ switch pin (0 for external dedicated input)";			// Limit+ switch pin (0 for external dedicated input)
-param rw unsigned PEv2.#.AxisEnableOutputPins [8] "Axis enabled output pin (0 for external dedicated output)";		// Axis enabled output pin (0 for external dedicated output)
 
-pin out bit PEv2.#.HomeSwitchStat [8];				// Home switch
+
+
+
+pin out unsigned PEv2.#.LimitStatusN[8];					// Limit- status (NOT bit-mapped)
+pin out bit PEv2.#.LimitNSwitch.in[8];
+pin out bit PEv2.#.LimitNSwitch.in-not[8];
+param rw unsigned PEv2.#.LimitNSwitch.Pin [8] "Limit- switch pin (0 for external dedicated input)";			// Limit- switch pin (0 for external dedicated input)
+param rw unsigned PEv2.#.LimitNSwitch.Filter[8] "Digital filter for limit- switch";		// Digital filter for limit- switch
+param rw bit PEv2.#.LimitNSwitch.invert[8] "Invert limit-";		
+
+pin out unsigned PEv2.#.LimitStatusP[8];					// Limit+ status (NOT bit-mapped)
+pin out bit PEv2.#.LimitPSwitch.in[8];
+pin out bit PEv2.#.LimitPSwitch.in-not[8];
+param rw unsigned PEv2.#.LimitPSwitch.Pin[8] "Limit+ switch pin (0 for external dedicated input)";			// Limit+ switch pin (0 for external dedicated input)
+param rw unsigned PEv2.#.LimitPSwitch.Filter[8] "Digital filter for limit+ switch";		// Digital filter for limit+ switch
+param rw bit PEv2.#.LimitPSwitch.invert[8] "Invert limit+";		
+
+
+pin in bit PEv2.#.AxisEnableOutput[8];		// Axis enabled output
+param rw unsigned PEv2.#.AxisEnableOutput.Pin[8] "Axis enabled output pin (0 for external dedicated output)";		// Axis enabled output pin (0 for external dedicated output)
+param rw pin io u32 PEv2.#.AxisEnableOutput.invert[8]; "Invert axis enable signal"		// Invert axis enable signal
+
+pin out bit PEv2.#.HomeSwitchStat[8];				// Home switch
+pin out bit PEv2.HomeSwitch;				// Home switch
+pin out unsigned PEv2.#.HomeStatus[8];
+pin out bit PEv2.#.HomeSwitch.in[8];					// Home status (NOT bit-mapped)
+pin out bit PEv2.#.HomeSwitch.in-not[8];					// inverted Home status (NOT bit-mapped)
+param rw unsigned PEv2.#.HomeSwitch.Pin[8] "Home switch pin (0 for external dedicated input)";			// Home switch pin (0 for external dedicated input)
+param rw unsigned PEv2.#.HomeSwitch.Filter[8] "Digital filter for ho
+
+
 pin out bit PEv2.#.LimitMSwitch [8];			// Limit- switch
 pin out bit PEv2.#.LimitPSwitch [8];			// Limit+ switch
-pin in bit PEv2.#.AxisEnableOutput [8];		// Axis enabled output
-pin out bit PEv2.HomeSwitch;				// Home switch
+
+
 
 pin io unsigned PEv2.#.HomeBackOffDistance [8];		// Back-off distance after homing
 pin io unsigned PEv2.#.MPGjogDivider [8];			// Divider for the MPG jogging (enhanced encoder resolution)
@@ -212,9 +236,7 @@ pin io bit PEv2.PG_extended_io;
 pin io unsigned PEv2.ChargePumpEnabled;				// Charge pump output enabled
 param rw unsigned PEv2.EmergencySwitchPolarity "Emergency switch polarity (set to 1 to invert)";		// Emergency switch polarity (set to 1 to invert)
 pin out unsigned PEv2.PulseEngineActivated;			// Pulse engine activation status
-pin out unsigned PEv2.#.LimitStatusP[8];					// Limit+ status (NOT bit-mapped)
-pin out unsigned PEv2.#.LimitStatusN[8];					// Limit- status (NOT bit-mapped)
-pin out unsigned PEv2.#.HomeStatus[8];					// Home status (NOT bit-mapped)
+
 pin out unsigned PEv2.ErrorInputStatus;				// Stepper motor driver error inputs status (bit-mapped)
 pin out unsigned PEv2.MiscInputStatus;				// Miscelenous digital inputs...
 pin io unsigned PEv2.LimitOverride;					// Limit override status
@@ -549,8 +571,8 @@ typedef struct
     uint8_t         AxesConfig[8];             // Axis configuration - see ePK_PEv2_AxisConfig
     uint8_t         AxesSwitchConfig[8];       // Axis switch configuration - see ePK_PEv2_AxisSwitchOptions
 
-    uint8_t         PinHomeSwitch[8];          // Home switch pin (0 for external dedicated input)
-    uint8_t         PinLimitMSwitch[8];        // Limit- switch pin (0 for external dedicated input)
+    uint8_t         HomeSwitch_Pin[8];          // Home switch pin (0 for external dedicated input)
+    uint8_t         LimitNSwitch_Pin[8];        // Limit- switch pin (0 for external dedicated input)
     uint8_t         PinLimitPSwitch[8];        // Limit+ switch pin (0 for external dedicated input)
 
     uint8_t         HomingSpeed[8];            // Homing speed per axis (in %)
@@ -1428,9 +1450,15 @@ void user_mainloop(void)
 						PEv2_CurrentPosition(i) = intCurrentPosition[i];
 						a_debPEv2_axxisout(i) = 270 + i;
 
-						PEv2_LimitStatusP(i) = Get_BitOfByte(bm_LimitStatusP,i);
-						PEv2_LimitStatusN(i) = Get_BitOfByte(bm_LimitStatusN,i);
-						PEv2_HomeStatus(i) =  Get_BitOfByte(bm_HomeStatus,i);
+						PEv2_LimitPSwitch_in(i) = Get_BitOfByte(bm_LimitStatusP,i);
+						PEv2_LimitPSwitch_in_not(i) = !PEv2_LimitPSwitch_in(i);
+
+						PEv2_LimitNSwitch_in(i) = Get_BitOfByte(bm_LimitStatusN,i);
+						PEv2_LimitNSwitch_in_not(i) = !PEv2_LimitNSwitch_in(i);
+
+						PEv2_HomeSwitch_in(i) =  Get_BitOfByte(bm_HomeStatus,i);
+						PEv2_HomeSwitch_in_not(i) = !PEv2_HomeSwitch_in(i);
+
 						a_debPEv2_axxisout(i) = 280 ;
 						PEv2_DedicatedLimitNInputs(i) =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
 						PEv2_DedicatedLimitPInputs(i) =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
@@ -2797,12 +2825,12 @@ void user_mainloop(void)
 							 }
 
 
-							 if (PEv2_PinHomeSwitch(i) != 0)
+							 if (PEv2_HomeSwitch_Pin(i) != 0)
 							 {
 								 //check if pin is parametrized in HAL
-								 int Home = PEv2_PinHomeSwitch(i);
-								 int LimP = PEv2_PinLimitPSwitch(i);
-								 int LimM = PEv2_PinLimitMSwitch(i);
+								 int Home = PEv2_HomeSwitch_Pin(i);
+								 int LimP = PEv2_LimitPSwitch_Pin(i);
+								 int LimM = PEv2_LimitNSwitch_Pin(i);
 
 								 if (Home != LimM && Home != LimP)
 								 {
@@ -2835,39 +2863,55 @@ void user_mainloop(void)
 								 dev->PEv2.PinHomeSwitch[i] = 0;
 							 }
 
-							 if (dev->PEv2.PinLimitMSwitch[i] != PEv2_PinLimitMSwitch(i))
+							 if (PEv2_HomeSwitch_invert(i)==true)
 							 {
-								 dev->PEv2.PinLimitMSwitch[i] = PEv2_PinLimitMSwitch(i);
+								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 7, true); // PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
 								 doAxisConfig = true;
 							 }
-							 
-							 if (PEv2_PinLimitMSwitch(i) != 0)
+
+
+							 if (dev->PEv2.PinLimitMSwitch[i] != PEv2_LimitNSwitch_Pin(i))
+							 {
+								 dev->PEv2.PinLimitMSwitch[i] = PEv2_LimitNSwitch_Pin(i);
+								 doAxisConfig = true;
+							 }
+							 if (PEv2_LimitNSwitch_invert(i) == true)
+							 {
+								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 5, true); // PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
+								 doAxisConfig = true;
+							 }
+							 if (PEv2_LimitPSwitch_invert(i) == true)
+							 {
+								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 6, true); // PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
+								 doAxisConfig = true;
+							 }
+
+							 if (PEv2_LimitNSwitch_Pin(i) != 0)
 							 {	//check if pin is parametrized in HAL
 								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 0, true); // | PK_ASO_SWITCH_LIMIT_N;
-								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 5, true); // 32 Invert limit- switch polarity
-								 if (dev->Pins[PEv2_PinLimitMSwitch(i) - 1].PinFunction != PK_PinCap_digitalInput)
+								 
+								 if (dev->Pins[PEv2_LimitNSwitch_Pin(i) - 1].PinFunction != PK_PinCap_digitalInput)
 								 {
-									 dev->Pins[PEv2_PinLimitMSwitch(i) - 1].PinFunction = PK_PinCap_digitalInput;
-									 PK_SL_SetPinFunction(dev, PEv2_PinLimitMSwitch(i) - 1, PK_PinCap_digitalInput);
+									 dev->Pins[PEv2_LimitNSwitch_Pin(i) - 1].PinFunction = PK_PinCap_digitalInput;
+									 PK_SL_SetPinFunction(dev, PEv2_LimitNSwitch_Pin(i) - 1, PK_PinCap_digitalInput);
 									 setPinConfig = true;
 								 }
 							 }
 
-							 if (dev->PEv2.PinLimitPSwitch[i] != PEv2_PinLimitPSwitch(i))
+							 if (dev->PEv2.PinLimitPSwitch[i] != PEv2_LimitPSwitch_Pin(i))
 							 {
-								 dev->PEv2.PinLimitPSwitch[i] = PEv2_PinLimitPSwitch(i);
+								 dev->PEv2.PinLimitPSwitch[i] = PEv2_LimitPSwitch_Pin(i);
 								 doAxisConfig = true;
 							 }
 							 
-							 if (PEv2_PinLimitPSwitch(i) != 0)
+							 if (PEv2_LimitPSwitch_Pin(i) != 0)
 							 {	//check if pin is parametrized in HAL
 								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 1, true); // | PK_ASO_SWITCH_LIMIT_P;
-								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 6, true); // 32 Invert limit+ switch polarity
-
-								 if (dev->Pins[PEv2_PinLimitPSwitch(i) - 1].PinFunction != PK_PinCap_digitalInput)
+								 
+								 if (dev->Pins[PEv2_LimitPSwitch_Pin(i) - 1].PinFunction != PK_PinCap_digitalInput)
 								 {
-									 dev->Pins[PEv2_PinLimitPSwitch(i) - 1].PinFunction = PK_PinCap_digitalInput;
-									 PK_SL_SetPinFunction(dev, PEv2_PinLimitPSwitch(i) - 1, PK_PinCap_digitalInput);
+									 dev->Pins[PEv2_LimitPSwitch_Pin(i) - 1].PinFunction = PK_PinCap_digitalInput;
+									 PK_SL_SetPinFunction(dev, PEv2_LimitPSwitch_Pin(i) - 1, PK_PinCap_digitalInput);
 									 setPinConfig = true;
 								 }
 							 
@@ -2897,44 +2941,44 @@ void user_mainloop(void)
 								 doAxisConfig = true;
 							 }
 							 
-							 if (dev->PEv2.AxisEnableOutputPins[i] != PEv2_AxisEnableOutputPins(i))
+							 if (dev->PEv2.AxisEnableOutputPins[i] != PEv2_AxisEnableOutput_Pin(i))
 							 {
-								 dev->PEv2.AxisEnableOutputPins[i] = PEv2_AxisEnableOutputPins(i);
+								 dev->PEv2.AxisEnableOutputPins[i] = PEv2_AxisEnableOutput_Pin(i);
 								 doAxisConfig = true;
 							 }
 							 
-							 if (PEv2_AxisEnableOutputPins(i) != 0)
+							 if (PEv2_AxisEnableOutput_Pin(i) != 0)
 							 {	//check if pin is parametrized in HAL
-								 if (dev->Pins[PEv2_AxisEnableOutputPins(i) - 1].PinFunction != PK_PinCap_digitalOutput)
+								 if (dev->Pins[PEv2_AxisEnableOutput_Pin(i) - 1].PinFunction != PK_PinCap_digitalOutput)
 								 {
-									 dev->Pins[PEv2_AxisEnableOutputPins(i) - 1].PinFunction = PK_PinCap_digitalOutput;
-									 PK_SL_SetPinFunction(dev, PEv2_AxisEnableOutputPins(i) - 1, PK_PinCap_digitalOutput);
+									 dev->Pins[PEv2_AxisEnableOutput_Pin(i) - 1].PinFunction = PK_PinCap_digitalOutput;
+									 PK_SL_SetPinFunction(dev, PEv2_AxisEnableOutput_Pin(i) - 1, PK_PinCap_digitalOutput);
 									 setPinConfig = true;
 								 }
-								 Pins_DigitalValueSet_ignore[PEv2_AxisEnableOutputPins(i) - 1] = true;
+								 Pins_DigitalValueSet_ignore[PEv2_AxisEnableOutput_Pin(i) - 1] = true;
 							 }
 
-							 if (dev->PEv2.InvertAxisEnable[i] != PEv2_InvertAxisEnable(i))
+							 if (dev->PEv2.InvertAxisEnable[i] != PEv2_AxisEnableOutput_invert(i))
 							 {
-								 dev->PEv2.InvertAxisEnable[i] = PEv2_InvertAxisEnable(i);
+								 dev->PEv2.InvertAxisEnable[i] = PEv2_AxisEnableOutput_invert(i);
 								 doAxisConfig = true;
 							 }
 							 
-							 if (dev->PEv2.FilterLimitMSwitch[i] != PEv2_FilterLimitMSwitch(i))
+							 if (dev->PEv2.FilterLimitMSwitch[i] != PEv2_LimitNSwitch_Filter(i))
 							 {
-								 dev->PEv2.FilterLimitMSwitch[i] = PEv2_FilterLimitMSwitch(i);
+								 dev->PEv2.FilterLimitMSwitch[i] = PEv2_LimitNSwitch_Filter(i);
 								 doAxisConfig = true;
 							 }
 							 
-							 if (dev->PEv2.FilterLimitPSwitch[i] != PEv2_FilterLimitPSwitch(i))
+							 if (dev->PEv2.FilterLimitPSwitch[i] != PEv2_LimitPSwitch_Filter(i))
 							 {
-								 dev->PEv2.FilterLimitPSwitch[i] = PEv2_FilterLimitPSwitch(i);
+								 dev->PEv2.FilterLimitPSwitch[i] = PEv2_LimitPSwitch_Filter(i);
 								 doAxisConfig = true;
 							 }
 							 
-							 if (dev->PEv2.FilterHomeSwitch[i] != PEv2_FilterHomeSwitch(i))
+							 if (dev->PEv2.FilterHomeSwitch[i] != PEv2_HomeSwitch_Filter(i))
 							 {
-								 dev->PEv2.FilterHomeSwitch[i] = PEv2_FilterHomeSwitch(i);
+								 dev->PEv2.FilterHomeSwitch[i] = PEv2_HomeSwitch_Filter(i);
 								 doAxisConfig = true;
 							 }
 							 
@@ -2997,9 +3041,9 @@ void user_mainloop(void)
 								 //PEv2_AxesConfig(i) = dev->PEv2.AxesConfig[i]; readonly
 								 //PEv2_AxesSwitchConfig(i)  = dev->PEv2.AxesSwitchConfig[i];
 
-								 //PEv2_PinHomeSwitch(i) = dev->PEv2.PinHomeSwitch[i];
-								 //PEv2_PinLimitMSwitch(i) = dev->PEv2.PinLimitMSwitch[i];
-								 //PEv2_PinLimitPSwitch(i) = dev->PEv2.PinLimitPSwitch[i];
+								 //PEv2_HomeSwitch_Pin(i) = dev->PEv2.PinHomeSwitch[i];
+								 //PEv2_LimitNSwitch_Pin(i) = dev->PEv2.PinLimitMSwitch[i];
+								 //PEv2_LimitPSwitch_Pin(i) = dev->PEv2.PinLimitPSwitch[i];
 
 								 PEv2_HomingSpeed(i) = dev->PEv2.HomingSpeed[i];
 								 PEv2_HomingReturnSpeed(i) = dev->PEv2.HomingReturnSpeed[i];
@@ -3016,12 +3060,12 @@ void user_mainloop(void)
 
 								 PEv2_MPGjogMultiplier(i) = dev->PEv2.MPGjogMultiplier[i];
 
-								 //PEv2_AxisEnableOutputPins(i) = dev->PEv2.AxisEnableOutputPins[i];
-								 PEv2_InvertAxisEnable(i) = dev->PEv2.InvertAxisEnable[i];
+								 //PEv2_AxisEnableOutput_Pin(i) = dev->PEv2.AxisEnableOutputPins[i];
+								 PEv2_AxisEnableOutput_invert(i) = dev->PEv2.InvertAxisEnable[i];
 
-								 PEv2_FilterLimitMSwitch(i) = dev->PEv2.FilterLimitMSwitch[i];
-								 PEv2_FilterLimitPSwitch(i) = dev->PEv2.FilterLimitPSwitch[i];
-								 PEv2_FilterHomeSwitch(i) = dev->PEv2.FilterHomeSwitch[i];
+								 PEv2_LimitNSwitch_Filter(i) = dev->PEv2.FilterLimitMSwitch[i];
+								 PEv2_LimitPSwitch_Filter(i) = dev->PEv2.FilterLimitPSwitch[i];
+								 PEv2_HomeSwitch_Filter(i) = dev->PEv2.FilterHomeSwitch[i];
 
 								 PEv2_HomingAlgorithm(i) = dev->PEv2.HomingAlgorithm[i];
 								 // MPG 1x mode here
