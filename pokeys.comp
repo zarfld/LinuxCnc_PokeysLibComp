@@ -209,7 +209,7 @@ param rw bit PEv2.#.LimitPSwitch.invert[8] "Invert limit+";
 
 pin in bit PEv2.#.AxisEnableOutput[8];		// Axis enabled output
 param rw unsigned PEv2.#.AxisEnableOutput.Pin[8] "Axis enabled output pin (0 for external dedicated output)";		// Axis enabled output pin (0 for external dedicated output)
-param rw pin PEv2.#.AxisEnableOutput.invert[8]; "Invert axis enable signal"		// Invert axis enable signal
+param rw bit PEv2.#.AxisEnableOutput.invert[8]; "Invert axis enable signal"		// Invert axis enable signal
 
 pin out bit PEv2.#.HomeSwitchStat[8];				// Home switch
 pin out bit PEv2.HomeSwitch;				// Home switch
