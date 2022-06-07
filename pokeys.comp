@@ -190,10 +190,10 @@ pin io s32 PEv2.#.params.HOME_IGNORE_LIMITS [8] = 0;			// YES / NO
 pin io u32 PEv2.#.MPGjogMultiplier [8];		// MPG jog multiplier value
 pin io unsigned PEv2.#.MPGjogEncoder [8];			// MPG jog encoder ID
 
-pin in unsigned PEv2.#.PinHomeSwitch [8];			// Home switch pin (0 for external dedicated input)
-pin in unsigned PEv2.#.PinLimitMSwitch [8];			// Limit- switch pin (0 for external dedicated input)
-pin in unsigned PEv2.#.PinLimitPSwitch [8];			// Limit+ switch pin (0 for external dedicated input)
-pin in unsigned PEv2.#.AxisEnableOutputPins [8];		// Axis enabled output pin (0 for external dedicated output)
+param rw unsigned PEv2.#.PinHomeSwitch [8] "Home switch pin (0 for external dedicated input)";			// Home switch pin (0 for external dedicated input)
+param rw unsigned PEv2.#.PinLimitMSwitch [8] "Limit- switch pin (0 for external dedicated input)";			// Limit- switch pin (0 for external dedicated input)
+param rw unsigned PEv2.#.PinLimitPSwitch [8] "Limit+ switch pin (0 for external dedicated input)";			// Limit+ switch pin (0 for external dedicated input)
+param rw unsigned PEv2.#.AxisEnableOutputPins [8] "Axis enabled output pin (0 for external dedicated output)";		// Axis enabled output pin (0 for external dedicated output)
 
 pin out bit PEv2.#.HomeSwitchStat [8];				// Home switch
 pin out bit PEv2.#.LimitMSwitch [8];			// Limit- switch
@@ -210,7 +210,7 @@ pin in bit PEv2.PG_swap_stepdir;
 pin io bit PEv2.PG_extended_io;
 
 pin io unsigned PEv2.ChargePumpEnabled;				// Charge pump output enabled
-pin io unsigned PEv2.EmergencySwitchPolarity;		// Emergency switch polarity (set to 1 to invert)
+param rw unsigned PEv2.EmergencySwitchPolarity "Emergency switch polarity (set to 1 to invert)";		// Emergency switch polarity (set to 1 to invert)
 pin out unsigned PEv2.PulseEngineActivated;			// Pulse engine activation status
 pin out unsigned PEv2.#.LimitStatusP[8];					// Limit+ status (NOT bit-mapped)
 pin out unsigned PEv2.#.LimitStatusN[8];					// Limit- status (NOT bit-mapped)
@@ -222,9 +222,9 @@ pin io unsigned PEv2.LimitOverrideSetup;			// Limit override configuration
 pin io unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
 pin io unsigned PEv2.AxisEnabledMask;				// Bit-mapped ouput enabled mask
 
-pin io unsigned PEv2.EmergencyInputPin;
+param rw unsigned PEv2.EmergencyInputPin "";
 pin out bit PEv2.EmergencyInput;
-pin io unsigned PEv2.EmergencyOutputPin;				//added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)
+param rw unsigned PEv2.EmergencyOutputPin "added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)";				//added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)
 pin in bit PEv2.EmergencyOutput;
 
 pin io unsigned PEv2.param1;
@@ -254,8 +254,8 @@ pin io unsigned PEv2.motionBufferEntriesAccepted;
 pin io unsigned PEv2.newMotionBufferEntries;
 pin io unsigned PEv2.HomingStartMaskSetup;			// Bit-mapped axes indexes to be homed
 pin io unsigned PEv2.ProbeStartMaskSetup;			// Bit-mapped axis indexes for probing
-pin io unsigned PEv2.ProbeInput;					// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
-pin io unsigned PEv2.ProbeInputPolarity;			// Probe input polarity
+param rw unsigned PEv2.ProbeInput "Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)";					// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
+param rw unsigned PEv2.ProbeInputPolarity "Probe input polarity";			// Probe input polarity
 pin out unsigned PEv2.ProbeStatus;					// Probe status (probe completion bit-mapped status)
 //pin out unsigned PEv2.MotionBuffer[448];			// Motion buffer
 pin io float PEv2.ProbeSpeed;						// Probe speed (ratio of the maximum speed)
@@ -294,10 +294,10 @@ pin out unsigned counter.#.value[55];
 //pin out unsigned Pins.#.AnalogValue [55];
 pin out float adcin.#.value-raw[7];
 pin out float adcin.#.value[7];
-param rw float adcin.#.scale[7]  "";
-param rw float adcin.#.offset[7] "";
-param rw float adcin.#.bit_weight[7] "";
-param rw float adcin.#.hw_offset[7] "";
+param rw float adcin.#.scale[7]  "The input voltage (or current) will be multiplied by scale before being output to value.";
+param rw float adcin.#.offset[7] "This will be subtracted from the hardware input voltage (or current) after the scale multiplier has been applied.";
+param rw float adcin.#.bit_weight[7] "The value of one least significant bit (LSB). This is effectively the granularity of the input reading.";
+param rw float adcin.#.hw_offset[7] "The value present on the input when 0 volts is applied to the input pin(s).";
 
 //pin out bit Pins.#.DigitalValueGet [55];
 pin out bit digin.#.in[55];
@@ -305,14 +305,22 @@ pin out bit digin.#.in-not[55];
 
 //pin in bit Pins.#.DigitalValueSet [55];
 pin in bit digout.#.out[55];
-param rw bit digout.#.invert[55] "";
+param rw bit digout.#.invert[55] "If TRUE, out is inverted before writing to the hardware.";
 
 pin out s32 encoder.#.count[29];
 pin out float encoder.#.position[29];
 pin out float encoder.#.velocity[29];
 pin in bit encoder.#.reset[29];
 pin in bit encoder.#.index-enable[29];
-param rw float encoder.#.scale[29]  "";
+param rw float encoder.#.scale[29]  "The scale factor used to convert counts to position units. It is in “counts per position unit”";
+
+pin in float adcout.#.value[6];
+pin in bit adcout.#.enable[6];
+param rw float adcout.#.offset[6]  "This will be added to the value before the hardware is updated";
+param rw float adcout.#.scale[6]  "This should be set so that an input of 1 on the value pin will cause 1V";
+param rw float adcout.#.high_limit[6]  "When calculating the value to output to the hardware, if value +offset is greater than high_limit, then high_limit will be used instead.";
+param rw float adcout.#.low_limit[6]  "When calculating the value to output to the hardware, if value +offset is less than low_limit, then low_limit will be used instead";
+param rw float adcout.#.max_v[6] "max v";
 
 //pin out unsigned Pins.#.MappingType [55];
 //pin out unsigned Pins.#.KeyCodeMacroID [55];
