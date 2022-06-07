@@ -188,18 +188,14 @@ pin io s32 PEv2.#.params.HOME_IGNORE_LIMITS [8] = 0;			// YES / NO
 pin io u32 PEv2.#.MPGjogMultiplier [8];		// MPG jog multiplier value
 pin io unsigned PEv2.#.MPGjogEncoder [8];			// MPG jog encoder ID
 
-
-
-
-
-pin out unsigned PEv2.#.LimitStatusN[8];					// Limit- status (NOT bit-mapped)
+//pin out unsigned PEv2.#.LimitStatusN[8];					// Limit- status (NOT bit-mapped)
 pin out bit PEv2.#.LimitNSwitch.in[8];
 pin out bit PEv2.#.LimitNSwitch.in-not[8];
 param rw unsigned PEv2.#.LimitNSwitch.Pin [8] "Limit- switch pin (0 for external dedicated input)";			// Limit- switch pin (0 for external dedicated input)
 param rw unsigned PEv2.#.LimitNSwitch.Filter[8] "Digital filter for limit- switch";		// Digital filter for limit- switch
 param rw bit PEv2.#.LimitNSwitch.invert[8] "Invert limit-";		
 
-pin out unsigned PEv2.#.LimitStatusP[8];					// Limit+ status (NOT bit-mapped)
+//pin out unsigned PEv2.#.LimitStatusP[8];					// Limit+ status (NOT bit-mapped)
 pin out bit PEv2.#.LimitPSwitch.in[8];
 pin out bit PEv2.#.LimitPSwitch.in-not[8];
 param rw unsigned PEv2.#.LimitPSwitch.Pin[8] "Limit+ switch pin (0 for external dedicated input)";			// Limit+ switch pin (0 for external dedicated input)
@@ -211,17 +207,17 @@ pin in bit PEv2.#.AxisEnableOutput[8];		// Axis enabled output
 param rw unsigned PEv2.#.AxisEnableOutput.Pin[8] "Axis enabled output pin (0 for external dedicated output)";		// Axis enabled output pin (0 for external dedicated output)
 param rw bit PEv2.#.AxisEnableOutput.invert[8] "Invert axis enable signal"	;	// Invert axis enable signal
 
-pin out bit PEv2.#.HomeSwitchStat[8];				// Home switch
-pin out bit PEv2.HomeSwitch;				// Home switch
-pin out unsigned PEv2.#.HomeStatus[8];
+//pin out bit PEv2.#.HomeSwitchStat[8];				// Home switch
+//pin out bit PEv2.HomeSwitch;				// Home switch
+//pin out unsigned PEv2.#.HomeStatus[8];
 pin out bit PEv2.#.HomeSwitch.in[8];					// Home status (NOT bit-mapped)
 pin out bit PEv2.#.HomeSwitch.in-not[8];					// inverted Home status (NOT bit-mapped)
 param rw unsigned PEv2.#.HomeSwitch.Pin[8] "Home switch pin (0 for external dedicated input)";			// Home switch pin (0 for external dedicated input)
 param rw unsigned PEv2.#.HomeSwitch.Filter[8] "Digital filter for home-switch";
 param rw bit PEv2.#.HomeSwitch.invert[8] "Invert home-switch";
 
-pin out bit PEv2.#.LimitMSwitch [8];			// Limit- switch
-pin out bit PEv2.#.LimitPSwitch [8];			// Limit+ switch
+//pin out bit PEv2.#.LimitMSwitch [8];			// Limit- switch
+//pin out bit PEv2.#.LimitPSwitch [8];			// Limit+ switch
 
 
 
