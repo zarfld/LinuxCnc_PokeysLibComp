@@ -51,16 +51,24 @@ net machine-is-on => pokeys.0.machine-is-on
 # external input signals
 
 # --- MIN X---
-net min-x2     <=  pokeys.0.PEv2.6.LimitMSwitch
-net min-x     <=  pokeys.0.PEv2.0.LimitMSwitch
+net min-x2     <=  pokeys.0.PEv2.6.LimitNSwitch.in
+net min-x     <=  pokeys.0.PEv2.0.LimitNSwitch.in
 
 # --- MAX-X ---
-net max-x     <=  pokeys.0.PEv2.0.LimitPSwitch
-net max-x2     <=  pokeys.0.PEv2.6.LimitPSwitch
+net max-x     <=  pokeys.0.PEv2.0.LimitPSwitch.in
+net max-x2     <=  pokeys.0.PEv2.6.LimitPSwitch.in
 
 # --- HOME-X2 ---
-net home-x     <=  pokeys.0.PEv2.0.HomeSwitchStat
-net home-x2     <=  pokeys.0.PEv2.6.HomeSwitchStat
+net home-x     <=  pokeys.0.PEv2.0.HomeSwitch.in
+net home-x2     <=  pokeys.0.PEv2.6.HomeSwitch.in
+
+net min-y     <=  pokeys.0.PEv2.1.LimitNSwitch.in
+net max-y     <=  pokeys.0.PEv2.1.LimitPSwitch.in
+net home-y     <=  pokeys.0.PEv2.1.HomeSwitch.in
+
+net min-z     <=  pokeys.0.PEv2.2.LimitNSwitch.in
+net max-z     <=  pokeys.0.PEv2.2.LimitPSwitch.in
+net home-z     <=  pokeys.0.PEv2.2.HomeSwitch.in
 
 # --- CYCLE-START ---
 #net cycle-start     <=  [HMOT](CARD0).gpio.023.in
