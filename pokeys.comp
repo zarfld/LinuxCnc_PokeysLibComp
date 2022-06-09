@@ -161,11 +161,11 @@ pin in bit PEv2.#.joint-wheel-jog-active[8];
 
 //***********************************************************************
 //[JOINT_n] information in HAL-INI 
-param rw s32 PEv2.#.params.TYPE [8] "";			//LINEAR / ANGULAR
-param rw float PEv2.#.params.HOME [8] "";
-param rw float PEv2.#.stepgen.STEPGEN_MAXVEL [8] "";
-param rw float PEv2.#.stepgen.STEPGEN_MAXACCEL [8] "";
-pin io float PEv2.#.params.Feedback_Encoder_Id [8] "";
+pin in s32 PEv2.#.stepgen.TYPE [8] "";			//LINEAR / ANGULAR
+pin in float PEv2.#.stepgen.HOME [8] "";
+pin in float PEv2.#.stepgen.STEPGEN_MAXVEL [8] "";
+pin in float PEv2.#.stepgen.STEPGEN_MAXACCEL [8] "";
+pin in  float PEv2.#.params.Feedback_Encoder_Id [8] "";
 //pin in float PEv2.#.params.P [8];
 //pin in float PEv2.#.params.I [8];
 //pin in float PEv2.#.params.D [8];
@@ -173,19 +173,19 @@ pin io float PEv2.#.params.Feedback_Encoder_Id [8] "";
 //pin in float PEv2.#.params.FF1 [8];
 //pin in float PEv2.#.params.FF2 [8];
 //pin in float PEv2.#.params.BIAS [8];
-param rw float PEv2.#.stepgen.DEADBAND [8] "";
-param rw float PEv2.#.stepgen.MAX-OUTPUT [8] "";
-param rw float PEv2.#.stepgen.ENCODER-SCALE [8] "";
+pin in  float PEv2.#.stepgen.DEADBAND [8] "";
+pin in float PEv2.#.stepgen.MAX-OUTPUT [8] "";
+pin in  float PEv2.#.stepgen.ENCODER-SCALE [8] "";
 
 // these are in nanoseconds
-param rw float PEv2.#.stepgen.STEP-SCALE[8] "";					// (pulses/mm)
-param rw float PEv2.#.stepgen.MIN-LIMIT[8]  "";					// position (mm)
-param rw float PEv2.#.stepgen.MAX-LIMIT[8]  "";					// position (mm)
-param rw float PEv2.#.stepgen.HOME-OFFSET[8]  "";				// position (mm)
-param rw float PEv2.#.stepgen.HOME-SEARCH_VEL[8]  "";			// position (mm)
-param rw float PEv2.#.stepgen.HOME-LATCH-VEL[8]  "";				// position (mm)
-param rw float PEv2.#.stepgen.HOME-FINAL-VEL[8]  "";				// position (mm)
-param rw s32 PEv2.#.stepgen.HOME-IGNORE-LIMITS[8]  "";			// YES / NO
+pin in  float PEv2.#.stepgen.STEP-SCALE[8] "";					// (pulses/mm)
+pin in  float PEv2.#.stepgen.MIN-LIMIT[8]  "";					// position (mm)
+pin in  float PEv2.#.stepgen.MAX-LIMIT[8]  "";					// position (mm)
+pin in  float PEv2.#.stepgen.HOME-OFFSET[8]  "";				// position (mm)
+pin in  float PEv2.#.stepgen.HOME-SEARCH_VEL[8]  "";			// position (mm)
+pin in  float PEv2.#.stepgen.HOME-LATCH-VEL[8]  "";				// position (mm)
+pin in  float PEv2.#.stepgen.HOME-FINAL-VEL[8]  "";				// position (mm)
+pin in  s32 PEv2.#.stepgen.HOME-IGNORE-LIMITS[8]  "";			// YES / NO
 //***********************************************************************
 
 pin io u32 PEv2.#.MPGjogMultiplier [8];		// MPG jog multiplier value
