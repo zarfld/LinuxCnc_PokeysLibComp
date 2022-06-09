@@ -1303,7 +1303,7 @@ void user_mainloop(void)
 					bm_LimitStatusN = dev->PEv2.LimitStatusN;              // Limit- status (bit-mapped)
 					bm_HomeStatus = dev->PEv2.HomeStatus;                // Home status (bit-mapped)
 
-					PEv2_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
+					PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
 
 					// Other inputs
 					PEv2_ErrorInputStatus = dev->PEv2.ErrorInputStatus;
@@ -2713,8 +2713,8 @@ void user_mainloop(void)
 							 dev->PEv2.PulseGeneratorType = PEv2_PulseGeneratorType;
 							 DoPeSetup = true;
 						 }
-						 if (dev->PEv2.EmergencySwitchPolarity != PEv2_EmergencySwitchPolarity) {
-							 dev->PEv2.EmergencySwitchPolarity = PEv2_EmergencySwitchPolarity;
+						 if (dev->PEv2.EmergencySwitchPolarity != PEv2_digin_Emergency_invert) {
+							 dev->PEv2.EmergencySwitchPolarity = PEv2_digin_Emergency_invert;
 							 DoPeSetup = true;
 						 }
 						 //dev->PEv2.PulseEngineBufferSize = PEv2_stepgen_PulseEngineBufferSize;
@@ -2748,14 +2748,14 @@ void user_mainloop(void)
 							 PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 							 PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 							 //PEv2_stepgen_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
-							 PEv2_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
+							 PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
 							 //PEv2_stepgen_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 
 							 PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 							 PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 							 PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 							 //PEv2_stepgen_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
-							 PEv2_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
+							 PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
 							 //PEv2_stepgen_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 						 }
 
