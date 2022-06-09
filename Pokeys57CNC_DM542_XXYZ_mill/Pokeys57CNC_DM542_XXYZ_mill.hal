@@ -118,14 +118,14 @@ net estop-ext     <=  pokeys.0.PEv2.digin.Emergency.in
 
 
 # Step Gen signals/setup
-setp   pokeys.0.PEv2.0.stepgen.STEP_SCALE  	   [JOINT_0]STEP_SCALE
-setp   pokeys.0.PEv2.0.stepgen.MIN_LIMIT  	   [JOINT_0]MIN_LIMIT
-setp   pokeys.0.PEv2.0.stepgen.MAX_LIMIT  	   [JOINT_0]MAX_LIMIT
-setp   pokeys.0.PEv2.0.stepgen.HOME_OFFSET  	   [JOINT_0]HOME_OFFSET
-setp   pokeys.0.PEv2.0.stepgen.HOME_SEARCH_VEL  	   [JOINT_0]HOME_SEARCH_VEL
-setp   pokeys.0.PEv2.0.stepgen.HOME_LATCH_VEL  	   [JOINT_0]HOME_LATCH_VEL
-setp   pokeys.0.PEv2.0.stepgen.STEPGEN_MAXVEL         [JOINT_0]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2.0.stepgen.STEPGEN_MAXACCEL           [JOINT_0]STEPGEN_MAXVEL
+#setp   pokeys.0.PEv2.0.stepgen.STEP_SCALE  	   [JOINT_0]STEP_SCALE
+#setp   pokeys.0.PEv2.0.stepgen.MIN_LIMIT  	   [JOINT_0]MIN_LIMIT
+#setp   pokeys.0.PEv2.0.stepgen.MAX_LIMIT  	   [JOINT_0]MAX_LIMIT
+#setp   pokeys.0.PEv2.0.stepgen.HOME_OFFSET  	   [JOINT_0]HOME_OFFSET
+#setp   pokeys.0.PEv2.0.stepgen.HOME_SEARCH_VEL  	   [JOINT_0]HOME_SEARCH_VEL
+#setp   pokeys.0.PEv2.0.stepgen.HOME_LATCH_VEL  	   [JOINT_0]HOME_LATCH_VEL
+#setp   pokeys.0.PEv2.0.stepgen.STEPGEN_MAXVEL         [JOINT_0]STEPGEN_MAXACCEL
+#setp   pokeys.0.PEv2.0.stepgen.STEPGEN_MAXACCEL           [JOINT_0]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
@@ -188,14 +188,14 @@ net max-x     =>  joint.0.pos-lim-sw-in
 #net x2-output        <=  pid.x2.output
 
 # Step Gen signals/setup for tandem axis
-setp   pokeys.0.PEv2.6.stepgen.STEP_SCALE  	   [JOINT_1]STEP_SCALE
-setp   pokeys.0.PEv2.6.stepgen.MIN_LIMIT  	   [JOINT_1]MIN_LIMIT
-setp   pokeys.0.PEv2.6.stepgen.MAX_LIMIT  	   [JOINT_1]MAX_LIMIT
-setp   pokeys.0.PEv2.6.stepgen.HOME_OFFSET  	   [JOINT_1]HOME_OFFSET
-setp   pokeys.0.PEv2.6.stepgen.HOME_SEARCH_VEL  	   [JOINT_1]HOME_SEARCH_VEL
-setp   pokeys.0.PEv2.6.stepgen.HOME_LATCH_VEL  	   [JOINT_1]HOME_LATCH_VEL
-setp   pokeys.0.PEv2.6.stepgen.STEPGEN_MAXVEL         [JOINT_1]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2.6.stepgen.STEPGEN_MAXACCEL           [JOINT_1]STEPGEN_MAXVEL
+#setp   pokeys.0.PEv2.6.stepgen.STEP_SCALE  	   [JOINT_1]STEP_SCALE
+#setp   pokeys.0.PEv2.6.stepgen.MIN_LIMIT  	   [JOINT_1]MIN_LIMIT
+#setp   pokeys.0.PEv2.6.stepgen.MAX_LIMIT  	   [JOINT_1]MAX_LIMIT
+#setp   pokeys.0.PEv2.6.stepgen.HOME_OFFSET  	   [JOINT_1]HOME_OFFSET
+#setp   pokeys.0.PEv2.6.stepgen.HOME_SEARCH_VEL  	   [JOINT_1]HOME_SEARCH_VEL
+#setp   pokeys.0.PEv2.6.stepgen.HOME_LATCH_VEL  	   [JOINT_1]HOME_LATCH_VEL
+#setp   pokeys.0.PEv2.6.stepgen.STEPGEN_MAXVEL         [JOINT_1]STEPGEN_MAXACCEL
+#setp   pokeys.0.PEv2.6.stepgen.STEPGEN_MAXACCEL           [JOINT_1]STEPGEN_MAXVEL
 # ---closedloop stepper signals---
 
 net x2-pos-cmd    <= joint.1.motor-pos-cmd
@@ -255,14 +255,14 @@ net max-x2     =>  joint.1.pos-lim-sw-in
 #net y-output        <=  pid.y.output
 
 # Step Gen signals/setup
-setp   pokeys.0.PEv2.1.stepgen.STEP_SCALE  	   [JOINT_2]STEP_SCALE
-setp   pokeys.0.PEv2.1.stepgen.MIN_LIMIT  	   [JOINT_2]MIN_LIMIT
-setp   pokeys.0.PEv2.1.stepgen.MAX_LIMIT  	   [JOINT_2]MAX_LIMIT
-setp   pokeys.0.PEv2.1.stepgen.HOME_OFFSET  	   [JOINT_2]HOME_OFFSET
-setp   pokeys.0.PEv2.1.stepgen.HOME_SEARCH_VEL  	   [JOINT_2]HOME_SEARCH_VEL
-setp   pokeys.0.PEv2.1.stepgen.HOME_LATCH_VEL  	   [JOINT_2]HOME_LATCH_VEL
-setp   pokeys.0.PEv2.1.stepgen.STEPGEN_MAXVEL        [JOINT_2]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2.1.stepgen.STEPGEN_MAXACCEL           [JOINT_2]STEPGEN_MAXVEL
+#setp   pokeys.0.PEv2.1.stepgen.STEP_SCALE  	   [JOINT_2]STEP_SCALE
+#setp   pokeys.0.PEv2.1.stepgen.MIN_LIMIT  	   [JOINT_2]MIN_LIMIT
+#setp   pokeys.0.PEv2.1.stepgen.MAX_LIMIT  	   [JOINT_2]MAX_LIMIT
+#setp   pokeys.0.PEv2.1.stepgen.HOME_OFFSET  	   [JOINT_2]HOME_OFFSET
+#setp   pokeys.0.PEv2.1.stepgen.HOME_SEARCH_VEL  	   [JOINT_2]HOME_SEARCH_VEL
+#setp   pokeys.0.PEv2.1.stepgen.HOME_LATCH_VEL  	   [JOINT_2]HOME_LATCH_VEL
+#setp   pokeys.0.PEv2.1.stepgen.STEPGEN_MAXVEL        [JOINT_2]STEPGEN_MAXACCEL
+#setp   pokeys.0.PEv2.1.stepgen.STEPGEN_MAXACCEL           [JOINT_2]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
@@ -321,14 +321,14 @@ net y-pos-limit     =>  joint.2.pos-lim-sw-in
 #net z-output        <=  pid.z.output
 
 # Step Gen signals/setup
-setp   pokeys.0.PEv2.2.stepgen.STEP_SCALE  	   [JOINT_3]STEP_SCALE
-setp   pokeys.0.PEv2.2.stepgen.MIN_LIMIT  	   [JOINT_3]MIN_LIMIT
-setp   pokeys.0.PEv2.2.stepgen.MAX_LIMIT 	   [JOINT_3]MAX_LIMIT
-setp   pokeys.0.PEv2.2.stepgen.HOME_OFFSET  	   [JOINT_3]HOME_OFFSET
-setp   pokeys.0.PEv2.2.stepgen.HOME_SEARCH_VEL  	   [JOINT_3]HOME_SEARCH_VEL
-setp   pokeys.0.PEv2.2.stepgen.HOME_LATCH_VEL  	   [JOINT_3]HOME_LATCH_VEL
-setp   pokeys.0.PEv2.2.stepgen.STEPGEN_MAXVEL         [JOINT_3]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2.2.stepgen.STEPGEN_MAXACCEL           [JOINT_3]STEPGEN_MAXVEL
+#setp   pokeys.0.PEv2.2.stepgen.STEP_SCALE  	   [JOINT_3]STEP_SCALE
+#setp   pokeys.0.PEv2.2.stepgen.MIN_LIMIT  	   [JOINT_3]MIN_LIMIT
+#setp   pokeys.0.PEv2.2.stepgen.MAX_LIMIT 	   [JOINT_3]MAX_LIMIT
+#setp   pokeys.0.PEv2.2.stepgen.HOME_OFFSET  	   [JOINT_3]HOME_OFFSET
+#setp   pokeys.0.PEv2.2.stepgen.HOME_SEARCH_VEL  	   [JOINT_3]HOME_SEARCH_VEL
+#setp   pokeys.0.PEv2.2.stepgen.HOME_LATCH_VEL  	   [JOINT_3]HOME_LATCH_VEL
+#setp   pokeys.0.PEv2.2.stepgen.STEPGEN_MAXVEL         [JOINT_3]STEPGEN_MAXACCEL
+#setp   pokeys.0.PEv2.2.stepgen.STEPGEN_MAXACCEL           [JOINT_3]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
