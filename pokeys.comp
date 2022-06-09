@@ -70,25 +70,40 @@ pin out unsigned info.PulseEnginev2;                   // Device supports Pulse 
 pin out unsigned info.EasySensors;                     // Device supports EasySensors
 
 //pin out unsigned PoExtBus.#.DataGet [10];   
-pin out bit PoExtBus.#.In-0 [10];                   
-pin out bit PoExtBus.#.In-1 [10];    
-pin out bit PoExtBus.#.In-2 [10];    
-pin out bit PoExtBus.#.In-3 [10];    
-pin out bit PoExtBus.#.In-4 [10];    
-pin out bit PoExtBus.#.In-5 [10];    
-pin out bit PoExtBus.#.In-6 [10];    
-pin out bit PoExtBus.#.In-7 [10]; 
-
+pin out bit PoExtBus.#.digin.0.in [10];
+pin out bit PoExtBus.#.digin.1.in[10];
+pin out bit PoExtBus.#.digin.2.in[10];
+pin out bit PoExtBus.#.digin.3.in[10];
+pin out bit PoExtBus.#.digin.4.in[10];
+pin out bit PoExtBus.#.digin.5.in[10];
+pin out bit PoExtBus.#.digin.6.in[10];
+pin out bit PoExtBus.#.digin.7.in[10];
+pin out bit PoExtBus.#.digin.0.in-not[10];
+pin out bit PoExtBus.#.digin.1.in-not[10];
+pin out bit PoExtBus.#.digin.2.in-not[10];
+pin out bit PoExtBus.#.digin.3.in-not[10];
+pin out bit PoExtBus.#.digin.4.in-not[10];
+pin out bit PoExtBus.#.digin.5.in-not[10];
+pin out bit PoExtBus.#.digin.6.in-not[10];
+pin out bit PoExtBus.#.digin.7.in-not[10];
 
 //pin io unsigned PoExtBus.#.DataSet [10];                 
-pin in bit PoExtBus.#.Out-0 [10];                   
-pin in bit PoExtBus.#.Out-1 [10];    
-pin in bit PoExtBus.#.Out-2 [10];    
-pin in bit PoExtBus.#.Out-3 [10];    
-pin in bit PoExtBus.#.Out-4 [10];    
-pin in bit PoExtBus.#.Out-5 [10];    
-pin in bit PoExtBus.#.Out-6 [10];    
-pin in bit PoExtBus.#.Out-7 [10];
+pin in bit PoExtBus.#.digout.0.out[10];
+pin in bit PoExtBus.#.digout.1.out[10];
+pin in bit PoExtBus.#.digout.2.out[10];
+pin in bit PoExtBus.#.digout.3.out[10];
+pin in bit PoExtBus.#.digout.4.out[10];
+pin in bit PoExtBus.#.digout.5.out[10];
+pin in bit PoExtBus.#.digout.6.out[10];
+pin in bit PoExtBus.#.digout.7.out[10];
+param rw bit PoExtBus.#.digout.0.invert[10] "If TRUE, out is inverted before writing to the hardware.";
+param rw bit PoExtBus.#.digout.1.invert[10] "If TRUE, out is inverted before writing to the hardware.";
+param rw bit PoExtBus.#.digout.2.invert[10] "If TRUE, out is inverted before writing to the hardware.";
+param rw bit PoExtBus.#.digout.3.invert[10] "If TRUE, out is inverted before writing to the hardware.";
+param rw bit PoExtBus.#.digout.4.invert[10] "If TRUE, out is inverted before writing to the hardware.";
+param rw bit PoExtBus.#.digout.5.invert[10] "If TRUE, out is inverted before writing to the hardware.";
+param rw bit PoExtBus.#.digout.6.invert[10] "If TRUE, out is inverted before writing to the hardware.";
+param rw bit PoExtBus.#.digout.7.invert[10] "If TRUE, out is inverted before writing to the hardware.";
 
 // Pulse engine v2 information
 pin out unsigned PEv2.nrOfAxes;
@@ -97,13 +112,6 @@ pin out unsigned PEv2.bufferDepth;
 pin out unsigned PEv2.slotTiming;
 
 //***********************************************************************
-//[TRAJ] information in HAL-INI 
-pin in s32 PEv2.params.COORDINATES;
-pin in s32 PEv2.params.LINEAR_UNITS;
-pin in s32 PEv2.params.ANGULAR_UNITS;
-pin in float PEv2.params.CYCLE_TIME;
-pin in float PEv2.params.DEFAULT_LINEAR_VELOCITY;
-pin in float PEv2.params.MAX_LINEAR_VELOCITY;
 
 pin io bit PEv2.params.ApplyIniSettings;
 //***********************************************************************
@@ -118,8 +126,10 @@ pin io u32 PEv2.#.SoftLimitMaximum [8];		// Soft limit maximum position
 pin io u32 PEv2.#.SoftLimitMinimum [8];		// Soft limit minimum position
 pin io unsigned PEv2.#.HomingSpeed [8];			// Homing speed per axis (in %)
 pin io unsigned PEv2.#.HomingReturnSpeed [8];		// Homing return speed per axis (in % of the homing speed)
+pin io unsigned PEv2.#.HomingAlgorithm[8];		// Homing algorithm configuration
+
 pin io u32 PEv2.#.HomeOffsets [8];				// Home position offset
-pin io unsigned PEv2.#.HomingAlgorithm [8];		// Homing algorithm configuration
+
 
 pin io u32 PEv2.#.ProbePosition [8];			// Position where probe detected change
 pin io u32 PEv2.#.ProbeMaxPosition [8];		// Maximum position to travel to until stopping and returning error
@@ -127,6 +137,7 @@ pin io u32 PEv2.#.ProbeMaxPosition [8];		// Maximum position to travel to until 
 pin out s32 PEv2.#.CurrentPosition [8];			// Current position
 pin io s32 PEv2.#.PositionSetup [8];			// Position to be set as current position
 pin out u32 PEv2.#.ReferencePositionSpeed [8];	// Reference position or speed (position or pulses/s)
+
 pin io float PEv2.#.MaxSpeed [8];					// Maximum axis speed (in pulses per ms)
 pin io float PEv2.#.MaxAcceleration [8];			// Maximum axis acceleration (in pulses/ms/ms)
 pin io float PEv2.#.MaxDecceleration [8];			// Maximum axis deceleration (in pulses/ms/ms)
@@ -150,14 +161,10 @@ pin in bit PEv2.#.joint-wheel-jog-active[8];
 
 //***********************************************************************
 //[JOINT_n] information in HAL-INI 
-pin io s32 PEv2.#.params.TYPE [8];			//LINEAR / ANGULAR
-pin io float PEv2.#.params.HOME [8];
-pin io float PEv2.#.params.FERROR [8];
-pin io float PEv2.#.params.MIN_FERROR [8];
-pin io float PEv2.#.params.MAX_VELOCITY [8];
-pin io float PEv2.#.params.MAX_ACCELERATION [8];
-pin io float PEv2.#.params.STEPGEN_MAXVEL [8];
-pin io float PEv2.#.params.STEPGEN_MAXACCEL [8];
+param rw s32 PEv2.#.params.TYPE [8];			//LINEAR / ANGULAR
+param rw float PEv2.#.params.HOME [8];
+param rw float PEv2.#.stepgen.STEPGEN_MAXVEL [8];
+param rw float PEv2.#.stepgen.STEPGEN_MAXACCEL [8];
 pin io float PEv2.#.params.Feedback_Encoder_Id [8];
 //pin in float PEv2.#.params.P [8];
 //pin in float PEv2.#.params.I [8];
@@ -166,63 +173,63 @@ pin io float PEv2.#.params.Feedback_Encoder_Id [8];
 //pin in float PEv2.#.params.FF1 [8];
 //pin in float PEv2.#.params.FF2 [8];
 //pin in float PEv2.#.params.BIAS [8];
-pin io float PEv2.#.params.DEADBAND [8];
-pin io float PEv2.#.params.MAX_OUTPUT [8];
-pin io float PEv2.#.params.ENCODER_SCALE [8];
+param rw float PEv2.#.stepgen.DEADBAND [8];
+param rw float PEv2.#.stepgen.MAX_OUTPUT [8];
+param rw float PEv2.#.stepgen.ENCODER_SCALE [8];
+
 // these are in nanoseconds
-pin io float PEv2.#.params.DIRSETUP [8] = 0;					// (ns)
-pin io float PEv2.#.params.DIRHOLD [8] = 0;					// (ns)
-pin io float PEv2.#.params.STEPLEN [8] = 0;					// (ns)
-pin in float PEv2.#.params.STEPSPACE [8] = 0;					// (ns)
-pin in float PEv2.#.params.STEP_SCALE [8] = 0;					// (pulses/mm)
-pin io float PEv2.#.params.MIN_LIMIT [8] = 0;					// position (mm)
-pin io float PEv2.#.params.MAX_LIMIT [8] = 0;					// position (mm)
-pin io float PEv2.#.params.HOME_OFFSET [8] = 0;				// position (mm)
-pin io float PEv2.#.params.HOME_SEARCH_VEL [8] = 0;			// position (mm)
-pin io float PEv2.#.params.HOME_LATCH_VEL [8] = 0;				// position (mm)
-pin io float PEv2.#.params.HOME_FINAL_VEL [8] = 0;				// position (mm)
-pin io s32 PEv2.#.params.HOME_USE_INDEX [8] = 0;				// YES / NO
-pin io s32 PEv2.#.params.HOME_IGNORE_LIMITS [8] = 0;			// YES / NO
+param rw float PEv2.#.stepgen.STEP_SCALE [8] = 0 "";					// (pulses/mm)
+param rw float PEv2.#.stepgen.MIN_LIMIT [8] = 0 "";					// position (mm)
+param rw float PEv2.#.stepgen.MAX_LIMIT [8] = 0 "";					// position (mm)
+param rw float PEv2.#.stepgen.HOME_OFFSET [8] = 0 "";				// position (mm)
+param rw float PEv2.#.stepgen.HOME_SEARCH_VEL [8] = 0 "";			// position (mm)
+param rw float PEv2.#.stepgen.HOME_LATCH_VEL [8] = 0 "";				// position (mm)
+param rw float PEv2.#.stepgen.HOME_FINAL_VEL [8] = 0 "";				// position (mm)
+param rw s32 PEv2.#.stepgen.HOME_IGNORE_LIMITS [8] = 0 "";			// YES / NO
 //***********************************************************************
 
 pin io u32 PEv2.#.MPGjogMultiplier [8];		// MPG jog multiplier value
 pin io unsigned PEv2.#.MPGjogEncoder [8];			// MPG jog encoder ID
+pin io unsigned PEv2.#.MPGjogDivider[8];			// Divider for the MPG jogging (enhanced encoder resolution)
+
 
 //pin out unsigned PEv2.#.LimitStatusN[8];					// Limit- status (NOT bit-mapped)
-pin out bit PEv2.#.LimitNSwitch.in[8];
-pin out bit PEv2.#.LimitNSwitch.in-not[8];
-param rw unsigned PEv2.#.LimitNSwitch.Pin [8] "Limit- switch pin (0 for external dedicated input)";			// Limit- switch pin (0 for external dedicated input)
-param rw unsigned PEv2.#.LimitNSwitch.Filter[8] "Digital filter for limit- switch";		// Digital filter for limit- switch
-param rw bit PEv2.#.LimitNSwitch.invert[8] "Invert limit-";		
+pin out bit PEv2.#.digin.LimitN.in[8];
+pin out bit PEv2.#.digin.LimitN.in-not[8];
+pin out bit PEv2.#.digin.LimitN.DedicatedInput[8];
+param rw unsigned PEv2.#.digin.LimitN.Pin [8] "Limit- switch pin (0 for external dedicated input)";			// Limit- switch pin (0 for external dedicated input)
+param rw unsigned PEv2.#.digin.LimitN.Filter[8] "Digital filter for limit- switch";		// Digital filter for limit- switch
+param rw bit PEv2.#.digin.LimitN.invert[8] "Invert limit-";
 
 //pin out unsigned PEv2.#.LimitStatusP[8];					// Limit+ status (NOT bit-mapped)
-pin out bit PEv2.#.LimitPSwitch.in[8];
-pin out bit PEv2.#.LimitPSwitch.in-not[8];
-param rw unsigned PEv2.#.LimitPSwitch.Pin[8] "Limit+ switch pin (0 for external dedicated input)";			// Limit+ switch pin (0 for external dedicated input)
-param rw unsigned PEv2.#.LimitPSwitch.Filter[8] "Digital filter for limit+ switch";		// Digital filter for limit+ switch
-param rw bit PEv2.#.LimitPSwitch.invert[8] "Invert limit+";		
+pin out bit PEv2.#.digin.LimitP.in[8];
+pin out bit PEv2.#.digin.LimitP.in-not[8];
+pin out bit PEv2.#.digin.LimitP.DedicatedInput[8];
+param rw unsigned PEv2.#.digin.LimitP.Pin[8] "Limit+ switch pin (0 for external dedicated input)";			// Limit+ switch pin (0 for external dedicated input)
+param rw unsigned PEv2.#.digin.LimitP.Filter[8] "Digital filter for limit+ switch";		// Digital filter for limit+ switch
+param rw bit PEv2.#.digin.LimitP.invert[8] "Invert limit+";
 
 
-pin in bit PEv2.#.AxisEnableOutput[8];		// Axis enabled output
-param rw unsigned PEv2.#.AxisEnableOutput.Pin[8] "Axis enabled output pin (0 for external dedicated output)";		// Axis enabled output pin (0 for external dedicated output)
-param rw bit PEv2.#.AxisEnableOutput.invert[8] "Invert axis enable signal"	;	// Invert axis enable signal
+pin in bit PEv2.#.digout.AxisEnable.out[8];		// Axis enabled output
+param rw unsigned PEv2.#.digout.AxisEnable.Pin[8] "Axis enabled output pin (0 for external dedicated output)";		// Axis enabled output pin (0 for external dedicated output)
+param rw bit PEv2.#.digout.AxisEnable.invert[8] "Invert axis enable signal"	;	// Invert axis enable signal
 
 //pin out bit PEv2.#.HomeSwitchStat[8];				// Home switch
 //pin out bit PEv2.HomeSwitch;				// Home switch
 //pin out unsigned PEv2.#.HomeStatus[8];
-pin out bit PEv2.#.HomeSwitch.in[8];					// Home status (NOT bit-mapped)
-pin out bit PEv2.#.HomeSwitch.in-not[8];					// inverted Home status (NOT bit-mapped)
-param rw unsigned PEv2.#.HomeSwitch.Pin[8] "Home switch pin (0 for external dedicated input)";			// Home switch pin (0 for external dedicated input)
-param rw unsigned PEv2.#.HomeSwitch.Filter[8] "Digital filter for home-switch";
-param rw bit PEv2.#.HomeSwitch.invert[8] "Invert home-switch";
+pin out bit PEv2.#.digin.Home.in[8];					// Home status (NOT bit-mapped)
+pin out bit PEv2.#.digin.Home.in-not[8];					// inverted Home status (NOT bit-mapped)
+pin out bit PEv2.#.digin.Home.DedicatedInput[8];
+param rw unsigned PEv2.#.digin.Home.Pin[8] "Home switch pin (0 for external dedicated input)";			// Home switch pin (0 for external dedicated input)
+param rw unsigned PEv2.#.digin.Home.Filter[8] "Digital filter for home-switch";
+param rw bit PEv2.#.digin.Home.invert[8] "Invert home-switch";
 
 //pin out bit PEv2.#.LimitMSwitch [8];			// Limit- switch
 //pin out bit PEv2.#.LimitPSwitch [8];			// Limit+ switch
 
 
-
 pin io unsigned PEv2.#.HomeBackOffDistance [8];		// Back-off distance after homing
-pin io unsigned PEv2.#.MPGjogDivider [8];			// Divider for the MPG jogging (enhanced encoder resolution)
+
 
 pin io unsigned PEv2.PulseEngineEnabled;			// Pulse engine enabled status, also number of enabled axes
 pin io unsigned PEv2.PulseGeneratorType;			// Pulse engine generator type (0: external, 1: internal 3ch)
@@ -230,53 +237,52 @@ pin in bit PEv2.PG_swap_stepdir;
 pin io bit PEv2.PG_extended_io;
 
 pin io unsigned PEv2.ChargePumpEnabled;				// Charge pump output enabled
-param rw unsigned PEv2.EmergencySwitchPolarity "Emergency switch polarity (set to 1 to invert)";		// Emergency switch polarity (set to 1 to invert)
 pin out unsigned PEv2.PulseEngineActivated;			// Pulse engine activation status
+pin io unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
 
 pin out unsigned PEv2.ErrorInputStatus;				// Stepper motor driver error inputs status (bit-mapped)
 pin out unsigned PEv2.MiscInputStatus;				// Miscelenous digital inputs...
+
 pin io unsigned PEv2.LimitOverride;					// Limit override status
 pin io unsigned PEv2.LimitOverrideSetup;			// Limit override configuration
-pin io unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
-pin io unsigned PEv2.AxisEnabledMask;				// Bit-mapped ouput enabled mask
 
-param rw unsigned PEv2.EmergencyInputPin "";
-pin out bit PEv2.EmergencyInput;
-param rw unsigned PEv2.EmergencyOutputPin "added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)";				//added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)
-pin in bit PEv2.EmergencyOutput;
 
-pin io unsigned PEv2.param1;
-pin io unsigned PEv2.param2;
-pin io unsigned PEv2.param3;
-pin io unsigned PEv2.AxisEnabledStatesMask;		// Bit-mapped states, where axis enabled and charge pump signals are active
-pin io unsigned PEv2.PulseEngineStateSetup;		// Pulse engine new state configuration
-pin out unsigned PEv2.#.SoftLimitStatus [8] ;				// Bit-mapped soft-limit statuses per axes
-/* 			PEv2_DedicatedLimitNInputs(i) =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
+param rw unsigned PEv2.digin.Emergency.Pin "";
+pin out bit PEv2.digin.Emergency.in;
+param rw unsigned PEv2.digin.Emergency.invert "Emergency switch polarity (set to 1 to invert)";		// Emergency switch polarity (set to 1 to invert)
+param rw unsigned PEv2.digout.Emergency.Pin "added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)";				//added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)
+pin in bit PEv2.digout.Emergency.out;
+
+
+//pin io unsigned PEv2.PulseEngineStateSetup;		// Pulse engine new state configuration 
+pin out unsigned PEv2.#.digin.SoftLimit.in[8] ;				// Bit-mapped soft-limit statuses per axes
+/* 			PEv2_LimitNSwitch_DedicatedInput(i) =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
 			PEv2_DedicatedLimitPInputs(i) =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
-			PEv2_DedicatedHomeInputs(i) =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
-								PEv2_AxisEnabledStates(i) = false;
+			PEv2_digin_Home_DedicatedInput(i) =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
+								PEv2_digin_AxisEnabled_in(i) = false;
 					PEv2_AxisLimitOverride(i) = false;
 			*/
-pin out bit PEv2.#.DedicatedLimitNInputs [8] ;
-pin out bit PEv2.#.DedicatedLimitPInputs [8] ;
-pin out bit PEv2.#.DedicatedHomeInputs [8] ;
-pin out bit PEv2.#.AxisEnabledStates [8] ;
-pin out bit PEv2.#.AxisLimitOverride [8] ;
+
+pin io unsigned PEv2.AxisEnabledMask;				// Bit-mapped ouput enabled mask
+pin io unsigned PEv2.AxisEnabledStatesMask;		// Bit-mapped states, where axis enabled and charge pump signals are active
+pin in bit PEv2.#.digout.AxisEnabled.out[8]
+pin out bit PEv2.#.digin.AxisEnabled.in[8] ;
+pin out bit PEv2.#.digout.LimitOverride.out [8] ;
 
 pin out unsigned PEv2.ExternalRelayOutputs;			// External relay outputs
 pin out unsigned PEv2.ExternalOCOutputs;			// External open-collector outputs
-pin in bit PEv2.ExternalRelayOutput.#[4];			// External relay outputs
-pin in bit PEv2.ExternalOCOutput.#[4];			// External open-collector outputs
-pin io unsigned PEv2.PulseEngineBufferSize;		// Buffer size information...
-pin io unsigned PEv2.motionBufferEntriesAccepted;
-pin io unsigned PEv2.newMotionBufferEntries;
+pin in bit PEv2.digout.ExternalRelay-#.out[4];			// External relay outputs
+pin in bit PEv2.digout.ExternalOC-#.out[4];			// External open-collector outputs
+
 pin io unsigned PEv2.HomingStartMaskSetup;			// Bit-mapped axes indexes to be homed
 pin io unsigned PEv2.ProbeStartMaskSetup;			// Bit-mapped axis indexes for probing
-param rw unsigned PEv2.ProbeInput "Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)";					// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
-param rw unsigned PEv2.ProbeInputPolarity "Probe input polarity";			// Probe input polarity
+
+param rw unsigned PEv2.digin.Probe.Pin "Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)";					// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
+param rw unsigned PEv2.digin.Probe.invert "Probe input polarity";			// Probe input polarity
 pin out unsigned PEv2.ProbeStatus;					// Probe status (probe completion bit-mapped status)
-//pin out unsigned PEv2.MotionBuffer[448];			// Motion buffer
+pin out bit PEv2.digin.Probe.in;
 pin io float PEv2.ProbeSpeed;						// Probe speed (ratio of the maximum speed)
+
 pin io unsigned PEv2.#.BacklashWidth [8];			// half of real backlash width
 pin io unsigned PEv2.#.BacklashRegister [8];		// current value of the backlash register
 pin io unsigned PEv2.#.BacklashAcceleration [8];	// in pulses per ms^2
@@ -314,8 +320,8 @@ pin out float adcin.#.value-raw[7];
 pin out float adcin.#.value[7];
 param rw float adcin.#.scale[7]  "The input voltage (or current) will be multiplied by scale before being output to value.";
 param rw float adcin.#.offset[7] "This will be subtracted from the hardware input voltage (or current) after the scale multiplier has been applied.";
-param rw float adcin.#.bit_weight[7] "The value of one least significant bit (LSB). This is effectively the granularity of the input reading.";
-param rw float adcin.#.hw_offset[7] "The value present on the input when 0 volts is applied to the input pin(s).";
+//param rw float adcin.#.bit_weight[7] "The value of one least significant bit (LSB). This is effectively the granularity of the input reading.";
+//param rw float adcin.#.hw_offset[7] "The value present on the input when 0 volts is applied to the input pin(s).";
 
 //pin out bit Pins.#.DigitalValueGet [55];
 pin out bit digin.#.in[55];
@@ -641,10 +647,9 @@ typedef struct
 		float MAX_OUTPUT [8];
 		float ENCODER_SCALE [8];
 // these are in nanoseconds
-		float DIRSETUP [8];					// (ns)
-		float DIRHOLD [8];					// (ns)
-		float STEPLEN [8];					// (ns)
-		float STEPSPACE [8];					// (ns)
+
+
+
 		float STEP_SCALE [8];					// (pulses/mm)
 		float MIN_LIMIT [8];					// position (mm)
 		float MAX_LIMIT [8];					// position (mm)
@@ -916,7 +921,7 @@ void user_mainloop(void)
 	 {
 			
 			Loop_Frequ = rtc_loop_frequ;
-			if (PEv2_EmergencyOutput!=true)
+			if (PEv2_digout_Emergency_out!=true)
 			{
 				usleep(sleepdur); 
 			}
@@ -1141,7 +1146,7 @@ void user_mainloop(void)
  
 			 //dev->DeviceData.DeviceLockStatus=1;
 
-			 if (PEv2_params_ApplyIniSettings !=0 && info_PulseEnginev2!=0 )
+			 if (PEv2_stepgen_ApplyIniSettings !=0 && info_PulseEnginev2!=0 )
 			{
 				if (PK_SaveConfiguration(dev) != PK_OK)
 				{
@@ -1365,7 +1370,7 @@ void user_mainloop(void)
 						case PK_PEState_peSTOP_LIMIT:         // Pulse engine stopped due to limit reached
 							break;
 						case PK_PEState_peSTOP_EMERGENCY:          // Pulse engine stopped due to emergency switch
-							PEv2_EmergencyInput = true;
+							PEv2_digin_Emergency_in = true;
 							break;
 					}
 					if (dev->DeviceData.DeviceTypeID = PK_DeviceID_PoKeys57CNC)
@@ -1376,16 +1381,16 @@ void user_mainloop(void)
 						{
 							if (PEv2_PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
 							{
-								PEv2_EmergencyInput = 1;
+								PEv2_digin_Emergency_in = 1;
 							}
-							else if (PEv2_EmergencyInputPin == 0)
+							else if (PEv2_digin_Emergency_Pin == 0)
 							{
-								PEv2_EmergencyInput = 0;
+								PEv2_digin_Emergency_in = 0;
 							}
 						}
 						else
 						{
-							PEv2_EmergencyInput = 1;
+							PEv2_digin_Emergency_in = 1;
 						}
 					}
 
@@ -1424,7 +1429,7 @@ void user_mainloop(void)
 						uint8_t intAxesState = dev->PEv2.AxesState[i];
 						PEv2_AxesState(i) = intAxesState;
 						a_debPEv2_axxisout(i) = 200 + i;
-						StepScale[i] = PEv2_params_STEP_SCALE(i);
+						StepScale[i] = PEv2_stepgen_STEP_SCALE(i);
 						a_debPEv2_axxisout(i) = 210 + i;
 						// PEv2_CurrentPosition(i) = dev->PEv2.CurrentPosition[i];
 						intCurrentPosition[i] = dev->PEv2.CurrentPosition[i];
@@ -1446,22 +1451,22 @@ void user_mainloop(void)
 						PEv2_CurrentPosition(i) = intCurrentPosition[i];
 						a_debPEv2_axxisout(i) = 270 + i;
 
-						PEv2_LimitPSwitch_in(i) = Get_BitOfByte(bm_LimitStatusP,i);
-						PEv2_LimitPSwitch_in_not(i) = !PEv2_LimitPSwitch_in(i);
+						PEv2_digin_LimitP_in(i) = Get_BitOfByte(bm_LimitStatusP,i);
+						PEv2_digin_LimitP_in_not(i) = !PEv2_digin_LimitP_in(i);
 
-						PEv2_LimitNSwitch_in(i) = Get_BitOfByte(bm_LimitStatusN,i);
-						PEv2_LimitNSwitch_in_not(i) = !PEv2_LimitNSwitch_in(i);
+						PEv2_digin_LimitN_in(i) = Get_BitOfByte(bm_LimitStatusN,i);
+						PEv2_digin_LimitN_in_not(i) = !PEv2_digin_LimitN_in(i);
 
-						PEv2_HomeSwitch_in(i) =  Get_BitOfByte(bm_HomeStatus,i);
-						PEv2_HomeSwitch_in_not(i) = !PEv2_HomeSwitch_in(i);
+						PEv2_digin_Home_in(i) =  Get_BitOfByte(bm_HomeStatus,i);
+						PEv2_digin_Home_in_not(i) = !PEv2_digin_Home_in(i);
 
 						a_debPEv2_axxisout(i) = 280 ;
-						PEv2_DedicatedLimitNInputs(i) =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
-						PEv2_DedicatedLimitPInputs(i) =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
-						PEv2_DedicatedHomeInputs(i) =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
+						PEv2_digin_LimitN_DedicatedInput(i) =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
+						PEv2_digin_LimitP_DedicatedInput(i) =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
+						PEv2_digin_Home_DedicatedInput(i) =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
 
 						
-						PEv2_SoftLimitStatus(i) = Get_BitOfByte(bm_SoftLimitStatus,i);
+						PEv2_digin_SoftLimit_in(i) = Get_BitOfByte(bm_SoftLimitStatus,i);
 						a_debPEv2_axxisout(i) = 290 + i;
 						
 
@@ -1469,75 +1474,75 @@ void user_mainloop(void)
 						{
 							case PK_PEAxisState_axSTOPPED:        // Axis is stopped
 								a_debPEv2out = 310 + i;
-								//PEv2_AxisEnabledStates(i) = false;
-								//PEv2_AxisLimitOverride(i) = false;
+								//PEv2_digin_AxisEnabled_in(i) = false;
+								//PEv2_digin_LimitOverride_in(i) = false;
 
 		
 								break ;
 							case PK_PEAxisState_axREADY:        // Axis ready
 								a_debPEv2out = 320 + i;
-								//PEv2_AxisEnabledStates(i) = true;
-								//PEv2_AxisLimitOverride(i) = false;
+								//PEv2_digin_AxisEnabled_in(i) = true;
+								//PEv2_digin_LimitOverride_in(i) = false;
 	
 								break ;
 							case PK_PEAxisState_axRUNNING:        // Axis is running
 								a_debPEv2out = 330 + i;
 								break ;
 							case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
-								//PEv2_AxisLimitOverride(i) = true;
-								//PEv2_AxisEnabledStates(i) = true;
+								//PEv2_digin_LimitOverride_in(i) = true;
+								//PEv2_digin_AxisEnabled_in(i) = true;
 								a_debPEv2out = 340 + i;
 								break ;
 							case PK_PEAxisState_axHOMING_BACKING_OFF:   // Backing off switch
 								a_debPEv2out = 340 + i;
-								//PEv2_AxisLimitOverride(i) = true;
-								//PEv2_AxisEnabledStates(i) = true;
+								//PEv2_digin_LimitOverride_in(i) = true;
+								//PEv2_digin_AxisEnabled_in(i) = true;
 								break ;
 							case PK_PEAxisState_axHOME:       // Axis is homed
 								a_debPEv2out = 340 + i;
-								//PEv2_AxisEnabledStates(i) = true;
-								//PEv2_AxisLimitOverride(i) = true;
+								//PEv2_digin_AxisEnabled_in(i) = true;
+								//PEv2_digin_LimitOverride_in(i) = true;
 							// PEv2_joint_
 								break ;
 							case PK_PEAxisState_axHOMINGSTART:       // Homing procedure is starting on axis
-								//PEv2_AxisEnabledStates(i) = true;
-								//PEv2_AxisLimitOverride(i) = true;
+								//PEv2_digin_AxisEnabled_in(i) = true;
+								//PEv2_digin_LimitOverride_in(i) = true;
 								a_debPEv2out = 340 + i;
 								break ;
 							case PK_PEAxisState_axHOMINGSEARCH:       // Homing procedure first step - going to home
-								//PEv2_AxisEnabledStates(i) = true;
-								//PEv2_AxisLimitOverride(i) = true;
+								//PEv2_digin_AxisEnabled_in(i) = true;
+								//PEv2_digin_LimitOverride_in(i) = true;
 								a_debPEv2out = 340 + i;
 								break ;
 							case PK_PEAxisState_axHOMINGBACK:       // Homing procedure second step - slow homing
-								//PEv2_AxisEnabledStates(i) = true;
-								//PEv2_AxisLimitOverride(i) = true;
+								//PEv2_digin_AxisEnabled_in(i) = true;
+								//PEv2_digin_LimitOverride_in(i) = true;
 								a_debPEv2out = 340 + i;
 								break ;
 							case PK_PEAxisState_axPROBED:       // Probing completed for this axis
-								//PEv2_AxisEnabledStates(i) = true;
-								//PEv2_AxisLimitOverride(i) = false;
+								//PEv2_digin_AxisEnabled_in(i) = true;
+								//PEv2_digin_LimitOverride_in(i) = false;
 								a_debPEv2out = 350 + i;
 								break ;
 							case PK_PEAxisState_axPROBESTART:       // Probing procedure is starting on axis
-								//PEv2_AxisEnabledStates(i) = true;
-								//PEv2_AxisLimitOverride(i) = false;
+								//PEv2_digin_AxisEnabled_in(i) = true;
+								//PEv2_digin_LimitOverride_in(i) = false;
 								a_debPEv2out = 350 + i;
 								break ;
 							case PK_PEAxisState_axPROBESEARCH:       // Probing procedure - probing
-								//PEv2_AxisEnabledStates(i) = true;
-								//PEv2_AxisLimitOverride(i) = false;
+								//PEv2_digin_AxisEnabled_in(i) = true;
+								//PEv2_digin_LimitOverride_in(i) = false;
 								a_debPEv2out = 350 + i;
 								break ;
 							case PK_PEAxisState_axERROR:       // Axis error
-								//PEv2_AxisEnabledStates(i) = false;
-								//PEv2_AxisLimitOverride(i) = false;
+								//PEv2_digin_AxisEnabled_in(i) = false;
+								//PEv2_digin_LimitOverride_in(i) = false;
 								a_debPEv2out = 360 + i;
 
 								break ;
 							case PK_PEAxisState_axLIMIT:        // Axis limit tripped
-								//PEv2_AxisEnabledStates(i) = true;
-								//PEv2_AxisLimitOverride(i) = false;
+								//PEv2_digin_AxisEnabled_in(i) = true;
+								//PEv2_digin_LimitOverride_in(i) = false;
 								a_debPEv2out = 370 + i;
 								break ;
 							default:
@@ -1545,8 +1550,8 @@ void user_mainloop(void)
 								break ;
 						}
 						
-						tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,PEv2_AxisEnabledStates(i));
-						PEv2_LimitOverrideSetup = Set_BitOfByte(PEv2_LimitOverrideSetup ,i,PEv2_AxisLimitOverride(i));
+						tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,PEv2_digout_AxisEnabled_out(i));
+						PEv2_LimitOverrideSetup = Set_BitOfByte(PEv2_LimitOverrideSetup ,i,PEv2_digout_LimitOverride_out(i));
 						a_debPEv2_axxisout(i) = 2900 + i;
 						POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 						a_debPEv2_axxisout(i) = 29000 + i;
@@ -1830,27 +1835,27 @@ void user_mainloop(void)
 								{
 								case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
 									//PEv2_AxisLimitOverride(i) = true;
-									//PEv2_AxisEnabledStates(i) = true;
+									//PEv2_digin_AxisEnabled_in(i) = true;
 									break;
 								case PK_PEAxisState_axHOMING_BACKING_OFF:   // Backing off switch
 									//PEv2_AxisLimitOverride(i) = true;
-									//PEv2_AxisEnabledStates(i) = true;
+									//PEv2_digin_AxisEnabled_in(i) = true;
 									break;
 								case PK_PEAxisState_axHOME:       // Axis is homed
-									//PEv2_AxisEnabledStates(i) = true;
+									//PEv2_digin_AxisEnabled_in(i) = true;
 									//PEv2_AxisLimitOverride(i) = true;
 									// PEv2_joint_
 									break;
 								case PK_PEAxisState_axHOMINGSTART:       // Homing procedure is starting on axis
-									//PEv2_AxisEnabledStates(i) = true;
+									//PEv2_digin_AxisEnabled_in(i) = true;
 									//PEv2_AxisLimitOverride(i) = true;
 									break;
 								case PK_PEAxisState_axHOMINGSEARCH:       // Homing procedure first step - going to home
-									//PEv2_AxisEnabledStates(i) = true;
+									//PEv2_digin_AxisEnabled_in(i) = true;
 									//PEv2_AxisLimitOverride(i) = true;
 									break;
 								case PK_PEAxisState_axHOMINGBACK:       // Homing procedure second step - slow homing
-									//PEv2_AxisEnabledStates(i) = true;
+									//PEv2_digin_AxisEnabled_in(i) = true;
 									//PEv2_AxisLimitOverride(i) = true;
 									break;
 
@@ -1920,15 +1925,15 @@ void user_mainloop(void)
 					uint8_t ExternalOCOutputs_set=  0;
 
 
-					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,7,PEv2_ExternalRelayOutput(0));
-					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,0,PEv2_ExternalRelayOutput(1));
-					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,2,PEv2_ExternalRelayOutput(2));
-					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,1,PEv2_ExternalRelayOutput(3));
+					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,7, PEv2_digout_ExternalRelay_out(0));
+					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,0, PEv2_digout_ExternalRelay_out(1));
+					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,2, PEv2_digout_ExternalRelay_out(2));
+					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,1, PEv2_digout_ExternalRelay_out(3));
 
-					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,3,PEv2_ExternalOCOutput(0));
-					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,4,PEv2_ExternalOCOutput(1));
-					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,5,PEv2_ExternalOCOutput(2));
-					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,6,PEv2_ExternalOCOutput(3));
+					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,3,PEv2_digout_ExternalOC_out(0));
+					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,4,PEv2_digout_ExternalOC_out(1));
+					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,5,PEv2_digout_ExternalOC_out(2));
+					ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set ,6,PEv2_digout_ExternalOC_out(3));
 
 
 					if (ExternalOCOutputs_set != dev->PEv2.ExternalOCOutputs)
@@ -2009,9 +2014,9 @@ void user_mainloop(void)
 					}
 			
 				
-				if (PEv2_params_ApplyIniSettings==0 && PEv2_nrOfAxes!=PEv2_PulseEngineEnabled )
+				if (PEv2_stepgen_ApplyIniSettings==0 && PEv2_nrOfAxes!=PEv2_PulseEngineEnabled )
 				{
-					PEv2_params_ApplyIniSettings=1;
+					PEv2_stepgen_ApplyIniSettings=1;
 				}
 
 				a_debout = 224;
@@ -2111,18 +2116,18 @@ void user_mainloop(void)
 				a_debout = 230;
 
 				/* 
-				if ( PEv2_EmergencyOutputPin!=0 && PEv2_PulseEngineEnabled!=0)
+				if ( PEv2_digout_Emergency_Pin!=0 && PEv2_PulseEngineEnabled!=0)
 				{	//check if pin is parametrized in HAL
 					a_debout = 231;
-					if (PEv2_EmergencyOutput==0)
+					if (PEv2_digout_Emergency_out==0)
 					{
 						//error: lvalue required as left operand of assignment
-						Pins_DigitalValueSet(PEv2_EmergencyOutputPin-1)=0;
+						Pins_DigitalValueSet(PEv2_digout_Emergency_Pin-1)=0;
 					}
 					else
 					{
 						//error: lvalue required as left operand of assignment
-						Pins_DigitalValueSet(PEv2_EmergencyOutputPin-1)=1;
+						Pins_DigitalValueSet(PEv2_digout_Emergency_Pin-1)=1;
 					}
 					
 				}*/
@@ -2225,11 +2230,11 @@ void user_mainloop(void)
 							a_debout = 234;
 							if (SimOn = 0)
 							{
-								PEv2_EmergencyInput = dev->Pins[dev->PEv2.EmergencyInputPin - 1].DigitalValueGet;
+								PEv2_digin_Emergency_in = dev->Pins[dev->PEv2.EmergencyInputPin - 1].DigitalValueGet;
 							}
 							else
 							{
-								PEv2_EmergencyInput = 1;
+								PEv2_digin_Emergency_in = 1;
 							}
 							
 						}
@@ -2241,16 +2246,16 @@ void user_mainloop(void)
 							{
 								if (dev->PEv2.PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
 								{
-									PEv2_EmergencyInput = 0;
+									PEv2_digin_Emergency_in = 0;
 								}
 								else
 								{
-									PEv2_EmergencyInput = 1;
+									PEv2_digin_Emergency_in = 1;
 								}
 							}
 							else
 							{
-								PEv2_EmergencyInput = 1;
+								PEv2_digin_Emergency_in = 1;
 							}
 						}
 						else
@@ -2258,18 +2263,18 @@ void user_mainloop(void)
 							a_debout = 235;
 							if (SimOn = 0)
 							{
-								if (PEv2_EmergencyOutputPin != 0)
+								if (PEv2_digout_Emergency_Pin != 0)
 								{
-									PEv2_EmergencyInput = PEv2_EmergencyOutput;
+									PEv2_digin_Emergency_in = PEv2_digout_Emergency_out;
 								}
 								else
 								{
-									PEv2_EmergencyInput = 0;
+									PEv2_digin_Emergency_in = 0;
 								}
 							}
 							else
 							{
-								PEv2_EmergencyInput = 1;
+								PEv2_digin_Emergency_in = 1;
 							}
 						}
 					}
@@ -2480,23 +2485,79 @@ void user_mainloop(void)
 					PK_PoExtBusGet(dev);
 					PoExtBus_DataGet[i] = dev->PoExtBusData[i];
 
-					PoExtBus_In_0(i) = Get_BitOfByte(PoExtBus_DataGet[i], 0);
-					PoExtBus_In_1(i) = Get_BitOfByte(PoExtBus_DataGet[i], 1);
-					PoExtBus_In_2(i) = Get_BitOfByte(PoExtBus_DataGet[i], 2);
-					PoExtBus_In_3(i) = Get_BitOfByte(PoExtBus_DataGet[i], 3);
-					PoExtBus_In_4(i) = Get_BitOfByte(PoExtBus_DataGet[i], 4);
-					PoExtBus_In_5(i) = Get_BitOfByte(PoExtBus_DataGet[i], 5);
-					PoExtBus_In_6(i) = Get_BitOfByte(PoExtBus_DataGet[i], 6);
-					PoExtBus_In_7(i) = Get_BitOfByte(PoExtBus_DataGet[i], 7);
+					PoExtBus_digin_0_in(i) = Get_BitOfByte(PoExtBus_DataGet[i], 0);
+					PoExtBus_digin_1_in(i) = Get_BitOfByte(PoExtBus_DataGet[i], 1);
+					PoExtBus_digin_2_in(i) = Get_BitOfByte(PoExtBus_DataGet[i], 2);
+					PoExtBus_digin_3_in(i) = Get_BitOfByte(PoExtBus_DataGet[i], 3);
+					PoExtBus_digin_4_in(i) = Get_BitOfByte(PoExtBus_DataGet[i], 4);
+					PoExtBus_digin_5_in(i) = Get_BitOfByte(PoExtBus_DataGet[i], 5);
+					PoExtBus_digin_6_in(i) = Get_BitOfByte(PoExtBus_DataGet[i], 6);
+					PoExtBus_digin_7_in(i) = Get_BitOfByte(PoExtBus_DataGet[i], 7);
 
-					PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 0, PoExtBus_Out_0(i));
-					PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 1, PoExtBus_Out_1(i));
-					PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 2, PoExtBus_Out_2(i));
-					PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 3, PoExtBus_Out_3(i));
-					PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 4, PoExtBus_Out_4(i));
-					PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 5, PoExtBus_Out_5(i));
-					PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 6, PoExtBus_Out_6(i));
-					PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 7, PoExtBus_Out_7(i));
+					PoExtBus_digin_0_in_not(i) = !PoExtBus_digin_0_in(i);
+					PoExtBus_digin_1_in_not(i) = !PoExtBus_digin_1_in(i);
+					PoExtBus_digin_2_in_not(i) = !PoExtBus_digin_2_in(i);
+					PoExtBus_digin_3_in_not(i) = !PoExtBus_digin_3_in(i);
+					PoExtBus_digin_4_in_not(i) = !PoExtBus_digin_4_in(i);
+					PoExtBus_digin_5_in_not(i) = !PoExtBus_digin_5_in(i);
+					PoExtBus_digin_6_in_not(i) = !PoExtBus_digin_6_in(i);
+					PoExtBus_digin_7_in_not(i) = !PoExtBus_digin_7_in(i);
+
+					if (PoExtBus_digout_0_invert(i) == false) {
+						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 0, PoExtBus_digout_0_out(i));
+					}
+					else {
+						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 0, !PoExtBus_digout_0_out(i));
+					}
+
+					if (PoExtBus_digout_1_invert(i) == false) {
+						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 1, PoExtBus_digout_1_out(i));
+					}
+					else {
+						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 1, !PoExtBus_digout_1_out(i));
+					}
+
+					if (PoExtBus_digout_2_invert(i) == false) {
+						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 2, PoExtBus_digout_2_out(i));
+					}
+					else {
+						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 2, !PoExtBus_digout_2_out(i));
+					}
+
+					if (PoExtBus_digout_3_invert(i) == false) {
+						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 3, PoExtBus_digout_3_out(i));
+					}
+					else {
+						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 3, !PoExtBus_digout_3_out(i));
+					}
+
+					if (PoExtBus_digout_4_invert(i) == false) {
+						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 4, PoExtBus_digout_4_out(i));
+					}
+					else {
+						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 4, !PoExtBus_digout_4_out(i));
+					}
+
+					if (PoExtBus_digout_5_invert(i) == false) {
+						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 5, PoExtBus_digout_5_out(i));
+					}
+					else {
+						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 5, !PoExtBus_digout_5_out(i));
+					}
+
+					if (PoExtBus_digout_6_invert(i) == false) {
+						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 6, PoExtBus_digout_6_out(i));
+					}
+					else {
+						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 6, !PoExtBus_digout_6_out(i));
+					}
+
+					if (PoExtBus_digout_7_invert(i) == false) {
+						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 7, PoExtBus_digout_7_out(i));
+					}
+					else {
+						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 7, !PoExtBus_digout_7_out(i));
+					}
 
 					if (PoExtBus_DataGet[i] != PoExtBus_DataSet[i])
 					{
@@ -2568,17 +2629,17 @@ void user_mainloop(void)
 					 bool DoPeSetup = false;
 					 bool DoPeReboot = false;
 					 setPinConfig = false;
-					 if ((PEv2_params_ApplyIniSettings != 0) && (HAL_Machine_On==false))
+					 if ((PEv2_stepgen_ApplyIniSettings != 0) && (HAL_Machine_On==false))
 					 {
 						 //dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
 						 //PK_PEv2_PulseEngineSetup(dev);
 						 usleep(sleepdur);
-						 if (PEv2_ProbeInput != 0)
+						 if (PEv2_digin_Probe_Pin != 0)
 						 {	//check if pin is parametrized in HAL
-							 if (dev->Pins[PEv2_ProbeInput - 1].PinFunction != PK_PinCap_digitalInput)
+							 if (dev->Pins[PEv2_digin_Probe_Pin - 1].PinFunction != PK_PinCap_digitalInput)
 							 {
-								 dev->Pins[PEv2_ProbeInput - 1].PinFunction = PK_PinCap_digitalInput;
-								 PK_SL_SetPinFunction(dev, PEv2_ProbeInput - 1, PK_PinCap_digitalInput);
+								 dev->Pins[PEv2_digin_Probe_Pin - 1].PinFunction = PK_PinCap_digitalInput;
+								 PK_SL_SetPinFunction(dev, PEv2_digin_Probe_Pin - 1, PK_PinCap_digitalInput);
 								 setPinConfig = true;
 							 }
 
@@ -2589,25 +2650,25 @@ void user_mainloop(void)
 
 						 }
 
-						 if (dev->PEv2.EmergencyInputPin != PEv2_EmergencyInputPin)
+						 if (dev->PEv2.EmergencyInputPin != PEv2_digin_Emergency_Pin)
 						 {
-							 dev->PEv2.EmergencyInputPin = PEv2_EmergencyInputPin;
+							 dev->PEv2.EmergencyInputPin = PEv2_digin_Emergency_Pin;
 							 DoPeSetup = true;
-							 if (PEv2_EmergencyInputPin != 0)
+							 if (PEv2_digin_Emergency_Pin != 0)
 							 {	//check if pin is parametrized in HAL
-								 dev->Pins[PEv2_EmergencyInputPin - 1].PinFunction = PK_PinCap_digitalInput;
-								 PK_SL_SetPinFunction(dev, PEv2_EmergencyInputPin - 1, PK_PinCap_digitalInput);
+								 dev->Pins[PEv2_digin_Emergency_Pin - 1].PinFunction = PK_PinCap_digitalInput;
+								 PK_SL_SetPinFunction(dev, PEv2_digin_Emergency_Pin - 1, PK_PinCap_digitalInput);
 								 setPinConfig = true;
 							 }
 						 }
 
-						 if (PEv2_EmergencyOutputPin != 0)
+						 if (PEv2_digout_Emergency_Pin != 0)
 						 {	//check if pin is parametrized in HAL
-							 if (dev->Pins[PEv2_EmergencyOutputPin - 1].PinFunction != PK_PinCap_digitalOutput)
+							 if (dev->Pins[PEv2_digout_Emergency_Pin - 1].PinFunction != PK_PinCap_digitalOutput)
 							 {
-								 dev->Pins[PEv2_EmergencyOutputPin - 1].PinFunction = PK_PinCap_digitalOutput;
-								 PK_SL_SetPinFunction(dev, PEv2_EmergencyInputPin - 1, PK_PinCap_digitalOutput);
-								 Pins_DigitalValueSet_ignore[PEv2_EmergencyInputPin - 1] = true;
+								 dev->Pins[PEv2_digout_Emergency_Pin - 1].PinFunction = PK_PinCap_digitalOutput;
+								 PK_SL_SetPinFunction(dev, PEv2_digin_Emergency_Pin - 1, PK_PinCap_digitalOutput);
+								 Pins_DigitalValueSet_ignore[PEv2_digin_Emergency_Pin - 1] = true;
 								 setPinConfig = true;
 							 }
 
@@ -2655,9 +2716,9 @@ void user_mainloop(void)
 							 dev->PEv2.EmergencySwitchPolarity = PEv2_EmergencySwitchPolarity;
 							 DoPeSetup = true;
 						 }
-						 //dev->PEv2.PulseEngineBufferSize = PEv2_params_PulseEngineBufferSize;
+						 //dev->PEv2.PulseEngineBufferSize = PEv2_stepgen_PulseEngineBufferSize;
 						 
-						 //dev->PEv2.AxisEnabledStatesMask = PEv2_params_AxisEnabledStatesMask;
+						 //dev->PEv2.AxisEnabledStatesMask = PEv2_stepgen_AxisEnabledStatesMask;
 						 if (DoPeSetup = true) 
 						 {
 							 if (PK_PEv2_PulseEngineSetup(dev) != PK_OK)
@@ -2685,21 +2746,21 @@ void user_mainloop(void)
 							 PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 							 PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 							 PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
-							 //PEv2_params_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
+							 //PEv2_stepgen_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
 							 PEv2_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
-							 //PEv2_params_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
+							 //PEv2_stepgen_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 
 							 PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 							 PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 							 PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
-							 //PEv2_params_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
+							 //PEv2_stepgen_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
 							 PEv2_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
-							 //PEv2_params_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
+							 //PEv2_stepgen_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 						 }
 
 						 if (PK_PEv2_AdditionalParametersGet(dev) == PK_OK)
 						 {
-							 PEv2_EmergencyInputPin = dev->PEv2.EmergencyInputPin;
+							 PEv2_digin_Emergency_Pin = dev->PEv2.EmergencyInputPin;
 							 usleep(sleepdur);
 						 }
 					 }
@@ -2708,22 +2769,22 @@ void user_mainloop(void)
 					 uint8_t AxesSwitchConfig[8];
 					 for (i = 0; i < dev->PEv2.info.nrOfAxes; i++)
 					 {
-						 if (PEv2_params_ApplyIniSettings != 0)
+						 if (PEv2_stepgen_ApplyIniSettings != 0)
 						 {
 							 bool doAxisConfig = false;
 							 // Convert mm/s -> pulses/s
-							 if (PEv2_params_STEP_SCALE(i) != 0)
+							 if (PEv2_stepgen_STEP_SCALE(i) != 0)
 							 {
-								 PEv2_MaxSpeed(i) = PEv2_params_STEPGEN_MAXVEL(i) * PEv2_params_STEP_SCALE(i) / 1000;				// Maximum axis speed convert (mm/s) to (pulses per ms)
-								 PEv2_MaxAcceleration(i) = PEv2_params_STEPGEN_MAXACCEL(i) * PEv2_params_STEP_SCALE(i) / 1000000;	// Maximum axis acceleration convert (mm/s�) to (in pulses/ms/ms)
-								 PEv2_MaxDecceleration(i) = PEv2_params_STEPGEN_MAXACCEL(i) * PEv2_params_STEP_SCALE(i) / 1000000;	// Maximum axis deceleration convert (mm/s�) to (in pulses/ms/ms)
+								 PEv2_MaxSpeed(i) = PEv2_stepgen_STEPGEN_MAXVEL(i) * PEv2_stepgen_STEP_SCALE(i) / 1000;				// Maximum axis speed convert (mm/s) to (pulses per ms)
+								 PEv2_MaxAcceleration(i) = PEv2_stepgen_STEPGEN_MAXACCEL(i) * PEv2_stepgen_STEP_SCALE(i) / 1000000;	// Maximum axis acceleration convert (mm/s�) to (in pulses/ms/ms)
+								 PEv2_MaxDecceleration(i) = PEv2_stepgen_STEPGEN_MAXACCEL(i) * PEv2_stepgen_STEP_SCALE(i) / 1000000;	// Maximum axis deceleration convert (mm/s�) to (in pulses/ms/ms)
 
-								 PEv2_SoftLimitMaximum(i) = PEv2_params_MAX_LIMIT(i) * PEv2_params_STEP_SCALE(i);		// Soft limit maximum position
-								 PEv2_SoftLimitMinimum(i) = PEv2_params_MIN_LIMIT(i) * PEv2_params_STEP_SCALE(i);		// Soft limit minimum position
-								 PEv2_HomeOffsets(i) = PEv2_params_HOME_OFFSET(i) * PEv2_params_STEP_SCALE(i);		// Home position offset
+								 PEv2_SoftLimitMaximum(i) = PEv2_stepgen_MAX_LIMIT(i) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit maximum position
+								 PEv2_SoftLimitMinimum(i) = PEv2_stepgen_MIN_LIMIT(i) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit minimum position
+								 PEv2_HomeOffsets(i) = PEv2_stepgen_HOME_OFFSET(i) * PEv2_stepgen_STEP_SCALE(i);		// Home position offset
 
-								 PEv2_HomingSpeed(i) = PEv2_params_HOME_SEARCH_VEL(i) * 100 / PEv2_params_MAX_VELOCITY(i);			// Homing speed per axis (in %)
-								 PEv2_HomingReturnSpeed(i) = PEv2_params_HOME_LATCH_VEL(i) * 100 / PEv2_params_HOME_SEARCH_VEL(i);	// Homing return speed per axis (in % of the homing speed)
+								 PEv2_HomingSpeed(i) = PEv2_stepgen_HOME_SEARCH_VEL(i) * 100 / PEv2_stepgen_MAX_VELOCITY(i);			// Homing speed per axis (in %)
+								 PEv2_HomingReturnSpeed(i) = PEv2_stepgen_HOME_LATCH_VEL(i) * 100 / PEv2_stepgen_HOME_SEARCH_VEL(i);	// Homing return speed per axis (in % of the homing speed)
 
 								 // Convert parameters... assume little-endian format
 								 if (dev->PEv2.MaxSpeed[i] != PEv2_MaxSpeed(i))
@@ -2787,8 +2848,8 @@ void user_mainloop(void)
 								 PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
 								 PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
 							 */
-							 //PEv2_params_AxesConfig(i) = PK_AC_ENABLED_MASKED;
-							 if (PEv2_params_STEPGEN_MAXVEL(i) != 0)
+							 //PEv2_stepgen_AxesConfig(i) = PK_AC_ENABLED_MASKED;
+							 if (PEv2_stepgen_STEPGEN_MAXVEL(i) != 0)
 							 {
 								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 0, true);  // PK_AC_ENABLED ;
 								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 2, true);  // PK_AC_INTERNAL_PLANNER;
@@ -2821,12 +2882,12 @@ void user_mainloop(void)
 							 }
 
 
-							 if (PEv2_HomeSwitch_Pin(i) != 0)
+							 if (PEv2_digin_Home_Pin(i) != 0)
 							 {
 								 //check if pin is parametrized in HAL
-								 int Home = PEv2_HomeSwitch_Pin(i);
-								 int LimP = PEv2_LimitPSwitch_Pin(i);
-								 int LimM = PEv2_LimitNSwitch_Pin(i);
+								 int Home = PEv2_digin_Home_Pin(i);
+								 int LimP = PEv2_digin_LimitP_Pin(i);
+								 int LimM = PEv2_digin_LimitN_Pin(i);
 
 								 if (Home != LimM && Home != LimP)
 								 {
@@ -2859,55 +2920,55 @@ void user_mainloop(void)
 								 dev->PEv2.PinHomeSwitch[i] = 0;
 							 }
 
-							 if (PEv2_HomeSwitch_invert(i)==true)
+							 if (PEv2_digin_Home_invert(i)==true)
 							 {
 								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 7, true); // PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
 								 doAxisConfig = true;
 							 }
 
 
-							 if (dev->PEv2.PinLimitMSwitch[i] != PEv2_LimitNSwitch_Pin(i))
+							 if (dev->PEv2.PinLimitMSwitch[i] != PEv2_digin_LimitN_Pin(i))
 							 {
-								 dev->PEv2.PinLimitMSwitch[i] = PEv2_LimitNSwitch_Pin(i);
+								 dev->PEv2.PinLimitMSwitch[i] = PEv2_digin_LimitN_Pin(i);
 								 doAxisConfig = true;
 							 }
-							 if (PEv2_LimitNSwitch_invert(i) == true)
+							 if (PEv2_digin_LimitN_invert(i) == true)
 							 {
 								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 5, true); // PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
 								 doAxisConfig = true;
 							 }
-							 if (PEv2_LimitPSwitch_invert(i) == true)
+							 if (PEv2_digin_LimitP_invert(i) == true)
 							 {
 								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 6, true); // PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
 								 doAxisConfig = true;
 							 }
 
-							 if (PEv2_LimitNSwitch_Pin(i) != 0)
+							 if (PEv2_digin_LimitN_Pin(i) != 0)
 							 {	//check if pin is parametrized in HAL
 								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 0, true); // | PK_ASO_SWITCH_LIMIT_N;
 								 
-								 if (dev->Pins[PEv2_LimitNSwitch_Pin(i) - 1].PinFunction != PK_PinCap_digitalInput)
+								 if (dev->Pins[PEv2_digin_LimitN_Pin(i) - 1].PinFunction != PK_PinCap_digitalInput)
 								 {
-									 dev->Pins[PEv2_LimitNSwitch_Pin(i) - 1].PinFunction = PK_PinCap_digitalInput;
-									 PK_SL_SetPinFunction(dev, PEv2_LimitNSwitch_Pin(i) - 1, PK_PinCap_digitalInput);
+									 dev->Pins[PEv2_digin_LimitN_Pin(i) - 1].PinFunction = PK_PinCap_digitalInput;
+									 PK_SL_SetPinFunction(dev, PEv2_digin_LimitN_Pin(i) - 1, PK_PinCap_digitalInput);
 									 setPinConfig = true;
 								 }
 							 }
 
-							 if (dev->PEv2.PinLimitPSwitch[i] != PEv2_LimitPSwitch_Pin(i))
+							 if (dev->PEv2.PinLimitPSwitch[i] != PEv2_digin_LimitP_Pin(i))
 							 {
-								 dev->PEv2.PinLimitPSwitch[i] = PEv2_LimitPSwitch_Pin(i);
+								 dev->PEv2.PinLimitPSwitch[i] = PEv2_digin_LimitP_Pin(i);
 								 doAxisConfig = true;
 							 }
 							 
-							 if (PEv2_LimitPSwitch_Pin(i) != 0)
+							 if (PEv2_digin_LimitP_Pin(i) != 0)
 							 {	//check if pin is parametrized in HAL
 								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 1, true); // | PK_ASO_SWITCH_LIMIT_P;
 								 
-								 if (dev->Pins[PEv2_LimitPSwitch_Pin(i) - 1].PinFunction != PK_PinCap_digitalInput)
+								 if (dev->Pins[PEv2_digin_LimitP_Pin(i) - 1].PinFunction != PK_PinCap_digitalInput)
 								 {
-									 dev->Pins[PEv2_LimitPSwitch_Pin(i) - 1].PinFunction = PK_PinCap_digitalInput;
-									 PK_SL_SetPinFunction(dev, PEv2_LimitPSwitch_Pin(i) - 1, PK_PinCap_digitalInput);
+									 dev->Pins[PEv2_digin_LimitP_Pin(i) - 1].PinFunction = PK_PinCap_digitalInput;
+									 PK_SL_SetPinFunction(dev, PEv2_digin_LimitP_Pin(i) - 1, PK_PinCap_digitalInput);
 									 setPinConfig = true;
 								 }
 							 
@@ -2937,44 +2998,44 @@ void user_mainloop(void)
 								 doAxisConfig = true;
 							 }
 							 
-							 if (dev->PEv2.AxisEnableOutputPins[i] != PEv2_AxisEnableOutput_Pin(i))
+							 if (dev->PEv2.AxisEnableOutputPins[i] != PEv2_digout_AxisEnable_Pin(i))
 							 {
-								 dev->PEv2.AxisEnableOutputPins[i] = PEv2_AxisEnableOutput_Pin(i);
+								 dev->PEv2.AxisEnableOutputPins[i] = PEv2_digout_AxisEnable_Pin(i);
 								 doAxisConfig = true;
 							 }
 							 
-							 if (PEv2_AxisEnableOutput_Pin(i) != 0)
+							 if (PEv2_digout_AxisEnable_Pin(i) != 0)
 							 {	//check if pin is parametrized in HAL
-								 if (dev->Pins[PEv2_AxisEnableOutput_Pin(i) - 1].PinFunction != PK_PinCap_digitalOutput)
+								 if (dev->Pins[PEv2_digout_AxisEnable_Pin(i) - 1].PinFunction != PK_PinCap_digitalOutput)
 								 {
-									 dev->Pins[PEv2_AxisEnableOutput_Pin(i) - 1].PinFunction = PK_PinCap_digitalOutput;
-									 PK_SL_SetPinFunction(dev, PEv2_AxisEnableOutput_Pin(i) - 1, PK_PinCap_digitalOutput);
+									 dev->Pins[PEv2_digout_AxisEnable_Pin(i) - 1].PinFunction = PK_PinCap_digitalOutput;
+									 PK_SL_SetPinFunction(dev, PEv2_digout_AxisEnable_Pin(i) - 1, PK_PinCap_digitalOutput);
 									 setPinConfig = true;
 								 }
-								 Pins_DigitalValueSet_ignore[PEv2_AxisEnableOutput_Pin(i) - 1] = true;
+								 Pins_DigitalValueSet_ignore[PEv2_digout_AxisEnable_Pin(i) - 1] = true;
 							 }
 
-							 if (dev->PEv2.InvertAxisEnable[i] != PEv2_AxisEnableOutput_invert(i))
+							 if (dev->PEv2.InvertAxisEnable[i] != PEv2_digout_AxisEnable_invert(i))
 							 {
-								 dev->PEv2.InvertAxisEnable[i] = PEv2_AxisEnableOutput_invert(i);
+								 dev->PEv2.InvertAxisEnable[i] = PEv2_digout_AxisEnable_invert(i);
 								 doAxisConfig = true;
 							 }
 							 
-							 if (dev->PEv2.FilterLimitMSwitch[i] != PEv2_LimitNSwitch_Filter(i))
+							 if (dev->PEv2.FilterLimitMSwitch[i] != PEv2_digin_LimitN_Filter(i))
 							 {
-								 dev->PEv2.FilterLimitMSwitch[i] = PEv2_LimitNSwitch_Filter(i);
+								 dev->PEv2.FilterLimitMSwitch[i] = PEv2_digin_LimitN_Filter(i);
 								 doAxisConfig = true;
 							 }
 							 
-							 if (dev->PEv2.FilterLimitPSwitch[i] != PEv2_LimitPSwitch_Filter(i))
+							 if (dev->PEv2.FilterLimitPSwitch[i] != PEv2_digin_LimitP_Filter(i))
 							 {
-								 dev->PEv2.FilterLimitPSwitch[i] = PEv2_LimitPSwitch_Filter(i);
+								 dev->PEv2.FilterLimitPSwitch[i] = PEv2_digin_LimitP_Filter(i);
 								 doAxisConfig = true;
 							 }
 							 
-							 if (dev->PEv2.FilterHomeSwitch[i] != PEv2_HomeSwitch_Filter(i))
+							 if (dev->PEv2.FilterHomeSwitch[i] != PEv2_digin_Home_Filter(i))
 							 {
-								 dev->PEv2.FilterHomeSwitch[i] = PEv2_HomeSwitch_Filter(i);
+								 dev->PEv2.FilterHomeSwitch[i] = PEv2_digin_Home_Filter(i);
 								 doAxisConfig = true;
 							 }
 							 
@@ -3037,9 +3098,9 @@ void user_mainloop(void)
 								 //PEv2_AxesConfig(i) = dev->PEv2.AxesConfig[i]; readonly
 								 //PEv2_AxesSwitchConfig(i)  = dev->PEv2.AxesSwitchConfig[i];
 
-								 //PEv2_HomeSwitch_Pin(i) = dev->PEv2.PinHomeSwitch[i];
-								 //PEv2_LimitNSwitch_Pin(i) = dev->PEv2.PinLimitMSwitch[i];
-								 //PEv2_LimitPSwitch_Pin(i) = dev->PEv2.PinLimitPSwitch[i];
+								 //PEv2_digin_Home_Pin(i) = dev->PEv2.PinHomeSwitch[i];
+								 //PEv2_digin_LimitN_Pin(i) = dev->PEv2.PinLimitMSwitch[i];
+								 //PEv2_digin_LimitP_Pin(i) = dev->PEv2.PinLimitPSwitch[i];
 
 								 PEv2_HomingSpeed(i) = dev->PEv2.HomingSpeed[i];
 								 PEv2_HomingReturnSpeed(i) = dev->PEv2.HomingReturnSpeed[i];
@@ -3056,12 +3117,12 @@ void user_mainloop(void)
 
 								 PEv2_MPGjogMultiplier(i) = dev->PEv2.MPGjogMultiplier[i];
 
-								 //PEv2_AxisEnableOutput_Pin(i) = dev->PEv2.AxisEnableOutputPins[i];
-								 PEv2_AxisEnableOutput_invert(i) = dev->PEv2.InvertAxisEnable[i];
+								 //PEv2_digout_AxisEnable_Pin(i) = dev->PEv2.AxisEnableOutputPins[i];
+								 PEv2_digout_AxisEnable_invert(i) = dev->PEv2.InvertAxisEnable[i];
 
-								 PEv2_LimitNSwitch_Filter(i) = dev->PEv2.FilterLimitMSwitch[i];
-								 PEv2_LimitPSwitch_Filter(i) = dev->PEv2.FilterLimitPSwitch[i];
-								 PEv2_HomeSwitch_Filter(i) = dev->PEv2.FilterHomeSwitch[i];
+								 PEv2_digin_LimitN_Filter(i) = dev->PEv2.FilterLimitMSwitch[i];
+								 PEv2_digin_LimitP_Filter(i) = dev->PEv2.FilterLimitPSwitch[i];
+								 PEv2_digin_Home_Filter(i) = dev->PEv2.FilterHomeSwitch[i];
 
 								 PEv2_HomingAlgorithm(i) = dev->PEv2.HomingAlgorithm[i];
 								 // MPG 1x mode here
@@ -3077,9 +3138,9 @@ void user_mainloop(void)
 						 PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 						 PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 						 PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
-						 //PEv2_params_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
+						 //PEv2_stepgen_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
 						 PEv2_EmergencySwitchPolarity = dev->PEv2.EmergencySwitchPolarity;
-						 //PEv2_params_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
+						 //PEv2_stepgen_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 					 }
 
 					 if (setPinConfig == true)
