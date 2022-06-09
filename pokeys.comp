@@ -124,12 +124,15 @@ pin in unsigned PEv2.#.AxesSwitchConfig [8];		// Axis switch configuration - see
 
 pin io u32 PEv2.#.SoftLimitMaximum [8];		// Soft limit maximum position
 pin io u32 PEv2.#.SoftLimitMinimum [8];		// Soft limit minimum position
+param rw unsigned PEv2.#.digin.SoftLimit.PosMin[8] "";
+param rw unsigned PEv2.#.digin.SoftLimit.PosMax[8] "";
+
 pin io unsigned PEv2.#.HomingSpeed [8];			// Homing speed per axis (in %)
 pin io unsigned PEv2.#.HomingReturnSpeed [8];		// Homing return speed per axis (in % of the homing speed)
 pin io unsigned PEv2.#.HomingAlgorithm[8];		// Homing algorithm configuration
 
 pin io u32 PEv2.#.HomeOffsets [8];				// Home position offset
-
+param rw unsigned PEv2.#.digin.Home.Offset[8] "";
 
 pin io u32 PEv2.#.ProbePosition [8];			// Position where probe detected change
 pin io u32 PEv2.#.ProbeMaxPosition [8];		// Maximum position to travel to until stopping and returning error
@@ -142,9 +145,11 @@ pin io float PEv2.#.MaxSpeed [8];					// Maximum axis speed (in pulses per ms)
 pin io float PEv2.#.MaxAcceleration [8];			// Maximum axis acceleration (in pulses/ms/ms)
 pin io float PEv2.#.MaxDecceleration [8];			// Maximum axis deceleration (in pulses/ms/ms)
 
-pin io float PEv2.#.MaxSpeed_mm_per_sec [8];			// Maximum axis speed (mm/s)
-pin io float PEv2.#.MaxAcceleration_mm_per_sec2 [8];	// Maximum axis acceleration (in mm/s�)
-pin io float PEv2.#.MaxDecceleration_mm_per_sec2 [8];	// Maximum axis deceleration (in mm/s�)
+
+
+//pin io float PEv2.#.MaxSpeed_mm_per_sec [8];			// Maximum axis speed (mm/s)
+//pin io float PEv2.#.MaxAcceleration_mm_per_sec2 [8];	// Maximum axis acceleration (in mm/s�)
+//pin io float PEv2.#.MaxDecceleration_mm_per_sec2 [8];	// Maximum axis deceleration (in mm/s�)
 
 	
 pin in float PEv2.#.joint-vel-cmd [8];				
@@ -2780,9 +2785,9 @@ void user_mainloop(void)
 								 PEv2_MaxAcceleration(i) = PEv2_stepgen_STEPGEN_MAXACCEL(i) * PEv2_stepgen_STEP_SCALE(i) / 1000000;	// Maximum axis acceleration convert (mm/s�) to (in pulses/ms/ms)
 								 PEv2_MaxDecceleration(i) = PEv2_stepgen_STEPGEN_MAXACCEL(i) * PEv2_stepgen_STEP_SCALE(i) / 1000000;	// Maximum axis deceleration convert (mm/s�) to (in pulses/ms/ms)
 
-								 PEv2_SoftLimitMaximum(i) = PEv2_stepgen_MAX_LIMIT(i) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit maximum position
-								 PEv2_SoftLimitMinimum(i) = PEv2_stepgen_MIN_LIMIT(i) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit minimum position
-								 PEv2_HomeOffsets(i) = PEv2_stepgen_HOME_OFFSET(i) * PEv2_stepgen_STEP_SCALE(i);		// Home position offset
+								 PEv2_digin_SoftLimit_PosMax(i) = PEv2_stepgen_MAX_LIMIT(i) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit maximum position
+								 PEv2_digin_SoftLimit_PosMin(i) = PEv2_stepgen_MIN_LIMIT(i) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit minimum position
+								 PEv2_digin_Home_Offset(i) = PEv2_stepgen_HOME_OFFSET(i) * PEv2_stepgen_STEP_SCALE(i);		// Home position offset
 
 								 PEv2_HomingSpeed(i) = PEv2_stepgen_HOME_SEARCH_VEL(i) * 100 / PEv2_stepgen_STEPGEN_MAXVEL(i);			// Homing speed per axis (in %)
 								 PEv2_HomingReturnSpeed(i) = PEv2_stepgen_HOME_LATCH_VEL(i) * 100 / PEv2_stepgen_HOME_SEARCH_VEL(i);	// Homing return speed per axis (in % of the homing speed)
@@ -2805,21 +2810,21 @@ void user_mainloop(void)
 									 doAxisConfig = true;
 								 }
 								 
-								 if (dev->PEv2.SoftLimitMinimum[i] != PEv2_SoftLimitMinimum(i))
+								 if (dev->PEv2.SoftLimitMinimum[i] != PEv2_digin_SoftLimit_PosMin(i))
 								 {
-									 dev->PEv2.SoftLimitMinimum[i] = PEv2_SoftLimitMinimum(i);
+									 dev->PEv2.SoftLimitMinimum[i] = PEv2_digin_SoftLimit_PosMin(i);
 									 doAxisConfig = true;
 								 }
 								 
-								 if (dev->PEv2.SoftLimitMaximum[i] != PEv2_SoftLimitMaximum(i))
+								 if (dev->PEv2.SoftLimitMaximum[i] != PEv2_digin_SoftLimit_PosMax(i))
 								 {
-									 dev->PEv2.SoftLimitMaximum[i] = PEv2_SoftLimitMaximum(i);
+									 dev->PEv2.SoftLimitMaximum[i] = PEv2_digin_SoftLimit_PosMax(i);
 									 doAxisConfig = true;
 								 }
 								 
-								 if (dev->PEv2.HomeOffsets[i] != PEv2_HomeOffsets(i))
+								 if (dev->PEv2.HomeOffsets[i] != PEv2_digin_Home_Offset(i))
 								 {
-									 dev->PEv2.HomeOffsets[i] = PEv2_HomeOffsets(i);
+									 dev->PEv2.HomeOffsets[i] = PEv2_digin_Home_Offset(i);
 									 doAxisConfig = true;
 								 }
 								 
@@ -2876,7 +2881,7 @@ void user_mainloop(void)
 							 */
 							 AxesSwitchConfig[i] = 0;
 
-							 if (PEv2_SoftLimitMaximum(i) != 0 | PEv2_SoftLimitMinimum(i) != 0)
+							 if (PEv2_digin_SoftLimit_PosMax(i) != 0 | PEv2_digin_SoftLimit_PosMin(i) != 0)
 							 {
 								// AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 3, true); // PK_AC_SOFT_LIMIT_ENABLED;
 								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 3, true); // PK_AC_SOFT_LIMIT_ENABLED;
@@ -3113,8 +3118,8 @@ void user_mainloop(void)
 								 PEv2_MaxAcceleration(i) = dev->PEv2.MaxAcceleration[i];
 								 PEv2_MaxDecceleration(i) = dev->PEv2.MaxDecceleration[i];
 
-								 PEv2_SoftLimitMinimum(i) = dev->PEv2.SoftLimitMinimum[i];
-								 PEv2_SoftLimitMaximum(i) = dev->PEv2.SoftLimitMaximum[i];
+								 PEv2_digin_SoftLimit_PosMin(i) = dev->PEv2.SoftLimitMinimum[i];
+								 PEv2_digin_SoftLimit_PosMax(i) = dev->PEv2.SoftLimitMaximum[i];
 
 								 PEv2_MPGjogMultiplier(i) = dev->PEv2.MPGjogMultiplier[i];
 
