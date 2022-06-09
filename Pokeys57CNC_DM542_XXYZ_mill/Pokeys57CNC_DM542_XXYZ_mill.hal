@@ -150,7 +150,7 @@ net x-in-position     => pokeys.0.PEv2.0.joint-in-position
 
 # ---Encoder feedback signals/setup---
 
-setp    pokeys.0.PEv2.0.stepgen.ENCODER-SCALE  [JOINT_0]ENCODER_SCALE
+#setp    pokeys.0.PEv2.0.stepgen.ENCODER_SCALE  [JOINT_0]ENCODER_SCALE
 
 net x-pos-fb               <=  pokeys.0.PEv2.0.joint-pos-fb
 net x-pos-fb               =>  joint.0.motor-pos-fb
@@ -218,7 +218,7 @@ net x2-in-position     => pokeys.0.PEv2.6.joint-in-position
 
 # ---Encoder feedback signals/setup---
 
-setp    pokeys.0.PEv2.6.stepgen.ENCODER-SCALE  [JOINT_1]ENCODER_SCALE
+#setp    pokeys.0.PEv2.6.stepgen.ENCODER_SCALE  [JOINT_1]ENCODER_SCALE
 
 net x2-pos-fb               <=  pokeys.0.PEv2.6.joint-pos-fb
 net x2-pos-fb               =>  joint.1.motor-pos-fb
