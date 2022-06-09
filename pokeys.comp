@@ -265,7 +265,7 @@ pin out unsigned PEv2.#.digin.SoftLimit.in[8] ;				// Bit-mapped soft-limit stat
 
 pin io unsigned PEv2.AxisEnabledMask;				// Bit-mapped ouput enabled mask
 pin io unsigned PEv2.AxisEnabledStatesMask;		// Bit-mapped states, where axis enabled and charge pump signals are active
-pin in bit PEv2.#.digout.AxisEnabled.out[8]
+pin in bit PEv2.#.digout.AxisEnabled.out[8];
 pin out bit PEv2.#.digin.AxisEnabled.in[8] ;
 pin out bit PEv2.#.digout.LimitOverride.out [8] ;
 
