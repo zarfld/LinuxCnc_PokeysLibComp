@@ -49,23 +49,23 @@ i ... implemented but not tested
 p ... planned
 
 
-###PoRelay8:
+### PoRelay8:
 - [x] needs to be connected in Parallel to kbd48CNC with white PoExt Cable OR using Canbus (connecting it using the Red PoExtBus cable to the i2C extender which is delivered with kbd48CNC will not work)
 - [x] if it is used together with "non smart" PoExtBus devices (e.g. PoExtBusOC16) use "PoExtBus - Smart" page on Pokeys-SW to set "Sequence ID"
 - [ ] inputs not available (yet?)
 
-###PoExtBusOC16
+### PoExtBusOC16
 - [x] can be set using pokeys.0.PoExtBus.#.Out-0..7  (all 16outs can be used pokeys.0.PoExtBus.0 and pokeys.0.PoExtBus.1)
 - [ ] inputs not available
 
-###PoExtBusOC16CNC
+### PoExtBusOC16CNC
 - see "PulseEnginev2"
 
-###kbd48CNC:
+### kbd48CNC:
 - [x] using as PoNet-extension buard attached to Pokeys57E
 - [x] using CanBus (6Pin MicroMatch Connector) directly on Pokeys57CNC
 
-###Pokeys57E
+### Pokeys57E
 - [x] connected using Ethernet
 - [x] Read&Set of Digital IO on HalPins pokeys.0.Pins.*.DigitalValueGet / DigitalValueSet
 - [x] Readt of AnalogValue IO on HalPins pokeys.0.Pins.*.AnalogValue on the pins that support that
@@ -73,7 +73,7 @@ p ... planned
 
 changing structure of IOs to "Canonical Device Interface" in work
 
-###Pokeys57CNC
+### Pokeys57CNC
 - [x] connected using USB
 - [x] connected using Ethernet
 - [ ] LinuxCNC example config in Work (using the pinsetup as available on PCB)
@@ -82,7 +82,7 @@ changing structure of IOs to "Canonical Device Interface" in work
 - using USB connection seems "faster" than using ethernet - may depend on networksetup (networkswitch vs. direct connection)
 
 
-###PulseEnginev2 
+### PulseEnginev2 
 - [x] Setting Status Running/Stop depending on LinuxCNC state ("machine-on")
 - [x] Reading Status of Limit+/- and Home switches
 - [x] setting External OC and RelayOutputs - in case that "Extended IO" is available and activated (Pokeys57CNC)
@@ -91,15 +91,20 @@ changing structure of IOs to "Canonical Device Interface" in work
 - [ ] moving axis currently to uses "PositionMode"(STEPSCALE converted) with Pos-Cmd as shown in pokeys "PoKeysUsage.py" assume that Pos-Fb is to slow. (vel-cmd to change velocity will come soon)
 
 
-##HAL-Interface
+## HAL-Interface
 
-###Digital Input
+### Digital Input
 Count: 55
-####Pins
-- pokeys.<DevID>.digin.<PinID>.in			bit		State of the hardware input
-- pokeys.<DevID>.digin.<PinID>.in-not		bit		Inverted state of the input.
-- pokeys.<DevID>.PoExtBus.<PoExtBusId>.digin.<PinID>.in			bit		State of the PoExtBus input (currently prepared for future Firmware)
-- pokeys.<DevID>.PoExtBus.<PoExtBusId>.digin.<PinID>.in-not		bit		Inverted state of the PoExtBus input.
+#### Pins
+- pokeys.[DevID].digin.<PinID>.in			bit		State of the hardware input
+- pokeys.[DevID].digin.<PinID>.in-not		bit		Inverted state of the input.
+##### for PoExtBus Devices (currently prepared for future Firmware)
+- pokeys.[DevID].PoExtBus.<PoExtBusId>.digin.<PinID>.in			bit		State of the PoExtBus input (currently prepared for future Firmware)
+- pokeys.[DevID].PoExtBus.<PoExtBusId>.digin.<PinID>.in-not		bit		Inverted state of the PoExtBus input.
+##### for PulseEnginev2
+- pokeys.[DevID].PEv2.digin.Emergency.in
+ ##### for each Axis of PulseEnginev2
+- pokeys.[DevID].PEv2.<PEv2Id>.digin.Probe.in
 - pokeys.<DevID>.PEv2.<PEv2Id>.digin.Home.in			bit		State of the  Home input for Joint<PEv2Id>
 - pokeys.<DevID>.PEv2.<PEv2Id>.digin.Home.in-not		bit		Inverted state of the Home input for Joint<PEv2Id>
 - pokeys.<DevID>.PEv2.<PEv2Id>.digin.LimitN.in			bit		State of the  Home input for Joint<PEv2Id>
@@ -107,13 +112,12 @@ Count: 55
 - pokeys.<DevID>.PEv2.<PEv2Id>.digin.LimitP.in			bit		State of the  Home input for Joint<PEv2Id>
 - pokeys.<DevID>.PEv2.<PEv2Id>.digin.LimitP.in-not		bit		Inverted state of the Home input for Joint<PEv2Id>
 - pokeys.<DevID>.PEv2.<PEv2Id>.digin.AxisEnabled.in
-- pokeys.<DevID>.PEv2.digin.Emergency.in
-- pokeys.<DevID>.PEv2.digin.Probe.in
 
-####Parameters
-- pokeys.<DevID>.PEv2.#.digin.Home.Pin					"Home switch pin (0 for external dedicated input)";			// Limit+ switch pin (0 for external dedicated input)
-- pokeys.<DevID>.PEv2.#.digin.Home.Filter				"Digital filter for Home switch";		// Digital filter for limit+ switch
-- pokeys.<DevID>.PEv2.#.digin.Home.invert				"Invert Home (pokeys functionality) ";
+
+#### Parameters
+- pokeys.[DevID].PEv2.#.digin.Home.Pin					"Home switch pin (0 for external dedicated input)";			// Limit+ switch pin (0 for external dedicated input)
+- pokeys.[DevID].PEv2.#.digin.Home.Filter				"Digital filter for Home switch";		// Digital filter for limit+ switch
+- pokeys.[DevID].PEv2.#.digin.Home.invert				"Invert Home (pokeys functionality) ";
 - pokeys.<DevID>.PEv2.#.digin.LimitN.Pin				"Limit- switch pin (0 for external dedicated input)";			// Limit+ switch pin (0 for external dedicated input)
 - pokeys.<DevID>.PEv2.#.digin.LimitN.Filter				"Digital filter for limit- switch";		// Digital filter for limit+ switch
 - pokeys.<DevID>.PEv2.#.digin.LimitN.invert				"Invert limit- (pokeys functionality) ";
@@ -121,65 +125,67 @@ Count: 55
 - pokeys.<DevID>.PEv2.#.digin.LimitP.Filter				"Digital filter for limit+ switch";		// Digital filter for limit+ switch
 - pokeys.<DevID>.PEv2.#.digin.LimitP.invert				"Invert limit+ (pokeys functionality) ";
 - pokeys.<DevID>.PEv2.digin.Emergency.Pin
-- pokeys.<DevID>.PEv2.digin.Emergency.invert
+- pokeys.[DevID].PEv2.digin.Emergency.invert
 - pokeys.<DevID>.PEv2.digin.Probe.Pin
 - pokeys.<DevID>.PEv2.digin.Probe.invert
 
-###Digital Output
+### Digital Output
 Count: 55
-####Pins
+#### Pins
 - pokeys.<DevID>.digout.<PinID>.out			bit		Value to be written (possibly inverted) to the hardware output.
-- pokeys.<DevID>.PoExtBus.<PoExtBusId>.digout.<PinID>.out			bit		Value to be written (possibly inverted) to the PoExtBus output.
-- pokeys.0.PEv2.digout.Emergency.out
+##### for PoExtBus Devices (
+  - pokeys.<DevID>.PoExtBus.<PoExtBusId>.digout.<PinID>.out			bit		Value to be written (possibly inverted) to the PoExtBus output.
+##### for PulseEnginev2
+  - pokeys.0.PEv2.digout.Emergency.out
 - pokeys.<DevID>.PEv2.<PEv2Id>.digout.AxisEnabled.out
 - pokeys.<DevID>.PEv2.<PEv2Id>.digout.LimitOverride.out
 - pokeys.<DevID>.PEv2.digout.ExternalRelay-<RelId>.out[4];			// External relay outputs
 - pokeys.<DevID>.PEv2.digout.ExternalOC-<OcId>.out[4];			// External open-collector outputs
 
 
-####Parameters
+#### Parameters
 - pokeys.<DevID>.digout.<PinID>.invert		bit		If TRUE, out is inverted before writing to the hardware.
 - pokeys.<DevID>.PoExtBus.<PoExtBusId>.digout.<PinID>.invert		bit		If TRUE, out is inverted before writing to the PoExtBus output.
 - pokeys.0.PEv2.digout.Emergency.Pin
 
-###Analog Input
+### Analog Input
 Count: 7
-####Pins
+#### Pins
 - pokeys.<DevID>.adcin.<AdcId>.value-raw			float	The hardware reading 
 - pokeys.<DevID>.adcin.<AdcId>.value				float	The hardware reading, scaled according to the scale and offset parameters.
 
-####Parameters
+#### Parameters
 - pokeys.<DevID>.adcin.<AdcId>.scale[7]  "The input voltage (or current) will be multiplied by scale before being output to value.";
 - pokeys.<DevID>.adcin.<AdcId>.offset[7] "This will be subtracted from the hardware input voltage (or current) after the scale multiplier has been applied.";
 
-###Analog Output
+### Analog Output
 Count: 6
-####Pins
+#### Pins
 - pokeys.<DevID>.adcout.<AdcId>.value[6];			 The value to be written. The actual value output to the hardware will depend on the scale and offset parameters.
 - pokeys.<DevID>.adcout.<AdcId>.enable[6];		If false, then output 0 to the hardware, regardless of the value pin.
 
-####Parameters
+#### Parameters
 - pokeys.<DevID>.adcout.<AdcId>.offset[6]  "This will be added to the value before the hardware is updated";
 - pokeys.<DevID>.adcout.<AdcId>.scale[6]  "This should be set so that an input of 1 on the value pin will cause 1V";
 - pokeys.<DevID>.adcout.<AdcId>.high_limit[6]  "When calculating the value to output to the hardware, if value +offset is greater than high_limit, then high_limit will be used instead.";
 - pokeys.<DevID>.adcout.<AdcId>.low_limit[6]  "When calculating the value to output to the hardware, if value +offset is less than low_limit, then low_limit will be used instead";
 - pokeys.<DevID>.adcout.<AdcId>.max_v[6] "max v";
 
-###Encoder
+### Encoder
 Count: 29
-####Pins
+#### Pins
 - pokeys.<DevID>.encoder.#.count[29];			S32	Encoder value in counts.
 - pokeys.<DevID>.encoder.#.position[29];		FLOAT Encoder value in position units (see parameter “scale”).
 - pokeys.<DevID>.encoder.#.velocity[29];		FLOAT Velocity in position units per second
 - pokeys.<DevID>.encoder.#.reset[29];			BIT	When True, force counter to zero
 - pokeys.<DevID>.encoder.#.index-enable[29];	BIT	(bidirectional) When True, reset to zero on next index pulse, and set pin False.
 
-####Parameters
+#### Parameters
 - pokeys.<DevID>. encoder.#.scale[29]	FLOAT	"The scale factor used to convert counts to position units. It is in “counts per position unit”";
 
-###RealTimeClock
+### RealTimeClock
 
-####Pins
+#### Pins
 - pokeys.<DevID>.rtc.sec;				unsigned Second
 - pokeys.<DevID>.rtc.min;				unsigned Minute
 - pokeys.<DevID>.rtc.hour;				unsigned Hour	
