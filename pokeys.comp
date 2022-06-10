@@ -256,7 +256,7 @@ pin out bit PEv2.digin.Misc-#.in-not[8];			// inverted Miscelenous digital input
 pin io unsigned PEv2.LimitOverride;					// Limit override status
 pin io unsigned PEv2.LimitOverrideSetup;			// Limit override configuration
 
-pin out bit PEv2.digin.Probe.in;
+pin out bit PEv2.digin.Probed.in;
 pin out bit PEv2.#.digin.Probe.in[8];				// Stepper motor driver error inputs status (NOT bit-mapped)
 pin out bit PEv2.#.digin.Probe.in-not[8];			// inverted Stepper motor driver error inputs status (NOT bit-mapped)
 
@@ -1295,10 +1295,10 @@ void user_mainloop(void)
 
 				if (bm_ProbeStatus != 0)
 				{
-					PEv2_digin_Probe_in = true;
+					PEv2_digin_Probed_in = true;
 				}
 				else {
-					PEv2_digin_Probe_in = false;
+					PEv2_digin_Probed_in = false;
 				}
 				if(PK_PEv2_StatusGet(dev) == PK_OK)
 				{
