@@ -25,7 +25,6 @@ pin out bit err;
 pin out bit connected;
 pin in unsigned devSerial;
 pin out bit alive;
-pin io bit SimOn;
 
 pin in bit machine_is_on;
 
@@ -922,7 +921,7 @@ void user_mainloop(void)
 { 
 
 	comp_id = hal_init("pokeys");
-	//SimOn = 0;
+
 
     while(0xb){
        FOR_ALL_INSTS() {
@@ -1398,8 +1397,7 @@ void user_mainloop(void)
 					{
 
 						// PK_PEState_peSTOP_EMERGENCY
-						if (SimOn = 0)
-						{
+
 							if (PEv2_PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
 							{
 								PEv2_digin_Emergency_in = 1;
@@ -1408,11 +1406,7 @@ void user_mainloop(void)
 							{
 								PEv2_digin_Emergency_in = 0;
 							}
-						}
-						else
-						{
-							PEv2_digin_Emergency_in = 1;
-						}
+
 					}
 
 					usleep(sleepdur); 
@@ -2256,22 +2250,16 @@ void user_mainloop(void)
 						if (dev->PEv2.EmergencyInputPin>0)
 						{
 							a_debout = 234;
-							if (SimOn = 0)
-							{
+
 								PEv2_digin_Emergency_in = dev->Pins[dev->PEv2.EmergencyInputPin - 1].DigitalValueGet;
-							}
-							else
-							{
-								PEv2_digin_Emergency_in = 1;
-							}
+		
 							
 						}
 						else if (dev->DeviceData.DeviceTypeID = PK_DeviceID_PoKeys57CNC)
 						{
 
 							// PK_PEState_peSTOP_EMERGENCY
-							if (SimOn = 0)
-							{
+		
 								if (dev->PEv2.PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
 								{
 									PEv2_digin_Emergency_in = 0;
@@ -2280,17 +2268,12 @@ void user_mainloop(void)
 								{
 									PEv2_digin_Emergency_in = 1;
 								}
-							}
-							else
-							{
-								PEv2_digin_Emergency_in = 1;
-							}
+
 						}
 						else
 						{
 							a_debout = 235;
-							if (SimOn = 0)
-							{
+
 								if (PEv2_digout_Emergency_Pin != 0)
 								{
 									PEv2_digin_Emergency_in = PEv2_digout_Emergency_out;
@@ -2299,11 +2282,7 @@ void user_mainloop(void)
 								{
 									PEv2_digin_Emergency_in = 0;
 								}
-							}
-							else
-							{
-								PEv2_digin_Emergency_in = 1;
-							}
+
 						}
 					}
 
@@ -2673,10 +2652,7 @@ void user_mainloop(void)
 
 						 }
 
-						 if (SimOn = 0)
-						 {
 
-						 }
 
 						 if (dev->PEv2.EmergencyInputPin != PEv2_digin_Emergency_Pin)
 						 {
