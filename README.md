@@ -114,7 +114,7 @@ Count: 55
 - pokeys.[DevID].PEv2.[PEv2Id].digin.LimitP.in-not		bit		Inverted state of the Home input for Joint[PEv2Id]
 - pokeys.[DevID].PEv2.[PEv2Id].digin.AxisEnabled.in
 ##### for each Button on kbd48CNC 
-- pokeys.[DevID].kbd48CNC.[ButtonId].Button					// switch will ge True if Button pressed
+- pokeys.[DevID].kbd48CNC.[ButtonId].Button					// will get True if Button pressed
 
 #### Parameters
 - pokeys.[DevID].PEv2.[PEv2Id].digin.Home.Pin					"Home switch pin (0 for external dedicated input)";			// Limit+ switch pin (0 for external dedicated input)

@@ -293,7 +293,6 @@ pin io unsigned PEv2.ProbeStartMaskSetup;			// Bit-mapped axis indexes for probi
 param rw unsigned PEv2.digin.Probe.Pin "Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)";					// Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
 param rw unsigned PEv2.digin.Probe.invert "Probe input polarity";			// Probe input polarity
 pin out unsigned PEv2.ProbeStatus;					// Probe status (probe completion bit-mapped status)
-pin out bit PEv2.digin.Probe.in;
 pin io float PEv2.ProbeSpeed;						// Probe speed (ratio of the maximum speed)
 
 pin io unsigned PEv2.#.BacklashWidth [8];			// half of real backlash width
