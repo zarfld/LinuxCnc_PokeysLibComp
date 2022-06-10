@@ -1229,21 +1229,6 @@ void user_mainloop(void)
 							break;
 					}
 
-					if (dev->DeviceData.DeviceTypeID = PK_DeviceID_PoKeys57CNC)
-					{
-						// PK_PEState_peSTOP_EMERGENCY
-						if (PEv2_PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
-						{
-							PEv2_digin_Emergency_in = true;
-							PEv2_digin_Emergency_in_not = false;
-						}
-						else if (PEv2_digin_Emergency_Pin == 0)
-						{
-							PEv2_digin_Emergency_in = false;
-							PEv2_digin_Emergency_in_not = true;
-						}
-					}
-
 					usleep(sleepdur); 
 				}
 
@@ -2089,12 +2074,30 @@ void user_mainloop(void)
 								PEv2_digin_Emergency_in = false;
 								PEv2_digin_Emergency_in_not = true;
 							}
-							else
+							else if(PEv2_digin_Emergency_invert = false)
 							{
-								PEv2_digin_Emergency_in = dev->Pins[dev->PEv2.EmergencyInputPin - 1].DigitalValueGet;
-								PEv2_digin_Emergency_in_not = !dev->Pins[dev->PEv2.EmergencyInputPin - 1].DigitalValueGet;
+								if (dev->Pins[dev->PEv2.EmergencyInputPin - 1].DigitalValueGet = 0) 
+								{
+									PEv2_digin_Emergency_in = false;
+									PEv2_digin_Emergency_in_not = true;
+								}
+								else {
+									PEv2_digin_Emergency_in = true;
+									PEv2_digin_Emergency_in_not = false;
+								}
+								
 							}
-							
+							else {
+								if (dev->Pins[dev->PEv2.EmergencyInputPin - 1].DigitalValueGet = 0)
+								{
+									PEv2_digin_Emergency_in = true;
+									PEv2_digin_Emergency_in_not = false;
+								}
+								else {
+									PEv2_digin_Emergency_in = false;
+									PEv2_digin_Emergency_in_not = true;
+								}
+							}
 						}
 						else if (dev->DeviceData.DeviceTypeID = PK_DeviceID_PoKeys57CNC)
 						{
@@ -2125,7 +2128,7 @@ void user_mainloop(void)
 								else
 								{
 									PEv2_digin_Emergency_in = true;
-									PEv2_digin_Emergency_in_not = true;
+									PEv2_digin_Emergency_in_not = false;
 								}
 
 						}
