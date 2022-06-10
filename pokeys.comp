@@ -245,12 +245,20 @@ pin io unsigned PEv2.ChargePumpEnabled;				// Charge pump output enabled
 pin out unsigned PEv2.PulseEngineActivated;			// Pulse engine activation status
 pin io unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
 
-pin out unsigned PEv2.ErrorInputStatus;				// Stepper motor driver error inputs status (bit-mapped)
+//pin out unsigned PEv2.ErrorInputStatus;				// Stepper motor driver error inputs status (bit-mapped)
+pin out bit PEv2.#.digin.Error.in[8];				// Stepper motor driver error inputs status (NOT bit-mapped)
+pin out bit PEv2.#.digin.Error.in-not[8];			// inverted Stepper motor driver error inputs status (NOT bit-mapped)
+
 pin out unsigned PEv2.MiscInputStatus;				// Miscelenous digital inputs...
+pin out bit PEv2.digin.Misc-#.in[8];				// Miscelenous digital inputs status (NOT bit-mapped)
+pin out bit PEv2.digin.Misc-#.in-not[8];			// inverted Miscelenous digital inputs status (NOT bit-mapped)
 
 pin io unsigned PEv2.LimitOverride;					// Limit override status
 pin io unsigned PEv2.LimitOverrideSetup;			// Limit override configuration
 
+pin out bit PEv2.digin.Probe.in;
+pin out bit PEv2.#.digin.Probe.in[8];				// Stepper motor driver error inputs status (NOT bit-mapped)
+pin out bit PEv2.#.digin.Probe.in-not[8];			// inverted Stepper motor driver error inputs status (NOT bit-mapped)
 
 param rw unsigned PEv2.digin.Emergency.Pin "";
 pin out bit PEv2.digin.Emergency.in;
@@ -1280,11 +1288,19 @@ void user_mainloop(void)
 				uint8_t         bm_LimitStatusP;              // Limit+ status (bit-mapped)
 				uint8_t         bm_LimitStatusN;              // Limit- status (bit-mapped)
 				uint8_t         bm_HomeStatus;                // Home status (bit-mapped)
+				uint8_t         bm_ErrorStatus;
+				uint8_t         bm_ProbeStatus = dev->PEv2.ProbeStatus; //will be update in "PK_PEv2_ProbingFinish" or "PK_PEv2_ProbingFinishSimple"
 				uint8_t			bm_DedicatedLimitNInputs;
 				uint8_t			bm_DedicatedLimitPInputs;
 				uint8_t			bm_DedicatedHomeInputs;
 
-
+				if (bm_ProbeStatus != 0)
+				{
+					PEv2_digin_Probe_in = true;
+				}
+				else {
+					PEv2_digin_Probe_in = false;
+				}
 				if(PK_PEv2_StatusGet(dev) == PK_OK)
 				{
 					// Engine info
@@ -1311,7 +1327,7 @@ void user_mainloop(void)
 					PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
 
 					// Other inputs
-					PEv2_ErrorInputStatus = dev->PEv2.ErrorInputStatus;
+					bm_ErrorStatus = dev->PEv2.ErrorInputStatus;
 					PEv2_MiscInputStatus = dev->PEv2.MiscInputStatus;
 
 					if(HAL_Machine_On!=0)
@@ -1456,15 +1472,17 @@ void user_mainloop(void)
 						a_debPEv2_axxisout(i) = 260 + i;
 						PEv2_CurrentPosition(i) = intCurrentPosition[i];
 						a_debPEv2_axxisout(i) = 270 + i;
+						
+						PEv2_digin_Probe_in(i) = Get_BitOfByte(bm_ProbeStatus, i);
 
 						PEv2_digin_LimitP_in(i) = Get_BitOfByte(bm_LimitStatusP,i);
-						PEv2_digin_LimitP_in_not(i) = !PEv2_digin_LimitP_in(i);
+						PEv2_digin_LimitP_in_not(i) = !Get_BitOfByte(bm_LimitStatusP, i);
 
 						PEv2_digin_LimitN_in(i) = Get_BitOfByte(bm_LimitStatusN,i);
-						PEv2_digin_LimitN_in_not(i) = !PEv2_digin_LimitN_in(i);
+						PEv2_digin_LimitN_in_not(i) = !Get_BitOfByte(bm_LimitStatusN, i);
 
 						PEv2_digin_Home_in(i) =  Get_BitOfByte(bm_HomeStatus,i);
-						PEv2_digin_Home_in_not(i) = !PEv2_digin_Home_in(i);
+						PEv2_digin_Home_in_not(i) = !Get_BitOfByte(bm_HomeStatus, i);
 
 						a_debPEv2_axxisout(i) = 280 ;
 						PEv2_digin_LimitN_DedicatedInput(i) =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
@@ -1475,6 +1493,14 @@ void user_mainloop(void)
 						PEv2_digin_SoftLimit_in(i) = Get_BitOfByte(bm_SoftLimitStatus,i);
 						a_debPEv2_axxisout(i) = 290 + i;
 						
+						/*
+						PEv2.#.digin.Error.in[8]
+
+						bm_ErrorStatus
+						*/
+
+						PEv2_digin_Error_in(i) = Get_BitOfByte(bm_ErrorStatus, i);
+						PEv2_digin_Error_in_not(i) = !Get_BitOfByte(bm_ErrorStatus, i);
 
 						switch(intAxesState)
 						{
