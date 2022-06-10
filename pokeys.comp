@@ -261,6 +261,7 @@ pin out bit PEv2.#.digin.Probe.in-not[8];			// inverted Stepper motor driver err
 
 param rw unsigned PEv2.digin.Emergency.Pin "";
 pin out bit PEv2.digin.Emergency.in;
+pin out bit PEv2.digin.Emergency.in-not;
 param rw unsigned PEv2.digin.Emergency.invert "Emergency switch polarity (set to 1 to invert)";		// Emergency switch polarity (set to 1 to invert)
 param rw unsigned PEv2.digout.Emergency.Pin "added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)";				//added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused)
 pin in bit PEv2.digout.Emergency.out;
@@ -505,173 +506,6 @@ bool Pins_DigitalValueSet_ignore[55];
 int i=0;
 
 
-// Pulse engine v2 information
-typedef struct
-{
-
-	bool         SoftLimitStatus[8];           //soft-limit statuses per axes
-	bool         AxisEnabledStates[8];     // Bit-mapped states, where axis enabled and charge pump signals are active
-	uint8_t         AxisEnabledStatesMask;     // Bit-mapped states, where axis enabled and charge pump signals are active
-	uint8_t         LimitOverride;             // Limit override status
-	uint8_t         EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
-
-
-	// Basic engine states
-    uint8_t         PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
-    uint8_t         PulseEngineActivated;      // Pulse engine activation status
-    uint8_t         PulseEngineState;			 // State of pulse engine - see ePoKeysPEState
-    uint8_t         ChargePumpEnabled;         // Charge pump output enabled
-    uint8_t         PulseGeneratorType;        // Pulse engine generator type (0: external, 1: internal 3ch)
-
-	// Switch states
-    bool         LimitStatusP[8];              // Limit+ status (NOT bit-mapped)
-    bool         LimitStatusN[8];              // Limit- status (NOT bit-mapped)
-    bool         HomeStatus[8];                // Home status (bit-mapped)
-	bool         EmergencyStatus;                // Home status 0=ok 1=Emergency
-
-    uint8_t         AxesState[8];              // Axis states (bit-mapped) - see ePK_PEAxisState
-    int32_t         CurrentPosition[8];        // Current position
-
-	// Engine info
-    uint8_t nrOfAxes;
-    uint8_t maxPulseFrequency;
-    uint8_t bufferDepth;
-    uint8_t slotTiming;
-
-	// Other inputs
-    uint8_t         ErrorInputStatus;          // Stepper motor driver error inputs status (bit-mapped)
-    uint8_t         MiscInputStatus;           // Miscelenous digital inputs...
-
-	bool			DedicatedLimitNInputs[8];
-	bool			DedicatedLimitPInputs[8];
-	bool			DedicatedHomeInputs[8];
-
-	uint8_t         ExternalRelayOutputs;      // External relay outputs
-    uint8_t         ExternalOCOutputs;         // External open-collector outputs
-
-	int32_t         PositionSetup[8];          // Position to be set as current position
-    int32_t         ReferencePositionSpeed[8]; // Reference position or speed (position or pulses/s)
-	
-	// Cyclic Setting
-	float			joint_vel_cmd[8];			// SetVelocity
-	float			joint_pos_cmd[8];			// SetVelocity
-	float			joint_vel_fb[8];			// GetVelocity
-	float			joint_pos_fb[8];			// SetVelocity
-
-	uint8_t         PulseEngineStateSetup;     // Pulse engine new state configuration
-	uint8_t         LimitOverrideSetup;        // Limit override configuration
-	uint8_t         AxisLimitOverride[8];
-
-	bool         ExternalRelayOutput[8] ;      // External relay outputs
-    bool         ExternalOCOutput[8];         // External open-collector outputs
-
-} PK_PEv2_Stat;
-
-typedef struct
-{
-// PK_PEv2_PulseEngineSetup   
-    uint8_t         PulseEngineEnabled;        // Pulse engine enabled status, also number of enabled axes
-    uint8_t         ChargePumpEnabled;         // Charge pump output enabled
-    uint8_t         PulseGeneratorType;        // Pulse engine generator type (0: external, 1: internal 3ch)
-	uint8_t			PG_swap_stepdir;
-	uint8_t			PG_extended_io;
-    //dev->request[11] = dev->PEv2.PulseEngineBufferSize;
-    uint8_t         EmergencySwitchPolarity;   // Emergency switch polarity (set to 1 to invert)
-    //dev->request[13] = dev->PEv2.AxisEnabledStatesMask;
-	
-	
-//PK_PEv2_AxisConfigurationGet
-   // Read the structure
-    uint8_t         AxesConfig[8];             // Axis configuration - see ePK_PEv2_AxisConfig
-    uint8_t         AxesSwitchConfig[8];       // Axis switch configuration - see ePK_PEv2_AxisSwitchOptions
-
-    uint8_t         HomeSwitch_Pin[8];          // Home switch pin (0 for external dedicated input)
-    uint8_t         LimitNSwitch_Pin[8];        // Limit- switch pin (0 for external dedicated input)
-    uint8_t         PinLimitPSwitch[8];        // Limit+ switch pin (0 for external dedicated input)
-
-    uint8_t         HomingSpeed[8];            // Homing speed per axis (in %)
-    uint8_t         HomingReturnSpeed[8];      // Homing return speed per axis (in % of the homing speed)
-
-    uint8_t         MPGjogEncoder[8];          // MPG jog encoder ID
-
-    // Convert parameters... assume little-endian format
-    float           MaxSpeed[8];               // Maximum axis speed (in pulses per ms)
-    float           MaxAcceleration[8];        // Maximum axis acceleration (in pulses/ms/ms)
-    float           MaxDecceleration[8];       // Maximum axis deceleration (in pulses/ms/ms)
-
-    int32_t         SoftLimitMaximum[8];       // Soft limit maximum position
-    int32_t         SoftLimitMinimum[8];       // Soft limit minimum position
-
-    int32_t         MPGjogMultiplier[8];       // MPG jog multiplier value
-
-    uint8_t         AxisEnableOutputPins[8];   // Axis enabled output pin (0 for external dedicated output)
-    int8_t          InvertAxisEnable[8];       // Invert axis enable signal
-
-	uint8_t			FilterLimitMSwitch[8];	   // Digital filter for limit- switch
-	uint8_t			FilterLimitPSwitch[8];	   // Digital filter for limit+ switch
-	uint8_t			FilterHomeSwitch[8];	   // Digital filter for home switch
-
-	int32_t         HomeOffsets[8];            // Home position offset
-	uint8_t			HomingAlgorithm[8];		   // Homing algorithm configuration
-	// MPG 1x mode here
-	uint32_t		HomeBackOffDistance[8];	   // Back-off distance after homing
-    uint16_t        MPGjogDivider[8];          // Divider for the MPG jogging (enhanced encoder resolution)
-
-// 	uint16_t		BacklashWidth[8];			// half of real backlash width
-	int16_t			BacklashRegister[8];		// current value of the backlash register
-	uint8_t			BacklashAcceleration[8];	// in pulses per ms^2
-	uint8_t			BacklashCompensationEnabled;
-
-// add pins
-    uint8_t         ProbeInput;                // Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
-    uint8_t         ProbeInputPolarity;        // Probe input polarity
-
-//int32_t PK_PEv2_AdditionalParametersGet(sPoKeysDevice * device)
-//int32_t PK_PEv2_AdditionalParametersSet(sPoKeysDevice * device)
-    uint8_t         EmergencyInputPin;
-    uint8_t         EmergencyOutputPin;
-
-// HAL-INI parameters
-		bool ApplyIniSettings;
-		char COORDINATES;
-		char LINEAR_UNITS;
-		char ANGULAR_UNITS;
-		float CYCLE_TIME;
-		float DEFAULT_LINEAR_VELOCITY;
-		float MAX_LINEAR_VELOCITY;
-		char TYPE [8];			//LINEAR / ANGULAR
-		float HOME [8];
-		float FERROR [8];
-		float MIN_FERROR [8];
-
-		float MAX_ACCELERATION [8];
-		float STEPGEN_MAXVEL [8];
-		float STEPGEN_MAXACCEL [8];
-		uint Feedback_Encoder_Id [8];
-//		float P [8];
-//		float I [8];
-//		float D [8];
-//		float FF0 [8];
-//		float FF1 [8];
-//		float FF2 [8];
-//		float BIAS [8];
-		float DEADBAND [8];
-		float MAX_OUTPUT [8];
-		float ENCODER_SCALE [8];
-// these are in nanoseconds
-
-
-
-		float STEP_SCALE [8];					// (pulses/mm)
-		float MIN_LIMIT [8];					// position (mm)
-		float MAX_LIMIT [8];					// position (mm)
-		float HOME_OFFSET [8];				// position (mm)
-		float HOME_SEARCH_VEL [8];			// position (mm)
-		float HOME_LATCH_VEL [8];				// position (mm)
-		float HOME_FINAL_VEL [8];				// position (mm)
-		bool HOME_USE_INDEX [8];				// YES / NO
-		bool HOME_IGNORE_LIMITS [8];			// YES / NO
-} PK_PEv2_Parameters;
 
 typedef struct
 {
@@ -692,8 +526,8 @@ typedef struct
 
 } PK_MatrixKB_Parameters;
 
-PK_PEv2_Parameters PEv2_params;
-PK_PEv2_Stat PEv2_status;
+
+
 sPoKeysEasySensor EasySensors[100];
 sPoNETmodule PoNet[16];
 
@@ -1391,22 +1225,23 @@ void user_mainloop(void)
 							break;
 						case PK_PEState_peSTOP_EMERGENCY:          // Pulse engine stopped due to emergency switch
 							PEv2_digin_Emergency_in = true;
+							PEv2_digin_Emergency_in_not = false;
 							break;
 					}
+
 					if (dev->DeviceData.DeviceTypeID = PK_DeviceID_PoKeys57CNC)
 					{
-
 						// PK_PEState_peSTOP_EMERGENCY
-
-							if (PEv2_PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
-							{
-								PEv2_digin_Emergency_in = 1;
-							}
-							else if (PEv2_digin_Emergency_Pin == 0)
-							{
-								PEv2_digin_Emergency_in = 0;
-							}
-
+						if (PEv2_PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
+						{
+							PEv2_digin_Emergency_in = true;
+							PEv2_digin_Emergency_in_not = false;
+						}
+						else if (PEv2_digin_Emergency_Pin == 0)
+						{
+							PEv2_digin_Emergency_in = false;
+							PEv2_digin_Emergency_in_not = true;
+						}
 					}
 
 					usleep(sleepdur); 
@@ -1612,8 +1447,7 @@ void user_mainloop(void)
 								
 								a_debPEv2out = 400 + i;
 
-								//if ( PEv2_params.AxesConfig[i]!=PK_AC_POSITION_MODE)
-
+			
 								float ReferenceSpeed;
 								float ReferencePosition;
 								a_debPEv2_axxisout(i) = 1000;
@@ -2250,9 +2084,16 @@ void user_mainloop(void)
 						if (dev->PEv2.EmergencyInputPin>0)
 						{
 							a_debout = 234;
-
+							if (dev->PEv2.PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
+							{
+								PEv2_digin_Emergency_in = false;
+								PEv2_digin_Emergency_in_not = true;
+							}
+							else
+							{
 								PEv2_digin_Emergency_in = dev->Pins[dev->PEv2.EmergencyInputPin - 1].DigitalValueGet;
-		
+								PEv2_digin_Emergency_in_not = !dev->Pins[dev->PEv2.EmergencyInputPin - 1].DigitalValueGet;
+							}
 							
 						}
 						else if (dev->DeviceData.DeviceTypeID = PK_DeviceID_PoKeys57CNC)
@@ -2262,11 +2103,13 @@ void user_mainloop(void)
 		
 								if (dev->PEv2.PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
 								{
-									PEv2_digin_Emergency_in = 0;
+									PEv2_digin_Emergency_in = false;
+									PEv2_digin_Emergency_in_not = true;
 								}
 								else
 								{
-									PEv2_digin_Emergency_in = 1;
+									PEv2_digin_Emergency_in = true;
+									PEv2_digin_Emergency_in_not = false;
 								}
 
 						}
@@ -2277,10 +2120,12 @@ void user_mainloop(void)
 								if (PEv2_digout_Emergency_Pin != 0)
 								{
 									PEv2_digin_Emergency_in = PEv2_digout_Emergency_out;
+									PEv2_digin_Emergency_in_not = !PEv2_digout_Emergency_out;
 								}
 								else
 								{
-									PEv2_digin_Emergency_in = 0;
+									PEv2_digin_Emergency_in = true;
+									PEv2_digin_Emergency_in_not = true;
 								}
 
 						}
