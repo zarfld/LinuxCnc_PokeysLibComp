@@ -2044,11 +2044,8 @@ void user_mainloop(void)
 
 					}
 			
-				
-				if (PEv2_params_ApplyIniSettings==0 && PEv2_nrOfAxes!=PEv2_PulseEngineEnabled )
-				{
-					PEv2_params_ApplyIniSettings=1;
-				}
+
+
 
 				a_debout = 224;
 			}
