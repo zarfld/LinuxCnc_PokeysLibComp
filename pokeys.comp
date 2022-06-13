@@ -1954,6 +1954,10 @@ void user_mainloop(void)
 				}
 			}
 
+			if (dev->info.iPWMCount)
+			{
+				PK_PWMConfigurationGet(dev);
+			}
 			if (loopPins = true){  //gets IO data and checks return value 
 				err=0;
 				sPoKeysPinData iPin;
