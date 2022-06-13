@@ -2048,12 +2048,12 @@ void user_mainloop(void)
 
 									tmp = tmp * adcout_scale(PwmId);
 
-									setVal = uint32_t((tmp / adcout_max_v(PwmId)) * dev->PWM.PWMperiod);
+									setVal = (uint32_t)((tmp / adcout_max_v(PwmId)) * dev->PWM.PWMperiod);
 								}
 
 							if (*dev->PWM.PWMduty != setVal)
 							{
-								dev->PWM.PWMduty = uint32_t(setVal);
+								dev->PWM.PWMduty = setVal;
 								AnalogIOSet = true;
 							}
 
