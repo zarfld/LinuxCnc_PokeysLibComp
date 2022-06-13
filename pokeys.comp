@@ -23,7 +23,7 @@ pin out float PEv2.#.deb.RefPos[8];
 pin out float PEv2.#.deb.RefPosSpeed[8];
 
 pin out unsigned adcout.#.deb.out[6];
-pin out unsigned adcout.deb.outv[6];
+pin out unsigned adcout.deb.outv;
 
 pin out bit err;
 pin out bit connected;
