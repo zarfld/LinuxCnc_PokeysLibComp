@@ -394,9 +394,20 @@ net spindle-vel-fb-rps         =>  spindle.0.speed-in
 net spindle-index-enable      <=>  spindle.0.index-enable
 
 # ---Setup spindle at speed signals---
-
 sets spindle-at-speed true
 
+# ---Setup spindle DAC ---
+loadrt scale count=1
+addf scale.0 servo-thread
+setp scale.0.gain 0.002
+
+# direct mapping without PID
+net spindle-speed-scale spindle.0.speed-out => scale.0.in
+#if PID should be used
+#net spindle-speed-scale spindle-output => scale.0.in
+net spindle-speed-DAC scale.0.out => pokeys.0.adcout.0.value
+net spindle-enable => pokeys.0.adcout.0.enable
+net spindle-enable => pokeys.0.PEv2.digout.ExternalRelay-0.out
 
 #******************************
 # connect miscellaneous signals

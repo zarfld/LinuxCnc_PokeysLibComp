@@ -142,8 +142,8 @@ Count: 55
   - pokeys.0.PEv2.digout.Emergency.out
 - pokeys.[DevID].PEv2.[PEv2Id].digout.AxisEnabled.out
 - pokeys.[DevID].PEv2.[PEv2Id].digout.LimitOverride.out
-- pokeys.[DevID].PEv2.digout.ExternalRelay-[RelId].out[4];			// External relay outputs
-- pokeys.[DevID].PEv2.digout.ExternalOC-[OcId].out[4];			// External open-collector outputs
+- pokeys.[DevID].PEv2.digout.ExternalRelay-[RelId].out;			// External relay outputs
+- pokeys.[DevID].PEv2.digout.ExternalOC-[OcId].out;			// External open-collector outputs
 ##### for each Button on kbd48CNC 
 - pokeys.[DevID].kbd48CNC.[ButtonId].LED					// switch Button LED On/Off
 
