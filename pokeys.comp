@@ -1160,8 +1160,11 @@ void user_mainloop(void)
 					bm_LimitStatusP = dev->PEv2.LimitStatusP;              // Limit+ status (bit-mapped)
 					bm_LimitStatusN = dev->PEv2.LimitStatusN;              // Limit- status (bit-mapped)
 					bm_HomeStatus = dev->PEv2.HomeStatus;                // Home status (bit-mapped)
-
-					PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
+					if (PEv2_params_ApplyIniSettings == false) 
+					{
+						PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
+					}
+					
 
 					// Other inputs
 					bm_ErrorStatus = dev->PEv2.ErrorInputStatus;
