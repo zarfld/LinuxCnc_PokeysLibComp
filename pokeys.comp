@@ -22,6 +22,9 @@ pin out float PEv2.#.deb.RefSpeed[8];
 pin out float PEv2.#.deb.RefPos[8];
 pin out float PEv2.#.deb.RefPosSpeed[8];
 
+pin out unsigned adcout.#.deb.out[6];
+
+
 pin out bit err;
 pin out bit connected;
 pin in unsigned devSerial;
@@ -2033,19 +2036,23 @@ void user_mainloop(void)
 
 							if (adcout_scale(PwmId) = 0) 
 							{
+								adcout_deb_out[PwmId] = 200;
 								if (adcout_low_limit(PwmId) = 0) 
 								{
 									adcout_offset(PwmId) = 0;
 									adcout_scale(PwmId) = adcout_high_limit(PwmId) / adcout_max_v(PwmId);
+									adcout_deb_out[PwmId] = 205;
 								}
 								else
 								{
 									adcout_offset(PwmId) = adcout_low_limit(PwmId);
 									adcout_scale(PwmId) = (adcout_high_limit(PwmId) - adcout_low_limit(PwmId)) / adcout_max_v(PwmId);
+									adcout_deb_out[PwmId] = 210;
 								}
 								if (adcout_scale(PwmId) = 0) 
 								{
 									adcout_scale(PwmId) = 1;
+									adcout_deb_out[PwmId] = 220;
 								}
 							}
 
@@ -2095,6 +2102,7 @@ void user_mainloop(void)
 							if (adcout_scale(PwmId) = 0)
 							{
 								adcout_scale(PwmId) = 1;
+								adcout_deb_out[PwmId] = 230;
 							}
 							if ((dev->DeviceData.DeviceTypeID == PK_DeviceID_PoKeys57CNC) && (PwmId = 5)) 
 							{
