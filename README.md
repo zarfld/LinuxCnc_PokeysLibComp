@@ -174,6 +174,7 @@ Count: 6
 - pokeys.[DevID].adcout.[AdcId].high_limit  "When calculating the value to output to the hardware, if value +offset is greater than high_limit, then high_limit will be used instead.";
 - pokeys.[DevID].adcout.[AdcId].low_limit  "When calculating the value to output to the hardware, if value +offset is less than low_limit, then low_limit will be used instead";
 - pokeys.[DevID].adcout.[AdcId].max_v "max output-voltage";
+- pokeys.[DevID].float adcout.pwm.period  "PWM period, shared among all channels"
 
 ### Encoder
 Count: 29
