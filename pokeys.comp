@@ -2053,7 +2053,7 @@ void user_mainloop(void)
 
 							if (*dev->PWM.PWMduty != setVal)
 							{
-								dev->PWM.PWMduty = *setVal;
+								*dev->PWM.PWMduty = setVal;
 								AnalogIOSet = true;
 							}
 
@@ -2078,7 +2078,7 @@ void user_mainloop(void)
 							{
 								adcout_scale(PwmId) = 1;
 							}
-							if ((dev->DeviceData.DeviceTypeID == PK_DeviceID_PoKeys57CNC) && PwmId = 5) 
+							if ((dev->DeviceData.DeviceTypeID == PK_DeviceID_PoKeys57CNC) && (PwmId = 5)) 
 							{
 								adcout_max_v(PwmId) = 10; // Pin17 0-10V
 							}
