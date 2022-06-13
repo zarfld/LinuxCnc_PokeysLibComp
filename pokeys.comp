@@ -2035,7 +2035,7 @@ void user_mainloop(void)
 
 								if (adcout_enable(PwmId) == true)
 								{
-									int tmp = adcout_value(PwmId) + adcout_offset(PwmId)
+									int tmp = adcout_value(PwmId) + adcout_offset(PwmId);
 
 										if (tmp <= adcout_low_limit(PwmId))
 										{
