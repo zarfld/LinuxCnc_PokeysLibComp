@@ -2023,15 +2023,19 @@ void user_mainloop(void)
 
 							if (adcout_scale(PwmId) = 0) 
 							{
-								adcout_scale(PwmId) = (adcout_high_limit(PwmId) - adcout_low_limit(PwmId)) / adcout_max_v(PwmId);
-
 								if (adcout_low_limit(PwmId) = 0) 
 								{
 									adcout_offset(PwmId) = 0;
+									adcout_scale(PwmId) = adcout_high_limit(PwmId) / adcout_max_v(PwmId);
 								}
 								else
 								{
 									adcout_offset(PwmId) = adcout_low_limit(PwmId);
+									adcout_scale(PwmId) = (adcout_high_limit(PwmId) - adcout_low_limit(PwmId)) / adcout_max_v(PwmId);
+								}
+								if (adcout_scale(PwmId) = 0) 
+								{
+									adcout_scale(PwmId) = 1;
 								}
 							}
 
