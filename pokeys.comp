@@ -1957,6 +1957,12 @@ void user_mainloop(void)
 			if (dev->info.iPWMCount)
 			{
 				PK_PWMConfigurationGet(dev);
+
+				if (adcout_pwm_period = 0)
+				{
+					adcout_pwm_period = dev->PWM.PWMperiod;
+
+				}
 			}
 			if (loopPins = true){  //gets IO data and checks return value 
 				err=0;
