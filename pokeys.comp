@@ -2179,77 +2179,15 @@ void user_mainloop(void)
 
 					if (PEv2_PulseEngineEnabled!=0)
 					{
-						if (dev->PEv2.EmergencyInputPin>0)
+						if (dev->PEv2.PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
 						{
-							deb_out = 234;
-							PEv2_deb_estop = 100;
-							if (dev->PEv2.PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
-							{
-								PEv2_deb_estop = 110;
-								PEv2_digin_Emergency_in = false;
-								PEv2_digin_Emergency_in_not = true;
-							}
-							/*else if (PEv2_digin_Emergency_invert = true)
-							{
-								if (dev->Pins[dev->PEv2.EmergencyInputPin - 1].DigitalValueGet = 0) 
-								{
-									PEv2_deb_estop = 120;
-									PEv2_digin_Emergency_in = true;
-									PEv2_digin_Emergency_in_not = false;
-								}
-								else {
-									PEv2_deb_estop = 130;
-									PEv2_digin_Emergency_in = false;
-									PEv2_digin_Emergency_in_not = true;
-								}
-								
-							}*/
-							else {
-								if (dev->Pins[dev->PEv2.EmergencyInputPin - 1].DigitalValueGet = 0)
-								{
-									PEv2_deb_estop = 140;
-									PEv2_digin_Emergency_in = true;
-									PEv2_digin_Emergency_in_not = false;
-								}
-								else {
-									PEv2_deb_estop = 150;
-									PEv2_digin_Emergency_in = false;
-									PEv2_digin_Emergency_in_not = true;
-								}
-							}
-						}
-						else if (dev->DeviceData.DeviceTypeID = PK_DeviceID_PoKeys57CNC)
-						{
-
-							// PK_PEState_peSTOP_EMERGENCY
-		
-								if (dev->PEv2.PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
-								{
-									PEv2_digin_Emergency_in = false;
-									PEv2_digin_Emergency_in_not = true;
-								}
-								else
-								{
-									PEv2_digin_Emergency_in = true;
-									PEv2_digin_Emergency_in_not = false;
-								}
-
+							PEv2_digin_Emergency_in = false;
+							PEv2_digin_Emergency_in_not = true;
 						}
 						else
 						{
-							deb_out = 235;
-
-								if (PEv2_digout_Emergency_Pin != 0)
-								{
-									PEv2_digin_Emergency_in = PEv2_digout_Emergency_out;
-									PEv2_digin_Emergency_in_not = !PEv2_digout_Emergency_out;
-								}
-								else
-								{
-									PEv2_digin_Emergency_in = true;
-									PEv2_digin_Emergency_in_not = false;
-								}
-
+							PEv2_digin_Emergency_in = true;
+							PEv2_digin_Emergency_in_not = false;
 						}
 					}
 
