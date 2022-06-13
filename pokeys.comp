@@ -23,7 +23,7 @@ pin out float PEv2.#.deb.RefPos[8];
 pin out float PEv2.#.deb.RefPosSpeed[8];
 
 pin out unsigned adcout.#.deb.out[6];
-
+pin out unsigned adcout.deb.outv[6];
 
 pin out bit err;
 pin out bit connected;
@@ -1963,16 +1963,20 @@ void user_mainloop(void)
 
 			if (dev->info.iPWMCount)
 			{
+				adcout_deb_outv = 100;
 				PK_PWMConfigurationGet(dev);
 
 				if (adcout_pwm_period = 0)
 				{
+					adcout_deb_outv = 110;
 					if (dev->PWM.PWMperiod > 0) 
 					{
+						adcout_deb_outv = 120;
 						adcout_pwm_period = dev->PWM.PWMperiod;
 					}
 					else
 					{
+						adcout_deb_outv = 130;
 						dev->PWM.PWMperiod = 2500;
 						adcout_pwm_period = 2500;
 					}
@@ -2073,6 +2077,10 @@ void user_mainloop(void)
 
 				}
 
+			}
+			else 
+			{
+				adcout_deb_outv = 150;
 			}
 			if (loopPins = true){  //gets IO data and checks return value 
 				err=0;
