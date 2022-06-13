@@ -2189,21 +2189,21 @@ void user_mainloop(void)
 								PEv2_digin_Emergency_in = false;
 								PEv2_digin_Emergency_in_not = true;
 							}
-							else if(PEv2_digin_Emergency_invert = false)
+							/*else if (PEv2_digin_Emergency_invert = true)
 							{
 								if (dev->Pins[dev->PEv2.EmergencyInputPin - 1].DigitalValueGet = 0) 
 								{
 									PEv2_deb_estop = 120;
-									PEv2_digin_Emergency_in = false;
-									PEv2_digin_Emergency_in_not = true;
-								}
-								else {
-									PEv2_deb_estop = 130;
 									PEv2_digin_Emergency_in = true;
 									PEv2_digin_Emergency_in_not = false;
 								}
+								else {
+									PEv2_deb_estop = 130;
+									PEv2_digin_Emergency_in = false;
+									PEv2_digin_Emergency_in_not = true;
+								}
 								
-							}
+							}*/
 							else {
 								if (dev->Pins[dev->PEv2.EmergencyInputPin - 1].DigitalValueGet = 0)
 								{
