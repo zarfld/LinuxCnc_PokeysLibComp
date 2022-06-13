@@ -2073,14 +2073,6 @@ void user_mainloop(void)
 
 				}
 
-				if ((PwmNr >= 0) && (PwmNr < PwmPinCount))
-				{
-		
-				}
-
-
-
-
 			}
 			if (loopPins = true){  //gets IO data and checks return value 
 				err=0;
