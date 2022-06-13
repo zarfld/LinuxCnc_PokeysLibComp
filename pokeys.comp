@@ -8,6 +8,7 @@ pin out unsigned enum_udp_dev;
 pin out s32 deb.out;
 
 pin out s32 PEv2.deb.out;
+pin out s32 PEv2.deb.estop;
 pin out s32 PEv2.#.deb.axxisout[8];
 pin out bit PEv2.#.deb.ishoming[8];
 pin out bit PEv2.#.deb.inposition[8];
@@ -242,7 +243,7 @@ pin io bit PEv2.PG_extended_io;
 
 pin io unsigned PEv2.ChargePumpEnabled;				// Charge pump output enabled
 pin out unsigned PEv2.PulseEngineActivated;			// Pulse engine activation status
-pin io unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
+pin out unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
 
 //pin out unsigned PEv2.ErrorInputStatus;				// Stepper motor driver error inputs status (bit-mapped)
 pin out bit PEv2.#.digin.Error.in[8];				// Stepper motor driver error inputs status (NOT bit-mapped)
@@ -503,6 +504,7 @@ uint8_t rtc_latencycheck_set = 0;
 int rtc_latencyCounter = 0;
 //pin io unsigned PEv2.PulseEngineStateSetup;		// Pulse engine new state configuration  - No Pin needed
 uint8_t PEv2_PulseEngineStateSetup = 0;
+uint8_t PulseEngineState = 0;
 bool Pins_DigitalValueSet_ignore[55];
 int i=0;
 
@@ -1148,7 +1150,9 @@ void user_mainloop(void)
 					// Basic engine states
 					PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 					PEv2_PulseEngineActivated = dev->PEv2.PulseEngineActivated;
-					PEv2_PulseEngineState = dev->PEv2.PulseEngineState;
+					
+					PulseEngineState = dev->PEv2.PulseEngineState;
+					PEv2_PulseEngineState = PulseEngineState;
 					PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 					PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 
@@ -1194,7 +1198,7 @@ void user_mainloop(void)
 						PEv2_PulseEngineStateSetup = PK_PEState_peSTOPPED;
 					}
 
-					switch (PEv2_PulseEngineState)
+					switch (PulseEngineState)
 					{
 						case PK_PEState_peSTOPPED:           // Pulse engine is stopped
 							break;
@@ -1227,6 +1231,7 @@ void user_mainloop(void)
 						case PK_PEState_peSTOP_EMERGENCY:          // Pulse engine stopped due to emergency switch
 							PEv2_digin_Emergency_in = true;
 							PEv2_digin_Emergency_in_not = false;
+							PEv2_deb_estop = 10;
 							break;
 					}
 
@@ -1717,11 +1722,7 @@ void user_mainloop(void)
 						}
 						else
 						{
-			
-					
 							PEv2_deb_out = 3900 + i;
-
-
 						}
 					
 						PEv2_deb_doMove(i) = doMove;
@@ -1790,7 +1791,7 @@ void user_mainloop(void)
 
 					
 				}
-				if (PEv2_PulseEngineState != PEv2_PulseEngineStateSetup )
+				if (PulseEngineState != PEv2_PulseEngineStateSetup )
 				{
 					dev->PEv2.PulseEngineStateSetup = PEv2_PulseEngineStateSetup;
 					//dev->PEv2.AxisEnabledMask = PEv2_AxisEnabledMask;
@@ -2178,8 +2179,10 @@ void user_mainloop(void)
 						if (dev->PEv2.EmergencyInputPin>0)
 						{
 							deb_out = 234;
+							PEv2_deb_estop = 100;
 							if (dev->PEv2.PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
 							{
+								PEv2_deb_estop = 110;
 								PEv2_digin_Emergency_in = false;
 								PEv2_digin_Emergency_in_not = true;
 							}
@@ -2187,10 +2190,12 @@ void user_mainloop(void)
 							{
 								if (dev->Pins[dev->PEv2.EmergencyInputPin - 1].DigitalValueGet = 0) 
 								{
+									PEv2_deb_estop = 120;
 									PEv2_digin_Emergency_in = false;
 									PEv2_digin_Emergency_in_not = true;
 								}
 								else {
+									PEv2_deb_estop = 130;
 									PEv2_digin_Emergency_in = true;
 									PEv2_digin_Emergency_in_not = false;
 								}
@@ -2199,10 +2204,12 @@ void user_mainloop(void)
 							else {
 								if (dev->Pins[dev->PEv2.EmergencyInputPin - 1].DigitalValueGet = 0)
 								{
+									PEv2_deb_estop = 140;
 									PEv2_digin_Emergency_in = true;
 									PEv2_digin_Emergency_in_not = false;
 								}
 								else {
+									PEv2_deb_estop = 150;
 									PEv2_digin_Emergency_in = false;
 									PEv2_digin_Emergency_in_not = true;
 								}
@@ -2638,6 +2645,7 @@ void user_mainloop(void)
 							 {	//check if pin is parametrized in HAL
 								 dev->Pins[PEv2_digin_Emergency_Pin - 1].PinFunction = PK_PinCap_digitalInput;
 								 PK_SL_SetPinFunction(dev, PEv2_digin_Emergency_Pin - 1, PK_PinCap_digitalInput);
+								 
 								 setPinConfig = true;
 							 }
 						 }
