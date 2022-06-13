@@ -2036,23 +2036,23 @@ void user_mainloop(void)
 
 							if (adcout_scale(PwmId) = 0) 
 							{
-								adcout_deb_out[PwmId] = 200;
+								adcout_deb_out(PwmId) = 200;
 								if (adcout_low_limit(PwmId) = 0) 
 								{
 									adcout_offset(PwmId) = 0;
 									adcout_scale(PwmId) = adcout_high_limit(PwmId) / adcout_max_v(PwmId);
-									adcout_deb_out[PwmId] = 205;
+									adcout_deb_out(PwmId) = 205;
 								}
 								else
 								{
 									adcout_offset(PwmId) = adcout_low_limit(PwmId);
 									adcout_scale(PwmId) = (adcout_high_limit(PwmId) - adcout_low_limit(PwmId)) / adcout_max_v(PwmId);
-									adcout_deb_out[PwmId] = 210;
+									adcout_deb_out(PwmId) = 210;
 								}
 								if (adcout_scale(PwmId) = 0) 
 								{
 									adcout_scale(PwmId) = 1;
-									adcout_deb_out[PwmId] = 220;
+									adcout_deb_out(PwmId) = 220;
 								}
 							}
 
@@ -2102,7 +2102,7 @@ void user_mainloop(void)
 							if (adcout_scale(PwmId) = 0)
 							{
 								adcout_scale(PwmId) = 1;
-								adcout_deb_out[PwmId] = 230;
+								adcout_deb_out(PwmId) = 230;
 							}
 							if ((dev->DeviceData.DeviceTypeID == PK_DeviceID_PoKeys57CNC) && (PwmId = 5)) 
 							{
