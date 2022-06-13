@@ -1979,14 +1979,21 @@ void user_mainloop(void)
 						adcout_deb_outv = 130;
 						dev->PWM.PWMperiod = 2500;
 						adcout_pwm_period = 2500;
+						doPwmConfig = true;
 					}
 				}
 				else {
 					adcout_deb_outv = 140;
+					if (dev->PWM.PWMperiod != 2500)
+					{
+						dev->PWM.PWMperiod = 2500;
+							adcout_pwm_period = 2500;
+							doPwmConfig = true;
+					}
 				}
 				//Pins_PinFunction(i)=dev->Pins[i].PinFunction;
 
-				for (i = 0; i < dev->info.iPWMCount; i++)
+				for (i = 0; i < 6; i++)
 				{
 					int PwmId = 5 - i;
 					if ((adcout_max_v(PwmId) > 0) && (adcout_high_limit(PwmId) > 0) && (adcout_high_limit(PwmId) > adcout_low_limit(PwmId)))
