@@ -402,7 +402,7 @@ addf scale.0 servo-thread
 setp scale.0.gain 0.002
 
 # direct mapping without PID
-net spindle-speed-scale spindle.0.speed-out => scale.0.in
+net spindle-vel-cmd-rpm spindle.0.speed-out => scale.0.in
 #if PID should be used
 #net spindle-speed-scale spindle-output => scale.0.in
 net spindle-speed-DAC scale.0.out => pokeys.0.adcout.0.value
