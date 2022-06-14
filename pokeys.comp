@@ -1989,6 +1989,10 @@ void user_mainloop(void)
 						dev->PWM.PWMperiod = 2500;
 							adcout_pwm_period = 2500;
 							doPwmConfig = true;
+							adcout_deb_outv = 141;
+					}
+					else {
+						adcout_deb_outv = 142;
 					}
 				}
 				//Pins_PinFunction(i)=dev->Pins[i].PinFunction;
@@ -1996,14 +2000,19 @@ void user_mainloop(void)
 				for (i = 0; i < 6; i++)
 				{
 					int PwmId = 5 - i;
+					adcout_deb_out(PwmId) = 100;
 					if ((adcout_max_v(PwmId) > 0) && (adcout_high_limit(PwmId) > 0) && (adcout_high_limit(PwmId) > adcout_low_limit(PwmId)))
 					{
+						adcout_deb_out(PwmId) = 110;
 						if (dev->PWM.PWMenabledChannels[PwmId] = 0)
 						{
+							adcout_deb_out(PwmId) = 111;
 							dev->PWM.PWMenabledChannels[PwmId] = 1;
 							doPwmConfig = true;
 						}
-
+						else {
+							adcout_deb_out(PwmId) = 112;
+						}
 						if (adcout_scale(PwmId) = 0)
 						{
 							adcout_deb_out(PwmId) = 200;
@@ -2025,7 +2034,9 @@ void user_mainloop(void)
 								adcout_deb_out(PwmId) = 220;
 							}
 						}
-
+						else {
+							adcout_deb_out(PwmId) = 201;
+						}
 						uint32_t setVal = 0;
 
 						if (adcout_enable(PwmId) == true)
@@ -2073,6 +2084,9 @@ void user_mainloop(void)
 						{
 							adcout_scale(PwmId) = 1;
 							adcout_deb_out(PwmId) = 230;
+						}
+						else {
+							adcout_deb_out(PwmId) = 231;
 						}
 						if ((dev->DeviceData.DeviceTypeID == PK_DeviceID_PoKeys57CNC) && (PwmId = 5))
 						{
