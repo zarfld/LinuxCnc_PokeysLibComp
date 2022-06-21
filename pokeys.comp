@@ -1964,141 +1964,145 @@ void user_mainloop(void)
 			if (dev->info.iPWMCount)
 			{
 				adcout_deb_outv = 100;
-				PK_PWMConfigurationGet(dev);
-
-				if (adcout_pwm_period = 0)
+				if (PK_PWMConfigurationGet(dev) == PK_OK)
 				{
-					adcout_deb_outv = 110;
-					if (dev->PWM.PWMperiod > 0) 
+					if (adcout_pwm_period = 0)
 					{
-						adcout_deb_outv = 120;
-						adcout_pwm_period = dev->PWM.PWMperiod;
-					}
-					else
-					{
-						adcout_deb_outv = 130;
-						dev->PWM.PWMperiod = 2500;
-						adcout_pwm_period = 2500;
-						doPwmConfig = true;
-					}
-				}
-				else {
-					adcout_deb_outv = 140;
-					if (dev->PWM.PWMperiod != 2500)
-					{
-						dev->PWM.PWMperiod = 2500;
-							adcout_pwm_period = 2500;
-							doPwmConfig = true;
-							adcout_deb_outv = 141;
-					}
-					else {
-						adcout_deb_outv = 142;
-					}
-				}
-				//Pins_PinFunction(i)=dev->Pins[i].PinFunction;
-
-				for (i = 0; i < 6; i++)
-				{
-					int PwmId = 5 - i;
-					adcout_deb_out(PwmId) = 100;
-					if ((adcout_max_v(PwmId) > 0) && (adcout_high_limit(PwmId) > 0) && (adcout_high_limit(PwmId) > adcout_low_limit(PwmId)))
-					{
-						adcout_deb_out(PwmId) = 110;
-						if (dev->PWM.PWMenabledChannels[PwmId] = 0)
+						adcout_deb_outv = 110;
+						if (dev->PWM.PWMperiod > 0)
 						{
-							adcout_deb_out(PwmId) = 111;
-							dev->PWM.PWMenabledChannels[PwmId] = 1;
-							doPwmConfig = true;
-						}
-						else {
-							adcout_deb_out(PwmId) = 112;
-						}
-						if (adcout_scale(PwmId) = 0)
-						{
-							adcout_deb_out(PwmId) = 200;
-							if (adcout_low_limit(PwmId) = 0)
-							{
-								adcout_offset(PwmId) = 0;
-								adcout_scale(PwmId) = adcout_high_limit(PwmId) / adcout_max_v(PwmId);
-								adcout_deb_out(PwmId) = 205;
-							}
-							else
-							{
-								adcout_offset(PwmId) = adcout_low_limit(PwmId);
-								adcout_scale(PwmId) = (adcout_high_limit(PwmId) - adcout_low_limit(PwmId)) / adcout_max_v(PwmId);
-								adcout_deb_out(PwmId) = 210;
-							}
-							if (adcout_scale(PwmId) = 0)
-							{
-								adcout_scale(PwmId) = 1;
-								adcout_deb_out(PwmId) = 220;
-							}
-						}
-						else {
-							adcout_deb_out(PwmId) = 201;
-						}
-						uint32_t setVal = 0;
-
-						if (adcout_enable(PwmId) == true)
-						{
-							int tmp = adcout_value(PwmId) + adcout_offset(PwmId);
-
-							if (tmp <= adcout_low_limit(PwmId))
-							{
-								tmp = adcout_low_limit(PwmId);
-							}
-							else if (tmp >= adcout_high_limit(PwmId))
-							{
-								tmp = adcout_high_limit(PwmId);
-							}
-
-							tmp = tmp * adcout_scale(PwmId);
-
-							setVal = (uint32_t)((tmp / adcout_max_v(PwmId)) * dev->PWM.PWMperiod);
-						}
-
-						if (*dev->PWM.PWMduty != setVal)
-						{
-							*dev->PWM.PWMduty = setVal;
-							AnalogIOSet = true;
-						}
-
-
-					}
-					else if ((adcout_max_v(PwmId) > 0) && (adcout_scale(PwmId) > 0))
-					{
-						if (adcout_offset(PwmId) = 0)
-						{
-							adcout_low_limit(PwmId) = 0;
-							adcout_high_limit(PwmId) = adcout_max_v(PwmId) * adcout_scale(PwmId);
+							adcout_deb_outv = 120;
+							adcout_pwm_period = dev->PWM.PWMperiod;
 						}
 						else
 						{
-							adcout_low_limit(PwmId) = adcout_offset(PwmId);
-							adcout_high_limit(PwmId) = adcout_offset(PwmId) + adcout_max_v(PwmId) * adcout_scale(PwmId);
+							adcout_deb_outv = 130;
+							dev->PWM.PWMperiod = 2500;
+							adcout_pwm_period = 2500;
+							doPwmConfig = true;
 						}
 					}
-					else if (adcout_enable(PwmId) == true)
-					{
-						if (adcout_scale(PwmId) = 0)
+					else {
+						adcout_deb_outv = 140;
+						if (dev->PWM.PWMperiod != 2500)
 						{
-							adcout_scale(PwmId) = 1;
-							adcout_deb_out(PwmId) = 230;
+							dev->PWM.PWMperiod = 2500;
+							adcout_pwm_period = 2500;
+							doPwmConfig = true;
+							adcout_deb_outv = 141;
 						}
 						else {
-							adcout_deb_out(PwmId) = 231;
-						}
-						if ((dev->DeviceData.DeviceTypeID == PK_DeviceID_PoKeys57CNC) && (PwmId = 5))
-						{
-							adcout_max_v(PwmId) = 10; // Pin17 0-10V
-						}
-						else if (adcout_max_v(PwmId) = 0)
-						{
-							adcout_max_v(PwmId) = 5; // usually pokeys57 provide 0..5V PWM
+							adcout_deb_outv = 142;
 						}
 					}
+					//Pins_PinFunction(i)=dev->Pins[i].PinFunction;
+
+					for (i = 0; i < 6; i++)
+					{
+						int PwmId = 5 - i;
+						adcout_deb_out(PwmId) = 100;
+						if ((adcout_max_v(PwmId) > 0) && (adcout_high_limit(PwmId) > 0) && (adcout_high_limit(PwmId) > adcout_low_limit(PwmId)))
+						{
+							adcout_deb_out(PwmId) = 110;
+							if (dev->PWM.PWMenabledChannels[PwmId] = 0)
+							{
+								adcout_deb_out(PwmId) = 111;
+								dev->PWM.PWMenabledChannels[PwmId] = 1;
+								doPwmConfig = true;
+							}
+							else {
+								adcout_deb_out(PwmId) = 112;
+							}
+							if (adcout_scale(PwmId) = 0)
+							{
+								adcout_deb_out(PwmId) = 200;
+								if (adcout_low_limit(PwmId) = 0)
+								{
+									adcout_offset(PwmId) = 0;
+									adcout_scale(PwmId) = adcout_high_limit(PwmId) / adcout_max_v(PwmId);
+									adcout_deb_out(PwmId) = 205;
+								}
+								else
+								{
+									adcout_offset(PwmId) = adcout_low_limit(PwmId);
+									adcout_scale(PwmId) = (adcout_high_limit(PwmId) - adcout_low_limit(PwmId)) / adcout_max_v(PwmId);
+									adcout_deb_out(PwmId) = 210;
+								}
+								if (adcout_scale(PwmId) = 0)
+								{
+									adcout_scale(PwmId) = 1;
+									adcout_deb_out(PwmId) = 220;
+								}
+							}
+							else {
+								adcout_deb_out(PwmId) = 201;
+							}
+							uint32_t setVal = 0;
+
+							if (adcout_enable(PwmId) == true)
+							{
+								int tmp = adcout_value(PwmId) + adcout_offset(PwmId);
+
+								if (tmp <= adcout_low_limit(PwmId))
+								{
+									tmp = adcout_low_limit(PwmId);
+								}
+								else if (tmp >= adcout_high_limit(PwmId))
+								{
+									tmp = adcout_high_limit(PwmId);
+								}
+
+								tmp = tmp * adcout_scale(PwmId);
+
+								setVal = (uint32_t)((tmp / adcout_max_v(PwmId)) * dev->PWM.PWMperiod);
+							}
+
+							if (*dev->PWM.PWMduty != setVal)
+							{
+								*dev->PWM.PWMduty = setVal;
+								AnalogIOSet = true;
+							}
+
+
+						}
+						else if ((adcout_max_v(PwmId) > 0) && (adcout_scale(PwmId) > 0))
+						{
+							if (adcout_offset(PwmId) = 0)
+							{
+								adcout_low_limit(PwmId) = 0;
+								adcout_high_limit(PwmId) = adcout_max_v(PwmId) * adcout_scale(PwmId);
+							}
+							else
+							{
+								adcout_low_limit(PwmId) = adcout_offset(PwmId);
+								adcout_high_limit(PwmId) = adcout_offset(PwmId) + adcout_max_v(PwmId) * adcout_scale(PwmId);
+							}
+						}
+						else if (adcout_enable(PwmId) == true)
+						{
+							if (adcout_scale(PwmId) = 0)
+							{
+								adcout_scale(PwmId) = 1;
+								adcout_deb_out(PwmId) = 230;
+							}
+							else {
+								adcout_deb_out(PwmId) = 231;
+							}
+							if ((dev->DeviceData.DeviceTypeID == PK_DeviceID_PoKeys57CNC) && (PwmId = 5))
+							{
+								adcout_max_v(PwmId) = 10; // Pin17 0-10V
+							}
+							else if (adcout_max_v(PwmId) = 0)
+							{
+								adcout_max_v(PwmId) = 5; // usually pokeys57 provide 0..5V PWM
+							}
+						}
+
+					}
+
 
 				}
+
 
 			}
 			else 
@@ -2252,15 +2256,21 @@ void user_mainloop(void)
 						doPwmConfig = true;
 					}
 
-				if (doPwmConfig)
+				if (doPwmConfig = true)
 				{
 			
-					PK_PWMConfigurationSet(dev);
+					if (PK_PWMConfigurationSet(dev) != PK_OK)
+					{
+						usleep(sleepdur);
+					}
 				}
 
-				if (AnalogIOSet)
+				if (AnalogIOSet = true)
 				{
-					PK_PWMUpdate(dev);
+					if (PK_PWMUpdate(dev) != PK_OK)
+					{
+					usleep(sleepdur);
+					}
 				}
 
 				deb_out = 236;
