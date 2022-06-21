@@ -1992,6 +1992,9 @@ void user_mainloop(void)
 							adcout_deb_outv = 141;
 						}
 						else {
+							dev->PWM.PWMperiod = 2500;
+							adcout_pwm_period = 2500;
+							doPwmConfig = true;
 							adcout_deb_outv = 142;
 						}
 					}
