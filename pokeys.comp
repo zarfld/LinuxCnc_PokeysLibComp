@@ -357,10 +357,10 @@ param rw float encoder.#.scale[29]  "The scale factor used to convert counts to 
 pin in float adcout.#.value[6];
 pin in bit adcout.#.enable[6];
 param rw float adcout.#.offset[6]  "This will be added to the value before the hardware is updated";
-param rw float adcout.#.scale[6]  "This should be set so that an input of 1 on the value pin will cause 1V";
+param ro float adcout.#.scale[6]  "This should be set so that an input of 1 on the value pin will cause 1V";
 param rw float adcout.#.high_limit[6]  "When calculating the value to output to the hardware, if value +offset is greater than high_limit, then high_limit will be used instead.";
 param rw float adcout.#.low_limit[6]  "When calculating the value to output to the hardware, if value +offset is less than low_limit, then low_limit will be used instead";
-param rw float adcout.#.max_v[6] "max v";
+param ro float adcout.#.max_v[6] "max v";
 
 param rw float adcout.pwm.period  "PWM period, shared among all channels";
 //pin out unsigned Pins.#.MappingType [55];
