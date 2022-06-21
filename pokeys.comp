@@ -1966,7 +1966,7 @@ void user_mainloop(void)
 				adcout_deb_outv = 100;
 				if (PK_PWMConfigurationGet(dev) == PK_OK)
 				{
-					if (adcout_pwm_period = 0)
+					if (adcout_pwm_period <= 0)
 					{
 						adcout_deb_outv = 110;
 						if (dev->PWM.PWMperiod > 0)
@@ -2246,6 +2246,7 @@ void user_mainloop(void)
 
 					if (adcout_pwm_period = 0)
 					{
+						adcout_deb_outv = 200;
 						adcout_pwm_period = 2500;
 						dev->PWM.PWMperiod = 2500; // 10 kHz
 						doPwmConfig = true;
@@ -2253,6 +2254,7 @@ void user_mainloop(void)
 					else if (dev->PWM.PWMperiod != adcout_pwm_period)
 					{
 						dev->PWM.PWMperiod = adcout_pwm_period;
+						adcout_deb_outv = 210;
 						doPwmConfig = true;
 					}
 
