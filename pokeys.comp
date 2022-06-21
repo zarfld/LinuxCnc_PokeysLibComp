@@ -2019,7 +2019,14 @@ void user_mainloop(void)
 							if (adcout_scale(PwmId) = 0.000)
 							{
 								adcout_deb_out(PwmId) = 200;
-								if (adcout_low_limit(PwmId) = 0.000)
+								if ((adcout_high_limit(PwmId) = 0.000) && (adcout_low_limit(PwmId) = 0.000))
+								{
+									adcout_deb_out(PwmId) = 2050;
+									adcout_scale(PwmId) = 1;
+									adcout_high_limit(PwmId) = 10.000;
+									adcout_low_limit(PwmId) = 0.000;
+								}
+								else if (adcout_low_limit(PwmId) = 0.000)
 								{
 									adcout_offset(PwmId) = 0;
 									adcout_scale(PwmId) = adcout_high_limit(PwmId) / adcout_max_v(PwmId);
