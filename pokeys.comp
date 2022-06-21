@@ -2013,10 +2013,10 @@ void user_mainloop(void)
 							else {
 								adcout_deb_out(PwmId) = 112;
 							}
-							if (adcout_scale(PwmId) = 0)
+							if (adcout_scale(PwmId) = 0.000)
 							{
 								adcout_deb_out(PwmId) = 200;
-								if (adcout_low_limit(PwmId) = 0)
+								if (adcout_low_limit(PwmId) = 0.000)
 								{
 									adcout_offset(PwmId) = 0;
 									adcout_scale(PwmId) = adcout_high_limit(PwmId) / adcout_max_v(PwmId);
@@ -2028,7 +2028,7 @@ void user_mainloop(void)
 									adcout_scale(PwmId) = (adcout_high_limit(PwmId) - adcout_low_limit(PwmId)) / adcout_max_v(PwmId);
 									adcout_deb_out(PwmId) = 210;
 								}
-								if (adcout_scale(PwmId) = 0)
+								if (adcout_scale(PwmId) = 0.000)
 								{
 									adcout_scale(PwmId) = 1;
 									adcout_deb_out(PwmId) = 220;
@@ -2037,9 +2037,9 @@ void user_mainloop(void)
 							else {
 								adcout_deb_out(PwmId) = 201;
 
-								if (adcout_scale(PwmId) > 0) {
+								if (adcout_scale(PwmId) > 0.000) {
 									adcout_deb_out(PwmId) = 202;
-								}else if (adcout_scale(PwmId) < 0) {
+								}else if (adcout_scale(PwmId) < 0.000) {
 									adcout_deb_out(PwmId) = 203;
 								}
 							}
