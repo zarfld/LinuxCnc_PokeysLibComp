@@ -2036,6 +2036,12 @@ void user_mainloop(void)
 							}
 							else {
 								adcout_deb_out(PwmId) = 201;
+
+								if (adcout_scale(PwmId) > 0) {
+									adcout_deb_out(PwmId) = 202;
+								}else if (adcout_scale(PwmId) < 0) {
+									adcout_deb_out(PwmId) = 203;
+								}
 							}
 							uint32_t setVal = 0;
 
