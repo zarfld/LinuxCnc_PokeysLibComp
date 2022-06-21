@@ -357,10 +357,10 @@ param rw float encoder.#.scale[29]  "The scale factor used to convert counts to 
 pin in float adcout.#.value[6];
 pin in bit adcout.#.enable[6];
 param rw float adcout.#.offset[6]  "This will be added to the value before the hardware is updated";
-param r float adcout.#.scale[6]  "This should be set so that an input of 1 on the value pin will cause 1V";
+param w float adcout.#.scale[6]  "This should be set so that an input of 1 on the value pin will cause 1V";
 param rw float adcout.#.high_limit[6]  "When calculating the value to output to the hardware, if value +offset is greater than high_limit, then high_limit will be used instead.";
 param rw float adcout.#.low_limit[6]  "When calculating the value to output to the hardware, if value +offset is less than low_limit, then low_limit will be used instead";
-param r float adcout.#.max_v[6] "max v";
+param rw float adcout.#.max_v[6] "max v";
 
 param rw float adcout.pwm.period  "PWM period, shared among all channels";
 //pin out unsigned Pins.#.MappingType [55];
@@ -2001,7 +2001,7 @@ void user_mainloop(void)
 					{
 						int PwmId = 5 - i;
 						adcout_deb_out(PwmId) = 100;
-						if ((adcout_max_v(PwmId) > 0) && (adcout_high_limit(PwmId) > 0) && (adcout_high_limit(PwmId) > adcout_low_limit(PwmId)))
+						if ((adcout_max_v(PwmId) > 0.000) && (adcout_high_limit(PwmId) > 0.000) && (adcout_high_limit(PwmId) > adcout_low_limit(PwmId)))
 						{
 							adcout_deb_out(PwmId) = 110;
 							if (dev->PWM.PWMenabledChannels[PwmId] = 0)
@@ -2071,7 +2071,7 @@ void user_mainloop(void)
 
 
 						}
-						else if ((adcout_max_v(PwmId) > 0) && (adcout_scale(PwmId) > 0))
+						else if ((adcout_max_v(PwmId) > 0.000) && (adcout_scale(PwmId) > 0.000))
 						{
 							if (adcout_offset(PwmId) = 0)
 							{
@@ -2086,9 +2086,9 @@ void user_mainloop(void)
 						}
 						else if (adcout_enable(PwmId) == true)
 						{
-							if (adcout_scale(PwmId) = 0)
+							if (adcout_scale(PwmId) = 0.000)
 							{
-								adcout_scale(PwmId) = 1;
+								adcout_scale(PwmId) = 1.0;
 								adcout_deb_out(PwmId) = 230;
 							}
 							else {
@@ -2096,11 +2096,11 @@ void user_mainloop(void)
 							}
 							if ((dev->DeviceData.DeviceTypeID == PK_DeviceID_PoKeys57CNC) && (PwmId = 5))
 							{
-								adcout_max_v(PwmId) = 10; // Pin17 0-10V
+								adcout_max_v(PwmId) = 10.000; // Pin17 0-10V
 							}
-							else if (adcout_max_v(PwmId) = 0)
+							else
 							{
-								adcout_max_v(PwmId) = 5; // usually pokeys57 provide 0..5V PWM
+								adcout_max_v(PwmId) = 5.000; // usually pokeys57 provide 0..5V PWM
 							}
 						}
 
