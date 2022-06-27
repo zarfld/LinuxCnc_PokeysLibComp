@@ -2044,7 +2044,7 @@ void user_mainloop(void)
 									PWM_SCale[i] = high_limit[PwmId] / max_v[PwmId];
 									adcout_deb_out(PwmId) = 205;
 								}
-								else
+								else if( (high_limit[PwmId] != 0.000) && (max_v[PwmId] != 0.000))
 								{
 									adcout_offset(PwmId) = low_limit[PwmId];
 									PWM_SCale[i] = (high_limit[PwmId] - low_limit[PwmId]) / max_v[PwmId];
