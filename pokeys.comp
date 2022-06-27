@@ -361,6 +361,7 @@ param rw float adcout.#.scale[6]  "This should be set so that an input of 1 on t
 param rw float adcout.#.high_limit[6]  "When calculating the value to output to the hardware, if value +offset is greater than high_limit, then high_limit will be used instead.";
 param rw float adcout.#.low_limit[6]  "When calculating the value to output to the hardware, if value +offset is less than low_limit, then low_limit will be used instead";
 param rw float adcout.#.max_v[6] "max v";
+param r unsigned adcout.#.PinId[6] "max v";
 
 param rw float adcout.pwm.period  "PWM period, shared among all channels";
 //pin out unsigned Pins.#.MappingType [55];
@@ -2018,9 +2019,10 @@ void user_mainloop(void)
 						int PwmId = 5 - i;
 						adcout_deb_out(PwmId) = 100;
 
-						PWMduty[i]= dev->PWM.PWMenabledChannels[i];                         // PWM duty cycles (range between 0 and PWM period)
-						PWMenabledChannels[i]=;              // List of enabled PWM channels
-						PWMpinIDs[i]=;
+						PWMduty[i]= dev->PWM.PWMduty[i];                         // PWM duty cycles (range between 0 and PWM period)
+						PWMenabledChannels[i]= dev->PWM.PWMenabledChannels[i];              // List of enabled PWM channels
+						PWMpinIDs[i]= dev->PWM.PWMpinIDs[i];
+						adcout_PinId(PwmId) = PWMpinIDs[i];
 
 						if ((adcout_max_v(PwmId) > 0.000) && (adcout_high_limit(PwmId) > 0.000) && (adcout_high_limit(PwmId) > adcout_low_limit(PwmId)))
 						{
