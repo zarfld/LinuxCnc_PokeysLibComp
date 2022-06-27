@@ -1964,8 +1964,17 @@ void user_mainloop(void)
 			if (dev->info.iPWMCount)
 			{
 				adcout_deb_outv = 100;
+				uint32_t  PWMperiod;                       // PWM period, shared among all channels
+
+				uint32_t PWMduty[6];                         // PWM duty cycles (range between 0 and PWM period)
+				uint8_t PWMenabledChannels[6];              // List of enabled PWM channels
+				uint8_t PWMpinIDs[6];
+
 				if (PK_PWMConfigurationGet(dev) == PK_OK)
 				{
+					PWMperiod = dev->PWM.PWMperiod;
+
+
 					if (adcout_pwm_period <= 0)
 					{
 						adcout_deb_outv = 110;
@@ -1979,6 +1988,7 @@ void user_mainloop(void)
 							adcout_deb_outv = 130;
 							dev->PWM.PWMperiod = 2500;
 							adcout_pwm_period = 2500;
+							PK_SL_PWM_SetPeriod(dev, 2500);
 							doPwmConfig = true;
 						}
 					}
@@ -2002,15 +2012,23 @@ void user_mainloop(void)
 
 					for (i = 0; i < 6; i++)
 					{
+						
+						
+						
 						int PwmId = 5 - i;
 						adcout_deb_out(PwmId) = 100;
+
+						PWMduty[i]= dev->PWM.PWMenabledChannels[i];                         // PWM duty cycles (range between 0 and PWM period)
+						PWMenabledChannels[i]=;              // List of enabled PWM channels
+						PWMpinIDs[i]=;
+
 						if ((adcout_max_v(PwmId) > 0.000) && (adcout_high_limit(PwmId) > 0.000) && (adcout_high_limit(PwmId) > adcout_low_limit(PwmId)))
 						{
 							adcout_deb_out(PwmId) = 110;
-							if (dev->PWM.PWMenabledChannels[PwmId] = 0)
+							if (dev->PWM.PWMenabledChannels[i] = 0)
 							{
 								adcout_deb_out(PwmId) = 111;
-								dev->PWM.PWMenabledChannels[PwmId] = 1;
+								dev->PWM.PWMenabledChannels[i] = 1;
 								doPwmConfig = true;
 							}
 							else {
@@ -2023,7 +2041,7 @@ void user_mainloop(void)
 								{
 									adcout_deb_out(PwmId) = 2050;
 									adcout_scale(PwmId) = 1;
-									adcout_high_limit(PwmId) = 10.000;
+									adcout_high_limit(PwmId) = adcout_max_v(PwmId);
 									adcout_low_limit(PwmId) = 0.000;
 								}
 								else if (adcout_low_limit(PwmId) = 0.000)
@@ -2271,6 +2289,12 @@ void user_mainloop(void)
 					{
 						dev->PWM.PWMperiod = adcout_pwm_period;
 						adcout_deb_outv = 210;
+						doPwmConfig = true;
+					}
+					else {
+						adcout_deb_outv = 211;
+						adcout_pwm_period = 2500;
+						dev->PWM.PWMperiod = 2500; // 10 kHz
 						doPwmConfig = true;
 					}
 
