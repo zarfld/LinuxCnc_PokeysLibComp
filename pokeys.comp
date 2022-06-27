@@ -23,6 +23,7 @@ pin out float PEv2.#.deb.RefPos[8];
 pin out float PEv2.#.deb.RefPosSpeed[8];
 
 pin out unsigned adcout.#.deb.out[6];
+pin out unsigned adcout.#.deb.setval[6];
 pin out unsigned adcout.deb.outv;
 
 pin out bit err;
@@ -363,7 +364,7 @@ param rw float adcout.#.low_limit[6]  "When calculating the value to output to t
 param rw float adcout.#.max_v[6] "max v";
 param r unsigned adcout.#.PinId[6] "max v";
 
-param rw float adcout.pwm.period  "PWM period, shared among all channels";
+param rw unsigned adcout.pwm.period  "PWM period, shared among all channels";
 //pin out unsigned Pins.#.MappingType [55];
 //pin out unsigned Pins.#.KeyCodeMacroID [55];
 //pin out unsigned Pins.#.KeyModifier [55];
@@ -1970,6 +1971,7 @@ void user_mainloop(void)
 				uint32_t PWMduty[6];                         // PWM duty cycles (range between 0 and PWM period)
 				uint8_t PWMenabledChannels[6];              // List of enabled PWM channels
 				uint8_t PWMpinIDs[6];
+				float PWM_SCale[6];
 
 				if (PK_PWMConfigurationGet(dev) == PK_OK)
 				{
@@ -1979,14 +1981,15 @@ void user_mainloop(void)
 					if (adcout_pwm_period <= 0)
 					{
 						adcout_deb_outv = 110;
-						if (dev->PWM.PWMperiod > 0)
+						if (PWMperiod > 0)
 						{
 							adcout_deb_outv = 120;
-							adcout_pwm_period = dev->PWM.PWMperiod;
+							adcout_pwm_period = PWMperiod;
 						}
 						else
 						{
 							adcout_deb_outv = 130;
+							PWMperiod = 2500;
 							dev->PWM.PWMperiod = 2500;
 							adcout_pwm_period = 2500;
 							PK_SL_PWM_SetPeriod(dev, 2500);
@@ -2023,6 +2026,8 @@ void user_mainloop(void)
 						PWMenabledChannels[i]= dev->PWM.PWMenabledChannels[i];              // List of enabled PWM channels
 						PWMpinIDs[i]= dev->PWM.PWMpinIDs[i];
 						adcout_PinId(PwmId) = PWMpinIDs[i];
+						PWM_SCale[i] = adcout_scale(PwmId);
+
 
 						if ((adcout_max_v(PwmId) > 0.000) && (adcout_high_limit(PwmId) > 0.000) && (adcout_high_limit(PwmId) > adcout_low_limit(PwmId)))
 						{
@@ -2036,40 +2041,40 @@ void user_mainloop(void)
 							else {
 								adcout_deb_out(PwmId) = 112;
 							}
-							if (adcout_scale(PwmId) = 0.000)
+							if (PWM_SCale[i] = 0.000)
 							{
 								adcout_deb_out(PwmId) = 200;
 								if ((adcout_high_limit(PwmId) = 0.000) && (adcout_low_limit(PwmId) = 0.000))
 								{
 									adcout_deb_out(PwmId) = 2050;
-									adcout_scale(PwmId) = 1;
+									PWM_SCale[i] = 1;
 									adcout_high_limit(PwmId) = adcout_max_v(PwmId);
 									adcout_low_limit(PwmId) = 0.000;
 								}
 								else if (adcout_low_limit(PwmId) = 0.000)
 								{
 									adcout_offset(PwmId) = 0;
-									adcout_scale(PwmId) = adcout_high_limit(PwmId) / adcout_max_v(PwmId);
+									PWM_SCale[i] = adcout_high_limit(PwmId) / adcout_max_v(PwmId);
 									adcout_deb_out(PwmId) = 205;
 								}
 								else
 								{
 									adcout_offset(PwmId) = adcout_low_limit(PwmId);
-									adcout_scale(PwmId) = (adcout_high_limit(PwmId) - adcout_low_limit(PwmId)) / adcout_max_v(PwmId);
+									PWM_SCale[i] = (adcout_high_limit(PwmId) - adcout_low_limit(PwmId)) / adcout_max_v(PwmId);
 									adcout_deb_out(PwmId) = 210;
 								}
-								if (adcout_scale(PwmId) = 0.000)
+								if (PWM_SCale[i] = 0.000)
 								{
-									adcout_scale(PwmId) = 1;
+									PWM_SCale[i] = 1;
 									adcout_deb_out(PwmId) = 220;
 								}
 							}
 							else {
 								adcout_deb_out(PwmId) = 201;
 
-								if (adcout_scale(PwmId) > 0.000) {
+								if (PWM_SCale[i] > 0.000) {
 									adcout_deb_out(PwmId) = 202;
-								}else if (adcout_scale(PwmId) < 0.000) {
+								}else if (PWM_SCale[i] < 0.000) {
 									adcout_deb_out(PwmId) = 203;
 								}
 							}
@@ -2088,7 +2093,7 @@ void user_mainloop(void)
 									tmp = adcout_high_limit(PwmId);
 								}
 
-								tmp = tmp * adcout_scale(PwmId);
+								tmp = tmp * PWM_SCale[i];
 
 								setVal = (uint32_t)((tmp / adcout_max_v(PwmId)) * dev->PWM.PWMperiod);
 							}
@@ -2099,26 +2104,27 @@ void user_mainloop(void)
 								AnalogIOSet = true;
 							}
 
-
+							adcout_deb_setval(PwmId) = setVal;
+							
 						}
-						else if ((adcout_max_v(PwmId) > 0.000) && (adcout_scale(PwmId) > 0.000))
+						else if ((adcout_max_v(PwmId) > 0.000) && (PWM_SCale[i] > 0.000))
 						{
 							if (adcout_offset(PwmId) = 0)
 							{
 								adcout_low_limit(PwmId) = 0;
-								adcout_high_limit(PwmId) = adcout_max_v(PwmId) * adcout_scale(PwmId);
+								adcout_high_limit(PwmId) = adcout_max_v(PwmId) * PWM_SCale[i];
 							}
 							else
 							{
 								adcout_low_limit(PwmId) = adcout_offset(PwmId);
-								adcout_high_limit(PwmId) = adcout_offset(PwmId) + adcout_max_v(PwmId) * adcout_scale(PwmId);
+								adcout_high_limit(PwmId) = adcout_offset(PwmId) + adcout_max_v(PwmId) * PWM_SCale[i];
 							}
 						}
 						else if (adcout_enable(PwmId) == true)
 						{
-							if (adcout_scale(PwmId) = 0.000)
+							if (PWM_SCale[i] = 0.000)
 							{
-								adcout_scale(PwmId) = 1.0;
+								PWM_SCale[i] = 1.0;
 								adcout_deb_out(PwmId) = 230;
 							}
 							else {
@@ -2134,6 +2140,10 @@ void user_mainloop(void)
 							}
 						}
 
+						if (adcout_scale(PwmId) != PWM_SCale[i])
+						{
+							adcout_scale(PwmId) = PWM_SCale[i];
+						}
 					}
 
 
