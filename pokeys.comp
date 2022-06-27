@@ -1983,7 +1983,7 @@ void user_mainloop(void)
 					{
 						PWMperiod = 2500;
 					}
-
+					PWMperiod = 2500;
 					if (dev->PWM.PWMperiod!=  PWMperiod)
 					{
 						dev->PWM.PWMperiod= PWMperiod;
@@ -2010,7 +2010,7 @@ void user_mainloop(void)
 						PWMenabledChannels[i]= dev->PWM.PWMenabledChannels[i];              // List of enabled PWM channels
 						PWMpinIDs[i]= dev->PWM.PWMpinIDs[i];
 						adcout_PinId(PwmId) = PWMpinIDs[i];
-						PWM_SCale[i] = adcout_scale(PwmId);
+						PWM_SCale[i] = 1;
 
 						max_v[PwmId] = adcout_max_v(PwmId);
 						high_limit[PwmId] = adcout_high_limit(PwmId);
