@@ -1972,11 +1972,18 @@ void user_mainloop(void)
 				uint8_t PWMenabledChannels[6];              // List of enabled PWM channels
 				uint8_t PWMpinIDs[6];
 				float PWM_SCale[6];
-
+				float max_v[6];
+				float high_limit[6];
+				float low_limit[6];
 				if (PK_PWMConfigurationGet(dev) == PK_OK)
 				{
-					PWMperiod = 2500;
-						
+					PWMperiod = adcout_pwm_period;
+					
+					if (PWMperiod=0)
+					{
+						PWMperiod = 2500;
+					}
+
 					if (dev->PWM.PWMperiod!=  PWMperiod)
 					{
 						dev->PWM.PWMperiod= PWMperiod;
@@ -2005,8 +2012,11 @@ void user_mainloop(void)
 						adcout_PinId(PwmId) = PWMpinIDs[i];
 						PWM_SCale[i] = adcout_scale(PwmId);
 
+						max_v[PwmId] = adcout_max_v(PwmId);
+						high_limit[PwmId] = adcout_high_limit(PwmId);
+						low_limit[PwmId] = adcout_low_limit(PwmId);
 
-						if ((adcout_max_v(PwmId) > 0.000) && (adcout_high_limit(PwmId) > 0.000) && (adcout_high_limit(PwmId) > adcout_low_limit(PwmId)))
+						if ((max_v[PwmId] > 0.000) && (high_limit[PwmId] > 0.000) && (high_limit[PwmId] > low_limit[PwmId]))
 						{
 							adcout_deb_out(PwmId) = 110;
 							if (dev->PWM.PWMenabledChannels[i] = 0)
@@ -2021,23 +2031,23 @@ void user_mainloop(void)
 							if (PWM_SCale[i] = 0.000)
 							{
 								adcout_deb_out(PwmId) = 200;
-								if ((adcout_high_limit(PwmId) = 0.000) && (adcout_low_limit(PwmId) = 0.000))
+								if ((high_limit[PwmId] = 0.000) && (low_limit[PwmId] = 0.000))
 								{
 									adcout_deb_out(PwmId) = 2050;
 									PWM_SCale[i] = 1;
-									adcout_high_limit(PwmId) = adcout_max_v(PwmId);
-									adcout_low_limit(PwmId) = 0.000;
+									high_limit[PwmId] = max_v[PwmId];
+									low_limit[PwmId] = 0.000;
 								}
-								else if (adcout_low_limit(PwmId) = 0.000)
+								else if (low_limit[PwmId] = 0.000)
 								{
 									adcout_offset(PwmId) = 0;
-									PWM_SCale[i] = adcout_high_limit(PwmId) / adcout_max_v(PwmId);
+									PWM_SCale[i] = high_limit[PwmId] / max_v[PwmId];
 									adcout_deb_out(PwmId) = 205;
 								}
 								else
 								{
-									adcout_offset(PwmId) = adcout_low_limit(PwmId);
-									PWM_SCale[i] = (adcout_high_limit(PwmId) - adcout_low_limit(PwmId)) / adcout_max_v(PwmId);
+									adcout_offset(PwmId) = low_limit[PwmId];
+									PWM_SCale[i] = (high_limit[PwmId] - low_limit[PwmId]) / max_v[PwmId];
 									adcout_deb_out(PwmId) = 210;
 								}
 								if (PWM_SCale[i] = 0.000)
@@ -2061,18 +2071,18 @@ void user_mainloop(void)
 							{
 								int tmp = adcout_value(PwmId) + adcout_offset(PwmId);
 
-								if (tmp <= adcout_low_limit(PwmId))
+								if (tmp <= low_limit[PwmId])
 								{
-									tmp = adcout_low_limit(PwmId);
+									tmp = low_limit[PwmId];
 								}
-								else if (tmp >= adcout_high_limit(PwmId))
+								else if (tmp >= high_limit[PwmId])
 								{
-									tmp = adcout_high_limit(PwmId);
+									tmp = high_limit[PwmId];
 								}
 
 								tmp = tmp * PWM_SCale[i];
 
-								setVal = (uint32_t)((tmp / adcout_max_v(PwmId)) * dev->PWM.PWMperiod);
+								setVal = (uint32_t)((tmp / max_v[PwmId]) * dev->PWM.PWMperiod);
 							}
 
 							if (*dev->PWM.PWMduty != setVal)
@@ -2084,17 +2094,17 @@ void user_mainloop(void)
 							adcout_deb_setval(PwmId) = setVal;
 							
 						}
-						else if ((adcout_max_v(PwmId) > 0.000) && (PWM_SCale[i] > 0.000))
+						else if ((max_v[PwmId] > 0.000) && (PWM_SCale[i] > 0.000))
 						{
 							if (adcout_offset(PwmId) = 0)
 							{
-								adcout_low_limit(PwmId) = 0;
-								adcout_high_limit(PwmId) = adcout_max_v(PwmId) * PWM_SCale[i];
+								low_limit[PwmId] = 0;
+								high_limit[PwmId] = max_v[PwmId] * PWM_SCale[i];
 							}
 							else
 							{
-								adcout_low_limit(PwmId) = adcout_offset(PwmId);
-								adcout_high_limit(PwmId) = adcout_offset(PwmId) + adcout_max_v(PwmId) * PWM_SCale[i];
+								low_limit[PwmId] = adcout_offset(PwmId);
+								high_limit[PwmId] = adcout_offset(PwmId) + max_v[PwmId] * PWM_SCale[i];
 							}
 						}
 						else if (adcout_enable(PwmId) == true)
@@ -2109,11 +2119,11 @@ void user_mainloop(void)
 							}
 							if ((dev->DeviceData.DeviceTypeID == PK_DeviceID_PoKeys57CNC) && (PwmId = 5))
 							{
-								adcout_max_v(PwmId) = 10.000; // Pin17 0-10V
+								max_v[PwmId] = 10.000; // Pin17 0-10V
 							}
 							else
 							{
-								adcout_max_v(PwmId) = 5.000; // usually pokeys57 provide 0..5V PWM
+								max_v[PwmId] = 5.000; // usually pokeys57 provide 0..5V PWM
 							}
 						}
 
@@ -2121,6 +2131,22 @@ void user_mainloop(void)
 						{
 							adcout_scale(PwmId) = PWM_SCale[i];
 						}
+
+						if (adcout_max_v(PwmId) != max_v[PwmId])
+						{
+							adcout_max_v(PwmId) = max_v[PwmId];
+						}
+
+						if (adcout_high_limit(PwmId) != high_limit[PwmId])
+						{
+							adcout_high_limit(PwmId) = high_limit[PwmId];
+						}
+
+						if (adcout_low_limit(PwmId) != low_limit[PwmId])
+						{
+							adcout_low_limit(PwmId) = low_limit[PwmId];
+						}
+
 					}
 
 
