@@ -1975,43 +1975,20 @@ void user_mainloop(void)
 
 				if (PK_PWMConfigurationGet(dev) == PK_OK)
 				{
-					PWMperiod = dev->PWM.PWMperiod;
-
-
-					if (adcout_pwm_period <= 0)
+					PWMperiod = 2500;
+						
+					if (dev->PWM.PWMperiod!=  PWMperiod)
 					{
-						adcout_deb_outv = 110;
-						if (PWMperiod > 0)
-						{
-							adcout_deb_outv = 120;
-							adcout_pwm_period = PWMperiod;
-						}
-						else
-						{
-							adcout_deb_outv = 130;
-							PWMperiod = 2500;
-							dev->PWM.PWMperiod = 2500;
-							adcout_pwm_period = 2500;
-							PK_SL_PWM_SetPeriod(dev, 2500);
-							doPwmConfig = true;
-						}
+						dev->PWM.PWMperiod= PWMperiod;
+						doPwmConfig = true;
 					}
-					else {
-						adcout_deb_outv = 140;
-						if (dev->PWM.PWMperiod != 2500)
-						{
-							dev->PWM.PWMperiod = 2500;
-							adcout_pwm_period = 2500;
-							doPwmConfig = true;
-							adcout_deb_outv = 141;
-						}
-						else {
-							dev->PWM.PWMperiod = 2500;
-							adcout_pwm_period = 2500;
-							doPwmConfig = true;
-							adcout_deb_outv = 142;
-						}
+
+					if (adcout_pwm_period != PWMperiod)
+					{
+						adcout_pwm_period = PWMperiod;
 					}
+
+
 					//Pins_PinFunction(i)=dev->Pins[i].PinFunction;
 
 					for (i = 0; i < 6; i++)
@@ -2290,25 +2267,7 @@ void user_mainloop(void)
 						}
 					}
 
-					if (adcout_pwm_period = 0)
-					{
-						adcout_deb_outv = 200;
-						adcout_pwm_period = 2500;
-						dev->PWM.PWMperiod = 2500; // 10 kHz
-						doPwmConfig = true;
-					}
-					else if (dev->PWM.PWMperiod != adcout_pwm_period)
-					{
-						dev->PWM.PWMperiod = adcout_pwm_period;
-						adcout_deb_outv = 210;
-						doPwmConfig = true;
-					}
-					else {
-						adcout_deb_outv = 211;
-						adcout_pwm_period = 2500;
-						dev->PWM.PWMperiod = 2500; // 10 kHz
-						doPwmConfig = true;
-					}
+
 
 				if (doPwmConfig = true)
 				{
