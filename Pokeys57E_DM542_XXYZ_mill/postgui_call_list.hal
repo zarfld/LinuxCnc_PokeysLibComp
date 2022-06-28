@@ -2,78 +2,78 @@
 
 source custom_postgui.hal
 setp pokeys.0.devSerial [POKEYS]DEVICE_ID
-setp pokeys.0.PEv2.ProbeInput [POKEYS]PEv2_ProbeInput 	
-setp pokeys.0.PEv2.ProbeInputPolarity [POKEYS]PEv2_ProbeInputPolarity
-setp pokeys.0.PEv2.EmergencyInputPin [POKEYS]PEv2_EmergencyInputPin
-setp pokeys.0.PEv2.EmergencyOutputPin [POKEYS]PEv2_EmergencyOutputPin
+setp pokeys.0.PEv2.digin.Probe.Pin [POKEYS]PEv2_ProbeInput 	
+setp pokeys.0.PEv2.digin.Probe.invert [POKEYS]PEv2_ProbeInputPolarity
+setp pokeys.0.PEv2.digin.Emergency.Pin [POKEYS]PEv2_EmergencyInputPin
+setp pokeys.0.PEv2.digout.Emergency.Pin [POKEYS]PEv2_EmergencyOutputPin
 
 setp pokeys.0.PEv2.PulseGeneratorType [POKEYS]PEv2_PulseGeneratorType
 #setp pokeys.0.PEv2.PG_swap_stepdir [POKEYS]PEv2_PG_swap_stepdir
 #setp pokeys.0.PEv2.PG_extended_io [POKEYS]PEv2_PG_extended_io
 
 setp pokeys.0.PEv2.0.AxesSwitchConfig  [POKEYS]PEv2_AxesSwitchConfig_0
-setp pokeys.0.PEv2.0.FilterLimitMSwitch  [POKEYS]PEv2_FilterLimitMSwitch_0
-setp pokeys.0.PEv2.0.FilterLimitPSwitch  [POKEYS]PEv2_FilterLimitPSwitch_0
-setp pokeys.0.PEv2.0.PinHomeSwitch  [POKEYS]PEv2_PinHomeSwitch_0
-setp pokeys.0.PEv2.0.PinLimitMSwitch  [POKEYS]PEv2_PinLimitMSwitch_0
-setp pokeys.0.PEv2.0.PinLimitPSwitch  [POKEYS]PEv2_PinLimitPSwitch_0
-setp pokeys.0.PEv2.0.AxisEnableOutputPins  [POKEYS]PEv2_AxisEnableOutputPins_0
+setp pokeys.0.PEv2.0.digin.LimitN.Filter  [POKEYS]PEv2_FilterLimitMSwitch_0
+setp pokeys.0.PEv2.0.digin.LimitP.Filter  [POKEYS]PEv2_FilterLimitPSwitch_0
+setp pokeys.0.PEv2.0.digin.Home.Pin  [POKEYS]PEv2_PinHomeSwitch_0
+setp pokeys.0.PEv2.0.digin.LimitN.Pin  [POKEYS]PEv2_PinLimitMSwitch_0
+setp pokeys.0.PEv2.0.digin.LimitP.Pin  [POKEYS]PEv2_PinLimitPSwitch_0
+setp pokeys.0.PEv2.0.digout.AxisEnable.Pin  [POKEYS]PEv2_AxisEnableOutputPins_0
 
 setp pokeys.0.PEv2.1.AxesSwitchConfig  [POKEYS]PEv2_AxesSwitchConfig_1
-setp pokeys.0.PEv2.1.FilterLimitMSwitch  [POKEYS]PEv2_FilterLimitMSwitch_1
-setp pokeys.0.PEv2.1.FilterLimitPSwitch  [POKEYS]PEv2_FilterLimitPSwitch_1
-setp pokeys.0.PEv2.1.PinHomeSwitch  [POKEYS]PEv2_PinHomeSwitch_1
-setp pokeys.0.PEv2.1.PinLimitMSwitch  [POKEYS]PEv2_PinLimitMSwitch_1
-setp pokeys.0.PEv2.1.PinLimitPSwitch  [POKEYS]PEv2_PinLimitPSwitch_1
-setp pokeys.0.PEv2.1.AxisEnableOutputPins  [POKEYS]PEv2_AxisEnableOutputPins_1
+setp pokeys.0.PEv2.1.digin.LimitN.Filter  [POKEYS]PEv2_FilterLimitMSwitch_1
+setp pokeys.0.PEv2.1.digin.LimitP.Filter  [POKEYS]PEv2_FilterLimitPSwitch_1
+setp pokeys.0.PEv2.1.digin.Home.Pin  [POKEYS]PEv2_PinHomeSwitch_1
+setp pokeys.0.PEv2.1.digin.LimitN.Pin  [POKEYS]PEv2_PinLimitMSwitch_1
+setp pokeys.0.PEv2.1.digin.LimitP.Pin  [POKEYS]PEv2_PinLimitPSwitch_1
+setp pokeys.0.PEv2.1.digout.AxisEnable.Pin  [POKEYS]PEv2_AxisEnableOutputPins_1
 
 setp pokeys.0.PEv2.2.AxesSwitchConfig  [POKEYS]PEv2_AxesSwitchConfig_2
-setp pokeys.0.PEv2.2.FilterLimitMSwitch  [POKEYS]PEv2_FilterLimitMSwitch_2
-setp pokeys.0.PEv2.2.FilterLimitPSwitch  [POKEYS]PEv2_FilterLimitPSwitch_2
-setp pokeys.0.PEv2.2.PinHomeSwitch  [POKEYS]PEv2_PinHomeSwitch_2
-setp pokeys.0.PEv2.2.PinLimitMSwitch  [POKEYS]PEv2_PinLimitMSwitch_2
-setp pokeys.0.PEv2.2.PinLimitPSwitch  [POKEYS]PEv2_PinLimitPSwitch_2
-setp pokeys.0.PEv2.2.AxisEnableOutputPins  [POKEYS]PEv2_AxisEnableOutputPins_2
+setp pokeys.0.PEv2.2.digin.LimitN.Filter  [POKEYS]PEv2_FilterLimitMSwitch_2
+setp pokeys.0.PEv2.2.digin.LimitP.Filter  [POKEYS]PEv2_FilterLimitPSwitch_2
+setp pokeys.0.PEv2.2.digin.Home.Pin  [POKEYS]PEv2_PinHomeSwitch_2
+setp pokeys.0.PEv2.2.digin.LimitN.Pin  [POKEYS]PEv2_PinLimitMSwitch_2
+setp pokeys.0.PEv2.2.digin.LimitP.Pin  [POKEYS]PEv2_PinLimitPSwitch_2
+setp pokeys.0.PEv2.2.digout.AxisEnable.Pin  [POKEYS]PEv2_AxisEnableOutputPins_2
 
 setp pokeys.0.PEv2.3.AxesSwitchConfig  [POKEYS]PEv2_AxesSwitchConfig_3
-setp pokeys.0.PEv2.3.FilterLimitMSwitch  [POKEYS]PEv2_FilterLimitMSwitch_3
-setp pokeys.0.PEv2.3.FilterLimitPSwitch  [POKEYS]PEv2_FilterLimitPSwitch_3
-setp pokeys.0.PEv2.3.PinHomeSwitch  [POKEYS]PEv2_PinHomeSwitch_3
-setp pokeys.0.PEv2.3.PinLimitMSwitch  [POKEYS]PEv2_PinLimitMSwitch_3
-setp pokeys.0.PEv2.3.PinLimitPSwitch  [POKEYS]PEv2_PinLimitPSwitch_3
-setp pokeys.0.PEv2.3.AxisEnableOutputPins  [POKEYS]PEv2_AxisEnableOutputPins_3
+setp pokeys.0.PEv2.3.digin.LimitN.Filter  [POKEYS]PEv2_FilterLimitMSwitch_3
+setp pokeys.0.PEv2.3.digin.LimitP.Filter  [POKEYS]PEv2_FilterLimitPSwitch_3
+setp pokeys.0.PEv2.3.digin.Home.Pin  [POKEYS]PEv2_PinHomeSwitch_3
+setp pokeys.0.PEv2.3.digin.LimitN.Pin  [POKEYS]PEv2_PinLimitMSwitch_3
+setp pokeys.0.PEv2.3.digin.LimitP.Pin  [POKEYS]PEv2_PinLimitPSwitch_3
+setp pokeys.0.PEv2.3.digout.AxisEnable.Pin  [POKEYS]PEv2_AxisEnableOutputPins_3
 
 setp pokeys.0.PEv2.4.AxesSwitchConfig  [POKEYS]PEv2_AxesSwitchConfig_4
-setp pokeys.0.PEv2.4.FilterLimitMSwitch  [POKEYS]PEv2_FilterLimitMSwitch_4
-setp pokeys.0.PEv2.4.FilterLimitPSwitch  [POKEYS]PEv2_FilterLimitPSwitch_4
-setp pokeys.0.PEv2.4.PinHomeSwitch  [POKEYS]PEv2_PinHomeSwitch_4
-setp pokeys.0.PEv2.4.PinLimitMSwitch  [POKEYS]PEv2_PinLimitMSwitch_4
-setp pokeys.0.PEv2.4.PinLimitPSwitch  [POKEYS]PEv2_PinLimitPSwitch_4
-setp pokeys.0.PEv2.4.AxisEnableOutputPins  [POKEYS]PEv2_AxisEnableOutputPins_4
+setp pokeys.0.PEv2.4.digin.LimitN.Filter  [POKEYS]PEv2_FilterLimitMSwitch_4
+setp pokeys.0.PEv2.4.digin.LimitP.Filter  [POKEYS]PEv2_FilterLimitPSwitch_4
+setp pokeys.0.PEv2.4.digin.Home.Pin  [POKEYS]PEv2_PinHomeSwitch_4
+setp pokeys.0.PEv2.4.digin.LimitN.Pin  [POKEYS]PEv2_PinLimitMSwitch_4
+setp pokeys.0.PEv2.4.digin.LimitP.Pin  [POKEYS]PEv2_PinLimitPSwitch_4
+setp pokeys.0.PEv2.4.digout.AxisEnable.Pin  [POKEYS]PEv2_AxisEnableOutputPins_4
 
 setp pokeys.0.PEv2.5.AxesSwitchConfig  [POKEYS]PEv2_AxesSwitchConfig_5
-setp pokeys.0.PEv2.5.FilterLimitMSwitch  [POKEYS]PEv2_FilterLimitMSwitch_5
-setp pokeys.0.PEv2.5.FilterLimitPSwitch  [POKEYS]PEv2_FilterLimitPSwitch_5
-setp pokeys.0.PEv2.5.PinHomeSwitch  [POKEYS]PEv2_PinHomeSwitch_5
-setp pokeys.0.PEv2.5.PinLimitMSwitch  [POKEYS]PEv2_PinLimitMSwitch_5
-setp pokeys.0.PEv2.5.PinLimitPSwitch  [POKEYS]PEv2_PinLimitPSwitch_5
-setp pokeys.0.PEv2.5.AxisEnableOutputPins  [POKEYS]PEv2_AxisEnableOutputPins_5
+setp pokeys.0.PEv2.5.digin.LimitN.Filter  [POKEYS]PEv2_FilterLimitMSwitch_5
+setp pokeys.0.PEv2.5.digin.LimitP.Filter  [POKEYS]PEv2_FilterLimitPSwitch_5
+setp pokeys.0.PEv2.5.digin.Home.Pin  [POKEYS]PEv2_PinHomeSwitch_5
+setp pokeys.0.PEv2.5.digin.LimitN.Pin  [POKEYS]PEv2_PinLimitMSwitch_5
+setp pokeys.0.PEv2.5.digin.LimitP.Pin  [POKEYS]PEv2_PinLimitPSwitch_5
+setp pokeys.0.PEv2.5.digout.AxisEnable.Pin  [POKEYS]PEv2_AxisEnableOutputPins_5
 
 setp pokeys.0.PEv2.6.AxesSwitchConfig  [POKEYS]PEv2_AxesSwitchConfig_6
-setp pokeys.0.PEv2.6.FilterLimitMSwitch  [POKEYS]PEv2_FilterLimitMSwitch_6
-setp pokeys.0.PEv2.6.FilterLimitPSwitch  [POKEYS]PEv2_FilterLimitPSwitch_6
-setp pokeys.0.PEv2.6.PinHomeSwitch  [POKEYS]PEv2_PinHomeSwitch_6
-setp pokeys.0.PEv2.6.PinLimitMSwitch  [POKEYS]PEv2_PinLimitMSwitch_6
-setp pokeys.0.PEv2.6.PinLimitPSwitch  [POKEYS]PEv2_PinLimitPSwitch_6
-setp pokeys.0.PEv2.6.AxisEnableOutputPins  [POKEYS]PEv2_AxisEnableOutputPins_6
+setp pokeys.0.PEv2.6.digin.LimitN.Filter  [POKEYS]PEv2_FilterLimitMSwitch_6
+setp pokeys.0.PEv2.6.digin.LimitP.Filter  [POKEYS]PEv2_FilterLimitPSwitch_6
+setp pokeys.0.PEv2.6.digin.Home.Pin  [POKEYS]PEv2_PinHomeSwitch_6
+setp pokeys.0.PEv2.6.digin.LimitN.Pin  [POKEYS]PEv2_PinLimitMSwitch_6
+setp pokeys.0.PEv2.6.digin.LimitP.Pin  [POKEYS]PEv2_PinLimitPSwitch_6
+setp pokeys.0.PEv2.6.digout.AxisEnable.Pin  [POKEYS]PEv2_AxisEnableOutputPins_6
 
 setp pokeys.0.PEv2.7.AxesSwitchConfig  [POKEYS]PEv2_AxesSwitchConfig_7
-setp pokeys.0.PEv2.7.FilterLimitMSwitch  [POKEYS]PEv2_FilterLimitMSwitch_7
-setp pokeys.0.PEv2.7.FilterLimitPSwitch  [POKEYS]PEv2_FilterLimitPSwitch_7
-setp pokeys.0.PEv2.7.PinHomeSwitch  [POKEYS]PEv2_PinHomeSwitch_7
-setp pokeys.0.PEv2.7.PinLimitMSwitch  [POKEYS]PEv2_PinLimitMSwitch_7
-setp pokeys.0.PEv2.7.PinLimitPSwitch  [POKEYS]PEv2_PinLimitPSwitch_7
-setp pokeys.0.PEv2.7.AxisEnableOutputPins  [POKEYS]PEv2_AxisEnableOutputPins_7
+setp pokeys.0.PEv2.7.digin.LimitN.Filter  [POKEYS]PEv2_FilterLimitMSwitch_7
+setp pokeys.0.PEv2.7.digin.LimitP.Filter  [POKEYS]PEv2_FilterLimitPSwitch_7
+setp pokeys.0.PEv2.7.digin.Home.Pin  [POKEYS]PEv2_PinHomeSwitch_7
+setp pokeys.0.PEv2.7.digin.LimitN.Pin  [POKEYS]PEv2_PinLimitMSwitch_7
+setp pokeys.0.PEv2.7.digin.LimitP.Pin  [POKEYS]PEv2_PinLimitPSwitch_7
+setp pokeys.0.PEv2.7.digout.AxisEnable.Pin  [POKEYS]PEv2_AxisEnableOutputPins_7
 
 setp pokeys.0.PEv2.params.ApplyIniSettings  [POKEYS]ApplyIniSettings
 

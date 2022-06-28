@@ -5,41 +5,70 @@
 
 loadrt [KINS]KINEMATICS
 loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS
-#loadrt hostmot2
-#loadrt hm2_pci config=" num_encoders=1 num_pwmgens=0 num_stepgens=5 sserial_port_0=00xxxx" 
-#setp    [HMOT](CARD0).watchdog.timeout_ns 5000000
 loadusr pokeys
 show pin
-loadrt pid names=pid.x,pid.x2,pid.y,pid.z,pid.s
+show parameter
+#loadrt pid names=pid.x,pid.x2,pid.y,pid.z,pid.s
+loadrt pid names=pid.s
+show pin
+show parameter
+loadusr -W xhc-whb04b-6 -HsfB
 show pin
 show parameter
 
-#addf [HMOT](CARD0).read          servo-thread
 addf motion-command-handler   servo-thread
 addf motion-controller        servo-thread
-addf pid.x.do-pid-calcs       servo-thread
-addf pid.x2.do-pid-calcs       servo-thread
-addf pid.y.do-pid-calcs       servo-thread
-addf pid.z.do-pid-calcs       servo-thread
+#addf pid.x.do-pid-calcs       servo-thread
+#addf pid.x2.do-pid-calcs       servo-thread
+#addf pid.y.do-pid-calcs       servo-thread
+#addf pid.z.do-pid-calcs       servo-thread
 addf pid.s.do-pid-calcs       servo-thread
-#addf [HMOT](CARD0).write         servo-thread
+show pin
+show parameter
+
+show pin
+show parameter
+show pin
+show parameter
+show pin
+show parameter
+show pin
+show parameter
+show pin
+show parameter
+show pin
+show parameter
+show pin
+show parameter
+show pin
+show parameter
+show pin
+show parameter
 
 # external output signals
-net estop-out     => pokeys.0.PEv2.EmergencyOutput
+#net estop-out     => pokeys.0.PEv2.digout.Emergency.out
 net machine-is-on => pokeys.0.machine-is-on
 # external input signals
 
 # --- MIN X---
-net min-x2     <=  pokeys.0.PEv2.6.LimitMSwitch
-net min-x     <=  pokeys.0.PEv2.0.LimitMSwitch
+net min-x2     <=  pokeys.0.PEv2.6.digin.LimitN.in
+net min-x     <=  pokeys.0.PEv2.0.digin.LimitN.in
 
 # --- MAX-X ---
-net max-x     <=  pokeys.0.PEv2.0.LimitPSwitch
-net max-x2     <=  pokeys.0.PEv2.6.LimitPSwitch
+net max-x     <=  pokeys.0.PEv2.0.digin.LimitP.in
+net max-x2     <=  pokeys.0.PEv2.6.digin.LimitP.in
 
 # --- HOME-X2 ---
-net home-x     <=  pokeys.0.PEv2.0.HomeSwitchStat
-net home-x2     <=  pokeys.0.PEv2.6.HomeSwitchStat
+net home-x     <=  pokeys.0.PEv2.0.digin.Home.in
+net home-x2     <=  pokeys.0.PEv2.6.digin.Home.in
+
+net min-y     <=  pokeys.0.PEv2.1.digin.LimitN.in
+net max-y     <=  pokeys.0.PEv2.1.digin.LimitP.in
+net home-y     <=  pokeys.0.PEv2.1.digin.Home.in
+
+net min-z     <=  pokeys.0.PEv2.2.digin.LimitN.in
+net max-z     <=  pokeys.0.PEv2.2.digin.LimitP.in
+net home-z     <=  pokeys.0.PEv2.2.digin.Home.in
 
 # --- CYCLE-START ---
 #net cycle-start     <=  [HMOT](CARD0).gpio.023.in
@@ -48,8 +77,8 @@ net home-x2     <=  pokeys.0.PEv2.6.HomeSwitchStat
 #net abort     <=  [HMOT](CARD0).gpio.024.in
 
 # --- ESTOP-EXT ---
-net estop-ext     <=  pokeys.0.PEv2.EmergencyInput
-#setp pokeys.0.PEv2.EmergencyInput-invert 1
+net estop-ext     <=  pokeys.0.PEv2.digin.Emergency.in
+#setp pokeys.0.pokeys.0.PEv2.digin.Emergency.invert 1
 #
 
 # --- JOG-X-POS ---
@@ -66,20 +95,20 @@ net estop-ext     <=  pokeys.0.PEv2.EmergencyInput
 #  AXIS X JOINT 0
 #*******************
 
-setp   pid.x.Pgain     [JOINT_0]P
-setp   pid.x.Igain     [JOINT_0]I
-setp   pid.x.Dgain     [JOINT_0]D
-setp   pid.x.bias      [JOINT_0]BIAS
-setp   pid.x.FF0       [JOINT_0]FF0
-setp   pid.x.FF1       [JOINT_0]FF1
-setp   pid.x.FF2       [JOINT_0]FF2
-setp   pid.x.deadband  [JOINT_0]DEADBAND
-setp   pid.x.maxoutput [JOINT_0]MAX_OUTPUT
-setp   pid.x.error-previous-target true
+#setp   pid.x.Pgain     [JOINT_0]P
+#setp   pid.x.Igain     [JOINT_0]I
+#setp   pid.x.Dgain     [JOINT_0]D
+#setp   pid.x.bias      [JOINT_0]BIAS
+#setp   pid.x.FF0       [JOINT_0]FF0
+#setp   pid.x.FF1       [JOINT_0]FF1
+#setp   pid.x.FF2       [JOINT_0]FF2
+#setp   pid.x.deadband  [JOINT_0]DEADBAND
+#setp   pid.x.maxoutput [JOINT_0]MAX_OUTPUT
+#setp   pid.x.error-previous-target true
 # This setting is to limit bogus stepgen
 # velocity corrections caused by position
 # feedback sample time jitter.
-setp   pid.x.maxerror 0.012700
+#setp   pid.x.maxerror 0.012700
 
 #net x-index-enable  <=> pid.x.index-enable
 #net x-enable        =>  pid.x.enable
@@ -88,24 +117,15 @@ setp   pid.x.maxerror 0.012700
 #net x-output        <=  pid.x.output
 
 
-
-
-
-
-
 # Step Gen signals/setup
-setp   pokeys.0.PEv2.0.params.DIRSETUP        [JOINT_0]DIRSETUP
-setp   pokeys.0.PEv2.0.params.DIRHOLD         [JOINT_0]DIRHOLD
-setp   pokeys.0.PEv2.0.params.STEPLEN         [JOINT_0]STEPLEN
-setp   pokeys.0.PEv2.0.params.STEPSPACE       [JOINT_0]STEPSPACE
-setp   pokeys.0.PEv2.0.params.STEP-SCALE  	   [JOINT_0]STEP_SCALE
-setp   pokeys.0.PEv2.0.params.MIN-LIMIT  	   [JOINT_0]MIN_LIMIT
-setp   pokeys.0.PEv2.0.params.MAX-LIMIT  	   [JOINT_0]MAX_LIMIT
-setp   pokeys.0.PEv2.0.params.HOME-OFFSET  	   [JOINT_0]HOME_OFFSET
-setp   pokeys.0.PEv2.0.params.HOME-SEARCH-VEL  	   [JOINT_0]HOME_SEARCH_VEL
-setp   pokeys.0.PEv2.0.params.HOME-LATCH-VEL  	   [JOINT_0]HOME_LATCH_VEL
-setp   pokeys.0.PEv2.0.params.STEPGEN-MAXVEL         [JOINT_0]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2.0.params.STEPGEN-MAXACCEL           [JOINT_0]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2.0.stepgen.STEP-SCALE  	   [JOINT_0]STEP_SCALE
+setp   pokeys.0.PEv2.0.stepgen.MIN-LIMIT  	   [JOINT_0]MIN_LIMIT
+setp   pokeys.0.PEv2.0.stepgen.MAX-LIMIT  	   [JOINT_0]MAX_LIMIT
+setp   pokeys.0.PEv2.0.stepgen.HOME-OFFSET  	   [JOINT_0]HOME_OFFSET
+setp   pokeys.0.PEv2.0.stepgen.HOME-SEARCH-VEL  	   [JOINT_0]HOME_SEARCH_VEL
+setp   pokeys.0.PEv2.0.stepgen.HOME-LATCH-VEL  	   [JOINT_0]HOME_LATCH_VEL
+setp   pokeys.0.PEv2.0.stepgen.STEPGEN-MAXVEL         [JOINT_0]STEPGEN_MAXACCEL
+setp   pokeys.0.PEv2.0.stepgen.STEPGEN-MAXACCEL           [JOINT_0]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
@@ -119,7 +139,7 @@ net x-pos-fb     <= pokeys.0.PEv2.0.joint-pos-fb
 net x-pos-fb     => joint.0.motor-pos-fb
 
 net x-enable     <= joint.0.amp-enable-out
-net x-enable     => pokeys.0.PEv2.0.AxisEnableOutput
+net x-enable     => pokeys.0.PEv2.0.digout.AxisEnable.out
 
 
 net x-homing     <= joint.0.homing
@@ -130,19 +150,11 @@ net x-in-position     => pokeys.0.PEv2.0.joint-in-position
 
 # ---Encoder feedback signals/setup---
 
-#setp    [HMOT](CARD0).encoder.00.counter-mode 0
-#setp    [HMOT](CARD0).encoder.00.filter 1
-#setp    [HMOT](CARD0).encoder.00.index-invert 0
-#setp    [HMOT](CARD0).encoder.00.index-mask 0
-#setp    [HMOT](CARD0).encoder.00.index-mask-invert 0
-setp    pokeys.0.PEv2.0.params.ENCODER-SCALE  [JOINT_0]ENCODER_SCALE
+#setp    pokeys.0.PEv2.0.stepgen.ENCODER-SCALE  [JOINT_0]ENCODER_SCALE
 
 net x-pos-fb               <=  pokeys.0.PEv2.0.joint-pos-fb
 net x-pos-fb               =>  joint.0.motor-pos-fb
 
-
-#net x-index-enable    joint.0.index-enable  <=>  [HMOT](CARD0).encoder.00.index-enable
-#net x-pos-rawcounts        <=  [HMOT](CARD0).encoder.00.rawcounts
 
 # ---setup home / limit switch signals---
 
@@ -154,40 +166,37 @@ net max-x     =>  joint.0.pos-lim-sw-in
 #  Tandem AXIS X2 JOINT 1
 #*******************
 
-setp   pid.x2.Pgain     [JOINT_1]P
-setp   pid.x2.Igain     [JOINT_1]I
-setp   pid.x2.Dgain     [JOINT_1]D
-setp   pid.x2.bias      [JOINT_1]BIAS
-setp   pid.x2.FF0       [JOINT_1]FF0
-setp   pid.x2.FF1       [JOINT_1]FF1
-setp   pid.x2.FF2       [JOINT_1]FF2
-setp   pid.x2.deadband  [JOINT_1]DEADBAND
-setp   pid.x2.maxoutput [JOINT_1]MAX_OUTPUT
-setp   pid.x2.error-previous-target true
+#setp   pid.x2.Pgain     [JOINT_1]P
+#setp   pid.x2.Igain     [JOINT_1]I
+#setp   pid.x2.Dgain     [JOINT_1]D
+#setp   pid.x2.bias      [JOINT_1]BIAS
+#setp   pid.x2.FF0       [JOINT_1]FF0
+#setp   pid.x2.FF1       [JOINT_1]FF1
+#setp   pid.x2.FF2       [JOINT_1]FF2
+#setp   pid.x2.deadband  [JOINT_1]DEADBAND
+#setp   pid.x2.maxoutput [JOINT_1]MAX_OUTPUT
+#setp   pid.x2.error-previous-target true
 # This setting is to limit bogus stepgen
 # velocity corrections caused by position
 # feedback sample time jitter.
-setp   pid.x2.maxerror 0.012700
+#setp   pid.x2.maxerror 0.012700
 
-net x2-index-enable  <=> pid.x2.index-enable
-net x2-enable        =>  pid.x2.enable
-net x2-pos-cmd       =>  pid.x2.command
-net x2-pos-fb        =>  pid.x2.feedback
-net x2-output        <=  pid.x2.output
+#net x2-index-enable  <=> pid.x2.index-enable
+#net x2-enable        =>  pid.x2.enable
+#net x2-pos-cmd       =>  pid.x2.command
+#net x2-pos-fb        =>  pid.x2.feedback
+#net x2-output        <=  pid.x2.output
 
 # Step Gen signals/setup for tandem axis
-setp   pokeys.0.PEv2.6.params.DIRSETUP        [JOINT_1]DIRSETUP
-setp   pokeys.0.PEv2.6.params.DIRHOLD         [JOINT_1]DIRHOLD
-setp   pokeys.0.PEv2.6.params.STEPLEN         [JOINT_1]STEPLEN
-setp   pokeys.0.PEv2.6.params.STEPSPACE       [JOINT_1]STEPSPACE
-setp   pokeys.0.PEv2.6.params.STEP-SCALE  	   [JOINT_1]STEP_SCALE
-setp   pokeys.0.PEv2.6.params.MIN-LIMIT  	   [JOINT_1]MIN_LIMIT
-setp   pokeys.0.PEv2.6.params.MAX-LIMIT  	   [JOINT_1]MAX_LIMIT
-setp   pokeys.0.PEv2.6.params.HOME-OFFSET  	   [JOINT_1]HOME_OFFSET
-setp   pokeys.0.PEv2.6.params.HOME-SEARCH-VEL  	   [JOINT_1]HOME_SEARCH_VEL
-setp   pokeys.0.PEv2.6.params.HOME-LATCH-VEL  	   [JOINT_1]HOME_LATCH_VEL
-setp   pokeys.0.PEv2.6.params.STEPGEN-MAXVEL         [JOINT_1]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2.6.params.STEPGEN-MAXACCEL           [JOINT_1]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2.6.stepgen.STEP-SCALE  	   [JOINT_1]STEP_SCALE
+setp   pokeys.0.PEv2.6.stepgen.MIN-LIMIT  	   [JOINT_1]MIN_LIMIT
+setp   pokeys.0.PEv2.6.stepgen.MAX-LIMIT  	   [JOINT_1]MAX_LIMIT
+setp   pokeys.0.PEv2.6.stepgen.HOME-OFFSET  	   [JOINT_1]HOME_OFFSET
+setp   pokeys.0.PEv2.6.stepgen.HOME-SEARCH-VEL  	   [JOINT_1]HOME_SEARCH_VEL
+setp   pokeys.0.PEv2.6.stepgen.HOME-LATCH-VEL  	   [JOINT_1]HOME_LATCH_VEL
+setp   pokeys.0.PEv2.6.stepgen.STEPGEN-MAXVEL         [JOINT_1]STEPGEN_MAXACCEL
+setp   pokeys.0.PEv2.6.stepgen.STEPGEN-MAXACCEL           [JOINT_1]STEPGEN_MAXVEL
+
 # ---closedloop stepper signals---
 
 net x2-pos-cmd    <= joint.1.motor-pos-cmd
@@ -200,7 +209,7 @@ net x2-pos-fb     <= pokeys.0.PEv2.6.joint-pos-fb
 net x2-pos-fb     => joint.1.motor-pos-fb
 
 net x2-enable     <= joint.1.amp-enable-out
-net x2-enable     => pokeys.0.PEv2.6.AxisEnableOutput
+net x2-enable     => pokeys.0.PEv2.6.digout.AxisEnable.out
 
 net x2-homing     <= joint.1.homing
 net x2-homing     => pokeys.0.PEv2.6.joint-in-homing
@@ -210,13 +219,10 @@ net x2-in-position     => pokeys.0.PEv2.6.joint-in-position
 
 # ---Encoder feedback signals/setup---
 
-setp    pokeys.0.PEv2.6.params.ENCODER-SCALE  [JOINT_1]ENCODER_SCALE
+#setp    pokeys.0.PEv2.6.stepgen.ENCODER-SCALE  [JOINT_1]ENCODER_SCALE
 
 net x2-pos-fb     <= pokeys.0.PEv2.6.joint-pos-fb
 net x2-pos-fb     => joint.1.motor-pos-fb
-
-#net x2-index-enable    joint.0.index-enable  <=>  [HMOT](CARD0).encoder.00.index-enable
-#net x2-pos-rawcounts        <=  [HMOT](CARD0).encoder.00.rawcounts
 
 # ---setup home / limit switch signals---
 
@@ -228,41 +234,36 @@ net max-x2     =>  joint.1.pos-lim-sw-in
 #  AXIS Y JOINT 2
 #*******************
 
-setp   pid.y.Pgain     [JOINT_2]P
-setp   pid.y.Igain     [JOINT_2]I
-setp   pid.y.Dgain     [JOINT_2]D
-setp   pid.y.bias      [JOINT_2]BIAS
-setp   pid.y.FF0       [JOINT_2]FF0
-setp   pid.y.FF1       [JOINT_2]FF1
-setp   pid.y.FF2       [JOINT_2]FF2
-setp   pid.y.deadband  [JOINT_2]DEADBAND
-setp   pid.y.maxoutput [JOINT_2]MAX_OUTPUT
-setp   pid.y.error-previous-target true
+#setp   pid.y.Pgain     [JOINT_2]P
+#setp   pid.y.Igain     [JOINT_2]I
+#setp   pid.y.Dgain     [JOINT_2]D
+#setp   pid.y.bias      [JOINT_2]BIAS
+#setp   pid.y.FF0       [JOINT_2]FF0
+#setp   pid.y.FF1       [JOINT_2]FF1
+#setp   pid.y.FF2       [JOINT_2]FF2
+#setp   pid.y.deadband  [JOINT_2]DEADBAND
+#setp   pid.y.maxoutput [JOINT_2]MAX_OUTPUT
+#setp   pid.y.error-previous-target true
 # This setting is to limit bogus stepgen
 # velocity corrections caused by position
 # feedback sample time jitter.
-setp   pid.y.maxerror 0.012700
+#setp   pid.y.maxerror 0.012700
 
-net y-index-enable  <=> pid.y.index-enable
-net y-enable        =>  pid.y.enable
-net y-pos-cmd       =>  pid.y.command
-net y-pos-fb        =>  pid.y.feedback
-net y-output        <=  pid.y.output
+#net y-index-enable  <=> pid.y.index-enable
+#net y-enable        =>  pid.y.enable
+#net y-pos-cmd       =>  pid.y.command
+#net y-pos-fb        =>  pid.y.feedback
+#net y-output        <=  pid.y.output
 
 # Step Gen signals/setup
-
-setp   pokeys.0.PEv2.1.params.DIRSETUP        [JOINT_2]DIRSETUP
-setp   pokeys.0.PEv2.1.params.DIRHOLD         [JOINT_2]DIRHOLD
-setp   pokeys.0.PEv2.1.params.STEPLEN         [JOINT_2]STEPLEN
-setp   pokeys.0.PEv2.1.params.STEPSPACE       [JOINT_2]STEPSPACE
-setp   pokeys.0.PEv2.1.params.STEP-SCALE  	   [JOINT_2]STEP_SCALE
-setp   pokeys.0.PEv2.1.params.MIN-LIMIT  	   [JOINT_2]MIN_LIMIT
-setp   pokeys.0.PEv2.1.params.MAX-LIMIT  	   [JOINT_2]MAX_LIMIT
-setp   pokeys.0.PEv2.1.params.HOME-OFFSET  	   [JOINT_2]HOME_OFFSET
-setp   pokeys.0.PEv2.1.params.HOME-SEARCH-VEL  	   [JOINT_2]HOME_SEARCH_VEL
-setp   pokeys.0.PEv2.1.params.HOME-LATCH-VEL  	   [JOINT_2]HOME_LATCH_VEL
-setp   pokeys.0.PEv2.1.params.STEPGEN-MAXVEL        [JOINT_2]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2.1.params.STEPGEN-MAXACCEL           [JOINT_2]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2.1.stepgen.STEP-SCALE  	   [JOINT_2]STEP_SCALE
+setp   pokeys.0.PEv2.1.stepgen.MIN-LIMIT  	   [JOINT_2]MIN_LIMIT
+setp   pokeys.0.PEv2.1.stepgen.MAX-LIMIT  	   [JOINT_2]MAX_LIMIT
+setp   pokeys.0.PEv2.1.stepgen.HOME-OFFSET  	   [JOINT_2]HOME_OFFSET
+setp   pokeys.0.PEv2.1.stepgen.HOME-SEARCH-VEL  	   [JOINT_2]HOME_SEARCH_VEL
+setp   pokeys.0.PEv2.1.stepgen.HOME-LATCH-VEL  	   [JOINT_2]HOME_LATCH_VEL
+setp   pokeys.0.PEv2.1.stepgen.STEPGEN-MAXVEL        [JOINT_2]STEPGEN_MAXACCEL
+setp   pokeys.0.PEv2.1.stepgen.STEPGEN-MAXACCEL           [JOINT_2]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
@@ -281,7 +282,7 @@ net y-pos-fb     <= pokeys.0.PEv2.1.joint-pos-fb
 net y-pos-fb     => joint.2.motor-pos-fb
 
 net y-enable     <= joint.2.amp-enable-out
-net y-enable     => pokeys.0.PEv2.1.AxisEnableOutput
+net y-enable     => pokeys.0.PEv2.1.digout.AxisEnable.out
 
 net y-homing     <= joint.2.homing
 net y-homing     => pokeys.0.PEv2.1.joint-in-homing
@@ -299,41 +300,36 @@ net y-pos-limit     =>  joint.2.pos-lim-sw-in
 #  AXIS Z JOINT 3
 #*******************
 
-setp   pid.z.Pgain     [JOINT_3]P
-setp   pid.z.Igain     [JOINT_3]I
-setp   pid.z.Dgain     [JOINT_3]D
-setp   pid.z.bias      [JOINT_3]BIAS
-setp   pid.z.FF0       [JOINT_3]FF0
-setp   pid.z.FF1       [JOINT_3]FF1
-setp   pid.z.FF2       [JOINT_3]FF2
-setp   pid.z.deadband  [JOINT_3]DEADBAND
-setp   pid.z.maxoutput [JOINT_3]MAX_OUTPUT
-setp   pid.z.error-previous-target true
+#setp   pid.z.Pgain     [JOINT_3]P
+#setp   pid.z.Igain     [JOINT_3]I
+#setp   pid.z.Dgain     [JOINT_3]D
+#setp   pid.z.bias      [JOINT_3]BIAS
+#setp   pid.z.FF0       [JOINT_3]FF0
+#setp   pid.z.FF1       [JOINT_3]FF1
+#setp   pid.z.FF2       [JOINT_3]FF2
+#setp   pid.z.deadband  [JOINT_3]DEADBAND
+#setp   pid.z.maxoutput [JOINT_3]MAX_OUTPUT
+#setp   pid.z.error-previous-target true
 # This setting is to limit bogus stepgen
 # velocity corrections caused by position
 # feedback sample time jitter.
-setp   pid.z.maxerror 0.012700
+#setp   pid.z.maxerror 0.012700
 
-net z-index-enable  <=> pid.z.index-enable
-net z-enable        =>  pid.z.enable
-net z-pos-cmd       =>  pid.z.command
-net z-pos-fb        =>  pid.z.feedback
-net z-output        <=  pid.z.output
+#net z-index-enable  <=> pid.z.index-enable
+#net z-enable        =>  pid.z.enable
+#net z-pos-cmd       =>  pid.z.command
+#net z-pos-fb        =>  pid.z.feedback
+#net z-output        <=  pid.z.output
 
 # Step Gen signals/setup
-
-setp   pokeys.0.PEv2.2.params.DIRSETUP        [JOINT_3]DIRSETUP
-setp   pokeys.0.PEv2.2.params.DIRHOLD         [JOINT_3]DIRHOLD
-setp   pokeys.0.PEv2.2.params.STEPLEN         [JOINT_3]STEPLEN
-setp   pokeys.0.PEv2.2.params.STEPSPACE       [JOINT_3]STEPSPACE
-setp   pokeys.0.PEv2.2.params.STEP-SCALE  	   [JOINT_3]STEP_SCALE
-setp   pokeys.0.PEv2.2.params.MIN-LIMIT  	   [JOINT_3]MIN_LIMIT
-setp   pokeys.0.PEv2.2.params.MAX-LIMIT 	   [JOINT_3]MAX_LIMIT
-setp   pokeys.0.PEv2.2.params.HOME-OFFSET  	   [JOINT_3]HOME_OFFSET
-setp   pokeys.0.PEv2.2.params.HOME-SEARCH-VEL  	   [JOINT_3]HOME_SEARCH_VEL
-setp   pokeys.0.PEv2.2.params.HOME-LATCH-VEL  	   [JOINT_3]HOME_LATCH_VEL
-setp   pokeys.0.PEv2.2.params.STEPGEN-MAXVEL         [JOINT_3]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2.2.params.STEPGEN-MAXACCEL           [JOINT_3]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2.2.stepgen.STEP-SCALE  	   [JOINT_3]STEP_SCALE
+setp   pokeys.0.PEv2.2.stepgen.MIN-LIMIT  	   [JOINT_3]MIN_LIMIT
+setp   pokeys.0.PEv2.2.stepgen.MAX-LIMIT 	   [JOINT_3]MAX_LIMIT
+setp   pokeys.0.PEv2.2.stepgen.HOME-OFFSET  	   [JOINT_3]HOME_OFFSET
+setp   pokeys.0.PEv2.2.stepgen.HOME-SEARCH-VEL  	   [JOINT_3]HOME_SEARCH_VEL
+setp   pokeys.0.PEv2.2.stepgen.HOME-LATCH-VEL  	   [JOINT_3]HOME_LATCH_VEL
+setp   pokeys.0.PEv2.2.stepgen.STEPGEN-MAXVEL         [JOINT_3]STEPGEN_MAXACCEL
+setp   pokeys.0.PEv2.2.stepgen.STEPGEN-MAXACCEL           [JOINT_3]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
@@ -347,7 +343,7 @@ net z-pos-fb     <= pokeys.0.PEv2.2.joint-pos-fb
 net z-pos-fb     => joint.3.motor-pos-fb
 
 net z-enable     <= joint.3.amp-enable-out
-net z-enable     => pokeys.0.PEv2.2.AxisEnableOutput
+net z-enable     => pokeys.0.PEv2.2.digout.AxisEnable.out
 
 net z-homing     <= joint.3.homing
 net z-homing     => pokeys.0.PEv2.2.joint-in-homing
@@ -376,6 +372,13 @@ setp   pid.s.deadband  [SPINDLE_0]DEADBAND
 setp   pid.s.maxoutput [SPINDLE_0]MAX_OUTPUT
 setp   pid.s.error-previous-target true
 
+setp   pokeys.0.adcout.pwm.period	2500
+setp   pokeys.0.adcout.0.max-v	5
+setp   pokeys.0.adcout.0.high-limit	5
+setp   pokeys.0.adcout.0.low-limit	0
+setp   pokeys.0.adcout.0.offset	0
+setp   pokeys.0.adcout.0.scale	1
+
 net spindle-index-enable  <=> pid.s.index-enable
 net spindle-enable        =>  pid.s.enable
 net spindle-vel-cmd-rpm     => pid.s.command
@@ -398,9 +401,20 @@ net spindle-vel-fb-rps         =>  spindle.0.speed-in
 net spindle-index-enable      <=>  spindle.0.index-enable
 
 # ---Setup spindle at speed signals---
-
 sets spindle-at-speed true
 
+# ---Setup spindle DAC ---
+loadrt scale count=1
+addf scale.0 servo-thread
+setp scale.0.gain 0.002
+
+# direct mapping without PID
+net spindle-vel-cmd-rpm spindle.0.speed-out => scale.0.in
+#if PID should be used
+#net spindle-speed-scale spindle-output => scale.0.in
+net spindle-speed-DAC scale.0.out => pokeys.0.adcout.0.value
+net spindle-enable => pokeys.0.adcout.0.enable
+net spindle-enable => pokeys.0.PEv2.digout.ExternalRelay-0.out
 
 #******************************
 # connect miscellaneous signals
@@ -438,7 +452,7 @@ net coolant-mist      <=  iocontrol.0.coolant-mist
 net coolant-flood     <=  iocontrol.0.coolant-flood
 
 #  ---probe signal---
-
+#net probe-in     <=  pokeys.0.PEv2.ProbeInput
 net probe-in     =>  motion.probe-input
 
 #  ---motion control signals---
@@ -508,7 +522,7 @@ net pokeys.kbd48CNC.SPINDLE_STOP.Button =>	halui.spindle.0.stop
 net pokeys.kbd48CNC.SPINDLE_CCW.Button =>	halui.spindle.0.reverse		
 net pokeys.kbd48CNC.SPINDLE_CCW.LED 	<=	halui.spindle.0.runs-backward
 #FUN_GOTO_0s,
-#net pokeys.kbd48CNC.GOTO_0s.Button =>	halui.joint.N.home	
+net pokeys.kbd48CNC.GOTO_0s.Button =>	halui.home-all	
 #net pokeys.kbd48CNC.GOTO_0s.LED 	<=	halui.joint.N.is-homed
 #FUN_SPINDLE_SPEED_PLUS, 
 net pokeys.kbd48CNC.SPINDLE_SPEED_PLUS.Button =>	halui.spindle.0.increase	
@@ -538,9 +552,11 @@ net pokeys.kbd48CNC.FEEDRATE_MINUS.Button =>	halui.feed-override.decrease
 #net pokeys.kbd48CNC.JOG_TOGGLE.Button =>						
 #net pokeys.kbd48CNC.JOG_TOGGLE.LED 	<=
 #FUN_JOGRATE_PLUS,	
-#net pokeys.kbd48CNC.JOGRATE_PLUS.Button =>			
+net pokeys.kbd48CNC.JOGRATE_PLUS.Button =>	halui.joint.selected.increment-plus		
+net pokeys.kbd48CNC.JOGRATE_PLUS.Button =>	halui.axis.selected.increment-plus	
 #net pokeys.kbd48CNC.JOGRATE_PLUS.LED 	<=
-#net pokeys.kbd48CNC.JOGRATE_MINUS.Button =>				
+net pokeys.kbd48CNC.JOGRATE_MINUS.Button =>	halui.joint.selected.increment-minus		
+net pokeys.kbd48CNC.JOGRATE_MINUS.Button =>	halui.axis.selected.increment-minus	
 #net pokeys.kbd48CNC.JOGRATE_MINUS.LED 	<=
 #FUN_SHUTTLE_MODE,
 #net pokeys.kbd48CNC.SHUTTLE_MODE.Button =>				
@@ -554,6 +570,7 @@ net pokeys.kbd48CNC.JOG_X.LED 	<=	halui.axis.x.is-selected
 #net pokeys.kbd48CNC.JOG_A.LED 	<=	halui.axis.a.is-selected
 #FUN_JOG_PLUS,	
 net pokeys.kbd48CNC.JOG_PLUS.Button =>	halui.axis.selected.plus		
+net pokeys.kbd48CNC.JOG_PLUS.Button =>	halui.joint.selected.plus
 #net pokeys.kbd48CNC.JOG_PLUS.LED 	<=
 #FUN_JOG_CONT,
 #net pokeys.kbd48CNC.JOG_CONT.Button =>
@@ -578,6 +595,7 @@ net pokeys.kbd48CNC.JOG_Z.LED 	<=	halui.axis.z.is-selected
 #net pokeys.kbd48CNC.JOG_C.LED 	<=	halui.axis.c.is-selected
 #FUN_JOG_MINUS,
 net pokeys.kbd48CNC.JOG_MINUS.Button =>	halui.axis.selected.minus			
+net pokeys.kbd48CNC.JOG_MINUS.Button =>	halui.joint.selected.minus
 #net pokeys.kbd48CNC.JOG_MINUS.LED 	<=
 #FUN_JOG_MPG,
 #net pokeys.kbd48CNC.JOG_MPG.Button =>					
