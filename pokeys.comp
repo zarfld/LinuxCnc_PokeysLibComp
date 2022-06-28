@@ -2205,6 +2205,7 @@ void user_mainloop(void)
 
 				if (doPwmConfig = true)
 				{
+					PK_PWMConfigurationSet(dev);
 					if (PK_PWMConfigurationSet(dev) != PK_OK)
 					{
 						usleep(sleepdur);
@@ -2214,6 +2215,7 @@ void user_mainloop(void)
 
 				if (AnalogIOSet = true)
 				{
+					PK_PWMUpdate(dev);
 					if (PK_PWMUpdate(dev) != PK_OK)
 					{
 						usleep(sleepdur);
