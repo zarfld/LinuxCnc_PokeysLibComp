@@ -1987,7 +1987,7 @@ void user_mainloop(void)
 						PWMperiod = 2500;
 					}
 					PWMperiod = 2500;
-					if (*dev->PWM.PWMperiod!=  PWMperiod)
+					if (dev->PWM.PWMperiod!=  PWMperiod)
 					{
 						dev->PWM.PWMperiod= PWMperiod;
 						doPwmConfig = true;
@@ -2188,7 +2188,7 @@ void user_mainloop(void)
 							adcout_low_limit(PwmId) = low_limit[i];
 						}
 
-						if (*dev->PWM.PWMenabledChannels[i] != PWMenabledChannels[i]) 
+						if (dev->PWM.PWMenabledChannels[i] != PWMenabledChannels[i]) 
 						{
 							dev->PWM.PWMenabledChannels[i] = PWMenabledChannels[i];
 							doPwmConfig = true;
@@ -2196,7 +2196,7 @@ void user_mainloop(void)
 
 						if (*dev->PWM.PWMduty != PWMduty[i])
 						{
-							dev->PWM.PWMduty = PWMduty[i];
+							*dev->PWM.PWMduty = PWMduty[i];
 							AnalogIOSet = true;
 						}
 
