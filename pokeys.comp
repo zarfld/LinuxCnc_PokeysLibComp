@@ -1991,6 +1991,7 @@ void user_mainloop(void)
 					{
 						dev->PWM.PWMperiod= PWMperiod;
 						doPwmConfig = true;
+						PK_PWMConfigurationSet(dev);
 					}
 
 					if (adcout_pwm_period != PWMperiod)
@@ -2194,9 +2195,9 @@ void user_mainloop(void)
 							doPwmConfig = true;
 						}
 
-						if (*dev->PWM.PWMduty != PWMduty[i])
+						if (dev->PWM.PWMduty[i] != PWMduty[i])
 						{
-							*dev->PWM.PWMduty = PWMduty[i];
+							dev->PWM.PWMduty[i] = PWMduty[i];
 							AnalogIOSet = true;
 						}
 
