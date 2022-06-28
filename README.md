@@ -30,7 +30,7 @@ currently under development using following HW
 - [x] Reading pin functions
 - [ ] Setting pin key codes
 - [ ] Reading pin key codes
-- [p] PWM operations
+- [X] PWM operations
 - [x] Pulse engine operations
 - [i] Matrix keyboard setup
 - [i] Matrix keyboard reading
