@@ -2019,7 +2019,7 @@ void user_mainloop(void)
 						low_limit[i] = adcout_low_limit(PwmId);
 
 
-						if (max_v[PwmId] = 0) 
+						if (max_v[PwmId] == 0) 
 						{
 							if ((PEv2_PG_extended_io == true) && (PWMpinIDs[i] = 17))
 							{
@@ -2033,7 +2033,7 @@ void user_mainloop(void)
 
 						if (high_limit[PwmId] = low_limit[PwmId])
 						{
-							if (high_limit[PwmId] = 0) {
+							if (high_limit[PwmId] == 0) {
 								high_limit[PwmId] = max_v[PwmId];
 							}
 						}
