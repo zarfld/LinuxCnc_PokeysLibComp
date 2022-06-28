@@ -1975,6 +1975,9 @@ void user_mainloop(void)
 				float max_v[6];
 				float high_limit[6];
 				float low_limit[6];
+				float PWM_value[6];
+				float PWM_OffSet[6];
+
 				if (PK_PWMConfigurationGet(dev) == PK_OK)
 				{
 					PWMperiod = adcout_pwm_period;
@@ -1984,7 +1987,7 @@ void user_mainloop(void)
 						PWMperiod = 2500;
 					}
 					PWMperiod = 2500;
-					if (dev->PWM.PWMperiod!=  PWMperiod)
+					if (*dev->PWM.PWMperiod!=  PWMperiod)
 					{
 						dev->PWM.PWMperiod= PWMperiod;
 						doPwmConfig = true;
@@ -2000,23 +2003,68 @@ void user_mainloop(void)
 
 					for (i = 0; i < 6; i++)
 					{
-						
-						
-						
 						int PwmId = 5 - i;
 						adcout_deb_out(PwmId) = 100;
 
 						PWMduty[i]= dev->PWM.PWMduty[i];                         // PWM duty cycles (range between 0 and PWM period)
-						PWMenabledChannels[i]= dev->PWM.PWMenabledChannels[i];              // List of enabled PWM channels
+						PWMenabledChannels[i]= adcout_enable(PwmId) ;              // List of enabled PWM channels
 						PWMpinIDs[i]= dev->PWM.PWMpinIDs[i];
 						adcout_PinId(PwmId) = PWMpinIDs[i];
 						PWM_SCale[i] = 1;
 
-						max_v[PwmId] = adcout_max_v(PwmId);
-						high_limit[PwmId] = adcout_high_limit(PwmId);
-						low_limit[PwmId] = adcout_low_limit(PwmId);
+						PWM_value[i] = adcout_value(PwmId);
+						PWM_OffSet[i] = adcout_offset(PwmId);
+						max_v[i] = adcout_max_v(PwmId);
+						high_limit[i] = adcout_high_limit(PwmId);
+						low_limit[i] = adcout_low_limit(PwmId);
 
-						if ((max_v[PwmId] > 0.000) && (high_limit[PwmId] > 0.000) && (high_limit[PwmId] > low_limit[PwmId]))
+
+						if (max_v[PwmId] = 0) 
+						{
+							if ((PEv2_PG_extended_io == true) && (PWMpinIDs[i] = 17))
+							{
+								max_v[PwmId] = 10.000; // Pin17 0-10V
+							}
+							else
+							{
+								max_v[PwmId] = 5.000; // usually pokeys57 provide 0..5V PWM
+							}
+						}
+
+						if (high_limit[PwmId] = low_limit[PwmId])
+						{
+							if (high_limit[PwmId] = 0) {
+								high_limit[PwmId] = max_v[PwmId];
+							}
+						}
+
+						if (PWMenabledChannels[i] == true)
+						{
+							float tmp = PWM_value[i] + PWM_OffSet[i];
+
+							if (tmp <= low_limit[i])
+							{
+								tmp = low_limit[i];
+							}
+							else if (tmp >= high_limit[i])
+							{
+								tmp = high_limit[i];
+							}
+
+							tmp = tmp * PWM_SCale[i];
+
+							PWMduty[i] = (uint32_t)((tmp / max_v[i]) * PWMperiod);
+
+						}
+						else
+						{
+							PWMduty[i] = 0;
+						}
+
+						adcout_deb_setval(PwmId) = PWMduty[i];
+
+
+						/*if ((max_v[PwmId] > 0.000) && (high_limit[PwmId] > 0.000) && (high_limit[PwmId] > low_limit[PwmId]))
 						{
 							adcout_deb_out(PwmId) = 110;
 							if (dev->PWM.PWMenabledChannels[i] = 0)
@@ -2117,39 +2165,60 @@ void user_mainloop(void)
 							else {
 								adcout_deb_out(PwmId) = 231;
 							}
-							if ((dev->DeviceData.DeviceTypeID == PK_DeviceID_PoKeys57CNC) && (PwmId = 5))
-							{
-								max_v[PwmId] = 10.000; // Pin17 0-10V
-							}
-							else
-							{
-								max_v[PwmId] = 5.000; // usually pokeys57 provide 0..5V PWM
-							}
-						}
+
+						}*/
 
 						if (adcout_scale(PwmId) != PWM_SCale[i])
 						{
 							adcout_scale(PwmId) = PWM_SCale[i];
 						}
 
-						if (adcout_max_v(PwmId) != max_v[PwmId])
+						if (adcout_max_v(PwmId) != max_v[i])
 						{
-							adcout_max_v(PwmId) = max_v[PwmId];
+							adcout_max_v(PwmId) = max_v[i];
 						}
 
-						if (adcout_high_limit(PwmId) != high_limit[PwmId])
+						if (adcout_high_limit(PwmId) != high_limit[i])
 						{
-							adcout_high_limit(PwmId) = high_limit[PwmId];
+							adcout_high_limit(PwmId) = high_limit[i];
 						}
 
-						if (adcout_low_limit(PwmId) != low_limit[PwmId])
+						if (adcout_low_limit(PwmId) != low_limit[i])
 						{
-							adcout_low_limit(PwmId) = low_limit[PwmId];
+							adcout_low_limit(PwmId) = low_limit[i];
+						}
+
+						if (*dev->PWM.PWMenabledChannels[i] != PWMenabledChannels[i]) 
+						{
+							dev->PWM.PWMenabledChannels[i] = PWMenabledChannels[i];
+							doPwmConfig = true;
+						}
+
+						if (*dev->PWM.PWMduty != PWMduty[i])
+						{
+							dev->PWM.PWMduty = PWMduty[i];
+							AnalogIOSet = true;
 						}
 
 					}
+				}
 
+				if (doPwmConfig = true)
+				{
+					if (PK_PWMConfigurationSet(dev) != PK_OK)
+					{
+						usleep(sleepdur);
+						PK_PWMConfigurationSet(dev);
+					}
+				}
 
+				if (AnalogIOSet = true)
+				{
+					if (PK_PWMUpdate(dev) != PK_OK)
+					{
+						usleep(sleepdur);
+						PK_PWMUpdate(dev);
+					}
 				}
 
 
@@ -2158,6 +2227,7 @@ void user_mainloop(void)
 			{
 				adcout_deb_outv = 150;
 			}
+
 			if (loopPins = true){  //gets IO data and checks return value 
 				err=0;
 				sPoKeysPinData iPin;
@@ -2295,22 +2365,7 @@ void user_mainloop(void)
 
 
 
-				if (doPwmConfig = true)
-				{
-			
-					if (PK_PWMConfigurationSet(dev) != PK_OK)
-					{
-						usleep(sleepdur);
-					}
-				}
 
-				if (AnalogIOSet = true)
-				{
-					if (PK_PWMUpdate(dev) != PK_OK)
-					{
-					usleep(sleepdur);
-					}
-				}
 
 				deb_out = 236;
 				if (DigitalIOSet = true)
@@ -2327,14 +2382,14 @@ void user_mainloop(void)
 
 				deb_out = 237;
 			 }
-			 else
+			 /*else
 			 {             		  //on connection error
 				deb_out = 245;
 				PK_DisconnectDevice(dev);
 				dev=NULL;  		  //tries to reconnect
 				err=1;
 
-			 }
+			 }*/
 	
 	/*if (info_MatrixKeyboard!=0)
 	{
