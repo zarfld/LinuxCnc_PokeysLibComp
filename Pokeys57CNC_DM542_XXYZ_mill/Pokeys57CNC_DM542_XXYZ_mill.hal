@@ -373,6 +373,12 @@ setp   pid.s.maxoutput [SPINDLE_0]MAX_OUTPUT
 setp   pid.s.error-previous-target true
 
 setp   pokeys.0.adcout.pwm.period	2500
+setp   pokeys.0.adcout.0.max-v	10
+setp   pokeys.0.adcout.0.max-v	10
+setp   pokeys.0.adcout.0.high-limit	10
+setp   pokeys.0.adcout.0.low-limit	0
+setp   pokeys.0.adcout.0.offset	0
+setp   pokeys.0.adcout.0.scale	1
 
 net spindle-index-enable  <=> pid.s.index-enable
 net spindle-enable        =>  pid.s.enable
