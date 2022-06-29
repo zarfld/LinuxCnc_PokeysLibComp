@@ -76,7 +76,7 @@ changing structure of IOs to "Canonical Device Interface" in work
 ### Pokeys57CNC
 - [x] connected using USB
 - [x] connected using Ethernet
-- [ ] LinuxCNC example config in Work (using the pinsetup as available on PCB)
+- [x] LinuxCNC example config in Work (using the pinsetup as available on PCB)
 - [x] Switchng OC Outputs  pokeys.0.PEv2.ExternalOCOutput.0..3
 - [x] Switchng Relay Outputs (SSR1 & 2 -> pokeys.0.PEv2.ExternalRelayOutput.0 & 1) (SSR1 & 2 -> pokeys.0.PEv2.ExternalRelayOutput.0 & 1)
 - using USB connection seems "faster" than using ethernet - may depend on networksetup (networkswitch vs. direct connection)
@@ -88,7 +88,6 @@ changing structure of IOs to "Canonical Device Interface" in work
 - [x] setting External OC and RelayOutputs - in case that "Extended IO" is available and activated (Pokeys57CNC)
 - [x] setting PinConfiguration for Limits, Home, Probe & Emergency switches based in LinuxCNC-INI configuration - not reliable
 - [x] parametrizing MaxSpeed, MaxAccelleration, ... based on LinuxCNC configuarion (mm/sec to pulses/sec conversion is being done using JOINT.*.STEPSCALE)
-- [ ] moving axis currently to uses "PositionMode"(STEPSCALE converted) with Pos-Cmd as shown in pokeys "PoKeysUsage.py" assume that Pos-Fb is to slow. (vel-cmd to change velocity will come soon)
 
 
 ## HAL-Interface
