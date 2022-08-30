@@ -491,7 +491,7 @@ option extra_link_args "-lPoKeys";
 
 sPoKeysDevice * dev=0;
 static int comp_id;		/* component ID */
-
+bool initEncodersDone = 0;
 bool HAL_Machine_On = false;
 bool setPkConfig = false;
 bool setPinConfig = false;
@@ -1936,12 +1936,25 @@ void user_mainloop(void)
 				deb_out = 216;
 				if (PK_EncoderValuesGet(dev) == PK_OK)
 				{
+
 					deb_out = 217;
 					EncoderValuesGet = true;
+					bool resetEncoders = false;
+
+					resetEncoders = 0;
+					
 					for (i = 0; i < dev->info.iBasicEncoderCount; i++)
 					{
 						deb_out = 218;
-						encoder_count(i)=dev->Encoders[i].encoderValue;
+						encoder_count(i) = dev->Encoders[i].encoderValue;
+						encoder_position(i) = dev->Encoders[i].encoderValue * encoder_scale(i);
+
+						if ((encoder_reset(i) != 0) || (initEncodersDone == false))
+						{
+							dev->Encoders[i].encoderValue = 0;
+							resetEncoders = true;
+
+						}
 					}
 					deb_out = 219;
 					if (dev->info.iUltraFastEncoders)
@@ -1951,6 +1964,12 @@ void user_mainloop(void)
 						{
 							deb_out = 221;
 							encoder_count(i) = dev->Encoders[i].encoderValue;
+							encoder_position(i) = dev->Encoders[i].encoderValue * encoder_scale(i);
+							if ((encoder_reset(i) != 0) || (initEncodersDone == false))
+							{
+								dev->Encoders[i].encoderValue = 0;
+								resetEncoders = true;
+							}
 						}
 					}
 					/*if (dev->info.iFastEncoders)
@@ -1960,6 +1979,18 @@ void user_mainloop(void)
 							encoder_value(i) = dev->Encoders[i].encoderValue;
 						}
 					}*/
+
+					if (resetEncoders == true)
+					{
+						deb = 140;
+						if (PK_EncoderValuesSet(dev) == PK_OK)
+						{
+							resetEncoders = false;
+							deb = 141;
+							initEncodersDone = true;
+						}
+						deb = 142;
+					}
 				}
 			}
 
