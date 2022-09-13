@@ -1982,14 +1982,14 @@ void user_mainloop(void)
 
 					if (resetEncoders == true)
 					{
-						deb = 140;
+						deb_out = 140;
 						if (PK_EncoderValuesSet(dev) == PK_OK)
 						{
 							resetEncoders = false;
-							deb = 141;
+							deb_out = 141;
 							initEncodersDone = true;
 						}
-						deb = 142;
+						deb_out = 142;
 					}
 				}
 			}
