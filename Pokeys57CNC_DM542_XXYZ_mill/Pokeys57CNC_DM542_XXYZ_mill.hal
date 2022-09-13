@@ -460,7 +460,6 @@ setp joint.2.jog-vel-mode 0
 setp axis.z.jog-vel-mode 0
 setp joint.3.jog-vel-mode 0
 
-#--- 
 net mpg-counts  <= pokeys.0.encoder.0.count
 net mpg-counts => axis.x.jog-counts
 net mpg-counts => joint.0.jog-counts
@@ -472,7 +471,7 @@ net mpg-counts => joint.2.jog-counts
 net mpg-counts => axis.z.jog-counts
 net mpg-counts => joint.3.jog-counts
 
-net mpg-scale <= pokeys.0.encoder.0.scale
+# net mpg-scale <= pokeys.0.encoder.0.scale
 net mpg-scale => axis.x.jog-scale
 net mpg-scale => joint.0.jog-scale
 net mpg-scale => joint.1.jog-scale
