@@ -36,12 +36,12 @@ currently under development using following HW
 - [i] Matrix keyboard reading
 - [x] kbd48CNC set LED
 - [x] kbd48CNC get Button Status
-- [p] Using encoders
+- [x] Using encoders
 - [ ] I2C operations
 - [ ] SPI operation
 - [ ] PoIL operations
 - [i] 1-wire operations
-- [ ] PoNET bus support 
+
 
 x ... available
 i ... implemented but not tested
@@ -180,9 +180,9 @@ Count: 29
 #### Pins
 - pokeys.[DevID].encoder.[EncId].count;			S32	Encoder value in counts.
 - pokeys.[DevID].encoder.[EncId].position;		FLOAT Encoder value in position units (see parameter “scale”).
-- pokeys.[DevID].encoder.[EncId].velocity;		FLOAT Velocity in position units per second
+- ~~pokeys.[DevID].encoder.[EncId].velocity;		FLOAT Velocity in position units per second~~
 - pokeys.[DevID].encoder.[EncId].reset;			BIT	When True, force counter to zero
-- pokeys.[DevID].encoder.[EncId].index-enable;	BIT	(bidirectional) When True, reset to zero on next index pulse, and set pin False.
+- ~~pokeys.[DevID].encoder.[EncId].index-enable;	BIT	(bidirectional) When True, reset to zero on next index pulse, and set pin False.~~
 
 #### Parameters
 - pokeys.[DevID]. encoder.[EncId].scale	FLOAT	"The scale factor used to convert counts to position units. It is in “counts per position unit”";

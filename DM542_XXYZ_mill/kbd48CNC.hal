@@ -304,7 +304,7 @@ net pokeys.kbd48CNC.JOG_STEP_10.LED 	=> pokeys.0.kbd48CNC.45.LED
 net pokeys.kbd48CNC.JOG_STEP_100.Button <=	pokeys.0.kbd48CNC.46.Button
 net pokeys.kbd48CNC.JOG_STEP_100.LED 	=> pokeys.0.kbd48CNC.46.LED
 
-FUN_JOG_STEP_1000
+#FUN_JOG_STEP_1000
 #net pokeys.kbd48CNC.JOG_STEP_1000.Button =>					
 #net pokeys.kbd48CNC.JOG_STEP_1000.LED 	<=
 net pokeys.kbd48CNC.JOG_STEP_1000.Button <=	pokeys.0.kbd48CNC.47.Button
