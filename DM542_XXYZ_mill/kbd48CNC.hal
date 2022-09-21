@@ -8,7 +8,8 @@ show parameter
 
 #  ---HALUI signals---
 
-
+show pin
+show parameter
 
 #net axis-select-z  halui.axis.z.select # now pokeys.kbd48CNC.JOG_X.Button
 #net jog-selected-pos      halui.axis.selected.plus # pokeys.kbd48CNC.JOG_PLUS.Button
@@ -348,6 +349,10 @@ net pokeys.kbd48CNC.SET_NEXT_LINE.Button <=	pokeys.0.kbd48CNC.11.Button
 net pokeys.kbd48CNC.SET_NEXT_LINE.LED => pokeys.0.kbd48CNC.11.LED
 net pokeys.kbd48CNC.REWIND.Button <=	pokeys.0.kbd48CNC.12.Button			
 
+show pin
+show parameter
+show pin
+show parameter
 
 net pokeys.kbd48CNC.JOGRATE_PLUS.LED 	<= kbd48CNC.0.JOGRATE_PLUS.LED
 net pokeys.kbd48CNC.JOGRATE_PLUS.Button =>	kbd48CNC.0.JOGRATE_PLUS.Button	
