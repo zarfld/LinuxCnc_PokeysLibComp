@@ -261,14 +261,14 @@ net axis-select-b <=	pokeys.0.kbd48CNC.37.Button
 net pokeys.kbd48CNC.JOG_B.LED 	=> pokeys.0.kbd48CNC.37.LED
 
 #FUN_JOG_FAST_TOGGLE, 
-net pokeys.kbd48CNC.JOG_FAST_TOGGLE.Button =>	kbd48CNC.0.JOG_FAST_TOGGLE.Button			
-net pokeys.kbd48CNC.JOG_FAST_TOGGLE.LED 	<=kbd48CNC.0.JOG_FAST_TOGGLE.LED
+net pokeys.kbd48CNC.JOG_FAST_TOGGLE.Button =>	kbd48CNC.0.JOG-FAST-TOGGLE.Button			
+net pokeys.kbd48CNC.JOG_FAST_TOGGLE.LED 	<=kbd48CNC.0.JOG-FAST-TOGGLE.LED
 net pokeys.kbd48CNC.JOG_FAST_TOGGLE.Button <=	pokeys.0.kbd48CNC.38.Button
 net pokeys.kbd48CNC.JOG_FAST_TOGGLE.LED 	=> pokeys.0.kbd48CNC.38.LED
 
 #FUN_JOG_INC,
-net pokeys.kbd48CNC.JOG_INC.Button =>	kbd48CNC.0.JOG_INC.Button			
-net pokeys.kbd48CNC.JOG_INC.LED 	<= kbd48CNC.0.JOG_INC.LED
+net pokeys.kbd48CNC.JOG_INC.Button =>	kbd48CNC.0.JOG-INC.Button			
+net pokeys.kbd48CNC.JOG_INC.LED 	<= kbd48CNC.0.JOG-INC.LED
 net pokeys.kbd48CNC.JOG_INC.Button <=	pokeys.0.kbd48CNC.39.Button
 net pokeys.kbd48CNC.JOG_INC.LED 	=> pokeys.0.kbd48CNC.39.LED
 
@@ -294,32 +294,32 @@ net pokeys.kbd48CNC.JOG_MINUS.Button <=	pokeys.0.kbd48CNC.42.Button
 net pokeys.kbd48CNC.JOG_MINUS.LED 	=> pokeys.0.kbd48CNC.42.LED
 
 #FUN_JOG_MPG,
-net pokeys.kbd48CNC.JOG_MPG.Button =>	kbd48CNC.0.JOG_MPG.Button			
-net pokeys.kbd48CNC.JOG_MPG.LED 	<= kbd48CNC.0.JOG_MPG.LED
+net pokeys.kbd48CNC.JOG_MPG.Button =>	kbd48CNC.0.JOG-MPG.Button			
+net pokeys.kbd48CNC.JOG_MPG.LED 	<= kbd48CNC.0.JOG-MPG.LED
 net pokeys.kbd48CNC.JOG_MPG.Button <=	pokeys.0.kbd48CNC.43.Button
 net pokeys.kbd48CNC.JOG_MPG.LED 	=> pokeys.0.kbd48CNC.43.LED
 
 #FUN_JOG_STEP_1,	
-net pokeys.kbd48CNC.JOG_STEP_1.Button =>	kbd48CNC.0.JOG_STEP_1.Button				
-net pokeys.kbd48CNC.JOG_STEP_1.LED 	<= kbd48CNC.0.JOG_STEP_1.LED
+net pokeys.kbd48CNC.JOG_STEP_1.Button =>	kbd48CNC.0.JOG-STEP-1.Button				
+net pokeys.kbd48CNC.JOG_STEP_1.LED 	<= kbd48CNC.0.JOG-STEP-1.LED
 net pokeys.kbd48CNC.JOG_STEP_1.Button <=	pokeys.0.kbd48CNC.44.Button
 net pokeys.kbd48CNC.JOG_STEP_1.LED 	=> pokeys.0.kbd48CNC.44.LED
 
 #FUN_JOG_STEP_10,
-net pokeys.kbd48CNC.JOG_STEP_10.Button =>	kbd48CNC.0.JOG_STEP_10.Button				
-net pokeys.kbd48CNC.JOG_STEP_10.LED 	<= kbd48CNC.0.JOG_STEP_10.LED
+net pokeys.kbd48CNC.JOG_STEP_10.Button =>	kbd48CNC.0.JOG-STEP-10.Button				
+net pokeys.kbd48CNC.JOG_STEP_10.LED 	<= kbd48CNC.0.JOG-STEP-10.LED
 net pokeys.kbd48CNC.JOG_STEP_10.Button <=	pokeys.0.kbd48CNC.45.Button
 net pokeys.kbd48CNC.JOG_STEP_10.LED 	=> pokeys.0.kbd48CNC.45.LED
 
 #FUN_JOG_STEP_100,	
-net pokeys.kbd48CNC.JOG_STEP_100.Button =>	kbd48CNC.0.JOG_STEP_100.Button
-net pokeys.kbd48CNC.JOG_STEP_100.LED 	<= kbd48CNC.0.JOG_STEP_100.LED
+net pokeys.kbd48CNC.JOG_STEP_100.Button =>	kbd48CNC.0.JOG-STEP-100.Button
+net pokeys.kbd48CNC.JOG_STEP_100.LED 	<= kbd48CNC.0.JOG-STEP-100.LED
 net pokeys.kbd48CNC.JOG_STEP_100.Button <=	pokeys.0.kbd48CNC.46.Button
 net pokeys.kbd48CNC.JOG_STEP_100.LED 	=> pokeys.0.kbd48CNC.46.LED
 
 #FUN_JOG_STEP_1000
-net pokeys.kbd48CNC.JOG_STEP_1000.Button => kbd48CNC.0.JOG_STEP_1000.Button			
-net pokeys.kbd48CNC.JOG_STEP_1000.LED 	<= kbd48CNC.0.JOG_STEP_1000.LED
+net pokeys.kbd48CNC.JOG_STEP_1000.Button => kbd48CNC.0.JOG-STEP-1000.Button			
+net pokeys.kbd48CNC.JOG_STEP_1000.LED 	<= kbd48CNC.0.JOG-STEP-1000.LED
 net pokeys.kbd48CNC.JOG_STEP_1000.Button <=	pokeys.0.kbd48CNC.47.Button
 net pokeys.kbd48CNC.JOG_STEP_1000.LED 	=> pokeys.0.kbd48CNC.47.LED
 
