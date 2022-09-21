@@ -365,7 +365,7 @@ net axis-select-a =>	kbd48CNC.0.axis.3.select
 net axis-select-b =>	kbd48CNC.0.axis.4.select
 net axis-select-c =>	kbd48CNC.0.axis.5.select
 
-net mpg-Scale =>	kbd48CNC.0.JOG-MPG.Scale
+net mpg-scale =>	kbd48CNC.0.JOG-MPG.Scale
 
 
 
