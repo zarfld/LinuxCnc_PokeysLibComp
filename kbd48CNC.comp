@@ -5,14 +5,46 @@ option userspace yes;
 pin out bit axis.#.selected [8];  // used to map to LED on kbd
 pin in bit axis.#.select[8];  // inputs from buttons xyzabc
 
+pin in bit JOG_TOGGLE.Button;
+pin in bit JOGRATE_PLUS.Button;
+pin in bit JOGRATE_MINUS.Button;
+pin in bit JOG_PLUS.Button;
+pin in bit JOG_MINUS.Button;
+pin in bit JOG_CONT.Button;
+pin in bit JOG_FAST_TOGGLE.Button;
+pin in bit JOG_INC.Button;
+pin in bit JOG_MPG.Button;
+pin in bit JOG_STEP_1.Button;
+pin in bit JOG_STEP_10.Button;
+pin in bit JOG_STEP_100.Button;
+pin in bit JOG_STEP_1000.Button;
+
+pin out bit JOG_MPG.Scale = 1;
+
+pin out bit JOG_TOGGLE.LED;
+pin out bit JOGRATE_PLUS.LED;
+pin out bit JOGRATE_MINUS.LED;
+pin out bit JOG_PLUS.LED;
+pin out bit JOG_MINUS.LED;
+pin out bit JOG_CONT.LED;
+pin out bit JOG_FAST_TOGGLE.LED;
+pin out bit JOG_INC.LED;
+pin out bit JOG_MPG.LED;
+pin out bit JOG_STEP_1.LED;
+pin out bit JOG_STEP_10.LED;
+pin out bit JOG_STEP_100.LED;
+pin out bit JOG_STEP_1000.LED;
+
+
+
 // pin interface to HAL Axis/Joint
-pin out float axis.#.jog-accel-fraction[8]; //Sets acceleration for wheel jogging to a fraction of the ini max_acceleration for the axis.Values greater than 1 or less than zero are ignored.
-pin out s32 axis.#.jog-counts[8]; //Connect to the "counts" pin of an external encoder to use a physical jog wheel.
-pin out bit axis.#.jog-enable[8]; //When TRUE(and in manual mode), any change to "jog-counts" will result in motion.When false, "jog-counts" is ignored.
-pin out float axis.#.jog-scale[8]; //Sets the distance moved for each count on "jog-counts", in machine units.
-pin out bit axis.#.jog-vel-mode[8]; //When FALSE(the default), the jogwheel operates in position mode.The axis will move exactly jog - scale units for each count, regardless of how long that might take.When TRUE, the wheel operates in velocity mode - motion stops when the wheel stops, even if that means the commanded motion is not completed.
-pin in bit axis.#.kb-jog-active[8]; //(free planner axis jogging active (keyboard or halui))
-pin in bit axis.#.wheel-jog-active[8]; //(free planner axis jogging active (keyboard or halui))
+pin out float axis.#.jog-accel-fraction[6]; //Sets acceleration for wheel jogging to a fraction of the ini max_acceleration for the axis.Values greater than 1 or less than zero are ignored.
+pin out s32 axis.#.jog-counts[6]; //Connect to the "counts" pin of an external encoder to use a physical jog wheel.
+pin out bit axis.#.jog-enable[6]; //When TRUE(and in manual mode), any change to "jog-counts" will result in motion.When false, "jog-counts" is ignored.
+pin out float axis.#.jog-scale[6]; //Sets the distance moved for each count on "jog-counts", in machine units.
+pin out bit axis.#.jog-vel-mode[6]; //When FALSE(the default), the jogwheel operates in position mode.The axis will move exactly jog - scale units for each count, regardless of how long that might take.When TRUE, the wheel operates in velocity mode - motion stops when the wheel stops, even if that means the commanded motion is not completed.
+pin in bit axis.#.kb-jog-active[6]; //(free planner axis jogging active (keyboard or halui))
+pin in bit axis.#.wheel-jog-active[6]; //(free planner axis jogging active (keyboard or halui))
 
 pin out bit alive;
 
