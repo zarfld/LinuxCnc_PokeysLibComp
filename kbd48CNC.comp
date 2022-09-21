@@ -50,7 +50,7 @@ pin in bit axis.#.wheel-jog-active[6]; //(free planner axis jogging active (keyb
 pin out bit axis.#.jog-pos[6];
 pin out bit axis.#.jog-neg[6];
 pin out bit axis.#.jog-incpos[6];
-pin out bit axis.#.jog-neg[6];
+pin out bit axis.#.jog-incneg[6];
 
 pin out bit alive;
 
