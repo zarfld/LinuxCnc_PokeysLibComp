@@ -19,7 +19,7 @@ pin in bit JOG-STEP-10.Button;
 pin in bit JOG-STEP-100.Button;
 pin in bit JOG-STEP-1000.Button;
 
-pin out bit JOG-MPG.Scale = 1;
+pin out float JOG-MPG.Scale = 1;
 
 pin out bit JOG-TOGGLE.LED;
 pin out bit JOGRATE-PLUS.LED;
