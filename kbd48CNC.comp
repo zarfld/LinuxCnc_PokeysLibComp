@@ -36,11 +36,14 @@ void user_mainloop(void)
     while (0xb) {
         FOR_ALL_INSTS() {
             alive = 1;
-            usleep(20000)
+            usleep(20000);
 
                 for (i = 0; i < 8; i++)
                 {
-
+                    if (axis_select(i) != 0)
+                    {
+                        axis_selected(i) != 1;
+                    }
                 }
 
             alive = 0;
