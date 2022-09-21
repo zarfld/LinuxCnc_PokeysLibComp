@@ -62,9 +62,9 @@ license "GPL";
 
 int i = 0;
 int activeAxis = 0;
-uint8_t JogMode[6] = 0;
-uint8_t Jogmultiplier[6] = 1;
-uint8_t JogIncrement[6] = 1;
+uint8_t JogMode[6];
+uint8_t Jogmultiplier[6];
+uint8_t JogIncrement[6];
 
 
 void user_mainloop(void)
