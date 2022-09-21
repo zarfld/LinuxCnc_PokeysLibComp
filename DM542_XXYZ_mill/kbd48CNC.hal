@@ -365,7 +365,7 @@ show parameter
 #net axis-select-b =>	kbd48CNC.0.axis.4.select
 #net axis-select-c =>	kbd48CNC.0.axis.5.select
 
-net MPG-Scale
+#net MPG-Scale
 
 
 
