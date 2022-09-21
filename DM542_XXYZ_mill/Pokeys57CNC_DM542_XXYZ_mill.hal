@@ -428,8 +428,8 @@ net spindle-enable => pokeys.0.PEv2.digout.ExternalRelay-0.out
 #net axis-select-x  halui.axis.x.select  # now pokeys.kbd48CNC.JOG_X.Button
 net jog-x-pos      halui.axis.x.plus
 net jog-x-neg      halui.axis.x.minus
-net joginc-x-pos <=	kbd48CNC.0.axis.0.jog-incpos
-net joginc-x-neg <=	kbd48CNC.0.axis.0.jog-incneg
+net joginc-x-pos 	halui.axis.x.increment-plus
+net joginc-x-neg 	halui.axis.x.increment-minus
 
 net jog-x-analog   halui.axis.x.analog
 net x-is-homed     halui.joint.0.is-homed
