@@ -428,22 +428,33 @@ net spindle-enable => pokeys.0.PEv2.digout.ExternalRelay-0.out
 #net axis-select-x  halui.axis.x.select  # now pokeys.kbd48CNC.JOG_X.Button
 net jog-x-pos      halui.axis.x.plus
 net jog-x-neg      halui.axis.x.minus
+net joginc-x-pos <=	kbd48CNC.0.axis.0.jog-incpos
+net joginc-x-neg <=	kbd48CNC.0.axis.0.jog-incneg
+
 net jog-x-analog   halui.axis.x.analog
 net x-is-homed     halui.joint.0.is-homed
 
 #net axis-select-y  halui.axis.y.select # now pokeys.kbd48CNC.JOG_Y.Button
 net jog-y-pos      halui.axis.y.plus
 net jog-y-pos      halui.joint.2.plus
+net joginc-y-pos 	halui.axis.z.increment-plus
+net joginc-y-neg 	halui.axis.z.increment-minus
 net jog-y-neg      halui.axis.y.minus
 net jog-y-neg      halui.joint.2.minus
+net joginc-y-pos 	halui.joint.2.increment-plus
+net joginc-y-neg 	halui.joint.2.increment-minus
 net jog-y-analog   halui.axis.y.analog
 net y-is-homed     halui.joint.2.is-homed
 
 #net axis-select-z  halui.axis.z.select # now pokeys.kbd48CNC.JOG_X.Button
 net jog-z-pos      halui.axis.z.plus
 net jog-z-neg      halui.axis.z.minus
+net joginc-z-pos	halui.axis.z.increment-plus
+net joginc-z-neg 	halui.axis.z.increment-minus
 net jog-z-pos      halui.joint.3.plus
 net jog-z-neg      halui.joint.3.minus
+net joginc-z-pos 	halui.joint.3.increment-plus
+net joginc-z-neg 	halui.joint.3.increment-minus
 
 net jog-z-analog   halui.axis.z.analog
 net z-is-homed     halui.joint.3.is-homed

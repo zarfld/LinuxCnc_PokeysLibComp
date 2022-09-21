@@ -21,6 +21,7 @@ pin in bit JOG-STEP-1000.Button;
 
 pin out float JOG-MPG.Scale = 1;
 pin in float JOG-INC.increment.in = 1;
+pin in float JOG-INC.increment.out = 1;
 
 pin out bit JOG-TOGGLE.LED;
 pin out bit JOGRATE-PLUS.LED;
