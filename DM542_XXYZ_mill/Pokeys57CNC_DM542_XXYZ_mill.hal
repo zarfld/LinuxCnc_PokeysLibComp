@@ -437,8 +437,8 @@ net x-is-homed     halui.joint.0.is-homed
 #net axis-select-y  halui.axis.y.select # now pokeys.kbd48CNC.JOG_Y.Button
 net jog-y-pos      halui.axis.y.plus
 net jog-y-pos      halui.joint.2.plus
-net joginc-y-pos 	halui.axis.z.increment-plus
-net joginc-y-neg 	halui.axis.z.increment-minus
+net joginc-y-pos 	halui.axis.y.increment-plus
+net joginc-y-neg 	halui.axis.y.increment-minus
 net jog-y-neg      halui.axis.y.minus
 net jog-y-neg      halui.joint.2.minus
 net joginc-y-pos 	halui.joint.2.increment-plus
