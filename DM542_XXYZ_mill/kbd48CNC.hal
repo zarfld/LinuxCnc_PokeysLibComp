@@ -1,5 +1,7 @@
 
-
+loadusr kbd48CNC
+show pin
+show paramet
 #******************************
 # connect miscellaneous signals
 #******************************
