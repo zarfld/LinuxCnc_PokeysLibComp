@@ -49,6 +49,8 @@ pin in bit axis.#.wheel-jog-active[6]; //(free planner axis jogging active (keyb
 
 pin out bit axis.#.jog-pos[6];
 pin out bit axis.#.jog-neg[6];
+pin out bit axis.#.jog-incpos[6];
+pin out bit axis.#.jog-neg[6];
 
 pin out bit alive;
 
@@ -98,7 +100,7 @@ void user_mainloop(void)
 
                                 axis_jog_vel_mode(i) = 1;
 
-                                if (JOG_PLUS_Button(i) != 0)
+                                if (JOG_PLUS_Button != 0)
                                 {
                                     axis_jog_pos(i) = 1;
                                 }
@@ -106,7 +108,7 @@ void user_mainloop(void)
                                 {
                                     axis_jog_pos(i) = 0;
                                 }
-                                if (JOG_MINUS_Button(i) != 0)
+                                if (JOG_MINUS_Button != 0)
                                 {
                                     axis_jog_neg(i) = 1;
                                 }
@@ -124,21 +126,21 @@ void user_mainloop(void)
                                 JOG_MPG_LED = 0;
 
                                 axis_jog_vel_mode(i) = 0;
-                                if (JOG_PLUS_Button(i) != 0)
+                                if (JOG_PLUS_Button != 0)
                                 {
-                                    axis_jog_pos(i) = 1;
+                                    axis_jog_incpos(i) = 1;
                                 }
                                 else
                                 {
-                                    axis_jog_pos(i) = 0;
+                                    axis_jog_incpos(i) = 0;
                                 }
-                                if (JOG_MINUS_Button(i) != 0)
+                                if (JOG_MINUS_Button != 0)
                                 {
-                                    axis_jog_neg(i) = 1;
+                                    axis_jog_incneg(i) = 1;
                                 }
                                 else
                                 {
-                                    axis_jog_neg(i) = 0;
+                                    axis_jog_incneg(i) = 0;
                                 }
 
                             }
@@ -152,6 +154,8 @@ void user_mainloop(void)
 
                                 axis_jog_pos(i) = 0;
                                 axis_jog_neg(i) = 0;
+                                axis_jog_incpos(i) = 0;
+                                axis_jog_incneg(i) = 0;
                             }
                             else if (JogMode[i] == 4)
                             {
@@ -229,6 +233,8 @@ void user_mainloop(void)
                             JOG_MPG_LED = 0;
                             axis_jog_pos(i) = 0;
                             axis_jog_neg(i) = 0;
+                            axis_jog_incpos(i) = 0;
+                            axis_jog_incneg(i) = 0;
                         }
 
 
@@ -240,7 +246,8 @@ void user_mainloop(void)
                         axis_jog_pos(i) = 0;
                         axis_jog_neg(i) = 0;
 
-
+                        axis_jog_incpos(i) = 0;
+                        axis_jog_incneg(i) = 0;
                     }
                 }
 
