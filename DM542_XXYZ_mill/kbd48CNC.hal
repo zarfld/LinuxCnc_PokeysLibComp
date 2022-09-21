@@ -227,7 +227,7 @@ net pokeys.kbd48CNC.JOG_X.LED 	=> pokeys.0.kbd48CNC.32.LED
 #FUN_JOG_A,
 net axis-select-a =>	halui.axis.a.select		
 
-net pokeys.kbd48CNC.JOG_A.LED 	<=	halui.axis.a.is-selected
+#net pokeys.kbd48CNC.JOG_A.LED 	<=	halui.axis.a.is-selected
 net axis-select-a <=	pokeys.0.kbd48CNC.33.Button		
 net pokeys.kbd48CNC.JOG_A.LED 	=> pokeys.0.kbd48CNC.33.LED
 
