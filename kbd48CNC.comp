@@ -24,7 +24,7 @@ license "GPL";
 
 #include <unistd.h>   /* UNIX standard function definitions */
 
-
+int i = 0;
 
 
 void user_mainloop(void)
