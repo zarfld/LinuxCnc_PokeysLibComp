@@ -47,7 +47,7 @@ void user_mainloop(void)
                 }
 
             alive = 0;
-            usleep(20000)
+            usleep(20000);
         }
     }
 }
