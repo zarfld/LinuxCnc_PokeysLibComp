@@ -407,7 +407,6 @@ pin out bit kbd48CNC.#.Button [48];
 //pin io unsigned Encoders.#.channelBpin [26];         // Channel B encoder pin
 
 
-
 pin out u32 EasySensors.#.sensorValue [16];            // Current sensor value
 pin out unsigned EasySensors.#.sensorType [16];             // Type of the sensor
 pin out unsigned EasySensors.#.sensorRefreshPeriod [16];    // Refresh period in 0.1s

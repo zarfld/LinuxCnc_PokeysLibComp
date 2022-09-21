@@ -1,0 +1,50 @@
+component kbd48CNC "PoKeys kbd48CNC abstraction for pokeys";
+
+option userspace yes;
+// pin interface to pokeys-component
+pin out bit axis.#.selected [8];  // used to map to LED on kbd
+pin in bit axis.#.select[8];  // inputs from buttons xyzabc
+
+// pin interface to HAL Axis/Joint
+pin out float axis.#.jog-accel-fraction[8]; //Sets acceleration for wheel jogging to a fraction of the ini max_acceleration for the axis.Values greater than 1 or less than zero are ignored.
+pin out S32 axis.#.jog-counts[8]; //Connect to the "counts" pin of an external encoder to use a physical jog wheel.
+pin out bit axis.#.jog-enable[8]; //When TRUE(and in manual mode), any change to "jog-counts" will result in motion.When false, "jog-counts" is ignored.
+pin out FLOAT axis.#.jog-scale[8]; //Sets the distance moved for each count on "jog-counts", in machine units.
+pin out bit axis.#.jog-vel-mode[8]; //When FALSE(the default), the jogwheel operates in position mode.The axis will move exactly jog - scale units for each count, regardless of how long that might take.When TRUE, the wheel operates in velocity mode - motion stops when the wheel stops, even if that means the commanded motion is not completed.
+pin in bit axis.#.kb-jog-active[8]; //(free planner axis jogging active (keyboard or halui))
+pin in bit axis.#.wheel-jog-active[8]; //(free planner axis jogging active (keyboard or halui))
+
+pin out bit alive;
+
+license "GPL";
+
+option extra_link_args "-lPoKeys";
+
+;;
+
+
+
+
+
+
+void user_mainloop(void)
+{
+
+    comp_id = hal_init("kbd48CNC");
+
+
+    while (0xb) {
+        FOR_ALL_INSTS() {
+            alive = 1;
+            usleep(20000)
+
+                for (i = 0; i < 8; i++)
+                {
+
+                }
+
+            alive = 0;
+            usleep(20000)
+        }
+    }
+}
