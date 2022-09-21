@@ -30,7 +30,7 @@ license "GPL";
 void user_mainloop(void)
 {
 
-    comp_id = hal_init("kbd48CNC");
+    //comp_id = hal_init("kbd48CNC");
 
 
     while (0xb) {
