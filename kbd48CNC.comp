@@ -18,11 +18,11 @@ pin out bit alive;
 
 license "GPL";
 
-option extra_link_args "-lPoKeys";
+//option extra_link_args "-lPoKeys";
 
 ;;
 
-
+#include <unistd.h>   /* UNIX standard function definitions */
 
 
 
