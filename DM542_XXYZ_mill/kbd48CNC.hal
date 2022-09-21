@@ -262,7 +262,7 @@ net pokeys.kbd48CNC.JOG_B.LED 	=> pokeys.0.kbd48CNC.37.LED
 
 #FUN_JOG_FAST_TOGGLE, 
 net pokeys.kbd48CNC.JOG_FAST_TOGGLE.Button =>	kbd48CNC.0.JOG-FAST-TOGGLE.Button			
-net pokeys.kbd48CNC.JOG_FAST_TOGGLE.LED 	<=kbd48CNC.0.JOG-FAST-TOGGLE.LED
+net pokeys.kbd48CNC.JOG_FAST_TOGGLE.LED 	<= kbd48CNC.0.JOG-FAST-TOGGLE.LED
 net pokeys.kbd48CNC.JOG_FAST_TOGGLE.Button <=	pokeys.0.kbd48CNC.38.Button
 net pokeys.kbd48CNC.JOG_FAST_TOGGLE.LED 	=> pokeys.0.kbd48CNC.38.LED
 
