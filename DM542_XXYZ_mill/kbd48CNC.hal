@@ -240,8 +240,8 @@ net pokeys.kbd48CNC.JOG_PLUS.Button <=	pokeys.0.kbd48CNC.34.Button
 net pokeys.kbd48CNC.JOG_PLUS.LED 	=> pokeys.0.kbd48CNC.34.LED
 
 #FUN_JOG_CONT,
-net pokeys.kbd48CNC.JOG_CONT.Button => kbd48CNC.0.JOG_CONT.Button
-net pokeys.kbd48CNC.JOG_CONT.LED 	<= kbd48CNC.0.JOG_CONT.LED
+net pokeys.kbd48CNC.JOG_CONT.Button => kbd48CNC.0.JOG-CONT.Button
+net pokeys.kbd48CNC.JOG_CONT.LED 	<= kbd48CNC.0.JOG-CONT.LED
 net pokeys.kbd48CNC.JOG_CONT.Button <=	pokeys.0.kbd48CNC.35.Button
 net pokeys.kbd48CNC.JOG_CONT.LED 	=> pokeys.0.kbd48CNC.35.LED
 
