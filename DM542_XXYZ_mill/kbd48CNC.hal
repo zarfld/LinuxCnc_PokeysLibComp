@@ -354,18 +354,18 @@ show parameter
 show pin
 show parameter
 
-#net pokeys.kbd48CNC.JOGRATE_PLUS.LED 	<= kbd48CNC.0.JOGRATE_PLUS.LED
-#net pokeys.kbd48CNC.JOGRATE_PLUS.Button =>	kbd48CNC.0.JOGRATE_PLUS.Button	
-#net pokeys.kbd48CNC.JOGRATE_MINUS.LED 	<= kbd48CNC.0.JOGRATE_MINUS.LED
+net pokeys.kbd48CNC.JOGRATE_PLUS.LED 	<= kbd48CNC.0.JOGRATE-PLUS.LED
+net pokeys.kbd48CNC.JOGRATE_PLUS.Button =>	kbd48CNC.0.JOGRATE-PLUS.Button	
+net pokeys.kbd48CNC.JOGRATE_MINUS.LED 	<= kbd48CNC.0.JOGRATE-MINUS.LED
 
-#net axis-select-x =>	kbd48CNC.0.axis.0.select
-#net axis-select-y =>	kbd48CNC.0.axis.1.select
-#net axis-select-z =>	kbd48CNC.0.axis.2.select
-#net axis-select-a =>	kbd48CNC.0.axis.3.select
-#net axis-select-b =>	kbd48CNC.0.axis.4.select
-#net axis-select-c =>	kbd48CNC.0.axis.5.select
+net axis-select-x =>	kbd48CNC.0.axis.0.select
+net axis-select-y =>	kbd48CNC.0.axis.1.select
+net axis-select-z =>	kbd48CNC.0.axis.2.select
+net axis-select-a =>	kbd48CNC.0.axis.3.select
+net axis-select-b =>	kbd48CNC.0.axis.4.select
+net axis-select-c =>	kbd48CNC.0.axis.5.select
 
-#net MPG-Scale
+net MPG-Scale =>	kbd48CNC.0.JOG-MPG.Scale
 
 
 

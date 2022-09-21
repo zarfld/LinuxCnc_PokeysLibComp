@@ -6,34 +6,34 @@ pin out bit axis.#.selected [8];  // used to map to LED on kbd
 pin in bit axis.#.select[8];  // inputs from buttons xyzabc
 
 pin in bit JOG_TOGGLE.Button;
-pin in bit JOGRATE_PLUS.Button;
-pin in bit JOGRATE_MINUS.Button;
-pin in bit JOG_PLUS.Button;
-pin in bit JOG_MINUS.Button;
-pin in bit JOG_CONT.Button;
-pin in bit JOG_FAST_TOGGLE.Button;
-pin in bit JOG_INC.Button;
-pin in bit JOG_MPG.Button;
-pin in bit JOG_STEP_1.Button;
-pin in bit JOG_STEP_10.Button;
-pin in bit JOG_STEP_100.Button;
-pin in bit JOG_STEP_1000.Button;
+pin in bit JOGRATE-PLUS.Button;
+pin in bit JOGRATE-MINUS.Button;
+pin in bit JOG-PLUS.Button;
+pin in bit JOG-MINUS.Button;
+pin in bit JOG-CONT.Button;
+pin in bit JOG-FAST-TOGGLE.Button;
+pin in bit JOG-INC.Button;
+pin in bit JOG-MPG.Button;
+pin in bit JOG-STEP-1.Button;
+pin in bit JOG-STEP-10.Button;
+pin in bit JOG-STEP-100.Button;
+pin in bit JOG-STEP-1000.Button;
 
-pin out bit JOG_MPG.Scale = 1;
+pin out bit JOG-MPG.Scale = 1;
 
-pin out bit JOG_TOGGLE.LED;
-pin out bit JOGRATE_PLUS.LED;
-pin out bit JOGRATE_MINUS.LED;
-pin out bit JOG_PLUS.LED;
-pin out bit JOG_MINUS.LED;
-pin out bit JOG_CONT.LED;
-pin out bit JOG_FAST_TOGGLE.LED;
-pin out bit JOG_INC.LED;
-pin out bit JOG_MPG.LED;
-pin out bit JOG_STEP_1.LED;
-pin out bit JOG_STEP_10.LED;
-pin out bit JOG_STEP_100.LED;
-pin out bit JOG_STEP_1000.LED;
+pin out bit JOG-TOGGLE.LED;
+pin out bit JOGRATE-PLUS.LED;
+pin out bit JOGRATE-MINUS.LED;
+pin out bit JOG-PLUS.LED;
+pin out bit JOG-MINUS.LED;
+pin out bit JOG-CONT.LED;
+pin out bit JOG-FAST-TOGGLE.LED;
+pin out bit JOG-INC.LED;
+pin out bit JOG-MPG.LED;
+pin out bit JOG-STEP-1.LED;
+pin out bit JOG-STEP-10.LED;
+pin out bit JOG-STEP-100.LED;
+pin out bit JOG-STEP-1000.LED;
 
 
 
