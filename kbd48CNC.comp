@@ -100,14 +100,18 @@ void user_mainloop(void)
 
 
                     axis_deb(i) = 10;
-                    if ((axis_select(i) != 0) || (axis_selected(i) != 0))
+                    if ((axis_select(i) == 0) && (axis_selected(i) == 0))
+                    {
+                        axis_deb(i) = 15;
+                    }
+                    else
                     {
                         activeAxis = i;
                         axis_deb(i) = 20;
                     }
 
 
-                    if (activeAxis = i)
+                    if (activeAxis == i)
                     {
                         debCntB[i] ++;
                         axis_debCntB(i) = debCntB[i];
