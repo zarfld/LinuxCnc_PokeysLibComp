@@ -126,7 +126,7 @@ net pokeys.kbd48CNC.SPINDLE_CW.LED 	=> pokeys.0.kbd48CNC.16.LED
 #FUN_SPINDLE_STOP,	
 #net spindle-manual-stop =>	halui.spindle.0.stop		
 #net pokeys.kbd48CNC.SPINDLE_STOP.LED 	<=
-spindle-manual-stop <=	pokeys.0.kbd48CNC.17.Button	
+net spindle-manual-stop <=	pokeys.0.kbd48CNC.17.Button	
 net pokeys.kbd48CNC.SPINDLE_STOP.LED 	=> pokeys.0.kbd48CNC.17.LED
 
 #FUN_SPINDLE_CCW,
