@@ -19,6 +19,7 @@ pin in bit JOG-STEP-100.Button;
 pin in bit JOG-STEP-1000.Button;
 
 pin out float JOG-MPG.Scale = 1;
+pin in float JOG-MPG.Count-In = 1;
 pin in float JOG-INC.increment.in = 1;
 pin in float JOG-INC.increment.out = 1;
 
@@ -194,11 +195,13 @@ void user_mainloop(void)
                         axis_deb(i) = 20;
                     }
 
+                    
 
                     if (activeAxis == i)
                     {
                         debCntB[i] ++;
                         axis_debCntB(i) = debCntB[i];
+                        axis_jog_counts(i) = JOG_MPG_Count_In;
 
                         if (JogMode[i] != 0) 
                         {
