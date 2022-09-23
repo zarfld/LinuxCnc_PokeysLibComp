@@ -2,8 +2,7 @@ component kbd48CNC "PoKeys kbd48CNC abstraction for pokeys";
 
 option userspace yes;
 // pin interface to pokeys-component
-pin in bit axis.#.selected [8];  // used to map to LED on kbd
-pin in bit axis.#.select[8];  // inputs from buttons xyzabc
+
 
 pin in bit JOG_TOGGLE.Button;
 pin in bit JOGRATE-PLUS.Button;
@@ -40,6 +39,9 @@ pin out bit JOG-STEP-1000.LED;
 
 
 // pin interface to HAL Axis/Joint
+pin in bit axis.#.selected[6];  // used to map to LED on kbd
+pin in bit axis.#.select[6];  // inputs from buttons xyzabc
+
 pin out float axis.#.jog-accel-fraction[6]; //Sets acceleration for wheel jogging to a fraction of the ini max_acceleration for the axis.Values greater than 1 or less than zero are ignored.
 pin out s32 axis.#.jog-counts[6]; //Connect to the "counts" pin of an external encoder to use a physical jog wheel.
 pin out bit axis.#.jog-enable[6]; //When TRUE(and in manual mode), any change to "jog-counts" will result in motion.When false, "jog-counts" is ignored.
@@ -56,6 +58,8 @@ pin out bit axis.#.jog-incneg[6];
 pin out bit alive;
 pin out s32 deb;
 pin out s32 axis.#.deb[6];
+pin out s32 axis.#.debCntA[6];
+pin out s32 axis.#.debCntB[6];
 
 license "GPL";
 
@@ -71,20 +75,30 @@ uint8_t JogMode[6];
 unsigned Jogmultiplier[6];
 uint8_t JogIncrement[6];
 
+uint8_t debCntA[6];
+uint8_t debCntB[6];
 
 void user_mainloop(void)
 {
 
     //comp_id = hal_init("kbd48CNC");
-
+    for (i = 0; i < 6; i++)
+    {
+        debCntA[6] = 0;
+        debCntA[6] = 0;
+    }
 
     while (0xb) {
         FOR_ALL_INSTS() {
             alive = 1;
             usleep(20000);
             deb = 10;
-                for (i = 0; i < 8; i++)
+                for (i = 0; i < 6; i++)
                 {
+                    debCntA[i] ++;
+                    axis_debCntA(i) = debCntA[i];
+
+
                     axis_deb(i) = 10;
                     if ((axis_select(i) != 0) || (axis_selected(i) != 0))
                     {
@@ -95,6 +109,9 @@ void user_mainloop(void)
 
                     if (activeAxis = i)
                     {
+                        debCntB[i] ++;
+                        axis_debCntB(i) = debCntB[i];
+
                         if (JogMode[i] != 0) 
                         {
                             axis_deb(i) = 30;
