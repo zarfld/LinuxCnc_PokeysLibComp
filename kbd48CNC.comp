@@ -2,7 +2,7 @@ component kbd48CNC "PoKeys kbd48CNC abstraction for pokeys";
 
 option userspace yes;
 // pin interface to pokeys-component
-pin out bit axis.#.selected [8];  // used to map to LED on kbd
+pin in bit axis.#.selected [8];  // used to map to LED on kbd
 pin in bit axis.#.select[8];  // inputs from buttons xyzabc
 
 pin in bit JOG_TOGGLE.Button;
@@ -54,6 +54,7 @@ pin out bit axis.#.jog-incpos[6];
 pin out bit axis.#.jog-incneg[6];
 
 pin out bit alive;
+pin out s32 deb;
 
 license "GPL";
 
@@ -79,20 +80,23 @@ void user_mainloop(void)
     while (0xb) {
         FOR_ALL_INSTS() {
             alive = 1;
-            usleep(20000);
-
+            usleep(8000);
+            deb = 10;
                 for (i = 0; i < 8; i++)
                 {
-                    if (axis_select(i) != 0)
+                    deb = 10 + i * 1000;
+                    if ((axis_select(i) != 0) || (axis_selected(i) != 0))
                     {
                         activeAxis = i;
-                        axis_selected(i) != 1;
+                        deb = 11 + i * 1000;
                     }
+
 
                     if (activeAxis = i)
                     {
                         if (JogMode[i] != 0) 
                         {
+                            deb = 100 + i * 1000;
                             axis_jog_enable(i) = 1;
                             JOG_TOGGLE_LED = 1;
 
@@ -224,8 +228,6 @@ void user_mainloop(void)
                         {
                             axis_jog_enable(i) = 0;
 
-                            axis_selected(i) != 0;
-
                             JOG_TOGGLE_LED = 0;
 
                             JOG_STEP_1_LED = 0;
@@ -268,7 +270,7 @@ void user_mainloop(void)
                 }
 
             alive = 0;
-            usleep(20000);
+            usleep(8000);
         }
     }
 }
