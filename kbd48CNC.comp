@@ -174,7 +174,7 @@ void user_mainloop(void)
                         {
                             JogMode[i] = 1;
                         }
-                        elseif (JogMode[i] == 3)
+                        else if (JogMode[i] == 3)
                         {
                             JogMode[i] = 1;
                         }
