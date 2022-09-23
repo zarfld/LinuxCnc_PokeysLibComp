@@ -94,6 +94,8 @@ void user_mainloop(void)
                         if (JogMode[i] != 0) 
                         {
                             axis_jog_enable(i) = 1;
+                            JOG_TOGGLE_LED = 1;
+
                             if (JogMode[i] == 1) {
                                 JOG_CONT_LED = 1;
                                 JOG_INC_LED = 0;
@@ -217,12 +219,14 @@ void user_mainloop(void)
 
                             axis_jog_scale(i) = JogIncrement[i] / Jogmultiplier[i];
 
-
-
                         }
                         else
                         {
                             axis_jog_enable(i) = 0;
+
+                            axis_selected(i) != 0;
+
+                            JOG_TOGGLE_LED = 0;
 
                             JOG_STEP_1_LED = 0;
                             JOG_STEP_10_LED = 0;
@@ -246,6 +250,8 @@ void user_mainloop(void)
                         axis_jog_enable(i) = 0;
                         axis_jog_pos(i) = 0;
                         axis_jog_neg(i) = 0;
+
+      
 
                         axis_jog_incpos(i) = 0;
                         axis_jog_incneg(i) = 0;
