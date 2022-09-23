@@ -425,7 +425,26 @@ net spindle-enable => pokeys.0.PEv2.digout.ExternalRelay-0.out
 
 #  ---HALUI signals---
 
-#net axis-select-x  halui.axis.x.select  # now pokeys.kbd48CNC.JOG_X.Button
+
+net axis-select-x =>	halui.axis.x.select	
+net axis-select-y =>	halui.axis.x.select	
+net axis-select-z =>	halui.axis.x.select	
+net axis-select-a =>	halui.axis.x.select	
+net axis-select-b =>	halui.axis.x.select	
+net axis-select-c =>	halui.axis.x.select	
+
+net axis-selected-x 	<=	halui.axis.x.is-selected
+net axis-selected-y 	<=	halui.axis.y.is-selected
+net axis-selected-z 	<=	halui.axis.z.is-selected
+#net axis-selected-a 	<=	halui.axis.a.is-selected
+#net axis-selected-b 	<=	halui.axis.b.is-selected
+#net axis-selected-c 	<=	halui.axis.c.is-selected
+
+net jog-selected-pos      halui.axis.selected.plus
+net jog-selected-pos      halui.joint.selected.plus
+net jog-selected-neg      halui.axis.selected.minus
+net jog-selected-neg      halui.joint.selected.minus
+
 net jog-x-pos      halui.axis.x.plus
 net jog-x-neg      halui.axis.x.minus
 net joginc-x 	halui.axis.x.increment
@@ -435,7 +454,6 @@ net joginc-x-neg 	halui.axis.x.increment-minus
 net jog-x-analog   halui.axis.x.analog
 net x-is-homed     halui.joint.0.is-homed
 
-#net axis-select-y  halui.axis.y.select # now pokeys.kbd48CNC.JOG_Y.Button
 net jog-y-pos      halui.axis.y.plus
 net jog-y-pos      halui.joint.2.plus
 net joginc-y 	halui.axis.y.increment
@@ -469,6 +487,9 @@ net z-is-homed     halui.joint.3.is-homed
 net machine-is-on         halui.machine.is-on
 net jog-speed             halui.axis.jog-speed
 net MDI-mode              halui.mode.is-mdi
+
+
+net axis-select-a =>	halui.axis.a.select	
 
 #  ---coolant signals---
 
