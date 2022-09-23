@@ -55,6 +55,7 @@ pin out bit axis.#.jog-incneg[6];
 
 pin out bit alive;
 pin out s32 deb;
+pin out s32 axis.#.deb[6];
 
 license "GPL";
 
@@ -84,11 +85,11 @@ void user_mainloop(void)
             deb = 10;
                 for (i = 0; i < 8; i++)
                 {
-                    deb = 10 + i * 1000;
+                    axis_deb(i) = 10;
                     if ((axis_select(i) != 0) || (axis_selected(i) != 0))
                     {
                         activeAxis = i;
-                        deb = 11 + i * 1000;
+                        axis_deb(i) = 20;
                     }
 
 
@@ -96,11 +97,12 @@ void user_mainloop(void)
                     {
                         if (JogMode[i] != 0) 
                         {
-                            deb = 100 + i * 1000;
+                            axis_deb(i) = 30;
                             axis_jog_enable(i) = 1;
                             JOG_TOGGLE_LED = 1;
 
                             if (JogMode[i] == 1) {
+                                axis_deb(i) = 31;
                                 JOG_CONT_LED = 1;
                                 JOG_INC_LED = 0;
                                 JOG_MPG_LED = 0;
@@ -109,18 +111,22 @@ void user_mainloop(void)
 
                                 if (JOG_PLUS_Button != 0)
                                 {
+                                    axis_deb(i) = 32;
                                     axis_jog_pos(i) = 1;
                                 }
                                 else
                                 {
+                                    axis_deb(i) = 33;
                                     axis_jog_pos(i) = 0;
                                 }
                                 if (JOG_MINUS_Button != 0)
                                 {
+                                    axis_deb(i) = 34;
                                     axis_jog_neg(i) = 1;
                                 }
                                 else
                                 {
+                                    axis_deb(i) = 35;
                                     axis_jog_neg(i) = 0;
                                 }
 
@@ -128,6 +134,7 @@ void user_mainloop(void)
                             }
                             else if (JogMode[i] == 2)
                             {
+                                axis_deb(i) = 36;
                                 JOG_CONT_LED = 0;
                                 JOG_INC_LED = 1;
                                 JOG_MPG_LED = 0;
@@ -135,24 +142,29 @@ void user_mainloop(void)
                                 axis_jog_vel_mode(i) = 0;
                                 if (JOG_PLUS_Button != 0)
                                 {
+                                    axis_deb(i) = 37;
                                     axis_jog_incpos(i) = 1;
                                 }
                                 else
                                 {
+                                    axis_deb(i) = 38;
                                     axis_jog_incpos(i) = 0;
                                 }
                                 if (JOG_MINUS_Button != 0)
                                 {
+                                    axis_deb(i) = 39;
                                     axis_jog_incneg(i) = 1;
                                 }
                                 else
                                 {
+                                    axis_deb(i) = 40;
                                     axis_jog_incneg(i) = 0;
                                 }
 
                             }
                             else if (JogMode[i] == 3)
                             {
+                                axis_deb(i) = 41;
                                 JOG_CONT_LED = 0;
                                 JOG_INC_LED = 0;
                                 JOG_MPG_LED = 1;
@@ -166,6 +178,7 @@ void user_mainloop(void)
                             }
                             else if (JogMode[i] == 4)
                             {
+                                axis_deb(i) = 42;
                                 JogMode[i] = 0;
                                 axis_jog_vel_mode(i) = 0;
                             }
@@ -173,23 +186,28 @@ void user_mainloop(void)
 
                             if (JOG_STEP_1_Button != 0)
                             {
+                                axis_deb(i) = 43;
                                 Jogmultiplier[i] = 1;
                             }
                             else if (JOG_STEP_10_Button != 0)
                             {
+                                axis_deb(i) = 44;
                                 Jogmultiplier[i] = 10;
                             }
                             else if (JOG_STEP_100_Button != 0)
                             {
+                                axis_deb(i) = 45;
                                 Jogmultiplier[i] = 100;
                             }
                             else if (JOG_STEP_1000_Button != 0)
                             {
+                                axis_deb(i) = 46;
                                 Jogmultiplier[i] = 1000;
                             }
 
                             if(Jogmultiplier[i] = 1)
                             {
+                                axis_deb(i) = 47;
                                 JOG_STEP_1_LED = 1;
                                 JOG_STEP_10_LED = 0;
                                 JOG_STEP_100_LED = 0;
@@ -197,6 +215,7 @@ void user_mainloop(void)
                             }
                             else if (Jogmultiplier[i] = 10)
                             {
+                                axis_deb(i) = 48;
                                 JOG_STEP_1_LED = 0;
                                 JOG_STEP_10_LED = 1;
                                 JOG_STEP_100_LED = 0;
@@ -204,6 +223,7 @@ void user_mainloop(void)
                             }
                             else if (Jogmultiplier[i] = 100)
                             {
+                                axis_deb(i) = 49;
                                 JOG_STEP_1_LED = 0;
                                 JOG_STEP_10_LED = 0;
                                 JOG_STEP_100_LED = 1;
@@ -211,21 +231,25 @@ void user_mainloop(void)
                             }
                             else if (Jogmultiplier[i] = 1000)
                             {
+                                axis_deb(i) = 50;
                                 JOG_STEP_1_LED = 0;
                                 JOG_STEP_10_LED = 0;
                                 JOG_STEP_100_LED = 0;
                                 JOG_STEP_1000_LED = 1;
                             }
                             else
+
                             {
+                                axis_deb(i) = 51;
                                 Jogmultiplier[i] = 1;
                             }
 
                             axis_jog_scale(i) = JogIncrement[i] / Jogmultiplier[i];
-
+                            
                         }
                         else
                         {
+                            axis_deb(i) = 600;
                             axis_jog_enable(i) = 0;
 
                             JOG_TOGGLE_LED = 0;
@@ -249,6 +273,7 @@ void user_mainloop(void)
                     }
                     else
                     {
+                        axis_deb(i) = 700;
                         axis_jog_enable(i) = 0;
                         axis_jog_pos(i) = 0;
                         axis_jog_neg(i) = 0;
@@ -263,12 +288,12 @@ void user_mainloop(void)
                 if (JOG_TOGGLE_Button !=0)
                 {
                     JogMode[i] ++;
-                     if (JogMode[i] > 4) 
-                     {
-                         JogMode[i] = 0;
-                    }
-                }
 
+                }
+                if (JogMode[i] > 4)
+                {
+                    JogMode[i] = 0;
+                }
             alive = 0;
             usleep(8000);
         }
