@@ -81,7 +81,7 @@ void user_mainloop(void)
     while (0xb) {
         FOR_ALL_INSTS() {
             alive = 1;
-            usleep(8000);
+            usleep(20000);
             deb = 10;
                 for (i = 0; i < 8; i++)
                 {
@@ -295,7 +295,7 @@ void user_mainloop(void)
                     JogMode[i] = 0;
                 }
             alive = 0;
-            usleep(8000);
+            usleep(20000);
         }
     }
 }
