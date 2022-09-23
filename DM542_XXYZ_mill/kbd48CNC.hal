@@ -29,27 +29,7 @@ setp joint.2.jog-vel-mode 0
 setp axis.z.jog-vel-mode 0
 setp joint.3.jog-vel-mode 0
 
-net mpg-counts  <= pokeys.0.encoder.0.count
-net mpg-counts => axis.x.jog-counts
-net mpg-counts => joint.0.jog-counts
-net mpg-counts => joint.1.jog-counts
 
-net mpg-counts => axis.y.jog-counts
-net mpg-counts => joint.2.jog-counts
-
-net mpg-counts => axis.z.jog-counts
-net mpg-counts => joint.3.jog-counts
-
-# net mpg-scale <= pokeys.0.encoder.0.scale
-net mpg-scale => axis.x.jog-scale
-net mpg-scale => joint.0.jog-scale
-net mpg-scale => joint.1.jog-scale
-
-net mpg-scale => axis.y.jog-scale
-net mpg-scale => joint.2.jog-scale
-
-net mpg-scale => axis.z.jog-scale
-net mpg-scale => joint.3.jog-scale
 
 
 
@@ -355,6 +335,13 @@ net axis-selected-a =>	kbd48CNC.0.axis.3.selected
 net axis-selected-b =>	kbd48CNC.0.axis.4.selected
 net axis-selected-c =>	kbd48CNC.0.axis.5.selected
 
+net jog-x-enable <=	kbd48CNC.0.axis.0.jog-enable
+net jog-y-enable <=	kbd48CNC.0.axis.1.jog-enable
+net jog-z-enable <=	kbd48CNC.0.axis.2.jog-enable
+net jog-a-enable <=	kbd48CNC.0.axis.3.jog-enable
+net jog-b-enable <=	kbd48CNC.0.axis.4.jog-enable
+net jog-c-enable <=	kbd48CNC.0.axis.5.jog-enable
+
 net jog-x-pos =>	kbd48CNC.0.axis.0.jog-pos
 net jog-x-neg =>	kbd48CNC.0.axis.0.jog-neg
 net jog-y-pos =>	kbd48CNC.0.axis.1.jog-pos
@@ -381,7 +368,17 @@ net joginc-b-neg <=	kbd48CNC.0.axis.4.jog-incneg
 net joginc-c-pos <=	kbd48CNC.0.axis.5.jog-incpos
 net joginc-c-neg <=	kbd48CNC.0.axis.5.jog-incneg
 
+net mpg-scale-x =>	kbd48CNC.0.axis.0.jog-scale
+net mpg-scale-y =>	kbd48CNC.0.axis.0.jog-scale
+net mpg-scale-z =>	kbd48CNC.0.axis.0.jog-scale
+net mpg-scale-a =>	kbd48CNC.0.axis.0.jog-scale
+net mpg-scale-b =>	kbd48CNC.0.axis.0.jog-scale
+net mpg-scale-c =>	kbd48CNC.0.axis.0.jog-scale
+
 net mpg-scale =>	kbd48CNC.0.JOG-MPG.Scale
+
+
+net mpg-Count =>	kbd48CNC.0.JOG-MPG.Count-In
 net joginc-increment =>	kbd48CNC.0.JOG-INC.increment.in
 
 

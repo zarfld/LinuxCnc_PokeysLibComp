@@ -445,6 +445,21 @@ net jog-selected-pos      halui.joint.selected.plus
 net jog-selected-neg      halui.axis.selected.minus
 net jog-selected-neg      halui.joint.selected.minus
 
+net jog-x-enable =>	axis.x.jog-enable
+net jog-x-enable =>	joint.0.jog-enable
+net jog-x-enable =>	joint.1.jog-enable
+
+net jog-y-enable =>	axis.y.jog-enable
+net jog-y-enable =>	joint.2.jog-enable
+
+net jog-z-enable =>	axis.z.jog-enable
+net jog-z-enable =>	joint.3.jog-enable
+
+net jog-a-enable =>	axis.a.jog-enable
+net jog-b-enable =>	axis.b.jog-enable
+net jog-c-enable =>	axis.c.jog-enable
+
+
 net jog-x-pos      halui.axis.x.plus
 net jog-x-neg      halui.axis.x.minus
 net joginc-x 	halui.axis.x.increment
@@ -479,6 +494,30 @@ net joginc-z-neg 	halui.joint.3.increment-minus
 
 net jog-z-analog   halui.axis.z.analog
 net z-is-homed     halui.joint.3.is-homed
+
+net mpg-counts  <= pokeys.0.encoder.0.count
+net mpg-counts => axis.x.jog-counts
+net mpg-counts => joint.0.jog-counts
+net mpg-counts => joint.1.jog-counts
+
+net mpg-counts => axis.y.jog-counts
+net mpg-counts => joint.2.jog-counts
+
+net mpg-counts => axis.z.jog-counts
+net mpg-counts => joint.3.jog-counts
+
+# net mpg-scale <= pokeys.0.encoder.0.scale
+net mpg-scale-x => axis.x.jog-scale
+net mpg-scale-x => joint.0.jog-scale
+net mpg-scale-x => joint.1.jog-scale
+
+net mpg-scale-y => axis.y.jog-scale
+net mpg-scale-y => joint.2.jog-scale
+
+net mpg-scale-z => axis.z.jog-scale
+net mpg-scale-z => joint.3.jog-scale
+
+
 
 net spindle-manual-cw     halui.spindle.0.forward # pokeys.kbd48CNC.SPINDLE_CW.Button
 net spindle-manual-ccw    halui.spindle.0.reverse # pokeys.kbd48CNC.SPINDLE_CCW.Button
