@@ -348,12 +348,12 @@ net axis-select-a =>	kbd48CNC.0.axis.3.select
 net axis-select-b =>	kbd48CNC.0.axis.4.select
 net axis-select-c =>	kbd48CNC.0.axis.5.select
 
-net pokeys.kbd48CNC.JOG_X.LED =>	kbd48CNC.0.axis.0.selected
-net pokeys.kbd48CNC.JOG_Y.LED =>	kbd48CNC.0.axis.1.selected
-net pokeys.kbd48CNC.JOG_Z.LED =>	kbd48CNC.0.axis.2.selected
-net pokeys.kbd48CNC.JOG_A.LED =>	kbd48CNC.0.axis.3.selected
-net pokeys.kbd48CNC.JOG_B.LED =>	kbd48CNC.0.axis.4.selected
-net pokeys.kbd48CNC.JOG_C.LED =>	kbd48CNC.0.axis.5.selected
+net axis-selected-x =>	kbd48CNC.0.axis.0.selected
+net axis-selected-y =>	kbd48CNC.0.axis.1.selected
+net axis-selected-z =>	kbd48CNC.0.axis.2.selected
+net axis-selected-a =>	kbd48CNC.0.axis.3.selected
+net axis-selected-b =>	kbd48CNC.0.axis.4.selected
+net axis-selected-c =>	kbd48CNC.0.axis.5.selected
 
 net jog-x-pos =>	kbd48CNC.0.axis.0.jog-pos
 net jog-x-neg =>	kbd48CNC.0.axis.0.jog-neg
