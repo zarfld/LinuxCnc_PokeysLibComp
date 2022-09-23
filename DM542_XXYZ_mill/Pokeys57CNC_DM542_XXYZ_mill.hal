@@ -427,11 +427,11 @@ net spindle-enable => pokeys.0.PEv2.digout.ExternalRelay-0.out
 
 
 net axis-select-x =>	halui.axis.x.select	
-net axis-select-y =>	halui.axis.x.select	
-net axis-select-z =>	halui.axis.x.select	
-net axis-select-a =>	halui.axis.x.select	
-net axis-select-b =>	halui.axis.x.select	
-net axis-select-c =>	halui.axis.x.select	
+net axis-select-y =>	halui.axis.y.select	
+net axis-select-z =>	halui.axis.z.select	
+net axis-select-a =>	halui.axis.a.select	
+net axis-select-b =>	halui.axis.b.select	
+net axis-select-c =>	halui.axis.c.select	
 
 net axis-selected-x 	<=	halui.axis.x.is-selected
 net axis-selected-y 	<=	halui.axis.y.is-selected
