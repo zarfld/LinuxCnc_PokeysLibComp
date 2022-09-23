@@ -98,6 +98,28 @@ void user_mainloop(void)
                     debCntA[i] ++;
                     axis_debCntA(i) = debCntA[i];
 
+                    if (JOG_TOGGLE_Button != 0)
+                    {
+                        JogMode[i] ++;
+                    }
+
+
+                    if (JOG_CONT_Button != 0)
+                    {
+                        JogMode[i] = 1;
+                    }
+                    /*if (JOG_FAST_TOGGLE.Button != 0)
+                    {
+                        JogMode[i] ++;
+                    }*/
+                    if (JOG_INC_Button != 0)
+                    {
+                        JogMode[i] = 2;
+                    }
+                    if (JOG_MPG_Button != 0)
+                    {
+                        JogMode[i] = 3;
+                    }
 
                     axis_deb(i) = 10;
                     if ((axis_select(i) == 0) && (axis_selected(i) == 0))
@@ -306,11 +328,10 @@ void user_mainloop(void)
                     }
                 }
 
-                if (JOG_TOGGLE_Button !=0)
-                {
-                    JogMode[i] ++;
 
-                }
+
+
+
                 if (JogMode[i] > 4)
                 {
                     JogMode[i] = 0;
