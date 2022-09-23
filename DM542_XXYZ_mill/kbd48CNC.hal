@@ -118,21 +118,21 @@ net pokeys.kbd48CNC.REF.Button <=	pokeys.0.kbd48CNC.15.Button
 net pokeys.kbd48CNC.REF.LED => pokeys.0.kbd48CNC.15.LED
 
 #FUN_SPINDLE_CW,
-#net pokeys.kbd48CNC.SPINDLE_CW.Button =>	halui.spindle.0.forward	
+#net spindle-manual-cw =>	halui.spindle.0.forward	
 net pokeys.kbd48CNC.SPINDLE_CW.LED 	<=	halui.spindle.0.runs-forward 
-net pokeys.kbd48CNC.SPINDLE_CW.Button <=	pokeys.0.kbd48CNC.16.Button
+net spindle-manual-cw <=	pokeys.0.kbd48CNC.16.Button
 net pokeys.kbd48CNC.SPINDLE_CW.LED 	=> pokeys.0.kbd48CNC.16.LED
 
 #FUN_SPINDLE_STOP,	
-net pokeys.kbd48CNC.SPINDLE_STOP.Button =>	halui.spindle.0.stop		
+#net spindle-manual-stop =>	halui.spindle.0.stop		
 #net pokeys.kbd48CNC.SPINDLE_STOP.LED 	<=
-net pokeys.kbd48CNC.SPINDLE_STOP.Button <=	pokeys.0.kbd48CNC.17.Button	
+spindle-manual-stop <=	pokeys.0.kbd48CNC.17.Button	
 net pokeys.kbd48CNC.SPINDLE_STOP.LED 	=> pokeys.0.kbd48CNC.17.LED
 
 #FUN_SPINDLE_CCW,
-net pokeys.kbd48CNC.SPINDLE_CCW.Button =>	halui.spindle.0.reverse		
+#net spindle-manual-ccw =>	halui.spindle.0.reverse		
 net pokeys.kbd48CNC.SPINDLE_CCW.LED 	<=	halui.spindle.0.runs-backward
-net pokeys.kbd48CNC.SPINDLE_CCW.Button <=	pokeys.0.kbd48CNC.18.Button	
+net spindle-manual-ccw <=	pokeys.0.kbd48CNC.18.Button	
 net pokeys.kbd48CNC.SPINDLE_CCW.LED 	=> pokeys.0.kbd48CNC.18.LED
 
 #FUN_GOTO_0s,
