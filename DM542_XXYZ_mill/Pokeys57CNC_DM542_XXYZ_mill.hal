@@ -427,8 +427,15 @@ net spindle-enable => pokeys.0.PEv2.digout.ExternalRelay-0.out
 
 
 net axis-select-x =>	halui.axis.x.select	
+net axis-select-x =>	halui.joint.0.select	
+net axis-select-x =>	halui.joint.1.select
+
 net axis-select-y =>	halui.axis.y.select	
+net axis-select-y =>	halui.joint.2.select
+
 net axis-select-z =>	halui.axis.z.select	
+net axis-select-z =>	halui.joint.3.select
+
 net axis-select-a =>	halui.axis.a.select	
 net axis-select-b =>	halui.axis.b.select	
 net axis-select-c =>	halui.axis.c.select	
@@ -517,6 +524,19 @@ net mpg-scale-y => joint.2.jog-scale
 net mpg-scale-z => axis.z.jog-scale
 net mpg-scale-z => joint.3.jog-scale
 
+net joginc-x =>	halui.axis.x.increment
+net joginc-x =>	halui.joint.0.increment
+net joginc-x =>	halui.joint.1.increment
+
+net joginc-y =>	halui.axis.y.increment
+net joginc-y =>	halui.joint.2.increment
+
+net joginc-z =>	halui.axis.z.increment
+net joginc-z =>	halui.joint.3.increment
+
+net joginc-a =>	halui.axis.a.increment
+net joginc-b =>	halui.axis.b.increment
+net joginc-c =>	halui.axis.c.increment
 
 
 net spindle-manual-cw     halui.spindle.0.forward # pokeys.kbd48CNC.SPINDLE_CW.Button

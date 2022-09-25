@@ -368,6 +368,14 @@ net joginc-b-neg <=	kbd48CNC.0.axis.4.jog-incneg
 net joginc-c-pos <=	kbd48CNC.0.axis.5.jog-incpos
 net joginc-c-neg <=	kbd48CNC.0.axis.5.jog-incneg
 
+net joginc-x <=	kbd48CNC.0.axis.0.jog-increment
+net joginc-y <=	kbd48CNC.0.axis.1.jog-increment
+net joginc-z <=	kbd48CNC.0.axis.2.jog-increment
+net joginc-a <=	kbd48CNC.0.axis.3.jog-increment
+net joginc-b <=	kbd48CNC.0.axis.4.jog-increment
+net joginc-c <=	kbd48CNC.0.axis.5.jog-increment
+
+
 net mpg-scale-x =>	kbd48CNC.0.axis.0.jog-scale
 net mpg-scale-y =>	kbd48CNC.0.axis.1.jog-scale
 net mpg-scale-z =>	kbd48CNC.0.axis.2.jog-scale
