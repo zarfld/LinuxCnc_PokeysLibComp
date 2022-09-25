@@ -141,7 +141,7 @@ void user_mainloop(void)
 
 
 
-                    if (JOG_TOGGLE_Button != 0 && JOG_TOGGLE_LAST[i] == 0)
+                    if ((JOG_TOGGLE_Button != 0) && (JOG_TOGGLE_LAST[i] == 0))
                     {
                         JOG_TOGGLE_LAST[i] = 1;
                         JogMode[i] ++;
@@ -151,7 +151,7 @@ void user_mainloop(void)
                         JOG_TOGGLE_LAST[i] = 0;
                     }
 
-                    if (JOG_CONT_Button != 0 && JOG_CONT_LAST[i] == 0)
+                    if ((JOG_CONT_Button != 0) && (JOG_CONT_LAST[i] == 0))
                     {
                         JOG_CONT_LAST[i] = 1;
                         if (JogMode[i] != 1)
@@ -172,7 +172,7 @@ void user_mainloop(void)
                     {
                         JogMode[i] ++;
                     }*/
-                    if (JOG_INC_Button != 0 && JOG_INC_LAST[i] == 0)
+                    if ((JOG_INC_Button != 0) && (JOG_INC_LAST[i] == 0))
                     {
                         JOG_INC_LAST[i] = 1;
                         if (JogMode[i] != 2)
@@ -189,7 +189,7 @@ void user_mainloop(void)
                         JOG_INC_LAST[i] = 0;
                     }
 
-                    if (JOG_MPG_Button != 0 && JOG_MPG_LAST[i] == 0)
+                    if ((JOG_MPG_Button != 0) && (JOG_MPG_LAST[i] == 0))
                     {
                         JOG_MPG_LAST[i] = 1;
                         if (JogMode[i] != 3)
