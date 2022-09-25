@@ -41,6 +41,10 @@ pin in float JOGRATE.MAX = 9;//"max jograte in units/sec";
 pin in float JOGRATE.init = 0.9; //"default jograte in units/sec";
 pin in float JOGRATE.increment = 1; //" incrments which is added/subtracted when Jograte-plus/minus is pressed in units/min";
 
+pin in float axis.#.jograte-max[6];
+pin in float axis.#.jograte-init[6];
+pin in float axis.#.jograte-increment[6];
+
 // pin interface to HAL Axis/Joint
 pin in bit axis.#.selected[6];  // used to map to LED on kbd
 pin in bit axis.#.select[6];  // inputs from buttons xyzabc
@@ -103,7 +107,7 @@ void user_mainloop(void)
     {
         debCntA[i] = 0;
         debCntA[i] = 0;
-        jogSpeed[i] = JOGRATE_init *60 ;
+        
     }
 
     while (0xb) {
@@ -125,6 +129,11 @@ void user_mainloop(void)
                 {
                     debCntA[i] ++;
                     axis_debCntA(i) = debCntA[i];
+
+                    if (jogSpeed[i] = 0) {
+                        jogSpeed[i] = JOGRATE_init * 60;
+                    }
+                    
 
                     if (JOGRATE_PLUS_Button != 0 && JOGRATE_PLUS_LAST[i] == 0)
                     {
