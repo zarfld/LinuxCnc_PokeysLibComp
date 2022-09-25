@@ -37,9 +37,9 @@ pin out bit JOG-STEP-10.LED;
 pin out bit JOG-STEP-100.LED;
 pin out bit JOG-STEP-1000.LED;
 
-pin in float JOGRATE.MAX =9//"max jograte in units/sec";
-pin in float JOGRATE.DEFAULT =0.9 //"default jograte in units/sec";
-pin in float JOGRATE.increment =1 //" incrments which is added/subtracted when Jograte-plus/minus is pressed in units/min";
+pin in float JOGRATE.MAX = 9;//"max jograte in units/sec";
+pin in float JOGRATE.DEFAULT = 0.9; //"default jograte in units/sec";
+pin in float JOGRATE.increment = 1; //" incrments which is added/subtracted when Jograte-plus/minus is pressed in units/min";
 
 // pin interface to HAL Axis/Joint
 pin in bit axis.#.selected[6];  // used to map to LED on kbd
