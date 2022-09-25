@@ -240,7 +240,7 @@ void user_mainloop(void)
                         axis_debCntB(i) = debCntB[i];
                         axis_jog_counts(i) = JOG_MPG_Count_In;
 
-                        if (JOGRATE_PLUS_Button != 0 && JOGRATE_PLUS_LAST[i] == 0)
+                        if ((JOGRATE_PLUS_Button != 0) && (JOGRATE_PLUS_LAST[i] == 0))
                         {
                             jogSpeed[i] = jogSpeed[i] + JOGRATE_increment;
                             JOGRATE_PLUS_LAST[i] = 1;
@@ -264,7 +264,7 @@ void user_mainloop(void)
                             JOGRATE_PLUS_LED = 0;
                         }
 
-                        if (JOGRATE_MINUS_Button != 0 && JOGRATE_MINUS_LAST[i] == 0)
+                        if ((JOGRATE_MINUS_Button != 0) && (JOGRATE_MINUS_LAST[i] == 0))
                         {
                             jogSpeed[i] = jogSpeed[i] - JOGRATE_increment;
                             JOGRATE_MINUS_LAST[i] = 1;
