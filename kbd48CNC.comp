@@ -37,9 +37,9 @@ pin out bit JOG-STEP-10.LED;
 pin out bit JOG-STEP-100.LED;
 pin out bit JOG-STEP-1000.LED;
 
-param rw float JOGRATE.MAX "max jograte in units/sec";
-param rw float JOGRATE.DEFAULT "default jograte in units/sec";
-param rw float JOGRATE.increment " incrments which is added/subtracted when Jograte-plus/minus is pressed in units/sec";
+pin in float JOGRATE.MAX =9//"max jograte in units/sec";
+pin in float JOGRATE.DEFAULT =0.9 //"default jograte in units/sec";
+pin in float JOGRATE.increment =1 //" incrments which is added/subtracted when Jograte-plus/minus is pressed in units/min";
 
 // pin interface to HAL Axis/Joint
 pin in bit axis.#.selected[6];  // used to map to LED on kbd
@@ -103,7 +103,7 @@ void user_mainloop(void)
     {
         debCntA[i] = 0;
         debCntA[i] = 0;
-        jogSpeed[i] = JOGRATE_DEFAULT;
+        jogSpeed[i] = JOGRATE_DEFAULT *60 ;
     }
 
     while (0xb) {
@@ -138,12 +138,12 @@ void user_mainloop(void)
                         JOGRATE_PLUS_LAST[i] = 0;
                     }
 
-                    if (jogSpeed[i] >= JOGRATE_MAX)
+                    if (jogSpeed[i] >= JOGRATE_MAX*60)
                     {
-                        jogSpeed[i] = JOGRATE_MAX;
+                        jogSpeed[i] = JOGRATE_MAX*60 ;
                         JOGRATE_PLUS_LED = 1;
                     }
-                    else if (jogSpeed[i] == JOGRATE_MAX)
+                    else if (jogSpeed[i] == JOGRATE_MAX*60)
                     {
                         JOGRATE_PLUS_LED = blink;
                     }
