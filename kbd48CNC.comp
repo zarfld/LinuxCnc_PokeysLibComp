@@ -156,6 +156,10 @@ void user_mainloop(void)
                     {
                         JOGRATE_PLUS_LED = blink;
                     }
+                    else
+                    {
+                        JOGRATE_PLUS_LED = 0;
+                    }
 
                     if (JOGRATE_MINUS_Button != 0 && JOGRATE_MINUS_LAST[i] == 0)
                     {
@@ -167,7 +171,7 @@ void user_mainloop(void)
                         JOGRATE_MINUS_LAST[i] = 0;
                     }
 
-                    if (jogSpeed[i] <= JOGRATE_increment)
+                    if (jogSpeed[i] < JOGRATE_increment)
                     {
                         jogSpeed[i] = JOGRATE_increment;
                         JOGRATE_MINUS_LED = 1;
@@ -175,6 +179,10 @@ void user_mainloop(void)
                     else if (jogSpeed[i] == JOGRATE_increment)
                     {
                         JOGRATE_MINUS_LED = blink;
+                    }
+                    else
+                    {
+                        JOGRATE_MINUS_LED = 0;
                     }
 
                     if (JOG_TOGGLE_Button != 0 && JOG_TOGGLE_LAST[i] == 0)

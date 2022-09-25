@@ -545,6 +545,7 @@ net spindle-manual-stop   halui.spindle.0.stop # pokeys.kbd48CNC.SPINDLE_STOP.Bu
 
 net machine-is-on         halui.machine.is-on
 net jog-speed             halui.axis.jog-speed
+net jog-speed             halui.joint.jog-speed
 net MDI-mode              halui.mode.is-mdi
 
 
