@@ -37,7 +37,9 @@ pin out bit JOG-STEP-10.LED;
 pin out bit JOG-STEP-100.LED;
 pin out bit JOG-STEP-1000.LED;
 
-
+param rw bit JOGRATE-MAX "max jograte in units/sec";
+param rw bit JOGRATE-DEFAULT "default jograte in units/sec";
+param rw bit JOGRATE-increment " incrments which is added/subtracted when Jograte-plus/minus is pressed in units/sec";
 
 // pin interface to HAL Axis/Joint
 pin in bit axis.#.selected[6];  // used to map to LED on kbd
@@ -85,6 +87,8 @@ bool JOG_TOGGLE_LAST[6];
 bool JOG_INC_LAST[6];
 bool JOG_MPG_LAST[6];
 bool JOG_CONT_LAST[6];
+bool JOGRATE_PLUS_LAST[6];
+bool JOGRATE_MINUS_LAST[6];
 
 bool blink;
 
@@ -97,8 +101,9 @@ void user_mainloop(void)
     //comp_id = hal_init("kbd48CNC");
     for (i = 0; i < 6; i++)
     {
-        debCntA[6] = 0;
-        debCntA[6] = 0;
+        debCntA[i] = 0;
+        debCntA[i] = 0;
+        jogSpeed[i] = JOGRATE-DEFAULT;
     }
 
     while (0xb) {
@@ -120,6 +125,26 @@ void user_mainloop(void)
                 {
                     debCntA[i] ++;
                     axis_debCntA(i) = debCntA[i];
+
+                    if (JOGRATE_PLUS_Button != 0 && JOGRATE_PLUS_LAST[i] == 0)
+                    {
+                        jogSpeed[i] = jogSpeed[i] + JOGRATE_increment;
+                        JOGRATE_PLUS_LAST[i] = 1;
+                    }
+                    else if (JOGRATE_PLUS_Button == 0)
+                    {
+                        JOGRATE_PLUS_LAST[i] = 0;
+                    }
+
+                    if (JOGRATE_MINUS_Button != 0 && JOGRATE_MINUS_LAST[i] == 0)
+                    {
+                        jogSpeed[i] = jogSpeed[i] + JOGRATE_increment;
+                        JOGRATE_MINUS_LAST[i] = 0;
+                    }
+                    else if (JOGRATE_MINUS_Button == 0)
+                    {
+                        JOGRATE_MINUS_LAST[i] = 0;
+                    }
 
                     if (JOG_TOGGLE_Button != 0 && JOG_TOGGLE_LAST[i] == 0)
                     {
