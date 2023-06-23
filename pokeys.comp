@@ -543,11 +543,11 @@ typedef struct
 
 
 sPoKeysEasySensor EasySensors[];
-hal_pin_u32_t ** EasySensors_sensorValue[16]
-hal_pin_u32_t ** EasySensors_sensorType[16]
-hal_pin_u32_t ** EasySensors_sensorRefreshPeriod[16]
-hal_pin_u32_t ** EasySensors_sensorFailsafeConfig[16]
-hal_pin_u32_t ** EasySensors_sensorReadingID[16]
+hal_pin_u32_t EasySensors_sensorValue[16]
+hal_pin_u32_t EasySensors_sensorType[16]
+hal_pin_u32_t EasySensors_sensorRefreshPeriod[16]
+hal_pin_u32_t EasySensors_sensorFailsafeConfig[16]
+hal_pin_u32_t EasySensors_sensorReadingID[16]
 
 sPoNETmodule PoNet[16];
 
@@ -729,19 +729,19 @@ int Init_EasySensors()
 			char pinName[32];
 			
 			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorValue", i);  // Current sensor value
-			hal_pin_u32_new(pinName, HAL_IN,EasySensors_sensorValue[i],comp_id);
+			hal_pin_u32_new(pinName, HAL_IN,&EasySensors_sensorValue[i],comp_id);
 			
 			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorType", i);  // Type of the sensor
-			hal_pin_u32_new(pinName, HAL_IN,EasySensors_sensorType[i],comp_id);
+			hal_pin_u32_new(pinName, HAL_IN,&EasySensors_sensorType[i],comp_id);
 			
 			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorRefreshPeriod", i);  // Refresh period in 0.1s
-			hal_pin_u32_new(pinName, HAL_IN,EasySensors_sensorRefreshPeriod[i],comp_id);
+			hal_pin_u32_new(pinName, HAL_IN,&EasySensors_sensorRefreshPeriod[i],comp_id);
 			
 			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorFailsafeConfig", i);  // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
-			hal_pin_u32_new(pinName, HAL_IN,EasySensors_sensorFailsafeConfig[i],comp_id);
+			hal_pin_u32_new(pinName, HAL_IN,&EasySensors_sensorFailsafeConfig[i],comp_id);
 			
 			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorReadingID", i);  // Sensor reading selection (see Protocol description document for details)
-			hal_pin_u32_new(pinName, HAL_IN,EasySensors_sensorReadingID[i],comp_id);
+			hal_pin_u32_new(pinName, HAL_IN,&EasySensors_sensorReadingID[i],comp_id);
 			
 
 		}
