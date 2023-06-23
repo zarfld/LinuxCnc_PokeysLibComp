@@ -1,4 +1,4 @@
-component pokeys "PoKeys IO driver, by Mit Zot";
+component pokeys "PoKeys IO driver";
 
 option userspace yes;
 
@@ -406,13 +406,14 @@ pin out bit kbd48CNC.#.Button [48];
 //pin io unsigned Encoders.#.channelApin [26];         // Channel A encoder pin
 //pin io unsigned Encoders.#.channelBpin [26];         // Channel B encoder pin
 
-
+/*
 pin out u32 EasySensors.#.sensorValue [16];            // Current sensor value
 pin out unsigned EasySensors.#.sensorType [16];             // Type of the sensor
 pin out unsigned EasySensors.#.sensorRefreshPeriod [16];    // Refresh period in 0.1s
 pin out unsigned EasySensors.#.sensorFailsafeConfig [16];   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
 pin out unsigned EasySensors.#.sensorReadingID [16];        // Sensor reading selection (see Protocol description document for details)
 
+*/
 
 /*
 pin io unsigned PoStep.EnablePoStepCommunication;
@@ -510,6 +511,9 @@ int rtc_latencyCounter = 0;
 uint8_t PEv2_PulseEngineStateSetup = 0;
 uint8_t PulseEngineState = 0;
 bool Pins_DigitalValueSet_ignore[55];
+
+
+
 int i=0;
 
 
@@ -698,6 +702,40 @@ int Update_LCD()
 	}
 	return 0;
 }
+
+int Init_EasySensors()
+{
+	if(PK_EasySensorsSetupGet(dev) == PK_OK)
+	{
+		for (i = 0; i < dev->info.iEasySensors; i++)
+		{
+			/*pin out u32 EasySensors.%d.sensorValue [16];            // Current sensor value
+			pin out unsigned EasySensors.%d.sensorType [16];             
+			pin out unsigned EasySensors.%d.sensorRefreshPeriod [16];    
+			pin out unsigned EasySensors.%d.sensorFailsafeConfig [16];  
+			pin out unsigned EasySensors.%d.sensorReadingID [16];        // Sensor reading selection (see Protocol description document for details)
+			*/
+
+			char pinName[32];
+			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorValue", i);  // Current sensor value
+			hal_pin_u32_new(pinName, HAL_IN);
+			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorType", i);  // Type of the sensor
+			hal_pin_u32_new(pinName, HAL_IN);
+			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorRefreshPeriod", i);  // Refresh period in 0.1s
+			hal_pin_u32_new(pinName, HAL_IN);
+			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorFailsafeConfig", i);  // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
+			hal_pin_u32_new(pinName, HAL_IN);
+			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorReadingID", i);  // Sensor reading selection (see Protocol description document for details)
+			hal_pin_u32_new(pinName, HAL_IN);
+
+		}
+		usleep(sleepdur); 
+	}
+
+	//PK_EasySensorsSetupSet
+	return 0;
+}
+
 
 int Config_EasySensors()
 {

@@ -1,0 +1,159 @@
+#include "pokeyslib.h"
+#include "rtapi.h"
+#include "rtapi_app.h"
+#include "hal.h"
+
+
+RTAPI_PLUGIN(homecomp);
+
+
+static void homecomp_init(void) {
+    hal_pin_float_t *input_pin = hal_pin_float_new("homecomp.input-pin", HAL_IN);
+    hal_pin_float_t *output_pin = hal_pin_float_new("homecomp.output-pin", HAL_OUT);
+
+    // Configure pins or perform any other initialization
+
+    // Register a function or callback
+    hal_pin_float_t *trigger_pin = hal_pin_float_new("homecomp.trigger-pin", HAL_IN);
+    hal_pin_bit_t *home_done_pin = hal_pin_bit_new("homecomp.home-done-pin", HAL_OUT);
+    hal_pin_float_t *home_position_pin = hal_pin_float_new("homecomp.home-position-pin", HAL_OUT);
+    hal_pin_bit_t *homing_error_pin = hal_pin_bit_new("homecomp.homing-error-pin", HAL_OUT);
+
+    // Register a function to handle the trigger
+    hal_pin_bit_link(trigger_pin, homecomp_trigger);
+}
+
+static void homecomp_update(void) {
+
+hal_pin_bit_t* homing_pin;
+hal_pin_float_t* homing_speed_pin;
+// Create other necessary HAL pins for parameters
+
+homing_pin = hal_pin_bit_new("homecomp.homing", HAL_IN);
+homing_speed_pin = hal_pin_float_new("homecomp.homing-speed", HAL_IN);
+// Initialize other HAL pins for parameters
+
+int homing_required = hal_pin_bit_read(homing_pin);
+if (homing_required) {
+    // Perform homing process using pokeyslib functions
+    // Example: pokeyslib_homing_start(axis_number);
+}
+
+int homing_required = hal_pin_bit_read(homing_pin);
+float homing_speed = hal_pin_float_read(homing_speed_pin);
+// Read other parameter values from HAL pins
+
+if (homing_required) {
+    // Perform homing process using pokeyslib functions
+    // Example: pokeyslib_homing_start_with_params(axis_number, homing_speed, other_params);
+}
+
+
+}
+
+// Homing test
+void Homing_example(sPoKeysDevice * dev)
+{
+    // Check if pulse engine is enabled...
+    if (dev->PEv2.PulseEngineEnabled != 3)
+    {
+        printf("Run example1 first");
+        return;
+    }
+
+    // Switch to STOPPED
+    printf("Changing state to STOPPED...\n");
+    dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+    PK_PEv2_PulseEngineStateSet(dev);
+
+
+    dev->PEv2.param1 = 0;
+    PK_PEv2_AxisConfigurationGet(dev);
+
+
+    printf("Configuring axis 1...\n");
+    // - axis is equipped with home and limit+ switches, both limit+ and home switches have inverted polarity (NO switch)
+    dev->PEv2.AxesSwitchConfig[0] = PK_ASO_SWITCH_HOME | PK_ASO_SWITCH_LIMIT_P | PK_ASO_SWITCH_INVERT_HOME | PK_ASO_SWITCH_INVERT_LIMIT_P;
+    // - use dedicated home input on the PoKeysCNCaddon
+    dev->PEv2.PinHomeSwitch[0] = 0;
+
+    // - max speed: 15 kHz
+    dev->PEv2.MaxSpeed[0] = 15;
+    // - max acceleration: 30 kHz / s
+    dev->PEv2.MaxAcceleration[0] = 0.030f;
+    // - max deceleration: 60 kHz / s
+    dev->PEv2.MaxDecceleration[0] = 0.060f;
+
+    // - use 10% of max speed for homing
+    dev->PEv2.HomingSpeed[0] = 10;
+    // - use 50% of the homing speed for fine homing
+    dev->PEv2.HomingReturnSpeed[0] = 50;
+
+    // Save axis index to param1
+    dev->PEv2.param1 = 0;
+    PK_PEv2_AxisConfigurationSet(dev);
+
+
+
+    // Start homing procedure for axis 1
+    dev->PEv2.HomingStartMaskSetup = (1<<0); // Home axis 1 only (bit 0)
+    PK_PEv2_HomingStart(dev);
+
+    int cancel = 0;
+    printf("Homing... Press any key to cancel\n");
+    // Wait for homing to complete
+    while(!kbhit() && !cancel)
+    {
+        PK_PEv2_StatusGet(dev);
+
+        // Check homing status...
+        switch (dev->PEv2.AxesState[0])
+        {
+            case 0:
+                printf("\rStopped... ");
+                break;
+
+            case PK_PEAxisState_axHOME:
+                // Axis is homed
+                printf("\rAxis homed           \n");
+                break;
+
+            case PK_PEAxisState_axHOMINGSTART:
+                // Should not see this...
+                printf("\rHoming starting...");
+                break;
+
+            case PK_PEAxisState_axHOMINGSEARCH:
+                printf("\rCoarse homing... ");
+                break;
+
+            case PK_PEAxisState_axHOMINGBACK:
+                printf("\rFine homing...   ");
+                break;
+
+            default:
+                printf("\rUnknown state encountered\n");
+                cancel = 1;
+                break;
+        }
+
+        switch (dev->PEv2.PulseEngineState)
+        {
+            case PK_PEState_peHOME:
+                PK_PEv2_HomingFinish(dev);
+                printf("Homing complete!\nPress any key to continue...\n");
+                cancel = 1;
+                break;
+        }
+
+        Sleep(100);
+    }
+    getch();
+    printf("\n");
+
+    // Switch to STOPPED
+    printf("Changing state to STOPPED...\n");
+    dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+    PK_PEv2_PulseEngineStateSet(dev);
+
+}
