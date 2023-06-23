@@ -539,7 +539,7 @@ typedef struct
 
 
 
-sPoKeysEasySensor EasySensors[100];
+sPoKeysEasySensor EasySensors[];
 sPoNETmodule PoNet[16];
 
 uint8_t PoExtBus_DataSet[10];
@@ -707,6 +707,7 @@ int Init_EasySensors()
 {
 	if(PK_EasySensorsSetupGet(dev) == PK_OK)
 	{
+		redim EasySensors 
 		for (i = 0; i < dev->info.iEasySensors; i++)
 		{
 			/*pin out u32 EasySensors.%d.sensorValue [16];            // Current sensor value
@@ -718,15 +719,15 @@ int Init_EasySensors()
 
 			char pinName[32];
 			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorValue", i);  // Current sensor value
-			hal_pin_u32_new(pinName, HAL_IN);
+			hal_pin_u32_new(pinName, HAL_IN,EasySensors[i].sensorValue,"");
 			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorType", i);  // Type of the sensor
-			hal_pin_u32_new(pinName, HAL_IN);
+			hal_pin_u32_new(pinName, HAL_IN,EasySensors[i].sensorType,"");
 			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorRefreshPeriod", i);  // Refresh period in 0.1s
-			hal_pin_u32_new(pinName, HAL_IN);
+			hal_pin_u32_new(pinName, HAL_IN,EasySensors[i].sensorRefreshPeriod,"");
 			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorFailsafeConfig", i);  // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
-			hal_pin_u32_new(pinName, HAL_IN);
+			hal_pin_u32_new(pinName, HAL_IN,EasySensors[i].sensorFailsafeConfig,"");
 			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorReadingID", i);  // Sensor reading selection (see Protocol description document for details)
-			hal_pin_u32_new(pinName, HAL_IN);
+			hal_pin_u32_new(pinName, HAL_IN,EasySensors[i].sensorReadingID,"");
 
 		}
 		usleep(sleepdur); 
