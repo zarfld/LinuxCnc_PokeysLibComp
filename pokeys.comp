@@ -489,7 +489,7 @@ option extra_link_args "-lPoKeys";
 #include "rtapi.h"
 #include "rtapi_app.h"
 #include "hal.h"
-
+#include "stdio.h"
 
 sPoKeysDevice * dev=0;
 static int comp_id;		/* component ID */
