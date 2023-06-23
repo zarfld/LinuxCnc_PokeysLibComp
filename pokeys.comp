@@ -542,11 +542,11 @@ typedef struct
 
 
 sPoKeysEasySensor EasySensors[];
-hal_pin_u32_t EasySensors_sensorValue[16]
-hal_pin_u32_t EasySensors_sensorType[16]
-hal_pin_u32_t EasySensors_sensorRefreshPeriod[16]
-hal_pin_u32_t EasySensors_sensorFailsafeConfig[16]
-hal_pin_u32_t EasySensors_sensorReadingID[16]
+hal_pin_u32_t ** EasySensors_sensorValue[16]
+hal_pin_u32_t ** EasySensors_sensorType[16]
+hal_pin_u32_t ** EasySensors_sensorRefreshPeriod[16]
+hal_pin_u32_t ** EasySensors_sensorFailsafeConfig[16]
+hal_pin_u32_t ** EasySensors_sensorReadingID[16]
 
 sPoNETmodule PoNet[16];
 
