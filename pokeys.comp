@@ -707,7 +707,7 @@ int Init_EasySensors()
 {
 	if(PK_EasySensorsSetupGet(dev) == PK_OK)
 	{
-		redim EasySensors 
+
 		for (i = 0; i < dev->info.iEasySensors; i++)
 		{
 			/*pin out u32 EasySensors.%d.sensorValue [16];            // Current sensor value
