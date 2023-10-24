@@ -542,7 +542,7 @@ typedef struct
 
 
 
-sPoKeysEasySensor EasySensors[];
+sPoKeysEasySensor EasySensors[16];
 hal_pin_u32_t EasySensors_sensorValue[16]
 hal_pin_u32_t EasySensors_sensorType[16]
 hal_pin_u32_t EasySensors_sensorRefreshPeriod[16]
