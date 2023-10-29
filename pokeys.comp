@@ -2,6 +2,8 @@ component pokeys "PoKeys IO driver";
 
 option userspace yes;
 
+#define PoNet = 16
+
 pin out unsigned enum_usb_dev;
 pin out unsigned enum_fusb_dev;
 pin out unsigned enum_udp_dev;
@@ -406,44 +408,49 @@ pin out bit kbd48CNC.#.Button [48];
 //pin io unsigned Encoders.#.channelApin [26];         // Channel A encoder pin
 //pin io unsigned Encoders.#.channelBpin [26];         // Channel B encoder pin
 
-/*
-pin out u32 EasySensors.#.sensorValue [16];            // Current sensor value
-pin out unsigned EasySensors.#.sensorType [16];             // Type of the sensor
-pin out unsigned EasySensors.#.sensorRefreshPeriod [16];    // Refresh period in 0.1s
-pin out unsigned EasySensors.#.sensorFailsafeConfig [16];   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
-pin out unsigned EasySensors.#.sensorReadingID [16];        // Sensor reading selection (see Protocol description document for details)
+#ifdef EasySensors
+pin out u32 EasySensors.#.sensorValue[16];            // Current sensor value
+pin out unsigned EasySensors.#.sensorType[16];             // Type of the sensor
+pin out unsigned EasySensors.#.sensorRefreshPeriod[16];    // Refresh period in 0.1s
+pin out unsigned EasySensors.#.sensorFailsafeConfig[16];   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
+pin out unsigned EasySensors.#.sensorReadingID[16];        // Sensor reading selection (see Protocol description document for details)
 
-*/
+#endif // EasySensors
 
-/*
+
+
+#ifdef PoStep
 pin io unsigned PoStep.EnablePoStepCommunication;
-    // Status
-pin out unsigned PoStep.#.SupplyVoltage [8];
-pin out unsigned PoStep.#.Temperature [8];
-pin out unsigned PoStep.#.InputStatus [8];
-pin out unsigned PoStep.#.DriverStatus [8];
-pin out unsigned PoStep.#.FaultStatus [8];
-pin out unsigned PoStep.#.UpdateState [8];
+// Status
+pin out unsigned PoStep.#.SupplyVoltage[8];
+pin out unsigned PoStep.#.Temperature[8];
+pin out unsigned PoStep.#.InputStatus[8];
+pin out unsigned PoStep.#.DriverStatus[8];
+pin out unsigned PoStep.#.FaultStatus[8];
+pin out unsigned PoStep.#.UpdateState[8];
 
-    // Settings
-pin io unsigned PoStep.#.DriverMode [8];
-pin io unsigned PoStep.#.StepMode [8];
-pin io unsigned PoStep.#.Current_FS [8];
-pin io unsigned PoStep.#.Current_Idle [8];
-pin io unsigned PoStep.#.Current_Overheat [8];
-pin io unsigned PoStep.#.TemperatureLimit [8];
+// Settings
+pin io unsigned PoStep.#.DriverMode[8];
+pin io unsigned PoStep.#.StepMode[8];
+pin io unsigned PoStep.#.Current_FS[8];
+pin io unsigned PoStep.#.Current_Idle[8];
+pin io unsigned PoStep.#.Current_Overheat[8];
+pin io unsigned PoStep.#.TemperatureLimit[8];
 
-    // Configuration
-pin io unsigned PoStep.#.AddressI2C [8];
-pin io unsigned PoStep.#.DriverType [8];
-pin io unsigned PoStep.#.UpdateConfig [8];
+// Configuration
+pin io unsigned PoStep.#.AddressI2C[8];
+pin io unsigned PoStep.#.DriverType[8];
+pin io unsigned PoStep.#.UpdateConfig[8];
+#endif // PoStep
 
-
+#ifdef PWM
 pin io unsigned PWM.PWMperiod;
-pin io unsigned PWM.#.PWMduty [6];
-pin io unsigned PWM.#.PWMenabledChannels [6];
-pin io unsigned PWM.#.PWMpinIDs [6];
-*/
+pin io unsigned PWM.#.PWMduty[6];
+pin io unsigned PWM.#.PWMenabledChannels[6];
+pin io unsigned PWM.#.PWMpinIDs[6];
+#endif // PWM
+
+#ifdef PoNet
 pin out unsigned PoNET.#.moduleID[16];
 pin out unsigned PoNET.#.i2cAddress[16];
 pin out unsigned PoNET.#.moduleType[16];
@@ -454,27 +461,36 @@ pin io unsigned PoNET.PWMduty;
 pin io unsigned PoNET.lightValue;
 pin out unsigned PoNET.PoNETstatus;
 pin out unsigned PoNET.DevCount;
-pin out unsigned PoNET.#.statusIn [16];
-pin in unsigned PoNET.#.statusOut [16];
-/*
+pin out unsigned PoNET.#.statusIn[16];
+pin in unsigned PoNET.#.statusOut[16];
+#endif // PoNet
+
+
+#ifdef MatrixLED
 pin io unsigned MatrixLED.displayEnabled;                    // Display enabled byte - set to 1 to enable the display
 pin io unsigned MatrixLED.rows;                              // Number of Matrix LED rows
 pin io unsigned MatrixLED.columns;                           // Number of Matrix LED columns
 pin io unsigned MatrixLED.RefreshFlag;                       // Flag for refreshing data - set to 1 to refresh the display
-pin io unsigned MatrixLED.#.data [8];                           // Matrix LED buffer - one byte per row (assumes 8 columns)
+pin io unsigned MatrixLED.#.data[8];                           // Matrix LED buffer - one byte per row (assumes 8 columns)
 
+#endif // MatrixLED
+
+#ifdef LCD
 pin io unsigned LCD.Configuration;                     // LCD configuration byte - 0: disabled, 1: enabled on primary pins, 2: enabled on secondary pins
 pin io unsigned LCD.Rows;                              // Number of LCD module rows
 pin io unsigned LCD.Columns;                           // Number of LCD module columns
 pin io unsigned LCD.RowRefreshFlags;                   // Flag for refreshing data - bit 0: row 1, bit 1: row 2, bit 2: row 3, bit 3: row 4
-    
+
 pin io unsigned LCD.line1.# [20];                         // Line 1 buffer
 pin io unsigned LCD.line2.# [20];                         // Line 2 buffer
 pin io unsigned LCD.line3.# [20];                         // Line 3 buffer
 pin io unsigned LCD.line4.# [20];                         // Line 4 buffer
-*/
+#endif // LCD
+
+#ifdef i2c
 pin out unsigned I2C.#.presentDevices [16];
 pin out bit I2C.scanning ;
+#endif // LCD
 
 license "GPL";
 
@@ -541,13 +557,15 @@ typedef struct
 } PK_MatrixKB_Parameters;
 
 
-
+#ifdef EasySensors
 sPoKeysEasySensor EasySensors[16];
-hal_pin_u32_t EasySensors_sensorValue[16]
-hal_pin_u32_t EasySensors_sensorType[16]
-hal_pin_u32_t EasySensors_sensorRefreshPeriod[16]
-hal_pin_u32_t EasySensors_sensorFailsafeConfig[16]
-hal_pin_u32_t EasySensors_sensorReadingID[16]
+hal_pin_u32_t EasySensors_sensorValue[16];
+hal_pin_u32_t EasySensors_sensorType[16];
+hal_pin_u32_t EasySensors_sensorRefreshPeriod[16];
+hal_pin_u32_t EasySensors_sensorFailsafeConfig[16];
+hal_pin_u32_t EasySensors_sensorReadingID[16];
+#endif
+
 
 sPoNETmodule PoNet[16];
 
@@ -712,6 +730,7 @@ int Update_LCD()
 	return 0;
 }
 
+#ifdef EasySensors
 int Init_EasySensors()
 {
 	if(PK_EasySensorsSetupGet(dev) == PK_OK)
@@ -780,6 +799,9 @@ int Update_EasySensors()
 	}
 	return 0;
 }
+#endif
+
+
 
 
 int Config_PoStep()
@@ -979,7 +1001,8 @@ void user_mainloop(void)
 				Config_MatrixKB;
 
 			}*/
-			/*if (info_EasySensors!=0)
+#ifdef EasySensors
+			if (info_EasySensors!=0)
 			{
 				Config_EasySensors;
 				for (i = 0; i < dev->info.iEasySensors; i++)
@@ -991,7 +1014,9 @@ void user_mainloop(void)
 					EasySensors_sensorReadingID(i)= EasySensors[i].sensorReadingID;        // Sensor reading selection (see Protocol description document for details)
 					usleep(sleepdur); 
 				}
-			}*/
+			}
+#endif
+
 
 			if (info_protI2C!=0)
 			{
@@ -2637,7 +2662,7 @@ void user_mainloop(void)
 				//dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 				//PK_PoNETSetModuleStatus(dev);
 			}
-
+#ifdef EasySensors
 			if (info_EasySensors!=0)
 			{
 				Update_EasySensors;
@@ -2646,7 +2671,7 @@ void user_mainloop(void)
 					EasySensors_sensorValue(i) = EasySensors[i].sensorValue;            // Current sensor value
 				}
 			}
-
+#endif
 	
 
 			if (info_PoExtBus!=0)
