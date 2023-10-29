@@ -41,6 +41,7 @@ or by inifile setting : \\fB[EMCMOT]HOMEMOD = user_homecomp\\fR
 https ://github.com/LinuxCNC/linuxcnc/blob/BRANCHNAME/src/hal/components/homecomp.comp
 """;
 
+pin in unsigned devSerial;
 pin out bit is_module = 1; //one pin is required to use halcompile)
 
 license "GPL";
@@ -62,7 +63,7 @@ option  extra_setup;
 
 #include "motion.h"
 #include "homing.h"
-#include "pokeyslib.h"
+//#include "pokeyslib.h"
 
 static char* home_parms;
 RTAPI_MP_STRING(home_parms, "Example home parms");
