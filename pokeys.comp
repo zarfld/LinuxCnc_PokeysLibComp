@@ -2,7 +2,7 @@ component pokeys "PoKeys IO driver";
 
 option userspace yes;
 
-#define PoNet
+//#define PoNet
 
 pin out unsigned enum_usb_dev;
 pin out unsigned enum_fusb_dev;
