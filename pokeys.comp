@@ -503,7 +503,7 @@ option extra_link_args "-lPoKeys";
 //#include "<math.h>"
 #include "PoKeysLib.h"
 #include "rtapi.h"
-#include "rtapi_app.h"
+//#include "rtapi_app.h"
 #include "hal.h"
 #include "stdio.h"
 
