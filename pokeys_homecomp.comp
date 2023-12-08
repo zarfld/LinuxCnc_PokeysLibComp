@@ -386,6 +386,72 @@ void homeMotFunctions(void(*pSetRotaryUnlock)(int, int)
     return;
 }
 
+static int pokeyshoming_1joint_state_machine(int joint_num)
+{
+    typedef enum {
+        PK_PEAxisState_axSTOPPED = 0,        // Axis is stopped
+        PK_PEAxisState_axREADY = 1,        // Axis ready
+        PK_PEAxisState_axRUNNING = 2,        // Axis is running
+
+        PK_PEAxisState_axHOMING_RESETTING = 8,	   // Stopping the axis to reset the position counters
+        PK_PEAxisState_axHOMING_BACKING_OFF = 9,   // Backing off switch
+        PK_PEAxisState_axHOME = 10,       // Axis is homed
+        PK_PEAxisState_axHOMINGSTART = 11,       // Homing procedure is starting on axis
+        PK_PEAxisState_axHOMINGSEARCH = 12,       // Homing procedure first step - going to home
+        PK_PEAxisState_axHOMINGBACK = 13,       // Homing procedure second step - slow homing
+
+        PK_PEAxisState_axPROBED = 14,       // Probing completed for this axis
+        PK_PEAxisState_axPROBESTART = 15,       // Probing procedure is starting on axis
+        PK_PEAxisState_axPROBESEARCH = 16,       // Probing procedure - probing
+
+        PK_PEAxisState_axERROR = 20,       // Axis error
+        PK_PEAxisState_axLIMIT = 30        // Axis limit tripped
+    } custom_home_state_t;
+
+    static custom_home_state_t chomestate[EMCMOT_MAX_JOINTS] = { 0 };
+    custom_home_state_t nextcstate;
+
+#define C_SHOW \
+    rtapi_print("H[%d].homed=%d,homing=%d,home_state=%d chomestate[%d]=%d next=%d\n" \
+      ,joint_num,H[joint_num].homed,H[joint_num].homing,H[joint_num].home_state \
+      ,joint_num,chomestate[joint_num],nextcstate);
+
+    if (H[joint_num].home_state == HOME_IDLE) return 0; // nothing to do
+
+    if ((H[joint_num].home_state == HOME_START) && (chomestate[joint_num] == CUSTOM_IDLE)) {
+        H[joint_num].homing = 1;
+        H[joint_num].homed = 0;
+        chomestate[joint_num] = CUSTOM_1; // set first non-idle custom_home_state
+    }
+    // For this example, just walk thru custom_home_states with prints.
+    // Note: remains in the base home_state: HOME_START for all custom_home_states.
+    //       On completion, return to HOME_IDLE, CUSTOM_IDLE states.
+    switch (chomestate[joint_num]) {
+    case CUSTOM_1:
+        // Each CUSTOM_* state should do something and/or check something
+        // and set nexstcstate according to the design goals.
+        // Halpin variables can be read and/or set for next write.
+        nextcstate = CUSTOM_2;    C_SHOW; chomestate[joint_num] = nextcstate; break;
+    case CUSTOM_2: nextcstate = CUSTOM_3;    C_SHOW; chomestate[joint_num] = nextcstate; break;
+    case CUSTOM_3: nextcstate = CUSTOM_4;    C_SHOW; chomestate[joint_num] = nextcstate; break;
+    case CUSTOM_4: nextcstate = CUSTOM_FINI; C_SHOW; chomestate[joint_num] = nextcstate; break;
+    case CUSTOM_FINI:
+        H[joint_num].homing = 0;
+        H[joint_num].homed = 1;
+        H[joint_num].home_state = HOME_IDLE;
+        nextcstate = CUSTOM_IDLE;
+        C_SHOW;
+        chomestate[joint_num] = nextcstate;
+        return 0; // finished custom_home_states
+        break;
+    case CUSTOM_IDLE:
+    default: rtapi_print("Unhandled custom_home_state: %d\n", chomestate[joint_num]);
+    }
+    return 1; // return 1 if busy
+#undef C_SHOW
+} // pokeyshoming_1joint_state_machine()
+
+
 int  homing_init(int id,
     double servo_period,
     int n_joints,
