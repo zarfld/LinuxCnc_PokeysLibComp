@@ -1,7 +1,7 @@
 component pokeys_homecomp"homing module for pokeys";
 
 description """
-start at Example of a homing module buildable with halcompile.
+sta rt at Example of a homing module buildable with halcompile.
 Demonstrates required code for #includes, function definitions, etc.
 
 If \\fBHOMING_BASE\\fR is #definedand points to a valid homing.c file,
