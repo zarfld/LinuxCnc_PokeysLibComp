@@ -84,7 +84,7 @@ EXTRA_SETUP() {
 }
 
 //=====================================================================
-#define HOMING_BASE
+//#define HOMING_BASE
 
 #ifdef  HOMING_BASE  // { begin CUSTOM example
 #define USE_HOMING_BASE XSTR(HOMING_BASE)
@@ -173,17 +173,17 @@ static int custom_1joint_state_machine(int joint_num)
     custom_home_state_t nextcstate;
 
 #define C_SHOW \
-    rtapi_print("H[%d].homed=%d,homing=%d,home_state=%d chomestate[%d]=%d next=%d\n" \
-      ,joint_num,H[joint_num].homed,H[joint_num].homing,H[joint_num].home_state \
-      ,joint_num,chomestate[joint_num],nextcstate);
+  //  rtapi_print("H[%d].homed=%d,homing=%d,home_state=%d chomestate[%d]=%d next=%d\n" \
+  //    ,joint_num,H[joint_num].homed,H[joint_num].homing,H[joint_num].home_state \
+  //    ,joint_num,chomestate[joint_num],nextcstate);
 
-    if (H[joint_num].home_state == HOME_IDLE) return 0; // nothing to do
+  //  if (H[joint_num].home_state == HOME_IDLE) return 0; // nothing to do
 
-    if ((H[joint_num].home_state == HOME_START) && (chomestate[joint_num] == CUSTOM_IDLE)) {
-        H[joint_num].homing = 1;
-        H[joint_num].homed = 0;
-        chomestate[joint_num] = CUSTOM_1; // set first non-idle custom_home_state
-    }
+ //   if ((H[joint_num].home_state == HOME_START) && (chomestate[joint_num] == CUSTOM_IDLE)) {
+ //       H[joint_num].homing = 1;
+ //       H[joint_num].homed = 0;
+ //       chomestate[joint_num] = CUSTOM_1; // set first non-idle custom_home_state
+ //   }
     // For this example, just walk thru custom_home_states with prints.
     // Note: remains in the base home_state: HOME_START for all custom_home_states.
     //       On completion, return to HOME_IDLE, CUSTOM_IDLE states.
@@ -197,9 +197,9 @@ static int custom_1joint_state_machine(int joint_num)
     case CUSTOM_3: nextcstate = CUSTOM_4;    C_SHOW; chomestate[joint_num] = nextcstate; break;
     case CUSTOM_4: nextcstate = CUSTOM_FINI; C_SHOW; chomestate[joint_num] = nextcstate; break;
     case CUSTOM_FINI:
-        H[joint_num].homing = 0;
-        H[joint_num].homed = 1;
-        H[joint_num].home_state = HOME_IDLE;
+  //      H[joint_num].homing = 0;
+  //      H[joint_num].homed = 1;
+  //      H[joint_num].home_state = HOME_IDLE;
         nextcstate = CUSTOM_IDLE;
         C_SHOW;
         chomestate[joint_num] = nextcstate;
@@ -255,7 +255,7 @@ bool do_homing(void)
     do_homing_sequence();
     /* loop thru joints, treat each one individually */
     for (joint_num = 0; joint_num < all_joints; joint_num++) {
-        if (!H[joint_num].joint_in_sequence) { continue; }
+   //     if (!H[joint_num].joint_in_sequence) { continue; }
         if (!GET_JOINT_ACTIVE_FLAG(&joints[joint_num])) { continue; }
 
         if (customH[joint_num].is_custom_homing) {
@@ -413,16 +413,19 @@ static int pokeyshoming_1joint_state_machine(int joint_num)
     static custom_home_state_t chomestate[EMCMOT_MAX_JOINTS] = { 0 };
     custom_home_state_t nextcstate;
 
+
+
 #define C_SHOW \
+    addr = &(joint_home_data->jhd[joint_num]);
     rtapi_print("H[%d].homed=%d,homing=%d,home_state=%d chomestate[%d]=%d next=%d\n" \
-      ,joint_num,H[joint_num].homed,H[joint_num].homing,H[joint_num].home_state \
+      ,joint_num,addr->homed,addr->homing,addr->home_state \
       ,joint_num,chomestate[joint_num],nextcstate);
 
-    if (H[joint_num].home_state == HOME_IDLE) return 0; // nothing to do
+    if (addr->home_state == HOME_IDLE) return 0; // nothing to do
 
-    if ((H[joint_num].home_state == HOME_START) && (chomestate[joint_num] == PK_PEAxisState_axREADY)) {
-        H[joint_num].homing = 1;
-        H[joint_num].homed = 0;
+    if ((addr->home_state == HOME_START) && (chomestate[joint_num] == PK_PEAxisState_axREADY)) {
+        addr->homing = 1;
+        addr->homed = 0;
         chomestate[joint_num] = PK_PEAxisState_axHOMINGSTART; // set first non-idle custom_home_state
     }
     // For this example, just walk thru custom_home_states with prints.
@@ -448,9 +451,9 @@ static int pokeyshoming_1joint_state_machine(int joint_num)
     case PK_PEAxisState_axHOMINGBACK  : nextcstate = PK_PEAxisState_axHOME; C_SHOW; chomestate[joint_num] = nextcstate; break;
 
     case PK_PEAxisState_axHOME:
-        H[joint_num].homing = 0;
-        H[joint_num].homed = 1;
-        H[joint_num].home_state = HOME_IDLE;
+        addr->homing = 0;
+        addr->homed = 1;
+        addr->home_state = HOME_IDLE;
         nextcstate = PK_PEAxisState_axREADY;
         C_SHOW;
         chomestate[joint_num] = nextcstate;
