@@ -84,6 +84,8 @@ EXTRA_SETUP() {
 }
 
 //=====================================================================
+#define HOMING_BASE
+
 #ifdef  HOMING_BASE  // { begin CUSTOM example
 #define USE_HOMING_BASE XSTR(HOMING_BASE)
 
