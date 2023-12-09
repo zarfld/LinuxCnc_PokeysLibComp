@@ -440,10 +440,8 @@ static int pokeyshoming_1joint_state_machine(int joint_num)
         nextcstate = PK_PEAxisState_axREADY;    C_SHOW; chomestate[joint_num] = nextcstate; break;
 
     case PK_PEAxisState_axREADY : nextcstate = PK_PEAxisState_axRUNNING ;    C_SHOW; chomestate[joint_num] = nextcstate; break;
-    
     case PK_PEAxisState_axRUNNING : nextcstate = PK_PEAxisState_axREADY;    C_SHOW; chomestate[joint_num] = nextcstate; break;
-    
-    
+        
     case PK_PEAxisState_axHOMING_RESETTING : nextcstate = PK_PEAxisState_axHOMING_BACKING_OFF; C_SHOW; chomestate[joint_num] = nextcstate; break;
     case PK_PEAxisState_axHOMING_BACKING_OFF  : nextcstate = PK_PEAxisState_axHOMINGSTART; C_SHOW; chomestate[joint_num] = nextcstate; break;
     case PK_PEAxisState_axHOMINGSTART  : nextcstate = PK_PEAxisState_axHOMINGSEARCH ; C_SHOW; chomestate[joint_num] = nextcstate; break;
