@@ -412,11 +412,11 @@ static int pokeyshoming_1joint_state_machine(int joint_num)
 
     static custom_home_state_t chomestate[EMCMOT_MAX_JOINTS] = { 0 };
     custom_home_state_t nextcstate;
-
-
+    one_joint_home_data_t* addr;
+    addr = &(joint_home_data->jhd[joint_num]);
 
 #define C_SHOW \
-    addr = &(joint_home_data->jhd[joint_num]);
+    
     rtapi_print("H[%d].homed=%d,homing=%d,home_state=%d chomestate[%d]=%d next=%d\n" \
       ,joint_num,addr->homed,addr->homing,addr->home_state \
       ,joint_num,chomestate[joint_num],nextcstate);
