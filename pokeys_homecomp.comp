@@ -73,7 +73,7 @@ EXTRA_SETUP() {
     if (!home_parms) { home_parms = "no_home_parms"; }
     rtapi_print("@@@%s:%s: home_parms=%s\n", __FILE__, __FUNCTION__, home_parms);
 #ifndef HOMING_BASE
-    rtapi_print("\n!!!%s: Skeleton Homing Module\n\n", __FILE__);
+    rtapi_print("\n!!!%s: Skeleton Homing Module\n\n", __FILE__ );
 #else
     rtapi_print("\n!!!%s: HOMING_BASE=%s\n"
         "!!!Customize using hal pin(s): joint.N.request-custom-homing\n"
@@ -478,6 +478,8 @@ int  homing_init(int id,
     int n_extrajoints,
     emcmot_joint_t * pjoints) {
     joints = pjoints;
+    if (n_joints == 0) { n_joints == 8 }
+
     return makepins(id, n_joints);
 }
 bool do_homing(void) { return 1; }

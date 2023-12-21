@@ -1,5 +1,5 @@
 
-loadrt [EMCMOT]HOMEMOD [KINS]JOINTS
+loadrt [EMCMOT]HOMEMOD
 show pin
 show parameter
 #******************************
@@ -11,7 +11,7 @@ show parameter
 show pin
 show parameter
 
-
+setp pokeys_homing.0.devSerial [POKEYS]DEVICE_ID
 
 # ---MPG-Jog ---
 
