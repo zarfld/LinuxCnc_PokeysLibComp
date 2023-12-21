@@ -1,5 +1,5 @@
 
-loadrt [EMCMOT]HOMEMOD
+loadrt [EMCMOT]HOMEMOD [KINS]JOINTS
 show pin
 show parameter
 #******************************
