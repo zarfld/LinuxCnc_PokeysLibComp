@@ -1,0 +1,38 @@
+
+loadrt [EMCMOT]HOMEMOD
+show pin
+show parameter
+#******************************
+# connect miscellaneous signals
+#******************************
+
+#  ---HALUI signals---
+
+show pin
+show parameter
+
+
+
+# ---MPG-Jog ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
