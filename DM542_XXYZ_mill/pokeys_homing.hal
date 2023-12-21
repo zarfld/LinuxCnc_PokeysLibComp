@@ -11,9 +11,9 @@ show parameter
 show pin
 show parameter
 
+setp pokeys-homecomp.0.devSerial [POKEYS]DEVICE_ID
 
 
-# ---MPG-Jog ---
 
 
 
