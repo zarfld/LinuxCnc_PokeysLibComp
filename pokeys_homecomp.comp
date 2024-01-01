@@ -369,12 +369,24 @@ static int makepins(int id, int njoints)
 
         retval += hal_pin_bit_newf(HAL_IN, &(addr->home_sw), id,
             "joint.%d.home-sw-in", jno);
+        retval += hal_pin_bit_newf(HAL_OUT, &(addr->home_sw), id,
+            "joint.%d.pokeys.home-sw-in", jno);
+
         retval += hal_pin_bit_newf(HAL_OUT, &(addr->homing), id,
             "joint.%d.homing", jno);
+        retval += hal_pin_bit_newf(HAL_IN, &(addr->homing), id,
+            "joint.%d.pokeys.homing", jno);
+
         retval += hal_pin_bit_newf(HAL_OUT, &(addr->homed), id,
             "joint.%d.homed", jno);
+        retval += hal_pin_bit_newf(HAL_IN, &(addr->homed), id,
+            "joint.%d.pokeys.homed", jno);
+
         retval += hal_pin_s32_newf(HAL_OUT, &(addr->home_state), id,
             "joint.%d.home-state", jno);
+        retval += hal_pin_s32_newf(HAL_IN, &(addr->home_state), id,
+            "joint.%d.pokeys.home-state", jno);
+
         retval += hal_pin_bit_newf(HAL_IO, &(addr->index_enable), id,
             "joint.%d.index-enable", jno);
     }

@@ -142,9 +142,6 @@ net x-enable     <= joint.0.amp-enable-out
 net x-enable     => pokeys.0.PEv2.0.digout.AxisEnable.out
 
 
-net x-homing     <= joint.0.homing
-net x-homing     => pokeys.0.PEv2.0.joint-in-homing
-
 net x-in-position     <= joint.0.in-position
 net x-in-position     => pokeys.0.PEv2.0.joint-in-position
 
@@ -211,8 +208,7 @@ net x2-pos-fb     => joint.1.motor-pos-fb
 net x2-enable     <= joint.1.amp-enable-out
 net x2-enable     => pokeys.0.PEv2.6.digout.AxisEnable.out
 
-net x2-homing     <= joint.1.homing
-net x2-homing     => pokeys.0.PEv2.6.joint-in-homing
+
 
 net x2-in-position     <= joint.1.in-position
 net x2-in-position     => pokeys.0.PEv2.6.joint-in-position
@@ -284,8 +280,7 @@ net y-pos-fb     => joint.2.motor-pos-fb
 net y-enable     <= joint.2.amp-enable-out
 net y-enable     => pokeys.0.PEv2.1.digout.AxisEnable.out
 
-net y-homing     <= joint.2.homing
-net y-homing     => pokeys.0.PEv2.1.joint-in-homing
+
 
 net y-in-position     <= joint.2.in-position
 net y-in-position     => pokeys.0.PEv2.1.joint-in-position
@@ -345,8 +340,6 @@ net z-pos-fb     => joint.3.motor-pos-fb
 net z-enable     <= joint.3.amp-enable-out
 net z-enable     => pokeys.0.PEv2.2.digout.AxisEnable.out
 
-net z-homing     <= joint.3.homing
-net z-homing     => pokeys.0.PEv2.2.joint-in-homing
 
 net z-in-position     <= joint.3.in-position
 net z-in-position     => pokeys.0.PEv2.2.joint-in-position
