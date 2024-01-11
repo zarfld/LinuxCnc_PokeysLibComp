@@ -8,8 +8,8 @@ apt-get update
 echo "Upgrading packages..."
 apt-get upgrade -y
 
-echo "Installing required packages..."
-git fetch origin
+echo "updating Git repository..."
+git pull
 
 # Get the directory of the current script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
