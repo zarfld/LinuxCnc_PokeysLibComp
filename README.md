@@ -5,8 +5,11 @@ started at
 https://forum.linuxcnc.org/24-hal-components/29816-pokeys?start=90#162953
 
 ## installation
+```bash
 git clone https://github.com/zarfld/LinuxCnc_PokeysLibComp.git
+cd LinuxCnc_PokeysLibComp
 sudo sh install.sh
+```
 
 ## currently under development using following HW
 - RaspberryPi4 (for LinuxCnc)
