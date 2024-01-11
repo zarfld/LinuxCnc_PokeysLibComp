@@ -420,10 +420,39 @@ static int pokeyshoming_1joint_state_machine(int joint_num)
 
         PK_PEAxisState_axERROR = 20,       // Axis error
         PK_PEAxisState_axLIMIT = 30        // Axis limit tripped
-    } custom_home_state_t;
+    } pokeys_home_state_t;
 
-    static custom_home_state_t chomestate[EMCMOT_MAX_JOINTS] = { 0 };
-    custom_home_state_t nextcstate;
+typedef enum {
+  HOME_IDLE = 0,
+  HOME_START,// 1
+  HOME_UNLOCK,// 2
+  HOME_UNLOCK_WAIT,// 3
+  HOME_INITIAL_BACKOFF_START,// 4
+  HOME_INITIAL_BACKOFF_WAIT,// 5
+  HOME_INITIAL_SEARCH_START,// 6
+  HOME_INITIAL_SEARCH_WAIT,// 7
+  HOME_SET_COARSE_POSITION,// 8
+  HOME_FINAL_BACKOFF_START,// 9
+  HOME_FINAL_BACKOFF_WAIT,// 10
+  HOME_RISE_SEARCH_START,// 11
+  HOME_RISE_SEARCH_WAIT,// 12
+  HOME_FALL_SEARCH_START,// 13
+  HOME_FALL_SEARCH_WAIT,// 14
+  HOME_SET_SWITCH_POSITION,// 15
+  HOME_INDEX_ONLY_START,// 16
+  HOME_INDEX_SEARCH_START,// 17
+  HOME_INDEX_SEARCH_WAIT,// 18
+  HOME_SET_INDEX_POSITION,// 19
+  HOME_FINAL_MOVE_START,// 20
+  HOME_FINAL_MOVE_WAIT,// 21
+  HOME_LOCK,// 22
+  HOME_LOCK_WAIT,// 23
+  HOME_FINISHED,// 24
+  HOME_ABORT// 25
+} local_home_state_t;
+
+    static pokeys_home_state_t chomestate[EMCMOT_MAX_JOINTS] = { 0 };
+    pokeys_home_state_t nextcstate;
     one_joint_home_data_t* addr;
     addr = &(joint_home_data->jhd[joint_num]);
 
@@ -469,7 +498,7 @@ static int pokeyshoming_1joint_state_machine(int joint_num)
     case PK_PEAxisState_axHOME:
         addr->homing = false;
         addr->homed = true;
-        addr->home_state = HOME_IDLE;
+        //addr->home_state = HOME_IDLE;
         nextcstate = PK_PEAxisState_axREADY;
         C_SHOW;
         chomestate[joint_num] = nextcstate;
