@@ -484,8 +484,8 @@ typedef enum {
     case PK_PEAxisState_axRUNNING : nextcstate = PK_PEAxisState_axREADY;    C_SHOW; chomestate[joint_num] = nextcstate; break;
         
     case PK_PEAxisState_axHOMING_RESETTING : 
-        addr->homing = *1; //true
-        addr->homed = *0;
+        addr->homing = 1; //true
+        addr->homed = 0;
         nextcstate = PK_PEAxisState_axHOMING_BACKING_OFF; 
         C_SHOW; 
         chomestate[joint_num] = nextcstate; 
@@ -496,8 +496,8 @@ typedef enum {
     case PK_PEAxisState_axHOMINGBACK  : nextcstate = PK_PEAxisState_axHOME; C_SHOW; chomestate[joint_num] = nextcstate; break;
 
     case PK_PEAxisState_axHOME:
-        addr->homing = *0;
-        addr->homed = *1;
+        addr->homing = 0;
+        addr->homed = 1;
         //addr->home_state = HOME_IDLE;
         nextcstate = PK_PEAxisState_axREADY;
         C_SHOW;
