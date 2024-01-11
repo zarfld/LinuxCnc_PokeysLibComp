@@ -4,7 +4,11 @@ Pokeys comp for LinuxCnc using https://bitbucket.org/mbosnak/pokeyslib.git
 started at 
 https://forum.linuxcnc.org/24-hal-components/29816-pokeys?start=90#162953
 
-currently under development using following HW
+## installation
+git clone https://github.com/zarfld/LinuxCnc_PokeysLibComp.git
+sudo sh install.sh
+
+## currently under development using following HW
 - RaspberryPi4 (for LinuxCnc)
 - [x] Pokeys57E (see https://www.poscope.com/product/pokeys57e/)
 - [x] PoExtBusOC16CNC for Axes-Stepper Enable/Pulse/Dir (see https://www.poscope.com/product/poextbusoc16cnc/)
