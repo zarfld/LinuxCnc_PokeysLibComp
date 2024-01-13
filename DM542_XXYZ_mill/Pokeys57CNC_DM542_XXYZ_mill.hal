@@ -155,8 +155,8 @@ net x-pos-fb               =>  joint.0.motor-pos-fb
 
 # ---setup home / limit switch signals---
 
-net min-home-x     =>  joint.0.home-sw-in
-net min-home-x     =>  joint.0.neg-lim-sw-in
+net home-x     =>  joint.0.home-sw-in
+net min-x     =>  joint.0.neg-lim-sw-in
 net max-x     =>  joint.0.pos-lim-sw-in
 
 #*******************
@@ -287,9 +287,9 @@ net y-in-position     => pokeys.0.PEv2.1.joint-in-position
 
 # ---setup home / limit switch signals---
 
-net y-home-sw     =>  joint.2.home-sw-in
-net y-neg-limit     =>  joint.2.neg-lim-sw-in
-net y-pos-limit     =>  joint.2.pos-lim-sw-in
+net home-y     =>  joint.2.home-sw-in
+net min-y     =>  joint.2.neg-lim-sw-in
+net max-y     =>  joint.2.pos-lim-sw-in
 
 #*******************
 #  AXIS Z JOINT 3
@@ -346,9 +346,9 @@ net z-in-position     => pokeys.0.PEv2.2.joint-in-position
 
 # ---setup home / limit switch signals---
 
-net z-home-sw     =>  joint.3.home-sw-in
-net z-neg-limit     =>  joint.3.neg-lim-sw-in
-net z-pos-limit     =>  joint.3.pos-lim-sw-in
+net home-z     =>  joint.3.home-sw-in
+net min-z     =>  joint.3.neg-lim-sw-in
+net max-z     =>  joint.3.pos-lim-sw-in
 
 #*******************
 #  SPINDLE
