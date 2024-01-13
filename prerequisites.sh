@@ -59,7 +59,7 @@ if [ -d "pokeyslib" ]; then
     # Fetch latest changes
     echo "Fetching latest changes..."
     cd pokeyslib
-    git fetch origin
+    git pull
     cd ..
 else
     # Clone the repository

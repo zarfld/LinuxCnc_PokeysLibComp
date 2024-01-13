@@ -1,5 +1,4 @@
 
-loadrt [EMCMOT]HOMEMOD
 show pin
 show parameter
 #******************************

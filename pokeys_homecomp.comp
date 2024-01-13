@@ -63,7 +63,7 @@ option  extra_setup;
 
 #include "motion.h"
 #include "homing.h"
-#include "pokeyslib.h"
+//#include "pokeyslib.h"
 
 static char* home_parms;
 RTAPI_MP_STRING(home_parms, "Example home parms");
