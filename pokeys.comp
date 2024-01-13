@@ -163,15 +163,15 @@ pin in float PEv2.#.joint-vel-cmd [8];
 pin in float PEv2.#.joint-pos-cmd [8];				
 pin out float PEv2.#.joint-pos-fb [8];				
 
-pin out bit PEv2.#.joint-in-homing[8];
-pin out bit PEv2.#.joint-in-homed[8];
+//pin out bit PEv2.#.joint-in-homing[8];
+//pin out bit PEv2.#.joint-in-homed[8];
 pin in bit PEv2.#.joint-out-home[8];
 pin in bit PEv2.#.joint-in-position[8];
 
-pin in bit joint.#.home-sw-in[8];
-pin in bit joint.#.homing[8];
-pin out bit joint.#.homed[8];
-pin out s32 joint.#.home-state[8];
+//pin in bit joint.#.home-sw-in[8];
+//pin in bit joint.#.homing[8];
+//pin out bit joint.#.homed[8];
+//pin out s32 joint.#.home-state[8];
 
 pin in bit PEv2.#.joint-kb-jog-active[8];
 pin in bit PEv2.#.joint-wheel-jog-active[8];
