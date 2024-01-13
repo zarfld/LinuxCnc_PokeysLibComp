@@ -13,16 +13,16 @@ show parameter
 
 # joint.%d.pokeys.homing
 net x-homing     <= joint.0.homing
-net x-homing     => pokeys.0.joint.0.homing
+net x-homing     => pokeys.0.PEv2.0.joint-in-homing
 
 net x2-homing     <= joint.1.homing
-net x2-homing     => pokeys.0.joint.6.homing
+net x2-homing     => pokeys.0.PEv2.6.joint-in-homing
 
 net y-homing     <= joint.2.homing
-net y-homing     => pokeys.0.joint.1.homing
+net y-homing     => pokeys.0.PEv2.1.joint-in-homing
 
 net z-homing     <= joint.3.homing
-net z-homing     => pokeys.0.joint.2.homing
+net z-homing     => pokeys.0.PEv2.2.joint-in-homing
 
 
 
