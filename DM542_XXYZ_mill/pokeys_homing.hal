@@ -10,7 +10,6 @@ show parameter
 show pin
 show parameter
 
-setp pokeys-homecomp.0.devSerial [POKEYS]DEVICE_ID
 
 # joint.%d.pokeys.homing
 net x-homing     <= joint.0.homing
