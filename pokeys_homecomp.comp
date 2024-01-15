@@ -333,6 +333,21 @@ void update_joint_homing_params(int    jno,
 //           end   CUSTOM example
 //=====================================================================
 #else // } { begin SKELETON example minimal api implementation
+
+/* channels provided by PEv2 which might be relevant:
+pin out unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
+
+// Pulse engine v2 structure...
+pin out unsigned PEv2.#.AxesState [8];				// Axis states (bit-mapped) - see ePK_PEAxisState
+pin out unsigned PEv2.#.AxesConfig [8];				// Axis configuration - see ePK_PEv2_AxisConfig
+pin in unsigned PEv2.#.AxesSwitchConfig [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
+
+pin io unsigned PEv2.#.HomingSpeed [8];			// Homing speed per axis (in %)
+pin io unsigned PEv2.#.HomingReturnSpeed [8];		// Homing return speed per axis (in % of the homing speed)
+pin io unsigned PEv2.#.HomingAlgorithm[8];		// Homing algorithm configuration
+pin io u32 PEv2.#.HomeOffsets [8];				// Home position offset
+pin io unsigned PEv2.#.HomeBackOffDistance [8];		// Back-off distance after homing
+*/
 static emcmot_joint_t* joints;
 
 // data for per-joint homing-specific hal pins:
@@ -343,7 +358,20 @@ typedef struct {
     hal_bit_t* index_enable; // motmod sets: request reset on index
                              //        encoder clears: index arrived
     hal_s32_t* home_state;   // homing state machine state
+
+
+    hal_u32_t* PEv2_AxesState; // State of pulse engine - see ePoKeysPEState
+    hal_u32_t* PEv2_AxesConfig; // Axis configuration - see ePK_PEv2_AxisConfig
+    hal_u32_t* PEv2_AxesSwitchConfig; // Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
+
+    hal_u32_t* PEv2_HomingSpeed; // Homing speed per axis (in %)
+    hal_u32_t* PEv2_HomingReturnSpeed; // Homing return speed per axis (in % of the homing speed)
+    hal_u32_t* PEv2_HomingAlgorithm; // Homing algorithm configuration
+    hal_u32_t* PEv2_HomeOffsets; // Home position offset
+    hal_u32_t* PEv2_HomeBackOffDistance; // Back-off distance after homing
+
 } one_joint_home_data_t;
+
 
 typedef struct {
     one_joint_home_data_t jhd[EMCMOT_MAX_JOINTS];
@@ -369,26 +397,43 @@ static int makepins(int id, int njoints)
 
         retval += hal_pin_bit_newf(HAL_IN, &(addr->home_sw), id,
             "joint.%d.home-sw-in", jno);
-        retval += hal_pin_bit_newf(HAL_OUT, &(addr->home_sw), id,
-            "joint.%d.pokeys.home-sw-in", jno);
 
         retval += hal_pin_bit_newf(HAL_OUT, &(addr->homing), id,
             "joint.%d.homing", jno);
-        retval += hal_pin_bit_newf(HAL_IN, &(addr->homing), id,
-            "joint.%d.pokeys.homing", jno);
 
         retval += hal_pin_bit_newf(HAL_OUT, &(addr->homed), id,
             "joint.%d.homed", jno);
-        retval += hal_pin_bit_newf(HAL_IN, &(addr->homed), id,
-            "joint.%d.pokeys.homed", jno);
 
         retval += hal_pin_s32_newf(HAL_OUT, &(addr->home_state), id,
             "joint.%d.home-state", jno);
-        retval += hal_pin_s32_newf(HAL_IN, &(addr->home_state), id,
-            "joint.%d.pokeys.home-state", jno);
 
         retval += hal_pin_bit_newf(HAL_IO, &(addr->index_enable), id,
             "joint.%d.index-enable", jno);
+
+        retval += hal_pin_u32_newf(HAL_OUT, &(addr->PEv2_AxesState), id,
+            "joint.%d.PEv2.AxesState", jno);
+        retval += hal_pin_u32_newf(HAL_OUT, &(addr->PEv2_AxesConfig), id,
+            "joint.%d.PEv2.AxesConfig", jno);
+
+        retval += hal_pin_u32_newf(HAL_IN, &(addr->PEv2_AxesSwitchConfig), id,
+            "joint.%d.PEv2.AxesSwitchConfig", jno);
+
+        retval += hal_pin_u32_newf(HAL_IO, &(addr->PEv2_HomingSpeed), id,
+            "joint.%d.PEv2.HomingSpeed", jno);
+
+        retval += hal_pin_u32_newf(HAL_IO, &(addr->PEv2_HomingReturnSpeed), id,
+            "joint.%d.PEv2.HomingReturnSpeed", jno);
+
+        retval += hal_pin_u32_newf(HAL_IO, &(addr->PEv2_HomingAlgorithm), id,
+            "joint.%d.PEv2.HomingAlgorithm", jno);
+
+        retval += hal_pin_u32_newf(HAL_IO, &(addr->PEv2_HomeOffsets), id,
+            "joint.%d.PEv2.HomeOffsets", jno);
+
+        retval += hal_pin_u32_newf(HAL_IO, &(addr->PEv2_HomeBackOffDistance), id,
+            "joint.%d.PEv2.HomeBackOffDistance", jno);
+
+
     }
     return retval;
 }
