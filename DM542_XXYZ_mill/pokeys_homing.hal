@@ -36,7 +36,7 @@ pin out unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKey
  net y-AxesState     => pokeys.0.PEv2.1.AxesState
 
  net z-AxesState     <= joint.2.PEv2.AxesState
- net z-AxesState     => pokeys.0.PEv2.1.AxesState
+ net z-AxesState     => pokeys.0.PEv2.2.AxesState
 
 # net x2-homing     <= joint.1.homing
 # net x2-homing     => pokeys.0.PEv2.6.joint-in-homing
