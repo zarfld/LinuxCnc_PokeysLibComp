@@ -361,6 +361,7 @@ typedef struct {
 
 
     hal_u32_t* PEv2_AxesState; // State of pulse engine - see ePoKeysPEState
+    hal_u32_t* PEv2_AxesCmd; // Commands to  pulse engine - see ePoKeysPECmd
     hal_u32_t* PEv2_AxesConfig; // Axis configuration - see ePK_PEv2_AxisConfig
     hal_u32_t* PEv2_AxesSwitchConfig; // Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
 
@@ -410,12 +411,16 @@ static int makepins(int id, int njoints)
         retval += hal_pin_bit_newf(HAL_IO, &(addr->index_enable), id,
             "joint.%d.index-enable", jno);
 
-        retval += hal_pin_u32_newf(HAL_OUT, &(addr->PEv2_AxesState), id,
+        retval += hal_pin_u32_newf(HAL_IN, &(addr->PEv2_AxesState), id,
             "joint.%d.PEv2.AxesState", jno);
-        retval += hal_pin_u32_newf(HAL_OUT, &(addr->PEv2_AxesConfig), id,
+
+        retval += hal_pin_u32_newf(HAL_OUT, &(addr->PEv2_AxesState), id,
+            "joint.%d.PEv2.AxesCommand", jno);
+
+        retval += hal_pin_u32_newf(HAL_IN, &(addr->PEv2_AxesConfig), id,
             "joint.%d.PEv2.AxesConfig", jno);
 
-        retval += hal_pin_u32_newf(HAL_IN, &(addr->PEv2_AxesSwitchConfig), id,
+        retval += hal_pin_u32_newf(HAL_OUT, &(addr->PEv2_AxesSwitchConfig), id,
             "joint.%d.PEv2.AxesSwitchConfig", jno);
 
         retval += hal_pin_u32_newf(HAL_IO, &(addr->PEv2_HomingSpeed), id,
