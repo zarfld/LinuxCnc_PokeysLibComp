@@ -126,7 +126,7 @@ pin io bit PEv2.params.ApplyIniSettings;
 pin out unsigned PEv2.#.AxesState [8];				// Axis states (bit-mapped) - see ePK_PEAxisState
 pin out unsigned PEv2.#.AxesConfig [8];				// Axis configuration - see ePK_PEv2_AxisConfig
 pin in unsigned PEv2.#.AxesSwitchConfig [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
-
+pin in unsigned PEv2.#.AxesCommand [8];		// Axis Command
 
 pin io u32 PEv2.#.SoftLimitMaximum [8];		// Soft limit maximum position
 pin io u32 PEv2.#.SoftLimitMinimum [8];		// Soft limit minimum position

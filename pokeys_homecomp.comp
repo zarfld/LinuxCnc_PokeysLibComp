@@ -42,6 +42,7 @@ https ://github.com/LinuxCNC/linuxcnc/blob/BRANCHNAME/src/hal/components/homecom
 """;
 
 pin in unsigned devSerial;
+pin in unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
 pin out bit is_module = 1; //one pin is required to use halcompile)
 
 license "GPL";
@@ -361,7 +362,7 @@ typedef struct {
 
 
     hal_u32_t* PEv2_AxesState; // State of pulse engine - see ePoKeysPEState
-    hal_u32_t* PEv2_AxesCmd; // Commands to  pulse engine - see ePoKeysPECmd
+    hal_u32_t* PEv2_AxesCommand; // Commands to  pulse engine - see ePoKeysPECmd
     hal_u32_t* PEv2_AxesConfig; // Axis configuration - see ePK_PEv2_AxisConfig
     hal_u32_t* PEv2_AxesSwitchConfig; // Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
 
@@ -414,7 +415,7 @@ static int makepins(int id, int njoints)
         retval += hal_pin_u32_newf(HAL_IN, &(addr->PEv2_AxesState), id,
             "joint.%d.PEv2.AxesState", jno);
 
-        retval += hal_pin_u32_newf(HAL_OUT, &(addr->PEv2_AxesState), id,
+        retval += hal_pin_u32_newf(HAL_OUT, &(addr->PEv2_AxesCommand), id,
             "joint.%d.PEv2.AxesCommand", jno);
 
         retval += hal_pin_u32_newf(HAL_IN, &(addr->PEv2_AxesConfig), id,
