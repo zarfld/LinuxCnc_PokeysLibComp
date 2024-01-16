@@ -10,10 +10,9 @@ show parameter
 show pin
 show parameter
 
-/* channels provided by PEv2 which might be relevant:
-pin out unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
-
-// Pulse engine v2 structure...
+# channels provided by PEv2 which might be relevant:
+#pin out unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
+# Pulse engine v2 structure...
 #pin out unsigned PEv2.#.AxesState [8];				// Axis states (bit-mapped) - see ePK_PEAxisState
 #pin out unsigned PEv2.#.AxesConfig [8];				// Axis configuration - see ePK_PEv2_AxisConfig
 #pin in unsigned PEv2.#.AxesSwitchConfig [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
