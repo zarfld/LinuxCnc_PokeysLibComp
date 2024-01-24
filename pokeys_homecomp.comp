@@ -505,34 +505,34 @@ static int pokeyshoming_1joint_state_machine(int joint_num)
 
     } pokeys_home_command_t;
 
-typedef enum {
-  HOME_IDLE = 0,
-  HOME_START,// 1
-  HOME_UNLOCK,// 2
-  HOME_UNLOCK_WAIT,// 3
-  HOME_INITIAL_BACKOFF_START,// 4
-  HOME_INITIAL_BACKOFF_WAIT,// 5
-  HOME_INITIAL_SEARCH_START,// 6
-  HOME_INITIAL_SEARCH_WAIT,// 7
-  HOME_SET_COARSE_POSITION,// 8
-  HOME_FINAL_BACKOFF_START,// 9
-  HOME_FINAL_BACKOFF_WAIT,// 10
-  HOME_RISE_SEARCH_START,// 11
-  HOME_RISE_SEARCH_WAIT,// 12
-  HOME_FALL_SEARCH_START,// 13
-  HOME_FALL_SEARCH_WAIT,// 14
-  HOME_SET_SWITCH_POSITION,// 15
-  HOME_INDEX_ONLY_START,// 16
-  HOME_INDEX_SEARCH_START,// 17
-  HOME_INDEX_SEARCH_WAIT,// 18
-  HOME_SET_INDEX_POSITION,// 19
-  HOME_FINAL_MOVE_START,// 20
-  HOME_FINAL_MOVE_WAIT,// 21
-  HOME_LOCK,// 22
-  HOME_LOCK_WAIT,// 23
-  HOME_FINISHED,// 24
-  HOME_ABORT// 25
-} local_home_state_t;
+    typedef enum {
+      HOME_IDLE = 0,
+      HOME_START,// 1
+      HOME_UNLOCK,// 2
+      HOME_UNLOCK_WAIT,// 3
+      HOME_INITIAL_BACKOFF_START,// 4
+      HOME_INITIAL_BACKOFF_WAIT,// 5
+      HOME_INITIAL_SEARCH_START,// 6
+      HOME_INITIAL_SEARCH_WAIT,// 7
+      HOME_SET_COARSE_POSITION,// 8
+      HOME_FINAL_BACKOFF_START,// 9
+      HOME_FINAL_BACKOFF_WAIT,// 10
+      HOME_RISE_SEARCH_START,// 11
+      HOME_RISE_SEARCH_WAIT,// 12
+      HOME_FALL_SEARCH_START,// 13
+      HOME_FALL_SEARCH_WAIT,// 14
+      HOME_SET_SWITCH_POSITION,// 15
+      HOME_INDEX_ONLY_START,// 16
+      HOME_INDEX_SEARCH_START,// 17
+      HOME_INDEX_SEARCH_WAIT,// 18
+      HOME_SET_INDEX_POSITION,// 19
+      HOME_FINAL_MOVE_START,// 20
+      HOME_FINAL_MOVE_WAIT,// 21
+      HOME_LOCK,// 22
+      HOME_LOCK_WAIT,// 23
+      HOME_FINISHED,// 24
+      HOME_ABORT// 25
+    } local_home_state_t;
 
     static pokeys_home_state_t chomestate[EMCMOT_MAX_JOINTS] = { 0 };
     pokeys_home_state_t nextcstate;
@@ -573,27 +573,27 @@ typedef enum {
         C_SHOW; 
         chomestate[joint_num] = nextcstate; 
         break;
-    case PK_PEAxisState_axHOMING_BACKING_OFF  : nextcstate = PK_PEAxisState_axHOMINGSTART; C_SHOW; chomestate[joint_num] = nextcstate; break;
-    case PK_PEAxisState_axHOMINGSTART  : nextcstate = PK_PEAxisState_axHOMINGSEARCH ; C_SHOW; chomestate[joint_num] = nextcstate; break;
-    case PK_PEAxisState_axHOMINGSEARCH  : nextcstate = PK_PEAxisState_axHOMINGBACK ; C_SHOW; chomestate[joint_num] = nextcstate; break;
-    case PK_PEAxisState_axHOMINGBACK  : nextcstate = PK_PEAxisState_axHOME; C_SHOW; chomestate[joint_num] = nextcstate; break;
+    case PK_PEAxisState_axHOMING_BACKING_OFF: nextcstate = PK_PEAxisState_axHOMINGSTART; C_SHOW; chomestate[joint_num] = nextcstate; break;
+    case PK_PEAxisState_axHOMINGSTART: nextcstate = PK_PEAxisState_axHOMINGSEARCH; C_SHOW; chomestate[joint_num] = nextcstate; break;
+    case PK_PEAxisState_axHOMINGSEARCH: nextcstate = PK_PEAxisState_axHOMINGBACK; C_SHOW; chomestate[joint_num] = nextcstate; break;
+    case PK_PEAxisState_axHOMINGBACK: nextcstate = PK_PEAxisState_axHOME; C_SHOW; chomestate[joint_num] = nextcstate; break;
 
     case PK_PEAxisState_axHOME:
         addr->homing = 0;
-     //   addr->homed = -1;
-        //addr->home_state = HOME_IDLE;
+        //   addr->homed = -1;
+           //addr->home_state = HOME_IDLE;
         nextcstate = PK_PEAxisState_axREADY;
         C_SHOW;
         chomestate[joint_num] = nextcstate;
         return 0; // finished custom_home_states
         break;
 
-    case PK_PEAxisState_axPROBED   : nextcstate = PK_PEAxisState_axREADY; C_SHOW; chomestate[joint_num] = nextcstate; break;
-    case PK_PEAxisState_axPROBESTART   : nextcstate = PK_PEAxisState_axPROBESEARCH; C_SHOW; chomestate[joint_num] = nextcstate; break;
-    case PK_PEAxisState_axPROBESEARCH   : nextcstate = PK_PEAxisState_axPROBED; C_SHOW; chomestate[joint_num] = nextcstate; break;
+    case PK_PEAxisState_axPROBED: nextcstate = PK_PEAxisState_axREADY; C_SHOW; chomestate[joint_num] = nextcstate; break;
+    case PK_PEAxisState_axPROBESTART: nextcstate = PK_PEAxisState_axPROBESEARCH; C_SHOW; chomestate[joint_num] = nextcstate; break;
+    case PK_PEAxisState_axPROBESEARCH: nextcstate = PK_PEAxisState_axPROBED; C_SHOW; chomestate[joint_num] = nextcstate; break;
 
-    case PK_PEAxisState_axERROR   : nextcstate = PK_PEAxisState_axSTOPPED; C_SHOW; chomestate[joint_num] = nextcstate; break;
-    case PK_PEAxisState_axLIMIT   : nextcstate = PK_PEAxisState_axSTOPPED; C_SHOW; chomestate[joint_num] = nextcstate; break;
+    case PK_PEAxisState_axERROR: nextcstate = PK_PEAxisState_axSTOPPED; C_SHOW; chomestate[joint_num] = nextcstate; break;
+    case PK_PEAxisState_axLIMIT: nextcstate = PK_PEAxisState_axSTOPPED; C_SHOW; chomestate[joint_num] = nextcstate; break;
 
     default: rtapi_print("Unhandled custom_home_state: %d\n", chomestate[joint_num]);
     }
@@ -606,7 +606,7 @@ int  homing_init(int id,
     double servo_period,
     int n_joints,
     int n_extrajoints,
-    emcmot_joint_t * pjoints) {
+    emcmot_joint_t* pjoints) {
     joints = pjoints;
     if (n_joints == 0) { n_joints == 8; }
 
@@ -615,18 +615,83 @@ int  homing_init(int id,
 
 // once-per-servo-period functions:
 bool do_homing(void) { return 1; }//return 1 if allhomed
-void read_homing_in_pins(int njoints) { return; }
-void write_homing_out_pins(int njoints) { return; }
+void read_homing_in_pins(int njoints)
+{
+
+    for (jno = 0; jno < njoints; jno++) {
+        addr = &(joint_home_data->jhd[jno]);
+        switch (addr->PEv2_AxesState) {
+        case PK_PEAxisState_axHOMING_RESETTING:// Stopping the axis to reset the position counters
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_INITIAL_SEARCH_START;
+            break;
+        case PK_PEAxisState_axHOMING_BACKING_OFF:// Backing off switch
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_INITIAL_BACKOFF_WAIT;
+            break;
+        case PK_PEAxisState_axHOMINGSTART:// Homing procedure is starting on axis
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_START;
+            break;
+        case PK_PEAxisState_axHOMINGSEARCH:// Homing procedure first step - going to home
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_INITIAL_SEARCH_WAIT;
+            break;
+        case PK_PEAxisState_axHOMINGBACK:// Homing procedure second step - slow homing
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_FINAL_BACKOFF_START;
+            break;
+        case PK_PEAxisState_axHOME:// Axis is homed
+            H[jno].homing = 1;
+            H[jno].homed = 1;
+            H[jno].home_state = HOME_FINISHED;
+            break;
+        default:
+            H[jno].homing = 0;
+            H[jno].home_state = HOME_IDLE;
+            break;
+        }
+    }
+    return;
+}
+void write_homing_out_pins(int njoints) {
+    for (jno = 0; jno < njoints; jno++) {
+        addr = &(joint_home_data->jhd[jno]);
+        addr->homing = H[jno].homing;
+        addr->homed = H[jno].homed;
+        addr->home_state = H[jno].home_state;
+        addr->index_enable = H[jno].index_enable;
+    }
+    return;
+}
 
 // responses to EMCMOT_JOINT_HOME message:
-void do_home_joint(int jno) { 
+void do_home_joint(int joint_num) {
     addr = &(joint_home_data->jhd[joint_num]);
-    addr->PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
-    return; }
+    if (H[joint_num].home_sequence!=0){
+        addr->PEv2_AxesCommand = abs(H[joint_num].home_sequence);
+    }
+    else
+    {
+        addr->PEv2_AxesState = PK_PEAxisState_axHOMINGSTART;
+    }
+    return; 
+}
 
 // per-joint controls:
-void set_unhomed(int jno, motion_state_t motstate) { return; }
-void do_cancel_homing(int jno) { 
+void set_unhomed(int joint_num, motion_state_t motstate) {
+
+	addr = &(joint_home_data->jhd[joint_num]);
+    addr->PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGCANCEL;
+    addr->homed = 0;
+    return; 
+}
+void do_cancel_homing(int joint_num) {
     addr = &(joint_home_data->jhd[joint_num]);
     addr->PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGCANCEL;
     return; }
