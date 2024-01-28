@@ -618,14 +618,7 @@ void write_homing_out_pins(int njoints) {
 void do_home_joint(int joint_num) {
     one_joint_home_data_t* addr;
     addr = &(joint_home_data->jhd[joint_num]);
-    if (H[joint_num].home_sequence!=0){
-        int s = abs(H[joint_num].home_sequence);
-        addr->PEv2_AxesCommand = (hal_u32_t*)s;
-    }
-    else
-    {
-        addr->PEv2_AxesState = (hal_u32_t*)PK_PEAxisState_axHOMINGSTART;
-    }
+    addr->PEv2_AxesState = (hal_u32_t*)PK_PEAxisState_axHOMINGSTART;
     return; 
 }
 
