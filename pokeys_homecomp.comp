@@ -551,6 +551,7 @@ bool do_homing(void) { return 1; }//return 1 if allhomed
 void read_homing_in_pins(int njoints)
 {
     int jno;
+    one_joint_home_data_t* addr;
     for ( jno = 0; jno < njoints; jno++) {
         addr = &(joint_home_data->jhd[jno]);
         switch (addr->PEv2_AxesState) {
@@ -594,6 +595,7 @@ void read_homing_in_pins(int njoints)
 }
 void write_homing_out_pins(int njoints) {
     int jno;
+    one_joint_home_data_t* addr;
     for (jno = 0; jno < njoints; jno++) {
         addr = &(joint_home_data->jhd[jno]);
         addr->homing = H[jno].homing;
@@ -606,6 +608,7 @@ void write_homing_out_pins(int njoints) {
 
 // responses to EMCMOT_JOINT_HOME message:
 void do_home_joint(int joint_num) {
+    one_joint_home_data_t* addr;
     addr = &(joint_home_data->jhd[joint_num]);
     if (H[joint_num].home_sequence!=0){
         addr->PEv2_AxesCommand = abs(H[joint_num].home_sequence);
@@ -619,13 +622,14 @@ void do_home_joint(int joint_num) {
 
 // per-joint controls:
 void set_unhomed(int joint_num, motion_state_t motstate) {
-
+    one_joint_home_data_t* addr;
 	addr = &(joint_home_data->jhd[joint_num]);
     addr->PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGCANCEL;
     addr->homed = 0;
     return; 
 }
 void do_cancel_homing(int joint_num) {
+    one_joint_home_data_t* addr;
     addr = &(joint_home_data->jhd[joint_num]);
     addr->PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGCANCEL;
     return; }
