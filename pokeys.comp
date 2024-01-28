@@ -1836,17 +1836,6 @@ void user_mainloop(void)
 								default:
 									//dev->PEv2.PulseEngineStateSetup = PK_PEAxisState_axHOMINGSTART;
 
-									int MyHomeSequ, seq;
-										MyHomeSequ = PEv2_home_sequence[i];
-										for (seq = 0; seq < PEv2_nrOfAxes; seq++)
-										{
-											if(PEv2_home_sequence[i]== MyHomeSequ)
-											{
-												HomingStartMaskSetup = (1 << seq); // Home axis 1 only (bit 0)
-												doHomingStart=true;
-											 }
-
-										}
 									
 									break;
 								}
