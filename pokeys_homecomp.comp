@@ -614,7 +614,7 @@ void do_home_joint(int joint_num) {
     addr = &(joint_home_data->jhd[joint_num]);
     if (H[joint_num].home_sequence!=0){
         int s = abs(H[joint_num].home_sequence);
-        addr->PEv2_AxesCommand = (hal_u32_t*)s;
+        addr->PEv2_AxesCommand = (hal_u32_t)*s;
     }
     else
     {
