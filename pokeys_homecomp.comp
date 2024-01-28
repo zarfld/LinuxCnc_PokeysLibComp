@@ -554,7 +554,8 @@ void read_homing_in_pins(int njoints)
     one_joint_home_data_t* addr;
     for ( jno = 0; jno < njoints; jno++) {
         addr = &(joint_home_data->jhd[jno]);
-        switch (int)(addr->PEv2_AxesState) {
+        int int_AxesState = (int)(addr->PEv2_AxesState);
+        switch (int_AxesState) {
         case PK_PEAxisState_axHOMING_RESETTING:// Stopping the axis to reset the position counters
             H[jno].homing = 1;
             H[jno].homed = 0;
