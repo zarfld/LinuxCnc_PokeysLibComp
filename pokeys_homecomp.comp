@@ -411,7 +411,7 @@ typedef enum {
 
 // local per-joint data (includes hal pin data)
 typedef struct {
-    home_state home_state;           // OUT pin
+    local_home_state_t home_state;           // OUT pin
     bool         homing;               // OUT pin
     bool         homed;                // OUT pin
     bool         home_sw;              // IN  pin
