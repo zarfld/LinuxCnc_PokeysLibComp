@@ -600,9 +600,9 @@ void write_homing_out_pins(int njoints) {
     for (jno = 0; jno < njoints; jno++) {
         addr = &(joint_home_data->jhd[jno]);
         addr->homing = (hal_bit_t*)H[jno].homing;
-        addr->homed = H[jno].homed;
-        addr->home_state = H[jno].home_state;
-        addr->index_enable = H[jno].index_enable;
+        addr->homed = (hal_bit_t*)H[jno].homed;
+        addr->home_state = (hal_s32_t *)H[jno].home_state;
+        addr->index_enable = (hal_bit_t*)H[jno].index_enable;
     }
     return;
 }
