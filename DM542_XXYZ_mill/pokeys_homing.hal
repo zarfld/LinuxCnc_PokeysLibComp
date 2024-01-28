@@ -67,6 +67,11 @@ net PulseEngineState     => pokeys-homecomp.PulseEngineState
  net z-AxesConfig     <= joint.3.PEv2.AxesConfig
  net z-AxesConfig     => pokeys.0.PEv2.2.AxesConfig
 
+ #Homesqequence
+setp   pokeys.0.PEv2.0.home_sequence  	   [JOINT_0]HOME_SEQUENCE
+setp   pokeys.0.PEv2.6.home_sequence  	   [JOINT_1]HOME_SEQUENCE
+setp   pokeys.0.PEv2.1.home_sequence  	   [JOINT_2]HOME_SEQUENCE
+setp   pokeys.0.PEv2.2.home_sequence  	   [JOINT_3]HOME_SEQUENCE
 
 
 

@@ -127,6 +127,7 @@ pin out unsigned PEv2.#.AxesState [8];				// Axis states (bit-mapped) - see ePK_
 pin out unsigned PEv2.#.AxesConfig [8];				// Axis configuration - see ePK_PEv2_AxisConfig
 pin in unsigned PEv2.#.AxesSwitchConfig [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
 pin in unsigned PEv2.#.AxesCommand [8];		// Axis Command
+param rw s32 PEv2.#.home_sequence[8] "home_sequence";
 
 pin io u32 PEv2.#.SoftLimitMaximum [8];		// Soft limit maximum position
 pin io u32 PEv2.#.SoftLimitMinimum [8];		// Soft limit minimum position
@@ -1510,6 +1511,26 @@ void user_mainloop(void)
 								break ;
 						}
 						
+
+						if (PEv2_AxesCommand(i)==PK_PEAxisState_axHOMINGSTART && IsHoming[i] =s= false)
+						{
+							dev->PEv2.PulseEngineStateSetup = PK_PEAxisState_axHOMINGSTART;
+
+							int MyHomeSequ, seq;
+							MyHomeSequ = PEv2_home_sequence[i];
+
+							//ensure that all axes with same Sequence start homing at the same time
+							for (seq = 0; seq < PEv2_nrOfAxes; seq++)
+							{
+								if (PEv2_home_sequence[i] == MyHomeSequ)
+								{
+									HomingStartMaskSetup = (1 << seq); // Home axis 1 only (bit 0)
+									doHomingStart = true;
+								}
+
+							}
+						}
+
 						tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,PEv2_digout_AxisEnabled_out(i));
 						PEv2_LimitOverrideSetup = Set_BitOfByte(PEv2_LimitOverrideSetup ,i,PEv2_digout_LimitOverride_out(i));
 						PEv2_deb_axxisout(i) = 2900 + i;
@@ -1815,8 +1836,18 @@ void user_mainloop(void)
 								default:
 									//dev->PEv2.PulseEngineStateSetup = PK_PEAxisState_axHOMINGSTART;
 
-									HomingStartMaskSetup = (1 << i); // Home axis 1 only (bit 0)
-									//doHomingStart=true;
+									int MyHomeSequ, seq;
+										MyHomeSequ = PEv2_home_sequence[i];
+										for (seq = 0; seq < PEv2_nrOfAxes; seq++)
+										{
+											if(PEv2_home_sequence[i]== MyHomeSequ)
+											{
+												HomingStartMaskSetup = (1 << seq); // Home axis 1 only (bit 0)
+												doHomingStart=true;
+											 }
+
+										}
+									
 									break;
 								}
 								PEv2_deb_axxisout(i) = 2410 + i;
