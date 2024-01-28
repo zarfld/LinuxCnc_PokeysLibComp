@@ -613,7 +613,7 @@ void do_home_joint(int joint_num) {
     one_joint_home_data_t* addr;
     addr = &(joint_home_data->jhd[joint_num]);
     if (H[joint_num].home_sequence!=0){
-        addr->PEv2_AxesCommand = (hal_u32_t*)abs(H[joint_num].home_sequence);
+        addr->PEv2_AxesCommand = abs(H[joint_num].home_sequence);
     }
     else
     {
@@ -685,7 +685,7 @@ void update_joint_homing_params(int    jno,
     H[jno].home_offset = offset;
     H[jno].home = home;
     H[jno].home_sequence = home_sequence;
-    update_home_is_synchronized();
+ //   update_home_is_synchronized();
     return;
 }
 
