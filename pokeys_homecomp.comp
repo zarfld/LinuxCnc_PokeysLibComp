@@ -613,7 +613,7 @@ void do_home_joint(int joint_num) {
     one_joint_home_data_t* addr;
     addr = &(joint_home_data->jhd[joint_num]);
     if (H[joint_num].home_sequence!=0){
-        addr->PEv2_AxesCommand = abs(H[joint_num].home_sequence);
+        addr->PEv2_AxesCommand = abs((hal_u32_t*)H[joint_num].home_sequence);
     }
     else
     {
@@ -655,8 +655,8 @@ bool get_homing_at_index_search_wait(int jno) { return 0; }
 
 static void update_home_is_synchronized(void) {
     // invoke anytime H[*].home_sequence is altered
-    int jno, jj;
-
+    int jno, jj, all_joints;
+    all_joints = sizeof(H) / sizeof(H[0]);
     for (jno = 0; jno < all_joints; jno++) {
         H[jno].home_is_synchronized = 0;
         if (H[jno].home_sequence < 0) {
