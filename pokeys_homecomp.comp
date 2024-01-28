@@ -613,7 +613,8 @@ void do_home_joint(int joint_num) {
     one_joint_home_data_t* addr;
     addr = &(joint_home_data->jhd[joint_num]);
     if (H[joint_num].home_sequence!=0){
-        addr->PEv2_AxesCommand = abs((hal_u32_t*)H[joint_num].home_sequence);
+        int s = abs(H[joint_num].home_sequence);
+        addr->PEv2_AxesCommand = (hal_u32_t*)s;
     }
     else
     {
@@ -662,7 +663,7 @@ static void update_home_is_synchronized(void) {
         if (H[jno].home_sequence < 0) {
             // neg: sync all joints with same ABS(H[jno].home_sequence):
             for (jj = 0; jj < all_joints; jj++) {
-                if (ABS(H[jj].home_sequence) == ABS(H[jno].home_sequence)) {
+                if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence)) {
                     H[jj].home_is_synchronized = 1;
                 }
             }
