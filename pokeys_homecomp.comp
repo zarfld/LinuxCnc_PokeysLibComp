@@ -64,6 +64,7 @@ option  extra_setup;
 
 #include "motion.h"
 #include "homing.h"
+#include "stdlib.h"
 //#include "pokeyslib.h"
 
 static char* home_parms;
@@ -612,11 +613,11 @@ void do_home_joint(int joint_num) {
     one_joint_home_data_t* addr;
     addr = &(joint_home_data->jhd[joint_num]);
     if (H[joint_num].home_sequence!=0){
-        addr->PEv2_AxesCommand = abs(H[joint_num].home_sequence);
+        addr->PEv2_AxesCommand = (hal_u32_t*)abs(H[joint_num].home_sequence);
     }
     else
     {
-        addr->PEv2_AxesState = PK_PEAxisState_axHOMINGSTART;
+        addr->PEv2_AxesState = (hal_u32_t*)PK_PEAxisState_axHOMINGSTART;
     }
     return; 
 }
@@ -625,14 +626,14 @@ void do_home_joint(int joint_num) {
 void set_unhomed(int joint_num, motion_state_t motstate) {
     one_joint_home_data_t* addr;
 	addr = &(joint_home_data->jhd[joint_num]);
-    addr->PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGCANCEL;
+    addr->PEv2_AxesCommand = (hal_u32_t*)PK_PEAxisCommand_axHOMINGCANCEL;
     addr->homed = 0;
     return; 
 }
 void do_cancel_homing(int joint_num) {
     one_joint_home_data_t* addr;
     addr = &(joint_home_data->jhd[joint_num]);
-    addr->PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGCANCEL;
+    addr->PEv2_AxesCommand = (hal_u32_t*)PK_PEAxisCommand_axHOMINGCANCEL;
     return; }
 
 //---------------------------------------------------------------------
