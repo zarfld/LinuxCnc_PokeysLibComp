@@ -599,10 +599,10 @@ void write_homing_out_pins(int njoints) {
     one_joint_home_data_t* addr;
     for (jno = 0; jno < njoints; jno++) {
         addr = &(joint_home_data->jhd[jno]);
-        addr->homing = H[jno].homing;
-        addr->homed = H[jno].homed;
-        addr->home_state = H[jno].home_state;
-        addr->index_enable = H[jno].index_enable;
+        addr->homing = *H[jno].homing;
+        addr->homed = *H[jno].homed;
+        addr->home_state = *H[jno].home_state;
+        addr->index_enable = *H[jno].index_enable;
     }
     return;
 }
