@@ -2150,6 +2150,7 @@ void user_mainloop(void)
 
 					resetEncoders = 0;
 					
+					/* known issue: since update to Bullseye & Lcnc 2.9 it hangs here
 					for (i = 0; i < dev->info.iBasicEncoderCount; i++)
 					{
 						deb_out = 218*100+i;
@@ -2168,6 +2169,7 @@ void user_mainloop(void)
 						deb_out = 2185;
 						usleep(sleepdur);
 					}
+					*/
 					deb_out = 219;
 					if (dev->info.iUltraFastEncoders)
 					{
@@ -2208,7 +2210,7 @@ void user_mainloop(void)
 					}
 				}
 			}
-
+*/
 			if (dev->info.iPWMCount)
 			{
 				adcout_deb_outv = 100;
