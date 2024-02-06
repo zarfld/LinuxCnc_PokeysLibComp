@@ -887,7 +887,7 @@ void user_mainloop(void)
 				if (dev == NULL)
 				{
 					deb_out = 1131;
-					sPoKeysNetworkDeviceSummary net_devices[16];
+					sPoKeysNetworkDeviceSummary * net_devices;
 					int32_t nDevs = PK_SearchNetworkDevices(net_devices, i_Timeout,devSerial);
 					if (nDevs!=0)
 					{
@@ -895,7 +895,7 @@ void user_mainloop(void)
 						for (int i = 0; i < 16; i++)
 						{
 							deb_out = 1132;
-							dev = PK_ConnectToNetworkDevice(net_devices[i]);
+							dev = PK_ConnectToNetworkDevice(net_devices);
 							deb_out = 1133;
 						}
 					 }
@@ -911,7 +911,7 @@ void user_mainloop(void)
 							for (int i = 0; i < 16; i++)
 							{
 								deb_out = 1136;
-								dev = PK_ConnectToNetworkDevice(net_devices[i]);
+								dev = PK_ConnectToNetworkDevice(net_devices);
 								deb_out = 1137;
 							}
 							
