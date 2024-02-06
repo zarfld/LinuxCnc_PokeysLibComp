@@ -2210,7 +2210,7 @@ void user_mainloop(void)
 					}
 				}
 			}
-*/
+
 			if (dev->info.iPWMCount)
 			{
 				adcout_deb_outv = 100;
