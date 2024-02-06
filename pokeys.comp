@@ -2103,6 +2103,7 @@ void user_mainloop(void)
 				deb_out = 210;
 				if (PK_PinConfigurationGet(dev) == PK_OK)
 				{
+					usleep(sleepdur);
 					PinConfigurationGet = true;
 					deb_out = 211;
 					loopPins = true;
@@ -2110,6 +2111,7 @@ void user_mainloop(void)
 
 				if (PK_DigitalIOGet(dev) == PK_OK)
 				{
+					usleep(sleepdur);
 					deb_out = 212;
 					DigitalIOGet = true;
 					loopPins = true;
@@ -2117,6 +2119,7 @@ void user_mainloop(void)
 
 				if (PK_AnalogIOGet(dev) == PK_OK)
 				{
+					usleep(sleepdur);
 					deb_out = 213;
 					AnalogIOGet = true;
 					loopPins = true;
@@ -2128,6 +2131,7 @@ void user_mainloop(void)
 				deb_out = 214;
 				if (PK_DigitalCounterGet(dev) == PK_OK)
 				{
+					usleep(sleepdur);
 					deb_out = 215;
 					DigitalCounterGet = true;
 					loopPins = true;
@@ -2139,7 +2143,7 @@ void user_mainloop(void)
 				deb_out = 216;
 				if (PK_EncoderValuesGet(dev) == PK_OK)
 				{
-
+					usleep(sleepdur);
 					deb_out = 217;
 					EncoderValuesGet = true;
 					bool resetEncoders = false;
@@ -2150,18 +2154,24 @@ void user_mainloop(void)
 					{
 						deb_out = 218;
 						encoder_count(i) = dev->Encoders[i].encoderValue;
+						deb_out = 2180;
 						encoder_position(i) = dev->Encoders[i].encoderValue * encoder_scale(i);
-
+						deb_out = 2181;
 						if ((encoder_reset(i) != 0) || (initEncodersDone == false))
 						{
+							deb_out = 2182;
 							dev->Encoders[i].encoderValue = 0;
+							deb_out = 2183;
 							resetEncoders = true;
-
+							deb_out = 2184;
 						}
+						deb_out = 2185;
+						usleep(sleepdur);
 					}
 					deb_out = 219;
 					if (dev->info.iUltraFastEncoders)
 					{
+						usleep(sleepdur);
 						deb_out = 220;
 						for (i = dev->info.iBasicEncoderCount; i < (dev->info.iBasicEncoderCount + dev->info.iUltraFastEncoders); i++)
 						{
@@ -2173,6 +2183,7 @@ void user_mainloop(void)
 								dev->Encoders[i].encoderValue = 0;
 								resetEncoders = true;
 							}
+							usleep(sleepdur);
 						}
 					}
 					/*if (dev->info.iFastEncoders)
@@ -2188,6 +2199,7 @@ void user_mainloop(void)
 						deb_out = 140;
 						if (PK_EncoderValuesSet(dev) == PK_OK)
 						{
+							usleep(sleepdur);
 							resetEncoders = false;
 							deb_out = 141;
 							initEncodersDone = true;
@@ -2214,6 +2226,7 @@ void user_mainloop(void)
 
 				if (PK_PWMConfigurationGet(dev) == PK_OK)
 				{
+					usleep(sleepdur);
 					PWMperiod = adcout_pwm_period;
 					
 					if (PWMperiod=0)
@@ -2226,6 +2239,7 @@ void user_mainloop(void)
 						dev->PWM.PWMperiod= PWMperiod;
 						doPwmConfig = true;
 						PK_PWMConfigurationSet(dev);
+						usleep(sleepdur);
 					}
 
 					if (adcout_pwm_period != PWMperiod)
@@ -2297,7 +2311,7 @@ void user_mainloop(void)
 						}
 
 						adcout_deb_setval(PwmId) = PWMduty[i];
-
+						usleep(sleepdur);
 
 						/*if ((max_v[PwmId] > 0.000) && (high_limit[PwmId] > 0.000) && (high_limit[PwmId] > low_limit[PwmId]))
 						{
