@@ -938,7 +938,7 @@ void user_mainloop(void)
 							}
 						}
                     }
-					deb_out = 120;
+					//deb_out = 120;
 		}
 
 		if(dev != NULL)
