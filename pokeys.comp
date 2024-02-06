@@ -862,7 +862,7 @@ void user_mainloop(void)
 			{
 				usleep(sleepdur); 
 			}
-		int32_t i_Timeout=5000;
+			uint32_t i_Timeout=5000;
 		if (timeout > 0) {
 			i_Timeout= timeout;
 		}
