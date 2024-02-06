@@ -912,7 +912,7 @@ void user_mainloop(void)
 		else
 		{
 			deb_out = 114;
-			sPoKeysNetworkDeviceSummary * udp_devices;
+			sPoKeysNetworkDeviceSummary udp_devices[16];
 			deb_out = 115;
 			enum_usb_dev = PK_EnumerateUSBDevices();
 			deb_out = 116;
@@ -926,14 +926,13 @@ void user_mainloop(void)
                     for (int i = 0; i < 16; i++)
                     {
 						deb_out = 118 *10 + i;
-						if (udp_devices->SerialNumber != 0)
+						if (udp_devices[i]->SerialNumber != 0)
 						{
 							deb_out = 119 * 10 + i;
-							dev = PK_ConnectToDeviceWSerial_UDP(udp_devices->SerialNumber, 10000);  //waits for udp device
+							dev = PK_ConnectToDeviceWSerial_UDP(udp_devices[i]->SerialNumber, 10000);  //waits for udp device
 						}
                     }
-
-			deb_out =120
+					deb_out = 120;
 		}
 
 		if(dev != NULL)
