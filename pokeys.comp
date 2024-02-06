@@ -941,11 +941,6 @@ void user_mainloop(void)
 								deb_out = 119 * 10 + i;
 								dev = PK_ConnectToDeviceWSerial_UDP(udp_devices[i].SerialNumber, i_Timeout);  //waits for udp device
 								deb_out = 120 * 10 + i;
-								if (dev != NULL)
-								{
-									deb_out = 121 * 10 + i;
-									break;
-								}
 							}
 						}
                     }
