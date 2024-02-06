@@ -925,10 +925,10 @@ void user_mainloop(void)
                     for (int i = 0; i < 16; i++)
                     {
 						deb_out = 118 *10 + i;
-						if (netDevices[0] ->SerialNumber != 0)
+						if (udp_devices->SerialNumber != 0)
 						{
 							deb_out = 119 * 10 + i;
-							dev = PK_ConnectToDeviceWSerial_UDP(&netDevices[0], 10000);  //waits for udp device
+							dev = PK_ConnectToDeviceWSerial_UDP(&udp_devices, 10000);  //waits for udp device
 						}
                     }
 
