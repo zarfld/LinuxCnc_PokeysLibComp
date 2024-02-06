@@ -2152,7 +2152,7 @@ void user_mainloop(void)
 					
 					for (i = 0; i < dev->info.iBasicEncoderCount; i++)
 					{
-						deb_out = 218;
+						deb_out = 218*100+i;
 						encoder_count(i) = dev->Encoders[i].encoderValue;
 						deb_out = 2180;
 						encoder_position(i) = dev->Encoders[i].encoderValue * encoder_scale(i);
