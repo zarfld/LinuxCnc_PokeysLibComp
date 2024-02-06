@@ -590,6 +590,8 @@ unsigned int  sleepdur1 = 1000000;
 unsigned int  sleepdur2 = 1000000;
 float StepScale[8];
 
+bool DoPWM = false;
+bool DoEncoders = false;
 
 PK_MatrixKB_Parameters MatrixKB;
 
@@ -2138,7 +2140,7 @@ void user_mainloop(void)
 				}
 			}
 
-			if (dev->info.iBasicEncoderCount)
+			if (dev->info.iBasicEncoderCount && DoEncoders)
 			{
 				deb_out = 216;
 				if (PK_EncoderValuesGet(dev) == PK_OK)
@@ -2150,7 +2152,7 @@ void user_mainloop(void)
 
 					resetEncoders = 0;
 					
-					/* known issue: since update to Bullseye & Lcnc 2.9 it hangs here
+					/* known issue: since update to Bullseye & Lcnc 2.9 it hangs here*/
 					for (i = 0; i < dev->info.iBasicEncoderCount; i++)
 					{
 						deb_out = 218*100+i;
@@ -2169,9 +2171,9 @@ void user_mainloop(void)
 						deb_out = 2185;
 						usleep(sleepdur);
 					}
-					*/
+					
 					/*
-					known issue: since update to Bullseye & Lcnc 2.9 it hangs here
+					known issue: since update to Bullseye & Lcnc 2.9 it hangs here*/
 					deb_out = 219;
 					if (dev->info.iUltraFastEncoders)
 					{
@@ -2190,16 +2192,16 @@ void user_mainloop(void)
 							usleep(sleepdur);
 						}
 					}
-					*/
-					/*if (dev->info.iFastEncoders)
+					
+					if (dev->info.iFastEncoders)
 					{
 						for (i = dev->info.iBasicEncoderCount+ dev->info.iUltraFastEncoders; i < (dev->info.iBasicEncoderCount + dev->info.iUltraFastEncoders + dev->info.iFastEncoders ); i++)
 						{
 							encoder_value(i) = dev->Encoders[i].encoderValue;
 						}
-					}*/
+					}
 
-					/*if (resetEncoders == true)
+					if (resetEncoders == true)
 					{
 						deb_out = 140;
 						if (PK_EncoderValuesSet(dev) == PK_OK)
@@ -2211,11 +2213,11 @@ void user_mainloop(void)
 						}
 						deb_out = 142;
 					}
-					*/
+					
 				}
 			}
-
-			if (dev->info.iPWMCount)
+			
+			if (dev->info.iPWMCount && DoPWM)
 			{
 				adcout_deb_outv = 100;
 				uint32_t  PWMperiod;                       // PWM period, shared among all channels
@@ -2484,6 +2486,8 @@ void user_mainloop(void)
 			{
 				adcout_deb_outv = 150;
 			}
+			
+
 
 			if (loopPins = true){  //gets IO data and checks return value 
 				err=0;
