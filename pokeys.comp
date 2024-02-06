@@ -2170,6 +2170,8 @@ void user_mainloop(void)
 						usleep(sleepdur);
 					}
 					*/
+					/*
+					known issue: since update to Bullseye & Lcnc 2.9 it hangs here
 					deb_out = 219;
 					if (dev->info.iUltraFastEncoders)
 					{
@@ -2188,6 +2190,7 @@ void user_mainloop(void)
 							usleep(sleepdur);
 						}
 					}
+					*/
 					/*if (dev->info.iFastEncoders)
 					{
 						for (i = dev->info.iBasicEncoderCount+ dev->info.iUltraFastEncoders; i < (dev->info.iBasicEncoderCount + dev->info.iUltraFastEncoders + dev->info.iFastEncoders ); i++)
