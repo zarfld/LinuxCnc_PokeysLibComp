@@ -883,7 +883,7 @@ void user_mainloop(void)
 				if (dev == NULL)
 				{
 					deb_out = 1131;
-					sPoKeysNetworkDeviceSummary* udp_devices = new sPoKeysNetworkDeviceSummary;
+					sPoKeysNetworkDeviceSummary* udp_devices = new sPoKeysNetworkDeviceSummary();
 					int32_t nDevs = PK_SearchNetworkDevices(devices,5000,devSerial);
 					if (nDevs!=0)
 					{
@@ -911,7 +911,7 @@ void user_mainloop(void)
 		else
 		{
 			deb_out = 114;
-			sPoKeysNetworkDeviceSummary* udp_devices = new sPoKeysNetworkDeviceSummary;
+			sPoKeysNetworkDeviceSummary* udp_devices = new sPoKeysNetworkDeviceSummary();
 			;
 			deb_out = 115;
 			enum_usb_dev = PK_EnumerateUSBDevices();
