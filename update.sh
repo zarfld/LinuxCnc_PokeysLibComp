@@ -9,6 +9,7 @@ echo "Upgrading packages..."
 apt-get upgrade -y
 
 echo "updating Git repository..."
+git config pull.ff only
 git pull
 
 # Get the directory of the current script
