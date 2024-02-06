@@ -883,13 +883,13 @@ void user_mainloop(void)
 		else
 		{
 			deb_out = 114;
-			sPoKeysNetworkDeviceSummary udp_devices[16];
+			sPoKeysNetworkDeviceSummary * udp_devices;
 			deb_out = 115;
 			enum_usb_dev = PK_EnumerateUSBDevices();
 			deb_out = 116;
 			enum_fusb_dev = PK_EnumerateUSBDevices();
 			deb_out = 117;
-			enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices[0], 180); // does not work - it hangs here
+			enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices, 180); // does not work - it hangs here
 			deb_out = 118;
 
 
