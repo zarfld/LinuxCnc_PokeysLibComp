@@ -867,7 +867,7 @@ void user_mainloop(void)
 			{
 				usleep(sleepdur); 
 			}
-			uint32_t i_Timeout=500000;
+			uint32_t i_Timeout=900;
 		if (timeout_ms > 0) {
 			i_Timeout= timeout_ms;
 		}
@@ -876,12 +876,6 @@ void user_mainloop(void)
 				deb_out = 110;
 				enum_usb_dev = PK_EnumerateUSBDevices();
 				deb_out = 111;
-				if (enum_usb_dev != 0)
-				{
-					dev = PK_ConnectToDeviceWSerial(devSerial, i_Timeout);  //waits for usb device
-					lastConectionTypeTried = 1;
-				}
-				
 				deb_out = 112;
 				if (dev == NULL)
 				{
@@ -890,6 +884,14 @@ void user_mainloop(void)
 					lastConectionTypeTried = 2;
 
 				}
+
+				if (enum_usb_dev != 0)
+				{
+					dev = PK_ConnectToDeviceWSerial(devSerial, i_Timeout);  //waits for usb device
+					lastConectionTypeTried = 1;
+				}
+				
+				
 				if (dev == NULL)
 				{
 					deb_out = 1131;
