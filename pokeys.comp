@@ -967,13 +967,13 @@ void user_mainloop(void)
 				connected_udp = 0;
 				connected_net = 0;
 			}
-			else(lastConectionTypeTried = 2) {
+			else if(lastConectionTypeTried = 2) {
 				connected_usb = 0;
 				connected_fusb = 0;
 				connected_udp = 1;
 				connected_net = 0;
 			}
-		else(lastConectionTypeTried = 3) {
+		else if(lastConectionTypeTried = 3) {
 			connected_usb = 0;
 			connected_fusb = 0;
 			connected_udp = 0;
