@@ -31,6 +31,10 @@ pin out unsigned adcout.deb.outv;
 
 pin out bit err;
 pin out bit connected;
+pin out bit connected.usb;
+pin out bit connected.fusb;
+pin out bit connected.udp;
+pin out bit connected.net;
 pin in unsigned devSerial;
 pin out bit alive;
 
@@ -854,6 +858,7 @@ void user_mainloop(void)
 	   HAL_Machine_On = machine_is_on;
 
 	   deb_out = 100;
+	   uint32_t lastConectionTypeTried = 0;
 	 while(dev == NULL)
 	 {
 			
@@ -874,6 +879,7 @@ void user_mainloop(void)
 				if (enum_usb_dev != 0)
 				{
 					dev = PK_ConnectToDeviceWSerial(devSerial, i_Timeout);  //waits for usb device
+					lastConectionTypeTried = 1;
 				}
 				
 				deb_out = 112;
@@ -881,7 +887,7 @@ void user_mainloop(void)
 				{
 					deb_out = 113;
 					dev = PK_ConnectToDeviceWSerial_UDP(devSerial, i_Timeout);  //waits for udp device
-
+					lastConectionTypeTried = 2;
 
 				}
 				if (dev == NULL)
@@ -894,6 +900,7 @@ void user_mainloop(void)
 						enum_udp_dev = nDevs;
 						deb_out = 1132;
 						dev = PK_ConnectToNetworkDevice(net_devices);
+						lastConectionTypeTried = 3;
 						deb_out = 1133;
 					 }
 					else {
@@ -907,6 +914,7 @@ void user_mainloop(void)
 							enum_udp_dev = nDevs;
 							deb_out = 1136;
 							dev = PK_ConnectToNetworkDevice(net_devices);
+							lastConectionTypeTried = 3;
 							deb_out = 1137;
 							
 						}
@@ -940,6 +948,7 @@ void user_mainloop(void)
 							{
 								deb_out = 119 * 10 + i;
 								dev = PK_ConnectToDeviceWSerial_UDP(udp_devices[i].SerialNumber, i_Timeout);  //waits for udp device
+								lastConectionTypeTried = 2;
 								deb_out = 120 * 10 + i;
 							}
 						}
@@ -951,7 +960,25 @@ void user_mainloop(void)
 		{
 			deb_out = 121;
 			connected=1;
-
+			if (lastConectionTypeTried = 1) 
+			{
+				connected_usb=1;
+				connected_fusb = 0;
+				connected_udp = 0;
+				connected_net = 0;
+			}
+			else(lastConectionTypeTried = 2) {
+				connected_usb = 0;
+				connected_fusb = 0;
+				connected_udp = 1;
+				connected_net = 0;
+			}
+		else(lastConectionTypeTried = 3) {
+			connected_usb = 0;
+			connected_fusb = 0;
+			connected_udp = 0;
+			connected_net = 1;
+		}
 			 info_PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
 			 info_PWMCount = dev->info.iPWMCount;                        // Number of pins that support PWM output
 			 info_BasicEncoderCount = dev->info.iBasicEncoderCount;               // Number of basic encoders
