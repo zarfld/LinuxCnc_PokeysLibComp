@@ -916,7 +916,7 @@ void user_mainloop(void)
 			deb_out = 115;
 			enum_usb_dev = PK_EnumerateUSBDevices();
 			deb_out = 116;
-			enum_fusb_dev = PK_EnumerateFastUSBDevices();
+		//	enum_fusb_dev = PK_EnumerateFastUSBDevices();
 			deb_out = 117;
 			int32_t nDevs = PK_EnumerateNetworkDevices(udp_devices, 180); // does not work - it hangs here
 			enum_udp_dev = nDevs;
