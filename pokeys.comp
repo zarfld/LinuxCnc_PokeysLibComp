@@ -885,12 +885,14 @@ void user_mainloop(void)
 
 				}
 
+				if (dev == NULL)
+				{
 				if (enum_usb_dev != 0)
 				{
 					dev = PK_ConnectToDeviceWSerial(devSerial, i_Timeout);  //waits for usb device
 					lastConectionTypeTried = 1;
 				}
-				
+				}
 				
 				if (dev == NULL)
 				{
@@ -962,20 +964,20 @@ void user_mainloop(void)
 		{
 			deb_out = 121;
 			connected=1;
-			if (lastConectionTypeTried = 1) 
+			if (lastConectionTypeTried == 1) 
 			{
 				connected_usb=1;
 				connected_fusb = 0;
 				connected_udp = 0;
 				connected_net = 0;
 			}
-			else if(lastConectionTypeTried = 2) {
+			else if(lastConectionTypeTried == 2) {
 				connected_usb = 0;
 				connected_fusb = 0;
 				connected_udp = 1;
 				connected_net = 0;
 			}
-		else if(lastConectionTypeTried = 3) {
+		else if(lastConectionTypeTried == 3) {
 			connected_usb = 0;
 			connected_fusb = 0;
 			connected_udp = 0;
