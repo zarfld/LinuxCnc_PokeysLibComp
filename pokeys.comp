@@ -7,6 +7,7 @@ option userspace yes;
 pin out unsigned enum_usb_dev;
 pin out unsigned enum_fusb_dev;
 pin out unsigned enum_udp_dev;
+pin in unsigned timeout_ms;
 pin out s32 deb.out;
 
 pin out s32 PEv2.deb.out;
@@ -30,6 +31,10 @@ pin out unsigned adcout.deb.outv;
 
 pin out bit err;
 pin out bit connected;
+pin out bit connected.usb;
+pin out bit connected.fusb;
+pin out bit connected.udp;
+pin out bit connected.net;
 pin in unsigned devSerial;
 pin out bit alive;
 
@@ -579,12 +584,14 @@ sPoNETmodule PoNet[16];
 uint8_t PoExtBus_DataSet[10];
 uint8_t PoExtBus_DataGet[10];
 
-unsigned int  sleepdur = 2000;
+unsigned int  sleepdur = 1000;
 bool  use_sleepdur1 = true;
-unsigned int  sleepdur1 = 2000;
-unsigned int  sleepdur2 = 2000;
+unsigned int  sleepdur1 = 1000;
+unsigned int  sleepdur2 = 1000;
 float StepScale[8];
 
+bool DoPWM = false;
+bool DoEncoders = false;
 
 PK_MatrixKB_Parameters MatrixKB;
 
@@ -853,6 +860,7 @@ void user_mainloop(void)
 	   HAL_Machine_On = machine_is_on;
 
 	   deb_out = 100;
+	   uint32_t lastConectionTypeTried = 0;
 	 while(dev == NULL)
 	 {
 			
@@ -861,56 +869,123 @@ void user_mainloop(void)
 			{
 				usleep(sleepdur); 
 			}
-
+			uint32_t i_Timeout=1000;
+		if (timeout_ms > 0) {
+			i_Timeout= timeout_ms;
+		}
 		 if (devSerial!=0 )
 		 {
 				deb_out = 110;
-				enum_usb_dev = PK_EnumerateUSBDevices();
-				deb_out = 111;
-				if (enum_usb_dev != 0)
+
+				if (dev == NULL)
 				{
-					dev = PK_ConnectToDeviceWSerial(devSerial, 5000);  //waits for usb device
+					enum_usb_dev = PK_EnumerateUSBDevices();
+					deb_out = 111;
+					deb_out = 112;
+					if (enum_usb_dev != 0)
+					{
+						dev = PK_ConnectToDeviceWSerial(devSerial, i_Timeout);  //waits for usb device
+						lastConectionTypeTried = 1;
+					}
 				}
-				
-				deb_out = 112;
 				if (dev == NULL)
 				{
 					deb_out = 113;
-					dev = PK_ConnectToDeviceWSerial_UDP(devSerial, 10000);  //waits for udp device
-				}
+					dev = PK_ConnectToDeviceWSerial_UDP(devSerial, i_Timeout);  //waits for udp device
+					lastConectionTypeTried = 2;
 
+				}
+				if (dev == NULL)
+				{
+					deb_out = 1131;
+					sPoKeysNetworkDeviceSummary * net_devices;
+					int32_t nDevs = PK_SearchNetworkDevices(net_devices, i_Timeout, devSerial);
+					if (nDevs!=0)
+					{
+						enum_udp_dev = nDevs;
+						deb_out = 1132;
+						dev = PK_ConnectToNetworkDevice(net_devices);
+						lastConectionTypeTried = 3;
+						deb_out = 1133;
+					 }
+					else {
+						deb_out = 1134;
+	
+						nDevs = PK_EnumerateNetworkDevices(net_devices, i_Timeout); // does not work - it hangs here
+						
+						deb_out = 1135;
+						if (nDevs != 0)
+						{
+							enum_udp_dev = nDevs;
+							deb_out = 1136;
+							dev = PK_ConnectToNetworkDevice(net_devices);
+							lastConectionTypeTried = 3;
+							deb_out = 1137;
+							
+						}
+
+					}
+					
+				
+
+				}
 		 }
 		else
 		{
 			deb_out = 114;
-			sPoKeysNetworkDeviceSummary * udp_devices;
+			sPoKeysNetworkDeviceSummary udp_devices[16];
 			deb_out = 115;
 			enum_usb_dev = PK_EnumerateUSBDevices();
 			deb_out = 116;
-			enum_fusb_dev = PK_EnumerateUSBDevices();
+		//	enum_fusb_dev = PK_EnumerateFastUSBDevices();
 			deb_out = 117;
-			enum_udp_dev = PK_EnumerateNetworkDevices(udp_devices, 180); // does not work - it hangs here
+			int32_t nDevs = PK_EnumerateNetworkDevices(udp_devices, i_Timeout); // does not work - it hangs here
+			enum_udp_dev = nDevs;
 			deb_out = 118;
 
 
                     for (int i = 0; i < 16; i++)
                     {
-						deb_out = 118 *10 + i;
-						if (netDevices[0] ->SerialNumber != 0)
+						if (dev = NULL)
 						{
-							deb_out = 119 * 10 + i;
-							dev = PK_ConnectToDeviceWSerial_UDP(&netDevices[0], 10000);  //waits for udp device
+							deb_out = 118 *10 + i;
+							if (udp_devices[i].SerialNumber != 0)
+							{
+								deb_out = 119 * 10 + i;
+								dev = PK_ConnectToDeviceWSerial_UDP(udp_devices[i].SerialNumber, i_Timeout);  //waits for udp device
+								lastConectionTypeTried = 2;
+								deb_out = 120 * 10 + i;
+							}
 						}
                     }
-
-			deb_out =120
+					//deb_out = 120;
 		}
 
 		if(dev != NULL)
 		{
 			deb_out = 121;
 			connected=1;
-
+			if (lastConectionTypeTried == 1) 
+			{
+				connected_usb=1;
+				connected_fusb = 0;
+				connected_udp = 0;
+				connected_net = 0;
+			}
+			if(lastConectionTypeTried == 2) 
+			{
+				connected_usb = 0;
+				connected_fusb = 0;
+				connected_udp = 1;
+				connected_net = 0;
+			}
+			if(lastConectionTypeTried == 3) 
+			{
+				connected_usb = 0;
+				connected_fusb = 0;
+				connected_udp = 0;
+				connected_net = 1;
+			}
 			 info_PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
 			 info_PWMCount = dev->info.iPWMCount;                        // Number of pins that support PWM output
 			 info_BasicEncoderCount = dev->info.iBasicEncoderCount;               // Number of basic encoders
@@ -1160,7 +1235,7 @@ void user_mainloop(void)
 					{
 						if (rtc_loop_frequ_demand == 0)
 						{
-							sleepdur = sleepdur*rtc_loop_frequ/10;
+							sleepdur = sleepdur*rtc_loop_frequ/5;
 						}
 						else
 						{
@@ -2030,6 +2105,7 @@ void user_mainloop(void)
 				deb_out = 210;
 				if (PK_PinConfigurationGet(dev) == PK_OK)
 				{
+					usleep(sleepdur);
 					PinConfigurationGet = true;
 					deb_out = 211;
 					loopPins = true;
@@ -2037,6 +2113,7 @@ void user_mainloop(void)
 
 				if (PK_DigitalIOGet(dev) == PK_OK)
 				{
+					usleep(sleepdur);
 					deb_out = 212;
 					DigitalIOGet = true;
 					loopPins = true;
@@ -2044,6 +2121,7 @@ void user_mainloop(void)
 
 				if (PK_AnalogIOGet(dev) == PK_OK)
 				{
+					usleep(sleepdur);
 					deb_out = 213;
 					AnalogIOGet = true;
 					loopPins = true;
@@ -2055,40 +2133,51 @@ void user_mainloop(void)
 				deb_out = 214;
 				if (PK_DigitalCounterGet(dev) == PK_OK)
 				{
+					usleep(sleepdur);
 					deb_out = 215;
 					DigitalCounterGet = true;
 					loopPins = true;
 				}
 			}
 
-			if (dev->info.iBasicEncoderCount)
+			if (dev->info.iBasicEncoderCount && DoEncoders)
 			{
 				deb_out = 216;
 				if (PK_EncoderValuesGet(dev) == PK_OK)
 				{
-
+					usleep(sleepdur);
 					deb_out = 217;
 					EncoderValuesGet = true;
 					bool resetEncoders = false;
 
 					resetEncoders = 0;
 					
+					/* known issue: since update to Bullseye & Lcnc 2.9 it hangs here*/
 					for (i = 0; i < dev->info.iBasicEncoderCount; i++)
 					{
-						deb_out = 218;
+						deb_out = 218*100+i;
 						encoder_count(i) = dev->Encoders[i].encoderValue;
+						deb_out = 2180;
 						encoder_position(i) = dev->Encoders[i].encoderValue * encoder_scale(i);
-
+						deb_out = 2181;
 						if ((encoder_reset(i) != 0) || (initEncodersDone == false))
 						{
+							deb_out = 2182;
 							dev->Encoders[i].encoderValue = 0;
+							deb_out = 2183;
 							resetEncoders = true;
-
+							deb_out = 2184;
 						}
+						deb_out = 2185;
+						usleep(sleepdur);
 					}
+					
+					/*
+					known issue: since update to Bullseye & Lcnc 2.9 it hangs here*/
 					deb_out = 219;
 					if (dev->info.iUltraFastEncoders)
 					{
+						usleep(sleepdur);
 						deb_out = 220;
 						for (i = dev->info.iBasicEncoderCount; i < (dev->info.iBasicEncoderCount + dev->info.iUltraFastEncoders); i++)
 						{
@@ -2100,13 +2189,15 @@ void user_mainloop(void)
 								dev->Encoders[i].encoderValue = 0;
 								resetEncoders = true;
 							}
+							usleep(sleepdur);
 						}
 					}
-					/*if (dev->info.iFastEncoders)
+					/*
+					if (dev->info.iFastEncoders)
 					{
 						for (i = dev->info.iBasicEncoderCount+ dev->info.iUltraFastEncoders; i < (dev->info.iBasicEncoderCount + dev->info.iUltraFastEncoders + dev->info.iFastEncoders ); i++)
 						{
-							encoder_value(i) = dev->Encoders[i].encoderValue;
+							encoder_count(i) = dev->Encoders[i].encoderValue;
 						}
 					}*/
 
@@ -2115,16 +2206,18 @@ void user_mainloop(void)
 						deb_out = 140;
 						if (PK_EncoderValuesSet(dev) == PK_OK)
 						{
+							usleep(sleepdur);
 							resetEncoders = false;
 							deb_out = 141;
 							initEncodersDone = true;
 						}
 						deb_out = 142;
 					}
+					
 				}
 			}
-
-			if (dev->info.iPWMCount)
+			
+			if (dev->info.iPWMCount && DoPWM)
 			{
 				adcout_deb_outv = 100;
 				uint32_t  PWMperiod;                       // PWM period, shared among all channels
@@ -2141,6 +2234,7 @@ void user_mainloop(void)
 
 				if (PK_PWMConfigurationGet(dev) == PK_OK)
 				{
+					usleep(sleepdur);
 					PWMperiod = adcout_pwm_period;
 					
 					if (PWMperiod=0)
@@ -2153,6 +2247,7 @@ void user_mainloop(void)
 						dev->PWM.PWMperiod= PWMperiod;
 						doPwmConfig = true;
 						PK_PWMConfigurationSet(dev);
+						usleep(sleepdur);
 					}
 
 					if (adcout_pwm_period != PWMperiod)
@@ -2224,7 +2319,7 @@ void user_mainloop(void)
 						}
 
 						adcout_deb_setval(PwmId) = PWMduty[i];
-
+						usleep(sleepdur);
 
 						/*if ((max_v[PwmId] > 0.000) && (high_limit[PwmId] > 0.000) && (high_limit[PwmId] > low_limit[PwmId]))
 						{
@@ -2391,6 +2486,8 @@ void user_mainloop(void)
 			{
 				adcout_deb_outv = 150;
 			}
+			
+
 
 			if (loopPins = true){  //gets IO data and checks return value 
 				err=0;

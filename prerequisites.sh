@@ -63,6 +63,7 @@ if [ -d "pokeyslib" ]; then
     # Fetch latest changes
     echo "Fetching latest changes..."
     cd pokeyslib
+    git config pull.ff only
     git pull
     cd ..
 else
