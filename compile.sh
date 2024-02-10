@@ -11,3 +11,7 @@ echo "kbd48CNC.comp compiled successfully."
 echo "Compiling pokeys_homecomp.comp..."
 halcompile --install pokeys_homecomp.comp
 echo "pokeys_homecomp.comp compiled successfully."
+
+echo "Compiling pokeys_rt.comp..."
+halcompile --install pokeys_rt.comp
+echo "pokeys_rt.comp compiled successfully."
