@@ -1,5 +1,5 @@
 
-loadusr kbd48CNC
+loadusr kbd48CNC -W
 show pin
 show parameter
 #******************************
