@@ -6,9 +6,13 @@ apt-get update
 
 
 if ! dpkg -s linuxcnc-dev >/dev/null 2>&1; then
-    # Installing Development Packages needed to build COMP files
-    echo "Installing development packages..."
-    apt-get install -y linuxcnc-dev
+    # Ask user if linuxcnc-dev should be installed
+    read -p "Do you want to install linuxcnc-dev? (y/n): " install_linuxcnc_dev
+    if [ "$install_linuxcnc_dev" = "y" ]; then
+        # Installing Development Packages needed to build COMP files
+        echo "Installing linuxcnc-dev..."
+        apt-get install -y linuxcnc-dev
+    fi
 fi
 
 # Install or update required packages
