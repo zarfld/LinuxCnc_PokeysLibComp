@@ -26,7 +26,7 @@ option  extra_setup;
 #define XSTR(s) STR(s)
 
 #include "motion.h"
-#include "homing.h"
+//#include "homing.h"
 #include "stdlib.h"
 #include "pokeyslib.h"
 
