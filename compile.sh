@@ -38,12 +38,13 @@ cp pokeys_rt.comp ../pokeyslib
 # copy ../pokeyslib/Makefile.noqmake.rt and ../pokeyslib/PoKeysLib.h to current folder
 cp ../pokeyslib/Makefile.noqmake.rt .
 cp ../pokeyslib/PoKeysLib.h .
+cp ../libPoKeys.so .
 
 # stage, commit and push  Makefile.noqmake.rt and PoKeysLib.h
-git add Makefile.noqmake.rt
-git add PoKeysLib.h
-git commit -m "Makefile.noqmake.rt and PoKeysLib.h updated for pokeys_rt.comp"
-git push
+#git add Makefile.noqmake.rt
+#git add PoKeysLib.h
+#git commit -m "Makefile.noqmake.rt and PoKeysLib.h updated for pokeys_rt.comp"
+#git push
 
 # compile pokeyslib and install it to /usr/lib/linuxcnc/modules
 cd ../pokeyslib
