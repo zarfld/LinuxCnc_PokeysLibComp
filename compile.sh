@@ -16,8 +16,8 @@ echo "preparing prerequisites of pokeys_rt.comp..."
 cp ../pokeyslib/Makefile.noqmake ../pokeyslib/Makefile.noqmake.rt
 #modify the Makefile.noqmake.rt to exclude libusb-1.0
 sed -i 's/ -lusb-1.0//g' ../pokeyslib/Makefile.noqmake.rt
-#modify the Makefile.noqmake.rt to change line 'cp libPoKeys.so /usr/lib' to 'cp libPoKeys.so usr/lib/linuxcnc/modules'
-sed -i 's/cp libPoKeys.so \/usr\/lib/cp libPoKeys.so usr\/lib\/linuxcnc\/modules/g' ../pokeyslib/Makefile.noqmake.rt
+#modify the Makefile.noqmake.rt to change line 'cp libPoKeys.so /usr/lib' to 'cp libPoKeys.so /usr/lib/linuxcnc/modules'
+sed -i 's/cp libPoKeys.so \/usr\/lib/cp libPoKeys.so \/usr\/lib\/linuxcnc\/modules/g' ../pokeyslib/Makefile.noqmake.rt
 
 sed -i 's/hid-libusb.c //g' ../pokeyslib/Makefile.noqmake.rt
 
