@@ -93,7 +93,7 @@ typedef struct {
     hal_bit_t* homed;        // joint was homed
     hal_bit_t* index_enable; // motmod sets: request reset on index
                              //        encoder clears: index arrived
-    hal_s32_t* home_state;   // homing state machine state
+ //   hal_s32_t* home_state;   // homing state machine state
 
 
     hal_u32_t* PEv2_AxesState; // State of pulse engine - see ePoKeysPEState
@@ -141,8 +141,8 @@ static int makepins(int id, int njoints)
         retval += hal_pin_bit_newf(HAL_OUT, &(addr->homed), id,
             "joint.%d.homed", jno);
 
-        retval += hal_pin_s32_newf(HAL_OUT, &(addr->home_state), id,
-            "joint.%d.home-state", jno);
+    //    retval += hal_pin_s32_newf(HAL_OUT, &(addr->home_state), id,
+    //        "joint.%d.home-state", jno);
 
         retval += hal_pin_bit_newf(HAL_IO, &(addr->index_enable), id,
             "joint.%d.index-enable", jno);
@@ -217,7 +217,7 @@ void write_homing_out_pins(int njoints) {
         addr = &(joint_home_data->jhd[jno]);
         addr->homing = (hal_bit_t*)H[jno].homing;
         addr->homed = (hal_bit_t*)H[jno].homed;
-        addr->home_state = (hal_s32_t *)H[jno].home_state;
+   //     addr->home_state = (hal_s32_t *)H[jno].home_state;
         addr->index_enable = (hal_bit_t*)H[jno].index_enable;
     }
     return;
