@@ -5,7 +5,7 @@ description """
 """;
 
 pin in unsigned devSerial;
-pin in unsigned PulseEngineState;				// State of pulse engine - see ePoKeysPEState
+pin in unsigned inPulseEngineState;				// State of pulse engine - see ePoKeysPEState
 pin out bit is_module = 1; //one pin is required to use halcompile)
 
 license "GPL";
