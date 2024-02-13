@@ -1,35 +1,95 @@
 This configuration drives a 3-axis stepper machine using pokeyslib. and stepgeneration is done using PEv2 running on Pokeys card (either Pokeys57CNC or Pokeys57E+PoExtBusOC16CNC) 
 
-### Sample Configurations
+## Sample Configurations
 
-Pokeys57CNC_DM542_XXYZ_mill			using a Pokeys57CNC and 4 DM542 drivers for XYZ and X2 axis.  This configuration uses the Pokeys57CNC card and is for a 3 axis milling machine.
-									no limit switches or homing switche are used (as homing is not yet functional without of homing_comp)
-									spindle control is done using PWM 0..10V output of pokeys57CNC 
-									MPG is done using encoder 0 and 1 of pokeys57CNC
-									kbd48cnc keyboard input (prefered connection using CAN instead of PoExtBus for better performance)
-									OC outputs of PoExtBusOC16 and relays of PoRelay8 on pins pokeys.0.PoExtBus.#.digout.#
-									Switchng OC Outputs of Pokeys57CNC on pins pokeys.0.PEv2.ExternalOCOutput.0..3
-									Switchng Relay Outputs of Pokeys57CNC (SSR1 & 2 -> pokeys.0.PEv2.ExternalRelayOutput.0 & 1)
+DM542_XXYZ_mill is based on gantry example
 
-Pokeys57CNC_DM542_XXYZ_homingdeb	same as Pokeys57CNC_DM542_XXYZ_mill but with pokeys_homing enabled (need 2.9 and higher as it needs homing_comp functionality)
-									uses dedicated pins of pokeys57CNC for limit switches. (pin 0 on pokeys pulseengine UI), Homing Switches of X, X2, Y and Z are shared with 'limit +'
-									spindle control is done using PWM 0..10V output of pokeys57CNC 
-									MPG is done using encoder 0 of pokeys57CNC
-									kbd48cnc keyboard input (prefered connection using CAN instead of PoExtBus for better performance)
-									OC outputs of PoExtBusOC16 and relays of PoRelay8 on pins pokeys.0.PoExtBus.#.digout.#
-									Switchng OC Outputs of Pokeys57CNC on pins pokeys.0.PEv2.ExternalOCOutput.0..3
-									Switchng Relay Outputs of Pokeys57CNC (SSR1 & 2 -> pokeys.0.PEv2.ExternalRelayOutput.0 & 1)
+### Pokeys57CNC_DM542_XXYZ_mill			
 
-Pokeys57E_DM542_XXYZ_mill			using a Pokeys57E, PoExtBusOC16CNC and 4 DM542 drivers for XYZ and X2 axis.  This configuration uses the Pokeys57CNC card and is for a 3 axis milling machine.
-									no limit switches or homing switche are used (as homing is not yet functional without of homing_comp)
-									MPG is done using encoder 0 and 1 of pokeys57CNC
-									kbd48cnc keyboard input (prefered connection using CAN instead of PoExtBus for better performance)
-									OC outputs of PoExtBusOC16 and relays of PoRelay8 on pins pokeys.0.PoExtBus.#.digout.#
-									Switchng OC Outputs of Pokeys57CNC on pins pokeys.0.PEv2.ExternalOCOutput.0..3
-									Switchng Relay Outputs of Pokeys57CNC (SSR1 & 2 -> pokeys.0.PEv2.ExternalRelayOutput.0 & 1)	
+	* using a Pokeys57CNC and 4 DM542 drivers for XYZ and X2 axis.  
+	* This configuration uses the Pokeys57CNC card and is for a 3 axis milling machine.
+	* no limit switches or homing switche are used (as homing is not yet functional without of homing_comp)
+	* spindle control is done using PWM 0..10V output of pokeys57CNC 
+	* MPG is done using encoder 0 and 1 of pokeys57CNC
+	* kbd48cnc keyboard input (prefered connection using CAN instead of PoExtBus for better performance)
+	* OC outputs of PoExtBusOC16 and relays of PoRelay8 on pins pokeys.0.PoExtBus.#.digout.#
+	* Switchng OC Outputs of Pokeys57CNC on pins pokeys.0.PEv2.ExternalOCOutput.0..3
+	* Switchng Relay Outputs of Pokeys57CNC (SSR1 & 2 -> pokeys.0.PEv2.ExternalRelayOutput.0 & 1)
+	* GPIO PINs of pokeys57CNC
+			PEv2_ProbeInput=19	
+			PEv2_EmergencyInputPin=52
+		- AXIS_X / JOINT_0 / PEv2_0 
+			PEv2_AxesSwitchConfig_0=115		# PK_ASO_SWITCH_LIMIT_N | PK_ASO_SWITCH_LIMIT_P | PK_ASO_SWITCH_COMBINED_LP_H | PK_ASO_SWITCH_INVERT_LIMIT_N | PK_ASO_SWITCH_INVERT_LIMIT_P  = 1 | 2 | 16 | 32 | 64 = 115
+			PEv2_PinHomeSwitch_0=0  
+			PEv2_PinLimitMSwitch_0=0
+			PEv2_PinLimitPSwitch_0=0
+			PEv2_AxisEnableOutputPins_0=0
+		- AXIS_Y / JOINT_1 / PEv2_1
+			PEv2_AxesSwitchConfig_1=115	# PK_ASO_SWITCH_LIMIT_N | PK_ASO_SWITCH_LIMIT_P | PK_ASO_SWITCH_COMBINED_LP_H | PK_ASO_SWITCH_INVERT_LIMIT_N | PK_ASO_SWITCH_INVERT_LIMIT_P  = 1 | 2 | 16 | 32 | 64 = 115
+			PEv2_PinHomeSwitch_1=0
+			PEv2_PinLimitMSwitch_1=0
+			PEv2_PinLimitPSwitch_1=0
+			PEv2_AxisEnableOutputPins_1=0
+		- AXIS_Z / JOINT_2 / PEv2_2
+			PEv2_AxesSwitchConfig_2=115	# PK_ASO_SWITCH_LIMIT_N | PK_ASO_SWITCH_LIMIT_P | PK_ASO_SWITCH_COMBINED_LP_H | PK_ASO_SWITCH_INVERT_LIMIT_N | PK_ASO_SWITCH_INVERT_LIMIT_P  = 1 | 2 | 16 | 32 | 64 = 115
+			PEv2_PinHomeSwitch_2=0
+			PEv2_PinLimitMSwitch_2=0
+			PEv2_PinLimitPSwitch_2=0
+			PEv2_AxisEnableOutputPins_2=0
+		- AXIS_X2 / JOINT_3 / PEv2_6
+			PEv2_AxesSwitchConfig_6=115	# PK_ASO_SWITCH_LIMIT_N | PK_ASO_SWITCH_LIMIT_P | PK_ASO_SWITCH_COMBINED_LP_H | PK_ASO_SWITCH_INVERT_LIMIT_N | PK_ASO_SWITCH_INVERT_LIMIT_P  = 1 | 2 | 16 | 32 | 64 = 115
+			PEv2_PinHomeSwitch_6=0
+			PEv2_PinLimitMSwitch_6=0
+			PEv2_PinLimitPSwitch_6=0
+			PEv2_AxisEnableOutputPins_6=0
+
+### Pokeys57CNC_DM542_XXYZ_homingdeb
+
+	* same as Pokeys57CNC_DM542_XXYZ_mill but with pokeys_homing enabled (need 2.9 and higher as it needs homing_comp functionality)
+	* uses dedicated pins of pokeys57CNC for limit switches. (pin 0 on pokeys pulseengine UI), 
+	* Homing Switches of X, X2, Y and Z are shared with 'limit +'
+	* spindle control is done using PWM 0..10V output of pokeys57CNC 
+	* MPG is done using encoder 0 of pokeys57CNC
+	* kbd48cnc keyboard input (prefered connection using CAN instead of PoExtBus for better performance)
+	* OC outputs of PoExtBusOC16 and relays of PoRelay8 on pins pokeys.0.PoExtBus.#.digout.#
+	* Switchng OC Outputs of Pokeys57CNC on pins pokeys.0.PEv2.ExternalOCOutput.0..3
+	* Switchng Relay Outputs of Pokeys57CNC (SSR1 & 2 -> pokeys.0.PEv2.ExternalRelayOutput.0 & 1)
+
+### Pokeys57E_DM542_XXYZ_mill
+
+	* using a Pokeys57E, PoExtBusOC16CNC and 4 DM542 drivers for XYZ and X2 axis.  
+	* This configuration uses the Pokeys57CNC card and is for a 3 axis milling machine.
+	* MPG is done using encoder 0 and 1 of pokeys57CNC
+	* kbd48cnc keyboard input (known latency issues)
+	* OC outputs of PoExtBusOC16 and relays of PoRelay8 on pins pokeys.0.PoExtBus.#.digout.#
+	* GPIOs of Pokeys57E
+		PEv2_ProbeInput=20		# Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9)
+		PEv2_EmergencyInputPin=54 
+		PEv2_EmergencyOutputPin=53
+		- AXIS_X / JOINT_0 / PEv2_0 
+			PEv2_PinHomeSwitch_0=13
+			PEv2_PinLimitMSwitch_0=13
+			PEv2_PinLimitPSwitch_0=14
+			PEv2_AxisEnableOutputPins_0=1
+		- AXIS_Y / JOINT_1 / PEv2_1
+			PEv2_PinHomeSwitch_1=15
+			PEv2_PinLimitMSwitch_1=15
+			PEv2_PinLimitPSwitch_1=16
+			PEv2_AxisEnableOutputPins_1=2
+		- AXIS_Z / JOINT_2 / PEv2_2
+			PEv2_PinHomeSwitch_2=17
+			PEv2_PinLimitMSwitch_2=17
+			PEv2_PinLimitPSwitch_2=18
+			PEv2_AxisEnableOutputPins_2=3
+		- AXIS_X2 / JOINT_3 / PEv2_6
+			PEv2_PinHomeSwitch_6=19
+			PEv2_PinLimitMSwitch_6=19
+			PEv2_PinLimitPSwitch_6=20
+			PEv2_AxisEnableOutputPins_6=4
 
 
-### pokeys.comp   
+
+## pokeys.comp   
 	userspace component for Pokeys57CNC, Pokeys57E and Pokeys57U
 
 - [x] Connecting to USB devices
