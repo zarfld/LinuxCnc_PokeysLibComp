@@ -861,9 +861,18 @@ EXTRA_SETUP() {
 		sPoKeysNetworkDeviceSummary * devices;
 		uint32_t ConnectionType = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
 		//uint32_t timeout_ms = 1000; already difined as Pin
-
-		for (int i = 0; i < extra_arg.count; i++) {
-			switch (extra_arg.names[i][0]) {
+		//uint32_t devSerial = 0; already difined as Pin
+		
+		// temporary deactivated   extra_arg does not have properties count, names, values
+		// the names parameters are passed in 'prefix'. You just have to know that.
+		// the values are passed in 'extra_arg'. 
+		
+		loadusr is called
+		
+		for (int i = 0; i < prefix.count; i++)
+		{
+			switch (prefix[i][0])
+			{
 				case 'S':
 					devSerial = extra_arg.values[i];
 					devices->SerialNumber = devSerial;
@@ -881,7 +890,13 @@ EXTRA_SETUP() {
 					devices->Timeout = timeout_ms;
 					break;
 			}
+		}
+	
 
+
+		
+		 
+		
 			//first check ConnectionType 
 			uint32_t lastConectionTypeTried = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
 			if (ConnectionType == 1) // USB
