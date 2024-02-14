@@ -869,24 +869,24 @@ EXTRA_SETUP() {
 	
 
 		
-		for (int i = 0; i < prefix.count; i++)
+		for (int i = 0; i < prefix.count; i++) //pokeys.comp:872:29: error: request for member ‘count’ in something not a structure or union
 		{
-			switch (prefix[i][0])
+			switch (prefix[i])//pokeys.comp:874:21: error: subscripted value is neither array nor pointer nor vector
 			{
 				case 'S':
-					devSerial = extra_arg[i];
+					devSerial = extra_arg[i];//pokeys.comp:877:27: error: subscripted value is neither array nor pointer nor vector
 					devices->SerialNumber = devSerial;
 					break;
 				case 'C':
-					ConnectionType = extra_arg[i];
+					ConnectionType = extra_arg[i]; //pokeys.comp:881:32: error: subscripted value is neither array nor pointer nor vector
 
 					break;
 				case 'I':
-					devices->IPAddress = extra_arg[i];
+					devices->IPaddress = extra_arg[i];// pokeys.comp:885 : 36 : error : subscripted value is neither array nor pointer nor vector
 					break;
 
 				case 'T':
-					timeout_ms = extra_arg[i];
+					timeout_ms = extra_arg[i];//pokeys.comp:889:28: error: subscripted value is neither array nor pointer nor vector
 					break;
 			}
 		}
@@ -914,7 +914,7 @@ EXTRA_SETUP() {
 						{
 							if (dev == NULL)
 							{
-								dev = PK_ConnectToDevice(i, timeout_ms);
+								dev = PK_ConnectToDevice(i);
 								lastConectionTypeTried = 1;
 								if(dev != NULL)
 								{
@@ -944,7 +944,10 @@ EXTRA_SETUP() {
 						{
 							if (dev == NULL)
 							{
-								dev = PK_ConnectToNetworkDevice(net_devices[i]);
+								//dev = PK_ConnectToNetworkDevice(net_devices[i]);
+								//pokeys.comp:947:52: error: incompatible type for argument 1 of ‘PK_ConnectToNetworkDevice’
+								//pokeys.comp:947:52: note: expected ‘sPoKeysNetworkDeviceSummary *’ but argument is of type ‘sPoKeysNetworkDeviceSummary’
+								dev = PK_ConnectToNetworkDevice(net_devices);
 								lastConectionTypeTried = 3;
 								if(dev != NULL)
 								{
