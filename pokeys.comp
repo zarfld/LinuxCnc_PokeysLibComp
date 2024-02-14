@@ -974,10 +974,24 @@ EXTRA_SETUP() {
 					dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, timeout_ms);
 					lastConectionTypeTried = 3;
 				}
-				else
+				else // try to find the first available device
 				{
-					dev = PK_ConnectToDeviceWIP(devices->IPAddress, devices->Port, timeout_ms);
-					lastConectionTypeTried = 3;
+					enum_usb_dev = PK_EnumerateUSBDevices();
+					if (enum_usb_dev != 0)
+					{
+						for (int i = 0; i < enum_usb_dev; i++)
+						{
+							if (dev == NULL)
+							{
+								dev = PK_ConnectToDevice(i);
+								lastConectionTypeTried = 3;
+								if (dev != NULL)
+								{
+									break;
+								}
+							}
+						}
+					}
 				}
 			}
 			else if(ConnectionType == 4)
