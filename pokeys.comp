@@ -507,7 +507,7 @@ pin out bit I2C.scanning ;
 license "GPL";
 
 option extra_link_args "-lPoKeys";
-option  extra_setup;
+option extra_setup yes;
 ;;
 
 #include <unistd.h>   /* UNIX standard function definitions */
@@ -1135,13 +1135,12 @@ EXTRA_SETUP() {
 		 }
 			
 		devSerial = extra_arg;
-
-
 	}
 	return 0;
 }
 
-EXTRA_CLEANUP() {
+EXTRA_CLEANUP() 
+{
 	if (dev != NULL)
 	{
 		PK_DisconnectDevice(dev);
