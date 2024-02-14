@@ -4,13 +4,37 @@
 echo "Updating package lists..."
 apt-get update
 
-# Upgrade packages
-echo "Upgrading packages..."
-apt-get upgrade -y
 
-echo "updating Git repository..."
+# Prompt the user for confirmation before upgrading packages
+read -p "Do you want to upgrade packages? (y/n): " answer
+if [[ $answer == "y" ]]; then
+    # Upgrade packages
+    echo "Upgrading packages..."
+    apt-get upgrade -y
+else
+    echo "Skipping package upgrade."
+fi
+
+echo "Updating Git repository..."
 git config pull.ff only
 git pull
+
+
+# Prompt the user for confirmation before updating pokeyslib
+read -p "Do you want to update pokeyslib? (y/n): " answer
+if [[ $answer == "y" ]]; then
+    # Update pokeyslib
+    echo "Updating pokeyslib..."
+    cd ../pokeyslib
+    git config pull.ff only
+    git pull
+    # Build and install
+    echo "Building and installing pokeyslib"
+    make -f Makefile.noqmake install
+    cd -
+else
+    echo "Skipping pokeyslib update."
+fi
 
 # Get the directory of the current script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
