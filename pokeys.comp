@@ -856,7 +856,6 @@ EXTRA_SETUP() {
 		// -SER  mapped to devSerial
 		// -Con mapped to ConnectionType  1..USB, 2..UDP, 3..Network, 4..fastUSB
 		// -IP  mapped to IP
-		// -Port mapped to Port
 		// -Timeout mapped to timeout_ms
 
 		sPoKeysNetworkDeviceSummary * devices;
@@ -874,13 +873,9 @@ EXTRA_SETUP() {
 
 					break;
 				case 'I':
-					IP = extra_arg.values[i];
-					devices->IPAddress = IP;
+					devices->IPAddress = extra_arg.values[i];
 					break;
-				case 'P':
-					Port = extra_arg.values[i];
-					devices->Port = Port;
-					break;
+
 				case 'T':
 					timeout_ms = extra_arg.values[i];
 					devices->Timeout = timeout_ms;
