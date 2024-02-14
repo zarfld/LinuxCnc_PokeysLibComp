@@ -11,7 +11,8 @@ echo "kbd48CNC.comp compiled successfully."
 # Check LinuxCNC version
 linuxcnc_version=$(linuxcnc --version | awk '{print $2}')
 required_version="2.9"
-
+echo "LinuxCNC version: $linuxcnc_version"
+echo "Required version: $required_version"
 if (( $(echo "$linuxcnc_version >= $required_version" | bc -l) )); then
     echo "Compiling pokeys_homecomp.comp..."
     halcompile -install pokeys_homecomp.comp
