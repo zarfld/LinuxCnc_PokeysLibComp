@@ -507,7 +507,7 @@ pin out bit I2C.scanning ;
 license "GPL";
 
 option extra_link_args "-lPoKeys";
-
+option  extra_setup;
 ;;
 
 #include <unistd.h>   /* UNIX standard function definitions */
@@ -845,7 +845,288 @@ int Update_PoStep()
 }
 
 
+EXTRA_SETUP() {
+	if (!extra_arg) {
+		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: no ioaddr specified\n");
+		return -1;
+	}
+	else {
+		//extracting parameters from extra_arg
+		// indicators:
+		// -SER  mapped to devSerial
+		// -Con mapped to ConnectionType  1..USB, 2..UDP, 3..Network, 4..fastUSB
+		// -IP  mapped to IP
+		// -Port mapped to Port
+		// -Timeout mapped to timeout_ms
 
+		sPoKeysNetworkDeviceSummary * devices;
+		uint32_t ConnectionType = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
+		//uint32_t timeout_ms = 1000; already difined as Pin
+
+		for (int i = 0; i < extra_arg.count; i++) {
+			switch (extra_arg.names[i][0]) {
+				case 'S':
+					devSerial = extra_arg.values[i];
+					devices->SerialNumber = devSerial;
+					break;
+				case 'C':
+					ConnectionType = extra_arg.values[i];
+
+					break;
+				case 'I':
+					IP = extra_arg.values[i];
+					devices->IPAddress = IP;
+					break;
+				case 'P':
+					Port = extra_arg.values[i];
+					devices->Port = Port;
+					break;
+				case 'T':
+					timeout_ms = extra_arg.values[i];
+					devices->Timeout = timeout_ms;
+					break;
+			}
+
+			//first check ConnectionType 
+			uint32_t lastConectionTypeTried = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
+			if (ConnectionType == 1) // USB
+			{
+				if (devices->SerialNumber != 0) // if serial number is set
+				{
+					dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, devices->Timeout);
+					lastConectionTypeTried = 1;
+				}
+				else // try to find the first available device
+				{
+					enum_usb_dev = PK_EnumerateUSBDevices();
+					if (enum_usb_dev != 0)
+					{
+						for (int i = 0; i < enum_usb_dev; i++)
+						{
+							if (dev == NULL)
+							{
+								dev = PK_ConnectToDevice(i, devices->Timeout);
+								lastConectionTypeTried = 1;
+								if(dev != NULL)
+								{
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+			else if (ConnectionType == 2) // UDP
+			{
+				if (devices->SerialNumber != 0) // if serial number is set
+				{
+					dev = PK_ConnectToDeviceWSerial_UDP(devices->SerialNumber, devices->Timeout);
+					lastConectionTypeTried = 2;
+				}
+				else// try to find the first available device
+				{
+					sPoKeysNetworkDeviceSummary * net_devices;
+					// first Network
+					int32_t nDevs = PK_SearchNetworkDevices(net_devices, devices->Timeout, devices->SerialNumber);
+					if (nDevs != 0)
+					{
+						for (int i = 0; i < nDevs; i++)
+						{
+							if (dev == NULL)
+							{
+								dev = PK_ConnectToNetworkDevice(net_devices[i]);
+								lastConectionTypeTried = 3;
+								if(dev != NULL)
+								{
+									break;
+								}
+							}
+						}
+					}
+					else {
+						nDevs = PK_EnumerateNetworkDevices(net_devices, devices->Timeout); // does not work - it hangs here
+						if (nDevs != 0)
+						{
+							enum_udp_dev = nDevs;
+							dev = PK_ConnectToNetworkDevice(net_devices);
+							lastConectionTypeTried = 3;
+						}
+					}
+				}
+			}
+			else if(ConnectionType == 3)
+			{
+				if (devices->SerialNumber != 0)
+				{
+					dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, devices->Timeout);
+					lastConectionTypeTried = 3;
+				}
+				else
+				{
+					dev = PK_ConnectToDeviceWIP(devices->IPAddress, devices->Port, devices->Timeout);
+					lastConectionTypeTried = 3;
+				}
+			}
+			else if(ConnectionType == 4)
+			{
+				enum_fusb_dev = PK_EnumerateFastUSBDevices();
+				if (enum_fusb_dev != 0)
+				{
+					for (int i = 0; i < enum_fusb_dev; i++)
+					{
+						if (dev == NULL)
+						{
+							dev = PK_ConnectToDevice(i, devices->Timeout);
+							lastConectionTypeTried = 4;
+							if(dev != NULL)
+							{
+								break;
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				// generic approach check all possible connections
+				// first try to use the serial number and then try to use the IP address
+				// if none of these is available try to search for devices
+				// priorities:  Network, UDP, FastUSB, USB
+				if (devices->SerialNumber != 0)
+				{
+					//first try network
+					dev = PK_ConnectToNetworkDevice(devices);
+					if (dev == NULL)
+					{
+						// try UDP
+						dev = PK_ConnectToDeviceWSerial_UDP(devices->SerialNumber, devices->Timeout);
+						lastConectionTypeTried = 2;
+					}
+					if(dev == NULL)
+					{
+						// try FastUSB/USB
+						dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, devices->Timeout);
+						lastConectionTypeTried = 1;
+					}
+				}
+				if (dev == NULL)
+				{
+					// try to enumarate (priorities:  Network, UDP, FastUSB/USB)
+					sPoKeysNetworkDeviceSummary * net_devices;
+					int32_t nDevs = PK_SearchNetworkDevices(net_devices, devices->Timeout, devices->SerialNumber);
+					if (nDevs != 0)
+					{
+						enum_udp_dev = nDevs;
+						dev = PK_ConnectToNetworkDevice(net_devices);
+						lastConectionTypeTried = 3;
+					}
+					else {
+						nDevs = PK_EnumerateNetworkDevices(net_devices, devices->Timeout); // does not work - it hangs here
+						if (nDevs != 0)
+						{
+							enum_udp_dev = nDevs;
+							dev = PK_ConnectToNetworkDevice(net_devices);
+							lastConectionTypeTried = 3;
+						}
+					}
+					if (dev == NULL)
+					{
+						enum_fusb_dev = PK_EnumerateFastUSBDevices();
+						if (enum_fusb_dev != 0)
+						{
+							for (int i = 0; i < enum_fusb_dev; i++)
+							{
+								if (dev == NULL)
+								{
+									dev = PK_ConnectToDevice(i, devices->Timeout);
+									lastConectionTypeTried = 4;
+									if(dev != NULL)
+									{
+										break;
+									}
+								}
+							}
+						}
+						if (dev == NULL)
+						{
+							enum_usb_dev = PK_EnumerateUSBDevices();
+							if (enum_usb_dev != 0)
+							{
+								for (int i = 0; i < enum_usb_dev; i++)
+								{
+									if (dev == NULL)
+									{
+										dev = PK_ConnectToDevice(i, devices->Timeout);
+										lastConectionTypeTried = 1;
+										if(dev != NULL)
+										{
+											break;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			if (devices->SerialNumber != 0)
+			{
+				dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, devices->Timeout);
+			}
+			elseif (devices->IPAddress != 0)
+			{
+				dev = PK_ConnectToDeviceWIP(devices->IPAddress, devices->Port, devices->Timeout);
+			}
+
+			{
+				if (devices->IPAddress != 0)
+				{
+					dev = PK_ConnectToDeviceWIP(devices->IPAddress, devices->Port, devices->Timeout);
+				}
+			}
+
+
+			if (lastConectionTypeTried == 1)
+			{
+				connected_usb = 1;
+				connected_fusb = 0;
+				connected_udp = 0;
+				connected_net = 0;
+			}
+			if (lastConectionTypeTried == 2)
+			{
+				connected_usb = 0;
+				connected_fusb = 0;
+				connected_udp = 1;
+				connected_net = 0;
+			}
+			if (lastConectionTypeTried == 3)
+			{
+				connected_usb = 0;
+				connected_fusb = 0;
+				connected_udp = 0;
+				connected_net = 1;
+			}
+
+
+		 }
+			
+		devSerial = extra_arg;
+
+
+	}
+	ioaddr = io[extra_arg];
+	return 0;
+}
+
+EXTRA_CLEANUP() {
+	if (dev != NULL)
+	{
+		PK_DisconnectDevice(dev);
+	}
+return 0;
+}
 
 
 void user_mainloop(void) 
