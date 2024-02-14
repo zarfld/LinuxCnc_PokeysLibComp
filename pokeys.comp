@@ -1003,7 +1003,7 @@ EXTRA_SETUP() {
 					{
 						if (dev == NULL)
 						{
-							dev = PK_ConnectToDevice(i, timeout_ms);
+							dev = PK_ConnectToDevice(i);
 							lastConectionTypeTried = 4;
 							if(dev != NULL)
 							{
@@ -1065,7 +1065,7 @@ EXTRA_SETUP() {
 							{
 								if (dev == NULL)
 								{
-									dev = PK_ConnectToDevice(i, timeout_ms);
+									dev = PK_ConnectToDevice(i);
 									lastConectionTypeTried = 4;
 									if(dev != NULL)
 									{
@@ -1083,7 +1083,7 @@ EXTRA_SETUP() {
 								{
 									if (dev == NULL)
 									{
-										dev = PK_ConnectToDevice(i, timeout_ms);
+										dev = PK_ConnectToDevice(i);
 										lastConectionTypeTried = 1;
 										if(dev != NULL)
 										{
@@ -1101,17 +1101,12 @@ EXTRA_SETUP() {
 			{
 				dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, timeout_ms);
 			}
-			elseif (devices->IPAddress != 0)
+			else if (devices->IPaddress != 0)
 			{
-				dev = PK_ConnectToDeviceWIP(devices->IPAddress, devices->Port, timeout_ms);
+				dev = PK_ConnectToNetworkDevice(devices);
 			}
 
-			{
-				if (devices->IPAddress != 0)
-				{
-					dev = PK_ConnectToDeviceWIP(devices->IPAddress, devices->Port, timeout_ms);
-				}
-			}
+
 
 
 			if (lastConectionTypeTried == 1)
