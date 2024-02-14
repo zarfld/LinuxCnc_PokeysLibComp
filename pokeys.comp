@@ -1146,7 +1146,6 @@ EXTRA_CLEANUP() {
 	{
 		PK_DisconnectDevice(dev);
 	}
-return 0;
 }
 
 
