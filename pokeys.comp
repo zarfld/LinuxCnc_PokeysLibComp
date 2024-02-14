@@ -1138,7 +1138,6 @@ EXTRA_SETUP() {
 
 
 	}
-	ioaddr = io[extra_arg];
 	return 0;
 }
 
