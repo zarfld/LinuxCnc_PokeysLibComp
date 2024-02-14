@@ -887,7 +887,6 @@ EXTRA_SETUP() {
 
 				case 'T':
 					timeout_ms = extra_arg[i];
-					devices->Timeout = timeout_ms;
 					break;
 			}
 		}
@@ -903,7 +902,7 @@ EXTRA_SETUP() {
 			{
 				if (devices->SerialNumber != 0) // if serial number is set
 				{
-					dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, devices->Timeout);
+					dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, timeout_ms);
 					lastConectionTypeTried = 1;
 				}
 				else // try to find the first available device
@@ -915,7 +914,7 @@ EXTRA_SETUP() {
 						{
 							if (dev == NULL)
 							{
-								dev = PK_ConnectToDevice(i, devices->Timeout);
+								dev = PK_ConnectToDevice(i, timeout_ms);
 								lastConectionTypeTried = 1;
 								if(dev != NULL)
 								{
@@ -930,14 +929,15 @@ EXTRA_SETUP() {
 			{
 				if (devices->SerialNumber != 0) // if serial number is set
 				{
-					dev = PK_ConnectToDeviceWSerial_UDP(devices->SerialNumber, devices->Timeout);
+					dev = PK_ConnectToDeviceWSerial_UDP(devices->SerialNumber, timeout_ms);
 					lastConectionTypeTried = 2;
 				}
 				else// try to find the first available device
 				{
 					sPoKeysNetworkDeviceSummary * net_devices;
 					// first Network
-					int32_t nDevs = PK_SearchNetworkDevices(net_devices, devices->Timeout, devices->SerialNumber);
+								//PK_SearchNetworkDevices(sPoKeysNetworkDeviceSummary * devices, uint32_t timeout, uint32_t serialNumberToFind);
+					int32_t nDevs = PK_SearchNetworkDevices(net_devices, timeout_ms, devices->SerialNumber);
 					if (nDevs != 0)
 					{
 						for (int i = 0; i < nDevs; i++)
@@ -954,7 +954,7 @@ EXTRA_SETUP() {
 						}
 					}
 					else {
-						nDevs = PK_EnumerateNetworkDevices(net_devices, devices->Timeout); // does not work - it hangs here
+						nDevs = PK_EnumerateNetworkDevices(net_devices, timeout_ms); // does not work - it hangs here
 						if (nDevs != 0)
 						{
 							enum_udp_dev = nDevs;
@@ -968,12 +968,12 @@ EXTRA_SETUP() {
 			{
 				if (devices->SerialNumber != 0)
 				{
-					dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, devices->Timeout);
+					dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, timeout_ms);
 					lastConectionTypeTried = 3;
 				}
 				else
 				{
-					dev = PK_ConnectToDeviceWIP(devices->IPAddress, devices->Port, devices->Timeout);
+					dev = PK_ConnectToDeviceWIP(devices->IPAddress, devices->Port, timeout_ms);
 					lastConectionTypeTried = 3;
 				}
 			}
@@ -986,7 +986,7 @@ EXTRA_SETUP() {
 					{
 						if (dev == NULL)
 						{
-							dev = PK_ConnectToDevice(i, devices->Timeout);
+							dev = PK_ConnectToDevice(i, timeout_ms);
 							lastConectionTypeTried = 4;
 							if(dev != NULL)
 							{
@@ -1009,13 +1009,13 @@ EXTRA_SETUP() {
 					if (dev == NULL)
 					{
 						// try UDP
-						dev = PK_ConnectToDeviceWSerial_UDP(devices->SerialNumber, devices->Timeout);
+						dev = PK_ConnectToDeviceWSerial_UDP(devices->SerialNumber, timeout_ms);
 						lastConectionTypeTried = 2;
 					}
 					if(dev == NULL)
 					{
 						// try FastUSB/USB
-						dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, devices->Timeout);
+						dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, timeout_ms);
 						lastConectionTypeTried = 1;
 					}
 				}
@@ -1023,7 +1023,7 @@ EXTRA_SETUP() {
 				{
 					// try to enumarate (priorities:  Network, UDP, FastUSB/USB)
 					sPoKeysNetworkDeviceSummary * net_devices;
-					int32_t nDevs = PK_SearchNetworkDevices(net_devices, devices->Timeout, devices->SerialNumber);
+					int32_t nDevs = PK_SearchNetworkDevices(net_devices, timeout_ms, devices->SerialNumber);
 					if (nDevs != 0)
 					{
 						enum_udp_dev = nDevs;
@@ -1031,7 +1031,7 @@ EXTRA_SETUP() {
 						lastConectionTypeTried = 3;
 					}
 					else {
-						nDevs = PK_EnumerateNetworkDevices(net_devices, devices->Timeout); // does not work - it hangs here
+						nDevs = PK_EnumerateNetworkDevices(net_devices, timeout_ms); // does not work - it hangs here
 						if (nDevs != 0)
 						{
 							enum_udp_dev = nDevs;
@@ -1048,7 +1048,7 @@ EXTRA_SETUP() {
 							{
 								if (dev == NULL)
 								{
-									dev = PK_ConnectToDevice(i, devices->Timeout);
+									dev = PK_ConnectToDevice(i, timeout_ms);
 									lastConectionTypeTried = 4;
 									if(dev != NULL)
 									{
@@ -1066,7 +1066,7 @@ EXTRA_SETUP() {
 								{
 									if (dev == NULL)
 									{
-										dev = PK_ConnectToDevice(i, devices->Timeout);
+										dev = PK_ConnectToDevice(i, timeout_ms);
 										lastConectionTypeTried = 1;
 										if(dev != NULL)
 										{
@@ -1082,17 +1082,17 @@ EXTRA_SETUP() {
 
 			if (devices->SerialNumber != 0)
 			{
-				dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, devices->Timeout);
+				dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, timeout_ms);
 			}
 			elseif (devices->IPAddress != 0)
 			{
-				dev = PK_ConnectToDeviceWIP(devices->IPAddress, devices->Port, devices->Timeout);
+				dev = PK_ConnectToDeviceWIP(devices->IPAddress, devices->Port, timeout_ms);
 			}
 
 			{
 				if (devices->IPAddress != 0)
 				{
-					dev = PK_ConnectToDeviceWIP(devices->IPAddress, devices->Port, devices->Timeout);
+					dev = PK_ConnectToDeviceWIP(devices->IPAddress, devices->Port, timeout_ms);
 				}
 			}
 
