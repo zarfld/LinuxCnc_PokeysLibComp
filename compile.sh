@@ -1,18 +1,18 @@
 #!/bin/bash
 
 echo "Compiling pokeys.comp..."
-halcompile -install pokeys.comp
+halcompile --install pokeys.comp
 echo "pokeys.comp compiled successfully."
 
 echo "Compiling kbd48CNC.comp..."
-halcompile -install kbd48CNC.comp
+halcompile --install kbd48CNC.comp
 echo "kbd48CNC.comp compiled successfully."
 
 # Check LinuxCNC version
 linuxcnc_version=$(linuxcnc --version | awk '{print $2}')
 required_version="2.9"
 
-if [[ $(echo "$linuxcnc_version >= $required_version" | bc -l) -eq 1 ]]; then
+if (( $(echo "$linuxcnc_version >= $required_version" | bc -l) )); then
     echo "Compiling pokeys_homecomp.comp..."
     halcompile -install pokeys_homecomp.comp
     echo "pokeys_homecomp.comp compiled successfully."
