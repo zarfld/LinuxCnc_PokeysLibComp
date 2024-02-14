@@ -1000,7 +1000,7 @@ EXTRA_SETUP()
 		}
 		else if(ConnectionType == 4)
 		{
-			enum_fusb_dev = PK_EnumerateFastUSBDevices();
+		/*	enum_fusb_dev = PK_EnumerateFastUSBDevices();
 			if (enum_fusb_dev != 0)
 			{
 				for (int i = 0; i < enum_fusb_dev; i++)
@@ -1015,7 +1015,7 @@ EXTRA_SETUP()
 						}
 					}
 				}
-			}
+			}*/
 		}
 		else
 		{
@@ -1063,7 +1063,7 @@ EXTRA_SETUP()
 				}
 				if (dev == NULL)
 				{
-					enum_fusb_dev = PK_EnumerateFastUSBDevices();
+					/*enum_fusb_dev = PK_EnumerateFastUSBDevices();
 					if (enum_fusb_dev != 0)
 					{
 						for (int i = 0; i < enum_fusb_dev; i++)
@@ -1078,7 +1078,7 @@ EXTRA_SETUP()
 								}
 							}
 						}
-					}
+					}*/
 					if (dev == NULL)
 					{
 						enum_usb_dev = PK_EnumerateUSBDevices();
