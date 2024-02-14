@@ -866,27 +866,27 @@ EXTRA_SETUP() {
 		// temporary deactivated   extra_arg does not have properties count, names, values
 		// the names parameters are passed in 'prefix'. You just have to know that.
 		// the values are passed in 'extra_arg'. 
-		
-		loadusr is called
+	
+
 		
 		for (int i = 0; i < prefix.count; i++)
 		{
 			switch (prefix[i][0])
 			{
 				case 'S':
-					devSerial = extra_arg.values[i];
+					devSerial = extra_arg[i];
 					devices->SerialNumber = devSerial;
 					break;
 				case 'C':
-					ConnectionType = extra_arg.values[i];
+					ConnectionType = extra_arg[i];
 
 					break;
 				case 'I':
-					devices->IPAddress = extra_arg.values[i];
+					devices->IPAddress = extra_arg[i];
 					break;
 
 				case 'T':
-					timeout_ms = extra_arg.values[i];
+					timeout_ms = extra_arg[i];
 					devices->Timeout = timeout_ms;
 					break;
 			}
