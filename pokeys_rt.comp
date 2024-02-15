@@ -1,6 +1,10 @@
 component pokeys_rt "realtime module for pokeys";
 
 description """
+This component provides a real-time interface to the PoKeys device.
+It is based on the PoKeysLibRt library. (which is PoKeysLib.H modified not tu use libusb)
+It is a work in progress and is not yet functional.
+
 
 """;
 
@@ -17,8 +21,9 @@ pin out bit connected.net;
 pin out bit alive;
 
 license "GPL";
-author "Dewey Garrett";
+author "Dominik Zarfl";
 option  homemod;
+option extra_link_args "-lPoKeys";
 option  extra_setup;
 ;;
 
