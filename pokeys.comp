@@ -931,11 +931,11 @@ EXTRA_SETUP()
 			char *token = strtok(IP, ".");
 			int i = 0;
 			while (token != NULL) {
-				IPaddress[i] = atoi(token);
+				devices->IPaddress[i] = atoi(token);
 				token = strtok(NULL, ".");
 				i++;
 			}
-			devices->IPaddress = (IPaddress[0] << 24) | (IPaddress[1] << 16) | (IPaddress[2] << 8) | IPaddress[3];
+			//devices->IPaddress = (IPaddress[0] << 24) | (IPaddress[1] << 16) | (IPaddress[2] << 8) | IPaddress[3];
 		}
 
 		if (timeout_ms != 1000){
