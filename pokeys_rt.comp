@@ -30,20 +30,34 @@ option  extra_setup;
 #include "stdlib.h"
 #include "PoKeysLib.h"
 
-static char* home_parms;
-RTAPI_MP_STRING(home_parms, "Example home parms");
+static char* serial_number = "";
+//Not available in userspace code.
+//RTAPI_MP_STRING(serial_number, "Device Serial Number") 
+
+static int ConnectionType = 0;
+//Not available in userspace code.
+//RTAPI_MP_INT(ConnectionType, "Connection Type (1..USB, 2..UDP, 3..Network, 4..fastUSB)")
+
+static char* IP = "0.0.0.0";
+//Not available in userspace code.
+//RTAPI_MP_STRING(IP, "IP Address")
+
+static int timeout_ms = 1000;
+//Not available in userspace code.
+//RTAPI_MP_INT(timeout_ms, "Timeout in ms")
 
 // EXTRA_SETUP is executed before rtapi_app_main()
 EXTRA_SETUP() {
-    if (!home_parms) { home_parms = "no_home_parms"; }
-    rtapi_print("@@@%s:%s: home_parms=%s\n", __FILE__, __FUNCTION__, home_parms);
-#ifndef HOMING_BASE
-    rtapi_print("\n!!!%s: Skeleton Homing Module\n\n", __FILE__ );
-#else
-    rtapi_print("\n!!!%s: HOMING_BASE=%s\n"
-        "!!!Customize using hal pin(s): joint.N.request-custom-homing\n"
-        , __FILE__, XSTR(HOMING_BASE));
-#endif
+    if (serial_number != "") {
+        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: serial_number: %s\n", serial_number);
+        devices->SerialNumber = atoi(serial_number);
+    }
+
+    if (ConnectionType != 0) {
+        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: ConnectionType: %d\n", ConnectionType);
+        //	devices->ConnectionType = ConnectionType;
+}
+
 
     return 0;
 }
