@@ -877,7 +877,7 @@ EXTRA_SETUP()
 	}
 
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: init sPoKeysNetworkDeviceSummary\n");
-		sPoKeysNetworkDeviceSummary * devices;
+		sPoKeysNetworkDeviceSummary * devices = new sPoKeysNetworkDeviceSummary();
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: sPoKeysNetworkDeviceSummary init done\n");
 
 
