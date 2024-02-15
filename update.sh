@@ -2,17 +2,17 @@
 
 # Prompt the user for confirmation before upgrading packages
 read -p "Do you want to update packages lists? (y/n): " answer
-if [[ $answer == "y" ]]; then
+if [ "$answer" == "y" ]; then
     # Update package lists
     echo "Updating package lists..."
     apt-get update
 else
-    echo "Skipping package list udatee."
+    echo "Skipping package list update."
 fi
 
 # Prompt the user for confirmation before upgrading packages
 read -p "Do you want to upgrade packages? (y/n): " answer2
-if [[ $answer2 == "y" ]]; then
+if [ "$answer2" == "y" ]; then
     # Upgrade packages
     echo "Upgrading packages..."
     apt-get upgrade -y
@@ -27,7 +27,7 @@ git pull
 
 # Prompt the user for confirmation before updating pokeyslib
 read -p "Do you want to update pokeyslib also? (y/n): " answer3
-if [[ $answer3 == "y" ]]; then
+if [ "$answer3" == "y" ]; then
     # Update pokeyslib
     echo "Updating pokeyslib..."
     cd ../pokeyslib
