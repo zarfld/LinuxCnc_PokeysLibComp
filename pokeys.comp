@@ -844,15 +844,15 @@ int Update_PoStep()
 	return 0;
 }
 
-static char* serial_number = "";
+static char* serial_number = "";	
 //Not available in userspace code.
 //RTAPI_MP_STRING(serial_number, "Device Serial Number") 
 
-static int ConnectionType = 0;
+static int ConnectionType = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
 //Not available in userspace code.
 //RTAPI_MP_INT(ConnectionType, "Connection Type (1..USB, 2..UDP, 3..Network, 4..fastUSB)")
 
-static char* IP = "0.0.0.0";
+static char* IP = "0.0.0.0"; 
 //Not available in userspace code.
 //RTAPI_MP_STRING(IP, "IP Address")
 
@@ -908,12 +908,9 @@ EXTRA_SETUP()
 	*/
 	}
 
-
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: init sPoKeysNetworkDeviceSummary\n");
 		sPoKeysNetworkDeviceSummary * devices;
-		uint32_t ConnectionType = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
-		//uint32_t timeout_ms = 1000; already difined as Pin
-		//uint32_t devSerial = 0; already difined as Pin
-		
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: sPoKeysNetworkDeviceSummary init done\n");
 
 
 
@@ -921,6 +918,14 @@ EXTRA_SETUP()
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: serial_number: %s\n", serial_number);
 			devices->SerialNumber = atoi(serial_number);
 		}
+		else
+		{
+			serial_number = [POKEYS]DEVICE_ID; // try to get the serial number from the ini file
+			if (serial_number != "") {
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: INI serial_number: %s\n", serial_number);
+				devices->SerialNumber = atoi(serial_number);
+			}
+		 }
 
 		if (ConnectionType != 0){
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: ConnectionType: %d\n", ConnectionType);
