@@ -845,27 +845,31 @@ int Update_PoStep()
 }
 
 static char* serial_number = "";
-RTAPI_MP_STRING(serial_number, "Device Serial Number")
+//Not available in userspace code.
+//RTAPI_MP_STRING(serial_number, "Device Serial Number") 
 
 static int ConnectionType = 0;
-RTAPI_MP_INT(ConnectionType, "Connection Type (1..USB, 2..UDP, 3..Network, 4..fastUSB)")
+//Not available in userspace code.
+//RTAPI_MP_INT(ConnectionType, "Connection Type (1..USB, 2..UDP, 3..Network, 4..fastUSB)")
 
 static char* IP = "0.0.0.0";
-RTAPI_MP_STRING(IP, "IP Address")
+//Not available in userspace code.
+//RTAPI_MP_STRING(IP, "IP Address")
 
 static int timeout_ms = 1000;
-RTAPI_MP_INT(timeout_ms, "Timeout in ms")
+//Not available in userspace code.
+//RTAPI_MP_INT(timeout_ms, "Timeout in ms")
 
 EXTRA_SETUP() 
 {
-	if (!serial_number)
+	if (!extra_arg)
 	{
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: no devSerial specified\n");
 		//return -1;
 	}
 	else 
 	{
-		rtapi_print("@@@%s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, serial_number);
+		rtapi_print("@@@%s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
 
 		//extracting parameters from extra_arg
 		// indicators:
