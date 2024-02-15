@@ -856,7 +856,7 @@ static char* IP = "0.0.0.0";
 //Not available in userspace code.
 //RTAPI_MP_STRING(IP, "IP Address")
 
-static int timeout_ms = 500;
+static int timeout_ms = 5000;
 //Not available in userspace code.
 //RTAPI_MP_INT(timeout_ms, "Timeout in ms")
 
@@ -872,7 +872,8 @@ EXTRA_SETUP()
 		
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: EnumerateNetworkDevices\n");
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: timeout_ms: %d\n", timeout_ms);
-		uint32_t nDevs = PK_EnumerateNetworkDevices(net_devices, timeout_ms); // does not work - it hangs here
+		uint32_t nDevs = 0;
+		nDevs = PK_EnumerateNetworkDevices(net_devices, timeout_ms); // does not work - it hangs here
 		if (nDevs != 0)
 		{
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: nDevs: %d\n", nDevs);
