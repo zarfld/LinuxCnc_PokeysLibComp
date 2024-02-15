@@ -862,14 +862,14 @@ static int timeout_ms = 1000;
 
 EXTRA_SETUP() 
 {
-	if (!extra_arg)
+	if (!extra_args)
 	{
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: no devSerial specified\n");
 		//return -1;
 	}
 	else
 	{
-		rtapi_print("@@@%s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
+		rtapi_print("@@@%s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_args);
 
 		//extracting parameters from extra_arg
 		// indicators:
@@ -878,7 +878,7 @@ EXTRA_SETUP()
 		// -IP  mapped to IP
 		// -Timeout mapped to timeout_ms
 
-				// temporary deactivated   extra_arg does not have properties count, names, values
+		// temporary deactivated   extra_arg does not have properties count, names, values
 		// the names parameters are passed in 'prefix'. You just have to know that.
 		// the values are passed in 'extra_arg'. 
 
@@ -1234,8 +1234,6 @@ EXTRA_SETUP()
 			connected_net = 0;
 		}
 
-
-	
 	// devSerial = extra_arg;
 	 return 0;
 }
