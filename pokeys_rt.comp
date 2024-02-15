@@ -49,11 +49,12 @@ RTAPI_MP_INT(ConnectionType, "Connection Type (1..USB, 2..UDP, 3..Network, 4..fa
 static char* IP = "0.0.0.0";
 RTAPI_MP_STRING(IP, "IP Address")
 
-static int timeout_ms = 1000;
+static int timeout_ms = 500;
 RTAPI_MP_INT(timeout_ms, "Timeout in ms")
 
 // EXTRA_SETUP is executed before rtapi_app_main()
 EXTRA_SETUP() {
+	//If using the automatically defined rtapi_app_main, extra_arg is the number of this instance.
     if (serial_number != "") {
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: serial_number: %s\n", serial_number);
       //  devices->SerialNumber = atoi(serial_number);
@@ -90,7 +91,7 @@ EXTRA_SETUP() {
 		//devices->IPaddress = (IPaddress[0] << 24) | (IPaddress[1] << 16) | (IPaddress[2] << 8) | IPaddress[3];
 	}
 
-	if (timeout_ms != 1000) {
+	if (timeout_ms != 500) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: timeout_ms: %d\n", timeout_ms);
 		timeout_ms = timeout_ms;
 	}

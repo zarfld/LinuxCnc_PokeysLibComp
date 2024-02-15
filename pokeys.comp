@@ -856,56 +856,23 @@ static char* IP = "0.0.0.0";
 //Not available in userspace code.
 //RTAPI_MP_STRING(IP, "IP Address")
 
-static int timeout_ms = 1000;
+static int timeout_ms = 500;
 //Not available in userspace code.
 //RTAPI_MP_INT(timeout_ms, "Timeout in ms")
 
 EXTRA_SETUP() 
 {
-	if (!extra_arg)
+	if (!extra_arg) //If using the automatically defined rtapi_app_main, extra_arg is the number of this instance.
 	{
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: no devSerial specified\n");
-		//return -1;
+		//
+		serial_number = "53386"; // try to get the serial number from the ini file
 	}
 	else
 	{
 		rtapi_print("@@@%s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
 
-		//extracting parameters from extra_arg
-		// indicators:
-		// -SER  mapped to devSerial
-		// -Con mapped to ConnectionType  1..USB, 2..UDP, 3..Network, 4..fastUSB
-		// -IP  mapped to IP
-		// -Timeout mapped to timeout_ms
 
-		// temporary deactivated   extra_arg does not have properties count, names, values
-		// the names parameters are passed in 'prefix'. You just have to know that.
-		// the values are passed in 'extra_arg'. 
-
-
-	/* deactivated due to errors
-		for (int i = 0; i < prefix.count; i++) //pokeys.comp:872:29: error: request for member ‘count’ in something not a structure or union
-		{
-			switch (prefix[i])//pokeys.comp:874:21: error: subscripted value is neither array nor pointer nor vector
-			{
-				case 'S':
-					devSerial = extra_arg[i];//pokeys.comp:877:27: error: subscripted value is neither array nor pointer nor vector
-					devices->SerialNumber = devSerial;
-					break;
-				case 'C':
-					ConnectionType = extra_arg[i]; //pokeys.comp:881:32: error: subscripted value is neither array nor pointer nor vector
-
-					break;
-				case 'I':
-					devices->IPaddress = extra_arg[i];// pokeys.comp:885 : 36 : error : subscripted value is neither array nor pointer nor vector
-					break;
-
-				case 'T':
-					timeout_ms = extra_arg[i];//pokeys.comp:889:28: error: subscripted value is neither array nor pointer nor vector
-					break;
-			}
-		}
-	*/
 	}
 
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: init sPoKeysNetworkDeviceSummary\n");

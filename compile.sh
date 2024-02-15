@@ -9,17 +9,19 @@ halcompile --install kbd48CNC.comp
 echo "kbd48CNC.comp compiled successfully."
 
 # Check LinuxCNC version
-linuxcnc_version=$(linuxcnc --version | awk '{print $2}')
-required_version="2.9"
-echo "LinuxCNC version: $linuxcnc_version"
-echo "Required version: $required_version"
-if (( $(echo "$linuxcnc_version >= $required_version" | bc -l) )); then
+
+
+
+# Prompt the user for confirmation before compilation of pokeys_homecomp.comp
+read -p "Do you want to compile of pokeys_homecomp.comp (needs LinuxCNC version 2.9. or higher? (y/n): " answer
+if [[ $answer == "y" ]]; then
     echo "Compiling pokeys_homecomp.comp..."
     halcompile -install pokeys_homecomp.comp
     echo "pokeys_homecomp.comp compiled successfully."
 else
     echo "Skipping compilation of pokeys_homecomp.comp. LinuxCNC version is not higher than 2.9."
 fi
+
 
 echo "preparing prerequisites of pokeys_rt.comp..."
 cp ../pokeyslib/Makefile.noqmake ../pokeyslib/Makefile.noqmake.rt
