@@ -280,7 +280,7 @@ EXTRA_SETUP() {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: nDevs: %d\n", nDevs);
 				if (nDevs != 0)
 				{
-					enum_udp_dev = nDevs;
+					int32_t enum_udp_dev = nDevs;
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: try to connect to Network device\n");
 					dev = PK_ConnectToNetworkDevice(net_devices);
 					lastConectionTypeTried = 3;
@@ -307,7 +307,7 @@ EXTRA_SETUP() {
 				if (dev == NULL)
 				{
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: EnumerateUSBDevices\n");
-					enum_usb_dev = PK_EnumerateUSBDevices();
+					int32_t enum_usb_dev = PK_EnumerateUSBDevices();
 					if (enum_usb_dev != 0)
 					{
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: enum_usb_dev: %d\n", enum_usb_dev);
