@@ -7,7 +7,7 @@ option userspace yes;
 pin out unsigned enum_usb_dev;
 pin out unsigned enum_fusb_dev;
 pin out unsigned enum_udp_dev;
-pin in unsigned timeout_ms;
+//pin in unsigned timeout_ms;
 pin out s32 deb.out;
 
 pin out s32 PEv2.deb.out;
@@ -844,17 +844,28 @@ int Update_PoStep()
 	return 0;
 }
 
+static char* serial_number = "";
+RTAPI_MP_STRING(serial_number, "Device Serial Number");
+
+static int ConnectionType = 0;
+RTAPI_MP_INT(ConnectionType, "Connection Type (1..USB, 2..UDP, 3..Network, 4..fastUSB)");
+
+static char* IP = "0.0.0.0";
+RTAPI_MP_STRING(IP, "IP Address");
+
+static int timeout_ms = 1000;
+RTAPI_MP_INT(timeout_ms, "Timeout in ms");
 
 EXTRA_SETUP() 
 {
-	if (!extra_arg) 
+	if (!serial_number)
 	{
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: no devSerial specified\n");
 		//return -1;
 	}
 	else 
 	{
-		rtapi_print("@@@%s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
+		rtapi_print("@@@%s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, serial_number);
 
 		//extracting parameters from extra_arg
 		// indicators:
@@ -898,8 +909,21 @@ EXTRA_SETUP()
 	*/
 
 
-		
+		if (serial_number!=""){
+			devices->SerialNumber = atoi(serial_number);
+		}
+
+		if (ConnectionType != 0){
+			devices->ConnectionType = ConnectionType;
+		}
 		 
+		if (IP!= "0.0.0.0"){
+			devices->IPaddress = IP;
+		}
+
+		if (timeout_ms != 1000){
+			timeout_ms = timeout_ms;
+		}
 		
 		//first check ConnectionType 
 		uint32_t lastConectionTypeTried = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
