@@ -1004,7 +1004,7 @@ EXTRA_SETUP()
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: enum_usb_dev: %d\n", enum_usb_dev);
 					for (int i = 0; i < enum_usb_dev; i++)
 					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: dev: %d\n
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: dev: %d\n", i);
 						if (dev == NULL)
 						{
 							dev = PK_ConnectToDevice(i);
