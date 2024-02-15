@@ -864,6 +864,8 @@ int instance_number = 0;
 EXTRA_SETUP() 
 {
 	uint32_t lastConectionTypeTried = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
+	sPoKeysNetworkDeviceSummary* net_devices;
+
 	if (!extra_arg) //If using the automatically defined rtapi_app_main, extra_arg is the number of this instance.
 	{
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: no serial_number specified\n");
@@ -1016,7 +1018,7 @@ EXTRA_SETUP()
 			else// try to find the first available device
 			{
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: try to find the first available UDP device\n");
-				sPoKeysNetworkDeviceSummary * net_devices;
+				
 				// first Network
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: SearchNetworkDevices\n");
 				int32_t nDevs = PK_SearchNetworkDevices(net_devices, timeout_ms, devices->SerialNumber);

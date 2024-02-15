@@ -104,6 +104,7 @@ EXTRA_SETUP() {
 	}
 
 	//first check ConnectionType 
+	int32_t enum_usb_dev = 0;
 	uint32_t lastConectionTypeTried = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: ConnectionType: %d\n", ConnectionType);
 	if (ConnectionType == 1) // USB
