@@ -38,6 +38,8 @@ option  extra_setup;
 #include "stdlib.h"
 #include "PoKeysLib.h"
 
+sPoKeysDevice* dev = 0;		// PoKeys device
+
 static char* serial_number = "";
 RTAPI_MP_STRING(serial_number, "Device Serial Number") 
 
