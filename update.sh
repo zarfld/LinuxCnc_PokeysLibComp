@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Prompt the user for confirmation before upgrading packages
-read -p "Do you want to update packages lists? (y/n): " answer
-if [ "$answer" == "y" ]; then
-    # Update package lists
-    echo "Updating package lists..."
-    apt-get update
+read -p "Do you want to upgrade packages? (y/n): " answer
+if [[ $answer == "y" ]]; then
+    # Upgrade packages
+    echo "Upgrading packages..."
+    apt-get upgrade -y
 else
-    echo "Skipping package list update."
+    echo "Skipping package upgrade."
 fi
 
 # Prompt the user for confirmation before upgrading packages
