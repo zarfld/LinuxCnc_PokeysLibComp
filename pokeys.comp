@@ -920,7 +920,7 @@ EXTRA_SETUP()
 		}
 		else
 		{
-			serial_number = [POKEYS]DEVICE_ID; // try to get the serial number from the ini file
+			serial_number = "53386; // try to get the serial number from the ini file
 			if (serial_number != "") {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: INI serial_number: %s\n", serial_number);
 				devices->SerialNumber = atoi(serial_number);
