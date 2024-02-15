@@ -19,7 +19,7 @@ if [[ $answer == "y" ]]; then
         echo "Skipping package upgrade."
     fi
 else
-    echo "Skipping package upgrade."
+    echo "Skipping package list udatee."
 fi
 
 

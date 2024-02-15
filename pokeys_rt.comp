@@ -14,7 +14,6 @@ pin out bit connected.usb;
 pin out bit connected.fusb;
 pin out bit connected.udp;
 pin out bit connected.net;
-pin in unsigned devSerial;
 pin out bit alive;
 
 license "GPL";
