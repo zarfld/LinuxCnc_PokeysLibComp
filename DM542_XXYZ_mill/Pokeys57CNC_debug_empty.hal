@@ -16,19 +16,7 @@ show pin
 show parameter
 
 loadusr -W xhc-whb04b-6 -HsfB
-show pin
-show parameter
 
-show pin
-show parameter
-show pin
-show parameter
-show pin
-show parameter
-show pin
-show parameter
-show pin
-show parameter
 addf motion-command-handler   servo-thread
 addf motion-controller        servo-thread
 #addf pid.x.do-pid-calcs       servo-thread
@@ -387,7 +375,7 @@ setp   pid.s.error-previous-target true
 # net spindle-index-enable      <=>  spindle.0.index-enable
 
 # ---Setup spindle at speed signals---
-sets spindle-at-speed true
+# sets spindle-at-speed true
 
 # ---Setup spindle DAC ---
 loadrt scale count=1
