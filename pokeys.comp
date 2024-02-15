@@ -863,6 +863,7 @@ static int timeout_ms = 500;
 int instance_number = 0;
 EXTRA_SETUP() 
 {
+	uint32_t lastConectionTypeTried = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
 	if (!extra_arg) //If using the automatically defined rtapi_app_main, extra_arg is the number of this instance.
 	{
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: no serial_number specified\n");
@@ -871,7 +872,7 @@ EXTRA_SETUP()
 
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: try to connect to UDP device with SerialNumber: %d\n", serial_number);
 		dev = PK_ConnectToDeviceWSerial_UDP(atoi(serial_number), timeout_ms);
-
+		lastConectionTypeTried = 2;
 		if (dev == NULL)
 		{
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: failed to connect to device with SerialNumber: %d\n", serial_number);
@@ -885,6 +886,7 @@ EXTRA_SETUP()
 		{
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: try to connect to Network device with SerialNumber: %d\n", serial_number);
 			dev = PK_ConnectToDeviceWSerial(atoi(serial_number), timeout_ms);
+			lastConectionTypeTried = 3;
 			if (dev == NULL)
 			{
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: failed to connect to device with SerialNumber: %d\n", serial_number);
@@ -1003,7 +1005,7 @@ EXTRA_SETUP()
 		}
 		
 		//first check ConnectionType 
-		uint32_t lastConectionTypeTried = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
+
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: ConnectionType: %d\n", ConnectionType);
 		if (ConnectionType == 1) // USB
 		{
