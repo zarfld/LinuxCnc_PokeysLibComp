@@ -910,18 +910,22 @@ EXTRA_SETUP()
 
 
 		if (serial_number!=""){
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: serial_number: %s\n", serial_number);
 			devices->SerialNumber = atoi(serial_number);
 		}
 
 		if (ConnectionType != 0){
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: ConnectionType: %d\n", ConnectionType);
 			devices->ConnectionType = ConnectionType;
 		}
 		 
 		if (IP!= "0.0.0.0"){
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: IP: %s\n", IP);
 			devices->IPaddress = IP;
 		}
 
 		if (timeout_ms != 1000){
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: timeout_ms: %d\n", timeout_ms);
 			timeout_ms = timeout_ms;
 		}
 		
