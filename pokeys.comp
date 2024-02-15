@@ -845,16 +845,16 @@ int Update_PoStep()
 }
 
 static char* serial_number = "";
-RTAPI_MP_STRING(serial_number, "Device Serial Number");
+RTAPI_MP_STRING(serial_number, "Device Serial Number")
 
 static int ConnectionType = 0;
-RTAPI_MP_INT(ConnectionType, "Connection Type (1..USB, 2..UDP, 3..Network, 4..fastUSB)");
+RTAPI_MP_INT(ConnectionType, "Connection Type (1..USB, 2..UDP, 3..Network, 4..fastUSB)")
 
 static char* IP = "0.0.0.0";
-RTAPI_MP_STRING(IP, "IP Address");
+RTAPI_MP_STRING(IP, "IP Address")
 
 static int timeout_ms = 1000;
-RTAPI_MP_INT(timeout_ms, "Timeout in ms");
+RTAPI_MP_INT(timeout_ms, "Timeout in ms")
 
 EXTRA_SETUP() 
 {
