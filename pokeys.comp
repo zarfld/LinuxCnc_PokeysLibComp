@@ -872,7 +872,7 @@ EXTRA_SETUP()
 	else
 	{
 		rtapi_print("@@@%s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
-		instance_number = atoi(extra_arg);
+		instance_number = extra_arg;
 		rtapi_print("@@@%s:%s: instance_number=%d\n", __FILE__, __FUNCTION__, instance_number);
 	}
 
