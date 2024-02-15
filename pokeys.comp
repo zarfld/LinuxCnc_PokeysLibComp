@@ -867,7 +867,7 @@ EXTRA_SETUP()
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: no devSerial specified\n");
 		//return -1;
 	}
-	else 
+	else
 	{
 		rtapi_print("@@@%s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
 
@@ -878,17 +878,12 @@ EXTRA_SETUP()
 		// -IP  mapped to IP
 		// -Timeout mapped to timeout_ms
 
-		sPoKeysNetworkDeviceSummary * devices;
-		uint32_t ConnectionType = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
-		//uint32_t timeout_ms = 1000; already difined as Pin
-		//uint32_t devSerial = 0; already difined as Pin
-		
-		// temporary deactivated   extra_arg does not have properties count, names, values
+				// temporary deactivated   extra_arg does not have properties count, names, values
 		// the names parameters are passed in 'prefix'. You just have to know that.
 		// the values are passed in 'extra_arg'. 
-	
 
-	/* deactivated due to errors 
+
+	/* deactivated due to errors
 		for (int i = 0; i < prefix.count; i++) //pokeys.comp:872:29: error: request for member ‘count’ in something not a structure or union
 		{
 			switch (prefix[i])//pokeys.comp:874:21: error: subscripted value is neither array nor pointer nor vector
@@ -911,6 +906,15 @@ EXTRA_SETUP()
 			}
 		}
 	*/
+	}
+
+
+		sPoKeysNetworkDeviceSummary * devices;
+		uint32_t ConnectionType = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
+		//uint32_t timeout_ms = 1000; already difined as Pin
+		//uint32_t devSerial = 0; already difined as Pin
+		
+
 
 
 		if (serial_number!=""){
@@ -1230,7 +1234,7 @@ EXTRA_SETUP()
 			connected_net = 0;
 		}
 
-	 }
+
 	
 	// devSerial = extra_arg;
 	 return 0;

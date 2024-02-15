@@ -57,6 +57,8 @@ EXTRA_SETUP() {
       //  devices->SerialNumber = atoi(serial_number);
     }
 
+	sPoKeysNetworkDeviceSummary* devices;
+
     if (ConnectionType != 0) {
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: ConnectionType: %d\n", ConnectionType);
         //	devices->ConnectionType = ConnectionType;
