@@ -876,6 +876,15 @@ EXTRA_SETUP()
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: nDevs: %d\n", nDevs);
 			dev = PK_ConnectToNetworkDevice(net_devices);
 			lastConectionTypeTried = 3;
+			if (dev != NULL)
+			{
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: connected to device\n");
+				return 0;
+			}
+			else
+			{
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: failed to connect to device\n");
+			}
 		}
 		else
 		{
@@ -901,10 +910,12 @@ EXTRA_SETUP()
 						if (dev != NULL)
 						{
 							rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: connected to device: %d\n", i);
+							return 0;
 							break;
 						}
 					}
 				}
+			
 			}
 		}
 
@@ -928,13 +939,6 @@ EXTRA_SETUP()
 			devices->SerialNumber = atoi(serial_number);
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: done devices->SerialNumber: %s\n", devices->SerialNumber);
 		}
-		else
-		{
-			if (serial_number != "") {
-				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: INI serial_number: %s\n", serial_number);
-				devices->SerialNumber = atoi(serial_number);
-			}
-		 }
 
 		if (ConnectionType != 0){
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: ConnectionType: %d\n", ConnectionType);
@@ -971,6 +975,11 @@ EXTRA_SETUP()
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: try to connect to device with SerialNumber: %d\n", devices->SerialNumber);
 				dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, timeout_ms);
 				lastConectionTypeTried = 1;
+				if (dev != NULL)
+				{
+					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: connected to device: %d\n", devices->SerialNumber);
+					return 0;
+				}
 			}
 			else // try to find the first available device
 			{

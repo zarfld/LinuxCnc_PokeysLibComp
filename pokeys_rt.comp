@@ -117,7 +117,7 @@ EXTRA_SETUP() {
 		else // try to find the first available device
 		{
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: try to find the first available device\n");
-			int32_t enum_usb_dev = PK_EnumerateUSBDevices();
+		//	int32_t enum_usb_dev = PK_EnumerateUSBDevices();
 			if (enum_usb_dev != 0)
 			{
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: enum_usb_dev: %d\n", enum_usb_dev);
@@ -200,7 +200,7 @@ EXTRA_SETUP() {
 		else // try to find the first available device
 		{
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: try to find the first available Network device\n");
-			int32_t enum_usb_dev = PK_EnumerateUSBDevices();
+	//		int32_t enum_usb_dev = PK_EnumerateUSBDevices();
 			if (enum_usb_dev != 0)
 			{
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: enum_usb_dev: %d\n", enum_usb_dev);
@@ -315,7 +315,7 @@ EXTRA_SETUP() {
 				if (dev == NULL)
 				{
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: EnumerateUSBDevices\n");
-					int32_t enum_usb_dev = PK_EnumerateUSBDevices();
+		//			int32_t enum_usb_dev = PK_EnumerateUSBDevices();
 					if (enum_usb_dev != 0)
 					{
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: enum_usb_dev: %d\n", enum_usb_dev);
