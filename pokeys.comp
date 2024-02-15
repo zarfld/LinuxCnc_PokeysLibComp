@@ -862,14 +862,14 @@ static int timeout_ms = 1000;
 
 EXTRA_SETUP() 
 {
-	if (!extra_args)
+	if (!extra_arg)
 	{
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: no devSerial specified\n");
 		//return -1;
 	}
 	else
 	{
-		rtapi_print("@@@%s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_args);
+		rtapi_print("@@@%s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
 
 		//extracting parameters from extra_arg
 		// indicators:
