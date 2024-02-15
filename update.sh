@@ -1,29 +1,24 @@
 #!/bin/bash
 
-
-
 # Prompt the user for confirmation before upgrading packages
 read -p "Do you want to update packages lists? (y/n): " answer
 if [[ $answer == "y" ]]; then
     # Update package lists
     echo "Updating package lists..."
     apt-get update
-
-    # Prompt the user for confirmation before upgrading packages
-    read -p "Do you want to upgrade packages? (y/n): " answer2
-    if [[ $answer2 == "y" ]]; then
-        # Upgrade packages
-        echo "Upgrading packages..."
-        apt-get upgrade -y
-    else
-        echo "Skipping package upgrade."
-    fi
 else
     echo "Skipping package list udatee."
 fi
 
-
-
+# Prompt the user for confirmation before upgrading packages
+read -p "Do you want to upgrade packages? (y/n): " answer2
+if [[ $answer2 == "y" ]]; then
+    # Upgrade packages
+    echo "Upgrading packages..."
+    apt-get upgrade -y
+else
+    echo "Skipping package upgrade."
+fi
 
 echo "Updating Git repository..."
 git config pull.ff only
