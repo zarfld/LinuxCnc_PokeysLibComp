@@ -1,7 +1,7 @@
 # These files are loaded post GUI, in the order they appear
 
 source custom_postgui.hal
-setp pokeys.0.devSerial [POKEYS]DEVICE_ID
+#setp pokeys.0.devSerial [POKEYS]DEVICE_ID
 setp pokeys.0.PEv2.digin.Probe.Pin [POKEYS]PEv2_ProbeInput 	
 setp pokeys.0.PEv2.digin.Probe.invert [POKEYS]PEv2_ProbeInputPolarity
 setp pokeys.0.PEv2.digin.Emergency.Pin [POKEYS]PEv2_EmergencyInputPin
