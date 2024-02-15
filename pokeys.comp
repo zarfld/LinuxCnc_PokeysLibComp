@@ -870,7 +870,7 @@ EXTRA_SETUP()
 		serial_number = "53386"; // try to get the serial number from the ini file
 
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: try to connect to UDP device with SerialNumber: %d\n", serial_number);
-		dev = PK_ConnectToDeviceWSerial_UDP(INT32_C(serial_number), timeout_ms);
+		dev = PK_ConnectToDeviceWSerial_UDP(atoi(serial_number), timeout_ms);
 
 		if (dev == NULL)
 		{
@@ -884,7 +884,7 @@ EXTRA_SETUP()
 		if (dev == NULL)
 		{
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: try to connect to Network device with SerialNumber: %d\n", serial_number);
-			dev = PK_ConnectToDeviceWSerial(serial_number, timeout_ms);
+			dev = PK_ConnectToDeviceWSerial(atoi(serial_number), timeout_ms);
 			if (dev == NULL)
 			{
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: failed to connect to device with SerialNumber: %d\n", serial_number);
@@ -901,7 +901,7 @@ EXTRA_SETUP()
 			sPoKeysNetworkDeviceSummary* net_devices;
 			// first Network
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: SearchNetworkDevices\n");
-			int32_t nDevs = PK_SearchNetworkDevices(net_devices, timeout_ms, serial_number);
+			int32_t nDevs = PK_SearchNetworkDevices(net_devices, timeout_ms, atoi(serial_number));
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: nDevs: %d\n", nDevs);
 			if (nDevs != 0)
 			{
