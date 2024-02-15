@@ -916,12 +916,22 @@ EXTRA_SETUP()
 
 		if (ConnectionType != 0){
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: ConnectionType: %d\n", ConnectionType);
-			devices->ConnectionType = ConnectionType;
+		//	devices->ConnectionType = ConnectionType;
 		}
 		 
 		if (IP!= "0.0.0.0"){
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: IP: %s\n", IP);
-			devices->IPaddress = IP;
+			// need to convert IP to uint32_t[4]
+			// splittring the string by '.' and converting to uint32_t
+			uint8_t  IPaddress[4];
+			char *token = strtok(IP, ".");
+			int i = 0;
+			while (token != NULL) {
+				IPaddress[i] = atoi(token);
+				token = strtok(NULL, ".");
+				i++;
+			}
+			devices->IPaddress = (IPaddress[0] << 24) | (IPaddress[1] << 16) | (IPaddress[2] << 8) | IPaddress[3];
 		}
 
 		if (timeout_ms != 1000){
