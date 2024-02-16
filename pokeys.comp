@@ -1077,58 +1077,58 @@ void user_mainloop(void)
 					if (dev != NULL)
 					{
 						rtapi_print("PoKeys: %s:%s: Connected to device\n", __FILE__, __FUNCTION__);
-						if (devSerial == 0)
-						{
-							rtapi_print("PoKeys: %s:%s: Connected to device\n", __FILE__, __FUNCTION__);
-							devSerial = dev->DeviceData.SerialNumber;
-						}
-						switch (dev->connectionType)
-						{
-							case PK_DeviceType_USBDevice:
-								rtapi_print("PoKeys: %s:%s: USB\n", __FILE__, __FUNCTION__);
-								connected_usb = 1;
-								connected_fusb = 0;
-								connected_udp = 0;
-								connected_net = 0;
-								break;
-							case PK_DeviceType_FastUSBDevice:
-								rtapi_print("PoKeys: %s:%s: FastUSB\n", __FILE__, __FUNCTION__);
-								connected_usb = 0;
-								connected_fusb = 1;
-								connected_udp = 0;
-								connected_net = 0;
-								break;
-							case PK_DeviceType_NetworkDevice:
-								rtapi_print("PoKeys: %s:%s: UDP\n", __FILE__, __FUNCTION__);
-
-								/*  PK_ConnectionParam_TCP = 0,
-									PK_ConnectionParam_UDP = 1*/
-								if (dev->connectionParam == 0)
-								{
-									rtapi_print("PoKeys: %s:%s: TCP\n", __FILE__, __FUNCTION__);
-									connected_usb = 0;
-									connected_fusb = 0;
-									connected_udp = 0;
-									connected_net = 1;
-								}
-								else
-								{
-									rtapi_print("PoKeys: %s:%s: UDP\n", __FILE__, __FUNCTION__);
-									connected_usb = 0;
-									connected_fusb = 0;
-									connected_udp = 1;
-									connected_net = 0;
-								}
-
-								break;
-						}
 					}
 				}
 
 				if (dev != NULL)
 				{
+					
+					if (devSerial == 0)
+					{
+						
+						devSerial = dev->DeviceData.SerialNumber;
+						rtapi_print("PoKeys: %s:%s: devSerial: %d\n", __FILE__, __FUNCTION__, devSerial);
+					}
+					switch (dev->connectionType)
+					{
+					case PK_DeviceType_USBDevice:
+						rtapi_print("PoKeys: %s:%s: USB\n", __FILE__, __FUNCTION__);
+						connected_usb = 1;
+						connected_fusb = 0;
+						connected_udp = 0;
+						connected_net = 0;
+						break;
+					case PK_DeviceType_FastUSBDevice:
+						rtapi_print("PoKeys: %s:%s: FastUSB\n", __FILE__, __FUNCTION__);
+						connected_usb = 0;
+						connected_fusb = 1;
+						connected_udp = 0;
+						connected_net = 0;
+						break;
+					case PK_DeviceType_NetworkDevice:
+						rtapi_print("PoKeys: %s:%s: UDP\n", __FILE__, __FUNCTION__);
 
+						/*  PK_ConnectionParam_TCP = 0,
+							PK_ConnectionParam_UDP = 1*/
+						if (dev->connectionParam == 0)
+						{
+							rtapi_print("PoKeys: %s:%s: TCP\n", __FILE__, __FUNCTION__);
+							connected_usb = 0;
+							connected_fusb = 0;
+							connected_udp = 0;
+							connected_net = 1;
+						}
+						else
+						{
+							rtapi_print("PoKeys: %s:%s: UDP\n", __FILE__, __FUNCTION__);
+							connected_usb = 0;
+							connected_fusb = 0;
+							connected_udp = 1;
+							connected_net = 0;
+						}
 
+						break;
+					}
 
 
 					rtapi_print("PoKeys: %s:%s: initialize info pins\n", __FILE__, __FUNCTION__);
