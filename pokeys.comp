@@ -1623,7 +1623,7 @@ void user_mainloop(void)
 				bool IsHoming[8];
 				bool InPosition[8];
 				bool POSITION_MODE_active[8];
-				rtapi_print("PoKeys: %s:%s:PEv2_nrOfAxes = %s\n", __FILE__, __FUNCTION__, PEv2_nrOfAxes);
+				rtapi_print("PoKeys: %s:%s:PEv2_nrOfAxes = %d\n", __FILE__, __FUNCTION__, PEv2_nrOfAxes);
 				if (PEv2_nrOfAxes!=0)
 				{
 					uint8_t  bm_SoftLimitStatus = dev->PEv2.SoftLimitStatus;
