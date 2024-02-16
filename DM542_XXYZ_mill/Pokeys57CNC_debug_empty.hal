@@ -5,7 +5,7 @@
 
 loadrt [KINS]KINEMATICS
 loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS
-loadusr -W pokeys
+loadusr pokeys
 loadusr -W kbd48CNC 
 #loadrt pokeys_rt serial_number=[POKEYS]DEVICE_ID
 
