@@ -1051,12 +1051,14 @@ void user_mainloop(void)
 { 
 
 	//comp_id = hal_init("pokeys");
-
+	rtapi_print("PoKeys: %s:%s: user_mainloop started  \n", __FILE__, __FUNCTION__);
 
     while(0xb)
 	{
+		rtapi_print("PoKeys: %s:%s: while(0xb) \n", __FILE__, __FUNCTION__);
 		FOR_ALL_INSTS() 
 		{
+			rtapi_print("PoKeys: %s:%s: FOR_ALL_INSTS() \n", __FILE__, __FUNCTION__);
 			rtc_loopcount++;
 			HAL_Machine_On = machine_is_on;
 
