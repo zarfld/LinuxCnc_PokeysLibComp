@@ -1067,7 +1067,10 @@ void user_mainloop(void)
 					usleep(sleepdur); 
 				}
 				rtapi_print("PoKeys: %s:%s: TryConnectToDevice %d \n", __FILE__, __FUNCTION__, devSerial);
-				dev = TryConnectToDevice(devSerial);
+				if (dev == NULL)
+				{
+					dev = TryConnectToDevice(devSerial);
+				}
 
 				if (dev != NULL)
 				{
@@ -3619,7 +3622,16 @@ EXTRA_SETUP()
 	//usleep(wait_ms);  // wait for the HAL to start up
 	for (i = 0; i < retry; i++)
 	{
-		dev = TryConnectToDevice(0);
+		if (dev == NULL)
+		{
+			rtapi_print("PoKeys: %s:%s: TryConnectToDevice(0)")
+			dev = TryConnectToDevice(0);
+		}
+		if (dev != NULL)
+		{
+			rtapi_print("PoKeys: %s:%s: Connected")
+			break;
+		}
 	}
 
 
