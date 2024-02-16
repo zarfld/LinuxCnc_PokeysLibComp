@@ -2351,8 +2351,10 @@ void user_mainloop(void)
 			if (dev->info.iBasicEncoderCount && DoEncoders)
 			{
 				deb_out = 216;
+				rtapi_print("PoKeys: %s:%s: PK_EncoderValuesGet(dev)\n", __FILE__, __FUNCTION__);
 				if (PK_EncoderValuesGet(dev) == PK_OK)
 				{
+					rtapi_print("PoKeys: %s:%s: PK_EncoderValuesGet(dev) OK\n", __FILE__, __FUNCTION__);
 					usleep(sleepdur);
 					deb_out = 217;
 					EncoderValuesGet = true;
@@ -2363,6 +2365,7 @@ void user_mainloop(void)
 					/* known issue: since update to Bullseye & Lcnc 2.9 it hangs here*/
 					for (i = 0; i < dev->info.iBasicEncoderCount; i++)
 					{
+						rtapi_print("PoKeys: %s:%s: read encoder %d\n", __FILE__, __FUNCTION__, i);
 						deb_out = 218*100+i;
 						encoder_count(i) = dev->Encoders[i].encoderValue;
 						deb_out = 2180;
@@ -2385,10 +2388,13 @@ void user_mainloop(void)
 					deb_out = 219;
 					if (dev->info.iUltraFastEncoders)
 					{
+						rtapi_print("PoKeys: %s:%s: read UltraFastEncoders\n", __FILE__, __FUNCTION__);
 						usleep(sleepdur);
 						deb_out = 220;
+						
 						for (i = dev->info.iBasicEncoderCount; i < (dev->info.iBasicEncoderCount + dev->info.iUltraFastEncoders); i++)
 						{
+							rtapi_print("PoKeys: %s:%s: UltraFastEncoders %d\n", __FILE__, __FUNCTION__, i);
 							deb_out = 221;
 							encoder_count(i) = dev->Encoders[i].encoderValue;
 							encoder_position(i) = dev->Encoders[i].encoderValue * encoder_scale(i);
@@ -2408,12 +2414,14 @@ void user_mainloop(void)
 							encoder_count(i) = dev->Encoders[i].encoderValue;
 						}
 					}*/
-
+					rtapi_print("PoKeys: %s:%s: resetEncoders = %d\n", __FILE__, __FUNCTION__, resetEncoders);
 					if (resetEncoders == true)
 					{
 						deb_out = 140;
+						rtapi_print("PoKeys: %s:%s: PK_EncoderValuesSet(dev)\n", __FILE__, __FUNCTION__);
 						if (PK_EncoderValuesSet(dev) == PK_OK)
 						{
+							rtapi_print("PoKeys: %s:%s: PK_EncoderValuesSet(dev) OK\n", __FILE__, __FUNCTION__);
 							usleep(sleepdur);
 							resetEncoders = false;
 							deb_out = 141;
@@ -2424,7 +2432,7 @@ void user_mainloop(void)
 					
 				}
 			}
-			
+			rtapi_print("PoKeys: %s:%s: info_PWMCount = %d\n", __FILE__, __FUNCTION__, dev->info.iPWMCount);
 			if (dev->info.iPWMCount && DoPWM)
 			{
 				adcout_deb_outv = 100;
@@ -2439,9 +2447,10 @@ void user_mainloop(void)
 				float low_limit[6];
 				float PWM_value[6];
 				float PWM_OffSet[6];
-
+				rtapi_print("PoKeys: %s:%s: PK_PWMConfigurationGet(dev)\n", __FILE__, __FUNCTION__);
 				if (PK_PWMConfigurationGet(dev) == PK_OK)
 				{
+					rtapi_print("PoKeys: %s:%s: PK_PWMConfigurationGet(dev) OK\n", __FILE__, __FUNCTION__);
 					usleep(sleepdur);
 					PWMperiod = adcout_pwm_period;
 					
@@ -2670,6 +2679,7 @@ void user_mainloop(void)
 
 				if (doPwmConfig = true)
 				{
+					rtapi_print("PoKeys: %s:%s: PK_PWMConfigurationSet(dev)\n", __FILE__, __FUNCTION__);
 					PK_PWMConfigurationSet(dev);
 					if (PK_PWMConfigurationSet(dev) != PK_OK)
 					{
@@ -2680,6 +2690,7 @@ void user_mainloop(void)
 
 				if (AnalogIOSet = true)
 				{
+					rtapi_print("PoKeys: %s:%s: PK_PWMUpdate(dev)\n", __FILE__, __FUNCTION__);
 					PK_PWMUpdate(dev);
 					if (PK_PWMUpdate(dev) != PK_OK)
 					{
@@ -2698,6 +2709,7 @@ void user_mainloop(void)
 
 
 			if (loopPins = true){  //gets IO data and checks return value 
+				rtapi_print("PoKeys: %s:%s: read IO data\n", __FILE__, __FUNCTION__);
 				err=0;
 				sPoKeysPinData iPin;
 				deb_out = 230;
@@ -2728,6 +2740,7 @@ void user_mainloop(void)
 
 				for(i=0;i<info_PinCount-1;i++)
 				{
+					rtapi_print("PoKeys: %s:%s: Pin %d\n", __FILE__, __FUNCTION__, i);
 					deb_out = 2320+i;
 					int AinNr = i - AnalogPinOffset;
 
@@ -2741,8 +2754,9 @@ void user_mainloop(void)
 						float ainVal = 3.3 * dev->Pins[i].AnalogValue / 4096;
 						
 						adcin_value_raw(AinNr) = ainVal;
-						
+						rtapi_print("PoKeys: %s:%s: adcin_value_raw(%d) = %f\n", __FILE__, __FUNCTION__, AinNr, adcin_value_raw(AinNr));
 						adcin_value(AinNr) = ainVal * adcin_scale(AinNr) - adcin_offset(AinNr);
+						rtapi_print("PoKeys: %s:%s: adc value %d = %f\n", __FILE__, __FUNCTION__, AinNr, adcin_value(AinNr));
 					}
 
 
@@ -2750,6 +2764,8 @@ void user_mainloop(void)
 
 					if (DigitalIOGet = true)
 					{
+						rtapi_print("PoKeys: %s:%s: DigitalValueGet\n", __FILE__, __FUNCTION__);
+						rtapi_print("PoKeys: %s:%s: dev->Pins[i].DigitalValueGet = %d\n", __FILE__, __FUNCTION__, dev->Pins[i].DigitalValueGet);
 						if (dev->Pins[i].DigitalValueGet == 0)
 						{
 							//Pins_DigitalValueGet(i)=false;
@@ -2781,7 +2797,7 @@ void user_mainloop(void)
 								setDigoutvalue = true;
 							}
 						}
-
+						rtapi_print("PoKeys: %s:%s: setDigoutvalue = %d\n", __FILE__, __FUNCTION__, setDigoutvalue);
 						if ((setDigoutvalue = true) && (dev->Pins[i].DigitalValueSet = 0))
 						{
 							dev->Pins[i].DigitalValueSet = 1;
@@ -2792,12 +2808,15 @@ void user_mainloop(void)
 							dev->Pins[i].DigitalValueSet = 0;
 							DigitalIOSet = true;
 						}
+						rtapi_print("PoKeys: %s:%s: DigitalValueSet[%d] = %d\n", __FILE__, __FUNCTION__, i, dev->Pins[i].DigitalValueSet);
 					}
 
 					//Pins_DigitalCounterAvailable(i)=dev->Pins[i].DigitalCounterAvailable;
+					rtapi_print("PoKeys: %s:%s: DigitalCounterAvailable[%d] = %d\n", __FILE__, __FUNCTION__, i, dev->Pins[i].DigitalCounterAvailable);
 					if(dev->Pins[i].DigitalCounterAvailable)
 					{
 						//Pins_DigitalCounterValue(i) = dev->Pins[i].DigitalCounterValue;
+						rtapi_print("PoKeys: %s:%s:countr value %d = %d\n", __FILE__, __FUNCTION__, i, dev->Pins[i].DigitalCounterValue);
 						counter_value(i) = dev->Pins[i].DigitalCounterValue;
 						//Pins_CounterOptions(i) = dev->Pins[i].CounterOptions;
 					}
@@ -2817,9 +2836,10 @@ void user_mainloop(void)
 					usleep(sleepdur); 
 
 
-
+					rtapi_print("PoKeys: %s:%s:PEv2_PulseEngineEnabled = %d\n", __FILE__, __FUNCTION__, PEv2_PulseEngineEnabled);
 					if (PEv2_PulseEngineEnabled!=0)
 					{
+						rtapi_print("PoKeys: %s:%s: PulseEngineState = %d\n", __FILE__, __FUNCTION__, dev->PEv2.PulseEngineState);
 						if (dev->PEv2.PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
 						{
 							PEv2_digin_Emergency_in = false;
@@ -2839,8 +2859,10 @@ void user_mainloop(void)
 				deb_out = 236;
 				if (DigitalIOSet = true)
 				{
+					rtapi_print("PoKeys: %s:%s: PK_DigitalIOSet(dev)\n", __FILE__, __FUNCTION__);
 					if (PK_DigitalIOSet(dev) != PK_OK)
 					{
+						rtapi_print("PoKeys: %s:%s: PK_DigitalIOSet(dev) failed\n", __FILE__, __FUNCTION__);
 						usleep(sleepdur);
 					}
 					if (PK_DigitalIOSet(dev) != PK_OK)
@@ -2875,6 +2897,7 @@ void user_mainloop(void)
 	
 			if (kbd48CNC_available!=0)
 			{
+				rtapi_print("PoKeys: %s:%s: kb48CNC\n", __FILE__, __FUNCTION__);
 				deb_out = 340;
 				dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 				PK_PoNETGetModuleSettings(dev);
@@ -2888,8 +2911,10 @@ void user_mainloop(void)
 
 				dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 				PK_PoNETGetModuleLight(dev);
+				rtapi_print("PoKeys: %s:%s: PK_PoNETGetModuleLight(dev)\n", __FILE__, __FUNCTION__);
 				if (PK_PoNETGetModuleLight(dev) == PK_OK)
 				{
+					rtapi_print("PoKeys: %s:%s: PK_PoNETGetModuleLight(dev) OK\n", __FILE__, __FUNCTION__);
 					kbd48CNC_lightValue = dev->PoNETmodule.lightValue;
 
 
@@ -2916,25 +2941,31 @@ void user_mainloop(void)
 
 
 				dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+				rtapi_print("PoKeys: %s:%s: PK_PoNETGetModuleStatusRequest(dev)\n", __FILE__, __FUNCTION__);
 				if (PK_PoNETGetModuleStatusRequest(dev) != PK_OK)
 				{
+					rtapi_print("PoKeys: %s:%s: PK_PoNETGetModuleStatusRequest(dev) failed\n", __FILE__, __FUNCTION__);
 					usleep(sleepdur);
 					dev->PoNETmodule.moduleID = 0;
 					if (PK_PoNETGetModuleStatusRequest(dev) != PK_OK)
 					{
+						rtapi_print("PoKeys: %s:%s: PK_PoNETGetModuleStatusRequest(dev) failed\n", __FILE__, __FUNCTION__);
 						kbd48CNC_PoNetID =0;
 						usleep(sleepdur);
 					}
 				}
 				kbd48CNC_Counter[i]=0;
+				rtapi_print("PoKeys: %s:%s: PK_PoNETGetModuleStatus(dev)\n", __FILE__, __FUNCTION__);
 				while (PK_PoNETGetModuleStatus(dev) != PK_OK && kbd48CNC_Counter[i]<10)
 				{
 					kbd48CNC_Counter[i]++;
 				}
 
 				dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+				rtapi_print("PoKeys: %s:%s: PK_PoNETGetModuleStatus(dev)\n", __FILE__, __FUNCTION__);
 				if (PK_PoNETGetModuleStatus(dev) != PK_OK)
 				{
+					rtapi_print("PoKeys: %s:%s: PK_PoNETGetModuleStatus(dev) failed\n", __FILE__, __FUNCTION__);
 					if (PK_PoNETGetModuleStatus(dev) != PK_OK)
 					{
 						usleep(sleepdur);
@@ -2959,11 +2990,13 @@ void user_mainloop(void)
 						
 					if (kbd48CNC_LED(i) == true)
 					{
+						rtapi_print("PoKeys: %s:%s: kbd48CNC_LED(%d) = true\n", __FILE__, __FUNCTION__, i);
 						state=true;
 					}
 
 					if ((dev->PoNETmodule.statusIn[ID/8] & (1<<(ID%8))) > 0)
 					{
+						rtapi_print("PoKeys: %s:%s: kbd48CNC statusIn[%d] = %d\n", __FILE__, __FUNCTION__, ID/8, dev->PoNETmodule.statusIn[ID/8]);
 						instate=true;
 						state = true;
 					}
@@ -2986,7 +3019,7 @@ void user_mainloop(void)
 						tmp &= ~(1<<(ID%8));
 					}
 					dev->PoNETmodule.statusOut[ID/8] = tmp;
-
+					rtapi_print("PoKeys: %s:%s: kbd48CNC statusOut[%d] = %d\n", __FILE__, __FUNCTION__, ID/8, dev->PoNETmodule.statusOut[ID/8]);
 					/*while (dev->PoNETmodule.statusOut[ID/8] != tmp)
 					{
 						dev->PoNETmodule.statusOut[ID/8] = tmp;
@@ -2997,8 +3030,10 @@ void user_mainloop(void)
 				dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 				PK_PoNETSetModuleStatus(dev);
 				PK_PoNETSetModuleStatus(dev);
+				rtapi_print("PoKeys: %s:%s: PK_PoNETSetModuleStatus(dev)\n", __FILE__, __FUNCTION__);
 				if (PK_PoNETSetModuleStatus(dev) != PK_OK)
 				{
+					rtapi_print("PoKeys: %s:%s: PK_PoNETSetModuleStatus(dev) failed\n", __FILE__, __FUNCTION__);
 					usleep(sleepdur);
 					dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 					if (PK_PoNETSetModuleStatus(dev) != PK_OK)
@@ -3008,9 +3043,12 @@ void user_mainloop(void)
 				}
 
 				dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+				rtapi_print("PoKeys: %s:%s: kbd48CNC_PoNetID = %d\n", __FILE__, __FUNCTION__, kbd48CNC_PoNetID);
+
 				if (PK_PoNETSetModuleStatus(dev) != PK_OK)
 				{
 					dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
+					rtapi_print("PoKeys: %s:%s: kbd48CNC PK_PoNETSetModuleStatus(dev)\n", __FILE__, __FUNCTION__);
 					if (PK_PoNETSetModuleStatus(dev) != PK_OK)
 					{
 					}
