@@ -521,7 +521,7 @@ option extra_setup yes;
 #include "stdio.h"
 
 sPoKeysDevice * dev = NULL;
-static int comp_id;		/* component ID */
+int comp_id;		/* component ID */
 bool initEncodersDone = 0;
 bool HAL_Machine_On = false;
 bool setPkConfig = false;
