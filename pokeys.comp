@@ -1070,7 +1070,7 @@ void user_mainloop(void)
 			deb_out = 100;
 			uint32_t lastConectionTypeTried = 0;
             rtapi_print("PoKeys: %s:%s: initdone: %s\n", __FILE__, __FUNCTION__, initdone ? "true" : "false");
-			while(dev == NULL && !initdone )
+			while(dev == NULL | initdone !=1 )
 			{
 				Loop_Frequ = rtc_loop_frequ;
 				if (PEv2_digout_Emergency_out!=true)
