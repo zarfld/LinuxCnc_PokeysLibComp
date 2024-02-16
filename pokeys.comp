@@ -1050,7 +1050,7 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 void user_mainloop(void) 
 { 
 
-	comp_id = hal_init("pokeys");
+	//comp_id = hal_init("pokeys");
 
 
     while(0xb)
