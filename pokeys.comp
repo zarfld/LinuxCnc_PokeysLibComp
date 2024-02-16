@@ -3614,7 +3614,6 @@ EXTRA_SETUP()
 	int wait_ms = 5000;
 	rtapi_print("@@@%s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
 
-
 	//usleep(wait_ms);  // wait for the HAL to start up
 	for (i = 0; i < retry; i++)
 	{
