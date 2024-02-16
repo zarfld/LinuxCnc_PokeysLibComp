@@ -1014,7 +1014,8 @@ void user_mainloop(void)
 	comp_id = hal_init("pokeys");
 
 
-    while(0xb){
+    while(0xb)
+	{
 		FOR_ALL_INSTS() 
 		{
 			rtc_loopcount++;
@@ -1034,7 +1035,7 @@ void user_mainloop(void)
 				if (dev != NULL)
 				{
 					rtapi_print("PoKeys: %s:%s: initialize info pins\n", __FILE__, __FUNCTION__);
-					cannot set pins outside of user_mainloop()
+					
 					info_PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
 					info_PWMCount = dev->info.iPWMCount;                        // Number of pins that support PWM output
 					info_BasicEncoderCount = dev->info.iBasicEncoderCount;               // Number of basic encoders
@@ -3581,11 +3582,11 @@ EXTRA_SETUP()
 
 	for (int i = 0; i < retry; i++)
 	{
-		rtapi_print("@@@%s:%s: TryConnectToDevice(%s)\n", __FILE__, __FUNCTION__, extra_arg);)
+		rtapi_print("@@@%s:%s: TryConnectToDevice(%s)\n", __FILE__, __FUNCTION__, extra_arg);
 		dev = TryConnectToDevice(atoi(serial_number));
 		if (dev != NULL)
 		{	
-			rtapi_print("@@@%s:%s: dev != NULL\n", __FILE__, __FUNCTION__);)
+			rtapi_print("@@@%s:%s: dev != NULL\n", __FILE__, __FUNCTION__);
 			break;
 		}
 	}
