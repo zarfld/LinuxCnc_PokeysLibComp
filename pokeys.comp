@@ -3307,7 +3307,7 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 	if (retDev != NULL)
 	{
 		rtapi_print("PoKeys: %s:%s: Connected to device\n", __FILE__, __FUNCTION__);
-		connected = 1;
+		//connected = 1;
 		if (lastConectionTypeTried == 1)
 		{
 			rtapi_print("PoKeys: %s:%s: USB\n", __FILE__, __FUNCTION__);
