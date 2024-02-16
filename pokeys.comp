@@ -1068,11 +1068,12 @@ void user_mainloop(void)
 			HAL_Machine_On = machine_is_on;
 
 			deb_out = 100;
-			uint32_t lastConectionTypeTried = 0;
+			
             rtapi_print("PoKeys: %s:%s: initdone: %s\n", __FILE__, __FUNCTION__, initdone ? "true" : "false");
 			while(dev == NULL | initdone !=1 )
 			{
 				Loop_Frequ = rtc_loop_frequ;
+				uint32_t lastConectionTypeTried = 0;
 				if (PEv2_digout_Emergency_out!=true)
 				{
 					usleep(sleepdur); 
@@ -1114,7 +1115,7 @@ void user_mainloop(void)
 							connected_net = 0;
 							break;
 						case PK_DeviceType_NetworkDevice:
-							rtapi_print("PoKeys: %s:%s: UDP\n", __FILE__, __FUNCTION__);
+							rtapi_print("PoKeys: %s:%s: NetworkDevice\n", __FILE__, __FUNCTION__);
 
 							/*  PK_ConnectionParam_TCP = 0,
 								PK_ConnectionParam_UDP = 1*/
@@ -1182,23 +1183,23 @@ void user_mainloop(void)
 					rtapi_print("PoKeys: %s:%s: Device info pins initialized\n", __FILE__, __FUNCTION__);
 					switch (dev->DeviceData.DeviceTypeID)
 					{
-					case PK_DeviceID_PoKeys57CNC:
-						rtapi_print("PoKeys: %s:%s: DeviceID_PoKeys57CNC\n", __FILE__, __FUNCTION__);
-						PEv2_PulseEngineEnabled = 8;
-						PEv2_PG_extended_io = true;
-						break;
-					case PK_DeviceID_PoKeys57CNCdb25:
-						rtapi_print("PoKeys: %s:%s: DeviceID_PoKeys57CNCdb25\n", __FILE__, __FUNCTION__);
-						PEv2_PG_extended_io = false;
-						break;
-					case PK_DeviceID_57U:
-						rtapi_print("PoKeys: %s:%s: DeviceID_57U\n", __FILE__, __FUNCTION__);
-						PEv2_PG_extended_io = false;
-						break;
-					case PK_DeviceID_57E:
-						rtapi_print("PoKeys: %s:%s: DeviceID_57E\n", __FILE__, __FUNCTION__);
-						PEv2_PG_extended_io = false;
-						break;
+						case PK_DeviceID_PoKeys57CNC:
+							rtapi_print("PoKeys: %s:%s: DeviceID_PoKeys57CNC\n", __FILE__, __FUNCTION__);
+							PEv2_PulseEngineEnabled = 8;
+							PEv2_PG_extended_io = true;
+							break;
+						case PK_DeviceID_PoKeys57CNCdb25:
+							rtapi_print("PoKeys: %s:%s: DeviceID_PoKeys57CNCdb25\n", __FILE__, __FUNCTION__);
+							PEv2_PG_extended_io = false;
+							break;
+						case PK_DeviceID_57U:
+							rtapi_print("PoKeys: %s:%s: DeviceID_57U\n", __FILE__, __FUNCTION__);
+							PEv2_PG_extended_io = false;
+							break;
+						case PK_DeviceID_57E:
+							rtapi_print("PoKeys: %s:%s: DeviceID_57E\n", __FILE__, __FUNCTION__);
+							PEv2_PG_extended_io = false;
+							break;
 					}
 
 					if (info_PoNET != 0)
@@ -1211,14 +1212,14 @@ void user_mainloop(void)
 							if (PK_PoNETGetModuleSettings(dev) == PK_OK)
 							{
 								//		PoNET_moduleID(i) = i;
-								rtapi_print("PoKeys: %s:%s: PoNET_moduleID(%s)\n", __FILE__, __FUNCTION__, i);
+								rtapi_print("PoKeys: %s:%s: PoNET_moduleID(%d)\n", __FILE__, __FUNCTION__, i);
 								PoNET_i2cAddress(i) = dev->PoNETmodule.i2cAddress;
 								PoNET_moduleType(i) = dev->PoNETmodule.moduleType;
 								PoNET_moduleSize(i) = dev->PoNETmodule.moduleSize;
 								PoNET_moduleOptions(i) = dev->PoNETmodule.moduleOptions;
 								if (dev->PoNETmodule.moduleType != 0)
 								{
-									rtapi_print("PoKeys: %s:%s: PoNETmodule.moduleType(%s) = %s\n", __FILE__, __FUNCTION__, i, dev->PoNETmodule.moduleType);
+									rtapi_print("PoKeys: %s:%s: PoNETmodule.moduleType(%d) = %d\n", __FILE__, __FUNCTION__, i, dev->PoNETmodule.moduleType);
 									PoNet_Count++;
 								}
 								if (dev->PoNETmodule.moduleType == 0x10 && kbd48CNC_available == 0)
@@ -1236,7 +1237,7 @@ void user_mainloop(void)
 							}
 							PoNET_DevCount = PoNet_Count;
 						}
-						rtapi_print("PoKeys: %s:%s: PoNet Count: %s\n", __FILE__, __FUNCTION__, PoNet_Count);
+						rtapi_print("PoKeys: %s:%s: PoNet Count: %d\n", __FILE__, __FUNCTION__, PoNet_Count);
 					}
 
 					if (kbd48CNC_available != 0)
@@ -1281,7 +1282,7 @@ void user_mainloop(void)
 
 					if (info_protI2C != 0)
 					{
-						rtapi_print("PoKeys: %s:%s: info_protI2C = %s \n", __FILE__, __FUNCTION__, info_protI2C);
+						rtapi_print("PoKeys: %s:%s: info_protI2C = %d \n", __FILE__, __FUNCTION__, info_protI2C);
 						/* Pokeys Protokol Specification - page 65:  deprecated command, I2C bus is always activated
 
 						uint8_t * i_activated;
@@ -1298,7 +1299,7 @@ void user_mainloop(void)
 							I2C_isscanning = true;
 							usleep(sleepdur);
 						}
-						rtapi_print("PoKeys: %s:%s: I2C_isscanning = %s\n", __FILE__, __FUNCTION__, I2C_isscanning);
+						rtapi_print("PoKeys: %s:%s: I2C_isscanning = %d\n", __FILE__, __FUNCTION__, I2C_isscanning);
 					}
 
 					if (setPinConfig == true)
@@ -1313,7 +1314,7 @@ void user_mainloop(void)
 					}
 					if (info_PoNET != 0)
 					{
-						rtapi_print("PoKeys: %s:%s: info_PoNET = %s\n", __FILE__, __FUNCTION__, info_PoNET);
+						rtapi_print("PoKeys: %s:%s: info_PoNET = %d\n", __FILE__, __FUNCTION__, info_PoNET);
 						rtapi_print("PoKeys: %s:%s: PK_PoNETGetPoNETStatus\n", __FILE__, __FUNCTION__);
 						if (PK_PoNETGetPoNETStatus(dev) == PK_OK)
 						{
@@ -1322,7 +1323,7 @@ void user_mainloop(void)
 							{
 
 								dev->PoNETmodule.moduleID = i;
-								rtapi_print("PoKeys: %s:%s: PK_PoNETGetModuleSettings( %s )\n", __FILE__, __FUNCTION__, i);
+								rtapi_print("PoKeys: %s:%s: PK_PoNETGetModuleSettings( %d )\n", __FILE__, __FUNCTION__, i);
 								if (PK_PoNETGetModuleSettings(dev) == PK_OK)
 								{
 									PoNet[i].moduleID = i;
@@ -1330,11 +1331,11 @@ void user_mainloop(void)
 									PoNet[i].moduleType = dev->PoNETmodule.moduleType;
 									PoNet[i].moduleSize = dev->PoNETmodule.moduleSize;
 									PoNet[i].moduleOptions = dev->PoNETmodule.moduleOptions;
-									rtapi_print("PoKeys: %s:%s:PoNet[%s].moduleID = %s\n", __FILE__, __FUNCTION__, i, PoNet[i].moduleID);
-									rtapi_print("PoKeys: %s:%s:PoNet[%s].i2cAddress = %s\n", __FILE__, __FUNCTION__, i, PoNet[i].i2cAddress);
-									rtapi_print("PoKeys: %s:%s:PoNet[%s].moduleType = %s\n", __FILE__, __FUNCTION__, i, PoNet[i].moduleType);
-									rtapi_print("PoKeys: %s:%s:PoNet[%s].moduleSize = %s\n", __FILE__, __FUNCTION__, i, PoNet[i].moduleSize);
-									rtapi_print("PoKeys: %s:%s:PoNet[%s].moduleOptions = %s\n", __FILE__, __FUNCTION__, i, PoNet[i].moduleOptions);
+									rtapi_print("PoKeys: %s:%s:PoNet[%d].moduleID = %d\n", __FILE__, __FUNCTION__, i, PoNet[i].moduleID);
+									rtapi_print("PoKeys: %s:%s:PoNet[%d].i2cAddress = %d\n", __FILE__, __FUNCTION__, i, PoNet[i].i2cAddress);
+									rtapi_print("PoKeys: %s:%s:PoNet[%d].moduleType = %d\n", __FILE__, __FUNCTION__, i, PoNet[i].moduleType);
+									rtapi_print("PoKeys: %s:%s:PoNet[%d].moduleSize = %d\n", __FILE__, __FUNCTION__, i, PoNet[i].moduleSize);
+									rtapi_print("PoKeys: %s:%s:PoNet[%d].moduleOptions = %d\n", __FILE__, __FUNCTION__, i, PoNet[i].moduleOptions);
 									usleep(sleepdur);
 									//	memset(dev->PoNETmodule.statusOut, 0, 10);
 								}
