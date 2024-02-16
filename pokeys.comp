@@ -3555,7 +3555,10 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 	else
 	{
 		rtapi_print("PoKeys: %s:%s: failed to connect to device\n", __FILE__, __FUNCTION__);
-		connected = 0;
+		connected_usb = 0;
+		connected_fusb = 0;
+		connected_udp = 0;
+		connected_net = 0;
 		err = 1;
 	}
 }
