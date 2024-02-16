@@ -521,7 +521,7 @@ option extra_setup yes;
 #include "stdio.h"
 
 sPoKeysDevice * dev = NULL;
-int comp_id;		/* component ID */
+static int comp_id = hal_init("pokeys");		/* component ID */
 bool initEncodersDone = 0;
 bool HAL_Machine_On = false;
 bool setPkConfig = false;
@@ -1053,6 +1053,12 @@ void user_mainloop(void)
 	
 	rtapi_print("PoKeys: %s:%s: user_mainloop started  \n", __FILE__, __FUNCTION__);
 	rtapi_print("  \n");
+	if (comp_id == 0)
+	{
+		rtapi_print("PoKeys: %s:%s: comp_id: %d\n", __FILE__, __FUNCTION__, comp_id);
+		comp_id = hal_init("pokeys");
+		rtapi_print("PoKeys: %s:%s: comp_id: %d\n", __FILE__, __FUNCTION__, comp_id);
+	})
 //	comp_id = hal_init("pokeys");
 //	rtapi_print("PoKeys: %s:%s: comp_id: %d\n", __FILE__, __FUNCTION__, comp_id);
     while(0xb)
@@ -3679,9 +3685,8 @@ void user_mainloop(void)
 EXTRA_SETUP()
 {
 	int wait_ms = 5000;
-	rtapi_print("@@@%s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
-	comp_id = hal_init("pokeys");
-	rtapi_print("PoKeys: %s:%s: comp_id: %d\n", __FILE__, __FUNCTION__, comp_id);
+	rtapi_print("PoKeys: %s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
+
 	//usleep(wait_ms);  // wait for the HAL to start up
 	for (i = 0; i < retry; i++)
 	{
