@@ -865,7 +865,7 @@ EXTRA_SETUP()
 {
 	uint32_t lastConectionTypeTried = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
 	sPoKeysNetworkDeviceSummary* net_devices;
-
+	rtapi_print("@@@%s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
 	if (!extra_arg) //If using the automatically defined rtapi_app_main, extra_arg is the number of this instance.
 	{
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: no serial_number specified\n");
@@ -1280,97 +1280,90 @@ void user_mainloop(void)
 
 
     while(0xb){
-       FOR_ALL_INSTS() {
-	   rtc_loopcount++;
-	   HAL_Machine_On = machine_is_on;
+		FOR_ALL_INSTS() 
+		{
+			rtc_loopcount++;
+			HAL_Machine_On = machine_is_on;
 
-	   deb_out = 100;
-	   uint32_t lastConectionTypeTried = 0;
-	 while(dev == NULL)
-	 {
-			
-			Loop_Frequ = rtc_loop_frequ;
-			if (PEv2_digout_Emergency_out!=true)
+			deb_out = 100;
+			uint32_t lastConectionTypeTried = 0;
+			while(dev == NULL)
 			{
-				usleep(sleepdur); 
-			}
-			uint32_t i_Timeout=1000;
-		if (timeout_ms > 0) {
-			i_Timeout= timeout_ms;
-		}
-		 if (devSerial!=0 )
-		 {
-				deb_out = 110;
-
-				if (dev == NULL)
+				Loop_Frequ = rtc_loop_frequ;
+				if (PEv2_digout_Emergency_out!=true)
 				{
-					enum_usb_dev = PK_EnumerateUSBDevices();
-					deb_out = 111;
-					deb_out = 112;
-					if (enum_usb_dev != 0)
+					usleep(sleepdur); 
+				}
+				uint32_t i_Timeout=1000;
+				if (timeout_ms > 0) 
+				{
+					i_Timeout= timeout_ms;
+				}
+				if (devSerial!=0 )
+				{
+					deb_out = 110;
+					if (dev == NULL)
 					{
-						dev = PK_ConnectToDeviceWSerial(devSerial, i_Timeout);  //waits for usb device
-						lastConectionTypeTried = 1;
+						enum_usb_dev = PK_EnumerateUSBDevices();
+						deb_out = 111;
+						deb_out = 112;
+						if (enum_usb_dev != 0)
+						{
+							dev = PK_ConnectToDeviceWSerial(devSerial, i_Timeout);  //waits for usb device
+							lastConectionTypeTried = 1;
+						}
 					}
-				}
-				if (dev == NULL)
-				{
-					deb_out = 113;
-					dev = PK_ConnectToDeviceWSerial_UDP(devSerial, i_Timeout);  //waits for udp device
-					lastConectionTypeTried = 2;
-
-				}
-				if (dev == NULL)
-				{
-					deb_out = 1131;
-					sPoKeysNetworkDeviceSummary * net_devices;
-					int32_t nDevs = PK_SearchNetworkDevices(net_devices, i_Timeout, devSerial);
-					if (nDevs!=0)
+					if (dev == NULL)
 					{
-						enum_udp_dev = nDevs;
-						deb_out = 1132;
-						dev = PK_ConnectToNetworkDevice(net_devices);
-						lastConectionTypeTried = 3;
-						deb_out = 1133;
-					 }
-					else {
-						deb_out = 1134;
-	
-					//	nDevs = PK_EnumerateNetworkDevices(net_devices, i_Timeout); // does not work - it hangs here
-						
-						deb_out = 1135;
-						if (nDevs != 0)
+						deb_out = 113;
+						dev = PK_ConnectToDeviceWSerial_UDP(devSerial, i_Timeout);  //waits for udp device
+						lastConectionTypeTried = 2;
+
+					}
+					if (dev == NULL)
+					{
+						deb_out = 1131;
+						sPoKeysNetworkDeviceSummary * net_devices;
+						int32_t nDevs = PK_SearchNetworkDevices(net_devices, i_Timeout, devSerial);
+						if (nDevs!=0)
 						{
 							enum_udp_dev = nDevs;
-							deb_out = 1136;
+							deb_out = 1132;
 							dev = PK_ConnectToNetworkDevice(net_devices);
 							lastConectionTypeTried = 3;
-							deb_out = 1137;
-							
+							deb_out = 1133;
 						}
-
+						else 
+						{
+							deb_out = 1134;
+							//	nDevs = PK_EnumerateNetworkDevices(net_devices, i_Timeout); // does not work - it hangs here
+							deb_out = 1135;
+							if (nDevs != 0)
+							{
+								enum_udp_dev = nDevs;
+								deb_out = 1136;
+								dev = PK_ConnectToNetworkDevice(net_devices);
+								lastConectionTypeTried = 3;
+								deb_out = 1137;
+							}
+						}
 					}
-					
-				
-
 				}
-		 }
-		else
-		{
-			deb_out = 114;
-			sPoKeysNetworkDeviceSummary udp_devices[16];
-			deb_out = 115;
-			enum_usb_dev = PK_EnumerateUSBDevices();
-			deb_out = 116;
-		//	enum_fusb_dev = PK_EnumerateFastUSBDevices();
-			deb_out = 117;
-			int32_t nDevs = PK_EnumerateNetworkDevices(udp_devices, i_Timeout); // does not work - it hangs here
-			enum_udp_dev = nDevs;
-			deb_out = 118;
+				else
+				{
+					deb_out = 114;
+					sPoKeysNetworkDeviceSummary udp_devices[16];
+					deb_out = 115;
+					enum_usb_dev = PK_EnumerateUSBDevices();
+					deb_out = 116;
+				//	enum_fusb_dev = PK_EnumerateFastUSBDevices();
+					deb_out = 117;
+					int32_t nDevs = PK_EnumerateNetworkDevices(udp_devices, i_Timeout); // does not work - it hangs here
+					enum_udp_dev = nDevs;
+					deb_out = 118;
 
-
-                    for (int i = 0; i < 16; i++)
-                    {
+					for (int i = 0; i < 16; i++)
+					{
 						if (dev = NULL)
 						{
 							deb_out = 118 *10 + i;
@@ -1382,247 +1375,240 @@ void user_mainloop(void)
 								deb_out = 120 * 10 + i;
 							}
 						}
-                    }
+					}
 					//deb_out = 120;
-		}
-
-		if(dev != NULL)
-		{
-			deb_out = 121;
-			connected=1;
-			if (lastConectionTypeTried == 1) 
-			{
-				connected_usb=1;
-				connected_fusb = 0;
-				connected_udp = 0;
-				connected_net = 0;
-			}
-			if(lastConectionTypeTried == 2) 
-			{
-				connected_usb = 0;
-				connected_fusb = 0;
-				connected_udp = 1;
-				connected_net = 0;
-			}
-			if(lastConectionTypeTried == 3) 
-			{
-				connected_usb = 0;
-				connected_fusb = 0;
-				connected_udp = 0;
-				connected_net = 1;
-			}
-			 info_PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
-			 info_PWMCount = dev->info.iPWMCount;                        // Number of pins that support PWM output
-			 info_BasicEncoderCount = dev->info.iBasicEncoderCount;               // Number of basic encoders
-			 info_EncodersCount = dev->info.iEncodersCount;                   // Number of encoder slots available
-			 info_FastEncoders = dev->info.iFastEncoders;                    // Number of fast encoders supported
-			 info_UltraFastEncoders = dev->info.iUltraFastEncoders;               // Number of available ultra fast encoders
-			 info_PWMinternalFrequency = dev->info.PWMinternalFrequency;             // Main PWM peripheral clock
-			 info_AnalogInputs = dev->info.iAnalogInputs;                    // Number of info_protI2Cavailable analog inputs
-			 info_KeyMapping = dev->info.iKeyMapping;                      // Device supports key mapping (acts as a USB keyboard)
-			 info_TriggeredKeyMapping = dev->info.iTriggeredKeyMapping;             // Device supports triggered key mapping
-			 info_KeyRepeatDelay = dev->info.iKeyRepeatDelay;                  // Device supports user customizable key repeat rates and delays
-			 info_DigitalCounters = dev->info.iDigitalCounters;                 // Device supports digital counters
-			 info_JoystickButtonAxisMapping = dev->info.iJoystickButtonAxisMapping;       // Device supports mapping of joystick buttons
-			 info_JoystickAnalogToDigitalMapping = dev->info.iJoystickAnalogToDigitalMapping;  // Device supports mapping of analog inputs to digital keys
-			 info_Macros = dev->info.iMacros;                          // Device supports customizable macro sequences
-			 info_MatrixKeyboard = dev->info.iMatrixKeyboard;                  // Device supports matrix keyboard
-			 info_MatrixKeyboardTriggeredMapping = dev->info.iMatrixKeyboardTriggeredMapping;  // Device supports matrix keyboard triggered key mapping
-			 info_LCD = dev->info.iLCD;                             // Device supports alphanumeric LCD display
-			 info_MatrixLED = dev->info.iMatrixLED;                       // Device supports matrix LED display
-			 info_ConnectionSignal = dev->info.iConnectionSignal;                // Device supports connection signal output
-			 info_PoExtBus = dev->info.iPoExtBus;                        // Device supports PoExtBus digital outputs
-			 info_PoNET = dev->info.iPoNET;                           // Device supports PoNET bus devices
-			 info_AnalogFiltering = dev->info.iAnalogFiltering;                 // Device supports analog inputs low-pass digital filtering
-			 info_InitOutputsStart = dev->info.iInitOutputsStart;                // Device supports initializing outputs at startup
-			 info_protI2C = dev->info.iprotI2C;                         // Device supports I2C bus (master)
-			 info_prot1wire = dev->info.iprot1wire;                       // Device supports 1-wire bus (master)
-			 info_AdditionalOptions = dev->info.iAdditionalOptions;               // Device supports additional options with activation keys
-			 info_LoadStatus = dev->info.iLoadStatus;                      // Device supports reporting load status
-			 info_CustomDeviceName = dev->info.iCustomDeviceName;                // Device supports specifying custom device names
-			 info_PoTLog27support = dev->info.iPoTLog27support;                 // Device supports PoTLog27 firmware
-			 info_SensorList = dev->info.iSensorList;                      // Device supports sensor lists
-			 info_WebInterface = dev->info.iWebInterface;                    // Device supports web interface
-			 info_FailSafeSettings = dev->info.iFailSafeSettings;                // Device supports fail-safe mode
-			 info_JoystickHATswitch = dev->info.iJoystickHATswitch;               // Device supports joystick HAT switch mapping
-			 info_PulseEngine = dev->info.iPulseEngine;                     // Device supports Pulse engine
-			 info_PulseEnginev2 = dev->info.iPulseEnginev2;                   // Device supports Pulse engine v2
-			 info_EasySensors = dev->info.iEasySensors;                     // Device supports EasySensors
-
-			 switch (dev->DeviceData.DeviceTypeID)
-			{
-				case PK_DeviceID_PoKeys57CNC:           // Pulse engine is stopped
-					PEv2_PulseEngineEnabled=8;
-					PEv2_PG_extended_io=true;
-					break;
-				case PK_DeviceID_PoKeys57CNCdb25:           // Pulse engine is stopped
-					PEv2_PG_extended_io=false;
-					break;
-				case PK_DeviceID_57U:           // Pulse engine is stopped
-					PEv2_PG_extended_io=false;
-					break;
-				case PK_DeviceID_57E:           // Pulse engine is stopped
-					PEv2_PG_extended_io=false;
-					break;
-			}
-			 deb_out = 122;
-			 if ( info_PoNET!=0 )
-			 {
-				deb_out = 123;
-				
-				PoNet_Count = 0;
-				for (i = 0; i < 16; i++)
+				}
+				if(dev != NULL)
 				{
+					deb_out = 121;
+					connected=1;
+					if (lastConectionTypeTried == 1) 
+					{
+						connected_usb=1;
+						connected_fusb = 0;
+						connected_udp = 0;
+						connected_net = 0;
+					}
+					if(lastConectionTypeTried == 2) 
+					{
+						connected_usb = 0;
+						connected_fusb = 0;
+						connected_udp = 1;
+						connected_net = 0;
+					}
+					if(lastConectionTypeTried == 3) 
+					{
+						connected_usb = 0;
+						connected_fusb = 0;
+						connected_udp = 0;
+						connected_net = 1;
+					}
+					 info_PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
+					 info_PWMCount = dev->info.iPWMCount;                        // Number of pins that support PWM output
+					 info_BasicEncoderCount = dev->info.iBasicEncoderCount;               // Number of basic encoders
+					 info_EncodersCount = dev->info.iEncodersCount;                   // Number of encoder slots available
+					 info_FastEncoders = dev->info.iFastEncoders;                    // Number of fast encoders supported
+					 info_UltraFastEncoders = dev->info.iUltraFastEncoders;               // Number of available ultra fast encoders
+					 info_PWMinternalFrequency = dev->info.PWMinternalFrequency;             // Main PWM peripheral clock
+					 info_AnalogInputs = dev->info.iAnalogInputs;                    // Number of info_protI2Cavailable analog inputs
+					 info_KeyMapping = dev->info.iKeyMapping;                      // Device supports key mapping (acts as a USB keyboard)
+					 info_TriggeredKeyMapping = dev->info.iTriggeredKeyMapping;             // Device supports triggered key mapping
+					 info_KeyRepeatDelay = dev->info.iKeyRepeatDelay;                  // Device supports user customizable key repeat rates and delays
+					 info_DigitalCounters = dev->info.iDigitalCounters;                 // Device supports digital counters
+					 info_JoystickButtonAxisMapping = dev->info.iJoystickButtonAxisMapping;       // Device supports mapping of joystick buttons
+					 info_JoystickAnalogToDigitalMapping = dev->info.iJoystickAnalogToDigitalMapping;  // Device supports mapping of analog inputs to digital keys
+					 info_Macros = dev->info.iMacros;                          // Device supports customizable macro sequences
+					 info_MatrixKeyboard = dev->info.iMatrixKeyboard;                  // Device supports matrix keyboard
+					 info_MatrixKeyboardTriggeredMapping = dev->info.iMatrixKeyboardTriggeredMapping;  // Device supports matrix keyboard triggered key mapping
+					 info_LCD = dev->info.iLCD;                             // Device supports alphanumeric LCD display
+					 info_MatrixLED = dev->info.iMatrixLED;                       // Device supports matrix LED display
+					 info_ConnectionSignal = dev->info.iConnectionSignal;                // Device supports connection signal output
+					 info_PoExtBus = dev->info.iPoExtBus;                        // Device supports PoExtBus digital outputs
+					 info_PoNET = dev->info.iPoNET;                           // Device supports PoNET bus devices
+					 info_AnalogFiltering = dev->info.iAnalogFiltering;                 // Device supports analog inputs low-pass digital filtering
+					 info_InitOutputsStart = dev->info.iInitOutputsStart;                // Device supports initializing outputs at startup
+					 info_protI2C = dev->info.iprotI2C;                         // Device supports I2C bus (master)
+					 info_prot1wire = dev->info.iprot1wire;                       // Device supports 1-wire bus (master)
+					 info_AdditionalOptions = dev->info.iAdditionalOptions;               // Device supports additional options with activation keys
+					 info_LoadStatus = dev->info.iLoadStatus;                      // Device supports reporting load status
+					 info_CustomDeviceName = dev->info.iCustomDeviceName;                // Device supports specifying custom device names
+					 info_PoTLog27support = dev->info.iPoTLog27support;                 // Device supports PoTLog27 firmware
+					 info_SensorList = dev->info.iSensorList;                      // Device supports sensor lists
+					 info_WebInterface = dev->info.iWebInterface;                    // Device supports web interface
+					 info_FailSafeSettings = dev->info.iFailSafeSettings;                // Device supports fail-safe mode
+					 info_JoystickHATswitch = dev->info.iJoystickHATswitch;               // Device supports joystick HAT switch mapping
+					 info_PulseEngine = dev->info.iPulseEngine;                     // Device supports Pulse engine
+					 info_PulseEnginev2 = dev->info.iPulseEnginev2;                   // Device supports Pulse engine v2
+					 info_EasySensors = dev->info.iEasySensors;                     // Device supports EasySensors
 
-						dev->PoNETmodule.moduleID = i;
-						if(PK_PoNETGetModuleSettings(dev) == PK_OK)
+					switch (dev->DeviceData.DeviceTypeID)
+					{
+						case PK_DeviceID_PoKeys57CNC:           // Pulse engine is stopped
+							PEv2_PulseEngineEnabled=8;
+							PEv2_PG_extended_io=true;
+							break;
+						case PK_DeviceID_PoKeys57CNCdb25:           // Pulse engine is stopped
+							PEv2_PG_extended_io=false;
+							break;
+						case PK_DeviceID_57U:           // Pulse engine is stopped
+							PEv2_PG_extended_io=false;
+							break;
+						case PK_DeviceID_57E:           // Pulse engine is stopped
+							PEv2_PG_extended_io=false;
+							break;
+					}
+					deb_out = 122;
+					if ( info_PoNET!=0 )
+					{
+						deb_out = 123;
+						PoNet_Count = 0;
+						for (i = 0; i < 16; i++)
 						{
-							PoNET_moduleID(i) = i;
-							PoNET_i2cAddress(i) = dev->PoNETmodule.i2cAddress;
-							PoNET_moduleType(i) = dev->PoNETmodule.moduleType;
-							PoNET_moduleSize(i) = dev->PoNETmodule.moduleSize;
-							PoNET_moduleOptions(i) = dev->PoNETmodule.moduleOptions;
-							if (dev->PoNETmodule.moduleType!=0)
+							dev->PoNETmodule.moduleID = i;
+							if(PK_PoNETGetModuleSettings(dev) == PK_OK)
 							{
-								PoNet_Count++;
-							}
-							if (dev->PoNETmodule.moduleType == 0x10 && kbd48CNC_available ==0)
-							{
-								if ((dev->PoNETmodule.moduleOptions & (1<<7)) != 0)
+								PoNET_moduleID(i) = i;
+								PoNET_i2cAddress(i) = dev->PoNETmodule.i2cAddress;
+								PoNET_moduleType(i) = dev->PoNETmodule.moduleType;
+								PoNET_moduleSize(i) = dev->PoNETmodule.moduleSize;
+								PoNET_moduleOptions(i) = dev->PoNETmodule.moduleOptions;
+								if (dev->PoNETmodule.moduleType!=0)
 								{
-									// kbd48CNC is also detected
-									kbd48CNC_PoNetID = i;
-									//dev->deviceConfig->iEnableKBD48CNC = 1;
-									kbd48CNC_available=1;
+									PoNet_Count++;
+								}
+								if (dev->PoNETmodule.moduleType == 0x10 && kbd48CNC_available ==0)
+								{
+									if ((dev->PoNETmodule.moduleOptions & (1<<7)) != 0)
+									{
+										// kbd48CNC is also detected
+										kbd48CNC_PoNetID = i;
+										//dev->deviceConfig->iEnableKBD48CNC = 1;
+										kbd48CNC_available=1;
+									}
+								}
+								usleep(sleepdur); 
+							}
+							PoNET_DevCount = PoNet_Count;
+						}
+					 }
+					 deb_out = 124;
+					 if (kbd48CNC_available!=0)
+					 {
+						for (i = 0; i < 48; i++)
+						{
+							int offset[] = {15, 8, 7, 0};
+							int top = (i & 0xF0) + offset[(i / 4) % 4];
+							int y = i % 4;
+							int ID = top + y;
+							if (((i / 4) % 2) == 0)
+								ID = top - y;
+						}
+					 }
+
+
+		/*			if (info_MatrixKeyboard!=0)
+					{
+						dev->matrixKB.matrixKBconfiguration = 1;
+						Config_MatrixKB;
+
+					}
+		*/
+		/*
+					if (info_EasySensors!=0)
+					{
+						Config_EasySensors;
+						for (i = 0; i < dev->info.iEasySensors; i++)
+						{
+							EasySensors_sensorValue(i) = EasySensors[i].sensorValue;            // Current sensor value
+							EasySensors_sensorType(i)= EasySensors[i].sensorType;             // Type of the sensor
+							EasySensors_sensorRefreshPeriod(i)= EasySensors[i].sensorRefreshPeriod;    // Refresh period in 0.1s
+							EasySensors_sensorFailsafeConfig(i)= EasySensors[i].sensorFailsafeConfig;   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
+							EasySensors_sensorReadingID(i)= EasySensors[i].sensorReadingID;        // Sensor reading selection (see Protocol description document for details)
+							usleep(sleepdur); 
+						}
+					}
+		*/
+
+
+					if (info_protI2C!=0)
+					{
+						deb_out = 137;
+						/* Pokeys Protokol Specification - page 65:  deprecated command, I2C bus is always activated
+
+						uint8_t * i_activated;
+						if (PK_I2SGetStatus(dev, i_activated) == PK_OK)
+						{
+							usleep(sleepdur); 
+						} */
+
+
+						deb_out = 138;
+						if (PK_I2CBusScanStart(dev) == PK_OK)
+						{
+							//I2C_scanning=true;
+							I2C_isscanning = true;
+							usleep(sleepdur); 
+						}
+						deb_out = 139;
+					}
+
+					if (setPinConfig==true)
+					{
+						deb_out = 140;
+						if (PK_PinConfigurationSet(dev) == PK_OK)
+						{
+							usleep(sleepdur); 
+							setPinConfig = false;
+						}
+					}
+					if (info_PoNET!=0)
+					{
+						deb_out = 141;
+						if(PK_PoNETGetPoNETStatus(dev) == PK_OK)
+						{
+							// device->PoNETmodule.PoNETstatus
+							for (i = 0; i < 16; i++)
+							{
+								dev->PoNETmodule.moduleID = i;
+								if(PK_PoNETGetModuleSettings(dev) == PK_OK)
+								{
+									PoNet[i].moduleID=i;
+									PoNet[i].i2cAddress=dev->PoNETmodule.i2cAddress;
+									PoNet[i].moduleType=dev->PoNETmodule.moduleType;
+									PoNet[i].moduleSize=dev->PoNETmodule.moduleSize;
+									PoNet[i].moduleOptions=dev->PoNETmodule.moduleOptions;
+									usleep(sleepdur); 
+								//	memset(dev->PoNETmodule.statusOut, 0, 10);
 								}
 							}
-							usleep(sleepdur); 
 						}
-						PoNET_DevCount = PoNet_Count;
-				}
-			 }
-			 deb_out = 124;
+						deb_out = 142;
+						usleep(sleepdur); 
+					 }
+					 //dev->DeviceData.DeviceLockStatus=1;
 
-			 if (kbd48CNC_available!=0)
-			 {
-				for (i = 0; i < 48; i++)
-				{
-					int offset[] = {15, 8, 7, 0};
-
-					int top = (i & 0xF0) + offset[(i / 4) % 4];
-					int y = i % 4;
-					int ID = top + y;
-					if (((i / 4) % 2) == 0)
-						ID = top - y;
-				}
-			 }
-
-
-			 /*	if (info_MatrixKeyboard!=0)
-			{
-				dev->matrixKB.matrixKBconfiguration = 1;
-				Config_MatrixKB;
-
-			}*/
-/*
-			if (info_EasySensors!=0)
-			{
-				Config_EasySensors;
-				for (i = 0; i < dev->info.iEasySensors; i++)
-				{
-					EasySensors_sensorValue(i) = EasySensors[i].sensorValue;            // Current sensor value
-					EasySensors_sensorType(i)= EasySensors[i].sensorType;             // Type of the sensor
-					EasySensors_sensorRefreshPeriod(i)= EasySensors[i].sensorRefreshPeriod;    // Refresh period in 0.1s
-					EasySensors_sensorFailsafeConfig(i)= EasySensors[i].sensorFailsafeConfig;   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
-					EasySensors_sensorReadingID(i)= EasySensors[i].sensorReadingID;        // Sensor reading selection (see Protocol description document for details)
-					usleep(sleepdur); 
-				}
-			}
-*/
-
-
-			if (info_protI2C!=0)
-			{
-				deb_out = 137;
-				/* Pokeys Protokol Specification - page 65:  deprecated command, I2C bus is always activated
-
-				uint8_t * i_activated;
-				if (PK_I2SGetStatus(dev, i_activated) == PK_OK)
-				{
-					usleep(sleepdur); 
-				} */
-
-
-				deb_out = 138;
-				if (PK_I2CBusScanStart(dev) == PK_OK)
-				{
-					//I2C_scanning=true;
-					I2C_isscanning = true;
-					usleep(sleepdur); 
-				}
-				deb_out = 139;
-			}
-
-			 if (setPinConfig==true)
-			 {
-				deb_out = 140;
-				if (PK_PinConfigurationSet(dev) == PK_OK)
-				{
-					usleep(sleepdur); 
-					setPinConfig = false;
-				}
-			 }
-			 if (info_PoNET!=0)
-			 {
-				deb_out = 141;
-				if(PK_PoNETGetPoNETStatus(dev) == PK_OK)
-				{
-					// device->PoNETmodule.PoNETstatus
-				
-					for (i = 0; i < 16; i++)
+					if (PEv2_params_ApplyIniSettings !=0 && info_PulseEnginev2!=0 )
 					{
-						dev->PoNETmodule.moduleID = i;
-						if(PK_PoNETGetModuleSettings(dev) == PK_OK)
+						if (PK_SaveConfiguration(dev) != PK_OK)
 						{
-							PoNet[i].moduleID=i;
-							PoNet[i].i2cAddress=dev->PoNETmodule.i2cAddress;
-							PoNet[i].moduleType=dev->PoNETmodule.moduleType;
-							PoNet[i].moduleSize=dev->PoNETmodule.moduleSize;
-							PoNet[i].moduleOptions=dev->PoNETmodule.moduleOptions;
-							usleep(sleepdur); 
-						//	memset(dev->PoNETmodule.statusOut, 0, 10);
+							usleep(sleepdur*2); 
+							if (PK_SaveConfiguration(dev) != PK_OK)
+							{
+								usleep(sleepdur*2); 
+							}
 						}
-					}
-				}
-				deb_out = 142;
-				usleep(sleepdur); 
-			 }
-
- 
-			 //dev->DeviceData.DeviceLockStatus=1;
-
-			 if (PEv2_params_ApplyIniSettings !=0 && info_PulseEnginev2!=0 )
-			{
-				if (PK_SaveConfiguration(dev) != PK_OK)
-				{
-					usleep(sleepdur*2); 
-					if (PK_SaveConfiguration(dev) != PK_OK)
-					{
-						usleep(sleepdur*2); 
-					}
-				}
 				
+					}
+					deb_out = 143;
+				}
+				else
+				{
+					connected=0;
+					err=1;
+				}
+				usleep(sleepdur); 
 			}
-			 deb_out = 143;
-		}
-		else
-		{
-			connected=0;
-			err=1;
-		}
-		usleep(sleepdur); 
-	 }
-	 alive=1; 
+			alive=1; 
 
 			deb_out = 200;
 			 // RTC
@@ -1685,9 +1671,6 @@ void user_mainloop(void)
 						rtc_latencyCounter=0;
 						rtc_latencycheck_set=dev->RTC.SEC;
 					}
-
-
-
 				}
 				// hope to get loopfrequency more stable - as on everyminute additional actions
 				if (use_sleepdur1==false)
@@ -1707,8 +1690,6 @@ void user_mainloop(void)
 					sleepdur=sleepdur2;
 				}
 
-
-
 				if (rtc_sec_ret >= rtc_latencycheck_set && rtc_latencycheck_set>0 )
 				{
 					rtc_hal_latency = rtc_latencyCounter;
@@ -1718,10 +1699,8 @@ void user_mainloop(void)
 				{
 					rtc_latencyCounter ++;
 				}
-
 				deb_out = 212;
 			}
-
 
 			// PulseEnginev2
 			if (info_PulseEnginev2!=0)
@@ -1843,7 +1822,6 @@ void user_mainloop(void)
 							PEv2_deb_estop = 10;
 							break;
 					}
-
 					usleep(sleepdur); 
 				}
 
