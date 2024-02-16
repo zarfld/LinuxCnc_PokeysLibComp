@@ -1041,7 +1041,7 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 		//connected_udp = 0;
 		//connected_net = 0;
 		//err = 1;
-		return NULL
+		return NULL;
 	}
 }
 
