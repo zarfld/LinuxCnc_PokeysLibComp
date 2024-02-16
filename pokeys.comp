@@ -35,7 +35,8 @@ pin out bit connected.usb;
 pin out bit connected.fusb;
 pin out bit connected.udp;
 pin out bit connected.net;
-pin in unsigned devSerial;
+param rw unsigned devSerial "PoKeys device serial number";
+//pin in unsigned devSerial;
 pin out bit alive;
 
 pin in bit machine_is_on;
@@ -1071,10 +1072,47 @@ void user_mainloop(void)
 				{
 					rtapi_print("PoKeys: %s:%s: TryConnectToDevice %d \n", __FILE__, __FUNCTION__, devSerial);
 					dev = TryConnectToDevice(devSerial);
+					if (dev != NULL)
+					{
+						rtapi_print("PoKeys: %s:%s: Connected to device\n", __FILE__, __FUNCTION__);
+						if (devSerial == 0)
+						{
+							rtapi_print("PoKeys: %s:%s: Connected to device\n", __FILE__, __FUNCTION__);
+							devSerial = dev->DeviceData.SerialNumber;
+						}
+						switch (dev->ConnectionType)
+						{
+							case PK_DeviceType_USBDevice:
+								rtapi_print("PoKeys: %s:%s: USB\n", __FILE__, __FUNCTION__);
+								connected_usb = 1;
+								connected_fusb = 0;
+								connected_udp = 0;
+								connected_net = 0;
+								break;
+							case PK_DeviceType_FastUSBDevice:
+								rtapi_print("PoKeys: %s:%s: FastUSB\n", __FILE__, __FUNCTION__);
+								connected_usb = 0;
+								connected_fusb = 1;
+								connected_udp = 0;
+								connected_net = 0;
+								break;
+							case PK_DeviceType_UDPDevice:
+								rtapi_print("PoKeys: %s:%s: UDP\n", __FILE__, __FUNCTION__);
+								connected_usb = 0;
+								connected_fusb = 0;
+								connected_udp = 1;
+								connected_net = 0;
+								break;
+						}
+					}
 				}
 
 				if (dev != NULL)
 				{
+
+
+
+
 					rtapi_print("PoKeys: %s:%s: initialize info pins\n", __FILE__, __FUNCTION__);
 					
 					info_PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
