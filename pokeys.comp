@@ -866,6 +866,8 @@ int instance_number = 0;
 
 sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 {
+	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: serial_number: %s\n", intSerial);
+	rtapi_print("PoKeys: %s:%s: serial_number=%s\n", __FILE__, __FUNCTION__, intSerial);
 	sPoKeysDevice* retDev = NULL;
 	uint32_t i_Timeout = 1000;
 	if (timeout_ms > 0)
@@ -874,41 +876,44 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 	}
 	if (intSerial != 0)
 	{
+		
 		deb_out = 110;
 		if (retDev == NULL)
 		{
+			rtapi_print("PoKeys: %s:%s: PK_EnumerateUSBDevices\n", __FILE__, __FUNCTION__);
 			enum_usb_dev = PK_EnumerateUSBDevices();
-			deb_out = 111;
-			deb_out = 112;
+			rtapi_print("PoKeys: %s:%s: enum_usb_dev :%s\n", __FILE__, __FUNCTION__, enum_usb_dev);
 			if (enum_usb_dev != 0)
 			{
+				rtapi_print("PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%s, %s)", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 				retDev = PK_ConnectToDeviceWSerial(intSerial, i_Timeout);  //waits for usb device
 				lastConectionTypeTried = 1;
+				rtapi_print("PoKeys: %s:%s: lastConectionTypeTried = 1\n", __FILE__, __FUNCTION__);
 			}
 		}
 		if (retDev == NULL)
 		{
-			deb_out = 113;
+			rtapi_print("PoKeys: %s:%s: PK_ConnectToDeviceWSerial_UDP(%s, %s)", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 			retDev = PK_ConnectToDeviceWSerial_UDP(intSerial, i_Timeout);  //waits for udp device
 			lastConectionTypeTried = 2;
-
+			rtapi_print("PoKeys: %s:%s: lastConectionTypeTried = 2\n", __FILE__, __FUNCTION__);
 		}
 		if (retDev == NULL)
 		{
-			deb_out = 1131;
+			rtapi_print("PoKeys: %s:%s: PK_SearchNetworkDevices(net_devices, %s, %s)\n", __FILE__, __FUNCTION__, i_Timeout, intSerial);
 			sPoKeysNetworkDeviceSummary* net_devices;
 			int32_t nDevs = PK_SearchNetworkDevices(net_devices, i_Timeout, intSerial);
 			if (nDevs != 0)
 			{
 				enum_udp_dev = nDevs;
-				deb_out = 1132;
+				rtapi_print("PoKeys: %s:%s: PK_ConnectToNetworkDevice(net_devices)\n", __FILE__, __FUNCTION__);
 				retDev = PK_ConnectToNetworkDevice(net_devices);
 				lastConectionTypeTried = 3;
-				deb_out = 1133;
+				rtapi_print("PoKeys: %s:%s: lastConectionTypeTried = 3\n", __FILE__, __FUNCTION__);
 			}
 			else
 			{
-				deb_out = 1134;
+				rtapi_print("PoKeys: %s:%s: PK_EnumerateNetworkDevices(net_devices, %s)\n", __FILE__, __FUNCTION__, i_Timeout);
 				//	nDevs = PK_EnumerateNetworkDevices(net_devices, i_Timeout); // does not work - it hangs here
 				deb_out = 1135;
 				if (nDevs != 0)
