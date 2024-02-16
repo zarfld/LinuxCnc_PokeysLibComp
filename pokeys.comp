@@ -519,7 +519,7 @@ option extra_setup yes;
 #include "hal.h"
 #include "stdio.h"
 
-sPoKeysDevice * dev=0;
+sPoKeysDevice * dev = NULL;
 static int comp_id;		/* component ID */
 bool initEncodersDone = 0;
 bool HAL_Machine_On = false;
@@ -920,7 +920,7 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 			{
 				rtapi_print("PoKeys: %s:%s: PK_EnumerateNetworkDevices(net_devices, %s)\n", __FILE__, __FUNCTION__, i_Timeout);
 				//	nDevs = PK_EnumerateNetworkDevices(net_devices, i_Timeout); // does not work - it hangs here
-				deb_out = 1135;
+				//deb_out = 1135;
 				if (nDevs != 0)
 				{
 					rtapi_print("PoKeys: %s:%s: nDevs: %s\n", __FILE__, __FUNCTION__, nDevs);
@@ -1289,7 +1289,7 @@ EXTRA_SETUP()
 		rtapi_print("@@@%s:%s: instance_number=%d\n", __FILE__, __FUNCTION__, instance_number);
 	}
 
-	for ´(int i = 0; i < retry; i++)
+	for (int i = 0; i < retry; i++)
 	{
 		dev = TryConnectToDevice(atoi(serial_number));
 		if (dev != NULL)
