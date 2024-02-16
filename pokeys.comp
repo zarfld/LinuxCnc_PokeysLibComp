@@ -941,15 +941,15 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 		
 		rtapi_print("PoKeys: %s:%s: PK_EnumerateUSBDevices()\n", __FILE__, __FUNCTION__);
 		enm_usb_dev = PK_EnumerateUSBDevices();
-		rtapi_print("PoKeys: %s:%s: PK_EnumerateUSBDevices()=%s\n", __FILE__, __FUNCTION__, enm_usb_dev);
+		rtapi_print("PoKeys: %s:%s: PK_EnumerateUSBDevices()=%d\n", __FILE__, __FUNCTION__, enm_usb_dev);
 
 		rtapi_print("PoKeys: %s:%s: PK_EnumerateFastUSBDevices()\n", __FILE__, __FUNCTION__);
 	//	enm_fusb_dev = PK_EnumerateFastUSBDevices();
-		rtapi_print("PoKeys: %s:%s: PK_EnumerateFastUSBDevices()=%s\n", __FILE__, __FUNCTION__, enm_fusb_dev);
+		rtapi_print("PoKeys: %s:%s: PK_EnumerateFastUSBDevices()=%d\n", __FILE__, __FUNCTION__, enm_fusb_dev);
 		
-	//	rtapi_print("PoKeys: %s:%s: PK_EnumerateNetworkDevices(udp_devices, %s)\n", __FILE__, __FUNCTION__, i_Timeout);
+		rtapi_print("PoKeys: %s:%s: PK_EnumerateNetworkDevices(udp_devices, %d)\n", __FILE__, __FUNCTION__, i_Timeout);
 	//	int32_t nDevs = PK_EnumerateNetworkDevices(udp_devices, i_Timeout); // does not work - it hangs here
-		rtapi_print("PoKeys: %s:%s: nDevs: %s\n", __FILE__, __FUNCTION__, nDevs);
+		rtapi_print("PoKeys: %s:%s: nDevs: %d\n", __FILE__, __FUNCTION__, nDevs);
 		//enm_udp_dev = nDevs;
 		
 		if (nDevs != 0)
@@ -3611,19 +3611,14 @@ void user_mainloop(void)
 
 EXTRA_SETUP()
 {
-	uint32_t lastConectionTypeTried = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
-	sPoKeysNetworkDeviceSummary* net_devices;
+	int wait_ms = 5000;
 	rtapi_print("@@@%s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
 
-	for (int i = 0; i < retry; i++)
+	rta
+	usleep(wait_ms);  // wait for the HAL to start up
+	for (i = 0; i < retry; i++)
 	{
-		rtapi_print("@@@%s:%s: TryConnectToDevice(%s)\n", __FILE__, __FUNCTION__, extra_arg);
-		dev = TryConnectToDevice(atoi(serial_number));
-		if (dev != NULL)
-		{	
-			rtapi_print("@@@%s:%s: dev != NULL\n", __FILE__, __FUNCTION__);
-			break;
-		}
+		dev = TryConnectToDevice(0)
 	}
 
 
