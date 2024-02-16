@@ -3206,7 +3206,7 @@ void user_mainloop(void)
     exit(0);
 };
 
-sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
+sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 {
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: serial_number: %s\n", intSerial);
 	rtapi_print("PoKeys: %s:%s: serial_number=%s\n", __FILE__, __FUNCTION__, intSerial);
