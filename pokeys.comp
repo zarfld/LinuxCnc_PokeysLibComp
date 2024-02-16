@@ -864,7 +864,7 @@ static int retry = 3;
 
 int instance_number = 0;
 
-sPoKeysDevice TryConnectToDevice(uint31_t intSerial)
+sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 {
 	sPoKeysDevice* retDev = NULL;
 	uint32_t i_Timeout = 1000;
