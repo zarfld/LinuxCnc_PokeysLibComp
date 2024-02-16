@@ -1080,7 +1080,7 @@ void user_mainloop(void)
 							rtapi_print("PoKeys: %s:%s: Connected to device\n", __FILE__, __FUNCTION__);
 							devSerial = dev->DeviceData.SerialNumber;
 						}
-						switch (dev->ConnectionType)
+						switch (dev->connectionType)
 						{
 							case PK_DeviceType_USBDevice:
 								rtapi_print("PoKeys: %s:%s: USB\n", __FILE__, __FUNCTION__);
@@ -1096,12 +1096,28 @@ void user_mainloop(void)
 								connected_udp = 0;
 								connected_net = 0;
 								break;
-							case PK_DeviceType_UDPDevice:
+							case PK_DeviceType_NetworkDevice:
 								rtapi_print("PoKeys: %s:%s: UDP\n", __FILE__, __FUNCTION__);
-								connected_usb = 0;
-								connected_fusb = 0;
-								connected_udp = 1;
-								connected_net = 0;
+
+								/*  PK_ConnectionParam_TCP = 0,
+									PK_ConnectionParam_UDP = 1*/
+								if (dev->connectionParam == 0)
+								{
+									rtapi_print("PoKeys: %s:%s: TCP\n", __FILE__, __FUNCTION__);
+									connected_usb = 0;
+									connected_fusb = 0;
+									connected_udp = 0;
+									connected_net = 1;
+								}
+								else
+								{
+									rtapi_print("PoKeys: %s:%s: UDP\n", __FILE__, __FUNCTION__);
+									connected_usb = 0;
+									connected_fusb = 0;
+									connected_udp = 1;
+									connected_net = 0;
+								}
+
 								break;
 						}
 					}
