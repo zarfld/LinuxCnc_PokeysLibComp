@@ -1459,7 +1459,7 @@ void user_mainloop(void)
 			}
 
 			// PulseEnginev2
-			rtapi_print("PoKeys: %s:%s: info_PulseEnginev2 = %s\n", __FILE__, __FUNCTION__, info_PulseEnginev2);
+			rtapi_print("PoKeys: %s:%s: info_PulseEnginev2 = %d\n", __FILE__, __FUNCTION__, info_PulseEnginev2);
 			if (info_PulseEnginev2!=0)
 			{
 				uint8_t         bm_LimitStatusP;              // Limit+ status (bit-mapped)
