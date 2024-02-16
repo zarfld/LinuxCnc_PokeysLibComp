@@ -944,7 +944,7 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 		rtapi_print("PoKeys: %s:%s: PK_EnumerateUSBDevices()=%d\n", __FILE__, __FUNCTION__, enm_usb_dev);
 
 		rtapi_print("PoKeys: %s:%s: PK_EnumerateFastUSBDevices()\n", __FILE__, __FUNCTION__);
-		enm_fusb_dev = PK_EnumerateFastUSBDevices();
+		//enm_fusb_dev = PK_EnumerateFastUSBDevices();
 		rtapi_print("PoKeys: %s:%s: PK_EnumerateFastUSBDevices()=%d\n", __FILE__, __FUNCTION__, enm_fusb_dev);
 		
 		rtapi_print("PoKeys: %s:%s: PK_EnumerateNetworkDevices(udp_devices, %d)\n", __FILE__, __FUNCTION__, i_Timeout);
