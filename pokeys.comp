@@ -1348,6 +1348,7 @@ void user_mainloop(void)
 
 					if (PEv2_params_ApplyIniSettings != 0 && info_PulseEnginev2 != 0)
 					{
+						rtapi_print("PoKeys: %s:%s: PK_SaveConfiguration - PEv2_params_ApplyIniSettings\n", __FILE__, __FUNCTION__);
 						if (PK_SaveConfiguration(dev) != PK_OK)
 						{
 							usleep(sleepdur * 2);
@@ -1359,7 +1360,7 @@ void user_mainloop(void)
 
 					}
 					rtapi_print("PoKeys: %s:%s: Device info pins initialized\n", __FILE__, __FUNCTION__);
-					initdone == 1;
+					initdone = 1;
 				}
 
 				usleep(sleepdur); 
