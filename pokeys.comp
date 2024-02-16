@@ -3691,7 +3691,7 @@ EXTRA_SETUP()
 		}
 	}
 
-
+	rtapi_print("");
 	// devSerial = extra_arg;
 	return 0;
 }
