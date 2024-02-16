@@ -2299,46 +2299,53 @@ void user_mainloop(void)
 			 info_TriggeredKeyMapping = dev->info.iTriggeredKeyMapping;             // Device supports triggered key mapping
 			 info_KeyRepeatDelay = dev->info.iKeyRepeatDelay;                  // Device supports user customizable key repeat rates and delays
 			 info_DigitalCounters = dev->info.iDigitalCounters;                 // Device supports digital counters			*/
+			rtapi_print("PoKeys: %s:%s: info_PinCount = %d\n", __FILE__, __FUNCTION__, dev->info.iPinCount);
 			if (dev->info.iPinCount > 0)
 			{
 				deb_out = 210;
+				rtapi_print("PoKeys: %s:%s: PK_PinConfigurationGet(dev)\n", __FILE__, __FUNCTION__);
 				if (PK_PinConfigurationGet(dev) == PK_OK)
 				{
+					rtapi_print("PoKeys: %s:%s: PK_PinConfigurationGet(dev) OK\n", __FILE__, __FUNCTION__);
 					usleep(sleepdur);
 					PinConfigurationGet = true;
 					deb_out = 211;
 					loopPins = true;
 				}
-
+				rtapi_print("PoKeys: %s:%s: PK_DigitalIOGet(dev)\n", __FILE__, __FUNCTION__);
 				if (PK_DigitalIOGet(dev) == PK_OK)
 				{
+					rtapi_print("PoKeys: %s:%s: PK_DigitalIOGet(dev) OK\n", __FILE__, __FUNCTION__);
 					usleep(sleepdur);
 					deb_out = 212;
 					DigitalIOGet = true;
 					loopPins = true;
 				}
-
+				rtapi_print("PoKeys: %s:%s: PK_AnalogIOGet(dev)\n", __FILE__, __FUNCTION__);
 				if (PK_AnalogIOGet(dev) == PK_OK)
 				{
+					rtapi_print("PoKeys: %s:%s: PK_AnalogIOGet(dev) OK\n", __FILE__, __FUNCTION__);
 					usleep(sleepdur);
 					deb_out = 213;
 					AnalogIOGet = true;
 					loopPins = true;
 				}
 			}
-
+			rtapi_print("PoKeys: %s:%s: info_iDigitalCounters = %d\n", __FILE__, __FUNCTION__, dev->info.iDigitalCounters);
 			if (dev->info.iDigitalCounters > 0)
 			{
 				deb_out = 214;
+				rtapi_print("PoKeys: %s:%s: PK_DigitalCounterGet(dev)\n", __FILE__, __FUNCTION__);
 				if (PK_DigitalCounterGet(dev) == PK_OK)
 				{
+					rtapi_print("PoKeys: %s:%s: PK_DigitalCounterGet(dev) OK\n", __FILE__, __FUNCTION__);
 					usleep(sleepdur);
 					deb_out = 215;
 					DigitalCounterGet = true;
 					loopPins = true;
 				}
 			}
-
+			rtapi_print("PoKeys: %s:%s: info_iBasicEncoderCount = %d\n", __FILE__, __FUNCTION__, dev->info.iBasicEncoderCount);
 			if (dev->info.iBasicEncoderCount && DoEncoders)
 			{
 				deb_out = 216;
