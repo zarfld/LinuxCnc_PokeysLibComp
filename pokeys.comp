@@ -1060,7 +1060,7 @@ void user_mainloop(void)
 		comp_id = hal_init("pokeys");
 		rtapi_print("  \n");
 		rtapi_print("PoKeys: %s:%s: comp_id: %d\n", __FILE__, __FUNCTION__, comp_id);
-	})
+	}
 //	comp_id = hal_init("pokeys");
 //	rtapi_print("PoKeys: %s:%s: comp_id: %d\n", __FILE__, __FUNCTION__, comp_id);
     while(0xb)
