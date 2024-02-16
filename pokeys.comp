@@ -873,8 +873,9 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 	uint32_t enm_usb_dev = 0;
 	uint32_t enm_fusb_dev = 0;
 	uint32_t enm_udp_dev = 0;
-
+	int32_t nDevs = 0;
 	uint32_t lastConectionTypeTried = 0;
+
 	if (timeout_ms > 0)
 	{
 		i_Timeout = timeout_ms;
