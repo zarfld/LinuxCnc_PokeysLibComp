@@ -877,7 +877,7 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 	if (intSerial != 0)
 	{
 		
-		deb_out = 110;
+		rtapi_print("PoKeys: %s:%s: intSerial=%s\n", __FILE__, __FUNCTION__, intSerial);
 		if (retDev == NULL)
 		{
 			rtapi_print("PoKeys: %s:%s: PK_EnumerateUSBDevices\n", __FILE__, __FUNCTION__);
@@ -918,39 +918,40 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 				deb_out = 1135;
 				if (nDevs != 0)
 				{
+					rtapi_print("PoKeys: %s:%s: nDevs: %s\n", __FILE__, __FUNCTION__, nDevs);
 					enum_udp_dev = nDevs;
-					deb_out = 1136;
+					rtapi_print("PoKeys: %s:%s: PK_ConnectToNetworkDevice(net_devices)\n", __FILE__, __FUNCTION__);
 					retDev = PK_ConnectToNetworkDevice(net_devices);
 					lastConectionTypeTried = 3;
-					deb_out = 1137;
+					rtapi_print("PoKeys: %s:%s: lastConectionTypeTried = 3\n", __FILE__, __FUNCTION__);
 				}
 			}
 		}
 	}
 	else
 	{
-		deb_out = 114;
+		rtapi_print("PoKeys: %s:%s: udp_devices[16]\n", __FILE__, __FUNCTION__);
 		sPoKeysNetworkDeviceSummary udp_devices[16];
-		deb_out = 115;
+		rtapi_print("PoKeys: %s:%s: PK_EnumerateUSBDevices\n", __FILE__, __FUNCTION__);
 		enum_usb_dev = PK_EnumerateUSBDevices();
-		deb_out = 116;
+		rtapi_print("PoKeys: %s:%s: PK_EnumerateFastUSBDevices\n", __FILE__, __FUNCTION__);
 		//	enum_fusb_dev = PK_EnumerateFastUSBDevices();
-		deb_out = 117;
+		rtapi_print("PoKeys: %s:%s: PK_EnumerateNetworkDevices(udp_devices, %s)\n", __FILE__, __FUNCTION__, i_Timeout);
 		int32_t nDevs = PK_EnumerateNetworkDevices(udp_devices, i_Timeout); // does not work - it hangs here
 		enum_udp_dev = nDevs;
-		deb_out = 118;
+		rtapi_print("PoKeys: %s:%s: nDevs: %s\n", __FILE__, __FUNCTION__, nDevs);
 
 		for (int i = 0; i < 16; i++)
 		{
 			if (retDev = NULL)
 			{
-				deb_out = 118 * 10 + i;
+				rtapi_print("PoKeys: %s:%s: udp_devices[%s].SerialNumber: %s\n", __FILE__, __FUNCTION__, i, udp_devices[i].SerialNumber);
 				if (udp_devices[i].SerialNumber != 0)
 				{
-					deb_out = 119 * 10 + i;
+					rtapi_print("PoKeys: %s:%s: PK_ConnectToDeviceWSerial_UDP(%s, %s)\n", __FILE__, __FUNCTION__, udp_devices[i].SerialNumber, i_Timeout);
 					retDev = PK_ConnectToDeviceWSerial_UDP(udp_devices[i].SerialNumber, i_Timeout);  //waits for udp device
 					lastConectionTypeTried = 2;
-					deb_out = 120 * 10 + i;
+					rtapi_print("PoKeys: %s:%s: lastConectionTypeTried = 2\n", __FILE__, __FUNCTION__);
 				}
 			}
 		}
@@ -958,10 +959,11 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 	}
 	if (retDev != NULL)
 	{
-		deb_out = 121;
+		rtapi_print("PoKeys: %s:%s: Connected to device\n", __FILE__, __FUNCTION__);
 		connected = 1;
 		if (lastConectionTypeTried == 1)
 		{
+			rtapi_print("PoKeys: %s:%s: USB\n", __FILE__, __FUNCTION__);
 			connected_usb = 1;
 			connected_fusb = 0;
 			connected_udp = 0;
@@ -969,6 +971,7 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 		}
 		if (lastConectionTypeTried == 2)
 		{
+			rtapi_print("PoKeys: %s:%s: UDP\n", __FILE__, __FUNCTION__);
 			connected_usb = 0;
 			connected_fusb = 0;
 			connected_udp = 1;
@@ -976,11 +979,13 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 		}
 		if (lastConectionTypeTried == 3)
 		{
+			rtapi_print("PoKeys: %s:%s: Network\n", __FILE__, __FUNCTION__);
 			connected_usb = 0;
 			connected_fusb = 0;
 			connected_udp = 0;
 			connected_net = 1;
 		}
+		rtapi_print("PoKeys: %s:%s: initialize info pins\n", __FILE__, __FUNCTION__);
 		info_PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
 		info_PWMCount = dev->info.iPWMCount;                        // Number of pins that support PWM output
 		info_BasicEncoderCount = dev->info.iBasicEncoderCount;               // Number of basic encoders
@@ -1019,26 +1024,31 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 		info_PulseEnginev2 = dev->info.iPulseEnginev2;                   // Device supports Pulse engine v2
 		info_EasySensors = dev->info.iEasySensors;                     // Device supports EasySensors
 
+		rtapi_print("PoKeys: %s:%s: Device info pins initialized\n", __FILE__, __FUNCTION__);
 		switch (dev->DeviceData.DeviceTypeID)
 		{
-		case PK_DeviceID_PoKeys57CNC:           // Pulse engine is stopped
+		case PK_DeviceID_PoKeys57CNC:
+			rtapi_print("PoKeys: %s:%s: DeviceID_PoKeys57CNC\n", __FILE__, __FUNCTION__);
 			PEv2_PulseEngineEnabled = 8;
 			PEv2_PG_extended_io = true;
 			break;
-		case PK_DeviceID_PoKeys57CNCdb25:           // Pulse engine is stopped
+		case PK_DeviceID_PoKeys57CNCdb25:
+			rtapi_print("PoKeys: %s:%s: DeviceID_PoKeys57CNCdb25\n", __FILE__, __FUNCTION__);
 			PEv2_PG_extended_io = false;
 			break;
-		case PK_DeviceID_57U:           // Pulse engine is stopped
+		case PK_DeviceID_57U:
+			rtapi_print("PoKeys: %s:%s: DeviceID_57U\n", __FILE__, __FUNCTION__);
 			PEv2_PG_extended_io = false;
 			break;
-		case PK_DeviceID_57E:           // Pulse engine is stopped
+		case PK_DeviceID_57E: 
+			rtapi_print("PoKeys: %s:%s: DeviceID_57E\n", __FILE__, __FUNCTION__);
 			PEv2_PG_extended_io = false;
 			break;
 		}
-		deb_out = 122;
+		
 		if (info_PoNET != 0)
 		{
-			deb_out = 123;
+			rtapi_print("PoKeys: %s:%s: info_PoNET != 0\n", __FILE__, __FUNCTION__);
 			PoNet_Count = 0;
 			for (i = 0; i < 16; i++)
 			{
@@ -1046,12 +1056,15 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 				if (PK_PoNETGetModuleSettings(dev) == PK_OK)
 				{
 					PoNET_moduleID(i) = i;
+					rtapi_print("PoKeys: %s:%s: PoNET_moduleID(%s) = %s\n", __FILE__, __FUNCTION__, i, PoNET_moduleID(i));
 					PoNET_i2cAddress(i) = dev->PoNETmodule.i2cAddress;
 					PoNET_moduleType(i) = dev->PoNETmodule.moduleType;
 					PoNET_moduleSize(i) = dev->PoNETmodule.moduleSize;
 					PoNET_moduleOptions(i) = dev->PoNETmodule.moduleOptions;
 					if (dev->PoNETmodule.moduleType != 0)
+
 					{
+						rtapi_print("PoKeys: %s:%s: PoNETmodule.moduleType(%s) = %s\n", __FILE__, __FUNCTION__, i, dev->PoNETmodule.moduleType);
 						PoNet_Count++;
 					}
 					if (dev->PoNETmodule.moduleType == 0x10 && kbd48CNC_available == 0)
@@ -1059,6 +1072,7 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 						if ((dev->PoNETmodule.moduleOptions & (1 << 7)) != 0)
 						{
 							// kbd48CNC is also detected
+							rtapi_print("PoKeys: %s:%s: kb48CNC detected\n", __FILE__, __FUNCTION__);
 							kbd48CNC_PoNetID = i;
 							//dev->deviceConfig->iEnableKBD48CNC = 1;
 							kbd48CNC_available = 1;
@@ -1068,10 +1082,12 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 				}
 				PoNET_DevCount = PoNet_Count;
 			}
+			rtapi_print("PoKeys: %s:%s: PoNet Count: %s\n", __FILE__, __FUNCTION__, PoNet_Count);
 		}
-		deb_out = 124;
+		
 		if (kbd48CNC_available != 0)
 		{
+			rtapi_print("PoKeys: %s:%s: kbd48CNC_available != 0\n", __FILE__, __FUNCTION__);
 			for (i = 0; i < 48; i++)
 			{
 				int offset[] = { 15, 8, 7, 0 };
@@ -1081,6 +1097,7 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 				if (((i / 4) % 2) == 0)
 					ID = top - y;
 			}
+			rtapi_print("PoKeys: %s:%s: kb48CNC init done\n", __FILE__, __FUNCTION__);
 		}
 
 
@@ -1110,7 +1127,7 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 
 		if (info_protI2C != 0)
 		{
-			deb_out = 137;
+			rtapi_print("PoKeys: %s:%s: info_protI2C = %s \n", __FILE__, __FUNCTION__, info_protI2C);
 			/* Pokeys Protokol Specification - page 65:  deprecated command, I2C bus is always activated
 
 			uint8_t * i_activated;
@@ -1120,34 +1137,38 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 			} */
 
 
-			deb_out = 138;
+			rtapi_print("PoKeys: %s:%s: PK_I2CBusScanStart\n", __FILE__, __FUNCTION__);
 			if (PK_I2CBusScanStart(dev) == PK_OK)
 			{
-				//I2C_scanning=true;
+				rtapi_print("PoKeys: %s:%s: PK_I2CBusScanStart - scan started\n", __FILE__, __FUNCTION__);
 				I2C_isscanning = true;
 				usleep(sleepdur);
 			}
-			deb_out = 139;
+			rtapi_print("PoKeys: %s:%s: I2C_isscanning = %s\n", __FILE__, __FUNCTION__, I2C_isscanning);
 		}
 
 		if (setPinConfig == true)
 		{
-			deb_out = 140;
+			rtapi_print("PoKeys: %s:%s: setPinConfig = true\n", __FILE__, __FUNCTION__);
 			if (PK_PinConfigurationSet(dev) == PK_OK)
 			{
 				usleep(sleepdur);
 				setPinConfig = false;
 			}
+			rtapi_print("PoKeys: %s:%s: setPinConfig -done\n", __FILE__, __FUNCTION__);
 		}
 		if (info_PoNET != 0)
 		{
-			deb_out = 141;
+			rtapi_print("PoKeys: %s:%s: info_PoNET = %s\n", __FILE__, __FUNCTION__, info_PoNET);
+			rtapi_print("PoKeys: %s:%s: PK_PoNETGetPoNETStatus\n", __FILE__, __FUNCTION__);
 			if (PK_PoNETGetPoNETStatus(dev) == PK_OK)
 			{
-				// device->PoNETmodule.PoNETstatus
+				rtapi_print("PoKeys: %s:%s: PK_PoNETGetPoNETStatus=OK\n", __FILE__, __FUNCTION__);
 				for (i = 0; i < 16; i++)
 				{
+					
 					dev->PoNETmodule.moduleID = i;
+					rtapi_print("PoKeys: %s:%s: PK_PoNETGetModuleSettings( %s )\n", __FILE__, __FUNCTION__, i);
 					if (PK_PoNETGetModuleSettings(dev) == PK_OK)
 					{
 						PoNet[i].moduleID = i;
@@ -1155,12 +1176,17 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 						PoNet[i].moduleType = dev->PoNETmodule.moduleType;
 						PoNet[i].moduleSize = dev->PoNETmodule.moduleSize;
 						PoNet[i].moduleOptions = dev->PoNETmodule.moduleOptions;
+						rtapi_print("PoKeys: %s:%s:PoNet[%s].moduleID = %s\n", __FILE__, __FUNCTION__, i, PoNet[i].moduleID);
+						rtapi_print("PoKeys: %s:%s:PoNet[%s].i2cAddress = %s\n", __FILE__, __FUNCTION__, i, PoNet[i].i2cAddress);
+						rtapi_print("PoKeys: %s:%s:PoNet[%s].moduleType = %s\n", __FILE__, __FUNCTION__, i, PoNet[i].moduleType);
+						rtapi_print("PoKeys: %s:%s:PoNet[%s].moduleSize = %s\n", __FILE__, __FUNCTION__, i, PoNet[i].moduleSize);
+						rtapi_print("PoKeys: %s:%s:PoNet[%s].moduleOptions = %s\n", __FILE__, __FUNCTION__, i, PoNet[i].moduleOptions);
 						usleep(sleepdur);
 						//	memset(dev->PoNETmodule.statusOut, 0, 10);
 					}
 				}
 			}
-			deb_out = 142;
+			rtapi_print("PoKeys: %s:%s: PoNet scan done\n", __FILE__, __FUNCTION__);
 			usleep(sleepdur);
 		}
 		//dev->DeviceData.DeviceLockStatus=1;
@@ -1177,10 +1203,11 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 			}
 
 		}
-		deb_out = 143;
+		rtapi_print("PoKeys: %s:%s: Device info pins initialized\n", __FILE__, __FUNCTION__);
 	}
 	else
 	{
+		rtapi_print("PoKeys: %s:%s: failed to connect to device\n", __FILE__, __FUNCTION__);
 		connected = 0;
 		err = 1;
 	}
