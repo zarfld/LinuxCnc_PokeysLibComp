@@ -1050,7 +1050,7 @@ bool initdone = 0;
 void user_mainloop(void) 
 { 
 
-	//comp_id = hal_init("pokeys");
+	comp_id = hal_init("pokeys");
 	rtapi_print("PoKeys: %s:%s: user_mainloop started  \n", __FILE__, __FUNCTION__);
 
     while(0xb)
