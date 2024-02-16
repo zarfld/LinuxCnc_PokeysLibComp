@@ -1065,6 +1065,7 @@ void user_mainloop(void)
 				{
 					usleep(sleepdur); 
 				}
+				rtapi_print("PoKeys: %s:%s: TryConnectToDevice %d \n", __FILE__, __FUNCTION__, devSerial);
 				dev = TryConnectToDevice(devSerial);
 
 				if (dev != NULL)
