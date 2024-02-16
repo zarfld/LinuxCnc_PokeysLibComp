@@ -1066,9 +1066,10 @@ void user_mainloop(void)
 				{
 					usleep(sleepdur); 
 				}
-				rtapi_print("PoKeys: %s:%s: TryConnectToDevice %d \n", __FILE__, __FUNCTION__, devSerial);
+				
 				if (dev == NULL)
 				{
+					rtapi_print("PoKeys: %s:%s: TryConnectToDevice %d \n", __FILE__, __FUNCTION__, devSerial);
 					dev = TryConnectToDevice(devSerial);
 				}
 
@@ -3624,12 +3625,12 @@ EXTRA_SETUP()
 	{
 		if (dev == NULL)
 		{
-			rtapi_print("PoKeys: %s:%s: TryConnectToDevice(0)")
+			rtapi_print("PoKeys: %s:%s: TryConnectToDevice(0)");
 			dev = TryConnectToDevice(0);
 		}
 		if (dev != NULL)
 		{
-			rtapi_print("PoKeys: %s:%s: Connected")
+			rtapi_print("PoKeys: %s:%s: Connected");
 			break;
 		}
 	}
