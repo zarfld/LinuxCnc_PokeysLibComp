@@ -949,7 +949,7 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 		
 		rtapi_print("PoKeys: %s:%s: PK_EnumerateNetworkDevices(udp_devices, %d)\n", __FILE__, __FUNCTION__, i_Timeout);
 		int32_t nDevs = PK_EnumerateNetworkDevices(udp_devices, i_Timeout); // does not work - it hangs here
-		rtapi_print("");
+	//	rtapi_print("");
 		rtapi_print("PoKeys: %s:%s: nDevs: %d\n", __FILE__, __FUNCTION__, nDevs);
 		//enm_udp_dev = nDevs;
 		
