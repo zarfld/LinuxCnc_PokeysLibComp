@@ -1400,11 +1400,11 @@ void user_mainloop(void)
 					}
 
 					//sleepdur
-					if (rtc_loop_frequ>5)
+					if (rtc_loop_frequ>15)
 					{
 						if (rtc_loop_frequ_demand == 0)
 						{
-							sleepdur = sleepdur*rtc_loop_frequ/5;
+							sleepdur = sleepdur*rtc_loop_frequ/15;
 						}
 						else
 						{
