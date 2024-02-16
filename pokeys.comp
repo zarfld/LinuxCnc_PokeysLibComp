@@ -870,6 +870,8 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 	rtapi_print("PoKeys: %s:%s: serial_number=%s\n", __FILE__, __FUNCTION__, intSerial);
 	sPoKeysDevice* retDev = NULL;
 	uint32_t i_Timeout = 1000;
+	uint32_t enm_usb_dev = 0;
+	uint32_t lastConectionTypeTried = 0;
 	if (timeout_ms > 0)
 	{
 		i_Timeout = timeout_ms;
@@ -881,9 +883,9 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 		if (retDev == NULL)
 		{
 			rtapi_print("PoKeys: %s:%s: PK_EnumerateUSBDevices\n", __FILE__, __FUNCTION__);
-			enum_usb_dev = PK_EnumerateUSBDevices();
-			rtapi_print("PoKeys: %s:%s: enum_usb_dev :%s\n", __FILE__, __FUNCTION__, enum_usb_dev);
-			if (enum_usb_dev != 0)
+			enm_usb_dev = PK_EnumerateUSBDevices();
+			rtapi_print("PoKeys: %s:%s: enm_usb_dev :%s\n", __FILE__, __FUNCTION__, enm_usb_dev);
+			if (enm_usb_dev != 0)
 			{
 				rtapi_print("PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%s, %s)", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 				retDev = PK_ConnectToDeviceWSerial(intSerial, i_Timeout);  //waits for usb device
@@ -933,7 +935,7 @@ sPoKeysDevice TryConnectToDevice(uint32_t intSerial)
 		rtapi_print("PoKeys: %s:%s: udp_devices[16]\n", __FILE__, __FUNCTION__);
 		sPoKeysNetworkDeviceSummary udp_devices[16];
 		rtapi_print("PoKeys: %s:%s: PK_EnumerateUSBDevices\n", __FILE__, __FUNCTION__);
-		enum_usb_dev = PK_EnumerateUSBDevices();
+		enm_usb_dev = PK_EnumerateUSBDevices();
 		rtapi_print("PoKeys: %s:%s: PK_EnumerateFastUSBDevices\n", __FILE__, __FUNCTION__);
 		//	enum_fusb_dev = PK_EnumerateFastUSBDevices();
 		rtapi_print("PoKeys: %s:%s: PK_EnumerateNetworkDevices(udp_devices, %s)\n", __FILE__, __FUNCTION__, i_Timeout);
