@@ -22,4 +22,5 @@ EXTRA_SETUP() {
 	rtapi_print_msg(RTAPI_MSG_INFO, "start_delay: adding delay of %d ms\n", *delay_ms);
 	rtapi_delay(nsec);
 	rtapi_print_msg(RTAPI_MSG_INFO, "start_delay: done\n");
+return 0;
 }
