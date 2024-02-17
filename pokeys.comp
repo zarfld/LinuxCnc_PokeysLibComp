@@ -507,7 +507,7 @@ pin out bit I2C.scanning ;
 
 license "GPL";
 author "Dominik Zarfl";
-version "0.1.0";
+//version "0.1.0";
 option extra_link_args "-lPoKeys";
 option extra_setup yes;
 ;;

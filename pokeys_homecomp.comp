@@ -19,7 +19,7 @@ pin out bit is_module = 1; //one pin is required to use halcompile)
 
 license "GPL";
 author "Dominik Zarfl";
-version "0.1.0";
+//version "0.1.0";
 option  homemod;
 option  extra_setup;
 ;;

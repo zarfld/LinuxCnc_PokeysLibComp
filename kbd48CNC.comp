@@ -74,7 +74,7 @@ pin out s32 axis.#.debCntB[6];
 
 license "GPL";
 author "Dominik Zarfl";
-version "0.1.0";
+//version "0.1.0";
 ;;
 
 #include <unistd.h>   /* UNIX standard function definitions */
