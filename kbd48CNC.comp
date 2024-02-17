@@ -73,9 +73,8 @@ pin out s32 axis.#.debCntA[6];
 pin out s32 axis.#.debCntB[6];
 
 license "GPL";
-
-//option extra_link_args "-lPoKeys";
-
+author "Dominik Zarfl";
+version "0.1.0";
 ;;
 
 #include <unistd.h>   /* UNIX standard function definitions */

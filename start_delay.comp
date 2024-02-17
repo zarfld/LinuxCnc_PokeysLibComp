@@ -1,0 +1,25 @@
+component start_delay "adds some delay during startup while HAL file is loaded";
+description """ loadrt start_delay delay_ms=1000     
+	delay_ms: delay in milliseconds
+	This component is useful to add some delay during startup while HAL file is loaded. 
+	It is useful to ensure that Pins are avaiolbale before HAL file tries to write values to them. 
+	""";
+	pin out bit is_module = 1; //one pin is required to use halcompile)
+
+license "GPL";
+author "Dominik Zarfl";
+version "0.1";
+option  extra_setup;
+;;
+
+#include <rtapi.h>
+
+static char* delay_ms;
+RTAPI_MP_INT(delay_ms, "delay_ms to be added");
+
+EXTRA_SETUP() { 
+	long int nsec = 1000000 * delay_ms;
+	rtapi_print_msg(RTAPI_MSG_INFO, "start_delay: adding delay of %d ms\n", delay_ms);
+	rtapi_delay(nsec);
+	rtapi_print_msg(RTAPI_MSG_INFO, "start_delay: done\n");
+}
