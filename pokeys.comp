@@ -3408,7 +3408,7 @@ void user_mainloop(void)
 									 
 									 if (PEv2_stepgen_MIN_LIMIT(i) != abs(PEv2_stepgen_MIN_LIMIT(i)))
 									 {
-										 LimitOffset = abs(PEv2_stepgen_MIN_LIMIT(i))
+										 LimitOffset = abs(PEv2_stepgen_MIN_LIMIT(i));
 									 }
 									 
 									 PEv2_digin_SoftLimit_PosMax(i) = (PEv2_stepgen_MAX_LIMIT(i) + LimitOffset) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit maximum position
@@ -3419,7 +3419,7 @@ void user_mainloop(void)
 								 {
 									 if (PEv2_stepgen_MAX_LIMIT(i) != abs(PEv2_stepgen_MAX_LIMIT(i)))
 									 {
-										 LimitOffset = abs(PEv2_stepgen_MAX_LIMIT(i))
+										 LimitOffset = abs(PEv2_stepgen_MAX_LIMIT(i));
 									 }
 									 PEv2_digin_SoftLimit_PosMax(i) = ( PEv2_stepgen_MIN_LIMIT(i) + LimitOffset) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit maximum position
 									 PEv2_digin_SoftLimit_PosMin(i) = ( PEv2_stepgen_MAX_LIMIT(i) + LimitOffset) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit minimum position
