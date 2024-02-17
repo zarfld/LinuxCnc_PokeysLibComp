@@ -3484,7 +3484,7 @@ void user_mainloop(void)
 								 PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
 								 PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
 							 */
-							 AxesSwitchConfig[i] = PEv2_AxesSwitchConfig[i]; // initial value from ini file
+							 AxesSwitchConfig[i] = PEv2_AxesSwitchConfig(i); // initial value from ini file
 
 							 if (PEv2_digin_SoftLimit_PosMax(i) != 0 | PEv2_digin_SoftLimit_PosMin(i) != 0)
 							 {
