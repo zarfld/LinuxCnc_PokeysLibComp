@@ -32,19 +32,16 @@ return 0;
 void user_mainloop(void)
 {
 	// nothing to do
-	while (true)
+/*	while (true)
 	{
 		while (0xb)
 		{
-			rtapi_print_msg(RTAPI_MSG_DBG, "start_delay: %s:%s: while(0xb) \n", __FILE__, __FUNCTION__);
 			long int nsec = 1000000 * delay_ms;
 			FOR_ALL_INSTS()
 			{
-			
-
 				rtapi_delay(nsec);
 			}
 		}
-	}
-
+	} */
+	return rtapi_delay(nsec);
 }
