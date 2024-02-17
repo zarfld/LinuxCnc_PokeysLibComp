@@ -26,3 +26,21 @@ EXTRA_SETUP() {
 	rtapi_print_msg(RTAPI_MSG_ERR, "start_delay: done\n");
 return 0;
 }
+
+void user_mainloop(void)
+{
+	// nothing to do
+	while (true)
+	{
+		while (0xb)
+		{
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: while(0xb) \n", __FILE__, __FUNCTION__);
+
+			FOR_ALL_INSTS()
+			{
+				sleep(delay_ms);
+			}
+		}
+	}
+
+}
