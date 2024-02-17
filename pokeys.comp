@@ -3077,11 +3077,13 @@ void user_mainloop(void)
 			}
 */
 	
-
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PoExtBus = %d\n", __FILE__, __FUNCTION__, info_PoExtBus);
 			if (info_PoExtBus!=0)
 			{
+				
 				for (i = 0; i < 10; i++)
 				{
+					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoExtBusGet(dev) i = %d\n", __FILE__, __FUNCTION__, i);
 					PK_PoExtBusGet(dev);
 					PoExtBus_DataGet[i] = dev->PoExtBusData[i];
 
@@ -3161,7 +3163,9 @@ void user_mainloop(void)
 
 					if (PoExtBus_DataGet[i] != PoExtBus_DataSet[i])
 					{
+						
 						dev->PoExtBusData[i] = PoExtBus_DataSet[i];
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoExtBusSet(dev)\n", __FILE__, __FUNCTION__);
 						PK_PoExtBusSet(dev);
 						usleep(sleepdur); 
 						PK_PoExtBusSet(dev);
@@ -3169,13 +3173,13 @@ void user_mainloop(void)
 					usleep(sleepdur); 
 				}
 			}
-
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PoNET = %d\n", __FILE__, __FUNCTION__, info_PoNET);
 			if (info_protI2C!=0)
 			{
 			
 			}
 
-
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: rtc_lastmin = %d\n", __FILE__, __FUNCTION__, rtc_lastmin);
 			if (rtc_lastmin!=rtc_min)
 			{
 				alive = 0;
@@ -3223,12 +3227,14 @@ void user_mainloop(void)
 				 deb_out = 311;
 
 				 
-
+				 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PulseEnginev2 = %d\n", __FILE__, __FUNCTION__, info_PulseEnginev2);
 				 if (info_PulseEnginev2 != 0)
 				 {
 					 bool DoPeSetup = false;
 					 bool DoPeReboot = false;
 					 setPinConfig = false;
+					 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_params_ApplyIniSettings = %d\n", __FILE__, __FUNCTION__, PEv2_params_ApplyIniSettings);
+					 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: HAL_Machine_On = %d\n", __FILE__, __FUNCTION__, HAL_Machine_On);
 					 if ((PEv2_params_ApplyIniSettings != 0) && (HAL_Machine_On==false))
 					 {
 						 //dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
@@ -3236,9 +3242,11 @@ void user_mainloop(void)
 						 usleep(sleepdur);
 						 if (PEv2_digin_Probe_Pin != 0)
 						 {	//check if pin is parametrized in HAL
+							 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].PinFunction = %d\n", __FILE__, __FUNCTION__, PEv2_digin_Probe_Pin - 1, dev->Pins[PEv2_digin_Probe_Pin - 1].PinFunction);
 							 if (dev->Pins[PEv2_digin_Probe_Pin - 1].PinFunction != PK_PinCap_digitalInput)
 							 {
 								 dev->Pins[PEv2_digin_Probe_Pin - 1].PinFunction = PK_PinCap_digitalInput;
+								 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SL_SetPinFunction(dev, %d, PK_PinCap_digitalInput)\n", __FILE__, __FUNCTION__, PEv2_digin_Probe_Pin - 1);
 								 PK_SL_SetPinFunction(dev, PEv2_digin_Probe_Pin - 1, PK_PinCap_digitalInput);
 								 setPinConfig = true;
 							 }
@@ -3246,14 +3254,17 @@ void user_mainloop(void)
 						 }
 
 
-
+						 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2.EmergencyInputPin = %d\n", __FILE__, __FUNCTION__, dev->PEv2.EmergencyInputPin);
+						 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_digin_Emergency_Pin = %d\n", __FILE__, __FUNCTION__, PEv2_digin_Emergency_Pin);
 						 if (dev->PEv2.EmergencyInputPin != PEv2_digin_Emergency_Pin)
 						 {
 							 dev->PEv2.EmergencyInputPin = PEv2_digin_Emergency_Pin;
 							 DoPeSetup = true;
 							 if (PEv2_digin_Emergency_Pin != 0)
 							 {	//check if pin is parametrized in HAL
+								 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].PinFunction = %d\n", __FILE__, __FUNCTION__, PEv2_digin_Emergency_Pin - 1, dev->Pins[PEv2_digin_Emergency_Pin - 1].PinFunction);
 								 dev->Pins[PEv2_digin_Emergency_Pin - 1].PinFunction = PK_PinCap_digitalInput;
+									rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SL_SetPinFunction(dev, %d, PK_PinCap_digitalInput)\n", __FILE__, __FUNCTION__, PEv2_digin_Emergency_Pin - 1);
 								 PK_SL_SetPinFunction(dev, PEv2_digin_Emergency_Pin - 1, PK_PinCap_digitalInput);
 								 
 								 setPinConfig = true;
