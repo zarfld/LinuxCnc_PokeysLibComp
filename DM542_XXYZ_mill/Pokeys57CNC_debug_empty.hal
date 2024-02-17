@@ -8,7 +8,7 @@ loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JO
 loadusr -W pokeys
 loadusr -W kbd48CNC 
 #loadrt pokeys_rt serial_number=[POKEYS]DEVICE_ID
-loadrt -W start_delay delay_ms=5000 
+#loadrt -W start_delay delay_ms=5000 
 
 #show pin
 #show parameter
