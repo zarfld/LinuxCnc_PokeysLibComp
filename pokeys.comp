@@ -1,6 +1,6 @@
 component pokeys "(uSpace)PoKeys IO driver";
 
-option userspace yes;
+
 
 //#define PoNet
 
@@ -510,6 +510,7 @@ author "Dominik Zarfl";
 //version "0.1.0";
 option extra_link_args "-lPoKeys";
 option extra_setup yes;
+option userspace yes;
 ;;
 
 #include <unistd.h>   /* UNIX standard function definitions */

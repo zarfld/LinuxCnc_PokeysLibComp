@@ -10,6 +10,7 @@ license "GPL";
 author "Dominik Zarfl";
 //version "0.1";
 option  extra_setup;
+option userspace yes;
 ;;
 
 #include <rtapi.h>
