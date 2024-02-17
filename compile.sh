@@ -22,6 +22,10 @@ else
     echo "Skipping compilation of pokeys_homecomp.comp. LinuxCNC version is not higher than 2.9."
 fi
 
+echo "Compiling start_delay.comp..."
+halcompile --install start_delay.comp
+echo "start_delay.comp compiled successfully."
+
 
 echo "preparing prerequisites of pokeys_rt.comp..."
 cp ../pokeyslib/Makefile.noqmake ../pokeyslib/Makefile.noqmake.rt
@@ -70,6 +74,3 @@ echo "Compiling pokeys_rt.comp..."
 halcompile --install pokeys_rt.comp
 echo "pokeys_rt.comp compiled successfully."
 
-echo "Compiling start_delay.comp..."
-halcompile --install start_delay.comp
-echo "start_delay.comp compiled successfully."
