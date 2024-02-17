@@ -3406,7 +3406,7 @@ void user_mainloop(void)
 								 if (PEv2_stepgen_MAX_LIMIT(i) > PEv2_stepgen_MIN_LIMIT(i))
 								 {
 									 
-									 if (PEv2_stepgen_MIN_LIMIT(i) != abs(PEv2_stepgen_MIN_LIMIT(i))
+									 if (PEv2_stepgen_MIN_LIMIT(i) != abs(PEv2_stepgen_MIN_LIMIT(i)))
 									 {
 										 LimitOffset = abs(PEv2_stepgen_MIN_LIMIT(i)
 									 }
@@ -3417,7 +3417,7 @@ void user_mainloop(void)
 								 }
 								 else
 								 {
-									 if (PEv2_stepgen_MAX_LIMIT(i) != abs(PEv2_stepgen_MAX_LIMIT(i))
+									 if (PEv2_stepgen_MAX_LIMIT(i) != abs(PEv2_stepgen_MAX_LIMIT(i)))
 									 {
 										 LimitOffset = abs(PEv2_stepgen_MAX_LIMIT(i)
 									 }
