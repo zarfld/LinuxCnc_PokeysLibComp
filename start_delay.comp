@@ -14,12 +14,12 @@ option  extra_setup;
 
 #include <rtapi.h>
 
-static char* delay_ms;
+static int* delay_ms;
 RTAPI_MP_INT(delay_ms, "delay_ms to be added");
 
 EXTRA_SETUP() { 
-	long int nsec = 1000000 * atoi(delay_ms);
-	rtapi_print_msg(RTAPI_MSG_INFO, "start_delay: adding delay of %s ms\n", delay_ms);
+	long int nsec = 1000000 * delay_ms;
+	rtapi_print_msg(RTAPI_MSG_INFO, "start_delay: adding delay of %d ms\n", delay_ms);
 	rtapi_delay(nsec);
 	rtapi_print_msg(RTAPI_MSG_INFO, "start_delay: done\n");
 }
