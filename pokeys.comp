@@ -3437,15 +3437,30 @@ void user_mainloop(void)
 									 dev->PEv2.MaxSpeed[i] = PEv2_MaxSpeed(i);
 									 doAxisConfig = true;
 								 }
+								 else if (PEv2_MaxSpeed(i) == 0 && dev->PEv2.MaxSpeed[i] == 0)
+								 {
+									 dev->PEv2.MaxSpeed[i] = 1000;
+									 doAxisConfig = true;
+								 }
 								 if (dev->PEv2.MaxAcceleration[i] != PEv2_MaxAcceleration(i) && PEv2_MaxAcceleration(i)>0)
 								 {
 									 dev->PEv2.MaxAcceleration[i] = PEv2_MaxAcceleration(i);
+									 doAxisConfig = true;
+								 }
+								 else if (PEv2_MaxAcceleration(i) == 0 && dev->PEv2.MaxAcceleration[i] == 0)
+								 {
+									 dev->PEv2.MaxAcceleration[i] = 800;
 									 doAxisConfig = true;
 								 }
 								 
 								 if (dev->PEv2.MaxDecceleration[i] != PEv2_MaxDecceleration(i) && PEv2_MaxDecceleration(i)>0)
 								 {
 									 dev->PEv2.MaxDecceleration[i] = PEv2_MaxDecceleration(i);
+									 doAxisConfig = true;
+								 }
+								 else if (PEv2_MaxDecceleration(i) == 0 && dev->PEv2.MaxDecceleration[i] == 0)
+								 {
+									 dev->PEv2.MaxDecceleration[i] = 800;
 									 doAxisConfig = true;
 								 }
 								 
