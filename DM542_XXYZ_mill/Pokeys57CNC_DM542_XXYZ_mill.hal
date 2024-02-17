@@ -19,7 +19,8 @@ addf motion-controller        servo-thread
 #addf pid.z.do-pid-calcs       servo-thread
 addf pid.s.do-pid-calcs       servo-thread
 
-loadrt -W start_delay delay_ms=5000 
+#loadrt -W start_delay delay_ms=5000 
+loadusr -W start_delay
 
 # external output signals
 #net estop-out     => pokeys.0.PEv2.digout.Emergency.out

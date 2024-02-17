@@ -15,7 +15,7 @@ option userspace yes;
 
 #include <rtapi.h>
 
-static int* delay_ms;
+static int* delay_ms = 5000;
 RTAPI_MP_INT(delay_ms, "delay_ms to be added");
 
 EXTRA_SETUP() { 
