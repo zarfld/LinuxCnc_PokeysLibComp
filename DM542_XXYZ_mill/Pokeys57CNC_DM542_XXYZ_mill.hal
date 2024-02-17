@@ -6,6 +6,7 @@
 loadrt [KINS]KINEMATICS
 loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS
 loadusr -W pokeys
+loadrt -W start_delay delay_ms=5000 
 show pin
 show parameter
 #loadrt pid names=pid.x,pid.x2,pid.y,pid.z,pid.s
