@@ -3398,38 +3398,52 @@ void user_mainloop(void)
 							 if (PEv2_stepgen_STEP_SCALE(i) != 0)
 							 {
 								 //need to ensure positve values for the following calculations otherwise machine will not move
-								 PEv2_MaxSpeed(i) = abs(PEv2_stepgen_STEPGEN_MAXVEL(i) * PEv2_stepgen_STEP_SCALE(i) / 1000);				// Maximum axis speed convert (mm/s) to (pulses per ms)
-								 PEv2_MaxAcceleration(i) = abs(PEv2_stepgen_STEPGEN_MAXACCEL(i) * PEv2_stepgen_STEP_SCALE(i) / 1000000);	// Maximum axis acceleration convert (mm/s�) to (in pulses/ms/ms)
-								 PEv2_MaxDecceleration(i) = abs(PEv2_stepgen_STEPGEN_MAXACCEL(i) * PEv2_stepgen_STEP_SCALE(i) / 1000000);	// Maximum axis deceleration convert (mm/s�) to (in pulses/ms/ms)
+								 PEv2_MaxSpeed(i) = abs(PEv2_stepgen_STEPGEN_MAXVEL(i) * PEv2_stepgen_STEP_SCALE(i)) / 1000;				// Maximum axis speed convert (mm/s) to (pulses per ms)
+								 PEv2_MaxAcceleration(i) = abs(PEv2_stepgen_STEPGEN_MAXACCEL(i) * PEv2_stepgen_STEP_SCALE(i)) / 1000000;	// Maximum axis acceleration convert (mm/s�) to (in pulses/ms/ms)
+								 PEv2_MaxDecceleration(i) = abs(PEv2_stepgen_STEPGEN_MAXACCEL(i) * PEv2_stepgen_STEP_SCALE(i)) / 1000000;	// Maximum axis deceleration convert (mm/s�) to (in pulses/ms/ms)
 								 if (PEv2_stepgen_MAX_LIMIT(i) > PEv2_stepgen_MIN_LIMIT(i))
 								 {
 									 PEv2_digin_SoftLimit_PosMax(i) = PEv2_stepgen_MAX_LIMIT(i) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit maximum position
 									 PEv2_digin_SoftLimit_PosMin(i) = PEv2_stepgen_MIN_LIMIT(i) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit minimum position
+									 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 5, true);  // PK_AC_SOFT_LIMIT_ENABLED ;
 								 }
 								 else
 								 {
 									 PEv2_digin_SoftLimit_PosMax(i) = PEv2_stepgen_MIN_LIMIT(i) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit maximum position
 									 PEv2_digin_SoftLimit_PosMin(i) = PEv2_stepgen_MAX_LIMIT(i) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit minimum position
 									 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 1, true);  // PK_AC_INVERTED ;
+									 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 5, true);  // PK_AC_SOFT_LIMIT_ENABLED ;
 								  }
+								 if (PEv2_stepgen_MAX_LIMIT(i) = PEv2_stepgen_MIN_LIMIT(i))
+								 { //DISABLE SOFT LIMITS
+									 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 5, false);  // PK_AC_SOFT_LIMIT_ENABLED ;
+								 }
 								 PEv2_digin_Home_Offset(i) = PEv2_stepgen_HOME_OFFSET(i) * PEv2_stepgen_STEP_SCALE(i);		// Home position offset
 
-								 PEv2_HomingSpeed(i) = abs(PEv2_stepgen_HOME_SEARCH_VEL(i) * 100 / PEv2_stepgen_STEPGEN_MAXVEL(i));			// Homing speed per axis (in %)
-								 PEv2_HomingReturnSpeed(i) = abs(PEv2_stepgen_HOME_LATCH_VEL(i) * 100 / PEv2_stepgen_HOME_SEARCH_VEL(i));	// Homing return speed per axis (in % of the homing speed)
+								 if (PEv2_stepgen_HOME_SEARCH_VEL(i) > 0 and PEv2_stepgen_STEPGEN_MAXVEL(i) > 0) 
+								 {
+									 PEv2_HomingSpeed(i) = abs(PEv2_stepgen_HOME_SEARCH_VEL(i) * 100 / PEv2_stepgen_STEPGEN_MAXVEL(i));			// Homing speed per axis (in %)
+									 PEv2_HomingReturnSpeed(i) = abs(PEv2_stepgen_HOME_LATCH_VEL(i) * 100 / PEv2_stepgen_HOME_SEARCH_VEL(i));	// Homing return speed per axis (in % of the homing speed)
 
+								 }
+								 else
+{
+									 PEv2_HomingSpeed(i) = 30;
+									 PEv2_HomingReturnSpeed(i) = 50;
+								 }
 								 // Convert parameters... assume little-endian format
-								 if (dev->PEv2.MaxSpeed[i] != PEv2_MaxSpeed(i))
+								 if (dev->PEv2.MaxSpeed[i] != PEv2_MaxSpeed(i) && PEv2_MaxSpeed(i)>0)
 								 {
 									 dev->PEv2.MaxSpeed[i] = PEv2_MaxSpeed(i);
 									 doAxisConfig = true;
 								 }
-								 if (dev->PEv2.MaxAcceleration[i] != PEv2_MaxAcceleration(i))
+								 if (dev->PEv2.MaxAcceleration[i] != PEv2_MaxAcceleration(i) && PEv2_MaxAcceleration(i)>0)
 								 {
 									 dev->PEv2.MaxAcceleration[i] = PEv2_MaxAcceleration(i);
 									 doAxisConfig = true;
 								 }
 								 
-								 if (dev->PEv2.MaxDecceleration[i] != PEv2_MaxDecceleration(i))
+								 if (dev->PEv2.MaxDecceleration[i] != PEv2_MaxDecceleration(i) && PEv2_MaxDecceleration(i)>0)
 								 {
 									 dev->PEv2.MaxDecceleration[i] = PEv2_MaxDecceleration(i);
 									 doAxisConfig = true;
