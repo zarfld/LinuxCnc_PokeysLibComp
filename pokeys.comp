@@ -3330,7 +3330,7 @@ void user_mainloop(void)
 						 //dev->PEv2.PulseEngineBufferSize = PEv2_stepgen_PulseEngineBufferSize;
 						 
 						 //dev->PEv2.AxisEnabledStatesMask = PEv2_stepgen_AxisEnabledStatesMask;
-						 if (DoPeSetup = true) 
+						 if (DoPeSetup == true) 
 						 {
 							 if (PK_PEv2_PulseEngineSetup(dev) != PK_OK)
 							 {
@@ -3342,7 +3342,7 @@ void user_mainloop(void)
 							 {
 								 usleep(sleepdur);
 							 }
-							 if (DoPeReboot = true)
+							 if (DoPeReboot == true)
 							 {
 								 PK_PEv2_PulseEngineReboot(dev);
 								 usleep(1000000);
@@ -3640,9 +3640,9 @@ void user_mainloop(void)
 								 doAxisConfig = true;
 							 }
 							 
-							 if (dev->PEv2.HomingReturnSpeed[i] = PEv2_HomingReturnSpeed(i))
+							 if (dev->PEv2.HomingReturnSpeed[i] != PEv2_HomingReturnSpeed(i))
 							 {
-								 dev->PEv2.HomingReturnSpeed[i] != PEv2_HomingReturnSpeed(i);
+								 dev->PEv2.HomingReturnSpeed[i] = PEv2_HomingReturnSpeed(i);
 								 doAxisConfig = true;
 							 }
 							 
@@ -3734,7 +3734,7 @@ void user_mainloop(void)
 							 
 							 //dev->PEv2.AxesConfig[i] = 0;
 							 //dev->PEv2.AxesSwitchConfig[i] =0;
-							 if (doAxisConfig = true)
+							 if (doAxisConfig == true)
 							 {
 								 dev->PEv2.param1 = i;
 								 if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK)
