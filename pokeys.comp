@@ -3408,7 +3408,7 @@ void user_mainloop(void)
 									 
 									 if (PEv2_stepgen_MIN_LIMIT(i) != abs(PEv2_stepgen_MIN_LIMIT(i)))
 									 {
-										 LimitOffset = abs(PEv2_stepgen_MIN_LIMIT(i));
+										 LimitOffset = abs(PEv2_stepgen_MIN_LIMIT(i)); // shift reference to 0 and make sure it is positive
 									 }
 									 
 									 PEv2_digin_SoftLimit_PosMax(i) = (PEv2_stepgen_MAX_LIMIT(i) + LimitOffset) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit maximum position
@@ -3419,17 +3419,20 @@ void user_mainloop(void)
 								 {
 									 if (PEv2_stepgen_MAX_LIMIT(i) != abs(PEv2_stepgen_MAX_LIMIT(i)))
 									 {
-										 LimitOffset = abs(PEv2_stepgen_MAX_LIMIT(i));
+										 LimitOffset = abs(PEv2_stepgen_MAX_LIMIT(i)); // shift reference to 0 and make sure it is positive
 									 }
 									 PEv2_digin_SoftLimit_PosMax(i) = ( PEv2_stepgen_MIN_LIMIT(i) + LimitOffset) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit maximum position
 									 PEv2_digin_SoftLimit_PosMin(i) = ( PEv2_stepgen_MAX_LIMIT(i) + LimitOffset) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit minimum position
 									 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 1, true);  // PK_AC_INVERTED ;
 									 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 5, true);  // PK_AC_SOFT_LIMIT_ENABLED ;
+
 								  }
-								 if (PEv2_stepgen_MAX_LIMIT(i) == PEv2_stepgen_MIN_LIMIT(i))
+								 if (PEv2_digin_SoftLimit_PosMax(i) == PEv2_digin_SoftLimit_PosMin(i))
 								 { //DISABLE SOFT LIMITS
 									 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 5, false);  // PK_AC_SOFT_LIMIT_ENABLED ;
+									 doAxisConfig = true;
 								 }
+
 								 PEv2_digin_Home_Offset(i) = PEv2_stepgen_HOME_OFFSET(i) * PEv2_stepgen_STEP_SCALE(i);		// Home position offset
 
 								 if (PEv2_stepgen_HOME_SEARCH_VEL(i) > 0 && PEv2_stepgen_STEPGEN_MAXVEL(i) > 0) 
@@ -3546,7 +3549,7 @@ void user_mainloop(void)
 							 */
 							 
 
-							 if (PEv2_digin_SoftLimit_PosMax(i) != 0 | PEv2_digin_SoftLimit_PosMin(i) != 0)
+							 if (PEv2_digin_SoftLimit_PosMax(i) !=  PEv2_digin_SoftLimit_PosMin(i))
 							 {
 								// AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 3, true); // PK_AC_SOFT_LIMIT_ENABLED;
 								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 3, true); // PK_AC_SOFT_LIMIT_ENABLED;
