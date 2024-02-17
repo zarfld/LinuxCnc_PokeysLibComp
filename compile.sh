@@ -57,7 +57,7 @@ cp pokeys_rt.comp ../pokeyslib
 # copy ../pokeyslib/Makefile.noqmake.rt and ../pokeyslib/PoKeysLibRt.h to current folder
 cp ../pokeyslib/Makefile.noqmake.rt .
 cp ../pokeyslib/PoKeysLibRt.h .
-cp ../libPoKeys.so .
+cp ../pokeyslib/libPoKeys.so .
 
 # stage, commit and push  Makefile.noqmake.rt and PoKeysLibRt.h
 #git add Makefile.noqmake.rt
