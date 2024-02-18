@@ -28,25 +28,26 @@ echo "start_delay.comp compiled successfully."
 
 
 echo "preparing prerequisites of pokeys_rt.comp..."
-cp ../pokeyslib/Makefile.noqmake ../pokeyslib/Makefile.noqmake.rt
+#cp ../pokeyslib/Makefile.noqmake ../pokeyslib/Makefile.noqmake.rt
+cp  ./Makefile.noqmake.rt ../pokeyslib/Makefile.noqmake.rt
 cp ../pokeyslib/PoKeysLib.h ../pokeyslib/PoKeysLibRt.h
 
 #modify the Makefile.noqmake.rt to exclude libusb-1.0
-sed -i 's/ -lusb-1.0//g' ../pokeyslib/Makefile.noqmake.rt
+#sed -i 's/ -lusb-1.0//g' ../pokeyslib/Makefile.noqmake.rt
 
 #remove -lusb-1.0 from LDFLAGS in Makefile.noqmake.rt
-sed -i 's/LDFLAGS = -lusb-1.0/LDFLAGS = /g' ../pokeyslib/Makefile.noqmake.rt
+#sed -i 's/LDFLAGS = -lusb-1.0/LDFLAGS = /g' ../pokeyslib/Makefile.noqmake.rt
 
 
 #modify the Makefile.noqmake.rt to change line 'cp libPoKeys.so /usr/lib' to 'cp libPoKeys.so /usr/lib/linuxcnc/modules'
-sed -i 's/cp libPoKeys.so \/usr\/lib/cp libPoKeys.so \/usr\/lib\/linuxcnc\/modules/g' ../pokeyslib/Makefile.noqmake.rt
+#sed -i 's/cp libPoKeys.so \/usr\/lib/cp libPoKeys.so \/usr\/lib\/linuxcnc\/modules/g' ../pokeyslib/Makefile.noqmake.rt
 
-sed -i 's/hid-libusb.c //g' ../pokeyslib/Makefile.noqmake.rt
+#sed -i 's/hid-libusb.c //g' ../pokeyslib/Makefile.noqmake.rt
 
-sed -i 's/PoKeysLibFastUSB.c //g' ../pokeyslib/Makefile.noqmake.rt
+#sed -i 's/PoKeysLibFastUSB.c //g' ../pokeyslib/Makefile.noqmake.rt
 
 #modify the Makefile.noqmake.rt to change line 'cp PoKeysLib.h /usr/include' to 'cp PoKeysLib.h  /usr/include/linuxcnc'
-sed -i 's/cp PoKeysLib.h \/usr\/include/cp PoKeysLibRt.h  \/usr\/include\/linuxcnc/g' ../pokeyslib/Makefile.noqmake.rt
+#sed -i 's/cp PoKeysLib.h \/usr\/include/cp PoKeysLibRt.h  \/usr\/include\/linuxcnc/g' ../pokeyslib/Makefile.noqmake.rt
 
 #add line '#undef POKEYSLIB_USE_LIBUSB' in the begining of ../pokeyslib/PoKeysLibRt.h
 sed -i '1s/^/#undef POKEYSLIB_USE_LIBUSB\n/' ../pokeyslib/PoKeysLibRt.h
@@ -71,6 +72,14 @@ make -f Makefile.noqmake.rt install
 # register the pokeyslib to be included in halcompile for pokeys_rt.comp
 
 echo "Compiling pokeys_rt.comp..."
-halcompile --install pokeys_rt.comp
+halcompile --install pokeys_rt.comp PoKeysLibCore.c PoKeysLibCoreSockets.c PoKeysLibDeviceData.c 
+        PoKeysLibIO.c PoKeysLibEncoders.c PoKeysLibMatrixLED.c PoKeysLibMatrixKB.c \
+        PoKeysLibPoNET.c PoKeysLibLCD.c PoKeysLibRTC.c \
+        PoKeysLibEasySensors.c PoKeysLibI2C.c PoKeysLib1Wire.c PoKeysLibSPI.c \
+        PoKeysLibPulseEngine_v2.c \
+        PoKeysLibUART.c \
+        PoKeysLibCAN.c \
+        PoKeysLibFailsafe.c \
+        PoKeysLibWS2812.c
 echo "pokeys_rt.comp compiled successfully."
 

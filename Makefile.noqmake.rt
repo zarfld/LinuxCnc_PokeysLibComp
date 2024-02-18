@@ -14,24 +14,25 @@ SOURCES=PoKeysLibCore.c PoKeysLibCoreSockets.c \
         PoKeysLibFailsafe.c \
         PoKeysLibWS2812.c
 
+#undef POKEYSLIB_USE_LIBUSB
 
 OBJECTS=$(SOURCES:.c=.o)
 
 install: all
-	cp libPoKeys.so /usr/lib/linuxcnc/modules
-	cp PoKeysLib.h  /usr/include/linuxcnc
+	cp libPoKeysRt.so /usr/lib/linuxcnc/modules
+	cp PoKeysLibRt.h  /usr/include/linuxcnc
 
-all: $(SOURCES) libPoKeys.so
+all: $(SOURCES) libPoKeysRt.so
 
-static: libPoKeys.a
+static: libPoKeysRt.a
 
 libPoKeys.a: $(OBJECTS)
 	$(AR) rcs libPoKeys.a $(OBJECTS)
 
 libPoKeys.so: $(OBJECTS)
-	$(CC) -shared $(OBJECTS) -o libPoKeys.so $(LDFLAGS)
+	$(CC) -shared $(OBJECTS) -o libPoKeysRt.so $(LDFLAGS)
 	
 clean:
-	-rm *.a
-	-rm *.o
-	-rm *.so
+#	-rm *.a
+#	-rm *.o
+#	-rm *.so
