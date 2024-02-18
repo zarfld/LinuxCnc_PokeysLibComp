@@ -79,6 +79,7 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 	{
 
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: intSerial=%d\n", __FILE__, __FUNCTION__, intSerial);
+		/* no USB in RT
 		if (retDev == NULL)
 		{
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EnumerateUSBDevices\n", __FILE__, __FUNCTION__);
@@ -91,7 +92,7 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 				lastConectionTypeTried = 1;
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: lastConectionTypeTried = 1\n", __FILE__, __FUNCTION__);
 			}
-		}
+		}*/
 		if (retDev == NULL)
 		{
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial_UDP(%d, %d)", __FILE__, __FUNCTION__, intSerial, i_Timeout);
@@ -133,14 +134,14 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 	{
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: udp_devices[16]\n", __FILE__, __FUNCTION__);
 		sPoKeysNetworkDeviceSummary udp_devices[16];
-
+		/* no USB in RT
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EnumerateUSBDevices()\n", __FILE__, __FUNCTION__);
 		enm_usb_dev = PK_EnumerateUSBDevices();
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EnumerateUSBDevices()=%d\n", __FILE__, __FUNCTION__, enm_usb_dev);
 
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EnumerateFastUSBDevices()\n", __FILE__, __FUNCTION__);
 		//enm_fusb_dev = PK_EnumerateFastUSBDevices();
-		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EnumerateFastUSBDevices()=%d\n", __FILE__, __FUNCTION__, enm_fusb_dev);
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EnumerateFastUSBDevices()=%d\n", __FILE__, __FUNCTION__, enm_fusb_dev);*/
 		i_Timeout = 1000;
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EnumerateNetworkDevices(udp_devices, %d)\n", __FILE__, __FUNCTION__, i_Timeout);
 		int32_t nDevs = PK_EnumerateNetworkDevices(udp_devices, i_Timeout); // does not work - it hangs here
@@ -171,6 +172,7 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 			}
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: lastConectionTypeTried = 3\n", __FILE__, __FUNCTION__);
 		}
+		/* no USB in RT
 		if (enm_fusb_dev > 0)
 		{
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_ConnectToDevice FastUSB\n", __FILE__, __FUNCTION__);
@@ -191,7 +193,7 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 				retDev = PK_ConnectToDevice(i);
 			}
 			lastConectionTypeTried = 4;
-		}
+		}*/
 		//deb_out = 120;
 	}
 	if (retDev != NULL)
