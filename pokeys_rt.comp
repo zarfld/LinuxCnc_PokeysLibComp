@@ -59,341 +59,226 @@ RTAPI_MP_STRING(IP, "IP Address")
 static int timeout_ms = 500;
 RTAPI_MP_INT(timeout_ms, "Timeout in ms")
 
-// EXTRA_SETUP is executed before rtapi_app_main()
-EXTRA_SETUP() {
-	//If using the automatically defined rtapi_app_main, extra_arg is the number of this instance.
-    if (serial_number != "") {
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: serial_number: %s\n", serial_number);
-      //  devices->SerialNumber = atoi(serial_number);
-    }
+sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
+{
+	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: serial_number: %d\n", intSerial);
+	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: serial_number=%d\n", __FILE__, __FUNCTION__, intSerial);
+	sPoKeysDevice* retDev = NULL;
+	uint32_t i_Timeout = 1000;
+	uint32_t enm_usb_dev = 0;
+	uint32_t enm_fusb_dev = 0;
+	uint32_t enm_udp_dev = 0;
+	int32_t nDevs = 0;
+	uint32_t lastConectionTypeTried = 0;
 
-	sPoKeysNetworkDeviceSummary* devices;
-
-    if (ConnectionType != 0) {
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: ConnectionType: %d\n", ConnectionType);
-        //	devices->ConnectionType = ConnectionType;
-    }
-	if (serial_number != "") {
-		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: serial_number: %s\n", serial_number);
-		devices->SerialNumber = atoi(serial_number);
-	}
-
-	if (ConnectionType != 0) {
-		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: ConnectionType: %d\n", ConnectionType);
-		//	devices->ConnectionType = ConnectionType;
-	}
-
-	if (IP != "0.0.0.0") {
-		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: IP: %s\n", IP);
-		// need to convert IP to uint32_t[4]
-		// splittring the string by '.' and converting to uint32_t
-		uint8_t  IPaddress[4];
-		char* token = strtok(IP, ".");
-		int i = 0;
-		while (token != NULL) {
-			devices->IPaddress[i] = atoi(token);
-			token = strtok(NULL, ".");
-			i++;
-		}
-		//devices->IPaddress = (IPaddress[0] << 24) | (IPaddress[1] << 16) | (IPaddress[2] << 8) | IPaddress[3];
-	}
-
-	if (timeout_ms != 500) {
-		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: timeout_ms: %d\n", timeout_ms);
-		timeout_ms = timeout_ms;
-	}
-
-	//first check ConnectionType 
-	int32_t enum_usb_dev = 0;
-	uint32_t lastConectionTypeTried = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
-	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: ConnectionType: %d\n", ConnectionType);
-	if (ConnectionType == 1) // USB
+	if (timeout_ms > 0)
 	{
-		if (devices->SerialNumber != 0) // if serial number is set
+		i_Timeout = timeout_ms;
+	}
+	if (intSerial != 0)
+	{
+
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: intSerial=%d\n", __FILE__, __FUNCTION__, intSerial);
+		if (retDev == NULL)
 		{
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: try to connect to device with SerialNumber: %d\n", devices->SerialNumber);
-			dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, timeout_ms);
-			lastConectionTypeTried = 1;
-		}
-		else // try to find the first available device
-		{
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: try to find the first available device\n");
-		//	int32_t enum_usb_dev = PK_EnumerateUSBDevices();
-			if (enum_usb_dev != 0)
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EnumerateUSBDevices\n", __FILE__, __FUNCTION__);
+			enm_usb_dev = PK_EnumerateUSBDevices();
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: enm_usb_dev :%d\n", __FILE__, __FUNCTION__, enm_usb_dev);
+			if (enm_usb_dev != 0)
 			{
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: enum_usb_dev: %d\n", enum_usb_dev);
-				for (int i = 0; i < enum_usb_dev; i++)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: dev: %d\n", i);
-					if (dev == NULL)
-					{
-						dev = PK_ConnectToDevice(i);
-						lastConectionTypeTried = 1;
-						if (dev != NULL)
-						{
-							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: connected to device: %d\n", i);
-							break;
-						}
-					}
-				}
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d)", __FILE__, __FUNCTION__, intSerial, i_Timeout);
+				retDev = PK_ConnectToDeviceWSerial(intSerial, i_Timeout);  //waits for usb device
+				lastConectionTypeTried = 1;
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: lastConectionTypeTried = 1\n", __FILE__, __FUNCTION__);
 			}
 		}
-	}
-	else if (ConnectionType == 2) // UDP
-	{
-		if (devices->SerialNumber != 0) // if serial number is set
+		if (retDev == NULL)
 		{
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: try to connect to UDP device with SerialNumber: %d\n", devices->SerialNumber);
-			dev = PK_ConnectToDeviceWSerial_UDP(devices->SerialNumber, timeout_ms);
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial_UDP(%d, %d)", __FILE__, __FUNCTION__, intSerial, i_Timeout);
+			retDev = PK_ConnectToDeviceWSerial_UDP(intSerial, i_Timeout);  //waits for udp device
 			lastConectionTypeTried = 2;
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: lastConectionTypeTried = 2\n", __FILE__, __FUNCTION__);
 		}
-		else// try to find the first available device
+		if (retDev == NULL)
 		{
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: try to find the first available UDP device\n");
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SearchNetworkDevices(net_devices, %d, %d)\n", __FILE__, __FUNCTION__, i_Timeout, intSerial);
 			sPoKeysNetworkDeviceSummary* net_devices;
-			// first Network
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: SearchNetworkDevices\n");
-			int32_t nDevs = PK_SearchNetworkDevices(net_devices, timeout_ms, devices->SerialNumber);
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: nDevs: %d\n", nDevs);
+			int32_t nDevs = PK_SearchNetworkDevices(net_devices, i_Timeout, intSerial);
 			if (nDevs != 0)
 			{
-				for (int i = 0; i < nDevs; i++)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: dev: %d\n", i);
-					if (dev == NULL)
-					{
-						//dev = PK_ConnectToNetworkDevice(net_devices[i]);
-						//pokeys.comp:947:52: error: incompatible type for argument 1 of ‘PK_ConnectToNetworkDevice’
-						//pokeys.comp:947:52: note: expected ‘sPoKeysNetworkDeviceSummary *’ but argument is of type ‘sPoKeysNetworkDeviceSummary’
-						dev = PK_ConnectToNetworkDevice(net_devices);
-						lastConectionTypeTried = 3;
-						if (dev != NULL)
-						{
-							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: connected  device: %d\n", i);
-							break;
-						}
-					}
-				}
+				enm_udp_dev = nDevs;
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_ConnectToNetworkDevice(net_devices)\n", __FILE__, __FUNCTION__);
+				retDev = PK_ConnectToNetworkDevice(net_devices);
+				lastConectionTypeTried = 3;
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: lastConectionTypeTried = 3\n", __FILE__, __FUNCTION__);
 			}
 			else
 			{
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: EnumerateNetworkDevices\n");
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: timeout_ms: %d\n", timeout_ms);
-				nDevs = PK_EnumerateNetworkDevices(net_devices, timeout_ms); // does not work - it hangs here
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EnumerateNetworkDevices(net_devices, %d)\n", __FILE__, __FUNCTION__, i_Timeout);
+				//	nDevs = PK_EnumerateNetworkDevices(net_devices, i_Timeout); // does not work - it hangs here
+				//deb_out = 1135;
 				if (nDevs != 0)
 				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: nDevs: %d\n", nDevs);
-					int32_t enum_udp_dev = nDevs;
-					dev = PK_ConnectToNetworkDevice(net_devices);
+					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: nDevs: %s\n", __FILE__, __FUNCTION__, nDevs);
+					enm_udp_dev = nDevs;
+					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_ConnectToNetworkDevice(net_devices)\n", __FILE__, __FUNCTION__);
+					retDev = PK_ConnectToNetworkDevice(net_devices);
 					lastConectionTypeTried = 3;
+					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: lastConectionTypeTried = 3\n", __FILE__, __FUNCTION__);
 				}
 			}
 		}
-	}
-	else if (ConnectionType == 3)
-	{
-		if (devices->SerialNumber != 0)
-		{
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: try to connect to Network device with SerialNumber: %d\n", devices->SerialNumber);
-			dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, timeout_ms);
-			lastConectionTypeTried = 3;
-		}
-		else // try to find the first available device
-		{
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: try to find the first available Network device\n");
-	//		int32_t enum_usb_dev = PK_EnumerateUSBDevices();
-			if (enum_usb_dev != 0)
-			{
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: enum_usb_dev: %d\n", enum_usb_dev);
-				for (int i = 0; i < enum_usb_dev; i++)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: dev: %d\n", i);
-					if (dev == NULL)
-					{
-						dev = PK_ConnectToDevice(i);
-						lastConectionTypeTried = 3;
-						if (dev != NULL)
-						{
-							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: connected to device: %d\n", i);
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-	else if (ConnectionType == 4)
-	{
-		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: PK_EnumerateFastUSBDevices");
-		/*	enum_fusb_dev = PK_EnumerateFastUSBDevices();
-			if (enum_fusb_dev != 0)
-			{
-				for (int i = 0; i < enum_fusb_dev; i++)
-				{
-					if (dev == NULL)
-					{
-						dev = PK_ConnectToDevice(i);
-						lastConectionTypeTried = 4;
-						if(dev != NULL)
-						{
-							break;
-						}
-					}
-				}
-			}*/
 	}
 	else
 	{
-		// generic approach check all possible connections
-		// first try to use the serial number and then try to use the IP address
-		// if none of these is available try to search for devices
-		// priorities:  Network, UDP, FastUSB, USB
-		if (devices->SerialNumber != 0)
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: udp_devices[16]\n", __FILE__, __FUNCTION__);
+		sPoKeysNetworkDeviceSummary udp_devices[16];
+
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EnumerateUSBDevices()\n", __FILE__, __FUNCTION__);
+		enm_usb_dev = PK_EnumerateUSBDevices();
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EnumerateUSBDevices()=%d\n", __FILE__, __FUNCTION__, enm_usb_dev);
+
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EnumerateFastUSBDevices()\n", __FILE__, __FUNCTION__);
+		//enm_fusb_dev = PK_EnumerateFastUSBDevices();
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EnumerateFastUSBDevices()=%d\n", __FILE__, __FUNCTION__, enm_fusb_dev);
+		i_Timeout = 1000;
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EnumerateNetworkDevices(udp_devices, %d)\n", __FILE__, __FUNCTION__, i_Timeout);
+		int32_t nDevs = PK_EnumerateNetworkDevices(udp_devices, i_Timeout); // does not work - it hangs here
+		//	rtapi_print("");
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: nDevs: %d\n", __FILE__, __FUNCTION__, nDevs);
+		//enm_udp_dev = nDevs;
+
+		if (nDevs != 0)
 		{
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: serial number is set\n");
-			//first try network
-			dev = PK_ConnectToNetworkDevice(devices);
-			if (dev == NULL)
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_ConnectToNetworkDevice(udp_devices) - %d\n", __FILE__, __FUNCTION__, nDevs);
+			for (int i = 0; i < 16; i++)
 			{
-				// try UDP
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: try to connect to UDP device with SerialNumber: %d\n", devices->SerialNumber);
-				dev = PK_ConnectToDeviceWSerial_UDP(devices->SerialNumber, timeout_ms);
-				lastConectionTypeTried = 2;
+				if (retDev == NULL)
+				{
+					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: udp_devices[%d].SerialNumber: %d\n", __FILE__, __FUNCTION__, i, udp_devices[i].SerialNumber);
+					if (udp_devices[i].SerialNumber != 0)
+					{
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial_UDP(%d, %d)\n", __FILE__, __FUNCTION__, udp_devices[i].SerialNumber, i_Timeout);
+						retDev = PK_ConnectToDeviceWSerial_UDP(udp_devices[i].SerialNumber, i_Timeout);  //waits for udp device
+						lastConectionTypeTried = 2;
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: lastConectionTypeTried = 2\n", __FILE__, __FUNCTION__);
+					}
+				}
+				else
+				{
+					break;
+				}
 			}
-			if (dev == NULL)
-			{
-				// try FastUSB/USB
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: try to connect to USB device with SerialNumber: %d\n", devices->SerialNumber);
-				dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, timeout_ms);
-				lastConectionTypeTried = 1;
-			}
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: lastConectionTypeTried = 3\n", __FILE__, __FUNCTION__);
 		}
+		if (enm_fusb_dev > 0)
+		{
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_ConnectToDevice FastUSB\n", __FILE__, __FUNCTION__);
+			for (int i = 0; i < enm_fusb_dev; i++)
+			{
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_ConnectToDevice(%d)\n", __FILE__, __FUNCTION__, i);
+				retDev = PK_ConnectToDevice(i);
+			}
+			lastConectionTypeTried = 4;
+		}
+
+		if (enm_usb_dev > 0)
+		{
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_ConnectToDevice FastUSB\n", __FILE__, __FUNCTION__);
+			for (int i = 0; i < enm_usb_dev; i++)
+			{
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_ConnectToDevice(%d)\n", __FILE__, __FUNCTION__, i);
+				retDev = PK_ConnectToDevice(i);
+			}
+			lastConectionTypeTried = 4;
+		}
+		//deb_out = 120;
+	}
+	if (retDev != NULL)
+	{
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Connected to device\n", __FILE__, __FUNCTION__);
+		//connected = 1;
+		if (lastConectionTypeTried == 1)
+		{
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: USB\n", __FILE__, __FUNCTION__);
+			// cannot set pins outside of user_mainloop()
+			//	connected_usb = 1;
+			//	connected_fusb = 0;
+			//	connected_udp = 0;
+			//	connected_net = 0;
+		}
+		if (lastConectionTypeTried == 2)
+		{
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: UDP\n", __FILE__, __FUNCTION__);
+			// cannot set pins outside of user_mainloop()
+			//	connected_usb = 0;
+			//	connected_fusb = 0;
+			//	connected_udp = 1;
+			//	connected_net = 0;
+		}
+		if (lastConectionTypeTried == 3)
+		{
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Network\n", __FILE__, __FUNCTION__);
+			// cannot set pins outside of user_mainloop()
+			//	connected_usb = 0;
+			//	connected_fusb = 0;
+			//	connected_udp = 0;
+			//	connected_net = 1;
+		}
+		return retDev;
+	}
+	else
+	{
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: failed to connect to device\n", __FILE__, __FUNCTION__);
+		//connected_usb = 0;
+		//connected_fusb = 0;
+		//connected_udp = 0;
+		//connected_net = 0;
+		//err = 1;
+		return NULL;
+	}
+}
+
+
+// EXTRA_SETUP is executed before rtapi_app_main()
+EXTRA_SETUP()
+{
+	int wait_ms = 5000;
+	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
+
+	//usleep(wait_ms);  // wait for the HAL to start up
+	for (i = 0; i < retry; i++)
+	{
 		if (dev == NULL)
 		{
-			// try to enumarate (priorities:  Network, UDP, FastUSB/USB)
-			sPoKeysNetworkDeviceSummary* net_devices;
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: SearchNetworkDevices with SerialNumber: %d\n", devices->SerialNumber);
-			int32_t nDevs = PK_SearchNetworkDevices(net_devices, timeout_ms, devices->SerialNumber);
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: nDevs: %d\n", nDevs);
-			if (nDevs != 0)
-			{
-				int32_t enum_udp_dev = nDevs;
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: try to connect to Network device with SerialNumber: %d\n", devices->SerialNumber);
-				dev = PK_ConnectToNetworkDevice(net_devices);
-				lastConectionTypeTried = 3;
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: TryConnectToDevice(0)\n", __FILE__, __FUNCTION__);
+			if (serial_number != "") {
+				dev = TryConnectToDevice(atoi(serial_number));
 			}
-			else
-			{
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: EnumerateNetworkDevices\n");
-				nDevs = PK_EnumerateNetworkDevices(net_devices, timeout_ms); // does not work - it hangs here
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: nDevs: %d\n", nDevs);
-				if (nDevs != 0)
-				{
-					int32_t enum_udp_dev = nDevs;
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: try to connect to Network device\n");
-					dev = PK_ConnectToNetworkDevice(net_devices);
-					lastConectionTypeTried = 3;
-				}
+			else{
+				dev = TryConnectToDevice(0);
 			}
-			if (dev == NULL)
-			{
-				/*enum_fusb_dev = PK_EnumerateFastUSBDevices();
-				if (enum_fusb_dev != 0)
-				{
-					for (int i = 0; i < enum_fusb_dev; i++)
-					{
-						if (dev == NULL)
-						{
-							dev = PK_ConnectToDevice(i);
-							lastConectionTypeTried = 4;
-							if(dev != NULL)
-							{
-								break;
-							}
-						}
-					}
-				}*/
-				if (dev == NULL)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: EnumerateUSBDevices\n");
-		//			int32_t enum_usb_dev = PK_EnumerateUSBDevices();
-					if (enum_usb_dev != 0)
-					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: enum_usb_dev: %d\n", enum_usb_dev);
-						for (int i = 0; i < enum_usb_dev; i++)
-						{
-							if (dev == NULL)
-							{
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: try to connect to USB device: %d\n", i);
-								dev = PK_ConnectToDevice(i);
-								lastConectionTypeTried = 1;
-								if (dev != NULL)
-								{
-									rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: connected to device: %d\n", i);
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
+
 		}
-	}
-	if (devices->SerialNumber != 0)
-	{
-		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: try to connect to device with SerialNumber: %d\n", devices->SerialNumber);
-		dev = PK_ConnectToDeviceWSerial(devices->SerialNumber, timeout_ms);
-	}
-	else if (devices->IPaddress != 0)
-	{
-		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: try to connect to device with IP: %d\n", devices->IPaddress);
-		dev = PK_ConnectToNetworkDevice(devices);
+		if (dev != NULL)
+		{
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Connected\n", __FILE__, __FUNCTION__);
+			break;
+		}
 	}
 
-	if (dev != NULL)
-	{
-		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys-Rt: connected to device\n");
-		if (lastConectionTypeTried == 1) // USB
-		{
-			connected_usb = 1;
-			connected_fusb = 0;
-			connected_udp = 0;
-			connected_net = 0;
-		}
-		if (lastConectionTypeTried == 2) // UDP
-		{
-			connected_usb = 0;
-			connected_fusb = 0;
-			connected_udp = 1;
-			connected_net = 0;
-		}
-		if (lastConectionTypeTried == 3) // Network
-		{
-			connected_usb = 0;
-			connected_fusb = 0;
-			connected_udp = 0;
-			connected_net = 1;
-		}
-		if (lastConectionTypeTried == 4) // FastUSB
-		{
-			connected_usb = 0;
-			connected_fusb = 1;
-			connected_udp = 0;
-			connected_net = 0;
-		}
-	}
-	else
-	{
-		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: could not connect to device\n");
-		connected_usb = 0;
-		connected_fusb = 0;
-		connected_udp = 0;
-		connected_net = 0;
-	}
+	rtapi_print("");
 	// devSerial = extra_arg;
 	return 0;
 }
 
+EXTRA_CLEANUP()
+{
+	if (dev != NULL)
+	{
+		PK_DisconnectDevice(dev);
+	}
+}
 
 /* channels provided by PEv2 which might be relevant:
 pin out unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
