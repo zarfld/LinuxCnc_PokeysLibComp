@@ -41,7 +41,7 @@ option  extra_setup;
 #include "motion.h"
 //#include "homing.h"
 #include "stdlib.h"
-#include "PoKeysLib.h"
+#include "PoKeysLibRt.h"
 
 #undef POKEYSLIB_USE_LIBUSB
 
