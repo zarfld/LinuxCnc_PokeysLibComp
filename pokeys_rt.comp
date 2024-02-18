@@ -246,7 +246,6 @@ EXTRA_SETUP()
 	int wait_ms = 5000;
 	int retry = 5;
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
-
 	//usleep(wait_ms);  // wait for the HAL to start up
 	for (int i = 0; i < retry; i++)
 	{
