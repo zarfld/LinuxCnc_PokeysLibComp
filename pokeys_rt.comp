@@ -23,7 +23,7 @@ pin out bit alive;
 license "GPL";
 author "Dominik Zarfl";
 option  homemod;
-option extra_link_args "-lPoKeys -lpthread";
+option extra_link_args "-lPoKeysRt -lpthread";
 option  extra_setup;
 ;;
 
