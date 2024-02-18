@@ -23,7 +23,7 @@ pin out bit alive;
 license "GPL";
 author "Dominik Zarfl";
 option  homemod;
-option extra_link_args "-lPoKeys";
+option extra_link_args "-lPoKeys -lpthread";
 option  extra_setup;
 ;;
 
@@ -37,7 +37,7 @@ option  extra_setup;
 
 #define STR(s)  #s
 #define XSTR(s) STR(s)
-
+#undef POKEYSLIB_USE_LIBUSB
 #include "motion.h"
 //#include "homing.h"
 #include "stdlib.h"
