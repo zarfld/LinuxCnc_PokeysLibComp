@@ -131,7 +131,6 @@ pin io bit PEv2.params.ApplyIniSettings;
 // Pulse engine v2 structure...
 pin out unsigned PEv2.#.AxesState [8];				// Axis states (bit-mapped) - see ePK_PEAxisState
 pin out unsigned PEv2.#.AxesConfig [8];				// Axis configuration - see ePK_PEv2_AxisConfig
-pin in unsigned PEv2.#.AxesSwitchConfig [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
 pin in unsigned PEv2.#.AxesCommand [8];		// Axis Command
 param rw s32 PEv2.#.home_sequence[8] "home_sequence";
 
@@ -217,13 +216,32 @@ pin io unsigned PEv2.#.MPGjogEncoder [8];			// MPG jog encoder ID
 pin io unsigned PEv2.#.MPGjogDivider[8];			// Divider for the MPG jogging (enhanced encoder resolution)
 
 
+// PEv2_AxesSwitchConfig
+//	PK_ASO_SWITCH_LIMIT_N: 1 << 0 = 1
+//	PK_ASO_SWITCH_LIMIT_P : 1 << 1 = 2
+//	PK_ASO_SWITCH_HOME : 1 << 2 = 4
+//	PK_ASO_SWITCH_COMBINED_LN_H : 1 << 3 = 8
+//	PK_ASO_SWITCH_COMBINED_LP_H : 1 << 4 = 16
+//	PK_ASO_SWITCH_INVERT_LIMIT_N : 1 << 5 = 32
+//	PK_ASO_SWITCH_INVERT_LIMIT_P : 1 << 6 = 64
+//	PK_ASO_SWITCH_INVERT_HOME : 1 << 7 = 128
+param rw unsigned PEv2.#.AxesSwitchConfig[8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
+
+
+// PEv2_Filter<PEv2PinType >Switch_<n>(PEv2_FilterLimitMSwitch_<n>, PEv2_FilterLimitPSwitch_<n>)
+//	The limit and home switch inputs support digital filtering.The filter value defines the minimum time
+//	for the limit or home switch signal activation(1 unit equals to 100 µs = 0.0001 s) - possible values are
+//	between 0 (no filtering) to 254 (25.4 ms).
+
 //pin out unsigned PEv2.#.LimitStatusN[8];					// Limit- status (NOT bit-mapped)
 pin out bit PEv2.#.digin.LimitN.in[8];
 pin out bit PEv2.#.digin.LimitN.in-not[8];
 pin out bit PEv2.#.digin.LimitN.DedicatedInput[8];
 param rw unsigned PEv2.#.digin.LimitN.Pin [8] "Limit- switch pin (0 for external dedicated input)";			// Limit- switch pin (0 for external dedicated input)
 param rw unsigned PEv2.#.digin.LimitN.Filter[8] "Digital filter for limit- switch";		// Digital filter for limit- switch
-param rw bit PEv2.#.digin.LimitN.invert[8] "Invert limit-";
+param rw bit PEv2.#.digin.LimitN.invert[8] "Invert limit- (PK_ASO_SWITCH_INVERT_LIMIT_N)";
+param rw bit PEv2.#.digin.LimitN.Enabled[8] "Limit- is available (PK_ASO_SWITCH_LIMIT_N)";
+
 
 //pin out unsigned PEv2.#.LimitStatusP[8];					// Limit+ status (NOT bit-mapped)
 pin out bit PEv2.#.digin.LimitP.in[8];
@@ -231,7 +249,8 @@ pin out bit PEv2.#.digin.LimitP.in-not[8];
 pin out bit PEv2.#.digin.LimitP.DedicatedInput[8];
 param rw unsigned PEv2.#.digin.LimitP.Pin[8] "Limit+ switch pin (0 for external dedicated input)";			// Limit+ switch pin (0 for external dedicated input)
 param rw unsigned PEv2.#.digin.LimitP.Filter[8] "Digital filter for limit+ switch";		// Digital filter for limit+ switch
-param rw bit PEv2.#.digin.LimitP.invert[8] "Invert limit+";
+param rw bit PEv2.#.digin.LimitP.invert[8] "Invert limit+ (PK_ASO_SWITCH_INVERT_LIMIT_P)";
+param rw bit PEv2.#.digin.LimitP.Enabled[8] "Limit+ is available (PK_ASO_SWITCH_INVERT_LIMIT_P)";
 
 
 pin in bit PEv2.#.digout.AxisEnable.out[8];		// Axis enabled output
@@ -246,7 +265,10 @@ pin out bit PEv2.#.digin.Home.in-not[8];					// inverted Home status (NOT bit-ma
 pin out bit PEv2.#.digin.Home.DedicatedInput[8];
 param rw unsigned PEv2.#.digin.Home.Pin[8] "Home switch pin (0 for external dedicated input)";			// Home switch pin (0 for external dedicated input)
 param rw unsigned PEv2.#.digin.Home.Filter[8] "Digital filter for home-switch";
-param rw bit PEv2.#.digin.Home.invert[8] "Invert home-switch";
+param rw bit PEv2.#.digin.Home.invert[8] "Invert home-switch (PK_ASO_SWITCH_INVERT_HOME)";
+param rw bit PEv2.#.digin.Home.Enabled[8] "Invert home-switch (PK_ASO_SWITCH_HOME)";
+param rw bit PEv2.#.digin.Home.OnLimitN[8] "Shared with Limit- (PK_ASO_SWITCH_COMBINED_LN_H)";
+param rw bit PEv2.#.digin.Home.OnLimitP[8] "Shared with Limit+ (PK_ASO_SWITCH_COMBINED_LP_H)";
 
 //pin out bit PEv2.#.LimitMSwitch [8];			// Limit- switch
 //pin out bit PEv2.#.LimitPSwitch [8];			// Limit+ switch
@@ -1796,19 +1818,111 @@ void user_mainloop(void)
 						
 						PEv2_digin_Probe_in(i) = Get_BitOfByte(bm_ProbeStatus, i);
 
-						PEv2_digin_LimitP_in(i) = Get_BitOfByte(bm_LimitStatusP,i);
-						PEv2_digin_LimitP_in_not(i) = !Get_BitOfByte(bm_LimitStatusP, i);
 
-						PEv2_digin_LimitN_in(i) = Get_BitOfByte(bm_LimitStatusN,i);
-						PEv2_digin_LimitN_in_not(i) = !Get_BitOfByte(bm_LimitStatusN, i);
+						 /* 
+							param rw unsigned PEv2.#.digin.LimitN.Pin [8] "Limit- switch pin (0 for external dedicated input)";			// Limit- switch pin (0 for external dedicated input)
+							param rw unsigned PEv2.#.digin.LimitN.Filter[8] "Digital filter for limit- switch";		// Digital filter for limit- switch
+							param rw bit PEv2.#.digin.LimitN.invert[8] "Invert limit- (PK_ASO_SWITCH_INVERT_LIMIT_N)";
+							param rw bit PEv2.#.digin.LimitN.Enabled[8] "Limit- is available (PK_ASO_SWITCH_LIMIT_N)";
+						 */
+						if (PEv2_digin_LimitP_Pin(i) > 0) 
+						{
+							if (PEv2_digin_LimitP_invert(i) != 0) 
+							{
+								PEv2_digin_LimitP_in(i) = !Get_BitOfByte(bm_LimitStatusP, i);
+								PEv2_digin_LimitP_in_not(i) = Get_BitOfByte(bm_LimitStatusP, i);
+							}
+							else 
+							{
+								PEv2_digin_LimitP_in(i) = !Get_BitOfByte(bm_LimitStatusP, i);
+								PEv2_digin_LimitP_in_not(i) = Get_BitOfByte(bm_LimitStatusP, i);
+							}
+							PEv2_digin_LimitP_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedLimitPInputs, i);
+						}
+						else if (PEv2_digin_LimitP_Enabled(i) != 0)
+						{
+							if (PEv2_digin_LimitP_invert(i) != 0)
+							{
+								PEv2_digin_LimitP_in(i) = !Get_BitOfByte(bm_DedicatedLimitPInputs, i);
+								PEv2_digin_LimitP_in_not(i) = Get_BitOfByte(bm_DedicatedLimitPInputs, i);
+								PEv2_digin_LimitP_DedicatedInput(i) = !Get_BitOfByte(bm_DedicatedLimitPInputs, i);
+							}
+							else
+							{
+								PEv2_digin_LimitP_in(i) = Get_BitOfByte(bm_DedicatedLimitPInputs, i);
+								PEv2_digin_LimitP_in_not(i) = !Get_BitOfByte(bm_DedicatedLimitPInputs, i);
+								PEv2_digin_LimitP_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedLimitPInputs, i);
+							}
+						}
 
-						PEv2_digin_Home_in(i) =  Get_BitOfByte(bm_HomeStatus,i);
-						PEv2_digin_Home_in_not(i) = !Get_BitOfByte(bm_HomeStatus, i);
+
+						if (PEv2_digin_LimitN_Pin(i) > 0)
+						{
+							if (PEv2_digin_LimitN_invert(i) != 0)
+							{
+								PEv2_digin_LimitN_in(i) = !Get_BitOfByte(bm_LimitStatusN, i);
+								PEv2_digin_LimitN_in_not(i) = Get_BitOfByte(bm_LimitStatusN, i);
+							}
+							else
+							{
+								PEv2_digin_LimitN_in(i) = !Get_BitOfByte(bm_LimitStatusN, i);
+								PEv2_digin_LimitN_in_not(i) = Get_BitOfByte(bm_LimitStatusN, i);
+							}
+							PEv2_digin_LimitN_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedLimitNInputs, i);
+						}
+						else if (PEv2_digin_LimitN_Enabled(i)!=0)
+						{
+							if (PEv2_digin_LimitN_invert(i) != 0)
+							{
+								PEv2_digin_LimitN_in(i) = !Get_BitOfByte(bm_DedicatedLimitNInputs, i);
+								PEv2_digin_LimitN_in_not(i) = Get_BitOfByte(bm_DedicatedLimitNInputs, i);
+								PEv2_digin_LimitN_DedicatedInput(i) = !Get_BitOfByte(bm_DedicatedLimitNInputs, i);
+							}
+							else
+							{
+								PEv2_digin_LimitN_in(i) = Get_BitOfByte(bm_DedicatedLimitNInputs, i);
+								PEv2_digin_LimitN_in_not(i) = !Get_BitOfByte(bm_DedicatedLimitNInputs, i);
+								PEv2_digin_LimitN_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedLimitNInputs, i);
+							}
+						}
+
+						if (PEv2_digin_Home_Pin(i) > 0) 
+						{
+							if (PEv2_digin_Home_invert(i) != 0)
+							{
+								PEv2_digin_Home_in(i) = !Get_BitOfByte(bm_HomeStatus, i);
+								PEv2_digin_Home_in_not(i) = Get_BitOfByte(bm_HomeStatus, i);
+
+							}
+							else
+							{
+								PEv2_digin_Home_in(i) = Get_BitOfByte(bm_HomeStatus, i);
+								PEv2_digin_Home_in_not(i) = !Get_BitOfByte(bm_HomeStatus, i);
+							}
+							PEv2_digin_Home_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedHomeInputs, i);
+						}
+						else if (PEv2_digin_Home__Enabled(i)) 
+						{
+							if (PEv2_digin_Home_invert(i) != 0)
+							{
+								PEv2_digin_Home_in(i) = !Get_BitOfByte(bm_DedicatedHomeInputs, i);
+								PEv2_digin_Home_in_not(i) = Get_BitOfByte(bm_DedicatedHomeInputs, i);
+
+							}
+							else
+							{
+								PEv2_digin_Home_in(i) = Get_BitOfByte(bm_DedicatedHomeInputs, i);
+								PEv2_digin_Home_in_not(i) = !Get_BitOfByte(bm_DedicatedHomeInputs, i);
+							}
+						}
+
+						
+						
 
 						PEv2_deb_axxisout(i) = 280 ;
-						PEv2_digin_LimitN_DedicatedInput(i) =  Get_BitOfByte(bm_DedicatedLimitNInputs,i);
-						PEv2_digin_LimitP_DedicatedInput(i) =  Get_BitOfByte(bm_DedicatedLimitPInputs,i);
-						PEv2_digin_Home_DedicatedInput(i) =  Get_BitOfByte(bm_DedicatedHomeInputs,i);
+						
+						
+						
 
 						
 						PEv2_digin_SoftLimit_in(i) = Get_BitOfByte(bm_SoftLimitStatus,i);
