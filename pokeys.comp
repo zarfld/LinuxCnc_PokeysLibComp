@@ -1647,17 +1647,147 @@ void user_mainloop(void)
 						// PEv2_CurrentPosition(i) = dev->PEv2.CurrentPosition[i];
 						intCurrentPosition[i] = dev->PEv2.CurrentPosition[i];
 						PEv2_deb_axxisout(i) = 220 + i;
-						// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-						if (StepScale[i]!=0)
+						
+						PEv2_digin_Error_in(i) = Get_BitOfByte(bm_ErrorStatus, i);
+						PEv2_digin_Error_in_not(i) = !Get_BitOfByte(bm_ErrorStatus, i);
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: intAxesState = %s\n", __FILE__, __FUNCTION__, intAxesState);
+						switch (intAxesState)
 						{
-							PEv2_deb_axxisout(i) = 230 + i;
-							PosFb[i] = intCurrentPosition[i] / StepScale[i];
+						case PK_PEAxisState_axSTOPPED:        // Axis is stopped
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axSTOPPED\n", __FILE__, __FUNCTION__);
+							IsHoming[i] = false;
+							PEv2_deb_out = 310 + i;
+							//PEv2_digin_AxisEnabled_in(i) = false;
+							//PEv2_digin_LimitOverride_in(i) = false;
+
+
+							break;
+						case PK_PEAxisState_axREADY:        // Axis ready
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axREADY\n", __FILE__, __FUNCTION__);
+							IsHoming[i] = false;
+							PEv2_deb_out = 320 + i;
+							//PEv2_digin_AxisEnabled_in(i) = true;
+							//PEv2_digin_LimitOverride_in(i) = false;
+
+							break;
+						case PK_PEAxisState_axRUNNING:        // Axis is running
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axRUNNING\n", __FILE__, __FUNCTION__);
+							IsHoming[i] = false;
+							PEv2_deb_out = 330 + i;
+							break;
+						case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMING_RESETTING\n", __FILE__, __FUNCTION__);
+							//PEv2_digin_LimitOverride_in(i) = true;
+							//PEv2_digin_AxisEnabled_in(i) = true;
+							IsHoming[i] = true;
+							PEv2_deb_out = 340 + i;
+							break;
+						case PK_PEAxisState_axHOMING_BACKING_OFF:   // Backing off switch
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMING_BACKING_OFF\n", __FILE__, __FUNCTION__);
+							IsHoming[i] = true;
+							PEv2_deb_out = 340 + i;
+
+							//PEv2_digin_LimitOverride_in(i) = true;
+							//PEv2_digin_AxisEnabled_in(i) = true;
+							break;
+						case PK_PEAxisState_axHOME:       // Axis is homed
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOME\n", __FILE__, __FUNCTION__);
+							PEv2_deb_out = 340 + i;
+							IsHoming[i] = false;
+							//PEv2_digin_AxisEnabled_in(i) = true;
+							//PEv2_digin_LimitOverride_in(i) = true;
+						// PEv2_joint_
+							break;
+						case PK_PEAxisState_axHOMINGSTART:       // Homing procedure is starting on axis
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMINGSTART\n", __FILE__, __FUNCTION__);
+							//PEv2_digin_AxisEnabled_in(i) = true;
+							//PEv2_digin_LimitOverride_in(i) = true;
+							IsHoming[i] = true;
+							PEv2_deb_out = 340 + i;
+							break;
+						case PK_PEAxisState_axHOMINGSEARCH:       // Homing procedure first step - going to home
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMINGSEARCH\n", __FILE__, __FUNCTION__);
+							//PEv2_digin_AxisEnabled_in(i) = true;
+							//PEv2_digin_LimitOverride_in(i) = true;
+							IsHoming[i] = true;
+							PEv2_deb_out = 340 + i;
+							break;
+						case PK_PEAxisState_axHOMINGBACK:       // Homing procedure second step - slow homing
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMINGBACK\n", __FILE__, __FUNCTION__);
+							//PEv2_digin_AxisEnabled_in(i) = true;
+							//PEv2_digin_LimitOverride_in(i) = true;
+							IsHoming[i] = true;
+							PEv2_deb_out = 340 + i;
+							break;
+						case PK_PEAxisState_axPROBED:       // Probing completed for this axis
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axPROBED\n", __FILE__, __FUNCTION__);
+							//PEv2_digin_AxisEnabled_in(i) = true;
+							//PEv2_digin_LimitOverride_in(i) = false;
+							IsHoming[i] = false;
+							PEv2_deb_out = 350 + i;
+							break;
+						case PK_PEAxisState_axPROBESTART:       // Probing procedure is starting on axis
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axPROBESTART\n", __FILE__, __FUNCTION__);
+							//PEv2_digin_AxisEnabled_in(i) = true;
+							//PEv2_digin_LimitOverride_in(i) = false;
+							IsHoming[i] = false;
+							PEv2_deb_out = 350 + i;
+							break;
+						case PK_PEAxisState_axPROBESEARCH:       // Probing procedure - probing
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axPROBESEARCH\n", __FILE__, __FUNCTION__);
+							//PEv2_digin_AxisEnabled_in(i) = true;
+							//PEv2_digin_LimitOverride_in(i) = false;
+							IsHoming[i] = false;
+							PEv2_deb_out = 350 + i;
+							break;
+						case PK_PEAxisState_axERROR:       // Axis error
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axERROR\n", __FILE__, __FUNCTION__);
+							//PEv2_digin_AxisEnabled_in(i) = false;
+							//PEv2_digin_LimitOverride_in(i) = false;
+							IsHoming[i] = false;
+							PEv2_deb_out = 360 + i;
+
+							break;
+						case PK_PEAxisState_axLIMIT:        // Axis limit tripped
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axLIMIT\n", __FILE__, __FUNCTION__);
+							//PEv2_digin_AxisEnabled_in(i) = true;
+							//PEv2_digin_LimitOverride_in(i) = false;
+							IsHoming[i] = false;
+							PEv2_deb_out = 370 + i;
+							break;
+						default:
+
+							PEv2_deb_out = 380 + i;
+							break;
+						}
+
+
+
+
+						// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
+						if (IsHoming[i] == false)
+						{
+							if (StepScale[i] != 0)
+							{
+								PEv2_deb_axxisout(i) = 230 + i;
+								PosFb[i] = intCurrentPosition[i] / StepScale[i];
+							}
+							else
+							{
+								PEv2_deb_axxisout(i) = 240 + i;
+								PosFb[i] = intCurrentPosition[i];
+							}
 						}
 						else
 						{
-							PEv2_deb_axxisout(i) = 240 + i;
-							PosFb[i] = intCurrentPosition[i];
+							// when homing, use the command position as feedback
+							// during homing the position is being reset to 0, so the feedback would be 0
+							// which causes FERROR
+							PosFb[i] = PEv2_joint_pos_cmd(i);
+							
 						}
+
+
 						PEv2_deb_axxisout(i) = 250 + i;
 						PEv2_joint_pos_fb(i) = PosFb[i];
 						PEv2_deb_axxisout(i) = 260 + i;
@@ -1690,119 +1820,6 @@ void user_mainloop(void)
 						bm_ErrorStatus
 						*/
 
-						PEv2_digin_Error_in(i) = Get_BitOfByte(bm_ErrorStatus, i);
-						PEv2_digin_Error_in_not(i) = !Get_BitOfByte(bm_ErrorStatus, i);
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: intAxesState = %s\n", __FILE__, __FUNCTION__, intAxesState);
-						switch(intAxesState)
-						{
-							case PK_PEAxisState_axSTOPPED:        // Axis is stopped
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axSTOPPED\n", __FILE__, __FUNCTION__);
-								IsHoming[i] = false;
-								PEv2_deb_out = 310 + i;
-								//PEv2_digin_AxisEnabled_in(i) = false;
-								//PEv2_digin_LimitOverride_in(i) = false;
-
-		
-								break ;
-							case PK_PEAxisState_axREADY:        // Axis ready
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axREADY\n", __FILE__, __FUNCTION__);
-								IsHoming[i] = false;
-								PEv2_deb_out = 320 + i;
-								//PEv2_digin_AxisEnabled_in(i) = true;
-								//PEv2_digin_LimitOverride_in(i) = false;
-	
-								break ;
-							case PK_PEAxisState_axRUNNING:        // Axis is running
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axRUNNING\n", __FILE__, __FUNCTION__);
-								IsHoming[i] = false;
-								PEv2_deb_out = 330 + i;
-								break ;
-							case PK_PEAxisState_axHOMING_RESETTING:   // Stopping the axis to reset the position counters
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMING_RESETTING\n", __FILE__, __FUNCTION__);
-								//PEv2_digin_LimitOverride_in(i) = true;
-								//PEv2_digin_AxisEnabled_in(i) = true;
-								IsHoming[i] = true;
-								PEv2_deb_out = 340 + i;
-								break ;
-							case PK_PEAxisState_axHOMING_BACKING_OFF:   // Backing off switch
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMING_BACKING_OFF\n", __FILE__, __FUNCTION__);
-								IsHoming[i] = true;
-								PEv2_deb_out = 340 + i;
-								
-								//PEv2_digin_LimitOverride_in(i) = true;
-								//PEv2_digin_AxisEnabled_in(i) = true;
-								break ;
-							case PK_PEAxisState_axHOME:       // Axis is homed
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOME\n", __FILE__, __FUNCTION__);
-								PEv2_deb_out = 340 + i;
-								IsHoming[i] = false;
-								//PEv2_digin_AxisEnabled_in(i) = true;
-								//PEv2_digin_LimitOverride_in(i) = true;
-							// PEv2_joint_
-								break ;
-							case PK_PEAxisState_axHOMINGSTART:       // Homing procedure is starting on axis
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMINGSTART\n", __FILE__, __FUNCTION__);
-								//PEv2_digin_AxisEnabled_in(i) = true;
-								//PEv2_digin_LimitOverride_in(i) = true;
-								IsHoming[i] = true;
-								PEv2_deb_out = 340 + i;
-								break ;
-							case PK_PEAxisState_axHOMINGSEARCH:       // Homing procedure first step - going to home
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMINGSEARCH\n", __FILE__, __FUNCTION__);
-								//PEv2_digin_AxisEnabled_in(i) = true;
-								//PEv2_digin_LimitOverride_in(i) = true;
-								IsHoming[i] = true;
-								PEv2_deb_out = 340 + i;
-								break ;
-							case PK_PEAxisState_axHOMINGBACK:       // Homing procedure second step - slow homing
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMINGBACK\n", __FILE__, __FUNCTION__);
-								//PEv2_digin_AxisEnabled_in(i) = true;
-								//PEv2_digin_LimitOverride_in(i) = true;
-								IsHoming[i] = true;
-								PEv2_deb_out = 340 + i;
-								break ;
-							case PK_PEAxisState_axPROBED:       // Probing completed for this axis
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axPROBED\n", __FILE__, __FUNCTION__);
-								//PEv2_digin_AxisEnabled_in(i) = true;
-								//PEv2_digin_LimitOverride_in(i) = false;
-								IsHoming[i] = false;
-								PEv2_deb_out = 350 + i;
-								break ;
-							case PK_PEAxisState_axPROBESTART:       // Probing procedure is starting on axis
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axPROBESTART\n", __FILE__, __FUNCTION__);
-								//PEv2_digin_AxisEnabled_in(i) = true;
-								//PEv2_digin_LimitOverride_in(i) = false;
-								IsHoming[i] = false;
-								PEv2_deb_out = 350 + i;
-								break ;
-							case PK_PEAxisState_axPROBESEARCH:       // Probing procedure - probing
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axPROBESEARCH\n", __FILE__, __FUNCTION__);
-								//PEv2_digin_AxisEnabled_in(i) = true;
-								//PEv2_digin_LimitOverride_in(i) = false;
-								IsHoming[i] = false;
-								PEv2_deb_out = 350 + i;
-								break ;
-							case PK_PEAxisState_axERROR:       // Axis error
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axERROR\n", __FILE__, __FUNCTION__);
-								//PEv2_digin_AxisEnabled_in(i) = false;
-								//PEv2_digin_LimitOverride_in(i) = false;
-								IsHoming[i] = false;
-								PEv2_deb_out = 360 + i;
-
-								break ;
-							case PK_PEAxisState_axLIMIT:        // Axis limit tripped
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axLIMIT\n", __FILE__, __FUNCTION__);
-								//PEv2_digin_AxisEnabled_in(i) = true;
-								//PEv2_digin_LimitOverride_in(i) = false;
-								IsHoming[i] = false;
-								PEv2_deb_out = 370 + i;
-								break ;
-							default:
-
-								PEv2_deb_out = 380 + i;
-								break ;
-						}
-						
 
 						if (PEv2_AxesCommand(i)==PK_PEAxisState_axHOMINGSTART && IsHoming[i] == false)
 						{
@@ -3548,12 +3565,12 @@ void user_mainloop(void)
 								 PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
 							 */
 							 
-
+							 /*
 							 if (PEv2_digin_SoftLimit_PosMax(i) !=  PEv2_digin_SoftLimit_PosMin(i))
 							 {
 								// AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 3, true); // PK_AC_SOFT_LIMIT_ENABLED;
 								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 3, true); // PK_AC_SOFT_LIMIT_ENABLED;
-							 }
+							 }*/
 
 
 							 if (PEv2_digin_Home_Pin(i) != 0)
