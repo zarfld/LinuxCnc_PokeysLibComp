@@ -1901,7 +1901,7 @@ void user_mainloop(void)
 							}
 							PEv2_digin_Home_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedHomeInputs, i);
 						}
-						else if (PEv2_digin_Home__Enabled(i)) 
+						else if (PEv2_digin_Home_Enabled(i)) 
 						{
 							if (PEv2_digin_Home_invert(i) != 0)
 							{
