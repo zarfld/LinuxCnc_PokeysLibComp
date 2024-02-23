@@ -239,7 +239,7 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 	}
 }
 
-int myid=0
+int myid = 0;
 // EXTRA_SETUP is executed before rtapi_app_main()
 EXTRA_SETUP()
 {
@@ -281,8 +281,8 @@ EXTRA_CLEANUP()
 	{
 		PK_DisconnectDevice(dev);
 	}
-	if (myid>0)
-		hal_exit(myid)
+	if (myid > 0)
+		hal_exit(myid);
 }
 
 /* channels provided by PEv2 which might be relevant:
