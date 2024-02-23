@@ -1,6 +1,6 @@
 
 loadusr -W kbd48CNC
-loadusr -W start_delay_3000
+#loadusr -W start_delay_3000
 
 #******************************
 # connect miscellaneous signals
