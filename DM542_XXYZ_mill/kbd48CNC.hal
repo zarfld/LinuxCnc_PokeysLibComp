@@ -1,15 +1,14 @@
 
 loadusr -W kbd48CNC
-show pin
-show parameter
+loadusr -W start_delay
+
 #******************************
 # connect miscellaneous signals
 #******************************
 
 #  ---HALUI signals---
 
-show pin
-show parameter
+
 
 #net axis-select-z  halui.axis.z.select # now pokeys.kbd48CNC.JOG_X.Button
 #net jog-selected-pos      halui.axis.selected.plus # pokeys.kbd48CNC.JOG_PLUS.Button
@@ -33,8 +32,7 @@ setp joint.3.jog-vel-mode 0
 
 
 
-show pin
-show parameter
+
 
 #  ---pokeys.kbd48CNC / HAL_UI---
 #FUN_CYCLE_START,
@@ -285,10 +283,7 @@ net pokeys.kbd48CNC.SET_NEXT_LINE.Button <=	pokeys.0.kbd48CNC.11.Button
 net pokeys.kbd48CNC.SET_NEXT_LINE.LED => pokeys.0.kbd48CNC.11.LED
 net pokeys.kbd48CNC.REWIND.Button <=	pokeys.0.kbd48CNC.12.Button			
 
-show pin
-show parameter
-show pin
-show parameter
+
 
 net pokeys.kbd48CNC.JOG_TOGGLE.Button =>	kbd48CNC.0.JOG-TOGGLE.Button
 net pokeys.kbd48CNC.JOG_TOGGLE.LED <=	kbd48CNC.0.JOG-TOGGLE.LED
