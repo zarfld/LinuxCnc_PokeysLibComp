@@ -23,7 +23,8 @@ else
 fi
 
 echo "Compiling start_delay.comp..."
-halcompile --install start_delay.comp
+halcompile --install start_delay_3000.comp
+halcompile --install start_delay_5000.comp
 echo "start_delay.comp compiled successfully."
 
 
