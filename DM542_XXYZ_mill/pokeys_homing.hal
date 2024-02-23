@@ -26,7 +26,7 @@ show parameter
 
 #PulseEngineState
 net PulseEngineState     <= pokeys.0.PEv2.PulseEngineState
-net PulseEngineState     => pokeys-homecomp.PulseEngineState
+#net PulseEngineState     => pokeys-homecomp.PulseEngineState
 
 # AxesState
  net x-AxesState     <= joint.0.PEv2.AxesState
