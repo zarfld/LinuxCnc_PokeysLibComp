@@ -239,11 +239,13 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 	}
 }
 
-
+static int 
 // EXTRA_SETUP is executed before rtapi_app_main()
 EXTRA_SETUP()
 {
-	hal_init("pokeys_rt")
+	
+	int myid = hal_init("pokeys_rt");
+			rtapi_print_msg(RTAPI_MSG_DBG,"PoKeysRt: %s:%s: hal_init(pokeys_rt):%d\n", __FILE__, __FUNCTION__, extra_arg);
 	int wait_ms = 5000;
 	int retry = 5;
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
