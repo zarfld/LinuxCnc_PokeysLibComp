@@ -130,9 +130,29 @@ pin io bit PEv2.params.ApplyIniSettings;
 
 // Pulse engine v2 structure...
 pin out unsigned PEv2.#.AxesState [8];				// Axis states (bit-mapped) - see ePK_PEAxisState
-pin out unsigned PEv2.#.AxesConfig [8];				// Axis configuration - see ePK_PEv2_AxisConfig
+
 pin in unsigned PEv2.#.AxesCommand [8];		// Axis Command
 param rw s32 PEv2.#.home_sequence[8] "home_sequence";
+/* AxesConfig
+PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled
+PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
+PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
+PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
+PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
+PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
+PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
+*/
+pin out unsigned PEv2.#.AxesConfig[8];				// Axis configuration - see ePK_PEv2_AxisConfig
+param rw s32 PEv2.#.AxisEnabled[8] "Axis enabled";
+param rw s32 PEv2.#.AxisInverted[8] "Axis inverted";
+param rw s32 PEv2.#.AxisInternalPlanner[8] "Axis uses internal motion planner";
+param rw s32 PEv2.#.AxisPositionMode[8] "Internal motion planner for this axis is in position mode";
+param rw s32 PEv2.#.AxisInvertedHome[8] "Axis homing direction is inverted";
+param rw s32 PEv2.#.AxisSoftLimitEnabled[8] "Use soft-limits for this axis";
+param rw s32 PEv2.#.AxisEnabledMasked[8] "Use output enable pin masking";
+
+
+
 
 pin io u32 PEv2.#.SoftLimitMaximum [8];		// Soft limit maximum position
 pin io u32 PEv2.#.SoftLimitMinimum [8];		// Soft limit minimum position
@@ -226,49 +246,60 @@ pin io unsigned PEv2.#.MPGjogDivider[8];			// Divider for the MPG jogging (enhan
 //	PK_ASO_SWITCH_INVERT_LIMIT_P : 1 << 6 = 64
 //	PK_ASO_SWITCH_INVERT_HOME : 1 << 7 = 128
 param rw unsigned PEv2.#.AxesSwitchConfig[8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
+param rw bit PEv2.#.digin.LimitN.Enabled[8] "Limit- is available (PK_ASO_SWITCH_LIMIT_N)";
+param rw bit PEv2.#.digin.LimitP.Enabled[8] "Limit+ is available (PK_ASO_SWITCH_LIMIT_P)";
+param rw bit PEv2.#.digin.Home.Enabled[8] "Invert home-switch (PK_ASO_SWITCH_HOME)";
+param rw bit PEv2.#.digin.Home.OnLimitN[8] "Shared with Limit- (PK_ASO_SWITCH_COMBINED_LN_H)";
+param rw bit PEv2.#.digin.Home.OnLimitP[8] "Shared with Limit+ (PK_ASO_SWITCH_COMBINED_LP_H)";
+param rw bit PEv2.#.digin.LimitN.invert[8] "Invert limit- (PK_ASO_SWITCH_INVERT_LIMIT_N)";
+param rw bit PEv2.#.digin.LimitP.invert[8] "Invert limit+ (PK_ASO_SWITCH_INVERT_LIMIT_P)";
+param rw bit PEv2.#.digin.Home.invert[8] "Invert home-switch (PK_ASO_SWITCH_INVERT_HOME)";
 
+// PinParametrization for Limit_N Pin
+//pin out unsigned PEv2.#.LimitStatusN[8];					// Limit- status (NOT bit-mapped)
+pin out bit PEv2.#.digin.LimitN.in[8];
+pin out bit PEv2.#.digin.LimitN.in - not[8];
+pin out bit PEv2.#.digin.LimitN.DedicatedInput[8];
+param rw unsigned PEv2.#.digin.LimitN.Pin[8] "Limit- switch pin (0 for external dedicated input)";			// Limit- switch pin (0 for external dedicated input)
+param rw unsigned PEv2.#.digin.LimitN.Filter[8] "Digital filter for limit- switch";		// Digital filter for limit- switch
+
+// PinParametrization for Limit_P Pin
+//pin out unsigned PEv2.#.LimitStatusP[8];					// Limit+ status (NOT bit-mapped)
+pin out bit PEv2.#.digin.LimitP.in[8];
+pin out bit PEv2.#.digin.LimitP.in - not[8];
+pin out bit PEv2.#.digin.LimitP.DedicatedInput[8];
+param rw unsigned PEv2.#.digin.LimitP.Pin[8] "Limit+ switch pin (0 for external dedicated input)";			// Limit+ switch pin (0 for external dedicated input)
+param rw unsigned PEv2.#.digin.LimitP.Filter[8] "Digital filter for limit+ switch";		// Digital filter for limit+ switch
+
+// PinParametrization for Home Pin
+//pin out bit PEv2.#.HomeSwitchStat[8];				// Home switch
+//pin out bit PEv2.HomeSwitch;				// Home switch
+//pin out unsigned PEv2.#.HomeStatus[8];
+pin out bit PEv2.#.digin.Home.in[8];					// Home status (NOT bit-mapped)
+pin out bit PEv2.#.digin.Home.in - not[8];					// inverted Home status (NOT bit-mapped)
+pin out bit PEv2.#.digin.Home.DedicatedInput[8];
+param rw unsigned PEv2.#.digin.Home.Pin[8] "Home switch pin (0 for external dedicated input)";			// Home switch pin (0 for external dedicated input)
+param rw unsigned PEv2.#.digin.Home.Filter[8] "Digital filter for home-switch";
 
 // PEv2_Filter<PEv2PinType >Switch_<n>(PEv2_FilterLimitMSwitch_<n>, PEv2_FilterLimitPSwitch_<n>)
 //	The limit and home switch inputs support digital filtering.The filter value defines the minimum time
 //	for the limit or home switch signal activation(1 unit equals to 100 µs = 0.0001 s) - possible values are
 //	between 0 (no filtering) to 254 (25.4 ms).
 
-//pin out unsigned PEv2.#.LimitStatusN[8];					// Limit- status (NOT bit-mapped)
-pin out bit PEv2.#.digin.LimitN.in[8];
-pin out bit PEv2.#.digin.LimitN.in-not[8];
-pin out bit PEv2.#.digin.LimitN.DedicatedInput[8];
-param rw unsigned PEv2.#.digin.LimitN.Pin [8] "Limit- switch pin (0 for external dedicated input)";			// Limit- switch pin (0 for external dedicated input)
-param rw unsigned PEv2.#.digin.LimitN.Filter[8] "Digital filter for limit- switch";		// Digital filter for limit- switch
-param rw bit PEv2.#.digin.LimitN.invert[8] "Invert limit- (PK_ASO_SWITCH_INVERT_LIMIT_N)";
-param rw bit PEv2.#.digin.LimitN.Enabled[8] "Limit- is available (PK_ASO_SWITCH_LIMIT_N)";
 
 
-//pin out unsigned PEv2.#.LimitStatusP[8];					// Limit+ status (NOT bit-mapped)
-pin out bit PEv2.#.digin.LimitP.in[8];
-pin out bit PEv2.#.digin.LimitP.in-not[8];
-pin out bit PEv2.#.digin.LimitP.DedicatedInput[8];
-param rw unsigned PEv2.#.digin.LimitP.Pin[8] "Limit+ switch pin (0 for external dedicated input)";			// Limit+ switch pin (0 for external dedicated input)
-param rw unsigned PEv2.#.digin.LimitP.Filter[8] "Digital filter for limit+ switch";		// Digital filter for limit+ switch
-param rw bit PEv2.#.digin.LimitP.invert[8] "Invert limit+ (PK_ASO_SWITCH_INVERT_LIMIT_P)";
-param rw bit PEv2.#.digin.LimitP.Enabled[8] "Limit+ is available (PK_ASO_SWITCH_INVERT_LIMIT_P)";
+
+
+
+
+
 
 
 pin in bit PEv2.#.digout.AxisEnable.out[8];		// Axis enabled output
 param rw unsigned PEv2.#.digout.AxisEnable.Pin[8] "Axis enabled output pin (0 for external dedicated output)";		// Axis enabled output pin (0 for external dedicated output)
 param rw bit PEv2.#.digout.AxisEnable.invert[8] "Invert axis enable signal"	;	// Invert axis enable signal
 
-//pin out bit PEv2.#.HomeSwitchStat[8];				// Home switch
-//pin out bit PEv2.HomeSwitch;				// Home switch
-//pin out unsigned PEv2.#.HomeStatus[8];
-pin out bit PEv2.#.digin.Home.in[8];					// Home status (NOT bit-mapped)
-pin out bit PEv2.#.digin.Home.in-not[8];					// inverted Home status (NOT bit-mapped)
-pin out bit PEv2.#.digin.Home.DedicatedInput[8];
-param rw unsigned PEv2.#.digin.Home.Pin[8] "Home switch pin (0 for external dedicated input)";			// Home switch pin (0 for external dedicated input)
-param rw unsigned PEv2.#.digin.Home.Filter[8] "Digital filter for home-switch";
-param rw bit PEv2.#.digin.Home.invert[8] "Invert home-switch (PK_ASO_SWITCH_INVERT_HOME)";
-param rw bit PEv2.#.digin.Home.Enabled[8] "Invert home-switch (PK_ASO_SWITCH_HOME)";
-param rw bit PEv2.#.digin.Home.OnLimitN[8] "Shared with Limit- (PK_ASO_SWITCH_COMBINED_LN_H)";
-param rw bit PEv2.#.digin.Home.OnLimitP[8] "Shared with Limit+ (PK_ASO_SWITCH_COMBINED_LP_H)";
+
 
 //pin out bit PEv2.#.LimitMSwitch [8];			// Limit- switch
 //pin out bit PEv2.#.LimitPSwitch [8];			// Limit+ switch
@@ -1077,8 +1108,8 @@ void user_mainloop(void)
 	rtapi_print("  \n");
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: user_mainloop started  \n", __FILE__, __FUNCTION__);
 	rtapi_print("  \n");
-	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: trigger hal_init('pokeys'#')\n", __FILE__, __FUNCTION__);
-	comp_id = hal_init("pokeys");
+	//rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: trigger hal_init('pokeys'#')\n", __FILE__, __FUNCTION__);
+	// comp_id = hal_init("pokeys"); // seems already initialized
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: comp_id: %d\n", __FILE__, __FUNCTION__, comp_id);
 	rtapi_print("  \n");
     while(0xb)
@@ -3507,15 +3538,7 @@ void user_mainloop(void)
 						 }
 					 }
 
-					 /*
-								 PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled
-								 PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
-								 PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
-								 PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
-								 PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
-								 PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
-								 PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
-							 */
+
 					 uint8_t AxesConfig[8];
 					 uint8_t AxesSwitchConfig[8];
 					 for (i = 0; i < dev->PEv2.info.nrOfAxes; i++)
@@ -3524,9 +3547,171 @@ void user_mainloop(void)
 						 {
 							 bool doAxisConfig = false;
 							 // Convert mm/s -> pulses/s
+							/* read parameters for Axis configuration - see ePK_PEv2_AxisConfig
+							PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled
+							PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
+							PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
+							PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
+							PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
+							PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
+							PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
+
+							pin out unsigned PEv2.#.AxesConfig[8];				// Axis configuration - see ePK_PEv2_AxisConfig
+							param rw s32 PEv2.#.AxisEnabled[8] "Axis enabled";
+							param rw s32 PEv2.#.AxisInverted[8] "Axis inverted";
+							param rw s32 PEv2.#.AxisInternalPlanner[8] "Axis uses internal motion planner";
+							param rw s32 PEv2.#.AxisPositionMode[8] "Internal motion planner for this axis is in position mode";
+							param rw s32 PEv2.#.AxisInvertedHome[8] "Axis homing direction is inverted";
+							param rw s32 PEv2.#.AxisSoftLimitEnabled[8] "Use soft-limits for this axis";
+							param rw s32 PEv2.#.AxisEnabledMasked[8] "Use output enable pin masking";
+							 */
 							 AxesConfig[i] = 0;
-							 AxesSwitchConfig[i] = PEv2_AxesSwitchConfig(i); // initial value from ini file
-							 if (PEv2_stepgen_STEP_SCALE(i) != 0)
+							 if (PEv2_AxisEnabled(i) != 0)
+							 {
+								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 0, true);  // PK_AC_ENABLED ;
+							 }
+							 else
+							 {
+								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 0, false);  // PK_AC_ENABLED ;
+							 }
+							 if (PEv2_AxisInverted(i) != 0)
+							 {
+								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 1, true);  // PK_AC_INVERTED ;
+							 }
+							 else
+							 {
+								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 1, false);  // PK_AC_INVERTED ;
+							 }
+							 if (PEv2_AxisInternalPlanner(i) != 0)
+							 {
+								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 2, true);  // PK_AC_INTERNAL_PLANNER ;
+							 }
+							 else
+							 {
+								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 2, false);  // PK_AC_INTERNAL_PLANNER ;
+							 }
+							 if (PEv2_AxisPositionMode(i) != 0)
+							 {
+								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 3, true);  // PK_AC_POSITION_MODE ;
+							 }
+							 else
+							 {
+								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 3, false);  // PK_AC_POSITION_MODE ;
+							 }
+							 if (PEv2_AxisInvertedHome(i) != 0)
+							 {
+								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 4, true);  // PK_AC_INVERTED_HOME ;
+							 }
+							 else
+							 {
+								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 4, false);  // PK_AC_INVERTED_HOME ;
+							 }
+							 if (PEv2_AxisSoftLimitEnabled(i) != 0)
+							 {
+								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 5, true);  // PK_AC_SOFT_LIMIT_ENABLED ;
+							 }
+							 else
+							 {
+								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 5, false);  // PK_AC_SOFT_LIMIT_ENABLED ;
+							 }
+							if (PEv2_AxisEnabledMasked(i) != 0)
+							 {
+								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 7, true);  // PK_AC_ENABLED_MASKED ;
+							 }
+							 else
+							 {
+								 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 7, false);  // PK_AC_ENABLED_MASKED ;
+							 }
+							/* PEv2_AxesSwitchConfig
+							PK_ASO_SWITCH_LIMIT_N: 1 << 0 = 1
+							PK_ASO_SWITCH_LIMIT_P : 1 << 1 = 2
+							PK_ASO_SWITCH_HOME : 1 << 2 = 4
+							PK_ASO_SWITCH_COMBINED_LN_H : 1 << 3 = 8
+							PK_ASO_SWITCH_COMBINED_LP_H : 1 << 4 = 16
+							PK_ASO_SWITCH_INVERT_LIMIT_N : 1 << 5 = 32
+							PK_ASO_SWITCH_INVERT_LIMIT_P : 1 << 6 = 64
+							PK_ASO_SWITCH_INVERT_HOME : 1 << 7 = 128
+
+							param rw unsigned PEv2.#.AxesSwitchConfig[8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
+							param rw bit PEv2.#.digin.LimitN.Enabled[8] "Limit- is available (PK_ASO_SWITCH_LIMIT_N)";
+							param rw bit PEv2.#.digin.LimitP.Enabled[8] "Limit+ is available (PK_ASO_SWITCH_LIMIT_P)";
+							param rw bit PEv2.#.digin.Home.Enabled[8] "Invert home-switch (PK_ASO_SWITCH_HOME)";
+							param rw bit PEv2.#.digin.Home.OnLimitN[8] "Shared with Limit- (PK_ASO_SWITCH_COMBINED_LN_H)";
+							param rw bit PEv2.#.digin.Home.OnLimitP[8] "Shared with Limit+ (PK_ASO_SWITCH_COMBINED_LP_H)";
+							param rw bit PEv2.#.digin.LimitN.invert[8] "Invert limit- (PK_ASO_SWITCH_INVERT_LIMIT_N)";
+							param rw bit PEv2.#.digin.LimitP.invert[8] "Invert limit+ (PK_ASO_SWITCH_INVERT_LIMIT_P)";
+							param rw bit PEv2.#.digin.Home.invert[8] "Invert home-switch (PK_ASO_SWITCH_INVERT_HOME)";
+							*/
+							AxesSwitchConfig[i] = PEv2_AxesSwitchConfig(i); // initial value from ini file
+
+							if (PEv2_digin_LimitN_Enabled(i) != 0)
+							{
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 0, true);  // PK_ASO_SWITCH_LIMIT_N ;
+							}
+							else
+							{	
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 0, false);  // PK_ASO_SWITCH_LIMIT_N ;
+							}
+							if (PEv2_digin_LimitP_Enabled(i) != 0)
+							{
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 1, true);  // PK_ASO_SWITCH_LIMIT_P ;
+							}
+							else
+							{
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 1, false);  // PK_ASO_SWITCH_LIMIT_P ;
+							}
+							if (PEv2_digin_Home_Enabled(i) != 0)
+							{
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 2, true);  // PK_ASO_SWITCH_HOME ;
+							}
+							else
+							{
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 2, false);  // PK_ASO_SWITCH_HOME ;
+							}
+							if (PEv2_digin_Home_OnLimitN(i) != 0)
+							{
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 3, true);  // PK_ASO_SWITCH_COMBINED_LN_H ;
+							}
+							else
+							{
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 3, false);  // PK_ASO_SWITCH_COMBINED_LN_H ;
+							}
+							if (PEv2_digin_Home_OnLimitP(i) != 0)
+							{
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 4, true);  // PK_ASO_SWITCH_COMBINED_LP_H ;
+							}
+							else
+							{
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 4, false);  // PK_ASO_SWITCH_COMBINED_LP_H ;
+							}
+							if (PEv2_digin_LimitN_invert(i) != 0)
+							{
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 5, true);  // PK_ASO_SWITCH_INVERT_LIMIT_N ;
+							}
+							else
+							{
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 5, false);  // PK_ASO_SWITCH_INVERT_LIMIT_N ;
+							}
+							if (PEv2_digin_LimitP_invert(i) != 0)
+							{
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 6, true);  // PK_ASO_SWITCH_INVERT_LIMIT_P ;
+							}
+							else
+							{
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 6, false);  // PK_ASO_SWITCH_INVERT_LIMIT_P ;
+							}
+							if (PEv2_digin_Home_invert(i) != 0)
+							{
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 7, true);  // PK_ASO_SWITCH_INVERT_HOME ;
+							}
+							else
+							{
+								AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 7, false);  // PK_ASO_SWITCH_INVERT_HOME ;
+							}
+
+								
+								
+							if (PEv2_stepgen_STEP_SCALE(i) != 0)
 							 {
 								 //need to ensure positve values for the following calculations otherwise machine will not move
 								 PEv2_MaxSpeed(i) = abs(PEv2_stepgen_STEPGEN_MAXVEL(i) * PEv2_stepgen_STEP_SCALE(i)) / 1000;				// Maximum axis speed convert (mm/s) to (pulses per ms)
@@ -3544,7 +3729,7 @@ void user_mainloop(void)
 									 
 									 PEv2_digin_SoftLimit_PosMax(i) = (PEv2_stepgen_MAX_LIMIT(i) + LimitOffset) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit maximum position
 									 PEv2_digin_SoftLimit_PosMin(i) = (PEv2_stepgen_MIN_LIMIT(i) + LimitOffset) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit minimum position
-									 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 5, true);  // PK_AC_SOFT_LIMIT_ENABLED ;
+									 // AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 5, true);  // PK_AC_SOFT_LIMIT_ENABLED ;
 								 }
 								 else
 								 {
@@ -3554,13 +3739,13 @@ void user_mainloop(void)
 									 }
 									 PEv2_digin_SoftLimit_PosMax(i) = ( PEv2_stepgen_MIN_LIMIT(i) + LimitOffset) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit maximum position
 									 PEv2_digin_SoftLimit_PosMin(i) = ( PEv2_stepgen_MAX_LIMIT(i) + LimitOffset) * PEv2_stepgen_STEP_SCALE(i);		// Soft limit minimum position
-									 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 1, true);  // PK_AC_INVERTED ;
-									 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 5, true);  // PK_AC_SOFT_LIMIT_ENABLED ;
+									// AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 1, true);  // PK_AC_INVERTED ;
+									// AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 5, true);  // PK_AC_SOFT_LIMIT_ENABLED ;
 
 								  }
 								 if (PEv2_digin_SoftLimit_PosMax(i) == PEv2_digin_SoftLimit_PosMin(i))
 								 { //DISABLE SOFT LIMITS
-									 AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 5, false);  // PK_AC_SOFT_LIMIT_ENABLED ;
+									// AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 5, false);  // PK_AC_SOFT_LIMIT_ENABLED ;
 									 doAxisConfig = true;
 								 }
 
@@ -3689,6 +3874,7 @@ void user_mainloop(void)
 
 							 if (PEv2_digin_Home_Pin(i) != 0)
 							 {
+								 // path if pin (not dedicated) is used for home switch
 								 //check if pin is parametrized in HAL
 								 int Home = PEv2_digin_Home_Pin(i);
 								 int LimP = PEv2_digin_LimitP_Pin(i);
@@ -3710,7 +3896,6 @@ void user_mainloop(void)
 								 {
 									 //dev->PEv2.PinHomeSwitch(i)=0;
 									 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 3, true); // 8 Home switch is shared with Limit- switch
-
 								 }
 								 AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 2, true); // | PK_ASO_SWITCH_HOME;
 								 if (dev->Pins[Home - 1].PinFunction != PK_PinCap_digitalInput)
