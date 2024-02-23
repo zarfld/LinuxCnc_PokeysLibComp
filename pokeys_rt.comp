@@ -4,8 +4,6 @@ description """
 This component provides a real-time interface to the PoKeys device.
 It is based on the PoKeysLibRt library. (which is PoKeysLib.H modified not tu use libusb)
 It is a work in progress and is not yet functional.
-
-
 """;
 
 pin in unsigned devSerial;
@@ -22,9 +20,9 @@ pin out bit alive;
 
 license "GPL";
 author "Dominik Zarfl";
-option  homemod;
+option homemod;
 option extra_link_args "-lPoKeysRt -lpthread";
-option  extra_setup;
+option extra_setup;
 ;;
 
 /* To incorporate default homing.c file from a local git src tree:
@@ -41,7 +39,7 @@ option  extra_setup;
 #include "motion.h"
 //#include "homing.h"
 #include "stdlib.h"
-#include "PoKeysLibRt.h"
+#include <PoKeysLibRt.h>
 
 #undef POKEYSLIB_USE_LIBUSB
 
