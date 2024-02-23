@@ -16,7 +16,7 @@ loadusr -W start_delay_5000
 loadrt pid names=pid.s
 
 
-loadusr -W xhc-whb04b-6 -HsfB
+#loadusr -W xhc-whb04b-6 -HsfB
 
 addf motion-command-handler   servo-thread
 addf motion-controller        servo-thread
