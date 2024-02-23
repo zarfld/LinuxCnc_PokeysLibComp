@@ -239,7 +239,7 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 	}
 }
 
-static int 
+
 // EXTRA_SETUP is executed before rtapi_app_main()
 EXTRA_SETUP()
 {
