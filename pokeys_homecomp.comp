@@ -326,7 +326,7 @@ rtapi_print_msg(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
     return;
 }
 void write_homing_out_pins(int njoints) {
-rtapi_print_msg(RTAPI_MSG_INFO, "Function %s started\n", __FUNCTION__);
+    rtapi_print_msg(RTAPI_MSG_INFO, "Function %s started\n", __FUNCTION__);
     int jno;
     one_joint_home_data_t* addr;
     for (jno = 0; jno < njoints; jno++) {
@@ -336,7 +336,7 @@ rtapi_print_msg(RTAPI_MSG_INFO, "Function %s started\n", __FUNCTION__);
         addr->home_state = (hal_s32_t *)H[jno].home_state;
         addr->index_enable = (hal_bit_t*)H[jno].index_enable;
     }
-rtapi_print_msg(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
+    rtapi_print_msg(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
     return;
 }
 
@@ -346,7 +346,7 @@ void do_home_joint(int joint_num) {
     one_joint_home_data_t* addr;
     addr = &(joint_home_data->jhd[joint_num]);
     addr->PEv2_AxesState = (hal_u32_t*)PK_PEAxisState_axHOMINGSTART;
-    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__)
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
     return; 
 }
 
@@ -357,7 +357,7 @@ void set_unhomed(int joint_num, motion_state_t motstate) {
 	addr = &(joint_home_data->jhd[joint_num]);
     addr->PEv2_AxesCommand = (hal_u32_t*)PK_PEAxisCommand_axHOMINGCANCEL;
     addr->homed = 0;
-    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__)
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
     return; 
 }
 void do_cancel_homing(int joint_num) {
@@ -375,19 +375,22 @@ void do_cancel_homing(int joint_num) {
 // overall status:
 bool get_allhomed() { 
     rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
-return 1; }
+    return 1; 
+}
 bool get_homing_is_active() { 
     rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
-return 0; }
+    return 0; 
+}
 
 // per-joint information:
 int  get_home_sequence(int jno) { 
     rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
-    return H[jno].home_sequence; }//return s
+    return H[jno].home_sequence; 
+}//return s
 bool get_homing(int jno) 
 { 
     rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
-return H[jno].homing; 
+    return H[jno].homing; 
 }
 bool get_homed(int jno) { 
     rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
@@ -395,20 +398,23 @@ bool get_homed(int jno) {
 }
 bool get_index_enable(int jno) { 
     rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
-return H[jno].index_enable; }
+    return H[jno].index_enable; 
+}
 bool get_home_needs_unlock_first(int jno) { 
     rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
-        return 0; }
+    return 0; 
+}
 bool get_home_is_idle(int jno) {
     RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__); 
-return 1; }
+    return 1; 
+}
 bool get_home_is_synchronized(int jno) { 
     RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__); 
-return H[jno].home_is_synchronized;
+    return H[jno].home_is_synchronized;
 }
 bool get_homing_at_index_search_wait(int jno) { 
     RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
-return 0; 
+    return 0; 
 }
 
 static void update_home_is_synchronized(void) {
