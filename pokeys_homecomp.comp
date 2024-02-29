@@ -434,7 +434,7 @@ static void update_home_is_synchronized(void) {
         }
     }
     rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
-    return
+    return;
 }
 
 // per-joint interface parameters (one-time setup)
