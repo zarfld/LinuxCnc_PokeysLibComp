@@ -405,20 +405,20 @@ bool get_home_needs_unlock_first(int jno) {
     return 0; 
 }
 bool get_home_is_idle(int jno) {
-    RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__); 
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
     return 1; 
 }
 bool get_home_is_synchronized(int jno) { 
-    RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__); 
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
     return H[jno].home_is_synchronized;
 }
 bool get_homing_at_index_search_wait(int jno) { 
-    RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
     return 0; 
 }
 
 static void update_home_is_synchronized(void) {
-RTAPI_MSG_INFO, "Function %s started\n", __FUNCTION__);
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s started\n", __FUNCTION__);
     // invoke anytime H[*].home_sequence is altered
     int jno, jj, all_joints;
     all_joints = sizeof(H) / sizeof(H[0]);
@@ -433,7 +433,7 @@ RTAPI_MSG_INFO, "Function %s started\n", __FUNCTION__);
             }
         }
     }
-    RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
     return
 }
 
@@ -457,7 +457,7 @@ void set_joint_homing_params(int    jno,
     H[jno].home_sequence = home_sequence;
     H[jno].volatile_home = volatile_home;
     update_home_is_synchronized();
-    RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
     return;
 }
 
@@ -467,7 +467,7 @@ void update_joint_homing_params(int jno, double offset, double home, int home_se
     H[jno].home = home;
     H[jno].home_sequence = home_sequence;
  //   update_home_is_synchronized();
-    RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
     return;
 }
 
