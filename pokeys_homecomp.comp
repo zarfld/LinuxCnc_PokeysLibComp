@@ -451,6 +451,7 @@ void set_joint_homing_params(int    jno,
     int    home_sequence,
     bool   volatile_home
 ) {
+    rtapi_print_msg(RTAPI_MSG_ERR, "Function %s started\n", __FUNCTION__);
     H[jno].home_offset = offset;
     H[jno].home = home;
     H[jno].home_final_vel = home_final_vel;
@@ -466,6 +467,7 @@ void set_joint_homing_params(int    jno,
 
 // updateable interface params (for inihal pin changes typically):
 void update_joint_homing_params(int jno, double offset, double home, int home_sequence) {
+    rtapi_print_msg(RTAPI_MSG_ERR, "Function %s started\n", __FUNCTION__);
     H[jno].home_offset = offset;
     H[jno].home = home;
     H[jno].home_sequence = home_sequence;
