@@ -26,10 +26,10 @@ all: $(SOURCES) libPoKeysRt.so
 
 static: libPoKeysRt.a
 
-libPoKeys.a: $(OBJECTS)
-	$(AR) rcs libPoKeys.a $(OBJECTS)
+libPoKeysRt.a: $(OBJECTS)
+	$(AR) rcs libPoKeysRt.a $(OBJECTS)
 
-libPoKeys.so: $(OBJECTS)
+libPoKeysRt.so: $(OBJECTS)
 	$(CC) -shared $(OBJECTS) -o libPoKeysRt.so $(LDFLAGS)
 	
 clean:

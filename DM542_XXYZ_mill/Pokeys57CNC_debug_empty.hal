@@ -8,17 +8,15 @@ loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JO
 loadusr -W pokeys
 loadusr -W kbd48CNC 
 loadrt pokeys_rt serial_number=[POKEYS]DEVICE_ID
+show function
 #loadrt -W start_delay delay_ms=5000 
-loadusr -W start_delay
+loadusr -W start_delay_5000
 
-#show pin
-#show parameter
-#loadrt pid names=pid.x,pid.x2,pid.y,pid.z,pid.s
+
 loadrt pid names=pid.s
-#show pin
-#show parameter
 
-loadusr -W xhc-whb04b-6 -HsfB
+
+#loadusr -W xhc-whb04b-6 -HsfB
 
 addf motion-command-handler   servo-thread
 addf motion-controller        servo-thread

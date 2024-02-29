@@ -258,7 +258,7 @@ param rw bit PEv2.#.digin.Home.invert[8] "Invert home-switch (PK_ASO_SWITCH_INVE
 // PinParametrization for Limit_N Pin
 //pin out unsigned PEv2.#.LimitStatusN[8];					// Limit- status (NOT bit-mapped)
 pin out bit PEv2.#.digin.LimitN.in[8];
-pin out bit PEv2.#.digin.LimitN.in - not[8];
+pin out bit PEv2.#.digin.LimitN.in-not[8];
 pin out bit PEv2.#.digin.LimitN.DedicatedInput[8];
 param rw unsigned PEv2.#.digin.LimitN.Pin[8] "Limit- switch pin (0 for external dedicated input)";			// Limit- switch pin (0 for external dedicated input)
 param rw unsigned PEv2.#.digin.LimitN.Filter[8] "Digital filter for limit- switch";		// Digital filter for limit- switch
@@ -266,7 +266,7 @@ param rw unsigned PEv2.#.digin.LimitN.Filter[8] "Digital filter for limit- switc
 // PinParametrization for Limit_P Pin
 //pin out unsigned PEv2.#.LimitStatusP[8];					// Limit+ status (NOT bit-mapped)
 pin out bit PEv2.#.digin.LimitP.in[8];
-pin out bit PEv2.#.digin.LimitP.in - not[8];
+pin out bit PEv2.#.digin.LimitP.in-not[8];
 pin out bit PEv2.#.digin.LimitP.DedicatedInput[8];
 param rw unsigned PEv2.#.digin.LimitP.Pin[8] "Limit+ switch pin (0 for external dedicated input)";			// Limit+ switch pin (0 for external dedicated input)
 param rw unsigned PEv2.#.digin.LimitP.Filter[8] "Digital filter for limit+ switch";		// Digital filter for limit+ switch
@@ -276,7 +276,7 @@ param rw unsigned PEv2.#.digin.LimitP.Filter[8] "Digital filter for limit+ switc
 //pin out bit PEv2.HomeSwitch;				// Home switch
 //pin out unsigned PEv2.#.HomeStatus[8];
 pin out bit PEv2.#.digin.Home.in[8];					// Home status (NOT bit-mapped)
-pin out bit PEv2.#.digin.Home.in - not[8];					// inverted Home status (NOT bit-mapped)
+pin out bit PEv2.#.digin.Home.in-not[8];					// inverted Home status (NOT bit-mapped)
 pin out bit PEv2.#.digin.Home.DedicatedInput[8];
 param rw unsigned PEv2.#.digin.Home.Pin[8] "Home switch pin (0 for external dedicated input)";			// Home switch pin (0 for external dedicated input)
 param rw unsigned PEv2.#.digin.Home.Filter[8] "Digital filter for home-switch";
