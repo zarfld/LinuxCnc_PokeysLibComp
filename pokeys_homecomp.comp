@@ -20,8 +20,8 @@ pin out bit is_module = 1; //one pin is required to use halcompile)
 license "GPL";
 author "Dominik Zarfl";
 //version "0.1.0";
-option  homemod;
-option  extra_setup;
+option homemod;
+option extra_setup;
 ;;
 
 
@@ -410,11 +410,7 @@ void set_joint_homing_params(int    jno,
 }
 
 // updateable interface params (for inihal pin changes typically):
-void update_joint_homing_params(int    jno,
-    double offset,
-    double home,
-    int    home_sequence
-) {
+void update_joint_homing_params(int jno, double offset, double home, int home_sequence) {
     H[jno].home_offset = offset;
     H[jno].home = home;
     H[jno].home_sequence = home_sequence;
