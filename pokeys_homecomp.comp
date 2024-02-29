@@ -180,6 +180,7 @@ static all_joints_home_data_t* joint_home_data = 0;
 
 static int makepins(int id, int njoints)
 {
+    rtapi_print_msg(RTAPI_MSG_INFO, "Function %s started\n", __FUNCTION__);
     // home_pins needed to work with configs expecting them:
     int jno, retval;
     one_joint_home_data_t* addr;
@@ -245,6 +246,9 @@ void homeMotFunctions(void(*pSetRotaryUnlock)(int, int)
     , int (*pGetRotaryIsUnlocked)(int)
 )
 {
+    rtapi_print_msg(RTAPI_MSG_INFO, "Function %s started\n", __FUNCTION__);
+
+    rtapi_print_msg(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
     return;
 }
 
@@ -257,9 +261,11 @@ int  homing_init(int id,
     int n_joints,
     int n_extrajoints,
     emcmot_joint_t* pjoints) {
+    rtapi_print_msg(RTAPI_MSG_INFO, "Function %s started\n", __FUNCTION__);
     joints = pjoints;
     if (n_joints == 0) { n_joints == 8; }
 
+    rtapi_print_msg(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
     return makepins(id, n_joints);
 }
 
@@ -267,6 +273,7 @@ int  homing_init(int id,
 bool do_homing(void) { return 1; }//return 1 if allhomed
 void read_homing_in_pins(int njoints)
 {
+    rtapi_print_msg(RTAPI_MSG_INFO, "Function %s started\n", __FUNCTION__);
     int jno;
     one_joint_home_data_t* addr;
     for ( jno = 0; jno < njoints; jno++) {
@@ -315,9 +322,11 @@ void read_homing_in_pins(int njoints)
             break;
         }
     }
+rtapi_print_msg(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
     return;
 }
 void write_homing_out_pins(int njoints) {
+rtapi_print_msg(RTAPI_MSG_INFO, "Function %s started\n", __FUNCTION__);
     int jno;
     one_joint_home_data_t* addr;
     for (jno = 0; jno < njoints; jno++) {
@@ -327,49 +336,83 @@ void write_homing_out_pins(int njoints) {
         addr->home_state = (hal_s32_t *)H[jno].home_state;
         addr->index_enable = (hal_bit_t*)H[jno].index_enable;
     }
+rtapi_print_msg(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
     return;
 }
 
 // responses to EMCMOT_JOINT_HOME message:
 void do_home_joint(int joint_num) {
+    rtapi_print_msg(RTAPI_MSG_INFO, "Function %s started\n", __FUNCTION__);
     one_joint_home_data_t* addr;
     addr = &(joint_home_data->jhd[joint_num]);
     addr->PEv2_AxesState = (hal_u32_t*)PK_PEAxisState_axHOMINGSTART;
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__)
     return; 
 }
 
 // per-joint controls:
 void set_unhomed(int joint_num, motion_state_t motstate) {
+    rtapi_print_msg(RTAPI_MSG_INFO, "Function %s started\n", __FUNCTION__);
     one_joint_home_data_t* addr;
 	addr = &(joint_home_data->jhd[joint_num]);
     addr->PEv2_AxesCommand = (hal_u32_t*)PK_PEAxisCommand_axHOMINGCANCEL;
     addr->homed = 0;
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__)
     return; 
 }
 void do_cancel_homing(int joint_num) {
+    rtapi_print_msg(RTAPI_MSG_INFO, "Function %s started\n", __FUNCTION__);
     one_joint_home_data_t* addr;
     addr = &(joint_home_data->jhd[joint_num]);
     addr->PEv2_AxesCommand = (hal_u32_t*)PK_PEAxisCommand_axHOMINGCANCEL;
-    return; }
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
+    return; 
+}
 
 //---------------------------------------------------------------------
 // QUERIES
 
 // overall status:
-bool get_allhomed() { return 1; }
-bool get_homing_is_active() { return 0; }
+bool get_allhomed() { 
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
+return 1; }
+bool get_homing_is_active() { 
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
+return 0; }
 
 // per-joint information:
-int  get_home_sequence(int jno) { return H[jno].home_sequence; }//return s
-bool get_homing(int jno) { return H[jno].homing; }
-bool get_homed(int jno) { return H[jno].homed; }
-bool get_index_enable(int jno) { return H[jno].index_enable; }
-bool get_home_needs_unlock_first(int jno) { return 0; }
-bool get_home_is_idle(int jno) { return 1; }
-bool get_home_is_synchronized(int jno) { return H[jno].home_is_synchronized;}
-bool get_homing_at_index_search_wait(int jno) { return 0; }
+int  get_home_sequence(int jno) { 
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
+    return H[jno].home_sequence; }//return s
+bool get_homing(int jno) 
+{ 
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
+return H[jno].homing; 
+}
+bool get_homed(int jno) { 
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
+    return H[jno].homed; 
+}
+bool get_index_enable(int jno) { 
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
+return H[jno].index_enable; }
+bool get_home_needs_unlock_first(int jno) { 
+    rtapi_print_message(RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
+        return 0; }
+bool get_home_is_idle(int jno) {
+    RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__); 
+return 1; }
+bool get_home_is_synchronized(int jno) { 
+    RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__); 
+return H[jno].home_is_synchronized;
+}
+bool get_homing_at_index_search_wait(int jno) { 
+    RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
+return 0; 
+}
 
 static void update_home_is_synchronized(void) {
+RTAPI_MSG_INFO, "Function %s started\n", __FUNCTION__);
     // invoke anytime H[*].home_sequence is altered
     int jno, jj, all_joints;
     all_joints = sizeof(H) / sizeof(H[0]);
@@ -384,6 +427,8 @@ static void update_home_is_synchronized(void) {
             }
         }
     }
+    RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
+    return
 }
 
 // per-joint interface parameters (one-time setup)
@@ -406,6 +451,7 @@ void set_joint_homing_params(int    jno,
     H[jno].home_sequence = home_sequence;
     H[jno].volatile_home = volatile_home;
     update_home_is_synchronized();
+    RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
     return;
 }
 
@@ -415,6 +461,7 @@ void update_joint_homing_params(int jno, double offset, double home, int home_se
     H[jno].home = home;
     H[jno].home_sequence = home_sequence;
  //   update_home_is_synchronized();
+    RTAPI_MSG_INFO, "Function %s ended\n", __FUNCTION__);
     return;
 }
 
