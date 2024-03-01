@@ -73,6 +73,6 @@ make -f Makefile.noqmake.rt install
 # register the pokeyslib to be included in halcompile for pokeys_rt.comp
 
 echo "Compiling pokeys_rt.comp..."
-halcompile --install pokeys_rt.comp PoKeysLibCore.c PoKeysLibCoreSockets.c PoKeysLibDeviceData.c PoKeysLibIO.c PoKeysLibEncoders.c PoKeysLibMatrixLED.c PoKeysLibMatrixKB.c PoKeysLibPoNET.c PoKeysLibLCD.c PoKeysLibRTC.c PoKeysLibEasySensors.c PoKeysLibI2C.c PoKeysLib1Wire.c PoKeysLibSPI.c PoKeysLibPulseEngine_v2.c PoKeysLibUART.c PoKeysLibCAN.c PoKeysLibFailsafe.c PoKeysLibWS2812.c
+halcompile --install pokeys_rt.comp -lPoKeysRt
 echo "pokeys_rt.comp compiled successfully."
 
