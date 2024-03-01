@@ -73,6 +73,7 @@ make -f Makefile.noqmake.rt install
 # register the pokeyslib to be included in halcompile for pokeys_rt.comp
 
 echo "Compiling pokeys_rt.comp..."
-halcompile --install pokeys_rt.comp -lPoKeysRt
+#--extra-compile-args="-I/usr/local/include" --extra-link-args="-L/usr/local/lib -lwiringPi -lwiringPiDev -lpthread -lm -lcrypt -lrt"
+halcompile --install pokeys_rt.comp --extra-compile-args="-I./" --extra-link-args="-lPoKeysRt -lpthread"
 echo "pokeys_rt.comp compiled successfully."
 
