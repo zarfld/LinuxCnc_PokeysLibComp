@@ -1303,7 +1303,6 @@ POKEYSDECL int32_t PK_SL_PWM_SetDuty(sPoKeysDevice* device, uint8_t channel, uin
 
 EXPORT_SYMBOL(PK_EnumerateNetworkDevices);
 EXPORT_SYMBOL(PK_SearchNetworkDevices);
-EXPORT_SYMBOL(PK_SearchNetworkDevices);
 EXPORT_SYMBOL(PK_ConnectToDeviceWSerial_UDP);
 
 EXPORT_SYMBOL(PK_ConnectToPoKeysDevice);
