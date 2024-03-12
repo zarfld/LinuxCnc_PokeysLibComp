@@ -83,7 +83,7 @@ RTLIBDIR := /usr/rtlib
 LIBDIR := /usr/lib
 else
 prefix := @prefix@
-EXTRA_CFLAGS := $(RTFLAGS) -D__MODULE__ -I/usr/include -I/usr/include/linuxcnc -I/usr/include/linuxcnc/rtapi_bool.h
+EXTRA_CFLAGS := $(RTFLAGS) -D__MODULE__ -I/usr/include -I/usr/include/linuxcnc
 RTLIBDIR := /usr/lib/linuxcnc/modules
 LIBDIR := /lib/linuxcnc
 endif
