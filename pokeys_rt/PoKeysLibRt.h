@@ -1300,7 +1300,7 @@ POKEYSDECL int32_t PK_SL_PWM_SetDuty(sPoKeysDevice* device, uint8_t channel, uin
 //POKEYSDECL int32_t PK_OEM_Martelli_SetRate(sPoKeysDevice* device, uint32_t rate);
 
 // export symbols of PokeyslibRt.h
-
+/*
 EXPORT_SYMBOL(PK_EnumerateNetworkDevices);
 EXPORT_SYMBOL(PK_SearchNetworkDevices);
 EXPORT_SYMBOL(PK_ConnectToDeviceWSerial_UDP);
@@ -1395,6 +1395,8 @@ EXPORT_SYMBOL(PK_PEv2_ProbingFinishSimple);
 
 EXPORT_SYMBOL(PK_PEv2_SyncedPWMSetup);
 EXPORT_SYMBOL(PK_PEv2_SyncOutputsSetup);
+*/
+
 /*
 POKEYSDECL int32_t PK_PEv2_InternalDriversConfigurationGet(sPoKeysDevice * device);
 POKEYSDECL int32_t PK_PEv2_InternalDriversConfigurationSet(sPoKeysDevice * device);
@@ -1415,7 +1417,7 @@ POKEYSDECL int32_t PK_PoStep_ConfigurationSet(sPoKeysDevice * device);
 POKEYSDECL int32_t PK_PoStep_StatusGet(sPoKeysDevice * device);
 POKEYSDECL int32_t PK_PoStep_DriverConfigurationGet(sPoKeysDevice * device);
 POKEYSDECL int32_t PK_PoStep_DriverConfigurationSet(sPoKeysDevice * device);
-*/
+
 EXPORT_SYMBOL(PK_PEv2_InternalDriversConfigurationGet);
 EXPORT_SYMBOL(PK_PEv2_InternalDriversConfigurationSet);
 EXPORT_SYMBOL(PK_PEv2_ThreadingPrepareForTrigger);
@@ -1432,7 +1434,7 @@ EXPORT_SYMBOL(PK_PoStep_ConfigurationSet);
 EXPORT_SYMBOL(PK_PoStep_StatusGet);
 EXPORT_SYMBOL(PK_PoStep_DriverConfigurationGet);
 EXPORT_SYMBOL(PK_PoStep_DriverConfigurationSet);
-
+*/
 
 /*
 // I2C operations status return ePK_I2C_STATUS, described above
@@ -1463,7 +1465,7 @@ POKEYSDECL int32_t PK_PoNETSetModulePWM(sPoKeysDevice* device);
 POKEYSDECL int32_t PK_PoNETGetModuleLightRequest(sPoKeysDevice* device);
 POKEYSDECL int32_t PK_PoNETGetModuleLight(sPoKeysDevice* device);
 
-*/
+
 EXPORT_SYMBOL(PK_I2CSetStatus);
 EXPORT_SYMBOL(PK_I2CGetStatus);
 EXPORT_SYMBOL(PK_I2CWriteStart);
@@ -1481,7 +1483,7 @@ EXPORT_SYMBOL(PK_PoNETSetModuleStatus);
 EXPORT_SYMBOL(PK_PoNETSetModulePWM);
 EXPORT_SYMBOL(PK_PoNETGetModuleLightRequest);
 EXPORT_SYMBOL(PK_PoNETGetModuleLight);
-
+*/
 /*
 // 1-wire operations
 // Set 1-wire activation status
@@ -1512,7 +1514,7 @@ POKEYSDECL int32_t PK_EasySensorsSetupGet(sPoKeysDevice* device);
 POKEYSDECL int32_t PK_EasySensorsSetupSet(sPoKeysDevice* device);
 // Get all EasySensors values
 POKEYSDECL int32_t PK_EasySensorsValueGetAll(sPoKeysDevice* device);
-*/
+
 EXPORT_SYMBOL(PK_1WireStatusSet);
 EXPORT_SYMBOL(PK_1WireStatusGet);
 EXPORT_SYMBOL(PK_1WireWriteReadStart);
@@ -1525,6 +1527,8 @@ EXPORT_SYMBOL(PK_1WireBusScanStop);
 EXPORT_SYMBOL(PK_EasySensorsSetupGet);
 EXPORT_SYMBOL(PK_EasySensorsSetupSet);
 EXPORT_SYMBOL(PK_EasySensorsValueGetAll);
+
+*/
 
 /*
 // SPI operations
@@ -1551,7 +1555,8 @@ POKEYSDECL int32_t PK_PoILTaskStatus(sPoKeysDevice * device);
 POKEYSDECL int32_t PK_RTCGet(sPoKeysDevice* device);
 POKEYSDECL int32_t PK_RTCSet(sPoKeysDevice* device);
 
-*/
+
+
 EXPORT_SYMBOL(PK_SPIConfigure);
 EXPORT_SYMBOL(PK_SPIWrite);
 EXPORT_SYMBOL(PK_SPIRead);
@@ -1568,7 +1573,7 @@ EXPORT_SYMBOL(PK_PoILChunkReadMemoryInternalAddress);
 EXPORT_SYMBOL(PK_PoILWriteSharedSlot);
 EXPORT_SYMBOL(PK_PoILTaskStatus);
 EXPORT_SYMBOL(PK_RTCGet);
-EXPORT_SYMBOL(PK_RTCSet);
+EXPORT_SYMBOL(PK_RTCSet);*/
 
 /*
 // UART commands
@@ -1605,7 +1610,7 @@ POKEYSDECL int32_t PK_SL_PWM_SetChannelEnabled(sPoKeysDevice* device, uint8_t ch
 POKEYSDECL int32_t PK_SL_PWM_SetDuty(sPoKeysDevice* device, uint8_t channel, uint32_t duty);
 
 */
-
+/*
 EXPORT_SYMBOL(PK_UARTConfigure);
 EXPORT_SYMBOL(PK_UARTWrite);
 EXPORT_SYMBOL(PK_UARTRead);
@@ -1625,7 +1630,7 @@ EXPORT_SYMBOL(PK_SL_EncoderValueGet);
 EXPORT_SYMBOL(PK_SL_EasySensorValueGet);
 EXPORT_SYMBOL(PK_SL_PWM_SetPeriod);
 EXPORT_SYMBOL(PK_SL_PWM_SetChannelEnabled);
-EXPORT_SYMBOL(PK_SL_PWM_SetDuty);
+EXPORT_SYMBOL(PK_SL_PWM_SetDuty);*/
 
 extern int32_t LastRetryCount;
 extern int32_t LastWaitCount;
