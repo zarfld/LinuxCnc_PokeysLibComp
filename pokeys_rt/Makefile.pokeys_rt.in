@@ -92,7 +92,7 @@ EXTRA_CFLAGS += -Wframe-larger-than=2560
 # Add this line to undefine POKEYSLIB_USE_LIBUSB
 EXTRA_CFLAGS += -UPOKEYSLIB_USE_LIBUSB
 
-EXTRA_CFLAGS += -I/usr/include/linuxcnc/rtapi_bool.h -I/usr/include/linuxcnc/rtapi.h -I/usr/include/linuxcnc/rtapi_app.h -I/usr/include/linuxcnc/rtapi_config.h -I/usr/include/linuxcnc/rtapi_math.h -I/usr/include/linuxcnc/rtapi_string.h -I/usr/include/linuxcnc/rtapi_time.h -I/usr/include/linuxcnc/rtapi_version.h -I/usr/include/linuxcnc/rtapi_vector.h -I/usr/include/linuxcnc/rtapi_vector_math.h -I/usr/include/linuxcnc/rtapi_vector_string.h -I/usr/include/linuxcnc/rtapi_vector_time.h -I/usr/include/linuxcnc/rtapi_vector_version.h -I/usr/include/linuxcnc/rtapi_vector
+#EXTRA_CFLAGS += -I/usr/include/linuxcnc/rtapi_bool.h -I/usr/include/linuxcnc/rtapi.h -I/usr/include/linuxcnc/rtapi_app.h -I/usr/include/linuxcnc/rtapi_config.h -I/usr/include/linuxcnc/rtapi_math.h -I/usr/include/linuxcnc/rtapi_string.h -I/usr/include/linuxcnc/rtapi_time.h -I/usr/include/linuxcnc/rtapi_version.h -I/usr/include/linuxcnc/rtapi_vector.h -I/usr/include/linuxcnc/rtapi_vector_math.h -I/usr/include/linuxcnc/rtapi_vector_string.h -I/usr/include/linuxcnc/rtapi_vector_time.h -I/usr/include/linuxcnc/rtapi_vector_version.h -I/usr/include/linuxcnc/rtapi_vector
 #/home/cnc/build/debian/tmp/usr/include/linuxcnc/rtapi_bool.h
 #/home/cnc/build/debian/linuxcnc-uspace-dev/usr/include/linuxcnc/rtapi_bool.h
 #/home/cnc/build/include/rtapi_bool.h
