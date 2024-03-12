@@ -42,6 +42,13 @@ option extra_setup;
 //#include "/usr/include/linuxcnc/motion.h"
 //#include "/usr/include/linuxcnc/homing.h"
 #include "/usr/include/linuxcnc/rtapi.h"
+#include "/usr/include/linuxcnc/rtapi_ctype.h"	/* isspace() */
+#include "/usr/include/linuxcnc/rtapi_app.h"		/* RTAPI realtime module decls */
+
+#include "/usr/include/linuxcnc/hal.h"		/* HAL public API decls */
+
+#include <rtapi_io.h>
+
 #include "stdlib.h"
 #include "./PoKeysLibRt.h"
 
