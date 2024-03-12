@@ -75,10 +75,11 @@ echo "start_delay.comp compiled successfully."
 echo "Compiling pokeys_rt.comp..."
 
 # Copy contents of subfolder ./pokeys_rt to /usr/share/linuxcnc
-cp -r ./pokeys_rt/* /usr/share/linuxcnc
+# cp -r ./pokeys_rt/* /usr/share/linuxcnc
 
 # Compile pokeys_rt.comp
-cd /usr/share/linuxcnc
+#cd /usr/share/linuxcnc
+cd pokeys_rt
 make -f Makefile.pokeys_rt.in pokeys_rt
 #--extra-compile-args="-I/usr/local/include" --extra-link-args="-L/usr/local/lib -lwiringPi -lwiringPiDev -lpthread -lm -lcrypt -lrt"
 #halcompile --install pokeys_rt.comp --extra-compile-args="-I./" --extra-link-args="-lPoKeysRt -lpthread"

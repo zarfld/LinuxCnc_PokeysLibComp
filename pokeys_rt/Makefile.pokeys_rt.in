@@ -76,16 +76,16 @@ EXTRA_CFLAGS += -msse
 endif
 endif
 EXTRA_CFLAGS += -fno-builtin-sin -fno-builtin-cos -fno-builtin-sincos
-EMC2_HOME=@EMC2_HOME@
+EMC2_HOME=/usr
 RUN_IN_PLACE=@RUN_IN_PLACE@
 ifeq ($(RUN_IN_PLACE),yes)
 EXTRA_CFLAGS := $(RTFLAGS) -D__MODULE__ -I$(EMC2_HOME)/include
-RTLIBDIR := @EMC2_HOME@/rtlib
-LIBDIR := @EMC2_HOME@/lib
+RTLIBDIR := /usr/rtlib
+LIBDIR := /usr/lib
 else
 prefix := @prefix@
-EXTRA_CFLAGS := $(RTFLAGS) -D__MODULE__ -I@includedir@/linuxcnc
-RTLIBDIR := @EMC2_RTLIB_DIR@
+EXTRA_CFLAGS := $(RTFLAGS) -D__MODULE__ -I/usr/include/linuxcnc
+RTLIBDIR := /usr/lib/linuxcnc/modules
 LIBDIR := @libdir@
 endif
 EXTRA_CFLAGS += -Wframe-larger-than=2560
