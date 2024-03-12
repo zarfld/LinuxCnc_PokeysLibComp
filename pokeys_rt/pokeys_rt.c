@@ -40,7 +40,7 @@ option extra_setup;
 #define XSTR(s) STR(s)
 #undef POKEYSLIB_USE_LIBUSB
 //#include "/usr/include/linuxcnc/motion.h"
-#include "/usr/include/linuxcnc/homing.h"
+//#include "/usr/include/linuxcnc/homing.h"
 #include "/usr/include/linuxcnc/rtapi.h"
 #include "stdlib.h"
 #include "./PoKeysLibRt.h"
