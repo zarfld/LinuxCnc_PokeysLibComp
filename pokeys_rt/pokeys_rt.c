@@ -39,8 +39,8 @@ option extra_setup;
 #define XSTR(s) STR(s)
 #undef POKEYSLIB_USE_LIBUSB
 //#include "motion.h"
-#include "homing.h"
-#include "rtapi.h"
+#include <homing.h>
+#include <rtapi.h>
 #include "stdlib.h"
 #include "./PoKeysLibRt.h"
 
