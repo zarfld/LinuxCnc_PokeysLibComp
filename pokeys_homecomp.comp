@@ -31,6 +31,7 @@ option extra_setup;
 #include "motion.h"
 #include "homing.h"
 #include "stdlib.h"
+#include "rtapi.h"
 //#include "pokeyslib.h"
 
 static char* home_parms;
