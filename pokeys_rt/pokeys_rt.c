@@ -40,6 +40,7 @@ option extra_setup;
 #undef POKEYSLIB_USE_LIBUSB
 //#include "motion.h"
 //#include "homing.h"
+#include "rtapi.h"
 #include "stdlib.h"
 #include "./PoKeysLibRt.h"
 
