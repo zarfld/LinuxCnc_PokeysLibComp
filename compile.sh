@@ -80,7 +80,7 @@ echo "Compiling pokeys_rt.comp..."
 # Compile pokeys_rt.comp
 #cd /usr/share/linuxcnc
 cd pokeys_rt
-make -f Makefile.pokeys_rt.in pokeys_rt -I/usr/include -I/usr/include/linuxcnc -L/lib -llinuxcnchal
+make -f Makefile.pokeys_rt.in pokeys_rt -I/usr/include -I/usr/include/linuxcnc
 #--extra-compile-args="-I/usr/local/include" --extra-link-args="-L/usr/local/lib -lwiringPi -lwiringPiDev -lpthread -lm -lcrypt -lrt"
 #halcompile --install pokeys_rt.comp --extra-compile-args="-I./" --extra-link-args="-lPoKeysRt -lpthread"
 echo "pokeys_rt.comp compiled successfully."
