@@ -63,7 +63,7 @@ cc-option = $(shell if $(CC) $(CFLAGS) $(1) -S -o /dev/null -xc /dev/null \
 
 BUILDSYS = @BUILD_SYS@
 
-KERNELDIR := @KERNELDIR@
+KERNELDIR := 
 # CC := @CC@
 CC := gcc
 RTAI = @RTAI@
