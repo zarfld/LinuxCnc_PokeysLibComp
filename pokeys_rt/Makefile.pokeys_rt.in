@@ -68,7 +68,7 @@ KERNELDIR := @KERNELDIR@
 # CC := @CC@
 CC := gcc
 RTAI = @RTAI@
-RTFLAGS = $(filter-out -ffast-math,@RTFLAGS@ @EXT_RTFLAGS@) -fno-fast-math $(call cc-option,-mieee-fp) -fno-unsafe-math-optimizations
+LAGS = $(filter-out -ffast-math,@RTFLAGS@ @EXT_RTFLAGS@) -fno-fast-math $(call cc-option,-mieee-fp) -fno-unsafe-math-optimizations
 RTFLAGS := -Os -g -I. -I@RTDIR@/include $(RTFLAGS) -DRTAPI -D_GNU_SOURCE -Drealtime
 ifneq ($(KERNELRELEASE),)
 ifeq ($(RTARCH):$(RTAI):$(filter $(RTFLAGS),-msse),x86_64:3:)

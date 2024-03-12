@@ -1,3 +1,5 @@
+/*  thois header is only for .comp files
+
 component pokeys_rt "realtime module for pokeys";
 
 description """
@@ -24,7 +26,7 @@ option homemod;
 option extra_link_args "-lPoKeysRt -lpthread";
 option extra_setup;
 ;;
-
+*/
 /* To incorporate default homing.c file from a local git src tree:
 ** enable #define HOMING_BASE set to the path to the current homing.c file.
 ** (Note: CUSTOM_HOMEMODULE precludes duplicate api symbols)
