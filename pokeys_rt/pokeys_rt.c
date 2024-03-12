@@ -50,6 +50,16 @@ option extra_setup;
 #include "/usr/include/linuxcnc/rtapi_io.h"
 
 #include "stdlib.h"
+
+//usr/include/bsd/stdlib.h
+//usr/include/stdlib.h
+//usr/include/c++/10/stdlib.h
+//usr/include/c++/10/tr1/stdlib.h
+//usr/include/c++/10/tr1/stdlib.h
+//usr/include/tcl8.6/tk-private/compat/stdlib.h
+//usr/include/tcl8.6/tcl-private/compat/stdlib.h
+///usr/include/c++/10/tr1/stdlib.h
+
 #include "./PoKeysLibRt.h"
 
 #undef POKEYSLIB_USE_LIBUSB

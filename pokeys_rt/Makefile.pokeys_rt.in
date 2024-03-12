@@ -88,7 +88,7 @@ EXTRA_CFLAGS := $(RTFLAGS) -D__MODULE__ -I/usr/include -I/usr/include/linuxcnc
 RTLIBDIR := /usr/lib/linuxcnc/modules
 LIBDIR := /lib/linuxcnc
 endif
-EXTRA_CFLAGS := $(RTFLAGS) -D__MODULE__ -I/usr/include -I/usr/include/linuxcnc
+EXTRA_CFLAGS := $(RTFLAGS) -D__MODULE__ -I/usr/include/linuxcnc -I/usr/include
 
 EXTRA_CFLAGS += -Wframe-larger-than=2560
 
