@@ -65,7 +65,8 @@ cc-option = $(shell if $(CC) $(CFLAGS) $(1) -S -o /dev/null -xc /dev/null \
 BUILDSYS = @BUILD_SYS@
 
 KERNELDIR := @KERNELDIR@
-CC := @CC@
+# CC := @CC@
+CC := gcc
 RTAI = @RTAI@
 RTFLAGS = $(filter-out -ffast-math,@RTFLAGS@ @EXT_RTFLAGS@) -fno-fast-math $(call cc-option,-mieee-fp) -fno-unsafe-math-optimizations
 RTFLAGS := -Os -g -I. -I@RTDIR@/include $(RTFLAGS) -DRTAPI -D_GNU_SOURCE -Drealtime
