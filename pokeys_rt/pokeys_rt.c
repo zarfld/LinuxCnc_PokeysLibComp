@@ -45,7 +45,7 @@ option extra_setup;
 #include "/usr/include/linuxcnc/rtapi_ctype.h"	/* isspace() */
 #include "/usr/include/linuxcnc/rtapi_app.h"		/* RTAPI realtime module decls */
 
-#include <hal.h>		/* HAL public API decls */
+//#include <hal.h>		/* HAL public API decls */
 
 #include <rtapi_io.h>
 
