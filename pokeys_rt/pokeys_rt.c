@@ -47,7 +47,7 @@ option extra_setup;
 
 //#include <hal.h>		/* HAL public API decls */
 
-#include <rtapi_io.h>
+#include "/usr/include/linuxcnc/rtapi_io.h"
 
 #include "stdlib.h"
 #include "./PoKeysLibRt.h"
