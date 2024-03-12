@@ -28,10 +28,10 @@ halcompile --install start_delay_5000.comp
 echo "start_delay.comp compiled successfully."
 
 
-echo "preparing prerequisites of pokeys_rt.comp..."
+#echo "preparing prerequisites of pokeys_rt.comp..."
 #cp ../pokeyslib/Makefile.noqmake ../pokeyslib/Makefile.noqmake.rt
-cp  ./Makefile.noqmake.rt ../pokeyslib/Makefile.noqmake.rt
-cp ./PoKeysLibRt.h ../pokeyslib/PoKeysLibRt.h
+#cp  ./Makefile.noqmake.rt ../pokeyslib/Makefile.noqmake.rt
+#cp ./PoKeysLibRt.h ../pokeyslib/PoKeysLibRt.h
 
 #modify the Makefile.noqmake.rt to exclude libusb-1.0
 #sed -i 's/ -lusb-1.0//g' ../pokeyslib/Makefile.noqmake.rt
@@ -54,7 +54,7 @@ cp ./PoKeysLibRt.h ../pokeyslib/PoKeysLibRt.h
 #sed -i '1s/^/#undef POKEYSLIB_USE_LIBUSB\n/' ../pokeyslib/PoKeysLibRt.h
 
 # copy pokeys_rt.comp to ../pokeyslib
-cp pokeys_rt.comp ../pokeyslib
+#cp pokeys_rt.comp ../pokeyslib
 
 # copy ../pokeyslib/Makefile.noqmake.rt and ../pokeyslib/PoKeysLibRt.h to current folder
 #cp ../pokeyslib/Makefile.noqmake.rt .
@@ -68,12 +68,12 @@ cp pokeys_rt.comp ../pokeyslib
 #git push
 
 # compile pokeyslib and install it to /usr/lib/linuxcnc/modules
-cd ../pokeyslib
-make -f Makefile.noqmake.rt install
+#cd ../pokeyslib
+#make -f Makefile.noqmake.rt install
 # register the pokeyslib to be included in halcompile for pokeys_rt.comp
 
 echo "Compiling pokeys_rt.comp..."
 #--extra-compile-args="-I/usr/local/include" --extra-link-args="-L/usr/local/lib -lwiringPi -lwiringPiDev -lpthread -lm -lcrypt -lrt"
-halcompile --install pokeys_rt.comp --extra-compile-args="-I./" --extra-link-args="-lPoKeysRt -lpthread"
+#halcompile --install pokeys_rt.comp --extra-compile-args="-I./" --extra-link-args="-lPoKeysRt -lpthread"
 echo "pokeys_rt.comp compiled successfully."
 
