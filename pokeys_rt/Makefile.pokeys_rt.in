@@ -25,8 +25,7 @@ obj-m += pokeys_rt.o PoKeysLibRt.o
 pokeys_rt-objs := PoKeysLibCore.c PoKeysLibCoreSockets.c PoKeysLibDeviceData.c PoKeysLibIO.c PoKeysLibEncoders.c PoKeysLibMatrixLED.c PoKeysLibMatrixKB.c PoKeysLibPoNET.c PoKeysLibLCD.c PoKeysLibRTC.c PoKeysLibEasySensors.c PoKeysLibI2C.c PoKeysLib1Wire.c PoKeysLibSPI.c PoKeysLibPulseEngine_v2.c PoKeysLibUART.c PoKeysLibCAN.c PoKeysLibFailsafe.c PoKeysLibWS2812.c
 #include ./Makefile.modinc
 
-# Add this line to undefine POKEYSLIB_USE_LIBUSB
-EXTRA_CFLAGS += -UPOKEYSLIB_USE_LIBUSB
+
 
 # Currently this Makefile is only suitable for 'kbuild' and 'uspace' systems,
 # but there is no technical reason it cannot be extended to pre-kbuild systems.
@@ -77,18 +76,21 @@ endif
 endif
 EXTRA_CFLAGS += -fno-builtin-sin -fno-builtin-cos -fno-builtin-sincos
 EMC2_HOME=/usr
-RUN_IN_PLACE=@RUN_IN_PLACE@
+RUN_IN_PLACE=no
 ifeq ($(RUN_IN_PLACE),yes)
 EXTRA_CFLAGS := $(RTFLAGS) -D__MODULE__ -I$(EMC2_HOME)/include
 RTLIBDIR := /usr/rtlib
 LIBDIR := /usr/lib
 else
 prefix := @prefix@
-EXTRA_CFLAGS := $(RTFLAGS) -D__MODULE__ -I/usr/include/linuxcnc
+EXTRA_CFLAGS := $(RTFLAGS) -D__MODULE__ -I/usr/include -I/usr/include/linuxcnc
 RTLIBDIR := /usr/lib/linuxcnc/modules
-LIBDIR := @libdir@
+LIBDIR := /lib/linuxcnc
 endif
 EXTRA_CFLAGS += -Wframe-larger-than=2560
+
+# Add this line to undefine POKEYSLIB_USE_LIBUSB
+EXTRA_CFLAGS += -UPOKEYSLIB_USE_LIBUSB
 
 ifeq ($(BUILDSYS),kbuild)
 modules:
