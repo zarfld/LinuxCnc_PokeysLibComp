@@ -36,7 +36,7 @@ pokeys_rt-objs := PoKeysLibCore.c PoKeysLibCoreSockets.c \
 # Add this line to undefine POKEYSLIB_USE_LIBUSB
 EXTRA_CFLAGS += -UPOKEYSLIB_USE_LIBUSB
 
-# include .../Makefile.modinc
+include /usr/share/linuxcnc/Makefile.modinc
 
 # Currently this Makefile is only suitable for 'kbuild' and 'uspace' systems,
 # but there is no technical reason it cannot be extended to pre-kbuild systems.
