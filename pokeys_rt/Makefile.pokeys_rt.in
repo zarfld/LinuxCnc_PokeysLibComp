@@ -23,7 +23,7 @@
 obj-m += pokeys_rt.o PoKeysLibRt.o
 #complex-objs := complex1.o complex2.o complex_main.o
 pokeys_rt-objs := PoKeysLibCore.c PoKeysLibCoreSockets.c PoKeysLibDeviceData.c PoKeysLibIO.c PoKeysLibEncoders.c PoKeysLibMatrixLED.c PoKeysLibMatrixKB.c PoKeysLibPoNET.c PoKeysLibLCD.c PoKeysLibRTC.c PoKeysLibEasySensors.c PoKeysLibI2C.c PoKeysLib1Wire.c PoKeysLibSPI.c PoKeysLibPulseEngine_v2.c PoKeysLibUART.c PoKeysLibCAN.c PoKeysLibFailsafe.c PoKeysLibWS2812.c
-include .../Makefile.modinc
+include .../Makefile.pokeys_rt
 
 # Add this line to undefine POKEYSLIB_USE_LIBUSB
 EXTRA_CFLAGS += -UPOKEYSLIB_USE_LIBUSB
