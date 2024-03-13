@@ -35,7 +35,7 @@ option extra_setup;
 
 // #define HOMING_BASE /home/myname/linuxcnc-dev/src/emc/motion/homing.c
 //#define RTAPI
-#define RTAPI
+
 #define STR(s)  #s
 #define XSTR(s) STR(s)
 #undef POKEYSLIB_USE_LIBUSB
@@ -261,9 +261,10 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 	}
 }
 
-int myid = 0;
+static int myid = 0;
 // EXTRA_SETUP is executed before rtapi_app_main()
-EXTRA_SETUP()
+//EXTRA_SETUP()
+static int extra_setup(void)
 {
 	
 	myid = hal_init("pokeys_rt");
@@ -297,7 +298,8 @@ EXTRA_SETUP()
 	return 0;
 }
 
-EXTRA_CLEANUP()
+//EXTRA_CLEANUP()
+static void extra_cleanup(void)
 {
 	if (dev != NULL)
 	{
