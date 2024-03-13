@@ -682,8 +682,8 @@ uint8_t getChecksum(uint8_t * data)
     return temp;
 }
 
-int32_t LastRetryCount = 0;
-int32_t LastWaitCount = 0;
+
+
 
 
 //#define PK_COM_DEBUG
@@ -716,6 +716,9 @@ int32_t SendRequest(sPoKeysDevice* device)
     uint32_t retries = 0;
     int32_t result = 0;
     uint8_t bufferOut[65] = {0};
+
+    int32_t LastRetryCount = 0;
+    int32_t LastWaitCount = 0;
 
     #ifdef PK_COM_DEBUG
         int i;
