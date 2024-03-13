@@ -61,6 +61,7 @@ option extra_setup;
 ///usr/include/c++/10/tr1/stdlib.h
 
 #include "./PoKeysLib.h"
+#include "./PoKeysLibCore.h"
 
 #undef POKEYSLIB_USE_LIBUSB
 
