@@ -32,7 +32,7 @@ clean:
 	rm -f *.ko *.mod.c *.o *.so
 
 install:
-	cp $(patsubst %.o,%.ko,$(obj-m)) $(RTLIBDIR)/
+#	cp $(patsubst %.o,%.ko,$(obj-m)) $(RTLIBDIR)/
 	cp $(LIB) $(RTLIBDIR)/
 
 # Compile source files
