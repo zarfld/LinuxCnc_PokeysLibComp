@@ -14,7 +14,7 @@ SRCS = pokeys_rt.c
 #SRCS = 
 
 # Header files
-HDRS = PoKeysLibRt.h PoKeysLibCore.h PoKeysLibCoreSockets.h hidapi.h homing.h motion.h rtapi.h rtapi_ctype.h rtapi_app.h hal.h tp_types.h
+HDRS = PoKeysLibRt.h PoKeysLibCore.h PoKeysLibCoreSockets.h hidapi.h homing.h motion.h rtapi.h rtapi_ctype.h rtapi_app.h hal.h tp_types.h rtapi_bool.h
 
 
 # An example Makefile using Makefile.modinc to build one kernel module from
