@@ -239,39 +239,45 @@ const sPoKeys_DeviceDescriptor deviceDesc[] = {
 };
 
 
+sPoKeys_PinCapabilities* GetPinCaps()
+{
+    // This structure is using real pin numbers
+    sPoKeys_PinCapabilities pinCaps[] = {
+        { PK_AllPinCap_digitalInput,        1, 55, 0, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 | PK_DeviceMask_27 },
+        { PK_AllPinCap_digitalOutput,       1, 55, 0, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 | PK_DeviceMask_27 },
+        { PK_AllPinCap_analogInput,        43, 47, 0, PK_DeviceMask_55 },
+        { PK_AllPinCap_analogInput,        41, 47, 0, PK_DeviceMask_56 | PK_DeviceMask_57 | PK_DeviceMask_27 },
+        { PK_AllPinCap_analogOutput,       43, 43, 0, PK_DeviceMask_55 },
+        { PK_AllPinCap_keyboardMapping,     1, 55, 0, PK_DeviceMask_55 | PK_DeviceMask_57U | PK_DeviceMask_56U },
+        { PK_AllPinCap_triggeredInput,      1, 55, 0, PK_DeviceMask_55 | PK_DeviceMask_57U | PK_DeviceMask_56U },
+        { PK_AllPinCap_digitalCounter,      1, 55, 1, PK_DeviceMask_56 | PK_DeviceMask_57 },
+        { PK_AllPinCap_PWMOut,             17, 22, 0, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
+        { PK_AllPinCap_fastEncoder1A,       1,  1, 0, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
+        { PK_AllPinCap_fastEncoder1B,       2,  2, 0, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
+        { PK_AllPinCap_fastEncoder1I,       9,  9, 1, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
 
-// This structure is using real pin numbers
-const sPoKeys_PinCapabilities pinCaps[] = {
-    { PK_AllPinCap_digitalInput,        1, 55, 0, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 | PK_DeviceMask_27 },
-    { PK_AllPinCap_digitalOutput,       1, 55, 0, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 | PK_DeviceMask_27 },
-    { PK_AllPinCap_analogInput,        43, 47, 0, PK_DeviceMask_55 },
-    { PK_AllPinCap_analogInput,        41, 47, 0, PK_DeviceMask_56 | PK_DeviceMask_57 | PK_DeviceMask_27 },
-    { PK_AllPinCap_analogOutput,       43, 43, 0, PK_DeviceMask_55 },
-    { PK_AllPinCap_keyboardMapping,     1, 55, 0, PK_DeviceMask_55 | PK_DeviceMask_57U | PK_DeviceMask_56U },
-    { PK_AllPinCap_triggeredInput,      1, 55, 0, PK_DeviceMask_55 | PK_DeviceMask_57U | PK_DeviceMask_56U },
-    { PK_AllPinCap_digitalCounter,      1, 55, 1, PK_DeviceMask_56 | PK_DeviceMask_57 },
-    { PK_AllPinCap_PWMOut,             17, 22, 0, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
-    { PK_AllPinCap_fastEncoder1A,       1,  1, 0, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
-    { PK_AllPinCap_fastEncoder1B,       2,  2, 0, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
-    { PK_AllPinCap_fastEncoder1I,       9,  9, 1, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
+        { PK_AllPinCap_fastEncoder2A,       3,  3, 1, PK_DeviceMask_55 },
+        { PK_AllPinCap_fastEncoder2B,       4,  4, 1, PK_DeviceMask_55 },
+        { PK_AllPinCap_fastEncoder2A,       5,  5, 1, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
+        { PK_AllPinCap_fastEncoder2B,       6,  6, 1, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
+        { PK_AllPinCap_fastEncoder2I,      11, 11, 1, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
 
-    { PK_AllPinCap_fastEncoder2A,       3,  3, 1, PK_DeviceMask_55 },
-    { PK_AllPinCap_fastEncoder2B,       4,  4, 1, PK_DeviceMask_55 },
-    { PK_AllPinCap_fastEncoder2A,       5,  5, 1, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
-    { PK_AllPinCap_fastEncoder2B,       6,  6, 1, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
-    { PK_AllPinCap_fastEncoder2I,      11, 11, 1, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
-
-    { PK_AllPinCap_fastEncoder3A,      15, 15, 0, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
-    { PK_AllPinCap_fastEncoder3B,      16, 16, 0, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
-    { PK_AllPinCap_fastEncoder3I,      27, 27, 1, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
+        { PK_AllPinCap_fastEncoder3A,      15, 15, 0, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
+        { PK_AllPinCap_fastEncoder3B,      16, 16, 0, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
+        { PK_AllPinCap_fastEncoder3I,      27, 27, 1, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 },
 
 
-    { PK_AllPinCap_digitalInput,        9, 19, 0, PK_DeviceMask_PoPLC58 },
-    { PK_AllPinCap_digitalOutput,      20, 27, 0, PK_DeviceMask_PoPLC58 },
-    { PK_AllPinCap_analogInput,         1,  8, 0, PK_DeviceMask_PoPLC58 },
-    { PK_AllPinCap_MFanalogInput,       1,  8, 0, PK_DeviceMask_PoPLC58 },
-    { -1, 0, 0, 0 }
-};
+        { PK_AllPinCap_digitalInput,        9, 19, 0, PK_DeviceMask_PoPLC58 },
+        { PK_AllPinCap_digitalOutput,      20, 27, 0, PK_DeviceMask_PoPLC58 },
+        { PK_AllPinCap_analogInput,         1,  8, 0, PK_DeviceMask_PoPLC58 },
+        { PK_AllPinCap_MFanalogInput,       1,  8, 0, PK_DeviceMask_PoPLC58 },
+        { -1, 0, 0, 0 }
+    };
+
+	return pinCaps;
+}
+
+
 
 
 
@@ -1159,7 +1165,8 @@ int32_t PK_CheckPinCapabilityByDevice(uint64_t deviceTypeMask, uint32_t pin, ePK
 {
     const sPoKeys_PinCapabilities * ptr;
 
-    ptr = &pinCaps[0];
+    sPoKeys_PinCapabilities pinCaps[] = GetPinCaps();
+        ptr = &pinCaps[0];
 
     while (ptr->cap != -1)
     {
@@ -1277,6 +1284,7 @@ int32_t PK_CheckPinCapabilityByTypeID(uint64_t deviceID, uint32_t pin, ePK_AllPi
             break;
     }
 
+    sPoKeys_PinCapabilities pinCaps[] = GetPinCaps();
     ptr = &pinCaps[0];
 
     while (ptr->cap != -1)
