@@ -3,6 +3,9 @@
 # Compiler
 CC = gcc
 
+# Linker flags
+LDFLAGS = -lPoKeysRt
+
 # Compiler flags
 CFLAGS = -Wall -Wextra -fPIC -I/usr/include/linuxcnc
 
@@ -34,10 +37,10 @@ include /usr/share/linuxcnc/Makefile.modinc
 
 # Build target
 modules: $(OBJS)
-	$(CC) -shared -o $(LIB) $(OBJS)
+	$(CC) $(LDFLAGS) -shared -o $(LIB) $(OBJS)
 
 $(LIB): $(OBJS)
-	$(CC) -shared -o $@ $^
+	$(CC) $(LDFLAGS) -shared -o $@ $^
 
 clean:
 	rm -f *.ko *.mod.c *.o *.so
