@@ -35,7 +35,7 @@ option extra_setup;
 
 // #define HOMING_BASE /home/myname/linuxcnc-dev/src/emc/motion/homing.c
 //#define RTAPI
-
+#define RTAPI
 #define STR(s)  #s
 #define XSTR(s) STR(s)
 #undef POKEYSLIB_USE_LIBUSB
