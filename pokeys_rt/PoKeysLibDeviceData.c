@@ -242,7 +242,7 @@ const sPoKeys_DeviceDescriptor deviceDesc[] = {
 sPoKeys_PinCapabilities* GetPinCaps()
 {
     // This structure is using real pin numbers
-    sPoKeys_PinCapabilities pinCaps[] = {
+    static sPoKeys_PinCapabilities pinCaps[] = {
         { PK_AllPinCap_digitalInput,        1, 55, 0, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 | PK_DeviceMask_27 },
         { PK_AllPinCap_digitalOutput,       1, 55, 0, PK_DeviceMask_55 | PK_DeviceMask_56 | PK_DeviceMask_57 | PK_DeviceMask_27 },
         { PK_AllPinCap_analogInput,        43, 47, 0, PK_DeviceMask_55 },
