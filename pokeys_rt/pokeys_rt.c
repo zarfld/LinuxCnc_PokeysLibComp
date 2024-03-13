@@ -45,7 +45,7 @@ option extra_setup;
 #include "/usr/include/linuxcnc/rtapi_ctype.h"	/* isspace() */
 #include "/usr/include/linuxcnc/rtapi_app.h"		/* RTAPI realtime module decls */
 
-//#include <hal.h>		/* HAL public API decls */
+#include <hal.h>		/* HAL public API decls */
 
 #include "/usr/include/linuxcnc/rtapi_io.h"
 
@@ -266,10 +266,10 @@ EXTRA_SETUP()
 {
 	
 	myid = hal_init("pokeys_rt");
-	rtapi_print_msg(RTAPI_MSG_ERR,"PoKeysRt: %s:%s: hal_init(pokeys_rt):%d\n", __FILE__, __FUNCTION__, extra_arg);
+	rtapi_print_msg(RTAPI_MSG_ERR,"PoKeysRt: %s:%s: hal_init(pokeys_rt):%d\n", __FILE__, __FUNCTION__);
 	int wait_ms = 5000;
 	int retry = 5;
-	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeysRt: %s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeysRt: %s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__);
 	//usleep(wait_ms);  // wait for the HAL to start up
 	for (int i = 0; i < retry; i++)
 	{
