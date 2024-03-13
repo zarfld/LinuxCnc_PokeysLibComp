@@ -11,13 +11,13 @@ SRCS = pokeys_rt.c PoKeysLibCore.c PoKeysLibCoreSockets.c PoKeysLibDeviceData.c 
 
 
 # Header files
-HDRS = PoKeysLibRt.h header2.h  # Add all your .h files here
+HDRS = PoKeysLibRt.h PoKeysLibCore.h  # Add all your .h files here
 
 # Object files
-OBJS = $(SRCS:.c=.o)
+OBJS = $(SRCS:.c=.so)
 
 # Target module
-obj-m += pokeys_rt.o
+obj-m += pokeys_rt.so
 
 # Include Makefile.modinc
 include /usr/share/linuxcnc/Makefile.modinc
@@ -27,7 +27,7 @@ modules: $(OBJS)
 	$(MAKE) modules
 
 clean:
-	rm -f *.ko *.mod.c *.o
+	rm -f *.ko *.mod.c *.o *.so
 
 install:
 	cp $(patsubst %.o,%.ko,$(obj-m)) $(RTLIBDIR)/
