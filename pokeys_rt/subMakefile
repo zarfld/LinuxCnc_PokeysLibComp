@@ -7,7 +7,7 @@ CC = gcc
 LDFLAGS = -lPoKeys
 
 # Compiler flags
-CFLAGS = -Wall -Wextra -fPIC -I/usr/include/linuxcnc
+CFLAGS = -Wall -Wextra -fPIC -I/usr/include/linuxcnc -I/home/cnc/LinuxCnc_PokeysLibComp/pokeys_rt
 
 # Source files
 SRCS = pokeys_rt.c
