@@ -33,7 +33,7 @@ $(LIB): $(OBJS)
 clean:
 	rm -f *.ko *.mod.c *.o *.so
 
-install:
+install_local:
 #	cp $(patsubst %.o,%.ko,$(obj-m)) $(RTLIBDIR)/
 	cp $(LIB) $(RTLIBDIR)/
 
