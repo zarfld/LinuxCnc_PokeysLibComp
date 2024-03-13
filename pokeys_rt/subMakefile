@@ -22,8 +22,9 @@ LIB = pokeys_rt.so
 include /usr/share/linuxcnc/Makefile.modinc
 
 # Build target
-modules: $(OBJS)
-	$(MAKE) modules
+#modules: $(OBJS)
+#	$(MAKE) modules
+
 $(LIB): $(OBJS)
 	$(CC) -shared -o $@ $^
 
