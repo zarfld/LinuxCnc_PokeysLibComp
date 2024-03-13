@@ -41,7 +41,7 @@ modules: $(OBJS)
 	$(CC) $(LDFLAGS) -shared -o $(LIB) $(OBJS) $(obj-m)
 
 $(LIB): $(OBJS)
-	$(CC) $(LDFLAGS) -shared -o $@ $^
+	$(CC) $(LDFLAGS) -shared -o $@ $^ -I/usr/include/linuxcnc
 
 clean:
 	rm -f *.ko *.mod.c *.o *.so
