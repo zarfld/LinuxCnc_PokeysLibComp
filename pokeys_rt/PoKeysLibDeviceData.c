@@ -1165,7 +1165,7 @@ int32_t PK_CheckPinCapabilityByDevice(uint64_t deviceTypeMask, uint32_t pin, ePK
 {
     const sPoKeys_PinCapabilities * ptr;
 
-    sPoKeys_PinCapabilities pinCaps[] = GetPinCaps();
+     sPoKeys_PinCapabilities* pinCaps = GetPinCaps();
         ptr = &pinCaps[0];
 
     while (ptr->cap != -1)
