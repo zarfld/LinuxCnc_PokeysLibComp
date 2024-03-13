@@ -1284,7 +1284,7 @@ int32_t PK_CheckPinCapabilityByTypeID(uint64_t deviceID, uint32_t pin, ePK_AllPi
             break;
     }
 
-    sPoKeys_PinCapabilities pinCaps[] = GetPinCaps();
+    sPoKeys_PinCapabilities* pinCaps = GetPinCaps();
     ptr = &pinCaps[0];
 
     while (ptr->cap != -1)
