@@ -38,7 +38,7 @@ include /usr/share/linuxcnc/Makefile.modinc
 
 # Build target
 modules: $(OBJS)
-	$(CC) $(LDFLAGS) -shared -o $(LIB) $(OBJS)
+	$(CC) $(LDFLAGS) -shared -o $(LIB) $(OBJS) $(obj-m)
 
 $(LIB): $(OBJS)
 	$(CC) $(LDFLAGS) -shared -o $@ $^
