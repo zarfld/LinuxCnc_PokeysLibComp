@@ -1,0 +1,39 @@
+# Makefile for compiling HAL realtime modules outside the LinuxCNC source tree
+
+# Compiler
+CC = gcc
+
+# Compiler flags
+CFLAGS = -Wall -Wextra
+
+# Source files
+SRCS = pokeys_rt.c PoKeysLibCore.c PoKeysLibCoreSockets.c PoKeysLibDeviceData.c PoKeysLibIO.c PoKeysLibEncoders.c PoKeysLibMatrixLED.c PoKeysLibMatrixKB.c PoKeysLibPoNET.c PoKeysLibLCD.c PoKeysLibRTC.c PoKeysLibEasySensors.c PoKeysLibI2C.c PoKeysLib1Wire.c PoKeysLibSPI.c PoKeysLibPulseEngine_v2.c PoKeysLibUART.c PoKeysLibCAN.c PoKeysLibFailsafe.c PoKeysLibWS2812.c
+
+
+# Header files
+HDRS = PoKeysLibRt.h header2.h  # Add all your .h files here
+
+# Object files
+OBJS = $(SRCS:.c=.o)
+
+# Target module
+obj-m += pokeys_rt.o
+
+# Include Makefile.modinc
+include /usr/share/linuxcnc/Makefile.modinc
+
+# Build target
+modules: $(OBJS)
+	$(MAKE) modules
+
+clean:
+	rm -f *.ko *.mod.c *.o
+
+install:
+	cp $(patsubst %.o,%.ko,$(obj-m)) $(RTLIBDIR)/
+
+# Compile source files
+%.o: %.c $(HDRS)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+.PHONY: clean install
