@@ -57,8 +57,9 @@ PK_PinCap_pinRestricted  = 0,           // Pin is not used
 #define PIN_DIO PK_AllPinCap_digitalInput, PK_AllPinCap_digitalOutput, PK_AllPinCap_keyboardMapping, PK_AllPinCap_triggeredInput
 
 #define CAP(...) { __VA_ARGS__, -1 }
-
-const sPoKeys_DeviceDescriptor deviceDesc[] = {
+sPoKeys_DeviceDescriptor* GetDeviceDesc()
+{
+	static sPoKeys_DeviceDescriptor deviceDesc[] = {
 
     // PoKeys57CNC Pins descriptor
     { PK_DeviceID_PoKeys57CNC,  {
@@ -238,6 +239,9 @@ const sPoKeys_DeviceDescriptor deviceDesc[] = {
     { -1, 0 }
 };
 
+	return deviceDesc;
+
+}
 
 sPoKeys_PinCapabilities* GetPinCaps()
 {
@@ -1207,7 +1211,7 @@ int32_t PK_CheckPinCapabilityByTypeID(uint64_t deviceID, uint32_t pin, ePK_AllPi
     const sPoKeys_PinCapabilities * ptr;
     uint32_t deviceTypeMask = 0;
     uint32_t iDev, iPin, iCap;
-
+    sPoKeys_DeviceDescriptor* deviceDesc = GetDeviceDesc();
     switch (deviceID)
     {
         // New approach
