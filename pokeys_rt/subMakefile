@@ -12,6 +12,8 @@ SRCS = pokeys_rt.c PoKeysLibCore.c PoKeysLibCoreSockets.c PoKeysLibDeviceData.c 
 # Header files
 HDRS = PoKeysLibRt.h PoKeysLibCore.h  # Add all your .h files here
 
+obj-m = pokeys_rt
+
 # Object files
 OBJS = $(SRCS:.c=.o)
 
@@ -33,7 +35,7 @@ clean:
 
 install:
 #	cp $(patsubst %.o,%.ko,$(obj-m)) $(RTLIBDIR)/
-#	cp $(LIB) $(RTLIBDIR)/
+	cp $(LIB) $(RTLIBDIR)/
 
 # Compile source files
 %.o: %.c $(HDRS)
