@@ -202,7 +202,8 @@ int32_t PK_PEv2_AxisConfigurationGet(sPoKeysDevice * device)
 	// MPG 1x mode here
 	pe->HomeBackOffDistance[pe->param1] = *(uint32_t*)(device->response + 45);
     pe->MPGjogDivider[pe->param1] = *(uint16_t*)(device->response + 49);
-
+	pe->AxisSignalOptions[pe->param1] = device->response[51];
+	pe->FilterProbeInput = device->response[52];
     return PK_OK;
 }
 
@@ -248,9 +249,13 @@ int32_t PK_PEv2_AxisConfigurationSet(sPoKeysDevice * device)
 	device->request[41] = pe->FilterLimitPSwitch[pe->param1];
 	device->request[42] = pe->FilterHomeSwitch[pe->param1];
 	device->request[43] = pe->HomingAlgorithm[pe->param1];
+	device->request[44] = 0;
 
 	*(uint32_t*)(device->request + 45) = pe->HomeBackOffDistance[pe->param1];
     *(uint16_t*)(device->request + 49) = pe->MPGjogDivider[pe->param1];
+
+	device->request[51] = pe->AxisSignalOptions[pe->param1];
+	device->request[52] = pe->FilterProbeInput;
 
     // Send request
     return SendRequest(device);
@@ -297,6 +302,28 @@ int32_t PK_PEv2_PulseEngineMove(sPoKeysDevice * device)
     CreateRequest(device->request, 0x85, 0x20, 0, 0, 0);
 
     memcpy(&device->request[8], device->PEv2.ReferencePositionSpeed, 8*4);
+
+    // Send request
+    return SendRequest(device);
+}
+
+
+// Execute the move. Position or speed is specified by the ReferencePositionSpeed
+int32_t PK_PEv2_PulseEngineMovePV(sPoKeysDevice * device)
+{
+    int i;
+    uint16_t tmpVelocity;
+
+    if (device == NULL) return PK_ERR_NOT_CONNECTED;
+
+    // Create request
+    CreateRequest(device->request, 0x85, 0x25, device->PEv2.param2, 0, 0);
+
+    memcpy(&device->request[8], device->PEv2.ReferencePositionSpeed, 8*4);
+    for (i = 0; i < 8; i++) {
+        tmpVelocity = (uint16_t)(device->PEv2.ReferenceVelocityPV[i] * 65535);
+        memcpy(&device->request[40 + i * 2], &tmpVelocity, 2);
+    }
 
     // Send request
     return SendRequest(device);
@@ -621,6 +648,10 @@ int32_t PK_PEv2_ThreadingStatusGet(sPoKeysDevice * device)
 	device->PEv2.SpindleRPM =			*(int32_t*)(device->response + 20);
 
 	device->PEv2.TriggerIngnoredAxisMask = device->response[24];
+
+	device->PEv2.spindleIndexCounter  = *(int32_t*)(device->response + 25);
+
+	memcpy(device->PEv2.DebugValues, device->response + 29, 35);
 	return PK_OK;
 
 }
@@ -663,6 +694,7 @@ int32_t PK_PEv2_BacklashCompensationSettings_Get(sPoKeysDevice * device)
 		device->PEv2.BacklashRegister[i] = *(int16_t*)(device->response + 40 + i * 2);
 	}
 	device->PEv2.BacklashCompensationEnabled = device->response[3];
+	device->PEv2.BacklashCompensationMaxSpeed = device->response[4];
 			
 	return PK_OK;
 }
@@ -673,7 +705,7 @@ int32_t PK_PEv2_BacklashCompensationSettings_Set(sPoKeysDevice * device)
     if (device == NULL) return PK_ERR_NOT_CONNECTED;
 
 	// Create request
-    CreateRequest(device->request, 0x85, 0x41, device->PEv2.BacklashCompensationEnabled, 0, 0);
+	CreateRequest(device->request, 0x85, 0x41, device->PEv2.BacklashCompensationEnabled, device->PEv2.BacklashCompensationMaxSpeed, 0);
 
 	for (i = 0; i < 8; i++)
 	{
@@ -699,6 +731,20 @@ int32_t PK_PEv2_SyncedPWMSetup(sPoKeysDevice * device, uint8_t enabled, uint8_t 
     if (SendRequest(device) != PK_OK) return PK_ERR_TRANSFER;
 
     return PK_OK;
+}
+
+int32_t PK_PEv2_SyncOutputsSetup(sPoKeysDevice * device)
+{
+	if (device == NULL) return PK_ERR_NOT_CONNECTED;
+
+	// Create request
+	CreateRequest(device->request, 0x85, 0x0B, device->PEv2.SyncFastOutputsAxisID > 0, device->PEv2.SyncFastOutputsAxisID - 1, 0);
+	memcpy(device->request + 8, device->PEv2.SyncFastOutputsMapping, 8);
+
+	// Send request
+	if (SendRequest(device) != PK_OK) return PK_ERR_TRANSFER;
+
+	return PK_OK;
 }
 
 int32_t PK_PoStep_ConfigurationGet(sPoKeysDevice * device)
@@ -878,3 +924,43 @@ int32_t PK_PoStep_DriverConfigurationSet(sPoKeysDevice * device)
 	return PK_OK;
 }
 
+// Retrieve internal motor drivers parameters
+int32_t PK_PEv2_InternalDriversConfigurationGet(sPoKeysDevice * device)
+{
+    sPoKeysPEv2 * pe;
+    if (device == NULL) return PK_ERR_NOT_CONNECTED;
+
+    // Send request
+    CreateRequest(device->request, 0x85, 0x18, 0, 0, 0);
+    if (SendRequest(device) != PK_OK) return PK_ERR_TRANSFER;
+
+    // Pointer to PEv2 structure for better code readability
+    pe = &device->PEv2;
+
+    for (int32_t i = 0; i < 4; i++) {
+        pe->InternalDriverStepConfig[i] = device->response[8 + i*2];
+        pe->InternalDriverCurrentConfig[i] = device->response[9 + i*2];
+    }
+    return PK_OK;
+}
+
+// Set internal motor drivers parameters
+int32_t PK_PEv2_InternalDriversConfigurationSet(sPoKeysDevice * device)
+{
+    sPoKeysPEv2 * pe;
+    if (device == NULL) return PK_ERR_NOT_CONNECTED;
+
+    // Create request
+    CreateRequest(device->request, 0x85, 0x19, 0, 0, 0);
+
+    // Pointer to PEv2 structure for better code readability
+    pe = &device->PEv2;
+
+    for (int32_t i = 0; i < 4; i++) {
+        device->request[8 + i*2] = pe->InternalDriverStepConfig[i];
+        device->request[9 + i*2] = pe->InternalDriverCurrentConfig[i];
+    }
+
+    // Send request
+    return SendRequest(device);
+}

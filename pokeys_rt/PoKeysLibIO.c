@@ -308,6 +308,14 @@ int32_t PK_IsCounterAvailableByDevice(uint32_t deviceTypeMask, uint8_t pinID)
                                 1,	1,	1,	1,	0,  0,  0,  0,  0,  0,
                                 0,  0,  0,	0,  0};
 
+    //                              1   2   3   4   5   6   7   8   9   10
+    int counters_57CNCpro4x25[] = { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+                                    0,  0,  0,  0,  0,  0,  0,  0,  1,  0,
+                                    0,	0,	0,  0,  0,  0,	0,  0,	0,	0,
+                                    0,	0,	0,  0,  0,  0,	0,  0,	0,	0,
+                                    0,	0,	0,  0,  0,  0,	0,  0,	0,	0,
+                                    0,  0,  0,	0,  0};
+
     if (deviceTypeMask & PK_DeviceMask_Bootloader) return 0;
 
 	if ((deviceTypeMask & PK_DeviceMask_PoPLC58) || (deviceTypeMask & PK_DeviceMask_57CNCdb25))
@@ -318,6 +326,7 @@ int32_t PK_IsCounterAvailableByDevice(uint32_t deviceTypeMask, uint8_t pinID)
         if (pinID >= 55) return 0;
 
         if (deviceTypeMask & PK_DeviceMask_57CNC) return counters_57CNC[pinID];
+        if (deviceTypeMask & PK_DeviceMask_57CNCpro4x25) return counters_57CNCpro4x25[pinID];
         if (!(deviceTypeMask & (PK_DeviceMask_56 | PK_DeviceMask_57))) return 0;
         return counterSupported[pinID];
     }
@@ -365,6 +374,9 @@ int32_t PK_IsCounterAvailableByTypeID(uint32_t deviceTypeID, uint8_t pinID)
             if (pinID >= 55) return 0;
             return counters_57CNC[pinID];
 
+        case PK_DeviceID_PoKeys57CNCpro4x25:
+            if (pinID == 18) return 1;
+            else return 0;
         case PK_DeviceID_58EU:
             return 0;
         case PK_DeviceID_PoPLC58:
@@ -594,7 +606,17 @@ int32_t PK_DigitalCounterGet(sPoKeysDevice* device)
 	}
 
 	return PK_OK;
-}              
+}
+
+int32_t PK_DigitalCounterClear(sPoKeysDevice* device)
+{
+    if (device == NULL) return PK_ERR_NOT_CONNECTED;
+
+    CreateRequest(device->request, 0x1D, 0, 0, 0, 0);
+    if (SendRequest(device) != PK_OK) return PK_ERR_TRANSFER;
+
+    return PK_OK;
+}
 
 int32_t PK_PWMConfigurationSet(sPoKeysDevice* device)
 {
@@ -715,6 +737,12 @@ int32_t PK_PoExtBusSet(sPoKeysDevice* device)
         device->request[8 + i] = device->PoExtBusData[i];
 	}
 	if (SendRequest(device) != PK_OK) return PK_ERR_TRANSFER;
+
+	// Check that the device has accepted the data
+	if (memcmp(device->PoExtBusData, device->response + 8, device->info.iPoExtBus) != 0)
+	{
+		return PK_ERR_GENERIC;
+	}
 
 	return PK_OK;
 }

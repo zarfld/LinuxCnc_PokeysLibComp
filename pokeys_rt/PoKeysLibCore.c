@@ -145,8 +145,15 @@ void InitializeNewDevice(sPoKeysDevice* device)
 	device->PWM.PWMduty = (uint32_t*)malloc(sizeof(uint32_t) * device->info.iPWMCount);
 	memset(device->PWM.PWMduty, 0, sizeof(uint32_t) * device->info.iPWMCount);
 
-	device->PWM.PWMenabledChannels = (unsigned char*)malloc(sizeof(unsigned char) * device->info.iPWMCount);
-	memset(device->PWM.PWMenabledChannels, 0, sizeof(unsigned char) * device->info.iPWMCount);
+	if (device->info.iPWMCount > 0)
+	{
+		device->PWM.PWMenabledChannels = (unsigned char*)malloc(sizeof(unsigned char) * device->info.iPWMCount);
+		memset(device->PWM.PWMenabledChannels, 0, sizeof(unsigned char) * device->info.iPWMCount);
+	}
+	else
+	{
+		device->PWM.PWMenabledChannels = NULL;
+	}
 	device->PWM.PWMpinIDs = (unsigned char*)malloc(sizeof(unsigned char) * device->info.iPWMCount);
 	memset(device->PWM.PWMpinIDs, 0, sizeof(unsigned char) * device->info.iPWMCount);
 
@@ -225,6 +232,7 @@ void PK_CloneDeviceStructure(sPoKeysDevice* original, sPoKeysDevice *destination
     destination->Encoders = (sPoKeysEncoder*)malloc(sizeof(sPoKeysEncoder) * original->info.iEncodersCount);
     destination->PWM.PWMduty = (uint32_t*)malloc(sizeof(uint32_t) * original->info.iPWMCount);
     destination->PWM.PWMenabledChannels = (unsigned char*)malloc(sizeof(unsigned char) * original->info.iPWMCount);
+	if (original->info.iPWMCount == 0) destination->PWM.PWMenabledChannels = NULL;
     destination->PWM.PWMpinIDs = (unsigned char*)malloc(sizeof(unsigned char) * original->info.iPWMCount);
     destination->MatrixLED = (sPoKeysMatrixLED*)malloc(sizeof(sPoKeysMatrixLED) * original->info.iMatrixLED);
 
@@ -402,23 +410,16 @@ sPoKeysDevice* PK_ConnectToDevice(uint32_t deviceIndex)
 
 // Flags:
 // bits 7-1: deviceType specifier (2 - PoKeys56, 3 - PoKeys58, 4 - PoKeys16)
-// bit 0: use UDP
-sPoKeysDevice* PK_ConnectToPoKeysDevice(uint32_t serialNumber, uint32_t checkForNetworkDevicesAndTimeout, uint32_t flags)
+sPoKeysDevice* PK_ConnectToPoKeysDevice_USB(uint32_t serialNumber, uint32_t flags)
 {
     int32_t numDevices = 0;
     struct hid_device_info *devs, *cur_dev;
     int32_t k;
     sPoKeysDevice* tmpDevice;
     uint8_t serialSearch[8];
-    //uint8_t serialSearch58[8];
-
-    sPoKeysNetworkDeviceSummary * devices;
-    int32_t iNet;
 
     int devRange = 0;
     uint8_t deviceTypeRequested = (flags >> 1) & 0x7F;
-
-	
 
 #ifdef POKEYSLIB_USE_LIBUSB
 	// Try connecting to fast USB interface first
@@ -459,20 +460,6 @@ sPoKeysDevice* PK_ConnectToPoKeysDevice(uint32_t serialNumber, uint32_t checkFor
                 if (deviceTypeRequested == 3 && cur_dev->serial_number[0] != '3') k = 0;
                 if (deviceTypeRequested == 4 && cur_dev->serial_number[0] != '4') k = 0;
 
-                /*
-                for (k = 0; k < 8 && cur_dev->serial_number[k] != 0; k++)
-                {
-                    if (cur_dev->serial_number[k] != serialSearch[k]) break;
-                }
-
-                if (k != 7)
-                {
-                    for (k = 0; k < 8 && cur_dev->serial_number[k] != 0; k++)
-                    {
-                        if (cur_dev->serial_number[k] != serialSearch58[k]) break;
-                    }
-                }*/
-
                 if (k == 7)
                 {
                     tmpDevice = (sPoKeysDevice*)malloc(sizeof(sPoKeysDevice));
@@ -485,7 +472,8 @@ sPoKeysDevice* PK_ConnectToPoKeysDevice(uint32_t serialNumber, uint32_t checkFor
                     if (tmpDevice->devHandle != NULL)
                     {
                         InitializeNewDevice(tmpDevice);
-                    } else
+					}
+					else
                     {
                         free(tmpDevice);
                         tmpDevice = NULL;
@@ -494,7 +482,8 @@ sPoKeysDevice* PK_ConnectToPoKeysDevice(uint32_t serialNumber, uint32_t checkFor
                     hid_free_enumeration(devs);
                     return tmpDevice;
                 }
-            } else
+			}
+			else
             {
                 // Old, PoKeys55 device - we must to connect and read the serial number...
                 tmpDevice = (sPoKeysDevice*)malloc(sizeof(sPoKeysDevice));
@@ -504,7 +493,8 @@ sPoKeysDevice* PK_ConnectToPoKeysDevice(uint32_t serialNumber, uint32_t checkFor
                 if (tmpDevice->devHandle != NULL)
                 {
                     InitializeNewDevice(tmpDevice);
-                } else
+				}
+				else
                 {
                     free(tmpDevice);
                     tmpDevice = NULL;
@@ -517,7 +507,8 @@ sPoKeysDevice* PK_ConnectToPoKeysDevice(uint32_t serialNumber, uint32_t checkFor
                 {
 	                hid_free_enumeration(devs);
                     return tmpDevice;
-                } else
+				}
+				else
                 {
                     CleanDevice(tmpDevice);
                     free(tmpDevice);
@@ -542,6 +533,17 @@ sPoKeysDevice* PK_ConnectToPoKeysDevice(uint32_t serialNumber, uint32_t checkFor
         }
     }
     hid_free_enumeration(devs);
+	return NULL;
+}
+
+// Flags:
+// bit 0: use UDP
+sPoKeysDevice* PK_ConnectToPoKeysDevice_Ethernet(uint32_t serialNumber, uint32_t checkForNetworkDevicesAndTimeout, uint32_t flags)
+{
+	int32_t k;
+	sPoKeysDevice* tmpDevice;
+	sPoKeysNetworkDeviceSummary * devices;
+	int32_t iNet;
 
     if (checkForNetworkDevicesAndTimeout)
     {
@@ -562,7 +564,8 @@ sPoKeysDevice* PK_ConnectToPoKeysDevice(uint32_t serialNumber, uint32_t checkFor
                     //CleanDevice(tmpDevice);
                     free(tmpDevice);
                     //printf("\nProblem connecting to the device...");
-                } else
+				}
+				else
                 {
                     free(devices);
                     InitializeNewDevice(tmpDevice);
@@ -574,6 +577,34 @@ sPoKeysDevice* PK_ConnectToPoKeysDevice(uint32_t serialNumber, uint32_t checkFor
     }
 
     return NULL;
+}
+
+
+// Flags:
+// bit 8: force Ethernet
+// bits 7-1: deviceType specifier (2 - PoKeys56, 3 - PoKeys58, 4 - PoKeys16)
+// bit 0: use UDP
+sPoKeysDevice* PK_ConnectToPoKeysDevice(uint32_t serialNumber, uint32_t checkForNetworkDevicesAndTimeout, uint32_t flags)
+{
+	sPoKeysDevice* tmpDevice = NULL;
+
+	// If Ethernet devices are forced and scan interval is greater than 0...
+	if ((flags & (1 << 8)) && checkForNetworkDevicesAndTimeout > 0)
+	{
+		tmpDevice = PK_ConnectToPoKeysDevice_Ethernet(serialNumber, checkForNetworkDevicesAndTimeout, flags);
+	}
+
+	// Otherwise, check USB first
+	if (tmpDevice == NULL)
+	{
+		tmpDevice = PK_ConnectToPoKeysDevice_USB(serialNumber, flags);
+	}
+	// Then Ethernet
+	if (tmpDevice == NULL && ((flags & (1 << 8)) == 0) && checkForNetworkDevicesAndTimeout > 0)
+	{
+		tmpDevice = PK_ConnectToPoKeysDevice_Ethernet(serialNumber, checkForNetworkDevicesAndTimeout, flags);
+	}
+	return tmpDevice;
 }
 
 

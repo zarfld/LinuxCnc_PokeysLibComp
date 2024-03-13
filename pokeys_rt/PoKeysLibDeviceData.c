@@ -75,11 +75,11 @@ const sPoKeys_DeviceDescriptor deviceDesc[] = {
 		  { 13, CAP( PIN_DIO ) },
 
           // Pendant connector pins
-		  { 9,  CAP( PIN_DIO, PK_AllPinCap_digitalCounter ) },
-          { 10, CAP( PIN_DIO, PK_AllPinCap_digitalCounter ) },
-          { 11, CAP( PIN_DIO, PK_AllPinCap_digitalCounter ) },
-          { 15, CAP( PIN_DIO, PK_AllPinCap_digitalCounter ) },
-          { 16, CAP( PIN_DIO, PK_AllPinCap_digitalCounter ) },
+		  { 9,  CAP( PIN_DI, PK_AllPinCap_digitalCounter ) },
+          { 10, CAP( PIN_DI, PK_AllPinCap_digitalCounter ) },
+          { 11, CAP( PIN_DI, PK_AllPinCap_digitalCounter ) },
+          { 15, CAP( PIN_DI, PK_AllPinCap_digitalCounter ) },
+          { 16, CAP( PIN_DI, PK_AllPinCap_digitalCounter ) },
 
           // Spindle error input
 		  { 14, CAP( PIN_DI ) },
@@ -88,13 +88,13 @@ const sPoKeys_DeviceDescriptor deviceDesc[] = {
 		  { 17, CAP( PIN_DO, PK_AllPinCap_PWMOut ) },
 
           // LCD contrast
-          { 18, CAP( PIN_DO, PK_AllPinCap_PWMOut ) },
+          { 18, CAP( PIN_DIO, PK_AllPinCap_PWMOut ) },
 
           // Probe input
 		  { 19, CAP( PIN_DI, PK_AllPinCap_digitalCounter ) },
 
           // PWM out, pin 20
-		  { 20, CAP( PIN_DO, PK_AllPinCap_PWMOut ) },
+		  { 20, CAP( PIN_DIO, PK_AllPinCap_PWMOut) },
 
           // Pendant LED, PWM out, pin 21
 		  { 21, CAP( PIN_DO, PK_AllPinCap_PWMOut ) },
@@ -135,7 +135,62 @@ const sPoKeys_DeviceDescriptor deviceDesc[] = {
 		  { -1, CAP( -1) }
       }},
 
-	  // PoKeys57CNC Pins descriptor
+    // PoKeys57CNCpro4x25 Pins descriptor
+    { PK_DeviceID_PoKeys57CNCpro4x25,  {
+
+          // Ultra-fast encoder pins
+          { 8,  CAP( PIN_DIO ) },
+          { 12, CAP( PIN_DIO ) },
+          { 13, CAP( PIN_DIO ) },
+
+          // Spindle error
+          { 14, CAP( PIN_DI ) },
+
+          // 0-10V output
+          { 17, CAP( PIN_DO, PK_AllPinCap_PWMOut ) },
+
+          // MOT - fault 2, 1, 4, 3
+          { 18, CAP( PIN_DI ) },
+          { 28, CAP( PIN_DI ) },
+          { 29, CAP( PIN_DI ) },
+          { 30, CAP( PIN_DI ) },
+
+          // Probe
+          { 19, CAP( PIN_DI ) },
+
+          // PWM out, pin 20
+          { 20, CAP( PIN_DO, PK_AllPinCap_PWMOut) },
+
+          // Axis limit 4, 3, 2, 1
+          { 23, CAP( PIN_DI ) },
+          { 24, CAP( PIN_DI ) },
+          { 25, CAP( PIN_DI ) },
+          { 26, CAP( PIN_DI ) },
+
+          // PoExtension2 connector pins
+          { 31, CAP( PIN_DIO ) },
+          { 32, CAP( PIN_DIO ) },
+          { 33, CAP( PIN_DIO ) },
+          { 34, CAP( PIN_DIO ) },
+          { 35, CAP( PIN_DIO ) },
+          { 36, CAP( PIN_DIO ) },
+          { 37, CAP( PIN_DIO ) },
+          { 38, CAP( PIN_DIO ) },
+
+          // Analog inputs
+          { 41, CAP( PIN_DI, PK_AllPinCap_analogInput ) }, // AnalogInput_0_10V
+          { 42, CAP( PIN_DI, PK_AllPinCap_analogInput ) }, // PlasmaIn_0_10V
+          { 43, CAP( PIN_DI, PK_AllPinCap_analogInput ) }, // AIN_24V
+          { 44, CAP( PIN_DI, PK_AllPinCap_analogInput ) }, // NTC_Temperature
+
+          // Emergency switch input
+          { 52, CAP( PIN_DI ) },
+
+          // End of pin list
+          { -1, CAP( -1) }
+      }},
+
+      // PoKeys57CNCdb25 Pins descriptor
 	  { PK_DeviceID_PoKeys57CNCdb25,  {
 		  { 1, CAP( PIN_DO ) },
 		  { 2, CAP( PIN_DO ) },
@@ -162,6 +217,22 @@ const sPoKeys_DeviceDescriptor deviceDesc[] = {
           // End of pin list
 		  { -1, CAP( -1) }
       }},
+
+
+	  // FabricCoder pins descriptor
+	  { PK_DeviceID_OEM1, {
+		  { 1, CAP(PIN_DO) },
+		  { 10, CAP(PIN_DI) },
+		  { 11, CAP(PIN_DI) },
+		  { 12, CAP(PIN_DI) },
+		  { 13, CAP(PIN_DI) },
+		  { 14, CAP(PIN_DO) },
+		  { 16, CAP(PIN_DO) },
+		  { 17, CAP(PIN_DO) },
+
+		  // End of pin list
+		  { -1, CAP(-1) }
+	  } },
 
     // End of device list
     { -1, 0 }
@@ -199,22 +270,6 @@ const sPoKeys_PinCapabilities pinCaps[] = {
     { PK_AllPinCap_digitalOutput,      20, 27, 0, PK_DeviceMask_PoPLC58 },
     { PK_AllPinCap_analogInput,         1,  8, 0, PK_DeviceMask_PoPLC58 },
     { PK_AllPinCap_MFanalogInput,       1,  8, 0, PK_DeviceMask_PoPLC58 },
-
-    /*
-    { PK_AllPinCap_digitalInput,        1, 6, 0, PK_DeviceMask_57CNC },
-    { PK_AllPinCap_digitalInput,        1, 6, 0, PK_DeviceMask_57CNC },
-
-
-    { PK_AllPinCap_digitalOutput,       1, 55, 0, PK_DeviceMask_57CNC },
-    { PK_AllPinCap_analogInput,        43, 47, 0, PK_DeviceMask_57CNC },
-    { PK_AllPinCap_analogInput,        41, 47, 0, PK_DeviceMask_57CNC },
-    { PK_AllPinCap_analogOutput,       43, 43, 0, PK_DeviceMask_57CNC },
-    { PK_AllPinCap_keyboardMapping,     1, 55, 0, PK_DeviceMask_57CNC },
-    { PK_AllPinCap_triggeredInput,      1, 55, 0, PK_DeviceMask_57CNC },
-    { PK_AllPinCap_digitalCounter,      1, 55, 1, PK_DeviceMask_57CNC },
-    { PK_AllPinCap_PWMOut,             17, 22, 0, PK_DeviceMask_57CNC },
-        */
-
     { -1, 0, 0, 0 }
 };
 
@@ -510,6 +565,14 @@ int32_t PK_DeviceDataGet(sPoKeysDevice* device)
                 data->DeviceTypeID = PK_DeviceMask_57 | PK_DeviceMask_57CNC;
                 break;
 
+            // PoKeys57CNCpro4x25
+            case PK_DeviceID_PoKeys57CNCpro4x25:
+                devSeries57 = 1;
+                devEth = 1;
+                devUSB = 1;
+                data->DeviceTypeID = PK_DeviceMask_57 | PK_DeviceMask_57CNCpro4x25;
+                break;
+
 			// PoKeys57CNCdb25
             case PK_DeviceID_PoKeys57CNCdb25:
                 devSeries57 = 1;
@@ -591,6 +654,9 @@ int32_t PK_DeviceDataGet(sPoKeysDevice* device)
         case PK_DeviceID_PoKeys57CNC:
             sprintf(data->DeviceTypeName, "PoKeys57CNC");
             break;
+        case PK_DeviceID_PoKeys57CNCpro4x25:
+            sprintf(data->DeviceTypeName, "PoKeys57CNCpro4x25");
+            break;
         case PK_DeviceID_PoKeys57CNCdb25:
             sprintf(data->DeviceTypeName, "PoKeys57CNCdb25");
             break;
@@ -610,7 +676,7 @@ int32_t PK_DeviceDataGet(sPoKeysDevice* device)
             sprintf(data->DeviceTypeName, "PoKeys16RF");
             break;
         case PK_DeviceID_OEM1:
-            sprintf(data->DeviceTypeName, "FabricCoder");
+			sprintf(data->DeviceTypeName, "MartelliMotion");
             break;
         case PK_DeviceID_SerialReader:
             sprintf(data->DeviceTypeName, "SerialReader");
@@ -698,6 +764,16 @@ int32_t PK_DeviceDataGet(sPoKeysDevice* device)
 
         // PoKeys57CNC
         case PK_DeviceID_PoKeys57CNC:
+            info->iPinCount = 55;
+            info->iEncodersCount = 26;
+            info->iBasicEncoderCount = 25;
+            info->iPWMCount = 6;
+
+            device->info.PWMinternalFrequency = 25000000;
+            break;
+
+        // PoKeys57CNCpro4x25
+        case PK_DeviceID_PoKeys57CNCpro4x25:
             info->iPinCount = 55;
             info->iEncodersCount = 26;
             info->iBasicEncoderCount = 25;
@@ -923,10 +999,18 @@ int32_t PK_DeviceDataGet(sPoKeysDevice* device)
 
     if (data->DeviceType == PK_DeviceID_X15_02_24)
     {
+		info->iDigitalCounters = 0;
+		info->iFastEncoders = 0;
+		info->iUltraFastEncoders = 0;
+		info->iAnalogInputs = 0;
+		info->iAnalogFiltering = 0;
         info->iSensorList = 0;
         info->iLCD = 0;
         info->iMatrixLED = 0;
         info->iprot1wire = 0;
+		info->iMatrixKeyboard = 0;
+		info->iPulseEngine = 0;
+		info->iPulseEnginev2 = 0;
     }
 
     if (devSeries27 || devSeries55 || devSeries56 || devSeries57 || devSeries58)
@@ -1122,6 +1206,8 @@ int32_t PK_CheckPinCapabilityByTypeID(uint64_t deviceID, uint32_t pin, ePK_AllPi
         // New approach
 		case PK_DeviceID_PoKeys57CNCdb25:
         case PK_DeviceID_PoKeys57CNC:
+        case PK_DeviceID_PoKeys57CNCpro4x25:
+		case PK_DeviceID_OEM1:
             // Find the device in the device list
             //if (cap == PK_AllPinCap_digitalCounter) return PK_IsCounterAvailableByDevice(deviceTypeMask, pin);
 
@@ -1231,10 +1317,13 @@ int32_t PK_CheckPinCapabilityByTypeID(uint64_t deviceID, uint32_t pin, ePK_AllPi
 
 int32_t PK_CheckPinCapability(sPoKeysDevice* device, unsigned int pin, ePK_AllPinCap cap)
 {
-    const sPoKeys_PinCapabilities * ptr;
+    //const sPoKeys_PinCapabilities * ptr;
 
     if (device == NULL) return PK_ERR_NOT_CONNECTED;
 
+	return PK_CheckPinCapabilityByTypeID(device->DeviceData.DeviceType, pin, cap);
+
+	/*
     ptr = &pinCaps[0];
 
     while (ptr->cap != -1)
@@ -1273,6 +1362,7 @@ int32_t PK_CheckPinCapability(sPoKeysDevice* device, unsigned int pin, ePK_AllPi
 
 
     return 0;
+	*/
 }
 
 
@@ -1323,5 +1413,24 @@ int32_t PK_GetFastUSBEnableStatus(sPoKeysDevice * device, uint32_t * state)
 	if (SendRequest(device) != PK_OK) return PK_ERR_TRANSFER;
 
 	*state = device->response[2];
+	return PK_OK;
+}
+
+int32_t PK_ReadDeviceLog(sPoKeysDevice * device, uint16_t * logBuffer, int32_t * logEntries)
+{
+    int32_t i;
+
+	if (device == NULL) return PK_ERR_NOT_CONNECTED;
+
+	CreateRequest(device->request, 0x84, 0, 0, 0, 0);
+	if (SendRequest(device) != PK_OK) return PK_ERR_TRANSFER;
+
+	*logEntries = device->response[2];
+	if (*logEntries > 27) *logEntries = 27;
+
+    for (i = 0; i < *logEntries; i++)
+	{
+		logBuffer[i] = *(uint16_t*)(device->response + 8 + i * 2);
+	}
 	return PK_OK;
 }

@@ -43,6 +43,10 @@ void PK_ParsePoILStateResponse(sPoKeysDevice* device)
 
     device->PoIL.functionStack.stackPtr = device->response[28] + ((uint32_t)device->response[29] << 8);
     device->PoIL.dataStack.stackPtr = device->response[30] + ((uint32_t)device->response[31] << 8);
+
+    memcpy(&device->PoIL.ExceptionLocation, device->response + 32, 4);
+    memcpy(device->PoIL.ExceptionDescription, device->response + 36, 16);
+
     device->PoIL.MasterEnable = device->response[59];
     device->PoIL.currentTask = device->response[16];
     device->PoIL.taskCount = device->response[60];

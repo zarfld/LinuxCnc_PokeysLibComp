@@ -48,6 +48,8 @@ int32_t PK_MatrixKBConfigurationGet(sPoKeysDevice* device)
 			{
 				device->matrixKB.macroMappingOptions[n] = ((device->response[26 + n / 8] & (1 << (n % 8))) > 0) ? 1 : 0;
 			}
+
+			device->matrixKB.matrixKBScanningDecimation = device->response[51];
 		} else return PK_ERR_TRANSFER;
 	}
 	
@@ -119,6 +121,12 @@ int32_t PK_MatrixKBConfigurationSet(sPoKeysDevice* device)
 			if (device->matrixKB.macroMappingOptions[n]) device->request[26 + n / 8] |= (1 << (n % 8));
 		}
 
+		if (SendRequest(device) != PK_OK) return PK_ERR_TRANSFER;
+
+
+		// Set matrix KB configuration
+		CreateRequest(device->request, 0xCA, 50, 0, 0, 0);
+		device->request[8] = device->matrixKB.matrixKBScanningDecimation;
 		if (SendRequest(device) != PK_OK) return PK_ERR_TRANSFER;
 	}
 	

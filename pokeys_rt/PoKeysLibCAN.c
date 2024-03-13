@@ -58,11 +58,22 @@ int32_t PK_CANRead(sPoKeysDevice* device, sPoKeysCANmsg * msg, uint8_t * status)
     if (device == NULL) return PK_ERR_NOT_CONNECTED;
 
     // Configure UART
-    CreateRequest(device->request, 0x86, 0x30, 0, 0, 0);
+    CreateRequest(device->request, 0x86, 0x31, 0, 0, 0);
     if (SendRequest(device) != PK_OK) return PK_ERR_TRANSFER;
 
     *status = device->response[3];
     if (*status)
         memcpy(msg, device->response + 8, sizeof(sPoKeysCANmsg));
+    return PK_OK;
+}
+
+
+int32_t PK_CANFlush(sPoKeysDevice* device)
+{
+    if (device == NULL) return PK_ERR_NOT_CONNECTED;
+
+    // Configure UART
+    CreateRequest(device->request, 0x86, 0x32, 0, 0, 0);
+    if (SendRequest(device) != PK_OK) return PK_ERR_TRANSFER;
     return PK_OK;
 }

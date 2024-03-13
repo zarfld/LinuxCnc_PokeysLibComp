@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2013 Matevï¿½ Boï¿½nak (matevz@poscope.com)
+Copyright (C) 2013 Matevž Bošnak (matevz@poscope.com)
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -65,7 +65,7 @@ int32_t PK_PoNETGetModuleStatus(sPoKeysDevice* device)
 {
   if (device == NULL) return PK_ERR_NOT_CONNECTED;
 
-  CreateRequest(device->request, 0xDD, 0x50, 0x30, device->PoNETmodule.moduleID, 0);
+  CreateRequest(device->request, 0xDD, 0x50, 0x30, 0, 0);
   if (SendRequest(device) != PK_OK) return PK_ERR_TRANSFER;
 
   if (device->response[3] != 1) return PK_ERR_GENERIC;

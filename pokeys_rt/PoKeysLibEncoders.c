@@ -209,6 +209,20 @@ int32_t PK_EncoderValuesGet(sPoKeysDevice* device)
 				device->Encoders[13 + i].encoderValue = *((unsigned int*)&device->response[8 + i * 4]);
 			}
 		} else return PK_ERR_TRANSFER;
+		
+		// Read the test mode values for the ultra-fast encoder
+		CreateRequest(device->request, 0x85, 0x37, 0, 0, 0);
+		if (SendRequest(device) == PK_OK)
+		{
+			device->PEv2.EncoderIndexCount = *((uint32_t*)&device->response[12]);
+			device->PEv2.EncoderTicksPerRotation = *((uint32_t*)&device->response[16]);
+			device->PEv2.EncoderVelocity = *((uint32_t*)&device->response[20]);
+
+			/*for (i = 0; i < 13; i++)
+			{
+				device->Encoders[13 + i].encoderValue = *((unsigned int*)&device->response[8 + i * 4]);
+			}*/
+		}
 	}
 	return PK_OK;
 }
