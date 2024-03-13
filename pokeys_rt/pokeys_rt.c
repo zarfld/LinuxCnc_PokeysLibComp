@@ -39,13 +39,13 @@ option extra_setup;
 #define STR(s)  #s
 #define XSTR(s) STR(s)
 #undef POKEYSLIB_USE_LIBUSB
-#include "/usr/include/linuxcnc/motion.h"
+#include "motion.h"
 #include "homing.h"
 #include "rtapi.h"
 #include "rtapi_ctype.h"	/* isspace() */
 #include "rtapi_app.h"		/* RTAPI realtime module decls */
 
-#include <hal.h>		/* HAL public API decls */
+//#include <hal.h>		/* HAL public API decls */
 
 #include "rtapi_io.h"
 
