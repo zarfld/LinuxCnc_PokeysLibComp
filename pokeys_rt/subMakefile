@@ -7,7 +7,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -fPIC
 
 # Source files
-SRCS = pokeys_rt.c PoKeysLibCore.c PoKeysLibCoreSockets.c PoKeysLibDeviceData.c PoKeysLibIO.c PoKeysLibEncoders.c PoKeysLibMatrixLED.c PoKeysLibMatrixKB.c PoKeysLibPoNET.c PoKeysLibLCD.c PoKeysLibRTC.c PoKeysLibEasySensors.c PoKeysLibI2C.c PoKeysLib1Wire.c PoKeysLibSPI.c PoKeysLibPulseEngine_v2.c PoKeysLibUART.c PoKeysLibCAN.c PoKeysLibFailsafe.c PoKeysLibWS2812.c
+SRCS = pokeys_rt.c
 #SRCS = 
 
 # Header files
