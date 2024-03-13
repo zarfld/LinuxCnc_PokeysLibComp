@@ -3,6 +3,8 @@
 # Compiler
 CC = gcc
 
+RTFLAGS := -Os -g -I. -I@RTDIR@/include -I/usr/include/linuxcnc $(RTFLAGS) -DRTAPI -D_GNU_SOURCE -Drealtime
+
 # Linker flags
 LDFLAGS = -lPoKeys
 
@@ -38,7 +40,7 @@ include /usr/share/linuxcnc/Makefile.modinc
 
 # Build target
 modules: $(OBJS)
-	$(CC) $(LDFLAGS) -shared -o $(LIB) $(OBJS) $(obj-m)
+	$(CC) $(LDFLAGS) -shared -o $(LIB) $(OBJS) $(obj-m) $(RTFLAGS)
 
 $(LIB): $(OBJS)
 	$(CC) $(LDFLAGS) -shared -o $@ $^ -I/usr/include/linuxcnc

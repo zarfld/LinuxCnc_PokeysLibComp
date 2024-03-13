@@ -51,6 +51,11 @@ option extra_setup;
 
 #include "stdlib.h"
 
+/* module information */
+MODULE_AUTHOR("Dominik Zarfl");
+MODULE_DESCRIPTION("realtime module for pokeys");
+MODULE_LICENSE("GPL");
+
 //usr/include/bsd/stdlib.h
 //usr/include/stdlib.h
 //usr/include/c++/10/stdlib.h
@@ -78,6 +83,9 @@ RTAPI_MP_STRING(IP, "IP Address")
 
 static int timeout_ms = 500;
 RTAPI_MP_INT(timeout_ms, "Timeout in ms")
+
+#define EXTRA_CLEANUP() static void extra_cleanup(void)
+#define EXTRA_SETUP() static int extra_setup(void)
 
 sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 {
