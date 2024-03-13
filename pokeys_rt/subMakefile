@@ -33,7 +33,7 @@ clean:
 
 install:
 #	cp $(patsubst %.o,%.ko,$(obj-m)) $(RTLIBDIR)/
-	cp $(LIB) $(RTLIBDIR)/
+#	cp $(LIB) $(RTLIBDIR)/
 
 # Compile source files
 %.o: %.c $(HDRS)
