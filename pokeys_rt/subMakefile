@@ -9,15 +9,14 @@ CFLAGS = -Wall -Wextra
 # Source files
 SRCS = pokeys_rt.c PoKeysLibCore.c PoKeysLibCoreSockets.c PoKeysLibDeviceData.c PoKeysLibIO.c PoKeysLibEncoders.c PoKeysLibMatrixLED.c PoKeysLibMatrixKB.c PoKeysLibPoNET.c PoKeysLibLCD.c PoKeysLibRTC.c PoKeysLibEasySensors.c PoKeysLibI2C.c PoKeysLib1Wire.c PoKeysLibSPI.c PoKeysLibPulseEngine_v2.c PoKeysLibUART.c PoKeysLibCAN.c PoKeysLibFailsafe.c PoKeysLibWS2812.c
 
-
 # Header files
 HDRS = PoKeysLibRt.h PoKeysLibCore.h  # Add all your .h files here
 
 # Object files
-OBJS = $(SRCS:.c=.so)
+OBJS = $(SRCS:.c=.o)
 
-# Target module
-obj-m += pokeys_rt.so
+# Target library
+LIB = pokeys_rt.so
 
 # Include Makefile.modinc
 include /usr/share/linuxcnc/Makefile.modinc
@@ -25,12 +24,15 @@ include /usr/share/linuxcnc/Makefile.modinc
 # Build target
 modules: $(OBJS)
 	$(MAKE) modules
+$(LIB): $(OBJS)
+	$(CC) -shared -o $@ $^
 
 clean:
 	rm -f *.ko *.mod.c *.o *.so
 
 install:
 	cp $(patsubst %.o,%.ko,$(obj-m)) $(RTLIBDIR)/
+	cp $(LIB) $(RTLIBDIR)/
 
 # Compile source files
 %.o: %.c $(HDRS)
