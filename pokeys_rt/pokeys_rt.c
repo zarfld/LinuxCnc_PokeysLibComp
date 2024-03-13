@@ -60,7 +60,7 @@ option extra_setup;
 //usr/include/tcl8.6/tcl-private/compat/stdlib.h
 ///usr/include/c++/10/tr1/stdlib.h
 
-#include "./PoKeysLibRt.h"
+#include "./PoKeysLib.h"
 
 #undef POKEYSLIB_USE_LIBUSB
 
