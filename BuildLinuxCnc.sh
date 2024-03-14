@@ -1,17 +1,19 @@
 #!/bin/bash
 
-
 # Install necessary packages
 cd ..
 sudo apt update
 sudo apt install build-essential git devscripts dpkg-dev python
 
-
 git config --global http.postBuffer 524288000
 
 # Clone LinuxCNC source code
-git clone git://github.com/linuxcnc/linuxcnc.git linuxcnc-dev
-cd linuxcnc-dev
+if ! git clone git://github.com/linuxcnc/linuxcnc.git linuxcnc-dev; then
+    echo "Failed to clone repository. Please check your internet connection."
+    exit 1
+fi
+
+cd linuxcnc-dev || exit
 
 # Choose version to compile (2.7 or 2.8 pre1)
 if [ -z "$1" ]; then
@@ -24,12 +26,23 @@ fi
 git pull
 
 # Configure and compile LinuxCNC
-cd src
-./autogen.sh
+if [ -d "src" ]; then
+    cd src
+else
+    echo "Directory 'src' not found. Please check the repository."
+    exit 1
+fi
+
+if [ -f "./autogen.sh" ]; then
+    ./autogen.sh
+else
+    echo "File 'autogen.sh' not found. Please check the repository."
+    exit 1
+fi
 
 # Choose RealTime option (uspace for PREEMPT_RT)
 echo "Choose RealTime option (uspace for PREEMPT_RT):"
-select realtime_option in uspace preempt_rt xenomai do
+select realtime_option in uspace preempt_rt xenomai; do
     break;
 done
 
