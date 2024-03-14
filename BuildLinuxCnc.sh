@@ -8,10 +8,15 @@ sudo apt install build-essential git devscripts dpkg-dev python
 git config --global http.postBuffer 1073741824
 
 # Clone LinuxCNC source code
-if ! git clone git://github.com/linuxcnc/linuxcnc.git linuxcnc-dev; then
-    echo "Failed to clone repository. Please check your internet connection."
-    exit 1
-fi
+
+#if ! git clone git://github.com/linuxcnc/linuxcnc.git linuxcnc-dev; then
+    if [ ! -d "linuxcnc-dev" ]; then
+        if ! git clone https://github.com/linuxcnc/linuxcnc.git linuxcnc-dev; then
+            echo "Failed to clone repository. Please check your internet connection."
+            exit 1
+        fi
+    fi
+
 
 cd linuxcnc-dev || exit
 
