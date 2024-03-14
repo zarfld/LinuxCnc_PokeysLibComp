@@ -51,12 +51,21 @@ fi
 #select realtime_option in uspace preempt_rt xenomai; do
 #    break;
 #done
-realtime_option = "preempt_rt"
+realtime_option = "PREEMPT_RT"
 
-# Compile LinuxCNC
-./configure --with-realtime="$realtime_option"
-make -j$(nproc)
-sudo make setuid
+# Choose build mode (RIP or Debian Packages)
+build_mode="RIP"  # Change this to your desired build mode
 
-# For Run In Place (RIP) environment
-source ~/linuxcnc-dev/scripts/rip-environment
+if [ "$build_mode" == "RIP" ]; then
+    ./configure --with-realtime=$realtime_option --enable-build-documentation
+    make -j$(nproc)
+    sudo make setuid
+    source ~/linuxcnc-dev/scripts/rip-environment
+elif [ "$build_mode" == "Debian Packages" ]; then
+    cd ~/linuxcnc-dev/debian
+    ./configure $realtime_option
+    dpkg-checkbuilddeps
+    # Install dependencies based on output of dpkg-checkbuilddeps command
+else
+    echo "Invalid build mode choice. Please choose between 'RIP' or 'Debian Packages'."
+fi
