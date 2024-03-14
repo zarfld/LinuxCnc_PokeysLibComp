@@ -6,6 +6,7 @@ sudo apt update
 sudo apt install build-essential git devscripts dpkg-dev python
 sudo apt install -y automake
 sudo apt install -y libmodbus-dev
+sudo apt install -y libgpiod
 git config --global http.postBuffer 2147483648
 
 
@@ -39,6 +40,8 @@ else
     echo "Directory 'src' not found. Please check the repository."
     exit 1
 fi
+
+include /usr/include
 
 if [ -f "./autogen.sh" ]; then
   #   ./autogen.sh
