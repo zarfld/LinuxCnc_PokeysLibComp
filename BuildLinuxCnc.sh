@@ -5,6 +5,7 @@ cd ..
 sudo apt update
 sudo apt install build-essential git devscripts dpkg-dev python
 sudo apt install -y automake
+sudo apt install -y libmodbus-dev
 git config --global http.postBuffer 2147483648
 
 
