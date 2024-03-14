@@ -56,12 +56,12 @@ realtime_option="PREEMPT_RT"
 # Choose build mode (RIP or Debian Packages)
 build_mode="RIP"  # Change this to your desired build mode
 
-if [ "$build_mode" == "RIP" ]; then
+if [ "$build_mode" = "RIP" ]; then
     ./configure --with-realtime=$realtime_option --enable-build-documentation
     make -j$(nproc)
     sudo make setuid
     source ~/linuxcnc-dev/scripts/rip-environment
-elif [ "$build_mode" == "Debian Packages" ]; then
+elif [ "$build_mode" = "Debian Packages" ]; then
     cd ~/linuxcnc-dev/debian
     ./configure $realtime_option
     dpkg-checkbuilddeps
