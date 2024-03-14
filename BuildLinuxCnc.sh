@@ -71,8 +71,13 @@ elif [ "$build_mode" = "Debian Packages" ]; then
     cd ~/linuxcnc-dev/debian
 #    ./configure $realtime_option
     sh configure $realtime_option
+    #The output of this command will list all the software packages that need to be installed to successfully compile the LinuxCNC software. 
     dpkg-checkbuilddeps
+
     # Install dependencies based on output of dpkg-checkbuilddeps command
+    #sudo apt-get install -y <dependencies>
+    sudo apt-get install -y $(dpkg-checkbuilddeps 2>&1 | grep -Po 'Depends: \K.*' | tr -d '<>' | tr ',' '\n' | awk '{print $1}' | tr '\n' ' ')
+
 else
     echo "Invalid build mode choice. Please choose between 'RIP' or 'Debian Packages'."
 fi
