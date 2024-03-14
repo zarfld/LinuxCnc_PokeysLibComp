@@ -1,6 +1,8 @@
 #!/bin/bash
 
+
 # Install necessary packages
+cd ..
 sudo apt update
 sudo apt install build-essential git devscripts dpkg-dev python
 
