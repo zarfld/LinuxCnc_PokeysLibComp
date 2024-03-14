@@ -83,7 +83,7 @@ fi
 #select realtime_option in uspace preempt_rt xenomai; do
 #    break;
 #done
-realtime_option="uspace"
+realtime_option="PREEMPT_RT"
 
 # Choose build mode (RIP or Debian Packages)
 build_mode="Debian Packages"  # Change this to your desired build mode
