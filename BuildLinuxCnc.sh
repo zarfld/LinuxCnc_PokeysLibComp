@@ -30,14 +30,15 @@ sudo apt install -y debhelper dh-python libudev-dev libxenomai-dev \
    texlive-latex-recommended xsltproc gettext autoconf libmodbus-dev \
    asciidoc-dblatex libxaw7-dev bwidget libtk-img tclx python-gtk2
 
-git config --global http.postBuffer 2147483648
+git config --global http.postBuffer 4294967296
+
 
 
 # Clone LinuxCNC source code
 
 #git clone --depth 1 https://github.com/linuxcnc/linuxcnc.git linuxcnc-dev
     if [ ! -d "linuxcnc-dev" ]; then
-        if ! git clone https://github.com/linuxcnc/linuxcnc.git linuxcnc-dev; then
+        if ! git clone --depth 1 https://github.com/linuxcnc/linuxcnc.git linuxcnc-dev; then
             echo "Failed to clone repository. Please check your internet connection."
             exit 1
         fi
