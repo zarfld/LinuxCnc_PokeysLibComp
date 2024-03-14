@@ -5,11 +5,12 @@ cd ..
 sudo apt update
 sudo apt install build-essential git devscripts dpkg-dev python
 
-git config --global http.postBuffer 1073741824
+git config --global http.postBuffer 2147483648
+
 
 # Clone LinuxCNC source code
 
-#if ! git clone git://github.com/linuxcnc/linuxcnc.git linuxcnc-dev; then
+#git clone --depth 1 https://github.com/linuxcnc/linuxcnc.git linuxcnc-dev
     if [ ! -d "linuxcnc-dev" ]; then
         if ! git clone https://github.com/linuxcnc/linuxcnc.git linuxcnc-dev; then
             echo "Failed to clone repository. Please check your internet connection."
@@ -46,10 +47,11 @@ else
 fi
 
 # Choose RealTime option (uspace for PREEMPT_RT)
-echo "Choose RealTime option (uspace for PREEMPT_RT):"
-select realtime_option in uspace preempt_rt xenomai; do
-    break;
-done
+#echo "Choose RealTime option (uspace for PREEMPT_RT):"
+#select realtime_option in uspace preempt_rt xenomai; do
+#    break;
+#done
+realtime_option = "preempt_rt"
 
 # Compile LinuxCNC
 ./configure --with-realtime="$realtime_option"
