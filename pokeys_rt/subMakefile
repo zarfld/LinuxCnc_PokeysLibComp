@@ -43,7 +43,7 @@ modules: $(OBJS)
 	$(CC) $(LDFLAGS) -shared -o $(LIB) $(OBJS) $(obj-m) -DRTAPI -D_GNU_SOURCE -Drealtime
 
 $(LIB): $(OBJS)
-	$(CC) $(LDFLAGS) -shared -o $@ $^ -I/usr/include/linuxcnc
+	$(CC) $(LDFLAGS) -shared -o $@ $^ -I/usr/include/linuxcnc -DRTAPI -D_GNU_SOURCE -Drealtime
 
 clean:
 	rm -f *.ko *.mod.c *.o *.so
