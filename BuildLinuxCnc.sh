@@ -3,7 +3,7 @@
 # Install necessary packages
 cd ..
 sudo apt update
-sudo apt autoremove
+
 sudo apt install build-essential git devscripts dpkg-dev python
 sudo apt install -y automake
 sudo apt install -y libmodbus-dev
@@ -31,6 +31,7 @@ sudo apt install -y debhelper dh-python libudev-dev libxenomai-dev \
    texlive-latex-recommended xsltproc gettext autoconf libmodbus-dev \
    asciidoc-dblatex libxaw7-dev bwidget libtk-img tclx python-gtk2
 
+sudo apt autoremove
 #git config --global http.postBuffer 4294967296
 git config --global http.postBuffer 1073741824
 
@@ -85,7 +86,7 @@ fi
 realtime_option="uspace"
 
 # Choose build mode (RIP or Debian Packages)
-build_mode="RIP"  # Change this to your desired build mode
+build_mode="Debian Packages"  # Change this to your desired build mode
 
 if [ "$build_mode" = "RIP" ]; then
 #    ./configure --with-realtime=$realtime_option --enable-build-documentation
