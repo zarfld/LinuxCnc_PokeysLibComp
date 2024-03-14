@@ -4,7 +4,7 @@
 cd ..
 sudo apt update
 sudo apt install build-essential git devscripts dpkg-dev python
-
+sudo apt install -y automake
 git config --global http.postBuffer 2147483648
 
 
@@ -40,7 +40,8 @@ else
 fi
 
 if [ -f "./autogen.sh" ]; then
-    ./autogen.sh
+  #   ./autogen.sh
+  sh autogen.sh
 else
     echo "File 'autogen.sh' not found. Please check the repository."
     exit 1
@@ -57,7 +58,8 @@ realtime_option="PREEMPT_RT"
 build_mode="RIP"  # Change this to your desired build mode
 
 if [ "$build_mode" = "RIP" ]; then
-    ./configure --with-realtime=$realtime_option --enable-build-documentation
+#    ./configure --with-realtime=$realtime_option --enable-build-documentation
+    sh configure --with-realtime=$realtime_option --enable-build-documentation
     make -j$(nproc)
     sudo make setuid
     source ~/linuxcnc-dev/scripts/rip-environment
