@@ -65,7 +65,8 @@ if [ "$build_mode" = "RIP" ]; then
     source ~/linuxcnc-dev/scripts/rip-environment
 elif [ "$build_mode" = "Debian Packages" ]; then
     cd ~/linuxcnc-dev/debian
-    ./configure $realtime_option
+#    ./configure $realtime_option
+    sh configure $realtime_option
     dpkg-checkbuilddeps
     # Install dependencies based on output of dpkg-checkbuilddeps command
 else
