@@ -29,7 +29,7 @@ cd src
 
 # Choose RealTime option (uspace for PREEMPT_RT)
 echo "Choose RealTime option (uspace for PREEMPT_RT):"
-select realtime_option in uspace preempt_rt xenomai; do
+select realtime_option in uspace preempt_rt xenomai do
     break;
 done
 
