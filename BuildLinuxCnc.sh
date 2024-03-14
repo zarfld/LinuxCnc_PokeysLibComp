@@ -18,7 +18,7 @@ sudo apt install -y libjansson-dev
 sudo apt install -y libboost-python-dev
 sudo apt install -y libboost-thread-dev
 sudo apt install -y libboost-system-dev
-sudo apt install debhelper dh-python libudev-dev libxenomai-dev \
+sudo apt install -y debhelper dh-python libudev-dev libxenomai-dev \
    tcl8.6-dev tk8.6-dev libreadline-gplv2-dev asciidoc \
    dvipng graphviz groff imagemagick inkscape python-lxml \
    source-highlight texlive-font-utils texlive-lang-cyrillic \
@@ -29,6 +29,7 @@ sudo apt install debhelper dh-python libudev-dev libxenomai-dev \
    dblatex docbook-xsl texlive-extra-utils texlive-fonts-recommended \
    texlive-latex-recommended xsltproc gettext autoconf libmodbus-dev \
    asciidoc-dblatex libxaw7-dev bwidget libtk-img tclx python-gtk2
+
 git config --global http.postBuffer 2147483648
 
 
