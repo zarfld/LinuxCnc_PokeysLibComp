@@ -6,6 +6,9 @@ cd ..
 sudo apt update
 sudo apt install build-essential git devscripts dpkg-dev python
 
+
+git config --global http.postBuffer 524288000
+
 # Clone LinuxCNC source code
 git clone git://github.com/linuxcnc/linuxcnc.git linuxcnc-dev
 cd linuxcnc-dev
