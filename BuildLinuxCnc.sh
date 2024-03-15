@@ -58,7 +58,7 @@ else
 fi
 
 # Update source code
-git pull
+git pull --ff-only
 
 # Configure and compile LinuxCNC
 if [ -d "src" ]; then
@@ -83,7 +83,7 @@ fi
 #select realtime_option in uspace preempt_rt xenomai; do
 #    break;
 #done
-realtime_option="PREEMPT_RT"
+realtime_option="preempt_rt"
 
 # Choose build mode (RIP or Debian Packages)
 build_mode="Debian Packages"  # Change this to your desired build mode
