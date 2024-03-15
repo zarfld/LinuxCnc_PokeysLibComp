@@ -49,7 +49,7 @@ git config --global http.postBuffer 1073741824
         fi
     fi
 
-
+dir
 cd linuxcnc-dev || exit
 
 # Choose version to compile (2.7 or 2.8 pre1)
@@ -64,6 +64,7 @@ git pull --ff-only
 
 # Configure and compile LinuxCNC
 if [ -d "src" ]; then
+    dir
     cd src
 else
     echo "Directory 'src' not found. Please check the repository."
@@ -96,8 +97,10 @@ if [ "$build_mode" = "RIP" ]; then
     sh configure --with-realtime=$realtime_option --enable-build-documentation
     make -j$(nproc)
     sudo make setuid
+    dir
     source ../scripts/rip-environment
 elif [ "$build_mode" = "Debian Packages" ]; then
+    dir
     cd ../linuxcnc-dev/debian
 #    ./configure $realtime_option
     sh configure $realtime_option
