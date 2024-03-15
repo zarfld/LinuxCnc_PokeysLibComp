@@ -19,6 +19,8 @@ sudo apt install -y libjansson-dev
 sudo apt install -y libboost-python-dev
 sudo apt install -y libboost-thread-dev
 sudo apt install -y libboost-system-dev
+sudo apt install -y libreadline-dev
+sudo apt install -y python3-lxml python3-gtk2
 sudo apt install -y debhelper dh-python libudev-dev libxenomai-dev \
    tcl8.6-dev tk8.6-dev libreadline-gplv2-dev asciidoc \
    dvipng graphviz groff imagemagick inkscape python-lxml \
@@ -68,7 +70,8 @@ else
     exit 1
 fi
 
-include /usr/include
+source /usr/include
+#include /usr/include
 
 if [ -f "./autogen.sh" ]; then
   #   ./autogen.sh
@@ -93,9 +96,9 @@ if [ "$build_mode" = "RIP" ]; then
     sh configure --with-realtime=$realtime_option --enable-build-documentation
     make -j$(nproc)
     sudo make setuid
-    source ~/linuxcnc-dev/scripts/rip-environment
+    source ../scripts/rip-environment
 elif [ "$build_mode" = "Debian Packages" ]; then
-    cd ~/linuxcnc-dev/debian
+    cd ../linuxcnc-dev/debian
 #    ./configure $realtime_option
     sh configure $realtime_option
     #The output of this command will list all the software packages that need to be installed to successfully compile the LinuxCNC software. 
