@@ -273,6 +273,54 @@ int  homing_init(int id,
 // once-per-servo-period functions:
 bool do_homing(void) { 
     rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function started\n", __FILE__, __FUNCTION__);
+    int jno;
+    one_joint_home_data_t* addr;
+    for (jno = 0; jno < EMCMOT_MAX_JOINTS; jno++) {
+        addr = &(joint_home_data->jhd[jno]);
+        int int_AxesState = (int)(*addr->PEv2_AxesState);
+        switch (int_AxesState) {
+        case PK_PEAxisState_axHOMING_RESETTING:// Stopping the axis to reset the position counters
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_INITIAL_SEARCH_START;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        case PK_PEAxisState_axHOMING_BACKING_OFF:// Backing off switch
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_INITIAL_BACKOFF_WAIT;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        case PK_PEAxisState_axHOMINGSTART:// Homing procedure is starting on axis
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_START;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        case PK_PEAxisState_axHOMINGSEARCH:// Homing procedure first step - going to home
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_INITIAL_SEARCH_WAIT;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        case PK_PEAxisState_axHOMINGBACK:// Homing procedure second step - slow homing
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_FINAL_BACKOFF_START;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        case PK_PEAxisState_axHOME:// Axis is homed
+            H[jno].homing = 1;
+            H[jno].homed = 1;
+            H[jno].home_state = HOME_FINISHED;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        default:
+            H[jno].homing = 0;
+            H[jno].home_state = HOME_IDLE;
+            break;
+        }
+    }
     rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
     return 1; }//return 1 if allhomed
 void read_homing_in_pins(int njoints)
