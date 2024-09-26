@@ -65,7 +65,7 @@ MODULE_LICENSE("GPL");
 //usr/include/tcl8.6/tcl-private/compat/stdlib.h
 ///usr/include/c++/10/tr1/stdlib.h
 
-#include "./PoKeysLib.h"
+#include "./PoKeysLibRt.h"
 #include "./PoKeysLibCore.h"
 
 #undef POKEYSLIB_USE_LIBUSB
