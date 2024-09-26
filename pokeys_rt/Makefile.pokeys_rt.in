@@ -142,4 +142,3 @@ endif
 ifeq ($(BUILDSYS),normal)
 $(error Makefile.modinc is only suitable for 'kbuild' kernels and 'uspace' systems)
 endif
-
