@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [debian-latest, raspbian-buster, raspbian-jessie, mint-latest, ubuntu-latest]
+        os: [debian-latest, raspbian-bookworm, raspbian-bullseye, mint-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -142,3 +142,103 @@ jobs:
         path: |
           build/build.log
           build/test.log
+
+    - name: Add caching mechanism for dependencies
+      run: |
+        echo "Adding caching mechanism for dependencies..."
+        cache_dir="$HOME/.cache/linuxcnc"
+        mkdir -p "$cache_dir"
+        export CCACHE_DIR="$cache_dir"
+        export CCACHE_COMPRESS=1
+        export CCACHE_COMPRESSLEVEL=6
+        export CCACHE_MAXSIZE=5G
+        export PATH="/usr/lib/ccache:$PATH"
+
+    - name: Add logging for installation failures
+      run: |
+        echo "Adding logging for installation failures..."
+        log_file="$HOME/linuxcnc_build.log"
+        make -j$(nproc) all 2>&1 | tee "$log_file"
+        if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+            echo "Build failed. Check the log file for details: $log_file"
+            exit 1
+        fi
+
+    - name: Integrate optimization steps from BuildLinuxCnc.sh
+      run: |
+        echo "Integrating optimization steps from BuildLinuxCnc.sh..."
+        sudo apt update
+        sudo apt autoremove
+        git config --global http.postBuffer 1073741824
+        cd linuxcnc-dev || exit
+        if [ -z "$1" ]; then
+            git checkout master
+        else
+            git checkout "$1"
+        fi
+        git pull --ff-only
+        if [ -d "src" ]; then
+            cd src
+        else
+            echo "Directory 'src' not found. Please check the repository."
+            exit 1
+        fi
+        source /usr/include
+        if [ -f "./autogen.sh" ]; then
+            sh autogen.sh
+        else
+            echo "File 'autogen.sh' not found. Please check the repository."
+            exit 1
+        fi
+        realtime_option="uspace"
+        build_mode="Debian Packages"
+        if [ "$build_mode" = "RIP" ]; then
+            sh configure --with-realtime=$realtime_option --enable-build-documentation
+            make -j$(nproc)
+            sudo make setuid
+            source ../scripts/rip-environment
+        elif [ "$build_mode" = "Debian Packages" ]; then
+            cd ../linuxcnc-dev/debian
+            sh configure $realtime_option
+            dpkg-checkbuilddeps
+            sudo apt-get install -y $(dpkg-checkbuilddeps 2>&1 | grep -Po 'Depends: \K.*' | tr -d '<>' | tr ',' '\n' | awk '{print $1}' | tr '\n' ' ')
+        else
+            echo "Invalid build mode choice. Please choose between 'RIP' or 'Debian Packages'."
+        fi
+        make -j$(nproc) all
+        make -j$(nproc) all 2>&1 | tee "$log_file"
+        if [ "${PIPESTATUS[0]}" -ne 0]; then
+            echo "Build failed. Check the log file for details: $log_file"
+            exit 1
+        fi
+
+    - name: Test installation process on multiple environments
+      run: |
+        echo "Testing installation process on multiple environments..."
+        environments=("debian-latest" "mint-latest" "raspbian-bookworm" "raspbian-bullseye")
+        for env in "${environments[@]}"; do
+            echo "Testing on $env..."
+            sudo apt-get update
+            sudo apt-get install -y cmake python3 libmodbus-dev libgpiod-dev libgtk2.0-dev libglade2-dev libxmu-dev libglu1-mesa-dev libgl1-mesa-dev libreadline-dev libjansson-dev libboost-python-dev libboost-thread-dev libboost-system-dev python3-lxml debhelper dh-python libudev-dev tcl8.6-dev tk8.6-dev asciidoc dvipng graphviz groff imagemagick inkscape source-highlight texlive-font-utils texlive-lang-cyrillic texlive-lang-french texlive-lang-german texlive-lang-polish texlive-lang-spanish w3c-linkchecker python-dev-is-python3 python-tk intltool libusb-1.0-0-dev yapps2 dblatex docbook-xsl texlive-extra-utils texlive-fonts-recommended texlive-latex-recommended xsltproc gettext autoconf asciidoc-dblatex libxaw7-dev bwidget libtk-img tclx
+            git clone https://github.com/LinuxCNC/linuxcnc.git
+            cd linuxcnc
+            sudo dpkg-buildpackage -b -uc
+            sudo dpkg -i ../linuxcnc-uspace_*.deb ../linuxcnc-dev_*.deb
+            git clone https://bitbucket.org/mbosnak/pokeyslib.git
+            cd pokeyslib
+            make -f Makefile.noqmake install
+            cd ..
+            mkdir build
+            cd build
+            cmake ..
+            make -j$(nproc) 2>&1 | tee build.log
+            if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+                echo "Build failed on $env. Check the log file for details: build.log"
+                exit 1
+            fi
+            ctest --output-on-failure 2>&1 | tee test.log
+            if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+                echo "Tests failed on $env. Check the log file for details: test.log"
+                exit 1
+            fi
+        done
