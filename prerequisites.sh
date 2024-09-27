@@ -88,6 +88,15 @@ else
     apt-get install --only-upgrade -y python3-gi
 fi
 
+# Check if python3-dev is installed
+if ! dpkg -s python3-dev >/dev/null 2>&1; then
+    echo "Installing python3-dev..."
+    apt-get install -y python3-dev
+else
+    echo "Updating python3-dev..."
+    apt-get install --only-upgrade -y python3-dev
+fi
+
 # Change directory to parent directory
 echo "Changing directory to parent directory..."
 cd ..
