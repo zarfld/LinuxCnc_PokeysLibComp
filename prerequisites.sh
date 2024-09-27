@@ -88,17 +88,6 @@ else
     apt-get install --only-upgrade -y python3-gi
 fi
 
-# Add Xenomai repository and install libxenomai-dev
-echo "Adding Xenomai repository and installing libxenomai-dev..."
-wget -q -O - http://xenomai.org/downloads/xenomai/stable/xenomai-3.1/xenomai-3.1.tar.bz2 | tar -xj
-cd xenomai-3.1
-./scripts/bootstrap
-./configure --with-core=cobalt
-make
-make install
-cd ..
-rm -rf xenomai-3.1
-
 # Change directory to parent directory
 echo "Changing directory to parent directory..."
 cd ..

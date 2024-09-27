@@ -36,7 +36,7 @@ jobs:
         echo "Building LinuxCNC packages..."
         sudo dpkg-buildpackage -b -uc
         echo "Installing LinuxCNC packages..."
-        sudo dpkg -i ../linuxcnc-uspace_*.deb ../linuxcnc-dev_*.deb
+        sudo dpkg -i ../linuxcnc-uspace-dev_*.deb
 
     - name: Install PoKeysLib
       run: |
