@@ -131,5 +131,33 @@ class TestPerformance(unittest.TestCase):
         with self.assertRaises(ValueError):
             pev2_io.fetch_status()
 
+    @patch('pokeys_py.pokeyslib')
+    def test_performance_under_load(self, mock_pokeyslib):
+        device = MagicMock()
+        dio = digital_io.DigitalIO(device)
+        aio = analog_io.AnalogIO(device)
+        pwm_io = pwm.PWM(device)
+        counter_io = counter.Counter(device)
+        ponet_io = ponet.PoNET(device)
+        pev2_io = pev2_motion_control.PEv2MotionControl(device)
+
+        start_time = time.time()
+        for _ in range(1000):
+            dio.set(1, 1)
+            dio.fetch(1)
+            aio.set(1, 1.0)
+            aio.fetch(1)
+            pwm_io.set(1, 1000, 50)
+            pwm_io.fetch(1)
+            counter_io.clear(1)
+            counter_io.fetch(1)
+            ponet_io.set(1, 1)
+            ponet_io.fetch(1)
+            pev2_io.set_position(1, 1000)
+            pev2_io.fetch_status()
+        end_time = time.time()
+        latency = (end_time - start_time) / 1000
+        self.assertLess(latency, 0.005, "System latency under load is too high")
+
 if __name__ == '__main__':
     unittest.main()

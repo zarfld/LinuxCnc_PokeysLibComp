@@ -70,5 +70,13 @@ class TestAnalogIO(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.analog_io.setup(1, 'invalid')
 
+    @patch('pokeys_py.analog_io.pokeyslib')
+    def test_analog_input_output_behavior(self, mock_pokeyslib):
+        for i in range(7):
+            expected_value = 1.23 * i
+            self.analog_io.set(i, expected_value)
+            actual_value = self.analog_io.fetch(i)
+            self.assertEqual(actual_value, expected_value, f"Analog pin {i} expected {expected_value} but got {actual_value}")
+
 if __name__ == '__main__':
     unittest.main()

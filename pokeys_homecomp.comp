@@ -545,3 +545,50 @@ EXPORT_SYMBOL(write_homing_out_pins);
 
 #undef XSTR
 #undef STR
+
+// Unit tests for pokeys_homecomp functionalities
+void test_pokeys_homecomp() {
+    // Test initialization
+    int id = 1;
+    double servo_period = 0.001;
+    int n_joints = 4;
+    int n_extrajoints = 0;
+    emcmot_joint_t joints[4];
+    int result = homing_init(id, servo_period, n_joints, n_extrajoints, joints);
+    if (result != 0) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_homecomp: ERROR: homing_init failed\n");
+        return;
+    }
+
+    // Test homing state transitions
+    for (int jno = 0; jno < n_joints; jno++) {
+        one_joint_home_data_t* addr = &(joint_home_data->jhd[jno]);
+        addr->PEv2_AxesState = (hal_u32_t*)PK_PEAxisState_axHOMINGSTART;
+        do_homing();
+        if (H[jno].home_state != HOME_START) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_homecomp: ERROR: joint %d expected HOME_START but got %d\n", jno, H[jno].home_state);
+            return;
+        }
+
+        addr->PEv2_AxesState = (hal_u32_t*)PK_PEAxisState_axHOMINGSEARCH;
+        do_homing();
+        if (H[jno].home_state != HOME_INITIAL_SEARCH_WAIT) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_homecomp: ERROR: joint %d expected HOME_INITIAL_SEARCH_WAIT but got %d\n", jno, H[jno].home_state);
+            return;
+        }
+
+        addr->PEv2_AxesState = (hal_u32_t*)PK_PEAxisState_axHOME;
+        do_homing();
+        if (H[jno].home_state != HOME_FINISHED) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_homecomp: ERROR: joint %d expected HOME_FINISHED but got %d\n", jno, H[jno].home_state);
+            return;
+        }
+    }
+
+    rtapi_print_msg(RTAPI_MSG_INFO, "pokeys_homecomp: Unit tests passed\n");
+}
+
+int rtapi_app_main(void) {
+    test_pokeys_homecomp();
+    return 0;
+}

@@ -55,5 +55,17 @@ class TestDigitalIO(unittest.TestCase):
         self.digital_io.set(1, 0)
         mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, 1, 0)
 
+    @patch('pokeys_py.digital_io.pokeyslib')
+    def test_digital_io_behavior(self, mock_pokeyslib):
+        for i in range(55):
+            expected_value = i % 2
+            self.digital_io.set(i, expected_value)
+            actual_value = self.digital_io.fetch(i)
+            self.assertEqual(actual_value, expected_value, f"Digital pin {i} expected {expected_value} but got {actual_value}")
+
+            self.digital_io.set(i, not expected_value)
+            actual_value = self.digital_io.fetch(i)
+            self.assertEqual(actual_value, not expected_value, f"Digital pin {i} invert expected {not expected_value} but got {actual_value}")
+
 if __name__ == '__main__':
     unittest.main()

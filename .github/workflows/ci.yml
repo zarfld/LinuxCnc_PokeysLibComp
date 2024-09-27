@@ -242,3 +242,28 @@ jobs:
                 exit 1
             fi
         done
+
+    - name: Run unit tests
+      run: |
+        echo "Running unit tests..."
+        python3 -m unittest discover -s tests -p "test_*.py"
+
+    - name: Run integration tests
+      run: |
+        echo "Running integration tests..."
+        python3 -m unittest discover -s tests -p "test_integration.py"
+
+    - name: Run performance tests
+      run: |
+        echo "Running performance tests..."
+        python3 -m unittest discover -s tests -p "test_performance.py"
+
+    - name: Run regression tests
+      run: |
+        echo "Running regression tests..."
+        python3 -m unittest discover -s tests -p "test_regression.py"
+
+    - name: Run end-to-end system tests
+      run: |
+        echo "Running end-to-end system tests..."
+        halrun -I -f pokeys_homing.hal

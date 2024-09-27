@@ -69,5 +69,20 @@ class TestCounter(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.counter.setup(1)
 
+    @patch('pokeys_py.counter.pokeyslib')
+    def test_counter_functionality(self, mock_pokeyslib):
+        for i in range(8):
+            # Test correct mapping of counter pins
+            expected_value = i * 100
+            self.counter.setup(i)
+            mock_pokeyslib.PK_DigitalCounterSet(self.device, i, expected_value)
+            actual_value = self.counter.fetch(i)
+            self.assertEqual(actual_value, expected_value, f"Counter pin {i} expected {expected_value} but got {actual_value}")
+
+            # Test state changes and expected values
+            self.counter.clear(i)
+            actual_value = self.counter.fetch(i)
+            self.assertEqual(actual_value, 0, f"Counter pin {i} clear expected 0 but got {actual_value}")
+
 if __name__ == '__main__':
     unittest.main()

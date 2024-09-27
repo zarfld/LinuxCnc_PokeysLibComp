@@ -143,5 +143,26 @@ class TestPEv2MotionControl(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.pev2_motion_control.get_homing_status(1)
 
+    def test_position_feedback(self):
+        for i in range(8):
+            expected_position = 1.23 * i
+            self.pev2_motion_control.set_position(i, expected_position)
+            actual_position = self.pev2_motion_control.fetch_status()[1]
+            self.assertEqual(actual_position, expected_position, f"Position feedback pin {i} expected {expected_position} but got {actual_position}")
+
+    def test_velocity_commands(self):
+        for i in range(8):
+            expected_velocity = 0.5 * i
+            self.pev2_motion_control.set_velocity(i, expected_velocity)
+            actual_velocity = self.pev2_motion_control.fetch_status()[0]
+            self.assertEqual(actual_velocity, expected_velocity, f"Velocity command pin {i} expected {expected_velocity} but got {actual_velocity}")
+
+    def test_homing_routines(self):
+        for i in range(8):
+            self.pev2_motion_control.start_homing(i)
+            homing_status = self.pev2_motion_control.get_homing_status(i)
+            self.assertEqual(homing_status, 11, f"Homing status pin {i} expected 11 but got {homing_status}")
+            self.pev2_motion_control.cancel_homing(i)
+
 if __name__ == '__main__':
     unittest.main()
