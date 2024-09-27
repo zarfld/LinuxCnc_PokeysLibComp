@@ -74,6 +74,15 @@ else
     retry apt-get install --only-upgrade -y libusb-1.0-0-dev
 fi
 
+# Add caching mechanism for dependencies
+cache_dir="$HOME/.cache/linuxcnc"
+mkdir -p "$cache_dir"
+export CCACHE_DIR="$cache_dir"
+export CCACHE_COMPRESS=1
+export CCACHE_COMPRESSLEVEL=6
+export CCACHE_MAXSIZE=5G
+export PATH="/usr/lib/ccache:$PATH"
+
 # Change directory to parent directory
 echo "Changing directory to parent directory..."
 cd ..
@@ -98,7 +107,11 @@ cd pokeyslib
 
 # Build and install
 echo "Building and installing..."
-make -f Makefile.noqmake install
+make -j$(nproc) -f Makefile.noqmake install 2>&1 | tee build.log
+if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+    echo "Build failed. Check the log file for details: build.log"
+    exit 1
+fi
 
 # Add udev rules if not already existing
 echo "Adding udev rules if not already existing..."

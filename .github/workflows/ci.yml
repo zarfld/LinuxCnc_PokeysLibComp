@@ -12,8 +12,8 @@ jobs:
   build:
     strategy:
       matrix:
-        ubuntu-version: [18.04, 20.04, 22.04]
-    runs-on: ubuntu-${{ matrix.ubuntu-version }}
+        os: [ubuntu-latest, debian-latest, mint-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
     - name: Checkout code
@@ -106,13 +106,21 @@ jobs:
         echo "Configuring build environment with CMake..."
         cmake ..
         echo "Compiling project using all available CPU cores..."
-        make -j$(nproc)
+        make -j$(nproc) 2>&1 | tee build.log
+        if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+            echo "Build failed. Check the log file for details: build.log"
+            exit 1
+        fi
 
     - name: Run tests
       run: |
         echo "Running tests..."
         cd build
-        ctest --output-on-failure
+        ctest --output-on-failure 2>&1 | tee test.log
+        if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+            echo "Tests failed. Check the log file for details: test.log"
+            exit 1
+        fi
 
     - name: Ensure example configs folder exists
       run: |
@@ -131,4 +139,6 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Logs
-        path: build/logs
+        path: |
+          build/build.log
+          build/test.log
