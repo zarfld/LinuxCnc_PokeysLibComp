@@ -77,5 +77,35 @@ class TestPEv2MotionControl(unittest.TestCase):
         self.pev2_motion_control.manage_homing_signals(1)
         self.pev2_motion_control.cancel_homing.assert_called_once_with(1)
 
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_set_position_invalid_axis(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PEv2_SetPosition.side_effect = ValueError("Invalid axis")
+        with self.assertRaises(ValueError):
+            self.pev2_motion_control.set_position(99, 100)
+
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_set_velocity_invalid_axis(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PEv2_SetVelocity.side_effect = ValueError("Invalid axis")
+        with self.assertRaises(ValueError):
+            self.pev2_motion_control.set_velocity(99, 200)
+
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_start_homing_invalid_axis(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PEv2_StartHoming.side_effect = ValueError("Invalid axis")
+        with self.assertRaises(ValueError):
+            self.pev2_motion_control.start_homing(99)
+
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_cancel_homing_invalid_axis(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PEv2_CancelHoming.side_effect = ValueError("Invalid axis")
+        with self.assertRaises(ValueError):
+            self.pev2_motion_control.cancel_homing(99)
+
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_get_homing_status_invalid_axis(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PEv2_GetHomingStatus.side_effect = ValueError("Invalid axis")
+        with self.assertRaises(ValueError):
+            self.pev2_motion_control.get_homing_status(99)
+
 if __name__ == '__main__':
     unittest.main()

@@ -34,5 +34,23 @@ class TestAnalogIO(unittest.TestCase):
         self.analog_io.set(1, 456)
         mock_pokeyslib.PK_SL_AnalogOutputSet.assert_called_once_with(self.device, 1, 456)
 
+    @patch('pokeys_py.analog_io.pokeyslib')
+    def test_fetch_invalid_pin(self, mock_pokeyslib):
+        mock_pokeyslib.PK_SL_AnalogInputGet.side_effect = ValueError("Invalid pin")
+        with self.assertRaises(ValueError):
+            self.analog_io.fetch(99)
+
+    @patch('pokeys_py.analog_io.pokeyslib')
+    def test_set_invalid_pin(self, mock_pokeyslib):
+        mock_pokeyslib.PK_SL_AnalogOutputSet.side_effect = ValueError("Invalid pin")
+        with self.assertRaises(ValueError):
+            self.analog_io.set(99, 456)
+
+    @patch('pokeys_py.analog_io.pokeyslib')
+    def test_setup_invalid_pin(self, mock_pokeyslib):
+        mock_pokeyslib.PK_SL_SetPinFunction.side_effect = ValueError("Invalid pin")
+        with self.assertRaises(ValueError):
+            self.analog_io.setup(99, 'input')
+
 if __name__ == '__main__':
     unittest.main()
