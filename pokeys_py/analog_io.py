@@ -1,11 +1,9 @@
 import ctypes
 
-# Load the PoKeysLib shared library
-pokeyslib = ctypes.CDLL('./pokeys_rt/PoKeysLib.so')
-
 class AnalogIO:
-    def __init__(self, device):
+    def __init__(self, device, pokeyslib):
         self.device = device
+        self.pokeyslib = pokeyslib
 
     def setup(self, pin, direction):
         """
@@ -14,9 +12,9 @@ class AnalogIO:
         :param direction: 'input' or 'output'
         """
         if direction == 'input':
-            pokeyslib.PK_SL_SetPinFunction(self.device, pin, 1)  # 1 for analog input
+            self.pokeyslib.PK_SL_SetPinFunction(self.device, pin, 1)  # 1 for analog input
         elif direction == 'output':
-            pokeyslib.PK_SL_SetPinFunction(self.device, pin, 3)  # 3 for analog output
+            self.pokeyslib.PK_SL_SetPinFunction(self.device, pin, 3)  # 3 for analog output
         else:
             raise ValueError("Invalid direction. Use 'input' or 'output'.")
 
@@ -26,7 +24,7 @@ class AnalogIO:
         :param pin: Pin number
         :return: Pin value
         """
-        return pokeyslib.PK_SL_AnalogInputGet(self.device, pin)
+        return self.pokeyslib.PK_SL_AnalogInputGet(self.device, pin)
 
     def set(self, pin, value):
         """
@@ -34,4 +32,4 @@ class AnalogIO:
         :param pin: Pin number
         :param value: Pin value
         """
-        pokeyslib.PK_SL_AnalogOutputSet(self.device, pin, value)
+        self.pokeyslib.PK_SL_AnalogOutputSet(self.device, pin, value)

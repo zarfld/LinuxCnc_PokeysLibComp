@@ -283,6 +283,46 @@ Some tests may require physical hardware to run. For hardware-dependent tests, m
 
 To integrate the tests into an automated testing pipeline, set up continuous integration (CI) to run the tests on every commit or pull request. This ensures that the code is continuously tested and any issues are detected early in the development process.
 
+### Running Tests with Mocks or Simulators
+
+To run tests with mocks or simulators, follow these steps:
+
+1. Set the environment variable `CI` to `true` to enable the use of mocks in the CI environment.
+2. Run the tests as usual using `pytest`.
+
+For example:
+
+```bash
+export CI=true
+pytest test_analog_io.py
+pytest test_counter.py
+pytest test_digital_io.py
+pytest test_pev2_motion_control.py
+pytest test_ponet.py
+pytest test_pwm.py
+pytest test_integration.py
+pytest test_functional.py
+pytest test_performance.py
+```
+
+### Setting Environment Variables
+
+To toggle between real and mock devices, set the `CI` environment variable accordingly:
+
+- For running tests with real hardware, unset the `CI` environment variable or set it to `false`:
+
+```bash
+unset CI
+# or
+export CI=false
+```
+
+- For running tests with mocks or simulators, set the `CI` environment variable to `true`:
+
+```bash
+export CI=true
+```
+
 ## Documentation
 
 The documentation provides clear instructions on running tests, setup steps for hardware-dependent tests, and interpreting test results and coverage reports. It is essential to keep the documentation up to date as new features are implemented and tests are added.

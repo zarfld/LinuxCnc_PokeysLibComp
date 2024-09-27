@@ -1,11 +1,9 @@
 import ctypes
 
-# Load the PoKeysLib shared library
-pokeyslib = ctypes.CDLL('./pokeys_rt/PoKeysLib.so')
-
 class PWM:
-    def __init__(self, device):
+    def __init__(self, device, pokeyslib):
         self.device = device
+        self.pokeyslib = pokeyslib
 
     def setup(self, channel, frequency, duty_cycle):
         """
@@ -14,7 +12,7 @@ class PWM:
         :param frequency: PWM frequency
         :param duty_cycle: PWM duty cycle (0-100)
         """
-        pokeyslib.PK_PWM_Setup(self.device, channel, frequency, duty_cycle)
+        self.pokeyslib.PK_PWM_Setup(self.device, channel, frequency, duty_cycle)
 
     def fetch(self, channel):
         """
@@ -24,7 +22,7 @@ class PWM:
         """
         frequency = ctypes.c_uint32()
         duty_cycle = ctypes.c_uint32()
-        pokeyslib.PK_PWM_Fetch(self.device, channel, ctypes.byref(frequency), ctypes.byref(duty_cycle))
+        self.pokeyslib.PK_PWM_Fetch(self.device, channel, ctypes.byref(frequency), ctypes.byref(duty_cycle))
         return frequency.value, duty_cycle.value
 
     def set(self, channel, frequency, duty_cycle):
@@ -34,4 +32,4 @@ class PWM:
         :param frequency: PWM frequency
         :param duty_cycle: PWM duty cycle (0-100)
         """
-        pokeyslib.PK_PWM_Set(self.device, channel, frequency, duty_cycle)
+        self.pokeyslib.PK_PWM_Set(self.device, channel, frequency, duty_cycle)
