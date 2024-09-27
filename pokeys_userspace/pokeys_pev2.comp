@@ -1,0 +1,74 @@
+component pokeys_pev2 "PEv2 component for PoKeys";
+
+option userspace yes;
+
+pin in float position_cmd.# [8];
+pin out float position_fb.# [8];
+pin out bit homing_status.# [8];
+
+license "GPL";
+author "Dominik Zarfl";
+
+;;
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "PoKeysLib.h"
+
+sPoKeysDevice* device;
+
+void setup_pins() {
+    for (int i = 0; i < 8; i++) {
+        if (hal_pin_float_newf(HAL_IN, &(position_cmd[i]), comp_id, "pokeys_pev2.position_cmd.%d", i) < 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "ERROR: could not create position_cmd pin %d\n", i);
+            exit(1);
+        }
+        if (hal_pin_float_newf(HAL_OUT, &(position_fb[i]), comp_id, "pokeys_pev2.position_fb.%d", i) < 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "ERROR: could not create position_fb pin %d\n", i);
+            exit(1);
+        }
+        if (hal_pin_bit_newf(HAL_OUT, &(homing_status[i]), comp_id, "pokeys_pev2.homing_status.%d", i) < 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "ERROR: could not create homing_status pin %d\n", i);
+            exit(1);
+        }
+    }
+}
+
+void user_mainloop() {
+    while (1) {
+        for (int i = 0; i < 8; i++) {
+            position_fb[i] = PK_PEv2_GetPosition(device, i);
+            homing_status[i] = PK_PEv2_GetHomingStatus(device, i);
+        }
+        usleep(10000);
+    }
+}
+
+int rtapi_app_main(void) {
+    comp_id = hal_init("pokeys_pev2");
+    if (comp_id < 0) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_pev2: ERROR: hal_init() failed\n");
+        return -1;
+    }
+
+    device = PK_ConnectToDevice(0);
+    if (device == NULL) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_pev2: ERROR: could not connect to PoKeys device\n");
+        return -1;
+    }
+
+    setup_pins();
+
+    hal_ready(comp_id);
+    rtapi_print_msg(RTAPI_MSG_INFO, "pokeys_pev2: installed\n");
+
+    return 0;
+}
+
+void rtapi_app_exit(void) {
+    if (device != NULL) {
+        PK_DisconnectDevice(device);
+    }
+    hal_exit(comp_id);
+}
