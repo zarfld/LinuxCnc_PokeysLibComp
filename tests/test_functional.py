@@ -33,5 +33,18 @@ class TestFunctionalPEv2MotionControl(unittest.TestCase):
         self.pev2.get_homing_status(0)
         self.device.PK_PEv2_GetHomingStatus.assert_called_with(self.device, 0)
 
+    def test_error_conditions_and_edge_cases(self):
+        # Test invalid axis for PEv2 motion control
+        with self.assertRaises(ValueError):
+            self.pev2.set_position(99, 100)
+        with self.assertRaises(ValueError):
+            self.pev2.set_velocity(99, 50)
+        with self.assertRaises(ValueError):
+            self.pev2.start_homing(99)
+        with self.assertRaises(ValueError):
+            self.pev2.cancel_homing(99)
+        with self.assertRaises(ValueError):
+            self.pev2.get_homing_status(99)
+
 if __name__ == '__main__':
     unittest.main()

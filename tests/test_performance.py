@@ -77,5 +77,59 @@ class TestPerformance(unittest.TestCase):
         latency = (end_time - start_time) / 1000
         self.assertLess(latency, 0.001, "PEv2 Motion Control latency is too high")
 
+    @patch('pokeys_py.digital_io.pokeyslib')
+    def test_digital_io_error_conditions(self, mock_pokeyslib):
+        device = MagicMock()
+        dio = digital_io.DigitalIO(device)
+        with self.assertRaises(ValueError):
+            dio.set(99, 1)
+        with self.assertRaises(ValueError):
+            dio.fetch(99)
+
+    @patch('pokeys_py.analog_io.pokeyslib')
+    def test_analog_io_error_conditions(self, mock_pokeyslib):
+        device = MagicMock()
+        aio = analog_io.AnalogIO(device)
+        with self.assertRaises(ValueError):
+            aio.set(99, 1.0)
+        with self.assertRaises(ValueError):
+            aio.fetch(99)
+
+    @patch('pokeys_py.pwm.pokeyslib')
+    def test_pwm_error_conditions(self, mock_pokeyslib):
+        device = MagicMock()
+        pwm_io = pwm.PWM(device)
+        with self.assertRaises(ValueError):
+            pwm_io.set(99, 1000, 50)
+        with self.assertRaises(ValueError):
+            pwm_io.fetch(99)
+
+    @patch('pokeys_py.counter.pokeyslib')
+    def test_counter_error_conditions(self, mock_pokeyslib):
+        device = MagicMock()
+        counter_io = counter.Counter(device)
+        with self.assertRaises(ValueError):
+            counter_io.clear(99)
+        with self.assertRaises(ValueError):
+            counter_io.fetch(99)
+
+    @patch('pokeys_py.ponet.pokeyslib')
+    def test_ponet_error_conditions(self, mock_pokeyslib):
+        device = MagicMock()
+        ponet_io = ponet.PoNET(device)
+        with self.assertRaises(ValueError):
+            ponet_io.set(99, 1)
+        with self.assertRaises(ValueError):
+            ponet_io.fetch(99)
+
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_pev2_motion_control_error_conditions(self, mock_pokeyslib):
+        device = MagicMock()
+        pev2_io = pev2_motion_control.PEv2MotionControl(device)
+        with self.assertRaises(ValueError):
+            pev2_io.set_position(99, 1000)
+        with self.assertRaises(ValueError):
+            pev2_io.fetch_status()
+
 if __name__ == '__main__':
     unittest.main()

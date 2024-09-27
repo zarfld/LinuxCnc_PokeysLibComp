@@ -34,5 +34,26 @@ class TestDigitalIO(unittest.TestCase):
         self.digital_io.set(1, 0)
         mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_once_with(self.device, 1, 0)
 
+    @patch('pokeys_py.digital_io.pokeyslib')
+    def test_inversion_parameter(self, mock_pokeyslib):
+        self.digital_io.setup(1, 'input')
+        self.digital_io.set(1, 1)
+        mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, 1, 1)
+        self.digital_io.set(1, 0)
+        mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, 1, 0)
+
+    @patch('pokeys_py.digital_io.pokeyslib')
+    def test_inversion_parameter_handling(self, mock_pokeyslib):
+        self.digital_io.setup(1, 'input')
+        self.digital_io.set(1, 1)
+        mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, 1, 1)
+        self.digital_io.set(1, 0)
+        mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, 1, 0)
+        self.digital_io.setup(1, 'output')
+        self.digital_io.set(1, 1)
+        mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, 1, 1)
+        self.digital_io.set(1, 0)
+        mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, 1, 0)
+
 if __name__ == '__main__':
     unittest.main()
