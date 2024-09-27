@@ -75,3 +75,23 @@ elif [ "$build_mode" = "Debian Packages" ]; then
 else
     echo "Invalid build mode choice. Please choose between 'RIP' or 'Debian Packages'."
 fi
+
+# Add caching mechanism for dependencies
+cache_dir="$HOME/.cache/linuxcnc"
+mkdir -p "$cache_dir"
+export CCACHE_DIR="$cache_dir"
+export CCACHE_COMPRESS=1
+export CCACHE_COMPRESSLEVEL=6
+export CCACHE_MAXSIZE=5G
+export PATH="/usr/lib/ccache:$PATH"
+
+# Optimize the installation process for faster execution
+make -j$(nproc) all
+
+# Add logging for installation failures
+log_file="$HOME/linuxcnc_build.log"
+make -j$(nproc) all 2>&1 | tee "$log_file"
+if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+    echo "Build failed. Check the log file for details: $log_file"
+    exit 1
+fi
