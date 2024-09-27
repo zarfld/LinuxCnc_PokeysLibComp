@@ -263,6 +263,30 @@ Performance tests ensure that the `pokeys_py` component meets real-time operatio
 pytest test_performance.py
 ```
 
+### Running Peripheral Devices Tests
+
+Tests for peripheral devices like PoNETkbd48CNC, PoExtBusOC16, and PoRelay8 are included in the `tests/test_peripheral_devices.py` file. To run these tests, execute the following command:
+
+```bash
+pytest test_peripheral_devices.py
+```
+
+### Running CAN Bus Communication Tests
+
+Tests for CAN bus communication are included in the `tests/test_can_bus.py` file. To run these tests, execute the following command:
+
+```bash
+pytest test_can_bus.py
+```
+
+### Running Digital I/O Inversion Tests
+
+Tests for handling inversion parameters in digital I/O are included in the `tests/test_digital_io_inversion.py` file. To run these tests, execute the following command:
+
+```bash
+pytest test_digital_io_inversion.py
+```
+
 ### Interpreting Test Results
 
 After running the tests, `pytest` will display the test results in the terminal. The results will indicate the number of tests passed, failed, or skipped. Additionally, you can generate a coverage report to identify untested code.
