@@ -10,7 +10,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ubuntu-version: [18.04, 20.04, 22.04]
+    runs-on: ubuntu-${{ matrix.ubuntu-version }}
 
     steps:
     - name: Checkout code
@@ -20,6 +23,16 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
+
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cache/pip
+          ~/.cache/apt
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
 
     - name: Install dependencies
       run: |
@@ -78,3 +91,10 @@ jobs:
       run: |
         echo "Copying example configs to the correct folder..."
         sudo cp -r ./DM542_XXYZ_mill /usr/share/doc/linuxcnc/examples/sample-configs/by_interface/pokeys
+
+    - name: Upload logs on failure
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: Logs
+        path: build/logs
