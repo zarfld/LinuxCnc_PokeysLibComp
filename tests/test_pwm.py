@@ -43,5 +43,23 @@ class TestPWM(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.pwm.set(99, 1000, 50)
 
+    @patch('pokeys_py.pwm.pokeyslib')
+    def test_setup_invalid_value(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PWM_Setup.side_effect = ValueError("Invalid value")
+        with self.assertRaises(ValueError):
+            self.pwm.setup(1, -1000, 50)
+
+    @patch('pokeys_py.pwm.pokeyslib')
+    def test_fetch_invalid_value(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PWM_Fetch.side_effect = ValueError("Invalid value")
+        with self.assertRaises(ValueError):
+            self.pwm.fetch(1)
+
+    @patch('pokeys_py.pwm.pokeyslib')
+    def test_set_invalid_value(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PWM_Set.side_effect = ValueError("Invalid value")
+        with self.assertRaises(ValueError):
+            self.pwm.set(1, 1000, -50)
+
 if __name__ == '__main__':
     unittest.main()

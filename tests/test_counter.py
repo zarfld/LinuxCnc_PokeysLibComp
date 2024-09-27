@@ -51,5 +51,23 @@ class TestCounter(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.counter.setup(99)
 
+    @patch('pokeys_py.counter.pokeyslib')
+    def test_fetch_invalid_value(self, mock_pokeyslib):
+        mock_pokeyslib.PK_DigitalCounterGet.side_effect = ValueError("Invalid value")
+        with self.assertRaises(ValueError):
+            self.counter.fetch(1)
+
+    @patch('pokeys_py.counter.pokeyslib')
+    def test_clear_invalid_value(self, mock_pokeyslib):
+        mock_pokeyslib.PK_DigitalCounterClear.side_effect = ValueError("Invalid value")
+        with self.assertRaises(ValueError):
+            self.counter.clear(1)
+
+    @patch('pokeys_py.counter.pokeyslib')
+    def test_setup_invalid_value(self, mock_pokeyslib):
+        mock_pokeyslib.PK_IsCounterAvailable.side_effect = ValueError("Invalid value")
+        with self.assertRaises(ValueError):
+            self.counter.setup(1)
+
 if __name__ == '__main__':
     unittest.main()

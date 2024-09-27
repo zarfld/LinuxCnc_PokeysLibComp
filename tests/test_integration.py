@@ -47,5 +47,60 @@ class TestIntegrationPokeysPy(unittest.TestCase):
         self.device.PK_PEv2_CancelHoming.assert_called_with(self.device, 1)
         self.device.PK_PEv2_GetHomingStatus.assert_called_with(self.device, 1)
 
+    def test_error_conditions_and_edge_cases(self):
+        # Test invalid pin for digital I/O
+        with self.assertRaises(ValueError):
+            self.digital_io.setup(99, 'input')
+        with self.assertRaises(ValueError):
+            self.digital_io.fetch(99)
+        with self.assertRaises(ValueError):
+            self.digital_io.set(99, 1)
+
+        # Test invalid pin for analog I/O
+        with self.assertRaises(ValueError):
+            self.analog_io.setup(99, 'input')
+        with self.assertRaises(ValueError):
+            self.analog_io.fetch(99)
+        with self.assertRaises(ValueError):
+            self.analog_io.set(99, 1.0)
+
+        # Test invalid pin for PWM
+        with self.assertRaises(ValueError):
+            self.pwm.setup(99, 1000, 50)
+        with self.assertRaises(ValueError):
+            self.pwm.fetch(99)
+        with self.assertRaises(ValueError):
+            self.pwm.set(99, 1000, 50)
+
+        # Test invalid pin for counter
+        with self.assertRaises(ValueError):
+            self.counter.setup(99)
+        with self.assertRaises(ValueError):
+            self.counter.fetch(99)
+        with self.assertRaises(ValueError):
+            self.counter.clear(99)
+
+        # Test invalid module ID for PoNET
+        with self.assertRaises(ValueError):
+            self.ponet.setup(99)
+        with self.assertRaises(ValueError):
+            self.ponet.fetch(99)
+        with self.assertRaises(ValueError):
+            self.ponet.set(99, 'data')
+
+        # Test invalid axis for PEv2 motion control
+        with self.assertRaises(ValueError):
+            self.pev2.setup(99, {'param': 'value'})
+        with self.assertRaises(ValueError):
+            self.pev2.set_position(99, 100)
+        with self.assertRaises(ValueError):
+            self.pev2.set_velocity(99, 50)
+        with self.assertRaises(ValueError):
+            self.pev2.start_homing(99)
+        with self.assertRaises(ValueError):
+            self.pev2.cancel_homing(99)
+        with self.assertRaises(ValueError):
+            self.pev2.get_homing_status(99)
+
 if __name__ == '__main__':
     unittest.main()

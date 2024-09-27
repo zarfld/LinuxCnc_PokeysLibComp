@@ -25,5 +25,23 @@ class TestPoRelay8(unittest.TestCase):
         self.porelay8.set(1, 'data')
         mock_pokeyslib.PK_PoRelay8_SetModuleStatus.assert_called_once_with(self.device, 1, 'data')
 
+    @patch('pokeys_py.porelay8.pokeyslib')
+    def test_fetch_invalid_module_id(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PoRelay8_GetModuleStatusRequest.side_effect = ValueError("Invalid module ID")
+        with self.assertRaises(ValueError):
+            self.porelay8.fetch(99)
+
+    @patch('pokeys_py.porelay8.pokeyslib')
+    def test_set_invalid_module_id(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PoRelay8_SetModuleStatus.side_effect = ValueError("Invalid module ID")
+        with self.assertRaises(ValueError):
+            self.porelay8.set(99, 'data')
+
+    @patch('pokeys_py.porelay8.pokeyslib')
+    def test_setup_invalid_module_id(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PoRelay8_GetModuleSettings.side_effect = ValueError("Invalid module ID")
+        with self.assertRaises(ValueError):
+            self.porelay8.setup(99)
+
 if __name__ == '__main__':
     unittest.main()

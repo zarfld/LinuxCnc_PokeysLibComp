@@ -37,5 +37,35 @@ class TestCANBus(unittest.TestCase):
         self.can_bus.flush()
         mock_pokeyslib.PK_CANFlush.assert_called_once_with(self.device)
 
+    @patch('pokeys_py.can_bus.pokeyslib')
+    def test_configure_invalid_baudrate(self, mock_pokeyslib):
+        mock_pokeyslib.PK_CANConfigure.side_effect = ValueError("Invalid baudrate")
+        with self.assertRaises(ValueError):
+            self.can_bus.configure(123456)
+
+    @patch('pokeys_py.can_bus.pokeyslib')
+    def test_register_filter_invalid_id(self, mock_pokeyslib):
+        mock_pokeyslib.PK_CANRegisterFilter.side_effect = ValueError("Invalid filter ID")
+        with self.assertRaises(ValueError):
+            self.can_bus.register_filter(99, 0x123)
+
+    @patch('pokeys_py.can_bus.pokeyslib')
+    def test_write_invalid_message(self, mock_pokeyslib):
+        mock_pokeyslib.PK_CANWrite.side_effect = ValueError("Invalid message")
+        with self.assertRaises(ValueError):
+            self.can_bus.write(None)
+
+    @patch('pokeys_py.can_bus.pokeyslib')
+    def test_read_invalid_message(self, mock_pokeyslib):
+        mock_pokeyslib.PK_CANRead.side_effect = ValueError("Invalid message")
+        with self.assertRaises(ValueError):
+            self.can_bus.read(None, MagicMock())
+
+    @patch('pokeys_py.can_bus.pokeyslib')
+    def test_flush_error(self, mock_pokeyslib):
+        mock_pokeyslib.PK_CANFlush.side_effect = ValueError("Flush error")
+        with self.assertRaises(ValueError):
+            self.can_bus.flush()
+
 if __name__ == '__main__':
     unittest.main()
