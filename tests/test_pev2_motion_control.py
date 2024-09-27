@@ -50,5 +50,32 @@ class TestPEv2MotionControl(unittest.TestCase):
         self.assertEqual(homing_status, 'homing_status')
         mock_pokeyslib.PK_PEv2_GetHomingStatus.assert_called_once_with(self.device, 1)
 
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_manage_homing_signals(self, mock_pokeyslib):
+        self.pev2_motion_control.get_homing_status = MagicMock(return_value=11)
+        self.pev2_motion_control.start_homing = MagicMock()
+        self.pev2_motion_control.set_velocity = MagicMock()
+        self.pev2_motion_control.set_position = MagicMock()
+        self.pev2_motion_control.cancel_homing = MagicMock()
+
+        self.pev2_motion_control.manage_homing_signals(1)
+        self.pev2_motion_control.start_homing.assert_called_once_with(1)
+
+        self.pev2_motion_control.get_homing_status = MagicMock(return_value=12)
+        self.pev2_motion_control.manage_homing_signals(1)
+        self.pev2_motion_control.set_velocity.assert_called_once_with(1, 0.5)
+
+        self.pev2_motion_control.get_homing_status = MagicMock(return_value=13)
+        self.pev2_motion_control.manage_homing_signals(1)
+        self.pev2_motion_control.set_velocity.assert_called_with(1, 0.1)
+
+        self.pev2_motion_control.get_homing_status = MagicMock(return_value=10)
+        self.pev2_motion_control.manage_homing_signals(1)
+        self.pev2_motion_control.set_position.assert_called_once_with(1, 0)
+
+        self.pev2_motion_control.get_homing_status = MagicMock(return_value=0)
+        self.pev2_motion_control.manage_homing_signals(1)
+        self.pev2_motion_control.cancel_homing.assert_called_once_with(1)
+
 if __name__ == '__main__':
     unittest.main()
