@@ -61,6 +61,44 @@ else
     apt-get install --only-upgrade -y python3-lxml
 fi
 
+# Check if python2-dev is installed
+if ! dpkg -s python2-dev >/dev/null 2>&1; then
+    echo "Installing python2-dev..."
+    apt-get install -y python2-dev
+else
+    echo "Updating python2-dev..."
+    apt-get install --only-upgrade -y python2-dev
+fi
+
+# Check if python-dev-is-python3 is installed
+if ! dpkg -s python-dev-is-python3 >/dev/null 2>&1; then
+    echo "Installing python-dev-is-python3..."
+    apt-get install -y python-dev-is-python3
+else
+    echo "Updating python-dev-is-python3..."
+    apt-get install --only-upgrade -y python-dev-is-python3
+fi
+
+# Check if python3-gi is installed
+if ! dpkg -s python3-gi >/dev/null 2>&1; then
+    echo "Installing python3-gi..."
+    apt-get install -y python3-gi
+else
+    echo "Updating python3-gi..."
+    apt-get install --only-upgrade -y python3-gi
+fi
+
+# Add Xenomai repository and install libxenomai-dev
+echo "Adding Xenomai repository and installing libxenomai-dev..."
+wget -q -O - http://xenomai.org/downloads/xenomai/stable/xenomai-3.1/xenomai-3.1.tar.bz2 | tar -xj
+cd xenomai-3.1
+./scripts/bootstrap
+./configure --with-core=cobalt
+make
+make install
+cd ..
+rm -rf xenomai-3.1
+
 # Change directory to parent directory
 echo "Changing directory to parent directory..."
 cd ..
