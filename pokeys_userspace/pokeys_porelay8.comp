@@ -1,0 +1,69 @@
+component pokeys_porelay8 "PoRelay8 component for PoKeys";
+
+option userspace yes;
+
+pin in bit porelay8_in.# [8];
+pin out bit porelay8_out.# [8];
+
+license "GPL";
+author "Dominik Zarfl";
+
+;;
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "PoKeysLib.h"
+
+sPoKeysDevice* device;
+
+void setup_pins() {
+    for (int i = 0; i < 8; i++) {
+        if (hal_pin_bit_newf(HAL_IN, &(porelay8_in[i]), comp_id, "pokeys_porelay8.porelay8_in.%d", i) < 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "ERROR: could not create porelay8_in pin %d\n", i);
+            exit(1);
+        }
+        if (hal_pin_bit_newf(HAL_OUT, &(porelay8_out[i]), comp_id, "pokeys_porelay8.porelay8_out.%d", i) < 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "ERROR: could not create porelay8_out pin %d\n", i);
+            exit(1);
+        }
+    }
+}
+
+void user_mainloop() {
+    while (1) {
+        for (int i = 0; i < 8; i++) {
+            porelay8_out[i] = PK_PoRelay8_Get(device, i);
+            PK_PoRelay8_Set(device, i, porelay8_in[i]);
+        }
+        usleep(10000);
+    }
+}
+
+int rtapi_app_main(void) {
+    comp_id = hal_init("pokeys_porelay8");
+    if (comp_id < 0) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_porelay8: ERROR: hal_init() failed\n");
+        return -1;
+    }
+
+    device = PK_ConnectToDevice(0);
+    if (device == NULL) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_porelay8: ERROR: could not connect to PoKeys device\n");
+        return -1;
+    }
+
+    setup_pins();
+
+    hal_ready(comp_id);
+    rtapi_print_msg(RTAPI_MSG_INFO, "pokeys_porelay8: installed\n");
+
+    return 0;
+}
+
+void rtapi_app_exit(void) {
+    if (device != NULL) {
+        PK_DisconnectDevice(device);
+    }
+    hal_exit(comp_id);
+}
