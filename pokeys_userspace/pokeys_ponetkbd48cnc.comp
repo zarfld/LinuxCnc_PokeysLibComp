@@ -58,6 +58,26 @@ int rtapi_app_main(void) {
     hal_ready(comp_id);
     rtapi_print_msg(RTAPI_MSG_INFO, "pokeys_ponetkbd48cnc: installed\n");
 
+    // Unit tests for PoNETkbd48CNC functionality
+    for (int i = 0; i < 48; i++) {
+        // Test correct mapping of PoNETkbd48CNC pins
+        int expected_value = i % 2;
+        PK_PoNETSetModuleStatus(device, i, expected_value);
+        int actual_value = PK_PoNETGetModuleStatus(device, i);
+        if (actual_value != expected_value) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_ponetkbd48cnc: ERROR: PoNETkbd48CNC pin %d expected %d but got %d\n", i, expected_value, actual_value);
+            return -1;
+        }
+
+        // Test state changes and expected values
+        PK_PoNETSetModuleStatus(device, i, !expected_value);
+        actual_value = PK_PoNETGetModuleStatus(device, i);
+        if (actual_value != !expected_value) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_ponetkbd48cnc: ERROR: PoNETkbd48CNC pin %d state change expected %d but got %d\n", i, !expected_value, actual_value);
+            return -1;
+        }
+    }
+
     return 0;
 }
 

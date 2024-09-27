@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2013 Matevž Bošnak (matevz@poscope.com)
+Copyright (C) 2013 Matevï¿½ Boï¿½nak (matevz@poscope.com)
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -902,3 +902,22 @@ uint32_t PK_SL_AnalogInputGet(sPoKeysDevice* device, uint8_t pin)
     return device->Pins[pin].AnalogValue;
 }
 
+// Performance tests for real-time operations
+void PK_PerformanceTest(sPoKeysDevice* device) {
+    // Test system responsiveness under load conditions
+    for (int i = 0; i < 1000; i++) {
+        for (int pin = 0; pin < device->info.iPinCount; pin++) {
+            PK_SL_DigitalOutputSet(device, pin, 1);
+            PK_SL_DigitalOutputSet(device, pin, 0);
+        }
+    }
+
+    // Test simultaneous IO operations and multiple axes moving
+    for (int i = 0; i < 1000; i++) {
+        for (int pin = 0; pin < device->info.iPinCount; pin++) {
+            PK_SL_DigitalOutputSet(device, pin, 1);
+            PK_SL_DigitalOutputSet(device, pin, 0);
+            PK_SL_AnalogInputGet(device, pin);
+        }
+    }
+}

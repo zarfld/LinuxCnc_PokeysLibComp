@@ -58,6 +58,26 @@ int rtapi_app_main(void) {
     hal_ready(comp_id);
     rtapi_print_msg(RTAPI_MSG_INFO, "pokeys_pwm: installed\n");
 
+    // Unit tests for PWM functionality
+    for (int i = 0; i < 6; i++) {
+        // Test correct mapping of PWM pins
+        float expected_duty_cycle = 50.0 * i;
+        PK_SL_PWM_SetDuty(device, i, expected_duty_cycle);
+        float actual_duty_cycle = PK_SL_PWM_GetDuty(device, i);
+        if (actual_duty_cycle != expected_duty_cycle) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_pwm: ERROR: PWM pin %d expected %f but got %f\n", i, expected_duty_cycle, actual_duty_cycle);
+            return -1;
+        }
+
+        // Test state changes and expected values
+        PK_SL_PWM_SetDuty(device, i, 100.0 - expected_duty_cycle);
+        actual_duty_cycle = PK_SL_PWM_GetDuty(device, i);
+        if (actual_duty_cycle != 100.0 - expected_duty_cycle) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_pwm: ERROR: PWM pin %d state change expected %f but got %f\n", i, 100.0 - expected_duty_cycle, actual_duty_cycle);
+            return -1;
+        }
+    }
+
     return 0;
 }
 
