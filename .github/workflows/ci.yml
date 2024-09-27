@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [debian-latest, raspbian-buster, raspbian-jessie, mint-latest, ubuntu-latest]
+      max-parallel: 1
     runs-on: ${{ matrix.os }}
 
     steps:
