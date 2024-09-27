@@ -61,3 +61,20 @@ class PEv2MotionControl:
         :return: Homing status
         """
         return pokeyslib.PK_PEv2_GetHomingStatus(self.device, axis)
+
+    def manage_homing_signals(self, axis):
+        """
+        Manage the homing signals for an axis.
+        :param axis: Axis number
+        """
+        homing_status = self.get_homing_status(axis)
+        if homing_status == 11:  # PK_PEAxisState_axHOMINGSTART
+            self.start_homing(axis)
+        elif homing_status == 12:  # PK_PEAxisState_axHOMINGSEARCH
+            self.set_velocity(axis, 0.5)  # Example velocity value
+        elif homing_status == 13:  # PK_PEAxisState_axHOMINGBACK
+            self.set_velocity(axis, 0.1)  # Example velocity value
+        elif homing_status == 10:  # PK_PEAxisState_axHOME
+            self.set_position(axis, 0)  # Example position value
+        else:
+            self.cancel_homing(axis)
