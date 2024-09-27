@@ -1,14 +1,27 @@
 component pokeys_homecomp"homing module for pokeys";
 
 description """
-sta rt at This component is a homing module for PoKeys.It provides pin outs and signal linking for the PoKeys homing configuration.
+This component is a homing module for PoKeys. It provides pin outs and signal linking for the PoKeys homing configuration.
 
-Pin Outs :
--`devSerial`: Unsigned integer input pin.
+Pin Outs:
+- `devSerial`: Unsigned integer input pin.
 - `PulseEngineState`: Unsigned integer input pin representing the state of the pulse engine.
+- `homing`: Bit output pin indicating if the joint is homing.
+- `homed`: Bit output pin indicating if the joint is homed.
+- `home_state`: Integer output pin representing the homing state machine state.
+- `index_enable`: Bit input/output pin for index enable.
+- `PEv2_AxesState`: Unsigned integer input pin representing the state of the pulse engine axis.
+- `PEv2_AxesCommand`: Unsigned integer output pin for commands to the pulse engine.
+- `PEv2_AxesConfig`: Unsigned integer input pin for axis configuration.
+- `PEv2_AxesSwitchConfig`: Unsigned integer output pin for axis switch configuration.
+- `PEv2_HomingSpeed`: Unsigned integer input/output pin for homing speed per axis.
+- `PEv2_HomingReturnSpeed`: Unsigned integer input/output pin for homing return speed per axis.
+- `PEv2_HomingAlgorithm`: Unsigned integer input/output pin for homing algorithm configuration.
+- `PEv2_HomeOffsets`: Unsigned integer input/output pin for home position offset.
+- `PEv2_HomeBackOffDistance`: Unsigned integer input/output pin for back-off distance after homing.
 
-Signal Linking :
--`is_module`: Bit output pin set to 1 to indicate that this module is being used.
+Signal Linking:
+- `is_module`: Bit output pin set to 1 to indicate that this module is being used.
 
 To use this homing module, make sure to connect the appropriate signals to the corresponding pins and configure the PoKeys device accordingly.
 """;
@@ -19,7 +32,6 @@ pin out bit is_module = 1; //one pin is required to use halcompile)
 
 license "GPL";
 author "Dominik Zarfl";
-//version "0.1.0";
 option homemod;
 option extra_setup;
 ;;
@@ -32,7 +44,6 @@ option extra_setup;
 #include "homing.h"
 #include "stdlib.h"
 #include "rtapi.h"
-//#include "pokeyslib.h"
 
 static char* home_parms;
 RTAPI_MP_STRING(home_parms, "Example home parms");
@@ -43,15 +54,10 @@ EXTRA_SETUP() {
     rtapi_print("@@@%s:%s: home_parms=%s\n", __FILE__, __FUNCTION__, home_parms);
     rtapi_print("\n!!!%s: Pokeys Homing Module\n\n", __FILE__ );
 
-
-
     return 0;
 }
 
 //=====================================================================
-//#define HOMING_BASE
-
-
 
 /* channels provided by PEv2 which might be relevant:
 pin out unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
@@ -88,14 +94,10 @@ typedef enum {
     PK_PEAxisState_axLIMIT = 30        // Axis limit tripped
 } pokeys_home_state_t;
 
-
-
 typedef enum {
     PK_PEAxisCommand_axIDLE = 0,        // Axis  in IDLE
     PK_PEAxisCommand_axHOMINGSTART = 1,        // Start Homing procedure
     PK_PEAxisCommand_axHOMINGCANCEL = 2,        // Cancel Homing procedure
-
-
 } pokeys_home_command_t;
 
 typedef enum {
@@ -158,7 +160,6 @@ typedef struct {
                              //        encoder clears: index arrived
     hal_s32_t* home_state;   // homing state machine state
 
-
     hal_u32_t* PEv2_AxesState; // State of pulse engine - see ePoKeysPEState
     hal_u32_t* PEv2_AxesCommand; // Commands to  pulse engine - see ePoKeysPECmd
     hal_u32_t* PEv2_AxesConfig; // Axis configuration - see ePK_PEv2_AxisConfig
@@ -171,7 +172,6 @@ typedef struct {
     hal_u32_t* PEv2_HomeBackOffDistance; // Back-off distance after homing
 
 } one_joint_home_data_t;
-
 
 typedef struct {
     one_joint_home_data_t jhd[EMCMOT_MAX_JOINTS];
@@ -192,7 +192,6 @@ static int makepins(int id, int njoints)
         return -1;
     }
 
-    
     for (jno = 0; jno < njoints; jno++) {
         addr = &(joint_home_data->jhd[jno]);
 
@@ -237,11 +236,10 @@ static int makepins(int id, int njoints)
 
         retval += hal_pin_u32_newf(HAL_IO, &(addr->PEv2_HomeBackOffDistance), id,
             "joint.%d.PEv2.HomeBackOffDistance", jno);
-
-
     }
     return retval;
 }
+
 // All (skeleton) functions required for homing api follow:
 void homeMotFunctions(void(*pSetRotaryUnlock)(int, int)
     , int (*pGetRotaryIsUnlocked)(int)
@@ -252,9 +250,6 @@ void homeMotFunctions(void(*pSetRotaryUnlock)(int, int)
     rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
     return;
 }
-
-
-
 
 // one-time initialization (return 0 if ok):
 int  homing_init(int id,
@@ -471,7 +466,6 @@ bool get_homing_at_index_search_wait(int jno) {
 
 static void update_home_is_synchronized(void) {
     rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function started\n", __FILE__, __FUNCTION__);
-    
 
     // invoke anytime H[*].home_sequence is altered
     int jno, jj, all_joints;
@@ -522,7 +516,6 @@ void update_joint_homing_params(int jno, double offset, double home, int home_se
     H[jno].home_offset = offset;
     H[jno].home = home;
     H[jno].home_sequence = home_sequence;
- //   update_home_is_synchronized();
     rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
     return;
 }
@@ -552,6 +545,3 @@ EXPORT_SYMBOL(write_homing_out_pins);
 
 #undef XSTR
 #undef STR
-#undef HOMING_BASE
-#undef USE_HOMING_BASE
-#undef CUSTOM_HOMEMODULE

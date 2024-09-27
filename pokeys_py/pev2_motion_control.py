@@ -39,3 +39,25 @@ class PEv2MotionControl:
         :param velocity: Velocity value
         """
         pokeyslib.PK_PEv2_SetVelocity(self.device, axis, velocity)
+
+    def start_homing(self, axis):
+        """
+        Start the homing procedure for an axis.
+        :param axis: Axis number
+        """
+        pokeyslib.PK_PEv2_StartHoming(self.device, axis)
+
+    def cancel_homing(self, axis):
+        """
+        Cancel the homing procedure for an axis.
+        :param axis: Axis number
+        """
+        pokeyslib.PK_PEv2_CancelHoming(self.device, axis)
+
+    def get_homing_status(self, axis):
+        """
+        Get the homing status for an axis.
+        :param axis: Axis number
+        :return: Homing status
+        """
+        return pokeyslib.PK_PEv2_GetHomingStatus(self.device, axis)
