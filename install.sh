@@ -9,6 +9,7 @@ echo "Executing compile.sh script..."
 
 # Ensure that the folder for example configs is existing
 if [ ! -d "/usr/share/doc/linuxcnc/examples/sample-configs/by_interface/pokeys" ]; then
+    echo "Creating folder for example configs..."
     mkdir -p /usr/share/doc/linuxcnc/examples/sample-configs/by_interface/pokeys
 fi
 
