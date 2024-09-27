@@ -1,0 +1,19 @@
+Source: linuxcnc
+Section: misc
+Priority: optional
+Maintainer: LinuxCNC Team <team@linuxcnc.org>
+Build-Depends: debhelper (>= 9), dh-python, python3-all, python3-setuptools, python3-dev, libmodbus-dev, libgpiod-dev, libgtk2.0-dev, libglade2-dev, libxmu-dev, libglu1-mesa-dev, libgl1-mesa-dev, libreadline-dev, libjansson-dev, libboost-python-dev, libboost-thread-dev, libboost-system-dev, python3-lxml, libudev-dev, tcl8.6-dev, tk8.6-dev, asciidoc, dvipng, graphviz, groff, imagemagick, inkscape, source-highlight, texlive-font-utils, texlive-lang-cyrillic, texlive-lang-french, texlive-lang-german, texlive-lang-polish, texlive-lang-spanish, w3c-linkchecker, python-dev-is-python3, python-tk, intltool, libusb-1.0-0-dev, yapps2, dblatex, docbook-xsl, texlive-extra-utils, texlive-fonts-recommended, texlive-latex-recommended, xsltproc, gettext, autoconf, asciidoc-dblatex, libxaw7-dev, bwidget, libtk-img, tclx
+Standards-Version: 3.9.6
+Homepage: http://www.linuxcnc.org
+
+Package: linuxcnc-uspace
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: LinuxCNC for real-time kernel
+ LinuxCNC is a software system for computer control of machine tools such as milling machines, lathes, plasma cutters, and 3D printers. This package provides the user-space components of LinuxCNC for use with a real-time kernel.
+
+Package: linuxcnc-dev
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Development files for LinuxCNC
+ This package provides the development files for LinuxCNC, including headers and libraries needed to build applications that interface with LinuxCNC.
