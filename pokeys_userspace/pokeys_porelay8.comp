@@ -58,6 +58,26 @@ int rtapi_app_main(void) {
     hal_ready(comp_id);
     rtapi_print_msg(RTAPI_MSG_INFO, "pokeys_porelay8: installed\n");
 
+    // Unit tests for PoRelay8 functionality
+    for (int i = 0; i < 8; i++) {
+        // Test correct mapping of PoRelay8 pins
+        int expected_value = i % 2;
+        PK_PoRelay8_Set(device, i, expected_value);
+        int actual_value = PK_PoRelay8_Get(device, i);
+        if (actual_value != expected_value) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_porelay8: ERROR: PoRelay8 pin %d expected %d but got %d\n", i, expected_value, actual_value);
+            return -1;
+        }
+
+        // Test state changes and expected values
+        PK_PoRelay8_Set(device, i, !expected_value);
+        actual_value = PK_PoRelay8_Get(device, i);
+        if (actual_value != !expected_value) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_porelay8: ERROR: PoRelay8 pin %d state change expected %d but got %d\n", i, !expected_value, actual_value);
+            return -1;
+        }
+    }
+
     return 0;
 }
 

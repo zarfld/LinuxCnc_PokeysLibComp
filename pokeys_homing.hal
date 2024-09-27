@@ -15,12 +15,12 @@ show parameter
 #pin out unsigned PEv2.#.AxesState [8];				// Axis states (bit-mapped) - see ePK_PEAxisState
 #pin out unsigned PEv2.#.AxesCommand [8];				// Axis Command - see ePK_PEAxisState
 #pin out unsigned PEv2.#.AxesConfig [8];				// Axis configuration - see ePK_PEv2_AxisConfig
-#pin in unsigned PEv2.#.AxesSwitchConfig [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
+#pin in unsigned PEv2.#.AxesSwitchConfig [8];			// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
 
-#pin io unsigned PEv2.#.HomingSpeed [8];			// Homing speed per axis (in %)
-#pin io unsigned PEv2.#.HomingReturnSpeed [8];		// Homing return speed per axis (in % of the homing speed)
-#pin io unsigned PEv2.#.HomingAlgorithm[8];		// Homing algorithm configuration
-#pin io u32 PEv2.#.HomeOffsets [8];				// Home position offset
+#pin io unsigned PEv2.#.HomingSpeed [8];				// Homing speed per axis (in %)
+#pin io unsigned PEv2.#.HomingReturnSpeed [8];			// Homing return speed per axis (in % of the homing speed)
+#pin io unsigned PEv2.#.HomingAlgorithm[8];				// Homing algorithm configuration
+#pin io u32 PEv2.#.HomeOffsets [8];						// Home position offset
 #pin io unsigned PEv2.#.HomeBackOffDistance [8];		// Back-off distance after homing
 
 #PulseEngineState
@@ -228,3 +228,15 @@ net y-PEv2_HomeBackOffDistance => pokeys.0.PEv2.1.HomeBackOffDistance
 
 net z-PEv2_HomeBackOffDistance <= pokeys-homecomp.0.joint.3.PEv2_HomeBackOffDistance
 net z-PEv2_HomeBackOffDistance => pokeys.0.PEv2.2.HomeBackOffDistance
+
+# End-to-end system tests for homing routines
+net homing-routine-test <= pokeys-homecomp.0.joint.0.homing
+net homing-routine-test => pokeys.0.PEv2.0.homing
+
+# Verify device initialization and interaction with LinuxCNC
+net device-init-test <= pokeys-homecomp.0.joint.0.homed
+net device-init-test => pokeys.0.PEv2.0.homed
+
+# Test system response to invalid or extreme inputs
+net extreme-input-test <= pokeys-homecomp.0.joint.0.home-state
+net extreme-input-test => pokeys.0.PEv2.0.home-state

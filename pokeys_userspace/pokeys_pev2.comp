@@ -63,6 +63,36 @@ int rtapi_app_main(void) {
     hal_ready(comp_id);
     rtapi_print_msg(RTAPI_MSG_INFO, "pokeys_pev2: installed\n");
 
+    // Unit tests for PEv2-related functionalities
+    for (int i = 0; i < 8; i++) {
+        // Test position feedback (pos-fb)
+        float expected_position = 1.23 * i;
+        PK_PEv2_SetPosition(device, i, expected_position);
+        float actual_position = PK_PEv2_GetPosition(device, i);
+        if (actual_position != expected_position) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_pev2: ERROR: position feedback pin %d expected %f but got %f\n", i, expected_position, actual_position);
+            return -1;
+        }
+
+        // Test velocity commands
+        float expected_velocity = 0.5 * i;
+        PK_PEv2_SetVelocity(device, i, expected_velocity);
+        float actual_velocity = PK_PEv2_GetVelocity(device, i);
+        if (actual_velocity != expected_velocity) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_pev2: ERROR: velocity command pin %d expected %f but got %f\n", i, expected_velocity, actual_velocity);
+            return -1;
+        }
+
+        // Verify homing routines and axis states
+        PK_PEv2_StartHoming(device, i);
+        int homing_status = PK_PEv2_GetHomingStatus(device, i);
+        if (homing_status != 11) {  // PK_PEAxisState_axHOMINGSTART
+            rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_pev2: ERROR: homing status pin %d expected %d but got %d\n", i, 11, homing_status);
+            return -1;
+        }
+        PK_PEv2_CancelHoming(device, i);
+    }
+
     return 0;
 }
 

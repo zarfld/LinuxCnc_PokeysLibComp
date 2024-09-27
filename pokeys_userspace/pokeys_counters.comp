@@ -60,6 +60,26 @@ int rtapi_app_main(void) {
     hal_ready(comp_id);
     rtapi_print_msg(RTAPI_MSG_INFO, "pokeys_counters: installed\n");
 
+    // Unit tests for counter functionality
+    for (int i = 0; i < 8; i++) {
+        // Test correct mapping of counter pins
+        int expected_value = i * 100;
+        PK_SL_DigitalCounterSet(device, i, expected_value);
+        int actual_value = PK_SL_DigitalCounterGet(device, i);
+        if (actual_value != expected_value) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_counters: ERROR: counter pin %d expected %d but got %d\n", i, expected_value, actual_value);
+            return -1;
+        }
+
+        // Test state changes and expected values
+        PK_SL_DigitalCounterClear(device, i);
+        actual_value = PK_SL_DigitalCounterGet(device, i);
+        if (actual_value != 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_counters: ERROR: counter pin %d clear expected 0 but got %d\n", i, actual_value);
+            return -1;
+        }
+    }
+
     return 0;
 }
 
