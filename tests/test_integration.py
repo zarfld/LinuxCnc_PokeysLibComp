@@ -102,5 +102,59 @@ class TestIntegrationPokeysPy(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.pev2.get_homing_status(99)
 
+    def test_integration_pokeys_py(self):
+        # Test integration of pokeys_py functionalities
+        self.digital_io.setup(1, 'input')
+        self.digital_io.fetch(1)
+        self.digital_io.set(1, 1)
+        self.device.PK_SL_SetPinFunction.assert_called_with(self.device, 1, 2)
+        self.device.PK_SL_DigitalInputGet.assert_called_with(self.device, 1)
+        self.device.PK_SL_DigitalOutputSet.assert_called_with(self.device, 1, 1)
+
+        self.analog_io.setup(1, 'input')
+        self.analog_io.fetch(1)
+        self.analog_io.set(1, 1.0)
+        self.device.PK_SL_SetPinFunction.assert_called_with(self.device, 1, 1)
+        self.device.PK_SL_AnalogInputGet.assert_called_with(self.device, 1)
+        self.device.PK_SL_AnalogOutputSet.assert_called_with(self.device, 1, 1.0)
+
+        self.pwm.setup(1, 1000, 50)
+        self.pwm.fetch(1)
+        self.pwm.set(1, 1000, 50)
+        self.device.PK_PWM_Setup.assert_called_with(self.device, 1, 1000, 50)
+        self.device.PK_PWM_Fetch.assert_called_with(self.device, 1, unittest.mock.ANY, unittest.mock.ANY)
+        self.device.PK_PWM_Set.assert_called_with(self.device, 1, 1000, 50)
+
+        self.counter.setup(1)
+        self.counter.fetch(1)
+        self.counter.clear(1)
+        self.device.PK_IsCounterAvailable.assert_called_with(self.device, 1)
+        self.device.PK_DigitalCounterGet.assert_called_with(self.device)
+        self.device.PK_DigitalCounterClear.assert_called_with(self.device)
+
+        self.ponet.setup(1)
+        self.ponet.fetch(1)
+        self.ponet.set(1, 'data')
+        self.device.PK_PoNETGetModuleSettings.assert_called_with(self.device, 1)
+        self.device.PK_PoNETGetModuleStatusRequest.assert_called_with(self.device, 1)
+        self.device.PK_PoNETGetModuleStatus.assert_called_with(self.device, 1)
+        self.device.PK_PoNETSetModuleStatus.assert_called_with(self.device, 1, 'data')
+
+        self.pev2.setup(1, {'param': 'value'})
+        self.pev2.fetch_status()
+        self.pev2.set_position(1, 100)
+        self.pev2.set_velocity(1, 50)
+        self.pev2.start_homing(1)
+        self.pev2.cancel_homing(1)
+        self.pev2.get_homing_status(1)
+        self.device.PK_PEv2_AxisConfigurationSet.assert_called_with(self.device, 1, {'param': 'value'})
+        self.device.PK_PEv2_StatusGet.assert_called_with(self.device)
+        self.device.PK_PEv2_GetPosition.assert_called_with(self.device)
+        self.device.PK_PEv2_SetPosition.assert_called_with(self.device, 1, 100)
+        self.device.PK_PEv2_SetVelocity.assert_called_with(self.device, 1, 50)
+        self.device.PK_PEv2_StartHoming.assert_called_with(self.device, 1)
+        self.device.PK_PEv2_CancelHoming.assert_called_with(self.device, 1)
+        self.device.PK_PEv2_GetHomingStatus.assert_called_with(self.device, 1)
+
 if __name__ == '__main__':
     unittest.main()
