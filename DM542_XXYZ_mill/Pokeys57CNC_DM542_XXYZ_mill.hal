@@ -132,7 +132,6 @@ net x-pos-fb               =>  joint.0.motor-pos-fb
 
 # ---setup home / limit switch signals---
 
-net home-x     =>  joint.0.home-sw-in
 net min-x     =>  joint.0.neg-lim-sw-in
 net max-x     =>  joint.0.pos-lim-sw-in
 
@@ -199,7 +198,6 @@ net x2-pos-fb               =>  joint.1.motor-pos-fb
 
 # ---setup home / limit switch signals---
 
-net home-x2     =>  joint.1.home-sw-in
 net min-x2     =>  joint.1.neg-lim-sw-in
 net max-x2     =>  joint.1.pos-lim-sw-in
 

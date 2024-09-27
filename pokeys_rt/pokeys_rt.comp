@@ -20,24 +20,14 @@ pin out bit alive;
 
 license "GPL";
 author "Dominik Zarfl";
-option homemod;
 option extra_link_args "-lPoKeysRt -lpthread";
 option extra_setup;
 ;;
-
-/* To incorporate default homing.c file from a local git src tree:
-** enable #define HOMING_BASE set to the path to the current homing.c file.
-** (Note: CUSTOM_HOMEMODULE precludes duplicate api symbols)
-** (Edit myname as required for valid path)
-*/
-
-// #define HOMING_BASE /home/myname/linuxcnc-dev/src/emc/motion/homing.c
 
 #define STR(s)  #s
 #define XSTR(s) STR(s)
 #undef POKEYSLIB_USE_LIBUSB
 #include "motion.h"
-//#include "homing.h"
 #include "stdlib.h"
 #include "./PoKeysLibRt.h"
 
@@ -303,7 +293,6 @@ static emcmot_joint_t* joints;
 
 // local per-joint data (includes hal pin data)
 typedef struct {
-   // local_home_state_t home_state;           // OUT pin
     bool         homing;               // OUT pin
     bool         homed;                // OUT pin
     bool         home_sw;              // IN  pin
@@ -330,8 +319,6 @@ typedef struct {
     hal_bit_t* homed;        // joint was homed
     hal_bit_t* index_enable; // motmod sets: request reset on index
                              //        encoder clears: index arrived
- //   hal_s32_t* home_state;   // homing state machine state
-
 
     hal_u32_t* PEv2_AxesState; // State of pulse engine - see ePoKeysPEState
     hal_u32_t* PEv2_AxesCommand; // Commands to  pulse engine - see ePoKeysPECmd
@@ -377,9 +364,6 @@ static int makepins(int id, int njoints)
 
         retval += hal_pin_bit_newf(HAL_OUT, &(addr->homed), id,
             "joint.%d.homed", jno);
-
-    //    retval += hal_pin_s32_newf(HAL_OUT, &(addr->home_state), id,
-    //        "joint.%d.home-state", jno);
 
         retval += hal_pin_bit_newf(HAL_IO, &(addr->index_enable), id,
             "joint.%d.index-enable", jno);
@@ -454,7 +438,6 @@ void write_homing_out_pins(int njoints) {
         addr = &(joint_home_data->jhd[jno]);
         addr->homing = (hal_bit_t*)H[jno].homing;
         addr->homed = (hal_bit_t*)H[jno].homed;
-   //     addr->home_state = (hal_s32_t *)H[jno].home_state;
         addr->index_enable = (hal_bit_t*)H[jno].index_enable;
     }
     return;
@@ -570,6 +553,3 @@ EXPORT_SYMBOL(write_homing_out_pins);
 
 #undef XSTR
 #undef STR
-#undef HOMING_BASE
-#undef USE_HOMING_BASE
-#undef CUSTOM_HOMEMODULE
