@@ -4,7 +4,6 @@
 echo "Updating package lists..."
 apt-get update
 
-
 if ! dpkg -s linuxcnc-dev >/dev/null 2>&1; then
     # Ask user if linuxcnc-dev should be installed
     read -p "Do you want to install linuxcnc-dev? (y/n): " install_linuxcnc_dev

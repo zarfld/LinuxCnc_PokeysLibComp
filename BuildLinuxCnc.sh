@@ -4,50 +4,11 @@
 cd ..
 sudo apt update
 
-sudo apt install build-essential git devscripts dpkg-dev python
-sudo apt install -y automake
-sudo apt install -y libmodbus-dev
-sudo apt install -y libgpiod
-sudo apt install -y libgpiod-dev
-sudo apt install -y libgtk2.0-dev
-sudo apt install -y libglade2-dev
-sudo apt install -y libxmu-dev
-sudo apt install -y libglu1-mesa-dev
-sudo apt install -y libgl1-mesa-dev
-sudo apt install -y libreadline-dev
-sudo apt install -y libjansson-dev
-sudo apt install -y libboost-python-dev
-sudo apt install -y libboost-thread-dev
-sudo apt install -y libboost-system-dev
-sudo apt install -y libreadline-dev
-sudo apt install -y python3-lxml python3-gtk2
-sudo apt install -y debhelper dh-python libudev-dev libxenomai-dev \
-   tcl8.6-dev tk8.6-dev libreadline-gplv2-dev asciidoc \
-   dvipng graphviz groff imagemagick inkscape python-lxml \
-   source-highlight texlive-font-utils texlive-lang-cyrillic \
-   texlive-lang-french texlive-lang-german texlive-lang-polish \
-   texlive-lang-spanish w3c-linkchecker python-dev python-tk \
-   libxmu-dev libgtk2.0-dev intltool libboost-python-dev \
-   libusb-1.0-0-dev yapps2 libglu1-mesa-dev libgl1-mesa-dev \
-   dblatex docbook-xsl texlive-extra-utils texlive-fonts-recommended \
-   texlive-latex-recommended xsltproc gettext autoconf libmodbus-dev \
-   asciidoc-dblatex libxaw7-dev bwidget libtk-img tclx python-gtk2
-
 sudo apt autoremove
 #git config --global http.postBuffer 4294967296
 git config --global http.postBuffer 1073741824
 
-
-
 # Clone LinuxCNC source code
-
-#git clone --depth 1 https://github.com/linuxcnc/linuxcnc.git linuxcnc-dev
-    if [ ! -d "linuxcnc-dev" ]; then
-        if ! git clone --depth 1 https://github.com/linuxcnc/linuxcnc.git linuxcnc-dev; then
-            echo "Failed to clone repository. Please check your internet connection."
-            exit 1
-        fi
-    fi
 
 dir
 cd linuxcnc-dev || exit
