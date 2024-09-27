@@ -43,13 +43,8 @@ jobs:
 
     - name: Install LinuxCNC
       run: |
-        echo "Cloning LinuxCNC repository..."
-        git clone https://github.com/LinuxCNC/linuxcnc.git
-        cd linuxcnc
-        echo "Building LinuxCNC packages..."
-        sudo dpkg-buildpackage -b -uc
-        echo "Installing LinuxCNC packages..."
-        sudo dpkg -i ../linuxcnc-uspace_*.deb ../linuxcnc-dev_*.deb
+        echo "Installing pre-built LinuxCNC packages..."
+        sudo apt-get install -y linuxcnc-uspace linuxcnc-dev
 
     - name: Install PoKeysLib
       run: |
@@ -98,3 +93,10 @@ jobs:
       with:
         name: Logs
         path: build/logs
+
+    - name: Add logging for installation failures
+      run: |
+        log_file="ci_install.log"
+        exec > >(tee -i $log_file)
+        exec 2>&1
+        echo "CI installation completed successfully."

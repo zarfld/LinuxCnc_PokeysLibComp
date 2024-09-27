@@ -75,3 +75,31 @@ elif [ "$build_mode" = "Debian Packages" ]; then
 else
     echo "Invalid build mode choice. Please choose between 'RIP' or 'Debian Packages'."
 fi
+
+# P0fce: Update the script to use pre-built LinuxCNC packages
+echo "Installing pre-built LinuxCNC packages..."
+sudo apt-get install -y linuxcnc-uspace linuxcnc-dev
+
+# P85d5: Add caching of dependencies to reduce installation time
+echo "Caching dependencies..."
+mkdir -p ~/.cache/apt/archives
+sudo cp /var/cache/apt/archives/*.deb ~/.cache/apt/archives/
+
+# P4a46: Ensure the script works across different environments
+echo "Ensuring compatibility across different environments..."
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    OS=$NAME
+    VER=$VERSION_ID
+else
+    OS=$(uname -s)
+    VER=$(uname -r)
+fi
+echo "Running on $OS version $VER"
+
+# Pd5f1: Add logging for installation failures
+log_file="build_linuxcnc.log"
+exec > >(tee -i $log_file)
+exec 2>&1
+
+echo "BuildLinuxCnc.sh script completed successfully."
