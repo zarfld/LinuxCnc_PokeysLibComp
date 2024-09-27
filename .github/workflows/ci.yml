@@ -267,3 +267,13 @@ jobs:
       run: |
         echo "Running end-to-end system tests..."
         halrun -I -f pokeys_homing.hal
+
+    - name: Set environment variable for CI
+      run: |
+        echo "Setting environment variable for CI..."
+        echo "CI=true" >> $GITHUB_ENV
+
+    - name: Run tests with mocks
+      run: |
+        echo "Running tests with mocks..."
+        python3 -m unittest discover -s tests -p "test_*.py"
