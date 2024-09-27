@@ -1,0 +1,69 @@
+component pokeys_poextbus "PoExtBus component for PoKeys";
+
+option userspace yes;
+
+pin in bit poextbus_in.# [16];
+pin out bit poextbus_out.# [16];
+
+license "GPL";
+author "Dominik Zarfl";
+
+;;
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "PoKeysLib.h"
+
+sPoKeysDevice* device;
+
+void setup_pins() {
+    for (int i = 0; i < 16; i++) {
+        if (hal_pin_bit_newf(HAL_IN, &(poextbus_in[i]), comp_id, "pokeys_poextbus.poextbus_in.%d", i) < 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "ERROR: could not create poextbus_in pin %d\n", i);
+            exit(1);
+        }
+        if (hal_pin_bit_newf(HAL_OUT, &(poextbus_out[i]), comp_id, "pokeys_poextbus.poextbus_out.%d", i) < 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "ERROR: could not create poextbus_out pin %d\n", i);
+            exit(1);
+        }
+    }
+}
+
+void user_mainloop() {
+    while (1) {
+        for (int i = 0; i < 16; i++) {
+            poextbus_out[i] = PK_PoExtBusGet(device, i);
+            PK_PoExtBusSet(device, i, poextbus_in[i]);
+        }
+        usleep(10000);
+    }
+}
+
+int rtapi_app_main(void) {
+    comp_id = hal_init("pokeys_poextbus");
+    if (comp_id < 0) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_poextbus: ERROR: hal_init() failed\n");
+        return -1;
+    }
+
+    device = PK_ConnectToDevice(0);
+    if (device == NULL) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_poextbus: ERROR: could not connect to PoKeys device\n");
+        return -1;
+    }
+
+    setup_pins();
+
+    hal_ready(comp_id);
+    rtapi_print_msg(RTAPI_MSG_INFO, "pokeys_poextbus: installed\n");
+
+    return 0;
+}
+
+void rtapi_app_exit(void) {
+    if (device != NULL) {
+        PK_DisconnectDevice(device);
+    }
+    hal_exit(comp_id);
+}
