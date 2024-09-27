@@ -12,6 +12,9 @@ if ! dpkg -s linuxcnc-dev >/dev/null 2>&1; then
         echo "Installing linuxcnc-dev..."
         apt-get install -y linuxcnc-dev
     fi
+else
+    echo "Updating linuxcnc-dev..."
+    apt-get install --only-upgrade -y linuxcnc-dev
 fi
 
 # Install or update required packages

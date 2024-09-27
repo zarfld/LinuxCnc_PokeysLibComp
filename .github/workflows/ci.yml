@@ -23,34 +23,58 @@ jobs:
 
     - name: Install dependencies
       run: |
+        echo "Updating package lists..."
         sudo apt-get update
+        echo "Installing dependencies..."
         sudo apt-get install -y cmake python3 linuxcnc-uspace linuxcnc-dev libmodbus-dev libgpiod-dev libgtk2.0-dev libglade2-dev libxmu-dev libglu1-mesa-dev libgl1-mesa-dev libreadline-dev libjansson-dev libboost-python-dev libboost-thread-dev libboost-system-dev python3-lxml python3-gtk2 debhelper dh-python libudev-dev libxenomai-dev tcl8.6-dev tk8.6-dev libreadline-gplv2-dev asciidoc dvipng graphviz groff imagemagick inkscape python-lxml source-highlight texlive-font-utils texlive-lang-cyrillic texlive-lang-french texlive-lang-german texlive-lang-polish texlive-lang-spanish w3c-linkchecker python-dev python-tk intltool libusb-1.0-0-dev yapps2 dblatex docbook-xsl texlive-extra-utils texlive-fonts-recommended texlive-latex-recommended xsltproc gettext autoconf asciidoc-dblatex libxaw7-dev bwidget libtk-img tclx python-gtk2
 
     - name: Install LinuxCNC
       run: |
+        echo "Cloning LinuxCNC repository..."
         git clone https://github.com/LinuxCNC/linuxcnc.git
         cd linuxcnc
+        echo "Building LinuxCNC packages..."
         sudo dpkg-buildpackage -b -uc
+        echo "Installing LinuxCNC packages..."
         sudo dpkg -i ../linuxcnc-uspace_*.deb ../linuxcnc-dev_*.deb
 
     - name: Install PoKeysLib
       run: |
+        echo "Cloning PoKeysLib repository..."
         git clone https://bitbucket.org/mbosnak/pokeyslib.git
         cd pokeyslib
+        echo "Building and installing PoKeysLib..."
         make -f Makefile.noqmake install
 
     - name: Install LinuxCNC and PoKeysLib dependencies
       run: |
+        echo "Installing LinuxCNC and PoKeysLib dependencies..."
         sudo apt-get install -y linuxcnc-uspace linuxcnc-dev libmodbus-dev libgpiod-dev libgtk2.0-dev libglade2-dev libxmu-dev libglu1-mesa-dev libgl1-mesa-dev libreadline-dev libjansson-dev libboost-python-dev libboost-thread-dev libboost-system-dev python3-lxml python3-gtk2 debhelper dh-python libudev-dev libxenomai-dev tcl8.6-dev tk8.6-dev libreadline-gplv2-dev asciidoc dvipng graphviz groff imagemagick inkscape python-lxml source-highlight texlive-font-utils texlive-lang-cyrillic texlive-lang-french texlive-lang-german texlive-lang-polish texlive-lang-spanish w3c-linkchecker python-dev python-tk intltool libusb-1.0-0-dev yapps2 dblatex docbook-xsl texlive-extra-utils texlive-fonts-recommended texlive-latex-recommended xsltproc gettext autoconf asciidoc-dblatex libxaw7-dev bwidget libtk-img tclx python-gtk2
 
     - name: Build project
       run: |
+        echo "Creating build directory..."
         mkdir build
         cd build
+        echo "Configuring build environment with CMake..."
         cmake ..
+        echo "Compiling project using all available CPU cores..."
         make -j$(nproc)
 
     - name: Run tests
       run: |
+        echo "Running tests..."
         cd build
         ctest --output-on-failure
+
+    - name: Ensure example configs folder exists
+      run: |
+        if [ ! -d "/usr/share/doc/linuxcnc/examples/sample-configs/by_interface/pokeys" ]; then
+            echo "Creating folder for example configs..."
+            sudo mkdir -p /usr/share/doc/linuxcnc/examples/sample-configs/by_interface/pokeys
+        fi
+
+    - name: Copy example configs
+      run: |
+        echo "Copying example configs to the correct folder..."
+        sudo cp -r ./DM542_XXYZ_mill /usr/share/doc/linuxcnc/examples/sample-configs/by_interface/pokeys
