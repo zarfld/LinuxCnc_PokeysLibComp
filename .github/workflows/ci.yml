@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, debian-latest, mint-latest]
+        os: [debian-latest, raspbian-buster, raspbian-jessie, mint-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
