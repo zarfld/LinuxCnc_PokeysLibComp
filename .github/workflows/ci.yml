@@ -18,15 +18,15 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: '3.x'
 
     - name: Cache dependencies
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: |
           ~/.cache/pip
@@ -86,7 +86,7 @@ jobs:
           local delay=5
           while true; do
             "$@" && break || {
-              if [[ $n -lt $max ]]; then
+              if [[ $n -lt the max ]]; then
                 ((n++))
                 echo "Command failed. Attempt $n/$max:"
                 sleep $delay;
