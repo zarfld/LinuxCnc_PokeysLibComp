@@ -288,3 +288,22 @@ To integrate the tests into an automated testing pipeline, set up continuous int
 The documentation provides clear instructions on running tests, setup steps for hardware-dependent tests, and interpreting test results and coverage reports. It is essential to keep the documentation up to date as new features are implemented and tests are added.
 
 By following these instructions, you can ensure the reliability, correctness, and performance of the `pokeys_py` component, making it easier to maintain and develop in the future.
+
+## GitHub Actions Workflow Changes
+
+### Node.js Version Update
+
+The GitHub Actions workflow has been updated to use Node.js version 16. The following actions have been updated to use the latest versions:
+
+- `actions/checkout@v3`
+- `actions/setup-python@v3`
+- `actions/cache@v3`
+- `actions/upload-artifact@v3`
+
+### Viewing Uploaded Artifacts
+
+In case of a build or test failure, the logs will be uploaded as artifacts. You can view the uploaded artifacts by following these steps:
+
+1. Go to the "Actions" tab in your GitHub repository.
+2. Select the workflow run that you want to inspect.
+3. In the "Artifacts" section, click on the "Logs" artifact to download and view the build and test logs.
