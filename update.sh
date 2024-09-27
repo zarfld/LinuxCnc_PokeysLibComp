@@ -1,32 +1,18 @@
 #!/bin/bash
 
-
-# Upgrade packages
-    echo "Upgrading packages..."
-    apt-get upgrade -y
-
-
-    # Upgrade packages
-    echo "Upgrading packages..."
-    apt-get upgrade -y
-
-
 echo "Updating Git repository..."
 git config pull.ff only
 git pull
 
-
-
-    # Update pokeyslib
-    echo "Updating pokeyslib..."
-    cd ../pokeyslib
-    git config pull.ff only
-    git pull
-    # Build and install
-    echo "Building and installing pokeyslib"
-    make -f Makefile.noqmake install
-    cd -
-
+# Update pokeyslib
+echo "Updating pokeyslib..."
+cd ../pokeyslib
+git config pull.ff only
+git pull
+# Build and install
+echo "Building and installing pokeyslib"
+make -f Makefile.noqmake install
+cd -
 
 # Get the directory of the current script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
