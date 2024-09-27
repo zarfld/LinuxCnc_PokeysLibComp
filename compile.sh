@@ -27,6 +27,21 @@ halcompile --install start_delay_3000.comp
 halcompile --install start_delay_5000.comp
 echo "start_delay.comp compiled successfully."
 
+echo "Compiling pokeys_digital_io.comp..."
+halcompile --install pokeys_userspace/pokeys_digital_io.comp
+echo "pokeys_digital_io.comp compiled successfully."
+
+echo "Compiling pokeys_analog_io.comp..."
+halcompile --install pokeys_userspace/pokeys_analog_io.comp
+echo "pokeys_analog_io.comp compiled successfully."
+
+echo "Compiling pokeys_pev2.comp..."
+halcompile --install pokeys_userspace/pokeys_pev2.comp
+echo "pokeys_pev2.comp compiled successfully."
+
+echo "Compiling pokeys_counters.comp..."
+halcompile --install pokeys_userspace/pokeys_counters.comp
+echo "pokeys_counters.comp compiled successfully."
 
 #echo "preparing prerequisites of pokeys_rt.comp..."
 #cp ../pokeyslib/Makefile.noqmake ../pokeyslib/Makefile.noqmake.rt
@@ -85,4 +100,3 @@ echo "start_delay.comp compiled successfully."
 #--extra-compile-args="-I/usr/local/include" --extra-link-args="-L/usr/local/lib -lwiringPi -lwiringPiDev -lpthread -lm -lcrypt -lrt"
 #halcompile --install pokeys_rt.comp --extra-compile-args="-I./" --extra-link-args="-lPoKeysRt -lpthread"
 #echo "pokeys_rt.comp compiled successfully."
-

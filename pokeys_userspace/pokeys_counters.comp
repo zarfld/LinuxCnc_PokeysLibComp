@@ -1,0 +1,71 @@
+component pokeys_counters "Counters component for PoKeys";
+
+option userspace yes;
+
+pin in bit counter_reset.# [8];
+pin out s32 counter_value.# [8];
+
+license "GPL";
+author "Dominik Zarfl";
+
+;;
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "PoKeysLib.h"
+
+sPoKeysDevice* device;
+
+void setup_pins() {
+    for (int i = 0; i < 8; i++) {
+        if (hal_pin_bit_newf(HAL_IN, &(counter_reset[i]), comp_id, "pokeys_counters.counter_reset.%d", i) < 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "ERROR: could not create counter_reset pin %d\n", i);
+            exit(1);
+        }
+        if (hal_pin_s32_newf(HAL_OUT, &(counter_value[i]), comp_id, "pokeys_counters.counter_value.%d", i) < 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "ERROR: could not create counter_value pin %d\n", i);
+            exit(1);
+        }
+    }
+}
+
+void user_mainloop() {
+    while (1) {
+        for (int i = 0; i < 8; i++) {
+            if (counter_reset[i]) {
+                PK_SL_DigitalCounterClear(device, i);
+            }
+            counter_value[i] = PK_SL_DigitalCounterGet(device, i);
+        }
+        usleep(10000);
+    }
+}
+
+int rtapi_app_main(void) {
+    comp_id = hal_init("pokeys_counters");
+    if (comp_id < 0) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_counters: ERROR: hal_init() failed\n");
+        return -1;
+    }
+
+    device = PK_ConnectToDevice(0);
+    if (device == NULL) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_counters: ERROR: could not connect to PoKeys device\n");
+        return -1;
+    }
+
+    setup_pins();
+
+    hal_ready(comp_id);
+    rtapi_print_msg(RTAPI_MSG_INFO, "pokeys_counters: installed\n");
+
+    return 0;
+}
+
+void rtapi_app_exit(void) {
+    if (device != NULL) {
+        PK_DisconnectDevice(device);
+    }
+    hal_exit(comp_id);
+}
