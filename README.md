@@ -207,3 +207,84 @@ Count: 29
 - pokeys.[DevID].rtc.year;				unsigned Year
 - pokeys.[DevID].rtc.loop_frequ;		unsigned Actual Loop frequency of pokeys.comp updated after rts.sec changed
 - pokeys.[DevID].rtc.loop_frequ_demand;	unsigned demand value for loop frequency (if 0 default of 10Hz will be used)
+
+## Running Tests
+
+To ensure the reliability and correctness of the `pokeys_py` component, a comprehensive test suite has been developed. The tests cover various functionalities, including digital I/O, analog I/O, PEv2, counters, PWM outputs, and peripheral devices. The tests are categorized into unit tests, integration tests, functional tests, and performance tests.
+
+### Prerequisites
+
+Before running the tests, make sure you have the following prerequisites installed:
+
+- Python 3.x
+- `pytest` testing framework
+- `unittest.mock` for mocking PoKeys device responses
+
+You can install `pytest` using pip:
+
+```bash
+pip install pytest
+```
+
+### Running Unit Tests
+
+Unit tests are designed to test individual functions and methods within the `pokeys_py` component. To run the unit tests, navigate to the `tests` directory and execute the following command:
+
+```bash
+pytest test_analog_io.py
+pytest test_counter.py
+pytest test_digital_io.py
+pytest test_pev2_motion_control.py
+pytest test_ponet.py
+pytest test_pwm.py
+```
+
+### Running Integration Tests
+
+Integration tests verify the interaction between the `pokeys_py` component and the PoKeys hardware and LinuxCNC. To run the integration tests, execute the following command:
+
+```bash
+pytest test_integration.py
+```
+
+### Running Functional Tests
+
+Functional tests simulate real-world usage scenarios for the `pokeys_py` component. To run the functional tests, execute the following command:
+
+```bash
+pytest test_functional.py
+```
+
+### Running Performance Tests
+
+Performance tests ensure that the `pokeys_py` component meets real-time operation requirements. To run the performance tests, execute the following command:
+
+```bash
+pytest test_performance.py
+```
+
+### Interpreting Test Results
+
+After running the tests, `pytest` will display the test results in the terminal. The results will indicate the number of tests passed, failed, or skipped. Additionally, you can generate a coverage report to identify untested code.
+
+To generate a coverage report, use the following command:
+
+```bash
+pytest --cov=pokeys_py --cov-report=html
+```
+
+The coverage report will be generated in the `htmlcov` directory. Open the `index.html` file in a web browser to view the detailed coverage report.
+
+### Hardware-Dependent Tests
+
+Some tests may require physical hardware to run. For hardware-dependent tests, make sure the PoKeys device is connected and properly configured. Follow the setup steps provided in the documentation to ensure the hardware is ready for testing.
+
+### Continuous Integration (CI)
+
+To integrate the tests into an automated testing pipeline, set up continuous integration (CI) to run the tests on every commit or pull request. This ensures that the code is continuously tested and any issues are detected early in the development process.
+
+## Documentation
+
+The documentation provides clear instructions on running tests, setup steps for hardware-dependent tests, and interpreting test results and coverage reports. It is essential to keep the documentation up to date as new features are implemented and tests are added.
+
+By following these instructions, you can ensure the reliability, correctness, and performance of the `pokeys_py` component, making it easier to maintain and develop in the future.
