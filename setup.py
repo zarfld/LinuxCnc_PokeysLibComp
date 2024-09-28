@@ -6,6 +6,8 @@ setup(
     packages=find_packages(),
     install_requires=[
         'ctypes',
+        'pytest',
+        'unittest.mock',
     ],
     entry_points={
         'console_scripts': [
