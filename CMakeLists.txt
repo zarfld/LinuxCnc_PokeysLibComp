@@ -27,6 +27,7 @@ set(SOURCES
     pokeys_rt/PoKeysLibCAN.c
     pokeys_rt/PoKeysLibFailsafe.c
     pokeys_rt/PoKeysLibWS2812.c
+    pokeys_rt/PoKeysLibDevicePoKeys57Industrial.c
 )
 
 # Add the library
