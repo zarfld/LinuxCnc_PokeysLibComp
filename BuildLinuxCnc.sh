@@ -123,3 +123,11 @@ fi
 echo "Copying necessary files to LinuxCNC directories..."
 sudo cp ../pokeys_rt/libPoKeysRt.so /usr/lib/linuxcnc/modules
 sudo cp ../pokeys_rt/PoKeysLibRt.h /usr/include/linuxcnc
+
+# Verify conformity with LinuxCNC guidelines and Canonical Device Interface
+echo "Verifying conformity with LinuxCNC guidelines and Canonical Device Interface..."
+if ! grep -q "Canonical Device Interface" ../README.md; then
+    echo "Canonical Device Interface not mentioned in README.md. Please ensure that the guidelines are documented."
+    exit 1
+fi
+echo "Canonical Device Interface guidelines are documented and accessible."

@@ -2,8 +2,8 @@ component pokeys_ponetkbd48cnc "PoNETkbd48CNC component for PoKeys";
 
 option userspace yes;
 
-pin in bit ponetkbd48cnc_in.# [48];
-pin out bit ponetkbd48cnc_out.# [48];
+pin in bit pokeys.[DevID].ponetkbd48cnc.[PinID].in [48];
+pin out bit pokeys.[DevID].ponetkbd48cnc.[PinID].out [48];
 
 license "GPL";
 author "Dominik Zarfl";

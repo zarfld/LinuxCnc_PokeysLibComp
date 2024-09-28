@@ -80,4 +80,49 @@ To keep the repository organized, please follow these branch naming conventions:
 
 By contributing to this project, you agree that your contributions will be licensed under the project's [LICENSE](LICENSE).
 
-Thank you for your contributions! We appreciate your help in making LinuxCnc_PokeysLibComp better for everyone.
+## Ensuring Adherence to LinuxCNC Standards
+
+To ensure that all development follows the official LinuxCNC guidelines, including compliance with the "Canonical Device Interface" as described in the HAL-Handbook, please adhere to the following:
+
+1. **Review LinuxCNC Documentation**:
+   - Review the official [LinuxCNC Development Guidelines](https://linuxcnc.org/docs/devel/html/code/code-notes.html).
+   - Ensure that all development practices, naming conventions, and interfaces conform to the LinuxCNC standards.
+
+2. **Follow LinuxCNC HAL and INI File Conventions**:
+   - Align with the structure and format of HAL and INI files as outlined in the LinuxCNC [HAL Guidelines](https://linuxcnc.org/docs/html/hal/basic-hal.html) and [INI Guidelines](https://linuxcnc.org/docs/html/config/ini-config.html).
+   - Ensure HAL and INI files for PoKeys components expose necessary parameters, pins, and signals using standardized naming.
+
+3. **Implement Canonical Device Interface**:
+   - Ensure that all components comply with the [Canonical Device Interface](https://linuxcnc.org/docs/html/hal/halmodule.html#_canonical_device_interfaces), including:
+     - **Digital Inputs/Outputs**: For PoKeys digital I/O, ensure that pins are named following the canonical form (e.g., `pokeys.[DevID].digin.[PinID].in`, `pokeys.[DevID].digout.[PinID].out`).
+     - **Analog Inputs/Outputs**: Analog I/O should follow the canonical pattern and include necessary parameters like scaling and offsets.
+     - **Motion Control**: PoKeys motion control (PEv2) should map to standard motion control HAL pins such as `pos-cmd`, `vel-cmd`, `amp-enable-out`, etc., using canonical naming.
+     - **Counters, PWM, and Other Peripherals**: Ensure each type of peripheral supported by PoKeys maps appropriately to the canonical device interface, following the standardized HAL pin and parameter conventions.
+
+4. **Comply with Real-Time Constraints**:
+   - For real-time components (e.g., `pokeys_rt`), ensure compliance with LinuxCNC real-time operation standards.
+   - Verify that components avoid practices that would cause real-time jitter or violations (e.g., dynamic memory allocation).
+
+5. **Review and Align with Canonical Interface Definitions**:
+   - Ensure that all HAL components, especially for digital/analog I/O, motion control (PEv2), and communication protocols (PoNET), follow the canonical interface definitions as outlined in LinuxCNC's [HAL Component Interface](https://linuxcnc.org/docs/html/hal/halmodule.html).
+   - Map all PoKeys-specific functionality appropriately to these interfaces.
+
+6. **Modular Design for Future Proofing**:
+   - Follow LinuxCNC's modular design principles. Ensure that each component (`pokeys_rt`, `pokeys_py`) is modular, allowing for future expansions and updates without major refactoring.
+   - Leverage abstraction for interfacing with hardware like PoKeys to maintain cleaner code and easier integration.
+
+7. **Adhere to Code Style Guidelines**:
+   - Align with LinuxCNC's coding style and practices, especially for C/C++ code in real-time components.
+   - Maintain consistent formatting, indentation, and comment style across all files.
+   - Review the [LinuxCNC Source Code Formatting Guidelines](https://linuxcnc.org/docs/devel/html/code/code-notes.html#_source_code_formatting) to ensure conformity.
+
+## References
+
+- [GitHub Pull Request Reviews](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests)
+- [Code Review Best Practices](https://medium.com/@techgirl1908/code-review-best-practices-22cb9f4a63b1)
+- [Collaborating with GitHub](https://guides.github.com/introduction/collaborating/)
+- [LinuxCNC Development Guidelines](https://linuxcnc.org/docs/devel/html/code/code-notes.html)
+- [LinuxCNC HAL Guidelines](https://linuxcnc.org/docs/html/hal/basic-hal.html)
+- [LinuxCNC INI Guidelines](https://linuxcnc.org/docs/html/config/ini-config.html)
+- [Canonical Device Interface](https://linuxcnc.org/docs/html/hal/halmodule.html#_canonical_device_interfaces)
+- [LinuxCNC Source Code Formatting Guidelines](https://linuxcnc.org/docs/devel/html/code/code-notes.html#_source_code_formatting)

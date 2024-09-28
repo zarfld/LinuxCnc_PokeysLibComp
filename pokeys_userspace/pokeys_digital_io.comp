@@ -2,8 +2,8 @@ component pokeys_digital_io "Digital IO component for PoKeys";
 
 option userspace yes;
 
-pin in bit digital_in.# [55];
-pin out bit digital_out.# [55];
+pin in bit pokeys.[DevID].digin.[PinID].in [55];
+pin out bit pokeys.[DevID].digout.[PinID].out [55];
 
 license "GPL";
 author "Dominik Zarfl";

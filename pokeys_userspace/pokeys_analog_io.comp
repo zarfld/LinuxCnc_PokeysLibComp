@@ -2,8 +2,8 @@ component pokeys_analog_io "Analog IO component for PoKeys";
 
 option userspace yes;
 
-pin in float analog_in.# [7];
-pin out float analog_out.# [7];
+pin in float pokeys.[DevID].adcin.[AdcId].value-raw [7];
+pin out float pokeys.[DevID].adcout.[AdcId].value [7];
 
 license "GPL";
 author "Dominik Zarfl";
