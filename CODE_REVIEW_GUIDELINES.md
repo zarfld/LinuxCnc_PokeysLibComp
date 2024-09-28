@@ -38,6 +38,19 @@ The following steps outline the code review process:
 8. **Merge Strategy**: Once all comments are resolved and the PR is approved, merge the changes following the team’s agreed-upon strategy (e.g., squash merge, rebase and merge).
 9. **Post-Merge Collaboration**: After merging, encourage the team to continue monitoring the changes in the main branch for any issues or regressions. Encourage further discussion if the review process brought up important architectural or design questions.
 
+## Branch Naming Conventions
+
+To keep the repository organized, please follow these branch naming conventions:
+
+- **Feature Branches**: `feature/{feature-name}`
+- **Bug Fix Branches**: `bugfix/{bug-name}`
+- **Improvement Branches**: `improvement/{improvement-name}`
+- **Hotfix Branches**: `hotfix/{hotfix-name}`
+
+## Creating Separate Branches for Each Feature or Bug Fix
+
+Each new feature or bug fix should have its own branch created from the latest version of the main branch. The branch should focus on one feature or issue to ensure isolated development.
+
 ## References
 
 - [GitHub Pull Request Reviews](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests)

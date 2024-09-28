@@ -71,9 +71,10 @@ When submitting a pull request, please ensure the following:
 
 To keep the repository organized, please follow these branch naming conventions:
 
-- **Feature Branches**: `feature/your-feature-name`
-- **Bug Fix Branches**: `bugfix/your-bugfix-description`
-- **Release Branches**: `release/version-number`
+- **Feature Branches**: `feature/{feature-name}`
+- **Bug Fix Branches**: `bugfix/{bug-name}`
+- **Improvement Branches**: `improvement/{improvement-name}`
+- **Hotfix Branches**: `hotfix/{hotfix-name}`
 
 ## License
 
