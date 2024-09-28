@@ -327,3 +327,16 @@ We welcome contributions from the community to help improve the project. Please 
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## Branch Naming Conventions
+
+To keep the repository organized, please follow these branch naming conventions:
+
+- **Feature Branches**: `feature/{feature-name}`
+- **Bug Fix Branches**: `bugfix/{bug-name}`
+- **Improvement Branches**: `improvement/{improvement-name}`
+- **Hotfix Branches**: `hotfix/{hotfix-name}`
+
+## Creating Separate Branches for Each Feature or Bug Fix
+
+Each new feature or bug fix should have its own branch created from the latest version of the main branch. The branch should focus on one feature or issue to ensure isolated development.
