@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [debian-latest, raspbian-bookworm, raspbian-bullseye, mint-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: [self-hosted, ${{ matrix.os }}]
 
     steps:
     - name: Checkout code
@@ -33,6 +33,22 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
+
+    - name: Check runner availability
+      run: |
+        echo "Checking runner availability..."
+        if [ -z "$RUNNER_NAME" ]; then
+          echo "No runner available. Exiting..."
+          exit 1
+        fi
+        echo "Runner $RUNNER_NAME is available."
+
+    - name: Log runner details
+      run: |
+        echo "Logging runner details..."
+        echo "Runner Name: $RUNNER_NAME"
+        echo "Runner OS: $RUNNER_OS"
+        echo "Runner Architecture: $RUNNER_ARCH"
 
     - name: Install dependencies
       run: |
