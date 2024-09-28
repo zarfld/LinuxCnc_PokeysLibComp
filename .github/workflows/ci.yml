@@ -141,7 +141,7 @@ jobs:
         fi
         make -j$(nproc) all
         make -j$(nproc) all 2>&1 | tee "$log_file"
-        if [ "${PIPESTATUS[0]}" -ne 0]; then
+        if [ "${PIPESTATUS[0]}" -ne 0 ]; then
             echo "Build failed. Check the log file for details: $log_file"
             exit 1
         fi
