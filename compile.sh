@@ -40,3 +40,11 @@ echo "pokeys_pev2.comp compiled successfully."
 echo "Compiling pokeys_counters.comp..."
 halcompile --install pokeys_userspace/pokeys_counters.comp
 echo "pokeys_counters.comp compiled successfully."
+
+echo "Compiling pokeys_rt.comp..."
+halcompile --install pokeys_rt/pokeys_rt.comp
+echo "pokeys_rt.comp compiled successfully."
+
+echo "Compiling pokeys_py components..."
+python3 setup.py install
+echo "pokeys_py components compiled successfully."

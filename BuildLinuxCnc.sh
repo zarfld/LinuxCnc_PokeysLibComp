@@ -95,3 +95,31 @@ if [ "${PIPESTATUS[0]}" -ne 0 ]; then
     echo "Build failed. Check the log file for details: $log_file"
     exit 1
 fi
+
+# Integrate pokeys_rt and pokeys_py components
+echo "Integrating pokeys_rt and pokeys_py components..."
+cd ../../pokeys_rt
+make -f Makefile.noqmake.rt install
+cd ../pokeys_py
+python3 setup.py install
+
+# Ensure compatibility with LinuxCNC versions 2.8.x and 2.9.x
+echo "Ensuring compatibility with LinuxCNC versions 2.8.x and 2.9.x..."
+if [ -d "/usr/lib/linuxcnc/modules" ]; then
+    echo "LinuxCNC modules directory exists."
+else
+    echo "LinuxCNC modules directory does not exist. Creating directory..."
+    sudo mkdir -p /usr/lib/linuxcnc/modules
+fi
+
+if [ -d "/usr/include/linuxcnc" ]; then
+    echo "LinuxCNC include directory exists."
+else
+    echo "LinuxCNC include directory does not exist. Creating directory..."
+    sudo mkdir -p /usr/include/linuxcnc
+fi
+
+# Copy necessary files to LinuxCNC directories
+echo "Copying necessary files to LinuxCNC directories..."
+sudo cp ../pokeys_rt/libPoKeysRt.so /usr/lib/linuxcnc/modules
+sudo cp ../pokeys_rt/PoKeysLibRt.h /usr/include/linuxcnc

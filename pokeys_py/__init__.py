@@ -8,4 +8,4 @@ if os.getenv('CI') == 'true':
     from tests.mocks.pokeyslib_mock import pokeyslib
 else:
     import ctypes
-    pokeyslib = ctypes.CDLL('./pokeys_rt/PoKeysLib.so')
+    pokeyslib = ctypes.CDLL('/usr/lib/linuxcnc/modules/PoKeysLib.so')
