@@ -2,8 +2,8 @@ component pokeys_porelay8 "PoRelay8 component for PoKeys";
 
 option userspace yes;
 
-pin in bit porelay8_in.# [8];
-pin out bit porelay8_out.# [8];
+pin in bit pokeys.[DevID].porelay8.[PinID].in [8];
+pin out bit pokeys.[DevID].porelay8.[PinID].out [8];
 
 license "GPL";
 author "Dominik Zarfl";

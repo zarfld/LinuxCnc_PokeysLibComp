@@ -2,8 +2,8 @@ component pokeys_pwm "PWM component for PoKeys";
 
 option userspace yes;
 
-pin in float pwm_in.# [6];
-pin out float pwm_out.# [6];
+pin in float pokeys.[DevID].pwm.[PwmId].in [6];
+pin out float pokeys.[DevID].pwm.[PwmId].out [6];
 
 license "GPL";
 author "Dominik Zarfl";

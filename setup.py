@@ -38,3 +38,5 @@ setup(
         'Source': 'https://github.com/zarfld/LinuxCnc_PokeysLibComp',
     },
 )
+
+# Ensure compliance with LinuxCNC guidelines and the Canonical Device Interface

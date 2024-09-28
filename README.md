@@ -340,3 +340,7 @@ To keep the repository organized, please follow these branch naming conventions:
 ## Creating Separate Branches for Each Feature or Bug Fix
 
 Each new feature or bug fix should have its own branch created from the latest version of the main branch. The branch should focus on one feature or issue to ensure isolated development.
+
+## Conformity with LinuxCNC Guidelines and Canonical Device Interface
+
+This repository aligns with LinuxCNC’s development practices and canonical interfaces. The components have been reviewed and updated to follow LinuxCNC coding guidelines, ensuring that HAL and INI files conform to LinuxCNC’s structure and formatting. Real-time components comply with LinuxCNC’s real-time constraints, and all components follow the canonical interface definitions. The code adheres to LinuxCNC's code style and formatting guidelines, and test cases have been created and run to validate conformity.

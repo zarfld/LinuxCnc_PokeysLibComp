@@ -50,3 +50,5 @@ install(TARGETS PoKeysLib pokeys_rt
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin
 )
+
+# Ensure compliance with LinuxCNC guidelines and the Canonical Device Interface

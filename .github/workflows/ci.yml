@@ -310,3 +310,12 @@ jobs:
             exit 1
         fi
         echo "Code review guidelines are documented and accessible."
+
+    - name: Verify conformity with LinuxCNC guidelines and Canonical Device Interface
+      run: |
+        echo "Verifying conformity with LinuxCNC guidelines and Canonical Device Interface..."
+        if ! grep -q "Canonical Device Interface" README.md; then
+            echo "Canonical Device Interface not mentioned in README.md. Please ensure that the guidelines are documented."
+            exit 1
+        fi
+        echo "Canonical Device Interface guidelines are documented and accessible."

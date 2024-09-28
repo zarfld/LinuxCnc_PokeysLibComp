@@ -2,9 +2,9 @@ component pokeys_pev2 "PEv2 component for PoKeys";
 
 option userspace yes;
 
-pin in float position_cmd.# [8];
-pin out float position_fb.# [8];
-pin out bit homing_status.# [8];
+pin in float pokeys.[DevID].pev2.position-cmd.# [8];
+pin out float pokeys.[DevID].pev2.position-fb.# [8];
+pin out bit pokeys.[DevID].pev2.homing-status.# [8];
 
 license "GPL";
 author "Dominik Zarfl";

@@ -2,8 +2,8 @@ component pokeys_counters "Counters component for PoKeys";
 
 option userspace yes;
 
-pin in bit counter_reset.# [8];
-pin out s32 counter_value.# [8];
+pin in bit pokeys.[DevID].counter.[CounterID].reset [8];
+pin out s32 pokeys.[DevID].counter.[CounterID].value [8];
 
 license "GPL";
 author "Dominik Zarfl";
