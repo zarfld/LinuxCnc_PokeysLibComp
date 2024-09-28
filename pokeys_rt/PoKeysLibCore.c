@@ -921,3 +921,86 @@ void PK_PerformanceTest(sPoKeysDevice* device) {
         }
     }
 }
+
+// README.md file explaining the contents of the pokeys_rt directory
+/*
+# pokeys_rt Directory
+
+This directory contains the real-time components of the PoKeys library. The files in this directory are responsible for interfacing with the PoKeys hardware and providing real-time functionality.
+
+## Contents
+
+- `PoKeysLibCore.c`: Core implementation of the PoKeys library.
+- `PoKeysLibCore.h`: Header file for the core implementation.
+- `PoKeysLibCoreSockets.c`: Implementation of socket communication for network devices.
+- `PoKeysLibCoreSockets.h`: Header file for socket communication.
+- `PoKeysLib1Wire.c`: Implementation of 1-Wire communication.
+- `PoKeysLibCAN.c`: Implementation of CAN bus communication.
+- `PoKeysLibDeviceData.c`: Implementation of device data handling.
+- `PoKeysLibDevicePoKeys57Industrial.c`: Implementation of PoKeys57 Industrial device-specific functionality.
+- `PoKeysLibDevicePoKeys57Industrial.h`: Header file for PoKeys57 Industrial device-specific functionality.
+- `PoKeysLibEasySensors.c`: Implementation of EasySensors functionality.
+- `PoKeysLibEncoders.c`: Implementation of encoder functionality.
+- `PoKeysLibFailsafe.c`: Implementation of failsafe functionality.
+- `PoKeysLibFastUSB.c`: Implementation of fast USB communication.
+- `PoKeysLibI2C.c`: Implementation of I2C communication.
+- `PoKeysLibIO.c`: Implementation of general IO functionality.
+- `PoKeysLibLCD.c`: Implementation of LCD functionality.
+- `PoKeysLibMatrixKB.c`: Implementation of matrix keyboard functionality.
+- `PoKeysLibMatrixLED.c`: Implementation of matrix LED functionality.
+- `PoKeysLibPoIL.c`: Implementation of PoIL functionality.
+- `PoKeysLibPoNET.c`: Implementation of PoNET communication.
+- `PoKeysLibPoRelay8.c`: Implementation of PoRelay8 functionality.
+- `PoKeysLibPulseEngine_v2.c`: Implementation of Pulse Engine v2 functionality.
+- `PoKeysLibRTC.c`: Implementation of real-time clock functionality.
+- `PoKeysLibSPI.c`: Implementation of SPI communication.
+- `PoKeysLibUART.c`: Implementation of UART communication.
+- `PoKeysLibWS2812.c`: Implementation of WS2812 LED communication.
+- `hid-libusb.c`: Implementation of HID communication using libusb.
+- `hid-mac.c`: Implementation of HID communication for macOS.
+- `hid.c`: Implementation of HID communication.
+- `hidapi.h`: Header file for HID API.
+- `Makefile.noqmake.rt`: Makefile for building the real-time components without qmake.
+- `Makefile.pokeys_rt.in`: Makefile template for building the real-time components.
+- `pokeys_rt.c`: Implementation of the PoKeys real-time component.
+- `pokeys_rt.comp`: HAL component definition for the PoKeys real-time component.
+- `PoKeysLib_global.h`: Global definitions for the PoKeys library.
+- `PoKeysLib.h`: Main header file for the PoKeys library.
+- `PoKeysLibRt.h`: Header file for the PoKeys real-time component.
+- `PoKeysLibCoreSockets.h`: Header file for socket communication.
+- `PoKeysLibCoreSockets.c`: Implementation of socket communication for network devices.
+- `PoKeysLibCoreSockets.h`: Header file for socket communication.
+- `PoKeysLib1Wire.c`: Implementation of 1-Wire communication.
+- `PoKeysLibCAN.c`: Implementation of CAN bus communication.
+- `PoKeysLibDeviceData.c`: Implementation of device data handling.
+- `PoKeysLibDevicePoKeys57Industrial.c`: Implementation of PoKeys57 Industrial device-specific functionality.
+- `PoKeysLibDevicePoKeys57Industrial.h`: Header file for PoKeys57 Industrial device-specific functionality.
+- `PoKeysLibEasySensors.c`: Implementation of EasySensors functionality.
+- `PoKeysLibEncoders.c`: Implementation of encoder functionality.
+- `PoKeysLibFailsafe.c`: Implementation of failsafe functionality.
+- `PoKeysLibFastUSB.c`: Implementation of fast USB communication.
+- `PoKeysLibI2C.c`: Implementation of I2C communication.
+- `PoKeysLibIO.c`: Implementation of general IO functionality.
+- `PoKeysLibLCD.c`: Implementation of LCD functionality.
+- `PoKeysLibMatrixKB.c`: Implementation of matrix keyboard functionality.
+- `PoKeysLibMatrixLED.c`: Implementation of matrix LED functionality.
+- `PoKeysLibPoIL.c`: Implementation of PoIL functionality.
+- `PoKeysLibPoNET.c`: Implementation of PoNET communication.
+- `PoKeysLibPoRelay8.c`: Implementation of PoRelay8 functionality.
+- `PoKeysLibPulseEngine_v2.c`: Implementation of Pulse Engine v2 functionality.
+- `PoKeysLibRTC.c`: Implementation of real-time clock functionality.
+- `PoKeysLibSPI.c`: Implementation of SPI communication.
+- `PoKeysLibUART.c`: Implementation of UART communication.
+- `PoKeysLibWS2812.c`: Implementation of WS2812 LED communication.
+- `hid-libusb.c`: Implementation of HID communication using libusb.
+- `hid-mac.c`: Implementation of HID communication for macOS.
+- `hid.c`: Implementation of HID communication.
+- `hidapi.h`: Header file for HID API.
+- `Makefile.noqmake.rt`: Makefile for building the real-time components without qmake.
+- `Makefile.pokeys_rt.in`: Makefile template for building the real-time components.
+- `pokeys_rt.c`: Implementation of the PoKeys real-time component.
+- `pokeys_rt.comp`: HAL component definition for the PoKeys real-time component.
+- `PoKeysLib_global.h`: Global definitions for the PoKeys library.
+- `PoKeysLib.h`: Main header file for the PoKeys library.
+- `PoKeysLibRt.h`: Header file for the PoKeys real-time component.
+*/
