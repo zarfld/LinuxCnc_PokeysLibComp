@@ -40,6 +40,7 @@ option extra_setup;
 #include "homing.h"
 #include "stdlib.h"
 #include "./PoKeysLibRt.h"
+#include "./PoKeysLibCore.h"
 
 #undef POKEYSLIB_USE_LIBUSB
 
