@@ -344,3 +344,47 @@ Each new feature or bug fix should have its own branch created from the latest v
 ## Conformity with LinuxCNC Guidelines and Canonical Device Interface
 
 This repository aligns with LinuxCNC’s development practices and canonical interfaces. The components have been reviewed and updated to follow LinuxCNC coding guidelines, ensuring that HAL and INI files conform to LinuxCNC’s structure and formatting. Real-time components comply with LinuxCNC’s real-time constraints, and all components follow the canonical interface definitions. The code adheres to LinuxCNC's code style and formatting guidelines, and test cases have been created and run to validate conformity.
+
+## Using Docker for Testing
+
+To simplify the testing process and ensure consistency across different environments, we have integrated Docker into our testing workflow. This allows you to run tests inside a Docker container, providing an isolated and reproducible environment.
+
+### Building the Docker Image
+
+To build the Docker image for testing, follow these steps:
+
+1. Ensure you have Docker installed on your machine. You can download and install Docker from [here](https://www.docker.com/get-started).
+
+2. Clone the repository and navigate to the project directory:
+
+```bash
+git clone https://github.com/zarfld/LinuxCnc_PokeysLibComp.git
+cd LinuxCnc_PokeysLibComp
+```
+
+3. Build the Docker image using the provided `Dockerfile`:
+
+```bash
+docker build -t linuxcnc-pokeyslibcomp .
+```
+
+### Running Tests Inside the Docker Container
+
+Once the Docker image is built, you can run tests inside the Docker container. This ensures that tests are executed in a consistent environment, regardless of the host system.
+
+To run tests inside the Docker container, use the following command:
+
+```bash
+docker run --rm linuxcnc-pokeyslibcomp
+```
+
+This command will start a Docker container from the `linuxcnc-pokeyslibcomp` image and execute the tests inside the container. The `--rm` flag ensures that the container is removed after the tests are completed.
+
+### Benefits of Using Docker for Testing
+
+- **Consistency**: Every test run in the same environment, reducing variability across different CI environments.
+- **Simplicity**: The Docker image provides a pre-configured LinuxCNC environment, which minimizes setup complexity in the CI pipeline.
+- **Isolation**: Running tests inside Docker ensures no interference with other system processes or environment variables.
+- **Cross-platform Compatibility**: The Docker image can be used across different platforms, making local testing and development easier for contributors.
+
+By using Docker for testing, you can ensure that tests are executed in a consistent and isolated environment, reducing the chances of environment-related issues and making it easier to reproduce and debug test failures.
