@@ -293,3 +293,12 @@ jobs:
       run: |
         echo "Running tests with mocks..."
         python3 -m unittest discover -s tests -p "test_*.py"
+
+    - name: Check for adherence to code review guidelines
+      run: |
+        echo "Checking for adherence to code review guidelines..."
+        if ! grep -q "Code Review Guidelines" CODE_REVIEW_GUIDELINES.md; then
+            echo "Code review guidelines not found. Please ensure that the guidelines are documented in CODE_REVIEW_GUIDELINES.md."
+            exit 1
+        fi
+        echo "Code review guidelines are documented and accessible."
