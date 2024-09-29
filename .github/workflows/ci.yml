@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         os: [debian-latest, raspbian-bookworm, raspbian-bullseye, mint-latest]
-    runs-on: [self-hosted, ${{ matrix.os }}]
+    runs-on: ${{ matrix.os }}
 
     steps:
     - name: Checkout code
@@ -248,7 +248,7 @@ jobs:
         ./create_images.sh
 
     - name: Upload generated images
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: Generated Images
         path: |

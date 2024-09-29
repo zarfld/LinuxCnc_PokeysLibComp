@@ -411,3 +411,7 @@ The generated images are stored in the repository's releases or a suitable cloud
 - [Raspberry Pi 4 Bullseye Image](#)
 - [Raspberry Pi 4 Bookworm Image](#)
 - [amd64 Hybrid Image](#)
+
+## Note on GitHub Actions Workflow
+
+In the GitHub Actions workflow file, ensure that the `runs-on` key is correctly specified. The correct syntax for the `runs-on` key should be `runs-on: ${{ matrix.os }}` instead of `runs-on: [self-hosted, ${{ matrix.os }}]`.
