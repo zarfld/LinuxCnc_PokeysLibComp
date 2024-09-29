@@ -456,5 +456,3 @@ To replicate the CI environments locally, follow these steps:
      ```bash
      sudo qemu-system-aarch64 -M raspi3 -kernel rpi4_bullseye/boot/vmlinuz-*-arm64 -initrd rpi4_bullseye/boot/initrd.img-*-arm64 -append "root=/dev/sda2" -hda rpi4_bullseye.img -nographic
      ```
-
-By following these steps, you can replicate the CI environments locally and ensure that the generated images are functioning correctly.
