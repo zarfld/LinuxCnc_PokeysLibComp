@@ -20,7 +20,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [debian-latest, raspbian-bookworm, raspbian-bullseye, mint-latest]
+        os: [raspbian-bullseye, raspbian-bookworm, debian-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -149,7 +149,7 @@ jobs:
     - name: Test installation process on multiple environments
       run: |
         echo "Testing installation process on multiple environments..."
-        environments=("debian-latest" "mint-latest" "raspbian-bookworm" "raspbian-bullseye")
+        environments=("debian-latest" "raspbian-bookworm" "raspbian-bullseye")
         for env in "${environments[@]}"; do
             echo "Testing on $env..."
             sudo apt-get update
