@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         os: [debian-latest, raspbian-bookworm, raspbian-bullseye, mint-latest]
-    runs-on: [self-hosted, ${{ matrix.os }}]
+    runs-on: ${{ matrix.os }}
 
     steps:
     - name: Checkout code
