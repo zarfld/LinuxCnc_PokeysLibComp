@@ -415,3 +415,43 @@ The generated images are stored in the repository's releases or a suitable cloud
 ## Note on GitHub Actions Workflow
 
 In the GitHub Actions workflow file, ensure that the `runs-on` key is correctly specified. The correct syntax for the `runs-on` key should be `runs-on: ${{ matrix.os }}` instead of `runs-on: [self-hosted, ${{ matrix.os }}]`.
+
+## Supported Platforms and LinuxCNC Versions
+
+The CI pipeline is configured to build and test on the following platforms with official LinuxCNC images:
+
+- Raspberry Pi 4 (Bullseye and Bookworm)
+- amd64 hybrid images
+
+The supported LinuxCNC versions are:
+
+- 2.9.2
+- 2.9.3
+- Latest available version
+
+## Replicating CI Environments Locally
+
+To replicate the CI environments locally, follow these steps:
+
+1. **Set Up Docker**: Ensure you have Docker installed on your machine. You can download and install Docker from [here](https://www.docker.com/get-started).
+
+2. **Clone the Repository**: Clone the repository and navigate to the project directory:
+
+```bash
+git clone https://github.com/zarfld/LinuxCnc_PokeysLibComp.git
+cd LinuxCnc_PokeysLibComp
+```
+
+3. **Build the Docker Image**: Build the Docker image using the provided `Dockerfile`:
+
+```bash
+docker build -t linuxcnc-pokeyslibcomp .
+```
+
+4. **Run Tests Inside the Docker Container**: Run tests inside the Docker container to ensure consistency with the CI environment:
+
+```bash
+docker run --rm linuxcnc-pokeyslibcomp
+```
+
+By following these steps, you can replicate the CI environments locally and ensure that your changes are tested in a consistent and isolated environment.
