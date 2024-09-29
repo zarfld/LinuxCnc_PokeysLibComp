@@ -117,8 +117,11 @@ upload_images() {
 }
 
 # Main script execution
+mkdir -p images
+cd images
 build_rpi4_bullseye
 build_rpi4_bookworm
 build_amd64_hybrid
 build_raspbian_bullseye_linuxcnc_2_8_latest
 upload_images
+cd ..
