@@ -116,6 +116,45 @@ To ensure that all development follows the official LinuxCNC guidelines, includi
    - Maintain consistent formatting, indentation, and comment style across all files.
    - Review the [LinuxCNC Source Code Formatting Guidelines](https://linuxcnc.org/docs/devel/html/code/code-notes.html#_source_code_formatting) to ensure conformity.
 
+## Using the `create_images.sh` Script
+
+The `create_images.sh` script automates the build and image creation process for Raspberry Pi 4 Bullseye, Bookworm, and amd64 hybrid. Follow these steps to use the script:
+
+1. Ensure you have the necessary dependencies installed for cross-compiling for ARM and natively compiling for amd64.
+
+2. Run the `create_images.sh` script:
+
+```bash
+chmod +x create_images.sh
+./create_images.sh
+```
+
+The script will build and create images for Raspberry Pi 4 Bullseye, Bookworm, and amd64 hybrid, following the structure and format of existing LinuxCNC releases. It will also test and validate the generated images.
+
+## Testing and Validating Generated Images
+
+After running the `create_images.sh` script, it is important to test and validate the generated images to ensure they boot correctly and that LinuxCNC runs as expected on each platform. Follow these steps to test and validate the images:
+
+1. **Boot the Image**: Write the generated image to an SD card (for Raspberry Pi) or a USB drive (for amd64 hybrid) and boot the device.
+
+2. **Verify Boot**: Ensure that the device boots successfully and reaches the LinuxCNC interface.
+
+3. **Run LinuxCNC**: Launch LinuxCNC and verify that it runs without errors.
+
+4. **Check PoKeys Integration**: Perform basic configuration checks for PoKeys integration and ensure that the expected LinuxCNC configuration is applied.
+
+5. **Report Issues**: If any issues are encountered during testing, report them in the repository's issue tracker with detailed information.
+
+## Uploading Generated Images
+
+The generated images should be uploaded to the repository's releases or a suitable cloud storage platform for distribution. Follow these steps to upload the images:
+
+1. **Create a Release**: Create a new release in the GitHub repository.
+
+2. **Upload Images**: Upload the generated images to the release.
+
+3. **Provide Download Links**: Include download links for the images in the release notes or related documentation.
+
 ## References
 
 - [GitHub Pull Request Reviews](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests)

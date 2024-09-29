@@ -388,3 +388,26 @@ This command will start a Docker container from the `linuxcnc-pokeyslibcomp` ima
 - **Cross-platform Compatibility**: The Docker image can be used across different platforms, making local testing and development easier for contributors.
 
 By using Docker for testing, you can ensure that tests are executed in a consistent and isolated environment, reducing the chances of environment-related issues and making it easier to reproduce and debug test failures.
+
+## Using the `create_images.sh` Script
+
+The `create_images.sh` script automates the build and image creation process for Raspberry Pi 4 Bullseye, Bookworm, and amd64 hybrid. Follow these steps to use the script:
+
+1. Ensure you have the necessary dependencies installed for cross-compiling for ARM and natively compiling for amd64.
+
+2. Run the `create_images.sh` script:
+
+```bash
+chmod +x create_images.sh
+./create_images.sh
+```
+
+The script will build and create images for Raspberry Pi 4 Bullseye, Bookworm, and amd64 hybrid, following the structure and format of existing LinuxCNC releases. It will also test and validate the generated images.
+
+## Downloading Generated Images
+
+The generated images are stored in the repository's releases or a suitable cloud storage platform. You can download the images from the following links:
+
+- [Raspberry Pi 4 Bullseye Image](#)
+- [Raspberry Pi 4 Bookworm Image](#)
+- [amd64 Hybrid Image](#)

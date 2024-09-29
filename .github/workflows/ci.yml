@@ -229,3 +229,28 @@ jobs:
             exit 1
         fi
         echo "Canonical Device Interface guidelines are documented and accessible."
+
+  create_images:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up QEMU
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y qemu qemu-user-static
+
+    - name: Run create_images.sh script
+      run: |
+        chmod +x create_images.sh
+        ./create_images.sh
+
+    - name: Upload generated images
+      uses: actions/upload-artifact@v2
+      with:
+        name: Generated Images
+        path: |
+          *.img
+          *.iso
