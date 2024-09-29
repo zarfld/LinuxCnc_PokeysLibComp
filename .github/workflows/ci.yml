@@ -248,7 +248,7 @@ jobs:
         ./create_images.sh
 
     - name: Upload generated images
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: Generated Images
         path: |
