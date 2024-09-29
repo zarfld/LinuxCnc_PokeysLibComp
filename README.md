@@ -415,3 +415,46 @@ The generated images are stored in the repository's releases or a suitable cloud
 ## Note on GitHub Actions Workflow
 
 In the GitHub Actions workflow file, ensure that the `runs-on` key is correctly specified. The correct syntax for the `runs-on` key should be `runs-on: ${{ matrix.os }}` instead of `runs-on: [self-hosted, ${{ matrix.os }}]`.
+
+## Supported Platforms and LinuxCNC Versions
+
+The following platforms and LinuxCNC versions are supported:
+
+- **Raspberry Pi 4**:
+  - Bullseye
+  - Bookworm
+- **amd64 Hybrid Images**:
+  - LinuxCNC 2.9.2
+  - LinuxCNC 2.9.3
+  - Latest available release
+
+## Replicating CI Environments Locally
+
+To replicate the CI environments locally, follow these steps:
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/zarfld/LinuxCnc_PokeysLibComp.git
+   cd LinuxCnc_PokeysLibComp
+   ```
+
+2. **Set Up the Environment**:
+   - Install the necessary dependencies:
+     ```bash
+     sudo apt-get update
+     sudo apt-get install -y qemu qemu-user-static debootstrap
+     ```
+
+3. **Run the CI Pipeline Locally**:
+   - Execute the CI pipeline script:
+     ```bash
+     ./create_images.sh
+     ```
+
+4. **Test and Validate the Generated Images**:
+   - Use QEMU to test and validate the generated images:
+     ```bash
+     sudo qemu-system-aarch64 -M raspi3 -kernel rpi4_bullseye/boot/vmlinuz-*-arm64 -initrd rpi4_bullseye/boot/initrd.img-*-arm64 -append "root=/dev/sda2" -hda rpi4_bullseye.img -nographic
+     ```
+
+By following these steps, you can replicate the CI environments locally and ensure that the generated images are functioning correctly.

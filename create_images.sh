@@ -82,6 +82,34 @@ build_amd64_hybrid() {
     sudo qemu-system-x86_64 -kernel amd64_hybrid/boot/vmlinuz-*-amd64 -initrd amd64_hybrid/boot/initrd.img-*-amd64 -append "root=/dev/sda2" -hda amd64_hybrid.img -nographic
 }
 
+# Function to build and create images for Raspbian Bullseye with LinuxCNC 2.8-latest
+build_raspbian_bullseye_linuxcnc_2_8_latest() {
+    echo "Building Raspbian Bullseye with LinuxCNC 2.8-latest image..."
+    # Cross-compile for ARM
+    sudo apt-get update
+    sudo apt-get install -y qemu qemu-user-static debootstrap
+    sudo debootstrap --arch=arm64 --foreign bullseye raspbian_bullseye_linuxcnc_2_8_latest http://deb.debian.org/debian
+    sudo cp /usr/bin/qemu-aarch64-static raspbian_bullseye_linuxcnc_2_8_latest/usr/bin/
+    sudo chroot raspbian_bullseye_linuxcnc_2_8_latest /debootstrap/debootstrap --second-stage
+    sudo chroot raspbian_bullseye_linuxcnc_2_8_latest apt-get update
+    sudo chroot raspbian_bullseye_linuxcnc_2_8_latest apt-get install -y linux-image-arm64 linux-headers-arm64
+    sudo chroot raspbian_bullseye_linuxcnc_2_8_latest apt-get install -y linuxcnc-uspace=2.8-latest linuxcnc-dev=2.8-latest
+
+    # Ensure the image follows the structure and format of existing LinuxCNC releases
+    sudo chroot raspbian_bullseye_linuxcnc_2_8_latest mkdir -p /usr/share/doc/linuxcnc/examples/sample-configs/by_interface/pokeys
+    sudo chroot raspbian_bullseye_linuxcnc_2_8_latest cp -r /path/to/DM542_XXYZ_mill /usr/share/doc/linuxcnc/examples/sample-configs/by_interface/pokeys
+
+    # Create the image
+    sudo dd if=/dev/zero of=raspbian_bullseye_linuxcnc_2_8_latest.img bs=1M count=2048
+    sudo mkfs.ext4 raspbian_bullseye_linuxcnc_2_8_latest.img
+    sudo mount -o loop raspbian_bullseye_linuxcnc_2_8_latest.img /mnt
+    sudo cp -r raspbian_bullseye_linuxcnc_2_8_latest/* /mnt/
+    sudo umount /mnt
+
+    # Test and validate the generated image
+    sudo qemu-system-aarch64 -M raspi3 -kernel raspbian_bullseye_linuxcnc_2_8_latest/boot/vmlinuz-*-arm64 -initrd raspbian_bullseye_linuxcnc_2_8_latest/boot/initrd.img-*-arm64 -append "root=/dev/sda2" -hda raspbian_bullseye_linuxcnc_2_8_latest.img -nographic
+}
+
 # Function to upload the generated images to the repository's releases or a suitable cloud storage platform
 upload_images() {
     echo "Uploading generated images..."
@@ -92,4 +120,5 @@ upload_images() {
 build_rpi4_bullseye
 build_rpi4_bookworm
 build_amd64_hybrid
+build_raspbian_bullseye_linuxcnc_2_8_latest
 upload_images
