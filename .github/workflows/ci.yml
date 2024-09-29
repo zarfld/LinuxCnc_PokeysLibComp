@@ -21,6 +21,8 @@ jobs:
     strategy:
       matrix:
         os: [debian-latest, raspbian-bookworm, raspbian-bullseye, mint-latest]
+        version: [2.9.2, 2.9.3, latest]
+        type: [hybrid, PREEMPT-RT, RTAI, USPACE]
     runs-on: ${{ matrix.os }}
 
     steps:
