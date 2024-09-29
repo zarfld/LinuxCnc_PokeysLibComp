@@ -12,9 +12,15 @@ class DigitalIO:
         :param direction: 'input' or 'output'
         """
         if direction == 'input':
-            self.pokeyslib.PK_SL_SetPinFunction(self.device, pin, 2)  # 2 for digital input
+            try:
+                self.pokeyslib.PK_SL_SetPinFunction(self.device, pin, 2)  # 2 for digital input
+            except ValueError:
+                raise ValueError(f"Invalid pin {pin}")
         elif direction == 'output':
-            self.pokeyslib.PK_SL_SetPinFunction(self.device, pin, 4)  # 4 for digital output
+            try:
+                self.pokeyslib.PK_SL_SetPinFunction(self.device, pin, 4)  # 4 for digital output
+            except ValueError:
+                raise ValueError(f"Invalid pin {pin}")
         else:
             raise ValueError("Invalid direction. Use 'input' or 'output'.")
 
@@ -24,7 +30,10 @@ class DigitalIO:
         :param pin: Pin number
         :return: Pin state (0 or 1)
         """
-        return self.pokeyslib.PK_SL_DigitalInputGet(self.device, pin)
+        try:
+            return self.pokeyslib.PK_SL_DigitalInputGet(self.device, pin)
+        except ValueError:
+            raise ValueError(f"Invalid pin {pin}")
 
     def set(self, pin, value):
         """
@@ -32,4 +41,7 @@ class DigitalIO:
         :param pin: Pin number
         :param value: Pin state (0 or 1)
         """
-        self.pokeyslib.PK_SL_DigitalOutputSet(self.device, pin, value)
+        try:
+            self.pokeyslib.PK_SL_DigitalOutputSet(self.device, pin, value)
+        except ValueError:
+            raise ValueError(f"Invalid pin {pin}")

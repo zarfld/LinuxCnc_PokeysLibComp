@@ -57,7 +57,7 @@ class TestPoNET(unittest.TestCase):
 
     @patch('pokeys_py.ponet.pokeyslib')
     def test_setup_invalid_value(self, mock_pokeyslib):
-        mock_pokeyslib.PK_PoNETGetModuleSettings.side_effect = ValueError("Invalid value")
+        mock_pokeyslib.PK_PoNETGetModuleSettings.side.effect = ValueError("Invalid value")
         with self.assertRaises(ValueError):
             self.ponet.setup(1)
 

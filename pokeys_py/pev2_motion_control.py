@@ -11,6 +11,8 @@ class PEv2MotionControl:
         :param axis: Axis number
         :param parameters: Dictionary of parameters
         """
+        if axis < 0 or axis >= len(self.device.Axes):
+            raise ValueError(f"Invalid axis {axis}")
         self.pokeyslib.PK_PEv2_AxisConfigurationSet(self.device, axis, parameters)
 
     def fetch_status(self):
@@ -18,9 +20,12 @@ class PEv2MotionControl:
         Retrieve the current motion status and position feedback.
         :return: Status and position feedback
         """
-        status = self.pokeyslib.PK_PEv2_StatusGet(self.device)
-        position = self.pokeyslib.PK_PEv2_GetPosition(self.device)
-        return status, position
+        try:
+            status = self.pokeyslib.PK_PEv2_StatusGet(self.device)
+            position = self.pokeyslib.PK_PEv2_GetPosition(self.device)
+            return status, position
+        except ValueError:
+            raise ValueError("Invalid device")
 
     def set_position(self, axis, position):
         """
@@ -28,6 +33,8 @@ class PEv2MotionControl:
         :param axis: Axis number
         :param position: Position value
         """
+        if axis < 0 or axis >= len(self.device.Axes):
+            raise ValueError(f"Invalid axis {axis}")
         self.pokeyslib.PK_PEv2_SetPosition(self.device, axis, position)
 
     def set_velocity(self, axis, velocity):
@@ -36,6 +43,8 @@ class PEv2MotionControl:
         :param axis: Axis number
         :param velocity: Velocity value
         """
+        if axis < 0 or axis >= len(self.device.Axes):
+            raise ValueError(f"Invalid axis {axis}")
         self.pokeyslib.PK_PEv2_SetVelocity(self.device, axis, velocity)
 
     def start_homing(self, axis):
@@ -43,6 +52,8 @@ class PEv2MotionControl:
         Start the homing procedure for an axis.
         :param axis: Axis number
         """
+        if axis < 0 or axis >= len(self.device.Axes):
+            raise ValueError(f"Invalid axis {axis}")
         self.pokeyslib.PK_PEv2_StartHoming(self.device, axis)
 
     def cancel_homing(self, axis):
@@ -50,6 +61,8 @@ class PEv2MotionControl:
         Cancel the homing procedure for an axis.
         :param axis: Axis number
         """
+        if axis < 0 or axis >= len(self.device.Axes):
+            raise ValueError(f"Invalid axis {axis}")
         self.pokeyslib.PK_PEv2_CancelHoming(self.device, axis)
 
     def get_homing_status(self, axis):
@@ -58,6 +71,8 @@ class PEv2MotionControl:
         :param axis: Axis number
         :return: Homing status
         """
+        if axis < 0 or axis >= len(self.device.Axes):
+            raise ValueError(f"Invalid axis {axis}")
         return self.pokeyslib.PK_PEv2_GetHomingStatus(self.device, axis)
 
     def manage_homing_signals(self, axis):

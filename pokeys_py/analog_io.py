@@ -12,9 +12,15 @@ class AnalogIO:
         :param direction: 'input' or 'output'
         """
         if direction == 'input':
-            self.pokeyslib.PK_SL_SetPinFunction(self.device, pin, 1)  # 1 for analog input
+            try:
+                self.pokeyslib.PK_SL_SetPinFunction(self.device, pin, 1)  # 1 for analog input
+            except ValueError:
+                raise ValueError(f"Invalid pin {pin}")
         elif direction == 'output':
-            self.pokeyslib.PK_SL_SetPinFunction(self.device, pin, 3)  # 3 for analog output
+            try:
+                self.pokeyslib.PK_SL_SetPinFunction(self.device, pin, 3)  # 3 for analog output
+            except ValueError:
+                raise ValueError(f"Invalid pin {pin}")
         else:
             raise ValueError("Invalid direction. Use 'input' or 'output'.")
 
@@ -24,7 +30,10 @@ class AnalogIO:
         :param pin: Pin number
         :return: Pin value
         """
-        return self.pokeyslib.PK_SL_AnalogInputGet(self.device, pin)
+        try:
+            return self.pokeyslib.PK_SL_AnalogInputGet(self.device, pin)
+        except ValueError:
+            raise ValueError(f"Invalid pin {pin}")
 
     def set(self, pin, value):
         """
@@ -32,4 +41,7 @@ class AnalogIO:
         :param pin: Pin number
         :param value: Pin value
         """
-        self.pokeyslib.PK_SL_AnalogOutputSet(self.device, pin, value)
+        try:
+            self.pokeyslib.PK_SL_AnalogOutputSet(self.device, pin, value)
+        except ValueError:
+            raise ValueError(f"Invalid pin {pin}")

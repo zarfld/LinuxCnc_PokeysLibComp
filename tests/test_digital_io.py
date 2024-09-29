@@ -67,5 +67,23 @@ class TestDigitalIO(unittest.TestCase):
             actual_value = self.digital_io.fetch(i)
             self.assertEqual(actual_value, not expected_value, f"Digital pin {i} invert expected {not expected_value} but got {actual_value}")
 
+    @patch('pokeys_py.digital_io.pokeyslib')
+    def test_setup_invalid_pin(self, mock_pokeyslib):
+        mock_pokeyslib.PK_SL_SetPinFunction.side_effect = ValueError("Invalid pin")
+        with self.assertRaises(ValueError):
+            self.digital_io.setup(99, 'input')
+
+    @patch('pokeys_py.digital_io.pokeyslib')
+    def test_fetch_invalid_pin(self, mock_pokeyslib):
+        mock_pokeyslib.PK_SL_DigitalInputGet.side_effect = ValueError("Invalid pin")
+        with self.assertRaises(ValueError):
+            self.digital_io.fetch(99)
+
+    @patch('pokeys_py.digital_io.pokeyslib')
+    def test_set_invalid_pin(self, mock_pokeyslib):
+        mock_pokeyslib.PK_SL_DigitalOutputSet.side_effect = ValueError("Invalid pin")
+        with self.assertRaises(ValueError):
+            self.digital_io.set(99, 0)
+
 if __name__ == '__main__':
     unittest.main()

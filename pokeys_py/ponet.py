@@ -12,7 +12,10 @@ class PoNET:
         Setup a PoNET module.
         :param module_id: Module ID
         """
-        pokeyslib.PK_PoNETGetModuleSettings(self.device, module_id)
+        try:
+            pokeyslib.PK_PoNETGetModuleSettings(self.device, module_id)
+        except ValueError:
+            raise ValueError(f"Invalid module ID {module_id}")
 
     def fetch(self, module_id):
         """
@@ -20,8 +23,11 @@ class PoNET:
         :param module_id: Module ID
         :return: Module data
         """
-        pokeyslib.PK_PoNETGetModuleStatusRequest(self.device, module_id)
-        return pokeyslib.PK_PoNETGetModuleStatus(self.device, module_id)
+        try:
+            pokeyslib.PK_PoNETGetModuleStatusRequest(self.device, module_id)
+            return pokeyslib.PK_PoNETGetModuleStatus(self.device, module_id)
+        except ValueError:
+            raise ValueError(f"Invalid module ID {module_id}")
 
     def set(self, module_id, data):
         """
@@ -29,4 +35,7 @@ class PoNET:
         :param module_id: Module ID
         :param data: Data to send
         """
-        pokeyslib.PK_PoNETSetModuleStatus(self.device, module_id, data)
+        try:
+            pokeyslib.PK_PoNETSetModuleStatus(self.device, module_id, data)
+        except ValueError:
+            raise ValueError(f"Invalid module ID {module_id}")
