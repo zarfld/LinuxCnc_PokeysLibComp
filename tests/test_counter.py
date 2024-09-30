@@ -102,5 +102,36 @@ class TestCounter(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.counter.clear(99)
 
+    @patch('pokeys_py.counter.pokeyslib')
+    def test_counter_edge_cases(self, mock_pokeyslib):
+        # Test edge case: maximum counter value
+        max_value = 2**32 - 1
+        self.device.Pins[1].DigitalCounterValue = max_value
+        value = self.counter.fetch(1)
+        self.assertEqual(value, max_value)
+        mock_pokeyslib.PK_DigitalCounterGet.assert_called_with(self.device)
+
+        # Test edge case: counter overflow
+        self.device.Pins[1].DigitalCounterValue = max_value + 1
+        value = self.counter.fetch(1)
+        self.assertEqual(value, 0)  # Assuming counter wraps around
+        mock_pokeyslib.PK_DigitalCounterGet.assert_called_with(self.device)
+
+        # Test edge case: negative counter value
+        self.device.Pins[1].DigitalCounterValue = -1
+        value = self.counter.fetch(1)
+        self.assertEqual(value, 0)  # Assuming counter does not support negative values
+        mock_pokeyslib.PK_DigitalCounterGet.assert_called_with(self.device)
+
+    @patch('pokeys_py.counter.pokeyslib')
+    def test_counter_performance(self, mock_pokeyslib):
+        import time
+        start_time = time.time()
+        for i in range(1000):
+            self.counter.fetch(1)
+        end_time = time.time()
+        duration = end_time - start_time
+        self.assertLess(duration, 1.0, "Counter fetch performance test failed")
+
 if __name__ == '__main__':
     unittest.main()

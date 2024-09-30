@@ -85,5 +85,37 @@ class TestDigitalIO(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.digital_io.set(99, 0)
 
+    @patch('pokeys_py.digital_io.pokeyslib')
+    def test_digital_io_edge_cases(self, mock_pokeyslib):
+        # Test edge case: maximum pin number
+        max_pin = 54
+        self.digital_io.setup(max_pin, 'input')
+        self.digital_io.set(max_pin, 1)
+        value = self.digital_io.fetch(max_pin)
+        self.assertEqual(value, 1)
+        mock_pokeyslib.PK_SL_SetPinFunction.assert_called_with(self.device, max_pin, 2)
+        mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, max_pin, 1)
+        mock_pokeyslib.PK_SL_DigitalInputGet.assert_called_with(self.device, max_pin)
+
+        # Test edge case: minimum pin number
+        min_pin = 0
+        self.digital_io.setup(min_pin, 'output')
+        self.digital_io.set(min_pin, 0)
+        value = self.digital_io.fetch(min_pin)
+        self.assertEqual(value, 0)
+        mock_pokeyslib.PK_SL_SetPinFunction.assert_called_with(self.device, min_pin, 4)
+        mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, min_pin, 0)
+        mock_pokeyslib.PK_SL_DigitalInputGet.assert_called_with(self.device, min_pin)
+
+    @patch('pokeys_py.digital_io.pokeyslib')
+    def test_digital_io_performance(self, mock_pokeyslib):
+        import time
+        start_time = time.time()
+        for i in range(1000):
+            self.digital_io.fetch(1)
+        end_time = time.time()
+        duration = end_time - start_time
+        self.assertLess(duration, 1.0, "Digital IO fetch performance test failed")
+
 if __name__ == '__main__':
     unittest.main()

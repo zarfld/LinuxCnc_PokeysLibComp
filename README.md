@@ -537,3 +537,34 @@ The following are examples of labels that can be automatically assigned by the C
 - `enhancement`: For issues that include terms like "feature", "enhancement", "improvement".
 
 By implementing this CI job, the repository ensures that issues are well-organized and labeled appropriately, improving issue management and making it easier for contributors to navigate the repository.
+
+## PreRelease Information
+
+This is a pre-release version of the LinuxCnc_PokeysLibComp project. The purpose of this pre-release is to gather feedback from users and contributors before the final release. Please note that this version may contain bugs and is intended for testing purposes only.
+
+### Installation Instructions
+
+To install the pre-release version, follow these steps:
+
+```bash
+git clone https://github.com/zarfld/LinuxCnc_PokeysLibComp.git
+cd LinuxCnc_PokeysLibComp
+git checkout v1.0.0-beta1
+sudo sh install.sh
+```
+
+### Testing Instructions
+
+Please test the pre-release version and provide feedback on any issues or bugs you encounter. Your feedback is valuable in ensuring the stability and reliability of the final release.
+
+### Known Issues
+
+- Some features may not be fully implemented or tested.
+- There may be compatibility issues with certain hardware configurations.
+- Documentation may be incomplete or outdated.
+
+### Providing Feedback
+
+To provide feedback, please create an issue in the GitHub repository with detailed information about the issue or bug you encountered. Include steps to reproduce the issue, any error messages, and relevant hardware or software configurations.
+
+Thank you for testing the pre-release version of LinuxCnc_PokeysLibComp!

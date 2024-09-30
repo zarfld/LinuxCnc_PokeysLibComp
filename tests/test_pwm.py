@@ -73,5 +73,39 @@ class TestPWM(unittest.TestCase):
             actual_duty_cycle = self.pwm.fetch(i)[1]
             self.assertEqual(actual_duty_cycle, 100.0 - expected_duty_cycle, f"PWM pin {i} state change expected {100.0 - expected_duty_cycle} but got {actual_duty_cycle}")
 
+    @patch('pokeys_py.pwm.pokeyslib')
+    def test_pwm_edge_cases(self, mock_pokeyslib):
+        # Test edge case: maximum channel number
+        max_channel = 5
+        self.pwm.setup(max_channel, 1000, 50)
+        self.pwm.set(max_channel, 1000, 50)
+        frequency, duty_cycle = self.pwm.fetch(max_channel)
+        self.assertEqual(frequency, 1000)
+        self.assertEqual(duty_cycle, 50)
+        mock_pokeyslib.PK_PWM_Setup.assert_called_with(self.device, max_channel, 1000, 50)
+        mock_pokeyslib.PK_PWM_Set.assert_called_with(self.device, max_channel, 1000, 50)
+        mock_pokeyslib.PK_PWM_Fetch.assert_called_with(self.device, max_channel, unittest.mock.ANY, unittest.mock.ANY)
+
+        # Test edge case: minimum channel number
+        min_channel = 0
+        self.pwm.setup(min_channel, 1000, 50)
+        self.pwm.set(min_channel, 1000, 50)
+        frequency, duty_cycle = self.pwm.fetch(min_channel)
+        self.assertEqual(frequency, 1000)
+        self.assertEqual(duty_cycle, 50)
+        mock_pokeyslib.PK_PWM_Setup.assert_called_with(self.device, min_channel, 1000, 50)
+        mock_pokeyslib.PK_PWM_Set.assert_called_with(self.device, min_channel, 1000, 50)
+        mock_pokeyslib.PK_PWM_Fetch.assert_called_with(self.device, min_channel, unittest.mock.ANY, unittest.mock.ANY)
+
+    @patch('pokeys_py.pwm.pokeyslib')
+    def test_pwm_performance(self, mock_pokeyslib):
+        import time
+        start_time = time.time()
+        for i in range(1000):
+            self.pwm.fetch(1)
+        end_time = time.time()
+        duration = end_time - start_time
+        self.assertLess(duration, 1.0, "PWM fetch performance test failed")
+
 if __name__ == '__main__':
     unittest.main()

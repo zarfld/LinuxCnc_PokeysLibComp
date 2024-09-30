@@ -91,3 +91,43 @@ class PEv2MotionControl:
             self.set_position(axis, 0)  # Example position value
         else:
             self.cancel_homing(axis)
+
+    def set_acceleration(self, axis, acceleration):
+        """
+        Send acceleration command to an axis.
+        :param axis: Axis number
+        :param acceleration: Acceleration value
+        """
+        if axis < 0 or axis >= len(self.device.Axes):
+            raise ValueError(f"Invalid axis {axis}")
+        self.pokeyslib.PK_PEv2_SetAcceleration(self.device, axis, acceleration)
+
+    def set_deceleration(self, axis, deceleration):
+        """
+        Send deceleration command to an axis.
+        :param axis: Axis number
+        :param deceleration: Deceleration value
+        """
+        if axis < 0 or axis >= len(self.device.Axes):
+            raise ValueError(f"Invalid axis {axis}")
+        self.pokeyslib.PK_PEv2_SetDeceleration(self.device, axis, deceleration)
+
+    def get_acceleration(self, axis):
+        """
+        Get the acceleration value for an axis.
+        :param axis: Axis number
+        :return: Acceleration value
+        """
+        if axis < 0 or axis >= len(self.device.Axes):
+            raise ValueError(f"Invalid axis {axis}")
+        return self.pokeyslib.PK_PEv2_GetAcceleration(self.device, axis)
+
+    def get_deceleration(self, axis):
+        """
+        Get the deceleration value for an axis.
+        :param axis: Axis number
+        :return: Deceleration value
+        """
+        if axis < 0 or axis >= len(self.device.Axes):
+            raise ValueError(f"Invalid axis {axis}")
+        return self.pokeyslib.PK_PEv2_GetDeceleration(self.device, axis)

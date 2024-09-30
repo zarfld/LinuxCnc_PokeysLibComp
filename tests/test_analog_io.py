@@ -66,7 +66,7 @@ class TestAnalogIO(unittest.TestCase):
 
     @patch('pokeys_py.analog_io.pokeyslib')
     def test_setup_invalid_value(self, mock_pokeyslib):
-        mock_pokeyslib.PK_SL_SetPinFunction.side_effect = ValueError("Invalid value")
+        mock_pokeyslib.PK_SL_SetPinFunction.side.effect = ValueError("Invalid value")
         with self.assertRaises(ValueError):
             self.analog_io.setup(1, 'invalid')
 
@@ -94,6 +94,24 @@ class TestAnalogIO(unittest.TestCase):
         mock_pokeyslib.PK_SL_AnalogOutputSet.side_effect = ValueError("Invalid pin")
         with self.assertRaises(ValueError):
             self.analog_io.set(99, 456)
+
+    @patch('pokeys_py.analog_io.pokeyslib')
+    def test_fetch_invalid_value_error_handling(self, mock_pokeyslib):
+        mock_pokeyslib.PK_SL_AnalogInputGet.side_effect = ValueError("Invalid value")
+        with self.assertRaises(ValueError):
+            self.analog_io.fetch(1)
+
+    @patch('pokeys_py.analog_io.pokeyslib')
+    def test_set_invalid_value_error_handling(self, mock_pokeyslib):
+        mock_pokeyslib.PK_SL_AnalogOutputSet.side_effect = ValueError("Invalid value")
+        with self.assertRaises(ValueError):
+            self.analog_io.set(1, -1)
+
+    @patch('pokeys_py.analog_io.pokeyslib')
+    def test_setup_invalid_value_error_handling(self, mock_pokeyslib):
+        mock_pokeyslib.PK_SL_SetPinFunction.side.effect = ValueError("Invalid value")
+        with self.assertRaises(ValueError):
+            self.analog_io.setup(1, 'invalid')
 
 if __name__ == '__main__':
     unittest.main()
