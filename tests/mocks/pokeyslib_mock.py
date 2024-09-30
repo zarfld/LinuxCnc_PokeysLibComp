@@ -8,6 +8,9 @@ class PoKeysLibMock:
         self.analog_outputs = {}
         self.counters = {}
         self.pwm_channels = {}
+        self.position_feedback = {}
+        self.velocity_commands = {}
+        self.homing_status = {}
 
     def PK_SL_SetPinFunction(self, device, pin, function):
         pass
@@ -48,23 +51,23 @@ class PoKeysLibMock:
     def PK_PEv2_StatusGet(self, device):
         return random.choice(['status1', 'status2', 'status3'])
 
-    def PK_PEv2_GetPosition(self, device):
-        return random.uniform(0, 100)
+    def PK_PEv2_GetPosition(self, device, axis):
+        return self.position_feedback.get(axis, 0.0)
 
     def PK_PEv2_SetPosition(self, device, axis, position):
-        pass
+        self.position_feedback[axis] = position
 
     def PK_PEv2_SetVelocity(self, device, axis, velocity):
-        pass
+        self.velocity_commands[axis] = velocity
 
     def PK_PEv2_StartHoming(self, device, axis):
-        pass
+        self.homing_status[axis] = 11  # PK_PEAxisState_axHOMINGSTART
 
     def PK_PEv2_CancelHoming(self, device, axis):
-        pass
+        self.homing_status[axis] = 10  # PK_PEAxisState_axHOME
 
     def PK_PEv2_GetHomingStatus(self, device, axis):
-        return random.choice([10, 11, 12, 13])
+        return self.homing_status.get(axis, 10)  # Default to PK_PEAxisState_axHOME
 
     def PK_PoNETGetModuleSettings(self, device, module_id):
         pass
