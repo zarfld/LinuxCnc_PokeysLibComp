@@ -45,6 +45,13 @@ add_executable(pokeys_rt pokeys_rt/pokeys_rt.c)
 # Link the library to the executable
 target_link_libraries(pokeys_rt PoKeysLib)
 
+# Add condition to link mocked_pokeyslib during testing
+if(BUILD_TESTS)
+    target_link_libraries(my_tests PRIVATE mocked_pokeyslib)
+else()
+    target_link_libraries(my_project PRIVATE real_pokeyslib)
+endif()
+
 # Install the library and executable
 install(TARGETS PoKeysLib pokeys_rt
     LIBRARY DESTINATION lib
