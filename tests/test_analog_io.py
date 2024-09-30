@@ -78,5 +78,22 @@ class TestAnalogIO(unittest.TestCase):
             actual_value = self.analog_io.fetch(i)
             self.assertEqual(actual_value, expected_value, f"Analog pin {i} expected {expected_value} but got {actual_value}")
 
+    @patch('pokeys_py.analog_io.pokeyslib')
+    def test_setup_invalid_direction_error_handling(self, mock_pokeyslib):
+        with self.assertRaises(ValueError):
+            self.analog_io.setup(1, 'invalid_direction')
+
+    @patch('pokeys_py.analog_io.pokeyslib')
+    def test_fetch_invalid_pin_error_handling(self, mock_pokeyslib):
+        mock_pokeyslib.PK_SL_AnalogInputGet.side_effect = ValueError("Invalid pin")
+        with self.assertRaises(ValueError):
+            self.analog_io.fetch(99)
+
+    @patch('pokeys_py.analog_io.pokeyslib')
+    def test_set_invalid_pin_error_handling(self, mock_pokeyslib):
+        mock_pokeyslib.PK_SL_AnalogOutputSet.side_effect = ValueError("Invalid pin")
+        with self.assertRaises(ValueError):
+            self.analog_io.set(99, 456)
+
 if __name__ == '__main__':
     unittest.main()

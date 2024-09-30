@@ -84,5 +84,23 @@ class TestCounter(unittest.TestCase):
             actual_value = self.counter.fetch(i)
             self.assertEqual(actual_value, 0, f"Counter pin {i} clear expected 0 but got {actual_value}")
 
+    @patch('pokeys_py.counter.pokeyslib')
+    def test_setup_invalid_pin_error_handling(self, mock_pokeyslib):
+        mock_pokeyslib.PK_IsCounterAvailable.side_effect = ValueError("Invalid pin")
+        with self.assertRaises(ValueError):
+            self.counter.setup(99)
+
+    @patch('pokeys_py.counter.pokeyslib')
+    def test_fetch_invalid_pin_error_handling(self, mock_pokeyslib):
+        mock_pokeyslib.PK_DigitalCounterGet.side_effect = ValueError("Invalid pin")
+        with self.assertRaises(ValueError):
+            self.counter.fetch(99)
+
+    @patch('pokeys_py.counter.pokeyslib')
+    def test_clear_invalid_pin_error_handling(self, mock_pokeyslib):
+        mock_pokeyslib.PK_DigitalCounterClear.side_effect = ValueError("Invalid pin")
+        with self.assertRaises(ValueError):
+            self.counter.clear(99)
+
 if __name__ == '__main__':
     unittest.main()
