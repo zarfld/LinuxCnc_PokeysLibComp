@@ -1,0 +1,25 @@
+# LinuxCNC configuration to map HAL pins of pokeys.comp, pokeys_py, or pokeys_rt to HAL pins of testing components
+
+# Load the HAL components
+loadrt pokeys_rt
+loadrt pokeys_py
+loadrt pokeys.comp
+
+# Add the HAL components
+addf pokeys_rt servo-thread
+addf pokeys_py servo-thread
+addf pokeys.comp servo-thread
+
+# Create signals to map HAL pins of pokeys.comp, pokeys_py, or pokeys_rt to HAL pins of testing components
+net digital-input-0 <= pokeys_rt.digital-input-0 => testing_component.digital-input-0
+net digital-output-0 <= pokeys_rt.digital-output-0 => testing_component.digital-output-0
+net analog-input-0 <= pokeys_py.analog-input-0 => testing_component.analog-input-0
+net analog-output-0 <= pokeys_py.analog-output-0 => testing_component.analog-output-0
+net pwm-output-0 <= pokeys.comp.pwm-output-0 => testing_component.pwm-output-0
+net counter-input-0 <= pokeys.comp.counter-input-0 => testing_component.counter-input-0
+net position-feedback-0 <= pokeys_rt.position-feedback-0 => testing_component.position-feedback-0
+net velocity-command-0 <= pokeys_rt.velocity-command-0 => testing_component.velocity-command-0
+net homing-status-0 <= pokeys_rt.homing-status-0 => testing_component.homing-status-0
+
+# Start the HAL components
+start

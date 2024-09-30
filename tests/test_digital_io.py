@@ -5,7 +5,7 @@ from pokeys_py.digital_io import DigitalIO
 class TestDigitalIO(unittest.TestCase):
     def setUp(self):
         self.device = MagicMock()
-        self.digital_io = DigitalIO(self.device)
+        self.digital_io = DigitalIO(self.device, pokeyslib)
 
     @patch('pokeys_py.digital_io.pokeyslib')
     def test_setup_input(self, mock_pokeyslib):
@@ -84,6 +84,20 @@ class TestDigitalIO(unittest.TestCase):
         mock_pokeyslib.PK_SL_DigitalOutputSet.side_effect = ValueError("Invalid pin")
         with self.assertRaises(ValueError):
             self.digital_io.set(99, 0)
+
+    @patch('pokeys_py.digital_io.pokeyslib')
+    def test_hal_pins_mapped_to_signals(self, mock_pokeyslib):
+        # Ensure HAL pins are created and mapped to signals in tests/linuxcnc_config.hal
+        self.digital_io.setup(0, 'input')
+        self.digital_io.set(0, 1)
+        mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, 0, 1)
+        self.digital_io.set(0, 0)
+        mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, 0, 0)
+        self.digital_io.setup(0, 'output')
+        self.digital_io.set(0, 1)
+        mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, 0, 1)
+        self.digital_io.set(0, 0)
+        mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, 0, 0)
 
 if __name__ == '__main__':
     unittest.main()

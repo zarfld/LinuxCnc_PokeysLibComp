@@ -600,3 +600,138 @@ pytest test_counter.py
 This will run the `test_counter.py` tests using the mocked `pokeyslib`, allowing you to validate the behavior of the `pokeys_py` component without the need for physical hardware.
 
 By following these instructions, you can easily swap between the real and mocked `pokeyslib`, enabling comprehensive testing and development of the `pokeys_py` component.
+
+### Mocked `pokeyslib` Design
+
+#### 1. **Function Mocks**
+
+Each function provided by the real `pokeyslib` will have a mocked version with the **exact same signature**. The mocked function will simulate the expected hardware behavior.
+
+- **Example**:
+
+Real `pokeyslib.h`:
+
+```c
+POKEYSDECL int32_t PK_DigitalIOGet(sPoKeysDevice* device, uint8_t pinID, uint8_t* pinValue);
+```
+
+Mocked Version:
+
+```cpp
+int32_t PK_DigitalIOGet(sPoKeysDevice* device, uint8_t pinID, uint8_t* pinValue) {
+    *pinValue = 1;  // Simulate the pin being high
+    return PK_OK;
+}
+```
+
+All other functions in the library, such as `PK_DigitalIOSet`, `PK_AnalogIOGet`, `PK_PEv2_PulseEngineMove`, etc., will follow the same approach, mimicking the real behavior of the functions.
+
+#### 2. **Structures and Enums**
+
+All the structures and enums defined in the original `pokeyslib.h` need to be replicated exactly in the mock to ensure **binary compatibility** when linking against components.
+
+- **Example**:
+
+Real `pokeyslib.h`:
+
+```c
+typedef struct sPoKeysDevice_Info {
+    char deviceName[32];
+    uint32_t serialNumber;
+    uint8_t deviceID;
+    uint8_t deviceType;
+    uint8_t firmwareVersionMajor;
+    uint8_t firmwareVersionMinor;
+    uint8_t numberOfPins;
+} sPoKeysDevice_Info;
+```
+
+Mocked `pokeyslib.h` (identical to the real header):
+
+```cpp
+typedef struct sPoKeysDevice_Info {
+    char deviceName[32];
+    uint32_t serialNumber;
+    uint8_t deviceID;
+    uint8_t deviceType;
+    uint8_t firmwareVersionMajor;
+    uint8_t firmwareVersionMinor;
+    uint8_t numberOfPins;
+} sPoKeysDevice_Info;
+```
+
+#### 3. **State Management**
+
+The mocked library will maintain **internal state** to simulate real device behavior across function calls. This is particularly important for functions like `PK_DigitalIOSet` and `PK_DigitalIOGet`, where setting an output pin should affect subsequent input reads.
+
+- A **state map** will track the value of pins, counters, PWM channels, and any other device attributes.
+- **Logging** should be available to track the internal state during tests.
+
+#### 4. **Configuration and Setup**
+
+The mock library must allow for **custom configuration** of the device state prior to tests. This includes setting up the initial state of pins, analog values, and other peripheral settings.
+
+- For example, a test might configure the mock device to have pin 0 as **high** before executing a series of tests.
+
+```cpp
+void setup_mock_device() {
+    device_state.pins[0] = 1;  // Simulate pin 0 being high
+    device_state.pins[1] = 0;  // Simulate pin 1 being low
+}
+```
+
+### Mock Library Integration
+
+1. **Linking the Mock Library**:
+    - During testing, the **mocked `pokeyslib`** will be linked into the test environment.
+    - During production builds, the **real `pokeyslib`** will be linked.
+
+    **CMake Example**:
+    ```cmake
+    if(BUILD_TESTS)
+        target_link_libraries(my_tests PRIVATE mocked_pokeyslib)
+    else()
+        target_link_libraries(my_project PRIVATE real_pokeyslib)
+    endif()
+    ```
+
+2. **Replacing the Real Library**:
+    - The CI pipeline or build system will determine whether to link against the **real** or **mocked** version of `pokeyslib`.
+
+### Testing with the Mock
+
+- The **mocked `pokeyslib`** should work seamlessly with existing unit tests and integration tests.
+- **Test components** (e.g., LinuxCNC HAL files) should use the mock for testing to simulate **device interactions**.
+
+```cpp
+TEST(MockPoKeysTest, TestDigitalIO) {
+    sPoKeysDevice* device = CreateMockDevice();
+    uint8_t pinValue = 0;
+
+    PK_DigitalIOGet(device, 0, &pinValue);
+    ASSERT_EQ(pinValue, 1);  // Check that the mock returns the expected value
+}
+```
+
+- Additionally, the mock can generate **logs** of all the interactions to validate the sequence of events and simulate edge cases like connection loss, invalid pin values, etc.
+
+### Steps for Implementation
+
+1. **Identify all Functions and Structures**:
+   - Review `pokeyslib.h` to identify all the functions, structures, and enums that need to be mocked.
+
+2. **Implement Mocked Functions**:
+   - Implement each function in the mock library, ensuring that the signature matches the original.
+
+3. **State Management**:
+   - Implement internal state management for pins, counters, PWM, and other device settings to simulate real device behavior.
+
+4. **Testing**:
+   - Write unit tests that validate the mock by simulating real-world scenarios and comparing the mock behavior with expected outcomes.
+
+5. **Documentation**:
+   - Provide clear documentation on how to swap between the real and mocked `pokeyslib` for testing and production.
+
+### Conclusion
+
+This **mocked `pokeyslib`** will allow for full **unit testing** and **CI pipeline testing** without the need for physical devices. By maintaining the same interface as the real library, no changes to existing components will be necessary, ensuring seamless integration.

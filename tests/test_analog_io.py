@@ -5,7 +5,7 @@ from pokeys_py.analog_io import AnalogIO
 class TestAnalogIO(unittest.TestCase):
     def setUp(self):
         self.device = MagicMock()
-        self.analog_io = AnalogIO(self.device)
+        self.analog_io = AnalogIO(self.device, pokeyslib)
 
     @patch('pokeys_py.analog_io.pokeyslib')
     def test_setup_input(self, mock_pokeyslib):
