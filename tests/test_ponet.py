@@ -73,5 +73,29 @@ class TestPoNET(unittest.TestCase):
             actual_value = self.ponet.fetch(i)
             self.assertEqual(actual_value, not expected_value, f"PoNET pin {i} invert expected {not expected_value} but got {actual_value}")
 
+    @patch('pokeys_py.ponet.pokeyslib')
+    def test_get_module_info(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PoNETGetModuleInfo.return_value = 'module_info'
+        info = self.ponet.get_module_info(1)
+        self.assertEqual(info, 'module_info')
+        mock_pokeyslib.PK_PoNETGetModuleInfo.assert_called_once_with(self.device, 1)
+
+    @patch('pokeys_py.ponet.pokeyslib')
+    def test_reset_module(self, mock_pokeyslib):
+        self.ponet.reset_module(1)
+        mock_pokeyslib.PK_PoNETResetModule.assert_called_once_with(self.device, 1)
+
+    @patch('pokeys_py.ponet.pokeyslib')
+    def test_get_module_info_invalid_module_id(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PoNETGetModuleInfo.side_effect = ValueError("Invalid module ID")
+        with self.assertRaises(ValueError):
+            self.ponet.get_module_info(99)
+
+    @patch('pokeys_py.ponet.pokeyslib')
+    def test_reset_module_invalid_module_id(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PoNETResetModule.side_effect = ValueError("Invalid module ID")
+        with self.assertRaises(ValueError):
+            self.ponet.reset_module(99)
+
 if __name__ == '__main__':
     unittest.main()

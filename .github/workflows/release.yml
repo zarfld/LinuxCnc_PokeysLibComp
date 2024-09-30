@@ -1,0 +1,39 @@
+name: PreRelease
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*.*.*-beta*'  # Trigger on pre-release tags
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Run tests
+      run: pytest
+
+    - name: Build packages
+      run: |
+        ./build-packages.sh  # Custom script to build packages for all platforms
+
+    - name: Create PreRelease
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ github.ref }}
+        prerelease: true
+        files: ./dist/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

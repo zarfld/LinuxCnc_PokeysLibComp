@@ -164,5 +164,77 @@ class TestPEv2MotionControl(unittest.TestCase):
             self.assertEqual(homing_status, 11, f"Homing status pin {i} expected 11 but got {homing_status}")
             self.pev2_motion_control.cancel_homing(i)
 
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_set_acceleration(self, mock_pokeyslib):
+        self.pev2_motion_control.set_acceleration(1, 300)
+        mock_pokeyslib.PK_PEv2_SetAcceleration.assert_called_once_with(self.device, 1, 300)
+
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_set_deceleration(self, mock_pokeyslib):
+        self.pev2_motion_control.set_deceleration(1, 400)
+        mock_pokeyslib.PK_PEv2_SetDeceleration.assert_called_once_with(self.device, 1, 400)
+
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_get_acceleration(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PEv2_GetAcceleration.return_value = 300
+        acceleration = self.pev2_motion_control.get_acceleration(1)
+        self.assertEqual(acceleration, 300)
+        mock_pokeyslib.PK_PEv2_GetAcceleration.assert_called_once_with(self.device, 1)
+
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_get_deceleration(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PEv2_GetDeceleration.return_value = 400
+        deceleration = self.pev2_motion_control.get_deceleration(1)
+        self.assertEqual(deceleration, 400)
+        mock_pokeyslib.PK_PEv2_GetDeceleration.assert_called_once_with(self.device, 1)
+
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_set_acceleration_invalid_axis(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PEv2_SetAcceleration.side_effect = ValueError("Invalid axis")
+        with self.assertRaises(ValueError):
+            self.pev2_motion_control.set_acceleration(99, 300)
+
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_set_deceleration_invalid_axis(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PEv2_SetDeceleration.side_effect = ValueError("Invalid axis")
+        with self.assertRaises(ValueError):
+            self.pev2_motion_control.set_deceleration(99, 400)
+
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_get_acceleration_invalid_axis(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PEv2_GetAcceleration.side_effect = ValueError("Invalid axis")
+        with self.assertRaises(ValueError):
+            self.pev2_motion_control.get_acceleration(99)
+
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_get_deceleration_invalid_axis(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PEv2_GetDeceleration.side_effect = ValueError("Invalid axis")
+        with self.assertRaises(ValueError):
+            self.pev2_motion_control.get_deceleration(99)
+
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_set_acceleration_invalid_value(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PEv2_SetAcceleration.side.effect = ValueError("Invalid value")
+        with self.assertRaises(ValueError):
+            self.pev2_motion_control.set_acceleration(1, -300)
+
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_set_deceleration_invalid_value(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PEv2_SetDeceleration.side.effect = ValueError("Invalid value")
+        with self.assertRaises(ValueError):
+            self.pev2_motion_control.set_deceleration(1, -400)
+
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_get_acceleration_invalid_value(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PEv2_GetAcceleration.side.effect = ValueError("Invalid value")
+        with self.assertRaises(ValueError):
+            self.pev2_motion_control.get_acceleration(1)
+
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_get_deceleration_invalid_value(self, mock_pokeyslib):
+        mock_pokeyslib.PK_PEv2_GetDeceleration.side.effect = ValueError("Invalid value")
+        with self.assertRaises(ValueError):
+            self.pev2_motion_control.get_deceleration(1)
+
 if __name__ == '__main__':
     unittest.main()
