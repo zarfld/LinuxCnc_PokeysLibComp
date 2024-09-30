@@ -481,3 +481,59 @@ When creating or reviewing issues and pull requests, apply the appropriate label
 ### Encouraging New Contributors
 
 We encourage new contributors to look for issues with these labels. If you are a first-time contributor, start by exploring the issues labeled `good first issue`, `beginner friendly`, or `documentation`. These tasks are designed to help you get started with the project and build your confidence as a contributor.
+
+## CI Job for Labeling Issues
+
+### Overview
+
+A new CI job has been added to automatically review issues in the repository that are not yet labeled and assign the correct label based on the issue content. This helps maintainers and contributors identify tasks efficiently.
+
+### Configuration
+
+The CI job is configured using GitHub Actions. The workflow file is named `label_issues.yml` and is located in the `.github/workflows/` directory.
+
+### Triggering the CI Job
+
+The CI job is triggered automatically in the following scenarios:
+
+- When a new issue is created.
+- When an existing issue is updated (e.g., issue title or body is modified).
+- Periodically (e.g., once per day) to review unlabeled issues and assign labels if any were missed.
+
+### Label Assignment
+
+The CI job uses a Python script named `label_issues.py` to analyze the issue content and assign labels based on keywords or an NLP model. The script uses the `requests` library to interact with the GitHub API.
+
+### Confidence Threshold
+
+The CI job implements a confidence threshold to avoid incorrect labeling. If the confidence level is high (e.g., over 80%), the label is applied automatically. If the confidence level is low, the issue is flagged for manual review by maintainers with a comment like:
+
+> "This issue could not be confidently labeled. Please review manually."
+
+### Manual Override
+
+Maintainers can manually override the label if the CI job incorrectly assigns one. The CI job also applies a `needs-review` label for issues where it is unsure about the appropriate label.
+
+### Excluding Issues with Existing Labels
+
+The CI job excludes issues that already have one or more labels. It does not remove or change existing labels unless flagged by a maintainer.
+
+### Logging and Reporting
+
+The CI job logs its actions, such as which issues were labeled and which issues it flagged for manual review. Optionally, it can send a daily or weekly report summarizing its actions to maintainers.
+
+### Error Handling
+
+In case the CI job fails or cannot process an issue (e.g., due to parsing errors), it flags the issue with a `needs-review` label and provides a log or error report.
+
+### Examples of Automatically Assigned Labels
+
+The following are examples of labels that can be automatically assigned by the CI job based on issue content:
+
+- `good first issue`: For issues that include terms like "beginner", "easy", "first-time", "simple", or "docs".
+- `documentation`: For issues that include terms related to documentation, like "README", "docs", "documentation".
+- `help wanted`: For issues that contain requests for help.
+- `bug`: For issues that include terms like "bug", "error", "issue".
+- `enhancement`: For issues that include terms like "feature", "enhancement", "improvement".
+
+By implementing this CI job, the repository ensures that issues are well-organized and labeled appropriately, improving issue management and making it easier for contributors to navigate the repository.
