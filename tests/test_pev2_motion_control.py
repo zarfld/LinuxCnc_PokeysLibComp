@@ -5,7 +5,7 @@ from pokeys_py.pev2_motion_control import PEv2MotionControl
 class TestPEv2MotionControl(unittest.TestCase):
     def setUp(self):
         self.device = MagicMock()
-        self.pev2_motion_control = PEv2MotionControl(self.device)
+        self.pev2_motion_control = PEv2MotionControl(self.device, pokeyslib)
 
     @patch('pokeys_py.pev2_motion_control.pokeyslib')
     def test_setup(self, mock_pokeyslib):

@@ -5,7 +5,7 @@ from pokeys_py.pwm import PWM
 class TestPWM(unittest.TestCase):
     def setUp(self):
         self.device = MagicMock()
-        self.pwm = PWM(self.device)
+        self.pwm = PWM(self.device, pokeyslib)
 
     @patch('pokeys_py.pwm.pokeyslib')
     def test_setup(self, mock_pokeyslib):
