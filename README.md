@@ -537,3 +537,66 @@ The following are examples of labels that can be automatically assigned by the C
 - `enhancement`: For issues that include terms like "feature", "enhancement", "improvement".
 
 By implementing this CI job, the repository ensures that issues are well-organized and labeled appropriately, improving issue management and making it easier for contributors to navigate the repository.
+
+## Swapping Between Real and Mocked `pokeyslib`
+
+To facilitate testing and development, you can easily swap between the real `pokeyslib` and the mocked `pokeyslib`. This allows you to run tests without the need for physical PoKeys devices.
+
+### Using the Mocked `pokeyslib`
+
+1. **Set the Environment Variable**: Set the `CI` environment variable to `true` to enable the use of the mocked `pokeyslib`.
+
+```bash
+export CI=true
+```
+
+2. **Run the Tests**: Execute the tests as usual using `pytest`.
+
+```bash
+pytest test_analog_io.py
+pytest test_counter.py
+pytest test_digital_io.py
+pytest test_pev2_motion_control.py
+pytest test_ponet.py
+pytest test_pwm.py
+pytest test_integration.py
+pytest test_functional.py
+pytest test_performance.py
+```
+
+### Using the Real `pokeyslib`
+
+1. **Unset the Environment Variable**: Unset the `CI` environment variable or set it to `false` to use the real `pokeyslib`.
+
+```bash
+unset CI
+# or
+export CI=false
+```
+
+2. **Run the Tests**: Execute the tests as usual using `pytest`.
+
+```bash
+pytest test_analog_io.py
+pytest test_counter.py
+pytest test_digital_io.py
+pytest test_pev2_motion_control.py
+pytest test_ponet.py
+pytest test_pwm.py
+pytest test_integration.py
+pytest test_functional.py
+pytest test_performance.py
+```
+
+### Example Test Configuration
+
+Here is an example of how to configure and run tests with the mocked `pokeyslib`:
+
+```bash
+export CI=true
+pytest test_counter.py
+```
+
+This will run the `test_counter.py` tests using the mocked `pokeyslib`, allowing you to validate the behavior of the `pokeys_py` component without the need for physical hardware.
+
+By following these instructions, you can easily swap between the real and mocked `pokeyslib`, enabling comprehensive testing and development of the `pokeys_py` component.
