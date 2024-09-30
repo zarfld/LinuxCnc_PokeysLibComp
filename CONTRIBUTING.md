@@ -165,3 +165,26 @@ The generated images should be uploaded to the repository's releases or a suitab
 - [LinuxCNC INI Guidelines](https://linuxcnc.org/docs/html/config/ini-config.html)
 - [Canonical Device Interface](https://linuxcnc.org/docs/html/hal/halmodule.html#_canonical_device_interfaces)
 - [LinuxCNC Source Code Formatting Guidelines](https://linuxcnc.org/docs/devel/html/code/code-notes.html#_source_code_formatting)
+
+## Labels for Issues and Pull Requests
+
+To make it easier for new contributors to get started, we use specific labels to identify issues and pull requests that are suitable for beginners. These labels help contributors find tasks that match their experience level and ensure a smooth onboarding process.
+
+### Labels
+
+- `good first issue`: For issues that are simple, well-documented, and require minimal background knowledge.
+- `beginner friendly`: For issues that require basic knowledge of the project but are ideal for newcomers.
+- `help wanted`: For issues where assistance is needed, often broader in scope but still accessible.
+- `documentation`: For tasks that involve contributing to documentation (which can be a good entry point for new contributors).
+- `low-hanging fruit`: For smaller, isolated issues that are quick to solve.
+
+### Using Labels
+
+When creating or reviewing issues and pull requests, apply the appropriate labels to help new contributors find suitable tasks. Here are some guidelines:
+
+- **Tagging Issues**: When creating new issues, apply the above labels if they are suitable for beginners or contributors with less experience in the project.
+- **Tagging Pull Requests**: Apply labels to pull requests that address beginner-friendly issues or are written by new contributors to encourage review and feedback.
+
+### Encouraging New Contributors
+
+We encourage new contributors to look for issues with these labels. If you are a first-time contributor, start by exploring the issues labeled `good first issue`, `beginner friendly`, or `documentation`. These tasks are designed to help you get started with the project and build your confidence as a contributor.
