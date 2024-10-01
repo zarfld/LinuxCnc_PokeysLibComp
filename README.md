@@ -735,3 +735,49 @@ TEST(MockPoKeysTest, TestDigitalIO) {
 ### Conclusion
 
 This **mocked `pokeyslib`** will allow for full **unit testing** and **CI pipeline testing** without the need for physical devices. By maintaining the same interface as the real library, no changes to existing components will be necessary, ensuring seamless integration.
+
+## Wiki
+
+We have a comprehensive Wiki to help you get started with the project and find detailed documentation. The Wiki is structured and organized according to best practices, making it easy to navigate and find the information you need.
+
+### Key Sections
+
+- [Home Page](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Home): Overview of the repository, key features, and links to important pages.
+- [Table of Contents](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Table_of_Contents): Navigate through different sections of the Wiki.
+- [Getting Started](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Getting_Started): Guides for installation, setup, and usage.
+- [User Documentation](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/User_Documentation): Detailed guides for how end-users can utilize the repository or software.
+- [Developer Documentation](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Developer_Documentation): Information for contributors, such as coding standards, architecture details, API documentation, and contribution guidelines.
+- [Advanced Topics](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Advanced_Topics): Cover advanced features, integrations, or use cases.
+- [FAQ/Troubleshooting](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/FAQ_Troubleshooting): Frequently asked questions and common troubleshooting issues.
+- [Release Notes](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Release_Notes): Document release notes and changelogs.
+- [Feature Requests](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Feature_Requests): Maintain a list of feature requests and a roadmap for the project.
+- [Versioning](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Versioning): Explain compatibility between different components (e.g., PoKeys, LinuxCNC).
+- [Issues and Pull Requests](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Issues_Pull_Requests): Cross-link to relevant issues or pull requests.
+
+### Contributing to the Wiki
+
+We encourage contributions to the Wiki to keep it up to date and comprehensive. If you would like to contribute to the Wiki, please follow these guidelines:
+
+1. **Fork the Repository**: Start by forking the repository to your GitHub account.
+2. **Clone the Repository**: Clone the forked repository to your local machine.
+   ```bash
+   git clone https://github.com/your-username/LinuxCnc_PokeysLibComp.git
+   cd LinuxCnc_PokeysLibComp
+   ```
+3. **Create a Branch**: Create a new branch for your Wiki contribution.
+   ```bash
+   git checkout -b wiki/your-wiki-contribution
+   ```
+4. **Make Changes**: Make your changes to the Wiki pages.
+5. **Commit Changes**: Commit your changes with a descriptive commit message.
+   ```bash
+   git add .
+   git commit -m "Update Wiki: your contribution description"
+   ```
+6. **Push Changes**: Push your changes to your forked repository.
+   ```bash
+   git push origin wiki/your-wiki-contribution
+   ```
+7. **Create a Pull Request**: Open a pull request from your forked repository to the main repository.
+
+By following these steps, you can contribute to the Wiki and help improve the documentation for the project.
