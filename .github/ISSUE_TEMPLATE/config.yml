@@ -9,6 +9,9 @@ contact_links:
   - name: Documentation Task
     url: https://github.com/zarfld/LinuxCnc_PokeysLibComp/issues/new?template=documentation.md
     about: Contribute to the documentation
+  - name: GitHub Discussions
+    url: https://github.com/zarfld/LinuxCnc_PokeysLibComp/discussions
+    about: Engage in conversations, ask questions, and share ideas
 milestones:
   - name: v1.0 release
     description: Milestone for the v1.0 release of the project

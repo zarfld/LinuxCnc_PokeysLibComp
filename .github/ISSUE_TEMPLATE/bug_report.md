@@ -64,3 +64,6 @@ Please select the appropriate label for this issue:
 - `in development`
 - `in staging`
 - `in production`
+
+**Note**
+Before creating a new bug report, please check [GitHub Discussions](https://github.com/zarfld/LinuxCnc_PokeysLibComp/discussions/categories/bug-reports) for similar issues. If you find a similar issue, you can participate in the discussion or add your findings there.

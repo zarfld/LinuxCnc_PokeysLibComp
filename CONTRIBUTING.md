@@ -12,6 +12,7 @@ Thank you for considering contributing to the LinuxCnc_PokeysLibComp project! We
 6. [Branch Naming Conventions](#branch-naming-conventions)
 7. [License](#license)
 8. [Telemetry Collection](#telemetry-collection)
+9. [Using GitHub Discussions](#using-github-discussions)
 
 ## Code of Conduct
 
@@ -261,3 +262,39 @@ To disable telemetry, set the `telemetry_opt_in` setting to `false` in the appli
 We are committed to protecting your privacy. The telemetry data collected is anonymized and used solely for improving the project. We do not share this data with third parties.
 
 For more information on our privacy practices, please refer to the [Privacy Policy](PRIVACY_POLICY.md).
+
+## Using GitHub Discussions
+
+We encourage the use of GitHub Discussions for questions, feature requests, and ideas before creating issues or pull requests. This helps keep the issue tracker focused on actionable items and fosters community engagement.
+
+### Available Categories
+
+We have created the following categories in GitHub Discussions to help organize conversations:
+
+- **General Q&A**: For users to ask questions or seek clarification on how to use the repository.
+- **Feature Requests**: For proposing new features or enhancements.
+- **Ideas & Brainstorming**: For discussing ideas that are still in the conceptual stage.
+- **Show and Tell**: For users to share how they are using the project in their own implementations.
+- **Announcements**: For maintainers to share important updates, releases, or roadmaps.
+- **Bug Reports**: For reporting bugs and discussing potential fixes.
+
+### Guidelines for Starting a Discussion
+
+When starting a discussion, please follow these guidelines:
+
+1. **Choose the Appropriate Category**: Select the category that best fits your topic to help keep discussions organized.
+2. **Provide a Clear Title**: Use a clear and descriptive title for your discussion.
+3. **Include Relevant Details**: Provide as much relevant information as possible to help others understand your question, idea, or request.
+4. **Be Respectful and Constructive**: Follow the project's Code of Conduct and engage in respectful and constructive conversations.
+
+### When to Use Discussions Instead of Issues or Pull Requests
+
+Use GitHub Discussions for:
+
+- General questions or clarifications about the project.
+- Proposing new features or enhancements before creating a feature request issue.
+- Sharing ideas and brainstorming with the community.
+- Showcasing how you are using the project in your own implementations.
+- Reporting bugs and discussing potential fixes before creating a bug report issue.
+
+By using GitHub Discussions effectively, we can build a stronger community around the project and make the repository more welcoming to both new and experienced users.
