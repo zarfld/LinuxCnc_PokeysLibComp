@@ -81,3 +81,22 @@
 
 ### Known Issues
 - None reported.
+
+## Version 1.5.0
+
+### New Features
+- Added a section that documents release notes and changelogs.
+- Improved the structure and organization of the Wiki.
+- Included clear installation instructions, configuration guides, and usage examples.
+- Added architecture diagrams, design decisions, and documentation on CI/CD pipelines, testing strategies, and release workflows.
+- Included contribution guidelines, release notes, and links to critical Wiki pages from the README file.
+- Maintained a list of feature requests, a roadmap, and versioning documentation.
+- Implemented cross-linking to relevant issues or pull requests.
+- Encouraged collaborative editing and periodic reviews of the Wiki content.
+
+### Bug Fixes
+- Fixed various issues related to the organization and navigation of the Wiki.
+- Resolved bugs in the documentation and examples provided in the Wiki.
+
+### Known Issues
+- None reported.
