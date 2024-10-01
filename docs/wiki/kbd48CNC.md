@@ -191,3 +191,52 @@ net axis-jog-neg-c kbd48CNC.0.axis.5.jog-neg => halui.axis.c.jog-neg
 - `axis-jog-neg-a`: Signal for jogging the A axis in the negative direction.
 - `axis-jog-neg-b`: Signal for jogging the B axis in the negative direction.
 - `axis-jog-neg-c`: Signal for jogging the C axis in the negative direction.
+
+## Signals Defined in kbd48CNC.hal
+
+### Jogging Signals
+
+- `jog-toggle`: Signal for the jog toggle button.
+- `jog-plus`: Signal for the jog plus button.
+- `jog-minus`: Signal for the jog minus button.
+- `jog-cont`: Signal for the jog continuous button.
+- `jog-inc`: Signal for the jog increment button.
+- `jog-mpg`: Signal for the jog MPG button.
+- `jog-step-1`: Signal for the jog step 1 button.
+- `jog-step-10`: Signal for the jog step 10 button.
+- `jog-step-100`: Signal for the jog step 100 button.
+- `jog-step-1000`: Signal for the jog step 1000 button.
+
+### LED Signals
+
+- `jog-toggle-led`: Signal for the jog toggle LED.
+- `jog-plus-led`: Signal for the jog plus LED.
+- `jog-minus-led`: Signal for the jog minus LED.
+- `jog-cont-led`: Signal for the jog continuous LED.
+- `jog-inc-led`: Signal for the jog increment LED.
+- `jog-mpg-led`: Signal for the jog MPG LED.
+- `jog-step-1-led`: Signal for the jog step 1 LED.
+- `jog-step-10-led`: Signal for the jog step 10 LED.
+- `jog-step-100-led`: Signal for the jog step 100 LED.
+- `jog-step-1000-led`: Signal for the jog step 1000 LED.
+
+### Axis Signals
+
+- `axis-select-x`: Signal for selecting the X axis.
+- `axis-select-y`: Signal for selecting the Y axis.
+- `axis-select-z`: Signal for selecting the Z axis.
+- `axis-select-a`: Signal for selecting the A axis.
+- `axis-select-b`: Signal for selecting the B axis.
+- `axis-select-c`: Signal for selecting the C axis.
+- `axis-jog-pos-x`: Signal for jogging the X axis in the positive direction.
+- `axis-jog-pos-y`: Signal for jogging the Y axis in the positive direction.
+- `axis-jog-pos-z`: Signal for jogging the Z axis in the positive direction.
+- `axis-jog-pos-a`: Signal for jogging the A axis in the positive direction.
+- `axis-jog-pos-b`: Signal for jogging the B axis in the positive direction.
+- `axis-jog-pos-c`: Signal for jogging the C axis in the positive direction.
+- `axis-jog-neg-x`: Signal for jogging the X axis in the negative direction.
+- `axis-jog-neg-y`: Signal for jogging the Y axis in the negative direction.
+- `axis-jog-neg-z`: Signal for jogging the Z axis in the negative direction.
+- `axis-jog-neg-a`: Signal for jogging the A axis in the negative direction.
+- `axis-jog-neg-b`: Signal for jogging the B axis in the negative direction.
+- `axis-jog-neg-c`: Signal for jogging the C axis in the negative direction.
