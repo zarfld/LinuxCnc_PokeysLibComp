@@ -183,6 +183,63 @@ button_state = device.kbd48CNC_get_button(0)
 print(f"Button 0 on the CNC keyboard state: {button_state}")
 ```
 
+## Configuration Steps for PoKeys Devices with LinuxCNC
+
+### Step 1: Connect the Hardware
+
+Ensure that the PoKeys devices are properly connected to your system according to the hardware requirements.
+
+### Step 2: Update LinuxCNC Configuration Files
+
+Update the LinuxCNC configuration files to include the PoKeys components. Refer to the following example configuration:
+
+```ini
+[HAL]
+# Load PoKeys HAL component
+loadrt pokeys
+
+# Add PoKeys device
+addf pokeys.0 servo-thread
+
+# Configure digital inputs and outputs
+net input-0 <= pokeys.0.digin.0.in
+net output-1 => pokeys.0.digout.1.out
+
+# Configure analog inputs and outputs
+net analog-input-0 <= pokeys.0.adcin.0.value
+net analog-output-1 => pokeys.0.adcout.1.value
+```
+
+### Step 3: Verify Connections
+
+Ensure that the PoKeys devices are properly connected and recognized by LinuxCNC. Use the `halcmd` command to monitor the state of the inputs and outputs.
+
+## Troubleshooting Steps for Common Issues
+
+### Issue 1: The PoKeys device is not detected by LinuxCNC
+
+**Solution**:
+1. Ensure that the PoKeys device is properly connected to the RaspberryPi4 or other supported hardware.
+2. Verify that the necessary drivers and dependencies are installed.
+3. Check the device connection using the `lsusb` command to ensure it is recognized by the system.
+4. Restart the LinuxCNC service and check the logs for any error messages.
+
+### Issue 2: Digital inputs/outputs are not functioning as expected
+
+**Solution**:
+1. Verify the pin configuration in the HAL file to ensure the correct pins are assigned for digital inputs/outputs.
+2. Check the wiring and connections to the PoKeys device to ensure they are secure.
+3. Use the `halcmd` command to monitor the state of the digital inputs/outputs and verify their functionality.
+4. Refer to the [User Documentation](User_Documentation.md) section for detailed guides on configuring digital inputs/outputs.
+
+### Issue 3: Analog inputs/outputs are not providing accurate readings
+
+**Solution**:
+1. Verify the pin configuration in the HAL file to ensure the correct pins are assigned for analog inputs/outputs.
+2. Check the wiring and connections to the PoKeys device to ensure they are secure.
+3. Use the `halcmd` command to monitor the state of the analog inputs/outputs and verify their functionality.
+4. Refer to the [User Documentation](User_Documentation.md) section for detailed guides on configuring analog inputs/outputs.
+
 ## Conclusion
 
 This User Documentation section provides detailed guides and usage examples to help you get started with the **LinuxCnc_PokeysLibComp** project. If you have any questions or need further assistance, please refer to the [FAQ/Troubleshooting](FAQ_Troubleshooting.md) section or reach out to the community for support.
