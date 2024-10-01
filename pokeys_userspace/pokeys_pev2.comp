@@ -6,6 +6,44 @@ pin in float pokeys.[DevID].pev2.position-cmd.# [8];
 pin out float pokeys.[DevID].pev2.position-fb.# [8];
 pin out bit pokeys.[DevID].pev2.homing-status.# [8];
 
+pin out unsigned pokeys.[DevID].info.PinCount;
+pin out unsigned pokeys.[DevID].info.PWMCount;
+pin out unsigned pokeys.[DevID].info.BasicEncoderCount;
+pin out unsigned pokeys.[DevID].info.EncodersCount;
+pin out unsigned pokeys.[DevID].info.FastEncoders;
+pin out unsigned pokeys.[DevID].info.UltraFastEncoders;
+pin out unsigned pokeys.[DevID].info.PWMinternalFrequency;
+pin out unsigned pokeys.[DevID].info.AnalogInputs;
+pin out bit pokeys.[DevID].info.KeyMapping;
+pin out bit pokeys.[DevID].info.TriggeredKeyMapping;
+pin out bit pokeys.[DevID].info.KeyRepeatDelay;
+pin out bit pokeys.[DevID].info.DigitalCounters;
+pin out bit pokeys.[DevID].info.JoystickButtonAxisMapping;
+pin out bit pokeys.[DevID].info.JoystickAnalogToDigitalMapping;
+pin out bit pokeys.[DevID].info.Macros;
+pin out bit pokeys.[DevID].info.MatrixKeyboard;
+pin out bit pokeys.[DevID].info.MatrixKeyboardTriggeredMapping;
+pin out bit pokeys.[DevID].info.LCD;
+pin out bit pokeys.[DevID].info.MatrixLED;
+pin out bit pokeys.[DevID].info.ConnectionSignal;
+pin out bit pokeys.[DevID].info.PoExtBus;
+pin out bit pokeys.[DevID].info.PoNET;
+pin out bit pokeys.[DevID].info.AnalogFiltering;
+pin out bit pokeys.[DevID].info.InitOutputsStart;
+pin out bit pokeys.[DevID].info.protI2C;
+pin out bit pokeys.[DevID].info.prot1wire;
+pin out bit pokeys.[DevID].info.AdditionalOptions;
+pin out bit pokeys.[DevID].info.LoadStatus;
+pin out bit pokeys.[DevID].info.CustomDeviceName;
+pin out bit pokeys.[DevID].info.PoTLog27support;
+pin out bit pokeys.[DevID].info.SensorList;
+pin out bit pokeys.[DevID].info.WebInterface;
+pin out bit pokeys.[DevID].info.FailSafeSettings;
+pin out bit pokeys.[DevID].info.JoystickHATswitch;
+pin out bit pokeys.[DevID].info.PulseEngine;
+pin out bit pokeys.[DevID].info.PulseEnginev2;
+pin out bit pokeys.[DevID].info.EasySensors;
+
 license "GPL";
 author "Dominik Zarfl";
 
@@ -35,6 +73,46 @@ void setup_pins() {
     }
 }
 
+void initialize_device_info_pins() {
+    pokeys.[DevID].info.PinCount = PK_GetPinCount(device);
+    pokeys.[DevID].info.PWMCount = PK_GetPWMCount(device);
+    pokeys.[DevID].info.BasicEncoderCount = PK_GetBasicEncoderCount(device);
+    pokeys.[DevID].info.EncodersCount = PK_GetEncodersCount(device);
+    pokeys.[DevID].info.FastEncoders = PK_GetFastEncoders(device);
+    pokeys.[DevID].info.UltraFastEncoders = PK_GetUltraFastEncoders(device);
+    pokeys.[DevID].info.PWMinternalFrequency = PK_GetPWMinternalFrequency(device);
+    pokeys.[DevID].info.AnalogInputs = PK_GetAnalogInputs(device);
+    pokeys.[DevID].info.KeyMapping = PK_GetKeyMapping(device);
+    pokeys.[DevID].info.TriggeredKeyMapping = PK_GetTriggeredKeyMapping(device);
+    pokeys.[DevID].info.KeyRepeatDelay = PK_GetKeyRepeatDelay(device);
+    pokeys.[DevID].info.DigitalCounters = PK_GetDigitalCounters(device);
+    pokeys.[DevID].info.JoystickButtonAxisMapping = PK_GetJoystickButtonAxisMapping(device);
+    pokeys.[DevID].info.JoystickAnalogToDigitalMapping = PK_GetJoystickAnalogToDigitalMapping(device);
+    pokeys.[DevID].info.Macros = PK_GetMacros(device);
+    pokeys.[DevID].info.MatrixKeyboard = PK_GetMatrixKeyboard(device);
+    pokeys.[DevID].info.MatrixKeyboardTriggeredMapping = PK_GetMatrixKeyboardTriggeredMapping(device);
+    pokeys.[DevID].info.LCD = PK_GetLCD(device);
+    pokeys.[DevID].info.MatrixLED = PK_GetMatrixLED(device);
+    pokeys.[DevID].info.ConnectionSignal = PK_GetConnectionSignal(device);
+    pokeys.[DevID].info.PoExtBus = PK_GetPoExtBus(device);
+    pokeys.[DevID].info.PoNET = PK_GetPoNET(device);
+    pokeys.[DevID].info.AnalogFiltering = PK_GetAnalogFiltering(device);
+    pokeys.[DevID].info.InitOutputsStart = PK_GetInitOutputsStart(device);
+    pokeys.[DevID].info.protI2C = PK_GetprotI2C(device);
+    pokeys.[DevID].info.prot1wire = PK_Getprot1wire(device);
+    pokeys.[DevID].info.AdditionalOptions = PK_GetAdditionalOptions(device);
+    pokeys.[DevID].info.LoadStatus = PK_GetLoadStatus(device);
+    pokeys.[DevID].info.CustomDeviceName = PK_GetCustomDeviceName(device);
+    pokeys.[DevID].info.PoTLog27support = PK_GetPoTLog27support(device);
+    pokeys.[DevID].info.SensorList = PK_GetSensorList(device);
+    pokeys.[DevID].info.WebInterface = PK_GetWebInterface(device);
+    pokeys.[DevID].info.FailSafeSettings = PK_GetFailSafeSettings(device);
+    pokeys.[DevID].info.JoystickHATswitch = PK_GetJoystickHATswitch(device);
+    pokeys.[DevID].info.PulseEngine = PK_GetPulseEngine(device);
+    pokeys.[DevID].info.PulseEnginev2 = PK_GetPulseEnginev2(device);
+    pokeys.[DevID].info.EasySensors = PK_GetEasySensors(device);
+}
+
 void user_mainloop() {
     while (1) {
         for (int i = 0; i < 8; i++) {
@@ -59,6 +137,7 @@ int rtapi_app_main(void) {
     }
 
     setup_pins();
+    initialize_device_info_pins();
 
     hal_ready(comp_id);
     rtapi_print_msg(RTAPI_MSG_INFO, "pokeys_pev2: installed\n");
