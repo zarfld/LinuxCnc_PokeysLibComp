@@ -43,3 +43,6 @@ Please select the appropriate label for this feature request:
 - `in development`
 - `in staging`
 - `in production`
+
+**Note**
+Before creating a new feature request, please discuss it in [GitHub Discussions](https://github.com/zarfld/LinuxCnc_PokeysLibComp/discussions/categories/feature-requests) to gather feedback and ideas from the community.
