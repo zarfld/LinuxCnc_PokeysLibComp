@@ -47,3 +47,9 @@ We encourage the community to contribute to feature requests by providing feedba
 By following these steps, you can help improve the **LinuxCnc_PokeysLibComp** project and contribute to its future development.
 
 Thank you for your contributions and support!
+
+## Community and Feature Requests
+
+Use the Wiki to maintain a list of **Feature Requests** and a **Roadmap** for the project to inform the community about upcoming changes or goals for future development.
+
+Have a dedicated section explaining how users can contribute by filing issues, reporting bugs, or suggesting features.
