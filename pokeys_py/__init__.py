@@ -9,3 +9,9 @@ if os.getenv('CI') == 'true':
 else:
     import ctypes
     pokeyslib = ctypes.CDLL('/usr/lib/linuxcnc/modules/PoKeysLib.so')
+
+# Import telemetry module
+from .telemetry import init_telemetry
+
+# Initialize telemetry
+init_telemetry()

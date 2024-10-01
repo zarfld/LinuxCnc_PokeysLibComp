@@ -735,3 +735,48 @@ TEST(MockPoKeysTest, TestDigitalIO) {
 ### Conclusion
 
 This **mocked `pokeyslib`** will allow for full **unit testing** and **CI pipeline testing** without the need for physical devices. By maintaining the same interface as the real library, no changes to existing components will be necessary, ensuring seamless integration.
+
+## Enabling/Disabling Telemetry
+
+Telemetry and usage data collection can be enabled or disabled based on user preference. The telemetry is implemented using Sentry for error tracking and performance metrics.
+
+### Enabling Telemetry
+
+To enable telemetry, follow these steps:
+
+1. During the installation process, you will be prompted to enable telemetry. Choose "y" to enable telemetry.
+2. If you have already installed the project and want to enable telemetry, edit the `/etc/environment` file and set `TELEMETRY_ENABLED=true`.
+
+### Disabling Telemetry
+
+To disable telemetry, follow these steps:
+
+1. During the installation process, you will be prompted to enable telemetry. Choose "n" to disable telemetry.
+2. If you have already installed the project and want to disable telemetry, edit the `/etc/environment` file and set `TELEMETRY_ENABLED=false`.
+
+### Verifying Telemetry Status
+
+To verify the current status of telemetry, check the value of the `TELEMETRY_ENABLED` variable in the `/etc/environment` file.
+
+```bash
+cat /etc/environment | grep TELEMETRY_ENABLED
+```
+
+If the value is `true`, telemetry is enabled. If the value is `false`, telemetry is disabled.
+
+### Telemetry Data Collected
+
+The following telemetry data is collected:
+
+- Error logs
+- Performance metrics
+- Usage data
+
+This data is sent to the Sentry dashboard for analysis and monitoring.
+
+### Privacy and Compliance
+
+Telemetry data collection is designed to comply with privacy regulations such as GDPR. Users have the option to opt-in or opt-out of telemetry during the installation process. The collected data is anonymized and used solely for improving the project.
+
+For more information on privacy and data collection, please refer to the [Privacy Policy](PRIVACY_POLICY.md).
+
