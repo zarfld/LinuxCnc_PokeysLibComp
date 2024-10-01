@@ -21,6 +21,18 @@ A clear and concise description of any alternative solutions or features you've 
 **Additional context**
 Add any other context or screenshots about the feature request here.
 
+**Pipeline Environment**
+Please specify the pipeline environment where the issue was encountered:
+- `dev`
+- `staging`
+- `prod`
+
+**CI Pipeline Stage**
+Please specify the CI pipeline stage where the issue was encountered:
+- `build`
+- `test`
+- `deploy`
+
 **Labels**
 Please select the appropriate label for this feature request:
 - `good first issue`
@@ -28,3 +40,6 @@ Please select the appropriate label for this feature request:
 - `help wanted`
 - `documentation`
 - `low-hanging fruit`
+- `in development`
+- `in staging`
+- `in production`

@@ -36,6 +36,18 @@ If applicable, add screenshots to help explain your problem.
  - Browser [e.g. stock browser, safari]
  - Version [e.g. 22]
 
+**Pipeline Environment**
+Please specify the pipeline environment where the issue was encountered:
+- `dev`
+- `staging`
+- `prod`
+
+**CI Pipeline Stage**
+Please specify the CI pipeline stage where the issue was encountered:
+- `build`
+- `test`
+- `deploy`
+
 **Additional context**
 Add any other context about the problem here.
 
@@ -46,3 +58,6 @@ Please select the appropriate label for this issue:
 - `help wanted`
 - `documentation`
 - `low-hanging fruit`
+- `in development`
+- `in staging`
+- `in production`

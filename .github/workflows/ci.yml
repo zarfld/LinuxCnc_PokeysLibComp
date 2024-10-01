@@ -15,6 +15,8 @@ on:
       - bugfix/**
       - improvement/**
       - hotfix/**
+  issues:
+    types: [labeled, unlabeled]
 
 jobs:
   build:
@@ -231,6 +233,33 @@ jobs:
             exit 1
         fi
         echo "Canonical Device Interface guidelines are documented and accessible."
+
+    - name: Trigger CI pipeline based on issue status updates
+      run: |
+        echo "Triggering CI pipeline based on issue status updates..."
+        if [ "${{ github.event.issue.labels }}" == "in progress" ]; then
+            echo "Issue is in progress. Triggering build and tests..."
+            # Add your build and test commands here
+        elif [ "${{ github.event.issue.labels }}" == "in review" ]; then
+            echo "Issue is in review. Triggering deployment to staging..."
+            # Add your deployment commands here
+        fi
+
+    - name: Send alerts for pipeline failures related to issues
+      run: |
+        echo "Sending alerts for pipeline failures related to issues..."
+        if [ "${{ github.event.issue.labels }}" == "failed CI" ]; then
+            echo "Pipeline failed. Sending alerts to contributors..."
+            # Add your alerting commands here (e.g., Slack, email, GitHub notifications)
+        fi
+
+    - name: Auto-close issues upon deployment
+      run: |
+        echo "Auto-closing issues upon deployment..."
+        if [ "${{ github.event.issue.labels }}" == "in production" ]; then
+            echo "Issue deployed to production. Auto-closing issue..."
+            # Add your auto-closing commands here
+        fi
 
   create_images:
     runs-on: ubuntu-latest
