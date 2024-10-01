@@ -115,3 +115,101 @@ For more detailed information, refer to the comments in the `Pokeys57CNC_DM542_X
 ## Conclusion
 
 The PEv2 component in the PoKeys library provides a flexible and powerful way to interface with PoKeys devices. By following the guidelines and examples provided in this document, you can effectively configure and use the PEv2 component in your projects.
+
+## Crosscheck with INI Entries
+
+The following INI entries are relevant for the PEv2 description and have been documented accordingly:
+
+### [POKEYS] Section
+
+- `DEVICE_ID=53386`
+- `ApplyIniSettings=1`
+- `PEv2_ProbeInput=19`
+- `PEv2_ProbeInputPolarity=0`
+- `PEv2_EmergencyInputPin=52`
+- `PEv2_EmergencyOutputPin=0`
+- `PEv2_PulseGeneratorType=0`
+- `PEv2_PG_swap_stepdir=0`
+- `PEv2_PG_extended_io=1`
+
+### AXIS_X
+
+- `PEv2_AxisEnabled_0=1`
+- `PEv2_AxesSwitchConfig_0=115`
+- `PEv2_FilterLimitMSwitch_0=0`
+- `PEv2_FilterLimitPSwitch_0=0`
+- `PEv2_PinHomeSwitch_0=0`
+- `PEv2_PinLimitMSwitch_0=0`
+- `PEv2_PinLimitPSwitch_0=0`
+- `PEv2_InvertLimitN_0=1`
+- `PEv2_EnableLimitN_0=1`
+- `PEv2_InvertLimitP_0=1`
+- `PEv2_EnableLimitP_0=1`
+- `PEv2_InvertHome_0=1`
+- `PEv2_EnableHome_0=1`
+- `PEv2_HomeOnLimitN_0=0`
+- `PEv2_HomeOnLimitP_0=1`
+- `PEv2_AxisEnableOutputPins_0=0`
+- `PEv2_Feedback_Encoder_Id_0=0`
+- `PEv2_InvertAxisEnable_0=1`
+
+### AXIS_Y
+
+- `PEv2_AxisEnabled_1=1`
+- `PEv2_AxesSwitchConfig_1=165`
+- `PEv2_FilterLimitMSwitch_1=0`
+- `PEv2_FilterLimitPSwitch_1=0`
+- `PEv2_PinHomeSwitch_1=0`
+- `PEv2_PinLimitMSwitch_1=0`
+- `PEv2_PinLimitPSwitch_1=0`
+- `PEv2_InvertLimitN_1=1`
+- `PEv2_EnableLimitN_1=1`
+- `PEv2_InvertLimitP_1=0`
+- `PEv2_EnableLimitP_1=0`
+- `PEv2_InvertHome_1=1`
+- `PEv2_EnableHome_1=1`
+- `PEv2_HomeOnLimitN_1=0`
+- `PEv2_HomeOnLimitP_1=0`
+- `PEv2_AxisEnableOutputPins_1=0`
+- `PEv2_Feedback_Encoder_Id_1=0`
+- `PEv2_InvertAxisEnable_1=1`
+
+### AXIS_Z
+
+- `PEv2_AxesSwitchConfig_2=165`
+- `PEv2_FilterLimitMSwitch_2=0`
+- `PEv2_FilterLimitPSwitch_2=0`
+- `PEv2_PinHomeSwitch_2=0`
+- `PEv2_PinLimitMSwitch_2=0`
+- `PEv2_PinLimitPSwitch_2=0`
+- `PEv2_InvertLimitN_2=1`
+- `PEv2_EnableLimitN_2=1`
+- `PEv2_InvertLimitP_2=0`
+- `PEv2_EnableLimitP_2=0`
+- `PEv2_InvertHome_2=1`
+- `PEv2_EnableHome_2=1`
+- `PEv2_HomeOnLimitN_2=0`
+- `PEv2_HomeOnLimitP_2=0`
+- `PEv2_AxisEnableOutputPins_2=0`
+- `PEv2_Feedback_Encoder_Id_2=0`
+- `PEv2_InvertAxisEnable_2=1`
+
+### AXIS_X2
+
+- `PEv2_AxesSwitchConfig_6=115`
+- `PEv2_FilterLimitMSwitch_6=0`
+- `PEv2_FilterLimitPSwitch_6=0`
+- `PEv2_PinHomeSwitch_6=0`
+- `PEv2_PinLimitMSwitch_6=0`
+- `PEv2_PinLimitPSwitch_6=0`
+- `PEv2_InvertLimitN_6=1`
+- `PEv2_EnableLimitN_6=1`
+- `PEv2_InvertLimitP_6=1`
+- `PEv2_EnableLimitP_6=1`
+- `PEv2_InvertHome_6=1`
+- `PEv2_EnableHome_6=1`
+- `PEv2_HomeOnLimitN_6=0`
+- `PEv2_HomeOnLimitP_6=1`
+- `PEv2_AxisEnableOutputPins_6=0`
+- `PEv2_Feedback_Encoder_Id_6=0`
+- `PEv2_InvertAxisEnable_6=1`
