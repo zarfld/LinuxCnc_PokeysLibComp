@@ -20,6 +20,47 @@ pin out bit connected.udp;
 pin out bit connected.net;
 pin out bit alive;
 
+pin out unsigned info.PinCount;
+pin out unsigned info.PWMCount;
+pin out unsigned info.BasicEncoderCount;
+pin out unsigned info.EncodersCount;
+pin out unsigned info.FastEncoders;
+pin out unsigned info.UltraFastEncoders;
+pin out unsigned info.PWMinternalFrequency;
+pin out unsigned info.AnalogInputs;
+pin out bit info.KeyMapping;
+pin out bit info.TriggeredKeyMapping;
+pin out bit info.KeyRepeatDelay;
+pin out bit info.DigitalCounters;
+pin out bit info.JoystickButtonAxisMapping;
+pin out bit info.JoystickAnalogToDigitalMapping;
+pin out bit info.Macros;
+pin out bit info.MatrixKeyboard;
+pin out bit info.MatrixKeyboardTriggeredMapping;
+pin out bit info.LCD;
+pin out bit info.MatrixLED;
+pin out bit info.ConnectionSignal;
+pin out bit info.PoExtBus;
+pin out bit info.PoNET;
+pin out bit info.AnalogFiltering;
+pin out bit info.InitOutputsStart;
+pin out bit info.protI2C;
+pin out bit info.prot1wire;
+pin out bit info.AdditionalOptions;
+pin out bit info.LoadStatus;
+pin out bit info.CustomDeviceName;
+pin out bit info.PoTLog27support;
+pin out bit info.SensorList;
+pin out bit info.WebInterface;
+pin out bit info.FailSafeSettings;
+pin out bit info.JoystickHATswitch;
+pin out bit info.PulseEngine;
+pin out bit info.PulseEnginev2;
+pin out bit info.EasySensors;
+
+pin out bit pokeys.[DevID].PoExtBus.[PoExtBusId]digin.[PinID].in;
+pin out bit pokeys.[DevID].PoExtBus.[PoExtBusId]digin.[PinID].in-not;
+
 license "GPL";
 author "Dominik Zarfl";
 option homemod;
@@ -65,8 +106,8 @@ MODULE_LICENSE("GPL");
 //usr/include/tcl8.6/tcl-private/compat/stdlib.h
 ///usr/include/c++/10/tr1/stdlib.h
 
-#include "./PoKeysLibRt.h"
-#include "./PoKeysLibCore.h"
+#include "pokeys_rt/PoKeysLibRt.h"
+#include "pokeys_rt/PoKeysLibCore.h"
 
 #undef POKEYSLIB_USE_LIBUSB
 

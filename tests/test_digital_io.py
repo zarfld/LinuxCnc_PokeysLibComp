@@ -99,5 +99,30 @@ class TestDigitalIO(unittest.TestCase):
         self.digital_io.set(0, 0)
         mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, 0, 0)
 
+    @patch('pokeys_py.digital_io.pokeyslib')
+    def test_setup_digin(self, mock_pokeyslib):
+        self.digital_io.setup_digin(0, 1)
+        mock_pokeyslib.PK_HAL_SetPin.assert_any_call("pokeys.0.digin.1.in", mock_pokeyslib.PK_SL_DigitalInputGet.return_value)
+        mock_pokeyslib.PK_HAL_SetPin.assert_any_call("pokeys.0.digin.1.in-not", not mock_pokeyslib.PK_SL_DigitalInputGet.return_value)
+
+    @patch('pokeys_py.digital_io.pokeyslib')
+    def test_setup_digout(self, mock_pokeyslib):
+        self.digital_io.setup_digout(0, 1)
+        mock_pokeyslib.PK_HAL_SetPin.assert_any_call("pokeys.0.digout.1.out", mock_pokeyslib.PK_SL_DigitalInputGet.return_value)
+        mock_pokeyslib.PK_HAL_SetPin.assert_any_call("pokeys.0.digout.1.out-not", not mock_pokeyslib.PK_SL_DigitalInputGet.return_value)
+
+    @patch('pokeys_py.digital_io.pokeyslib')
+    def test_digital_io_parameters(self, mock_pokeyslib):
+        self.digital_io.setup(1, 'input')
+        self.digital_io.set(1, 1)
+        mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, 1, 1)
+        self.digital_io.set(1, 0)
+        mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, 1, 0)
+        self.digital_io.setup(1, 'output')
+        self.digital_io.set(1, 1)
+        mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, 1, 1)
+        self.digital_io.set(1, 0)
+        mock_pokeyslib.PK_SL_DigitalOutputSet.assert_called_with(self.device, 1, 0)
+
 if __name__ == '__main__':
     unittest.main()

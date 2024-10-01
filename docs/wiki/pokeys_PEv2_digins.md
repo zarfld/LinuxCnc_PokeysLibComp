@@ -10,6 +10,25 @@ The `pokeys.[DevID].PEv2` component is designed to interface with PoKeys devices
 
 ### Pins
 
+- `pokeys.[DevID].digin.[PinID].in`: State of the hardware input
+- `pokeys.[DevID].digin.[PinID].in-not`: Inverted state of the input
+- `pokeys.[DevID].PoExtBus.[PoExtBusId]digin.[PinID].in`: State of the PoExtBus input (currently prepared for future Firmware)
+- `pokeys.[DevID].PoExtBus.[PoExtBusId]digin.[PinID].in-not`: Inverted state of the PoExtBus input
+- `pokeys.[DevID].PEv2.digin.Emergency.in`: Emergency input for PulseEnginev2
+- `pokeys.[DevID].PEv2.digin.Probe.in`: Probe input for PulseEnginev2
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.Probe.in`: Probe input for each Axis of PulseEnginev2
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.Home.in`: State of the Home input for Joint[PEv2Id]
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.Home.in-not`: Inverted state of the Home input for Joint[PEv2Id]
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitN.in`: State of the Limit- input for Joint[PEv2Id]
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitN.in-not`: Inverted state of the Limit- input for Joint[PEv2Id]
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitP.in`: State of the Limit+ input for Joint[PEv2Id]
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitP.in-not`: Inverted state of the Limit+ input for Joint[PEv2Id]
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.AxisEnabled.in`: Axis enabled input for each Axis of PulseEnginev2
+- `pokeys.[DevID].kbd48CNC.[ButtonId].Button`: State of the button on kbd48CNC (True if Button pressed)
+
+### Parameters
+
+- `pokeys.[DevID].digin.[PinID].invert`: If TRUE, in is inverted before reading from the hardware
 - `pokeys.[DevID].PEv2.[PEv2Id].digin.Home.Pin`: Home switch pin (0 for external dedicated input)
 - `pokeys.[DevID].PEv2.[PEv2Id].digin.Home.Filter`: Digital filter for Home switch
 - `pokeys.[DevID].PEv2.[PEv2Id].digin.Home.invert`: Invert Home (PoKeys functionality)
@@ -23,22 +42,6 @@ The `pokeys.[DevID].PEv2` component is designed to interface with PoKeys devices
 - `pokeys.[DevID].PEv2.digin.Emergency.invert`: Invert Emergency (PoKeys functionality)
 - `pokeys.[DevID].PEv2.digin.Probe.Pin`: Probe switch pin
 - `pokeys.[DevID].PEv2.digin.Probe.invert`: Invert Probe (PoKeys functionality)
-
-### Parameters
-
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.Home.Pin`: Specifies the pin number for the Home switch. Set to 0 for an external dedicated input.
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.Home.Filter`: Configures the digital filter for the Home switch to debounce the input signal.
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.Home.invert`: Inverts the Home switch input signal if set to TRUE.
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitN.Pin`: Specifies the pin number for the Limit- switch. Set to 0 for an external dedicated input.
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitN.Filter`: Configures the digital filter for the Limit- switch to debounce the input signal.
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitN.invert`: Inverts the Limit- switch input signal if set to TRUE.
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitP.Pin`: Specifies the pin number for the Limit+ switch. Set to 0 for an external dedicated input.
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitP.Filter`: Configures the digital filter for the Limit+ switch to debounce the input signal.
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitP.invert`: Inverts the Limit+ switch input signal if set to TRUE.
-- `pokeys.[DevID].PEv2.digin.Emergency.Pin`: Specifies the pin number for the Emergency switch.
-- `pokeys.[DevID].PEv2.digin.Emergency.invert`: Inverts the Emergency switch input signal if set to TRUE.
-- `pokeys.[DevID].PEv2.digin.Probe.Pin`: Specifies the pin number for the Probe switch.
-- `pokeys.[DevID].PEv2.digin.Probe.invert`: Inverts the Probe switch input signal if set to TRUE.
 
 ## Examples
 
