@@ -79,3 +79,27 @@ setp pokeys.1.PEv2.digin.Probe.invert FALSE
 ```
 
 By following these examples, you can configure the digital inputs and parameters for the `pokeys.[DevID].PEv2` component to suit your specific requirements.
+
+## Digital Outputs (digouts)
+
+### Pins
+
+- `pokeys.[DevID].PEv2.digout.*`
+  - Description: Digital output pins for the PEv2 component.
+  - Example: `pokeys.0.PEv2.digout.Emergency.out`
+
+### Parameters
+
+- `pokeys.[DevID].PEv2.digout.*.invert`
+  - Description: Invert the digital output signal.
+  - Example: `pokeys.0.PEv2.digout.Emergency.invert`
+
+### Signals
+
+- `pokeys.[DevID].PEv2.digout.*.out`
+  - Description: Digital output signal.
+  - Example: `pokeys.0.PEv2.digout.Emergency.out`
+
+## Conclusion
+
+The PEv2 component in the PoKeys library provides a flexible and powerful way to interface with PoKeys devices. By following the guidelines and examples provided in this document, you can effectively configure and use the PEv2 component in your projects.
