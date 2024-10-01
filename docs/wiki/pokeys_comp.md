@@ -90,3 +90,41 @@ Note that `pokeys.comp` is a UserSpace component rather than a realtime componen
 - `pokeys.[DevID].digin.[PinId].in-not`: Inverted state of the input
 - `pokeys.[DevID].digout.[PinId].out`: Value to be written (possibly inverted) to the hardware output
 - `pokeys.[DevID].digout.[PinId].invert`: If TRUE, out is inverted before writing to the hardware
+
+## PEv2 Digital Input
+
+### Pins
+
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.Home.in`: Home switch input
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitN.in`: Limit- switch input
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitP.in`: Limit+ switch input
+- `pokeys.[DevID].PEv2.digin.Emergency.in`: Emergency switch input
+- `pokeys.[DevID].PEv2.digin.Probe.in`: Probe input
+
+### Parameters
+
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.Home.Pin`: Home switch pin (0 for external dedicated input)
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.Home.Filter`: Digital filter for Home switch
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.Home.invert`: Invert Home (PoKeys functionality)
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitN.Pin`: Limit- switch pin (0 for external dedicated input)
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitN.Filter`: Digital filter for limit- switch
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitN.invert`: Invert limit- (PoKeys functionality)
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitP.Pin`: Limit+ switch pin (0 for external dedicated input)
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitP.Filter`: Digital filter for limit+ switch
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitP.invert`: Invert limit+ (PoKeys functionality)
+- `pokeys.[DevID].PEv2.digin.Emergency.Pin`
+- `pokeys.[DevID].PEv2.digin.Emergency.invert`
+- `pokeys.[DevID].PEv2.digin.Probe.Pin`
+- `pokeys.[DevID].PEv2.digin.Probe.invert`
+
+## kbd48CNC
+
+### Pins
+
+- `pokeys.[DevID].kbd48CNC.[KeyID].Button`: State of the keyboard button
+- `pokeys.[DevID].kbd48CNC.[KeyID].LED`: State of the keyboard LED
+
+### Parameters
+
+- `pokeys.[DevID].kbd48CNC.[KeyID].Button.invert`: If TRUE, Button is inverted before reading from the hardware
+- `pokeys.[DevID].kbd48CNC.[KeyID].LED.invert`: If TRUE, LED is inverted before writing to the hardware
