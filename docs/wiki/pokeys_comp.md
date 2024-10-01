@@ -128,3 +128,48 @@ Note that `pokeys.comp` is a UserSpace component rather than a realtime componen
 
 - `pokeys.[DevID].kbd48CNC.[KeyID].Button.invert`: If TRUE, Button is inverted before reading from the hardware
 - `pokeys.[DevID].kbd48CNC.[KeyID].LED.invert`: If TRUE, LED is inverted before writing to the hardware
+
+## PoKeys device information
+
+### Pins
+- `pokeys.[DevID].devSerial`   // devSerial used in PK_ConnectToDeviceWSerial or PK_ConnectToDeviceWSerial_UDP
+- `pokeys.[DevID].alive`          // status bit it is blinking on/off when operating
+- `pokeys.[DevID].connected`  //gets true when connected
+- `pokeys.[DevID].err`               // gets True oin Errors
+- `pokeys.[DevID].info.PinCount`                        // Number of pins, physically on the device
+- `pokeys.[DevID].info.PWMCount`                        // Number of pins that support PWM output
+- `pokeys.[DevID].info.BasicEncoderCount`               // Number of basic encoders
+- `pokeys.[DevID].info.EncodersCount`                   // Number of encoder slots available
+- `pokeys.[DevID].info.FastEncoders`                    // Number of fast encoders supported
+- `pokeys.[DevID].info.UltraFastEncoders`               // Number of available ultra fast encoders
+- `pokeys.[DevID].info.PWMinternalFrequency`             // Main PWM peripheral clock
+- `pokeys.[DevID].info.AnalogInputs`                    // Number of available analog inputs
+- `pokeys.[DevID].info.KeyMapping`                      // Device supports key mapping (acts as a USB keyboard)
+- `pokeys.[DevID].info.TriggeredKeyMapping`             // Device supports triggered key mapping
+- `pokeys.[DevID].info.KeyRepeatDelay`                  // Device supports user customizable key repeat rates and delays
+- `pokeys.[DevID].info.DigitalCounters`                 // Device supports digital counters
+- `pokeys.[DevID].info.JoystickButtonAxisMapping`       // Device supports mapping of joystick buttons
+- `pokeys.[DevID].info.JoystickAnalogToDigitalMapping`  // Device supports mapping of analog inputs to digital keys
+- `pokeys.[DevID].info.Macros`                          // Device supports customizable macro sequences
+- `pokeys.[DevID].info.MatrixKeyboard`                  // Device supports matrix keyboard
+- `pokeys.[DevID].info.MatrixKeyboardTriggeredMapping`  // Device supports matrix keyboard triggered key mapping
+- `pokeys.[DevID].info.LCD`                             // Device supports alphanumeric LCD display
+- `pokeys.[DevID].info.MatrixLED`                       // Device supports matrix LED display
+- `pokeys.[DevID].info.ConnectionSignal`                // Device supports connection signal output
+- `pokeys.[DevID].info.PoExtBus`                        // Device supports PoExtBus digital outputs
+- `pokeys.[DevID].info.PoNET`                           // Device supports PoNET bus devices
+- `pokeys.[DevID].info.AnalogFiltering`                 // Device supports analog inputs low-pass digital filtering
+- `pokeys.[DevID].info.InitOutputsStart`                // Device supports initializing outputs at startup
+- `pokeys.[DevID].info.protI2C`                         // Device supports I2C bus (master)
+- `pokeys.[DevID].info.prot1wire`                       // Device supports 1-wire bus (master)
+- `pokeys.[DevID].info.AdditionalOptions`               // Device supports additional options with activation keys
+- `pokeys.[DevID].info.LoadStatus`                      // Device supports reporting load status
+- `pokeys.[DevID].info.CustomDeviceName`                // Device supports specifying custom device names
+- `pokeys.[DevID].info.PoTLog27support`                 // Device supports PoTLog27 firmware
+- `pokeys.[DevID].info.SensorList`                      // Device supports sensor lists
+- `pokeys.[DevID].info.WebInterface`                    // Device supports web interface
+- `pokeys.[DevID].info.FailSafeSettings`                // Device supports fail-safe mode
+- `pokeys.[DevID].info.JoystickHATswitch`               // Device supports joystick HAT switch mapping
+- `pokeys.[DevID].info.PulseEngine`                     // Device supports Pulse engine
+- `pokeys.[DevID].info.PulseEnginev2`                   // Device supports Pulse engine v2
+- `pokeys.[DevID].info.EasySensors`                     // Device supports EasySensors
