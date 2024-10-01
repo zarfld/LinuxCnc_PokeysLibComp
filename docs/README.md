@@ -375,3 +375,55 @@ The generated images should be uploaded to the repository's releases or a suitab
 2. **Upload Images**: Upload the generated images to the release.
 
 3. **Provide Download Links**: Include download links for the images in the release notes or related documentation.
+
+## Wiki Structure and Organization
+
+The Wiki is structured and organized according to best practices, making it easy to navigate and find the information you need. The key sections of the Wiki include:
+
+- **Home Page**: A comprehensive entry point with an overview of the repository, key features, and links to important pages.
+- **Table of Contents**: Helps users easily navigate through different sections of the Wiki.
+- **Modular Sections**: Organized content into sections like Getting Started, User Documentation, Developer Documentation, Advanced Topics, FAQ/Troubleshooting.
+
+## Links to Wiki Pages
+
+Here are some critical Wiki pages that you can refer to for detailed documentation:
+
+- [Home Page](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Home)
+- [Table of Contents](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Table_of_Contents)
+- [Getting Started](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Getting_Started)
+- [User Documentation](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/User_Documentation)
+- [Developer Documentation](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Developer_Documentation)
+- [Advanced Topics](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Advanced_Topics)
+- [FAQ/Troubleshooting](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/FAQ_Troubleshooting)
+- [Release Notes](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Release_Notes)
+- [Feature Requests](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Feature_Requests)
+- [Versioning](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Versioning)
+- [Issues and Pull Requests](https://github.com/zarfld/LinuxCnc_PokeysLibComp/wiki/Issues_Pull_Requests)
+
+## Contributing to the Wiki
+
+We encourage contributions to the Wiki to keep it up to date and comprehensive. If you would like to contribute to the Wiki, please follow these guidelines:
+
+1. **Fork the Repository**: Start by forking the repository to your GitHub account.
+2. **Clone the Repository**: Clone the forked repository to your local machine.
+   ```bash
+   git clone https://github.com/your-username/LinuxCnc_PokeysLibComp.git
+   cd LinuxCnc_PokeysLibComp
+   ```
+3. **Create a Branch**: Create a new branch for your Wiki contribution.
+   ```bash
+   git checkout -b wiki/your-wiki-contribution
+   ```
+4. **Make Changes**: Make your changes to the Wiki pages.
+5. **Commit Changes**: Commit your changes with a descriptive commit message.
+   ```bash
+   git add .
+   git commit -m "Update Wiki: your contribution description"
+   ```
+6. **Push Changes**: Push your changes to your forked repository.
+   ```bash
+   git push origin wiki/your-wiki-contribution
+   ```
+7. **Create a Pull Request**: Open a pull request from your forked repository to the main repository.
+
+By following these steps, you can contribute to the Wiki and help improve the documentation for the project.

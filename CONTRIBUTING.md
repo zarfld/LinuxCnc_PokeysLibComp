@@ -188,3 +188,53 @@ When creating or reviewing issues and pull requests, apply the appropriate label
 ### Encouraging New Contributors
 
 We encourage new contributors to look for issues with these labels. If you are a first-time contributor, start by exploring the issues labeled `good first issue`, `beginner friendly`, or `documentation`. These tasks are designed to help you get started with the project and build your confidence as a contributor.
+
+## Contributing to the Wiki
+
+We encourage contributions to the Wiki to keep it up to date and comprehensive. If you would like to contribute to the Wiki, please follow these guidelines:
+
+1. **Fork the Repository**: Start by forking the repository to your GitHub account.
+2. **Clone the Repository**: Clone the forked repository to your local machine.
+   ```bash
+   git clone https://github.com/your-username/LinuxCnc_PokeysLibComp.git
+   cd LinuxCnc_PokeysLibComp
+   ```
+3. **Create a Branch**: Create a new branch for your Wiki contribution.
+   ```bash
+   git checkout -b wiki/your-wiki-contribution
+   ```
+4. **Make Changes**: Make your changes to the Wiki pages.
+5. **Commit Changes**: Commit your changes with a descriptive commit message.
+   ```bash
+   git add .
+   git commit -m "Update Wiki: your contribution description"
+   ```
+6. **Push Changes**: Push your changes to your forked repository.
+   ```bash
+   git push origin wiki/your-wiki-contribution
+   ```
+7. **Create a Pull Request**: Open a pull request from your forked repository to the main repository.
+
+By following these steps, you can contribute to the Wiki and help improve the documentation for the project.
+
+## Guidelines for Editing and Updating the Wiki
+
+To ensure the Wiki remains accurate and up-to-date, please follow these guidelines when editing or updating Wiki pages:
+
+1. **Consistency**: Maintain a consistent style and format across all Wiki pages. Use headings, bullet points, and code blocks where appropriate.
+2. **Clarity**: Write clear and concise content. Avoid jargon and technical terms that may be unfamiliar to new contributors.
+3. **Accuracy**: Ensure that the information you add or update is accurate and reflects the latest changes to the repository.
+4. **References**: Include references to relevant documentation, issues, or pull requests where applicable.
+5. **Review**: Before submitting your changes, review the content for spelling and grammar errors. Consider asking another contributor to review your changes for accuracy and clarity.
+
+## Periodic Reviews of the Wiki Content
+
+To keep the Wiki content accurate and up-to-date, we recommend scheduling periodic reviews. Here are some guidelines for conducting periodic reviews:
+
+1. **Review Schedule**: Establish a regular review schedule (e.g., quarterly) to review and update the Wiki content.
+2. **Assign Reviewers**: Assign specific contributors or teams to review different sections of the Wiki.
+3. **Check for Accuracy**: Verify that the information in the Wiki is accurate and reflects the latest changes to the repository.
+4. **Update Outdated Content**: Identify and update any outdated content, including links, references, and examples.
+5. **Solicit Feedback**: Encourage contributors to provide feedback on the Wiki content and suggest improvements.
+
+By following these guidelines, you can help ensure that the Wiki remains a valuable resource for both new and experienced contributors.
