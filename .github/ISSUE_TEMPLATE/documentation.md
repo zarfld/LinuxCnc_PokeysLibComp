@@ -21,6 +21,18 @@ Provide steps or tips on how to approach the task, including links to relevant d
 **Mentorship**
 Offer to provide mentorship or help if the contributor gets stuck.
 
+**Pipeline Environment**
+Please specify the pipeline environment where the issue was encountered:
+- `dev`
+- `staging`
+- `prod`
+
+**CI Pipeline Stage**
+Please specify the CI pipeline stage where the issue was encountered:
+- `build`
+- `test`
+- `deploy`
+
 **Labels**
 Please select the appropriate label for this documentation task:
 - `good first issue`
@@ -28,3 +40,6 @@ Please select the appropriate label for this documentation task:
 - `help wanted`
 - `documentation`
 - `low-hanging fruit`
+- `in development`
+- `in staging`
+- `in production`

@@ -12,13 +12,21 @@ LABELS_KEYWORDS = {
     "documentation": ["README", "docs", "documentation"],
     "help wanted": ["help"],
     "bug": ["bug", "error", "issue"],
-    "enhancement": ["feature", "enhancement", "improvement"]
+    "enhancement": ["feature", "enhancement", "improvement"],
+    "pending CI": ["pending CI"],
+    "passed CI": ["passed CI"],
+    "failed CI": ["failed CI"],
+    "in development": ["in development"],
+    "in staging": ["in staging"],
+    "in production": ["in production"]
 }
 
 MILESTONES_KEYWORDS = {
     "Bug Fixes": ["bug", "error", "issue"],
     "Feature Requests": ["feature", "enhancement", "improvement"],
-    "Documentation": ["README", "docs", "documentation"]
+    "Documentation": ["README", "docs", "documentation"],
+    "v1.0 release": ["v1.0 release"],
+    "production rollout": ["production rollout"]
 }
 
 PROJECTS_KEYWORDS = {

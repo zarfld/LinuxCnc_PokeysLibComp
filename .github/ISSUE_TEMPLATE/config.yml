@@ -9,3 +9,20 @@ contact_links:
   - name: Documentation Task
     url: https://github.com/zarfld/LinuxCnc_PokeysLibComp/issues/new?template=documentation.md
     about: Contribute to the documentation
+milestones:
+  - name: v1.0 release
+    description: Milestone for the v1.0 release of the project
+    due_on: 2023-12-31T23:59:59Z
+  - name: production rollout
+    description: Milestone for the production rollout phase
+    due_on: 2024-03-31T23:59:59Z
+labels:
+  - name: in development
+    color: '#1d76db'
+    description: Issues being handled in the development environment
+  - name: in staging
+    color: '#e4e669'
+    description: Issues being handled in the staging environment
+  - name: in production
+    color: '#0e8a16'
+    description: Issues being handled in the production environment

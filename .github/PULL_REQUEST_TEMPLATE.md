@@ -37,6 +37,19 @@ Put an `x` in all the boxes that apply:
 - [ ] I have read the **CONTRIBUTING** document.
 - [ ] I have added tests to cover my changes.
 - [ ] All new and existing tests passed.
+- [ ] All CI checks have passed before merging.
+
+**CI Pipeline Stage**
+Please specify the CI pipeline stage where the changes were tested:
+- `build`
+- `test`
+- `deploy`
+
+**Pipeline Environment**
+Please specify the pipeline environment where the changes were tested:
+- `dev`
+- `staging`
+- `prod`
 
 **Labels**
 Please select the appropriate label for this pull request:
