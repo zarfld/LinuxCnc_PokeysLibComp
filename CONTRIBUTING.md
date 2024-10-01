@@ -11,6 +11,7 @@ Thank you for considering contributing to the LinuxCnc_PokeysLibComp project! We
 5. [Submitting Pull Requests](#submitting-pull-requests)
 6. [Branch Naming Conventions](#branch-naming-conventions)
 7. [License](#license)
+8. [Telemetry Collection](#telemetry-collection)
 
 ## Code of Conduct
 
@@ -238,3 +239,25 @@ To keep the Wiki content accurate and up-to-date, we recommend scheduling period
 5. **Solicit Feedback**: Encourage contributors to provide feedback on the Wiki content and suggest improvements.
 
 By following these guidelines, you can help ensure that the Wiki remains a valuable resource for both new and experienced contributors.
+
+## Telemetry Collection
+
+The LinuxCnc_PokeysLibComp project includes telemetry collection to gather usage and error data. This helps us improve the project by identifying common issues and performance bottlenecks. We use Sentry for error tracking and performance metrics.
+
+### Opt-In/Opt-Out Mechanism
+
+To comply with privacy regulations, we provide an opt-in/opt-out mechanism for telemetry collection. You can enable or disable telemetry in the application settings.
+
+### Enabling Telemetry
+
+To enable telemetry, set the `telemetry_opt_in` setting to `true` in the application settings.
+
+### Disabling Telemetry
+
+To disable telemetry, set the `telemetry_opt_in` setting to `false` in the application settings.
+
+### Privacy Compliance
+
+We are committed to protecting your privacy. The telemetry data collected is anonymized and used solely for improving the project. We do not share this data with third parties.
+
+For more information on our privacy practices, please refer to the [Privacy Policy](PRIVACY_POLICY.md).
