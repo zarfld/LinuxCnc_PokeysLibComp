@@ -213,3 +213,38 @@ The following INI entries are relevant for the PEv2 description and have been do
 - `PEv2_AxisEnableOutputPins_6=0`
 - `PEv2_Feedback_Encoder_Id_6=0`
 - `PEv2_InvertAxisEnable_6=1`
+
+## Detailed Digital Inputs and Outputs
+
+### Digital Inputs
+
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitN.in`
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitP.in`
+- `pokeys.[DevID].PEv2.[PEv2Id].digin.Home.in`
+- `pokeys.[DevID].PEv2.digin.Emergency.in`
+- `pokeys.[DevID].digin.[PinId].in`
+- `pokeys.[DevID].digin.[PinId].in-not`
+
+### Digital Outputs
+
+- `pokeys.[DevID].PEv2.digout.Emergency.out`
+- `pokeys.[DevID].PEv2.digout.AxisEnable.out`
+- `pokeys.[DevID].PEv2.digout.ExternalRelay-0.out`
+- `pokeys.[DevID].digout.[PinId].out`
+
+## Crosscheck with HAL and INI Files
+
+The following HAL and INI files have been crosschecked for relevant information:
+
+- `Pokeys57CNC_DM542_XXYZ_mill.hal`
+- `Pokeys57CNC_DM542_XXYZ_mill.ini`
+- `postgui_call_list.hal`
+- `pokeys.comp`
+
+## Comments and Additional Descriptions
+
+The comments in the INI and HAL files have been used to provide additional descriptions and usage examples for the PEv2 component. These comments help in understanding the possible values and configurations for the PEv2 component.
+
+## Conclusion
+
+The PEv2 component in the PoKeys library provides a flexible and powerful way to interface with PoKeys devices. By following the guidelines and examples provided in this document, you can effectively configure and use the PEv2 component in your projects.
