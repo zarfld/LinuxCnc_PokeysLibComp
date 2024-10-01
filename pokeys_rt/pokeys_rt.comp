@@ -56,6 +56,9 @@ pin out bit info.PulseEngine;
 pin out bit info.PulseEnginev2;
 pin out bit info.EasySensors;
 
+pin out bit pokeys.[DevID].PoExtBus.[PoExtBusId]digin.[PinID].in;
+pin out bit pokeys.[DevID].PoExtBus.[PoExtBusId]digin.[PinID].in-not;
+
 license "GPL";
 author "Dominik Zarfl";
 option homemod;
