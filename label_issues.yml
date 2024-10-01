@@ -28,3 +28,17 @@ jobs:
       run: python label_issues.py
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Assign milestones, projects, and assignees
+      run: |
+        python label_issues.py --assign-milestones
+        python label_issues.py --assign-projects
+        python label_issues.py --assign-assignees
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Error handling and logging
+      run: |
+        python label_issues.py --log-errors
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

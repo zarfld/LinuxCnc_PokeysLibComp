@@ -2,8 +2,10 @@
 name: Documentation task
 about: Create a task for contributing to documentation
 title: ''
-labels: ''
-assignees: ''
+labels: 'documentation'
+assignees: '@username'
+milestones: 'Documentation'
+projects: 'Project Board'
 
 ---
 
