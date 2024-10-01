@@ -2,8 +2,10 @@
 name: Feature request
 about: Suggest an idea for this project
 title: ''
-labels: ''
-assignees: ''
+labels: 'enhancement'
+assignees: '@username'
+milestones: 'Feature Requests'
+projects: 'Project Board'
 
 ---
 
