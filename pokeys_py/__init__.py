@@ -9,3 +9,9 @@ if os.getenv('CI') == 'true':
 else:
     import ctypes
     pokeyslib = ctypes.CDLL('/usr/lib/linuxcnc/modules/PoKeysLib.so')
+
+from .telemetry import Telemetry
+
+# Initialize telemetry collection if the user has opted in
+telemetry = Telemetry(dsn="your_sentry_dsn_here", opt_in=True)
+telemetry.initialize_sentry()

@@ -48,6 +48,9 @@ Please specify the CI pipeline stage where the issue was encountered:
 - `test`
 - `deploy`
 
+**Telemetry Data**
+If you have opted in for telemetry, please attach the relevant telemetry data to help us diagnose the issue.
+
 **Additional context**
 Add any other context about the problem here.
 

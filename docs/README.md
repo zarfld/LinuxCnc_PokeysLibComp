@@ -427,3 +427,25 @@ We encourage contributions to the Wiki to keep it up to date and comprehensive. 
 7. **Create a Pull Request**: Open a pull request from your forked repository to the main repository.
 
 By following these steps, you can contribute to the Wiki and help improve the documentation for the project.
+
+## Telemetry Collection and Privacy Compliance
+
+The LinuxCnc_PokeysLibComp project includes telemetry collection to gather usage and error data. This helps us improve the project by identifying common issues and performance bottlenecks. We use Sentry for error tracking and performance metrics.
+
+### Opt-In/Opt-Out Mechanism
+
+To comply with privacy regulations, we provide an opt-in/opt-out mechanism for telemetry collection. You can enable or disable telemetry in the application settings.
+
+### Enabling Telemetry
+
+To enable telemetry, set the `telemetry_opt_in` setting to `true` in the application settings.
+
+### Disabling Telemetry
+
+To disable telemetry, set the `telemetry_opt_in` setting to `false` in the application settings.
+
+### Privacy Compliance
+
+We are committed to protecting your privacy. The telemetry data collected is anonymized and used solely for improving the project. We do not share this data with third parties.
+
+For more information on our privacy practices, please refer to the [Privacy Policy](PRIVACY_POLICY.md).
