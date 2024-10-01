@@ -652,8 +652,6 @@ Mocked `pokeyslib.h` (identical to the real header):
 typedef struct sPoKeysDevice_Info {
     char deviceName[32];
     uint32_t serialNumber;
-    uint8_t deviceID;
-    uint8_t deviceType;
     uint88 firmwareVersionMajor;
     uint8_t firmwareVersionMinor;
     uint8_t numberOfPins;
@@ -838,3 +836,13 @@ Use GitHub Discussions for:
 By using GitHub Discussions effectively, we can build a stronger community around the project and make the repository more welcoming to both new and experienced users.
 
 You can access the GitHub Discussions for this repository [here](https://github.com/zarfld/LinuxCnc_PokeysLibComp/discussions).
+
+## Sponsorship
+
+We appreciate your interest in supporting the LinuxCnc_PokeysLibComp project! Your sponsorship helps us continue to develop and maintain this project. Here are some ways you can sponsor us:
+
+- **GitHub Sponsors**: You can sponsor us directly through GitHub Sponsors. Visit our [GitHub Sponsors page](https://github.com/sponsors/zarfld) to learn more and become a sponsor.
+- **Patreon**: Support us on Patreon by becoming a patron. Visit our [Patreon page](https://www.patreon.com/zarfld) to learn more and contribute.
+- **PayPal**: Make a one-time donation via PayPal. Visit our [PayPal donation page](https://www.paypal.com/donate?hosted_button_id=XXXXXXX) to contribute.
+
+Thank you for your support!
