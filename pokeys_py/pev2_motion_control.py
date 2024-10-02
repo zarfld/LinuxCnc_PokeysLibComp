@@ -91,3 +91,15 @@ class PEv2MotionControl:
             self.set_position(axis, 0)  # Example position value
         else:
             self.cancel_homing(axis)
+
+    def add_pins(self):
+        """
+        Add missing pins and parameters for PEv2.
+        """
+        self.pokeyslib.PK_PEv2_AddPins(self.device)
+
+    def handle_new_pins(self):
+        """
+        Implement methods to handle new pins and parameters.
+        """
+        self.pokeyslib.PK_PEv2_HandleNewPins(self.device)

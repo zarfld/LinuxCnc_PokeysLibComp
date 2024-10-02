@@ -164,5 +164,15 @@ class TestPEv2MotionControl(unittest.TestCase):
             self.assertEqual(homing_status, 11, f"Homing status pin {i} expected 11 but got {homing_status}")
             self.pev2_motion_control.cancel_homing(i)
 
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_add_pins(self, mock_pokeyslib):
+        self.pev2_motion_control.add_pins()
+        mock_pokeyslib.PK_PEv2_AddPins.assert_called_once_with(self.device)
+
+    @patch('pokeys_py.pev2_motion_control.pokeyslib')
+    def test_handle_new_pins(self, mock_pokeyslib):
+        self.pev2_motion_control.handle_new_pins()
+        mock_pokeyslib.PK_PEv2_HandleNewPins.assert_called_once_with(self.device)
+
 if __name__ == '__main__':
     unittest.main()
