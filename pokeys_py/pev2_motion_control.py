@@ -1005,4 +1005,21 @@ class PEv2MotionControl:
         """
         self.pokeyslib.PK_PEv2_SetDiginProbeInvert(self.device, invert)
 
-    def get_digin_probe
+    def get_digin_probe_invert(self):
+        """
+        Get the digital input probe invert.
+        :return: Invert value
+        """
+        return self.pokeyslib.PK_PEv2_GetDiginProbeInvert(self.device)
+
+    def update_input_pins(self):
+        """
+        Update input pins based on corresponding pointers in pokeyslib.
+        """
+        self.pokeyslib.PK_PEv2_UpdateInputPins(self.device)
+
+    def update_output_pins(self):
+        """
+        Update pokeyslib pointers based on corresponding output pins.
+        """
+        self.pokeyslib.PK_PEv2_UpdateOutputPins(self.device)
