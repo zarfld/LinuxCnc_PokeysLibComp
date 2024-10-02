@@ -795,4 +795,297 @@ The PEv2 component in the PoKeys library provides a flexible and powerful way to
 - `pokeys.[DevID].PEv2.[PEv2ID].digin.SoftLimit.PosMin[8]`
 - `pokeys.[DevID].PEv2.[PEv2ID].digin.SoftLimit.PosMax[8]`
 - `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.Offset[8]`
-- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitN
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitN.Pin [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitN.Filter[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitN.invert[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitP.Pin[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitP.Filter[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitP.invert[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digout.AxisEnable.Pin[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digout.AxisEnable.invert[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.Pin[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.Filter[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.invert[8]`
+
+## Developer Description
+
+### PEv2 Information
+
+#### Pins
+
+- `pokeys.[DevID].PEv2.nrOfAxes`
+- `pokeys.[DevID].PEv2.maxPulseFrequency`
+- `pokeys.[DevID].PEv2.bufferDepth`
+- `pokeys.[DevID].PEv2.slotTiming`
+- `pokeys.[DevID].PEv2.digin.Emergency.in`
+- `pokeys.[DevID].PEv2.digin.Emergency.in-not`
+- `pokeys.[DevID].PEv2.PulseEngineEnabled`
+- `pokeys.[DevID].PEv2.PulseGeneratorType`
+- `pokeys.[DevID].PEv2.PG_swap_stepdir`
+- `pokeys.[DevID].PEv2.PG_extended_io`
+- `pokeys.[DevID].PEv2.ChargePumpEnabled`
+- `pokeys.[DevID].PEv2.PulseEngineActivated`
+- `pokeys.[DevID].PEv2.PulseEngineState`
+- `pokeys.[DevID].PEv2.MiscInputStatus`
+- `pokeys.[DevID].PEv2.digin.Misc-#.in[8]`
+- `pokeys.[DevID].PEv2.digin.Misc-#.in-not[8]`
+- `pokeys.[DevID].PEv2.LimitOverride`
+- `pokeys.[DevID].PEv2.LimitOverrideSetup`
+- `pokeys.[DevID].PEv2.digin.Probed.in`
+- `pokeys.[DevID].PEv2.digout.Emergency.out`
+- `pokeys.[DevID].PEv2.AxisEnabledMask`
+- `pokeys.[DevID].PEv2.AxisEnabledStatesMask`
+- `pokeys.[DevID].PEv2.ExternalRelayOutputs`
+- `pokeys.[DevID].PEv2.ExternalOCOutputs`
+- `pokeys.[DevID].PEv2.digout.ExternalRelay-#.out[4]`
+- `pokeys.[DevID].PEv2.digout.ExternalOC-#.out[4]`
+- `pokeys.[DevID].PEv2.HomingStartMaskSetup`
+- `pokeys.[DevID].PEv2.ProbeStartMaskSetup`
+- `pokeys.[DevID].PEv2.ProbeStatus`
+- `pokeys.[DevID].PEv2.ProbeSpeed`
+- `pokeys.[DevID].PEv2.BacklashCompensationEnabled`
+
+#### Parameters
+
+- `pokeys.[DevID].PEv2.digin.Emergency.Pin`
+- `pokeys.[DevID].PEv2.digin.Emergency.invert`
+- `pokeys.[DevID].PEv2.digout.Emergency.Pin`
+- `pokeys.[DevID].PEv2.digin.Probe.Pin`
+- `pokeys.[DevID].PEv2.digin.Probe.invert`
+
+### PEv2 Information - For Each Axis
+
+#### Pins
+
+- `pokeys.[DevID].PEv2.[PEv2ID].AxesState [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].AxesConfig [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].AxesSwitchConfig [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].SoftLimitMaximum [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].SoftLimitMinimum [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].HomingSpeed [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].HomingReturnSpeed [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].HomingAlgorithm[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].HomeOffsets [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].ProbePosition [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].ProbeMaxPosition [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].CurrentPosition [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].PositionSetup [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].ReferencePositionSpeed [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].MaxSpeed [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].MaxAcceleration [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].MPGjogMultiplier [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].MPGjogEncoder [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].MPGjogDivider[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitN.in[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitN.in-not[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitN.DedicatedInput[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitP.in[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitP.in-not[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitP.DedicatedInput[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digout.AxisEnable.out[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.in[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.in-not[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.DedicatedInput[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].HomeBackOffDistance [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Error.in[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Error.in-not[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Probe.in[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Probe.in-not[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.SoftLimit.in[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digout.AxisEnabled.out[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.AxisEnabled.in[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digout.LimitOverride.out[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].BacklashWidth [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].BacklashRegister [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].BacklashAcceleration [8]`
+
+#### Parameters
+
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.SoftLimit.PosMin[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.SoftLimit.PosMax[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.Offset[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitN.Pin [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitN.Filter[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitN.invert[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitP.Pin[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitP.Filter[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitP.invert[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digout.AxisEnable.Pin[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digout.AxisEnable.invert[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.Pin[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.Filter[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.invert[8]`
+
+## Developer Description
+
+### PEv2 Information
+
+#### Pins
+
+- `pokeys.[DevID].PEv2.nrOfAxes`
+- `pokeys.[DevID].PEv2.maxPulseFrequency`
+- `pokeys.[DevID].PEv2.bufferDepth`
+- `pokeys.[DevID].PEv2.slotTiming`
+- `pokeys.[DevID].PEv2.digin.Emergency.in`
+- `pokeys.[DevID].PEv2.digin.Emergency.in-not`
+- `pokeys.[DevID].PEv2.PulseEngineEnabled`
+- `pokeys.[DevID].PEv2.PulseGeneratorType`
+- `pokeys.[DevID].PEv2.PG_swap_stepdir`
+- `pokeys.[DevID].PEv2.PG_extended_io`
+- `pokeys.[DevID].PEv2.ChargePumpEnabled`
+- `pokeys.[DevID].PEv2.PulseEngineActivated`
+- `pokeys.[DevID].PEv2.PulseEngineState`
+- `pokeys.[DevID].PEv2.MiscInputStatus`
+- `pokeys.[DevID].PEv2.digin.Misc-#.in[8]`
+- `pokeys.[DevID].PEv2.digin.Misc-#.in-not[8]`
+- `pokeys.[DevID].PEv2.LimitOverride`
+- `pokeys.[DevID].PEv2.LimitOverrideSetup`
+- `pokeys.[DevID].PEv2.digin.Probed.in`
+- `pokeys.[DevID].PEv2.digout.Emergency.out`
+- `pokeys.[DevID].PEv2.AxisEnabledMask`
+- `pokeys.[DevID].PEv2.AxisEnabledStatesMask`
+- `pokeys.[DevID].PEv2.ExternalRelayOutputs`
+- `pokeys.[DevID].PEv2.ExternalOCOutputs`
+- `pokeys.[DevID].PEv2.digout.ExternalRelay-#.out[4]`
+- `pokeys.[DevID].PEv2.digout.ExternalOC-#.out[4]`
+- `pokeys.[DevID].PEv2.HomingStartMaskSetup`
+- `pokeys.[DevID].PEv2.ProbeStartMaskSetup`
+- `pokeys.[DevID].PEv2.ProbeStatus`
+- `pokeys.[DevID].PEv2.ProbeSpeed`
+- `pokeys.[DevID].PEv2.BacklashCompensationEnabled`
+
+#### Parameters
+
+- `pokeys.[DevID].PEv2.digin.Emergency.Pin`
+- `pokeys.[DevID].PEv2.digin.Emergency.invert`
+- `pokeys.[DevID].PEv2.digout.Emergency.Pin`
+- `pokeys.[DevID].PEv2.digin.Probe.Pin`
+- `pokeys.[DevID].PEv2.digin.Probe.invert`
+
+### PEv2 Information - For Each Axis
+
+#### Pins
+
+- `pokeys.[DevID].PEv2.[PEv2ID].AxesState [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].AxesConfig [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].AxesSwitchConfig [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].SoftLimitMaximum [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].SoftLimitMinimum [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].HomingSpeed [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].HomingReturnSpeed [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].HomingAlgorithm[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].HomeOffsets [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].ProbePosition [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].ProbeMaxPosition [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].CurrentPosition [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].PositionSetup [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].ReferencePositionSpeed [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].MaxSpeed [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].MaxAcceleration [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].MPGjogMultiplier [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].MPGjogEncoder [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].MPGjogDivider[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitN.in[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitN.in-not[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitN.DedicatedInput[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitP.in[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitP.in-not[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitP.DedicatedInput[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digout.AxisEnable.out[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.in[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.in-not[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.DedicatedInput[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].HomeBackOffDistance [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Error.in[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Error.in-not[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Probe.in[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Probe.in-not[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.SoftLimit.in[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digout.AxisEnabled.out[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.AxisEnabled.in[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digout.LimitOverride.out[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].BacklashWidth [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].BacklashRegister [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].BacklashAcceleration [8]`
+
+#### Parameters
+
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.SoftLimit.PosMin[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.SoftLimit.PosMax[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.Offset[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitN.Pin [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitN.Filter[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitN.invert[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitP.Pin[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitP.Filter[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitP.invert[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digout.AxisEnable.Pin[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digout.AxisEnable.invert[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.Pin[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.Filter[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.invert[8]`
+
+## Developer Description
+
+### PEv2 Information
+
+#### Pins
+
+- `pokeys.[DevID].PEv2.nrOfAxes`
+- `pokeys.[DevID].PEv2.maxPulseFrequency`
+- `pokeys.[DevID].PEv2.bufferDepth`
+- `pokeys.[DevID].PEv2.slotTiming`
+- `pokeys.[DevID].PEv2.digin.Emergency.in`
+- `pokeys.[DevID].PEv2.digin.Emergency.in-not`
+- `pokeys.[DevID].PEv2.PulseEngineEnabled`
+- `pokeys.[DevID].PEv2.PulseGeneratorType`
+- `pokeys.[DevID].PEv2.PG_swap_stepdir`
+- `pokeys.[DevID].PEv2.PG_extended_io`
+- `pokeys.[DevID].PEv2.ChargePumpEnabled`
+- `pokeys.[DevID].PEv2.PulseEngineActivated`
+- `pokeys.[DevID].PEv2.PulseEngineState`
+- `pokeys.[DevID].PEv2.MiscInputStatus`
+- `pokeys.[DevID].PEv2.digin.Misc-#.in[8]`
+- `pokeys.[DevID].PEv2.digin.Misc-#.in-not[8]`
+- `pokeys.[DevID].PEv2.LimitOverride`
+- `pokeys.[DevID].PEv2.LimitOverrideSetup`
+- `pokeys.[DevID].PEv2.digin.Probed.in`
+- `pokeys.[DevID].PEv2.digout.Emergency.out`
+- `pokeys.[DevID].PEv2.AxisEnabledMask`
+- `pokeys.[DevID].PEv2.AxisEnabledStatesMask`
+- `pokeys.[DevID].PEv2.ExternalRelayOutputs`
+- `pokeys.[DevID].PEv2.ExternalOCOutputs`
+- `pokeys.[DevID].PEv2.digout.ExternalRelay-#.out[4]`
+- `pokeys.[DevID].PEv2.digout.ExternalOC-#.out[4]`
+- `pokeys.[DevID].PEv2.HomingStartMaskSetup`
+- `pokeys.[DevID].PEv2.ProbeStartMaskSetup`
+- `pokeys.[DevID].PEv2.ProbeStatus`
+- `pokeys.[DevID].PEv2.ProbeSpeed`
+- `pokeys.[DevID].PEv2.BacklashCompensationEnabled`
+
+#### Parameters
+
+- `pokeys.[DevID].PEv2.digin.Emergency.Pin`
+- `pokeys.[DevID].PEv2.digin.Emergency.invert`
+- `pokeys.[DevID].PEv2.digout.Emergency.Pin`
+- `pokeys.[DevID].PEv2.digin.Probe.Pin`
+- `pokeys.[DevID].PEv2.digin.Probe.invert`
+
+### PEv2 Information - For Each Axis
+
+#### Pins
+
+- `pokeys.[DevID].PEv2.[PEv2ID].AxesState [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].AxesConfig [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].AxesSwitchConfig [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].SoftLimitMaximum [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].SoftLimitMinimum [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].HomingSpeed [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].HomingReturnSpeed [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].HomingAlgorithm[8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].HomeOffsets [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].ProbePosition [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].ProbeMaxPosition [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].CurrentPosition [8]`
+- `pokeys.[DevID].PEv2.[PEv2ID].PositionSetup [8]`
+- `pokeys.[DevID].PEv2.[PE

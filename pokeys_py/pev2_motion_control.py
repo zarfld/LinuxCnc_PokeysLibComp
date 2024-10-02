@@ -1023,3 +1023,34 @@ class PEv2MotionControl:
         Update pokeyslib pointers based on corresponding output pins.
         """
         self.pokeyslib.PK_PEv2_UpdateOutputPins(self.device)
+
+    def ensure_required_enabled_pins(self):
+        """
+        Ensure pins for required and enabled axes are created only.
+        """
+        for axis in range(len(self.device.Axes)):
+            if self.device.Axes[axis].enabled:
+                self.create_required_pins(axis)
+
+    def create_required_pins(self, axis):
+        """
+        Create required pins for an axis.
+        :param axis: Axis number
+        """
+        self.pokeyslib.PK_PEv2_CreateRequiredPins(self.device, axis)
+
+    def update_input_pins(self):
+        """
+        Update input pins based on corresponding pointers in pokeyslib.
+        """
+        for axis in range(len(self.device.Axes)):
+            self.device.Axes[axis].position_fb = self.pokeyslib.PK_PEv2_GetPosition(self.device, axis)
+            self.device.Axes[axis].homing_status = self.pokeyslib.PK_PEv2_GetHomingStatus(self.device, axis)
+
+    def update_output_pins(self):
+        """
+        Update pokeyslib pointers based on corresponding output pins.
+        """
+        for axis in range(len(self.device.Axes)):
+            self.pokeyslib.PK_PEv2_SetPosition(self.device, axis, self.device.Axes[axis].position_cmd)
+            self.pokeyslib.PK_PEv2_SetVelocity(self.device, axis, self.device.Axes[axis].velocity_cmd)
