@@ -156,6 +156,11 @@ pin in unsigned pokeys.[DevID].PEv2.[PEv2ID].digin.Home.Pin[8];
 pin in unsigned pokeys.[DevID].PEv2.[PEv2ID].digin.Home.Filter[8];
 pin in unsigned pokeys.[DevID].PEv2.[PEv2ID].digin.Home.invert[8];
 
+pin out bit pokeys.[DevID].digin.[PinID].in;
+pin out bit pokeys.[DevID].digin.[PinID].in-not;
+pin out bit pokeys.[DevID].digout.[PinID].out;
+pin out bit pokeys.[DevID].digout.[PinID].out-not;
+
 license "GPL";
 author "Dominik Zarfl";
 option homemod;

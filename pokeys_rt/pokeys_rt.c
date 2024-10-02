@@ -58,6 +58,11 @@ pin out bit info.PulseEngine;
 pin out bit info.PulseEnginev2;
 pin out bit info.EasySensors;
 
+pin out bit pokeys.[DevID].digin.[PinID].in;
+pin out bit pokeys.[DevID].digin.[PinID].in-not;
+pin out bit pokeys.[DevID].digout.[PinID].out;
+pin out bit pokeys.[DevID].digout.[PinID].out-not;
+
 license "GPL";
 author "Dominik Zarfl";
 option homemod;
