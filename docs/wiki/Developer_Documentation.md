@@ -716,4 +716,382 @@ POKEYSDECL int32_t PK_PEv2_PulseEngineMove(sPoKeysDevice * device);
 // Execute the move in PV (position-velocity) mode. Position is specified by the ReferencePositionSpeed, relative velocity by ReferenceVelocityPV - requires FW 4.4.7 or newer
 POKEYSDECL int32_t PK_PEv2_PulseEngineMovePV(sPoKeysDevice * device);
 // Read external outputs state - save them to ExternalRelayOutputs and ExternalOCOutputs
-POKEYSDECL int32_t PK_PEv2_ExternalOutputsGet(s
+POKEYSDECL int32_t PK_PEv2_ExternalOutputsGet(sPoKeysDevice * device);
+// Set external outputs state (from ExternalRelayOutputs and ExternalOCOutputs)
+POKEYSDECL int32_t PK_PEv2_ExternalOutputsSet(sPoKeysDevice * device);
+// Transfer motion buffer to device. The number of new entries (newMotionBufferEntries) must be specified
+// The number of accepted entries is saved to motionBufferEntriesAccepted.
+// In addition, pulse engine state is read (PEv2_GetStatus)
+POKEYSDECL int32_t PK_PEv2_BufferFill(sPoKeysDevice * device);
+POKEYSDECL int32_t PK_PEv2_BufferFill_16(sPoKeysDevice * device);
+POKEYSDECL int32_t PK_PEv2_BufferFillLarge(sPoKeysDevice * device);
+POKEYSDECL int32_t PK_PEv2_BufferFillLarge_16(sPoKeysDevice * device);
+// Clear motion buffer in device
+POKEYSDECL int32_t PK_PEv2_BufferClear(sPoKeysDevice * device);
+// Reboot pulse engine v2
+POKEYSDECL int32_t PK_PEv2_PulseEngineReboot(sPoKeysDevice * device);
+// Start the homing procedure. Home offsets must be provided in the HomeOffsets
+// Axes to home are selected as bit-mapped HomingStartMaskSetup value
+POKEYSDECL int32_t PK_PEv2_HomingStart(sPoKeysDevice * device);
+// Finish the homing procedure
+POKEYSDECL int32_t PK_PEv2_HomingFinish(sPoKeysDevice * device);
+// Star the probing procedure.
+// ProbeMaxPosition defines the maximum position in position ticks where probing error will be thrown
+// ProbeSpeed defines the probing speed (1 = max speed)
+// ProbeInput defines the extenal input (values 1-8) or PoKeys pin (0-based Pin ID + 9)
+// ProbeInputPolarity defines the polarity of the probe signal
+POKEYSDECL int32_t PK_PEv2_ProbingStart(sPoKeysDevice * device);
+POKEYSDECL int32_t PK_PEv2_ProbingHybridStart(sPoKeysDevice * device);
+// Finish the probing procedure. Probe position and status are saved to ProbePosition and ProbeStatus
+POKEYSDECL int32_t PK_PEv2_ProbingFinish(sPoKeysDevice * device);
+// Same as previous command, except for pulse engine states not being reset to 'STOPPED'
+POKEYSDECL int32_t PK_PEv2_ProbingFinishSimple(sPoKeysDevice * device);
+POKEYSDECL int32_t PK_PEv2_SyncedPWMSetup(sPoKeysDevice * device, uint8_t enabled, uint8_t srcAxis, uint8_t dstPWMChannel);
+POKEYSDECL int32_t PK_PEv2_SyncOutputsSetup(sPoKeysDevice * device);
+
+// Get/Set internal motor drivers parameters
+POKEYSDECL int32_t PK_PEv2_InternalDriversConfigurationGet(sPoKeysDevice * device);
+POKEYSDECL int32_t PK_PEv2_InternalDriversConfigurationSet(sPoKeysDevice * device);
+
+POKEYSDECL int32_t PK_PEv2_ThreadingPrepareForTrigger(sPoKeysDevice * device);
+POKEYSDECL int32_t PK_PEv2_ThreadingForceTriggerReady(sPoKeysDevice * device);
+POKEYSDECL int32_t PK_PEv2_ThreadingTrigger(sPoKeysDevice * device);
+POKEYSDECL int32_t PK_PEv2_ThreadingRelease(sPoKeysDevice * device);
+POKEYSDECL int32_t PK_PEv2_ThreadingStatusGet(sPoKeysDevice * device);
+POKEYSDECL int32_t PK_PEv2_ThreadingCancel(sPoKeysDevice * device);
+POKEYSDECL int32_t PK_PEv2_ThreadingSetup(sPoKeysDevice * device, uint8_t sensorMode, uint16_t ticksPerRevolution, uint16_t tagetSpindleRPM, uint16_t filterGainSpeed, uint16_t filterGainPosition);
+
+POKEYSDECL int32_t PK_PEv2_BacklashCompensationSettings_Get(sPoKeysDevice * device);
+POKEYSDECL int32_t PK_PEv2_BacklashCompensationSettings_Set(sPoKeysDevice * device);
+```
+
+## Examples and Usage Information for PEv2 Commands and Enumerations
+
+### Example Usage of PEv2 Commands
+
+#### 1. **PK_PEv2_StatusGet**
+
+```c
+sPoKeysDevice device;
+int32_t status = PK_PEv2_StatusGet(&device);
+if (status == PK_OK) {
+    // Process the status information
+    uint8_t pulseEngineState = device.PEv2.PulseEngineState;
+    // Further processing...
+}
+```
+
+#### 2. **PK_PEv2_PulseEngineSetup**
+
+```c
+sPoKeysDevice device;
+device.PEv2.PulseEngineEnabled = 1;
+device.PEv2.ChargePumpEnabled = 1;
+device.PEv2.PulseGeneratorType = 0;
+device.PEv2.PulseEngineBufferSize = 64;
+device.PEv2.EmergencySwitchPolarity = 0;
+device.PEv2.AxisEnabledStatesMask = 0xFF;
+
+int32_t setupStatus = PK_PEv2_PulseEngineSetup(&device);
+if (setupStatus == PK_OK) {
+    // Pulse engine setup successful
+}
+```
+
+#### 3. **PK_PEv2_AxisConfigurationGet**
+
+```c
+sPoKeysDevice device;
+device.PEv2.param1 = 0; // Axis ID
+
+int32_t configStatus = PK_PEv2_AxisConfigurationGet(&device);
+if (configStatus == PK_OK) {
+    // Process the axis configuration
+    uint8_t axisConfig = device.PEv2.AxesConfig[0];
+    // Further processing...
+}
+```
+
+#### 4. **PK_PEv2_AxisConfigurationSet**
+
+```c
+sPoKeysDevice device;
+device.PEv2.param1 = 0; // Axis ID
+device.PEv2.AxesConfig[0] = PK_AC_ENABLED | PK_AC_SOFT_LIMIT_ENABLED;
+device.PEv2.AxesSwitchConfig[0] = PK_ASO_SWITCH_LIMIT_N | PK_ASO_SWITCH_HOME;
+device.PEv2.PinHomeSwitch[0] = 1;
+device.PEv2.PinLimitMSwitch[0] = 2;
+device.PEv2.PinLimitPSwitch[0] = 3;
+device.PEv2.HomingSpeed[0] = 50;
+device.PEv2.HomingReturnSpeed[0] = 25;
+device.PEv2.MPGjogEncoder[0] = 1;
+device.PEv2.MaxSpeed[0] = 1000.0f;
+device.PEv2.MaxAcceleration[0] = 500.0f;
+device.PEv2.MaxDecceleration[0] = 500.0f;
+device.PEv2.SoftLimitMinimum[0] = -10000;
+device.PEv2.SoftLimitMaximum[0] = 10000;
+device.PEv2.MPGjogMultiplier[0] = 1;
+device.PEv2.AxisEnableOutputPins[0] = 1;
+device.PEv2.InvertAxisEnable[0] = 0;
+device.PEv2.FilterLimitMSwitch[0] = 0;
+device.PEv2.FilterLimitPSwitch[0] = 0;
+device.PEv2.FilterHomeSwitch[0] = 0;
+device.PEv2.HomingAlgorithm[0] = 0;
+device.PEv2.HomeBackOffDistance[0] = 100;
+device.PEv2.MPGjogDivider[0] = 1;
+device.PEv2.AxisSignalOptions[0] = PK_ASO_INVERT_STEP;
+device.PEv2.FilterProbeInput = 0;
+
+int32_t setConfigStatus = PK_PEv2_AxisConfigurationSet(&device);
+if (setConfigStatus == PK_OK) {
+    // Axis configuration set successfully
+}
+```
+
+#### 5. **PK_PEv2_PositionSet**
+
+```c
+sPoKeysDevice device;
+device.PEv2.param2 = 0x01; // Bit-mapped axis selection (Axis 1)
+device.PEv2.PositionSetup[0] = 5000; // Position for Axis 1
+
+int32_t positionSetStatus = PK_PEv2_PositionSet(&device);
+if (positionSetStatus == PK_OK) {
+    // Position set successfully
+}
+```
+
+#### 6. **PK_PEv2_PulseEngineStateSet**
+
+```c
+sPoKeysDevice device;
+device.PEv2.PulseEngineStateSetup = PK_PEState_peRUNNING;
+device.PEv2.LimitOverrideSetup = 0;
+device.PEv2.AxisEnabledMask = 0xFF;
+
+int32_t stateSetStatus = PK_PEv2_PulseEngineStateSet(&device);
+if (stateSetStatus == PK_OK) {
+    // Pulse engine state set successfully
+}
+```
+
+#### 7. **PK_PEv2_PulseEngineMove**
+
+```c
+sPoKeysDevice device;
+device.PEv2.ReferencePositionSpeed[0] = 10000; // Position for Axis 1
+
+int32_t moveStatus = PK_PEv2_PulseEngineMove(&device);
+if (moveStatus == PK_OK) {
+    // Move command executed successfully
+}
+```
+
+#### 8. **PK_PEv2_PulseEngineMovePV**
+
+```c
+sPoKeysDevice device;
+device.PEv2.param2 = 0x01; // Bit-mapped axis selection (Axis 1)
+device.PEv2.ReferencePositionSpeed[0] = 10000; // Position for Axis 1
+device.PEv2.ReferenceVelocityPV[0] = 0.5f; // Velocity for Axis 1
+
+int32_t movePVStatus = PK_PEv2_PulseEngineMovePV(&device);
+if (movePVStatus == PK_OK) {
+    // Move PV command executed successfully
+}
+```
+
+#### 9. **PK_PEv2_BufferFill**
+
+```c
+sPoKeysDevice device;
+device.PEv2.newMotionBufferEntries = 10;
+memcpy(device.PEv2.MotionBuffer, motionData, sizeof(motionData));
+
+int32_t bufferFillStatus = PK_PEv2_BufferFill(&device);
+if (bufferFillStatus == PK_OK) {
+    // Buffer filled successfully
+}
+```
+
+#### 10. **PK_PEv2_BufferClear**
+
+```c
+sPoKeysDevice device;
+
+int32_t bufferClearStatus = PK_PEv2_BufferClear(&device);
+if (bufferClearStatus == PK_OK) {
+    // Buffer cleared successfully
+}
+```
+
+#### 11. **PK_PEv2_HomingStart**
+
+```c
+sPoKeysDevice device;
+device.PEv2.HomingStartMaskSetup = 0x01; // Bit-mapped axis selection (Axis 1)
+device.PEv2.HomeOffsets[0] = 0; // Home offset for Axis 1
+
+int32_t homingStartStatus = PK_PEv2_HomingStart(&device);
+if (homingStartStatus == PK_OK) {
+    // Homing procedure started successfully
+}
+```
+
+#### 12. **PK_PEv2_HomingFinish**
+
+```c
+sPoKeysDevice device;
+device.PEv2.PulseEngineStateSetup = PK_PEState_peHOME;
+
+int32_t homingFinishStatus = PK_PEv2_HomingFinish(&device);
+if (homingFinishStatus == PK_OK) {
+    // Homing procedure finished successfully
+}
+```
+
+#### 13. **PK_PEv2_ProbingStart**
+
+```c
+sPoKeysDevice device;
+device.PEv2.ProbeStartMaskSetup = 0x01; // Bit-mapped axis selection (Axis 1)
+device.PEv2.ProbeMaxPosition[0] = 10000; // Maximum position for Axis 1
+device.PEv2.ProbeSpeed = 0.5f; // Probe speed
+device.PEv2.ProbeInput = 1; // Probe input
+device.PEv2.ProbeInputPolarity = 0; // Probe input polarity
+
+int32_t probingStartStatus = PK_PEv2_ProbingStart(&device);
+if (probingStartStatus == PK_OK) {
+    // Probing procedure started successfully
+}
+```
+
+#### 14. **PK_PEv2_ProbingFinish**
+
+```c
+sPoKeysDevice device;
+
+int32_t probingFinishStatus = PK_PEv2_ProbingFinish(&device);
+if (probingFinishStatus == PK_OK) {
+    // Probing procedure finished successfully
+    int32_t probePosition = device.PEv2.ProbePosition[0];
+    uint8_t probeStatus = device.PEv2.ProbeStatus;
+    // Further processing...
+}
+```
+
+#### 15. **PK_PEv2_BacklashCompensationSettings_Get**
+
+```c
+sPoKeysDevice device;
+
+int32_t backlashGetStatus = PK_PEv2_BacklashCompensationSettings_Get(&device);
+if (backlashGetStatus == PK_OK) {
+    // Backlash compensation settings retrieved successfully
+    uint16_t backlashWidth = device.PEv2.BacklashWidth[0];
+    int16_t backlashRegister = device.PEv2.BacklashRegister[0];
+    uint8_t backlashAcceleration = device.PEv2.BacklashAcceleration[0];
+    uint8_t backlashCompensationEnabled = device.PEv2.BacklashCompensationEnabled;
+    // Further processing...
+}
+```
+
+#### 16. **PK_PEv2_BacklashCompensationSettings_Set**
+
+```c
+sPoKeysDevice device;
+device.PEv2.BacklashWidth[0] = 100;
+device.PEv2.BacklashAcceleration[0] = 10;
+device.PEv2.BacklashCompensationEnabled = 1;
+
+int32_t backlashSetStatus = PK_PEv2_BacklashCompensationSettings_Set(&device);
+if (backlashSetStatus == PK_OK) {
+    // Backlash compensation settings set successfully
+}
+```
+
+#### 17. **PK_PEv2_SyncedPWMSetup**
+
+```c
+sPoKeysDevice device;
+uint8_t enabled = 1;
+uint8_t srcAxis = 0;
+uint8_t dstPWMChannel = 1;
+
+int32_t pwmSetupStatus = PK_PEv2_SyncedPWMSetup(&device, enabled, srcAxis, dstPWMChannel);
+if (pwmSetupStatus == PK_OK) {
+    // Synced PWM setup successful
+}
+```
+
+### Example Usage of PEv2 Enumerations
+
+#### 1. **ePK_PEState**
+
+```c
+sPoKeysDevice device;
+device.PEv2.PulseEngineState = PK_PEState_peRUNNING;
+```
+
+#### 2. **ePK_PEAxisState**
+
+```c
+sPoKeysDevice device;
+device.PEv2.AxesState[0] = PK_PEAxisState_axRUNNING;
+```
+
+#### 3. **ePK_PEv2_AxisConfig**
+
+```c
+sPoKeysDevice device;
+device.PEv2.AxesConfig[0] = PK_AC_ENABLED | PK_AC_SOFT_LIMIT_ENABLED;
+```
+
+#### 4. **ePK_PEv2_AxisSwitchOptions**
+
+```c
+sPoKeysDevice device;
+device.PEv2.AxesSwitchConfig[0] = PK_ASO_SWITCH_LIMIT_N | PK_ASO_SWITCH_HOME;
+```
+
+#### 5. **ePK_PEv2_AxisSignalOptions**
+
+```c
+sPoKeysDevice device;
+device.PEv2.AxisSignalOptions[0] = PK_ASO_INVERT_STEP | PK_ASO_INVERT_DIRECTION;
+```
+
+## Summary of Key Pointers
+
+### 1. Axis State and Motion
+
+- `device->PEv2.AxesState[]`
+- `device->PEv2.CurrentPosition[]`
+- `device->PEv2.ReferencePositionSpeed[]`
+- `device->PEv2.ReferenceVelocityPV[]`
+
+### 2. Homing and Limits
+
+- `device->PEv2.HomingStartMaskSetup`
+- `device->PEv2.AxesSwitchConfig[]`
+- `device->PEv2.SignalConfig[]`
+
+### 3. Backlash Compensation
+
+- `device->PEv2.BacklashWidth[]`
+- `device->PEv2.BacklashAcceleration[]`
+- `device->PEv2.BacklashCompensationEnabled`
+
+### 4. Probing
+
+- `device->PEv2.ProbeStatus`
+- `device->PEv2.ProbeSpeed`
+
+### 5. PWM Setup
+
+- `device->PEv2.PWMSetup[]`
+
+## Conclusion
+
+The examples and usage information provided above demonstrate how to use the PEv2 commands and enumerations in the PoKeysLib. By following these examples, developers can effectively integrate and utilize the PEv2 interface in their projects.
+

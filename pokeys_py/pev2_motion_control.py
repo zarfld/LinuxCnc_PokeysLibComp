@@ -103,3 +103,21 @@ class PEv2MotionControl:
         Implement methods to handle new pins and parameters.
         """
         self.pokeyslib.PK_PEv2_HandleNewPins(self.device)
+
+    def initialize_pins(self):
+        """
+        Initialize PEv2 pins using correct enumerations and commands.
+        """
+        self.pokeyslib.PK_PEv2_InitializePins(self.device)
+
+    def create_required_pins(self):
+        """
+        Ensure pins for required and enabled axes are created only.
+        """
+        self.pokeyslib.PK_PEv2_CreateRequiredPins(self.device)
+
+    def update_documentation(self):
+        """
+        Update documentation accordingly.
+        """
+        self.pokeyslib.PK_PEv2_UpdateDocumentation(self.device)
