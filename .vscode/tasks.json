@@ -23,6 +23,17 @@
         }
       },
       {
+        "label": "Compile PoKeys_rt.comp HAL Component",
+        "type": "shell",
+        "command": "sudo halcompile --install pokeys_rt.comp",
+        "problemMatcher": [],
+        "dependsOn": "Pre-Build Setup",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      },
+      {
         "label": "Compile homing module for pokeys",
         "type": "shell",
         "command": "sudo halcompile --install pokeys_homecomp.comp",
