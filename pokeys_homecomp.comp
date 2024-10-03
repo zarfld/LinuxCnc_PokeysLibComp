@@ -1,4 +1,4 @@
-component pokeys_homecomp"homing module for pokeys";
+component pokeys_homecomp "homing module for pokeys";
 
 description """
 This component is a homing module for PoKeys. It provides pin outs and signal linking for the PoKeys homing configuration.
