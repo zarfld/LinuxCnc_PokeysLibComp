@@ -215,16 +215,6 @@ option extra_setup;
 /* module information */
 MODULE_AUTHOR("Dominik Zarfl");
 MODULE_DESCRIPTION("realtime module for pokeys");
-MODULE_LICENSE("GPL");
-
-//usr/include/bsd/stdlib.h
-//usr/include/stdlib.h
-//usr/include/c++/10/stdlib.h
-//usr/include/c++/10/tr1/stdlib.h
-//usr/include/c++/10/tr1/stdlib.h
-//usr/include/tcl8.6/tk-private/compat/stdlib.h
-//usr/include/tcl8.6/tcl-private/compat/stdlib.h
-///usr/include/c++/10/tr1/stdlib.h
 
 #include "pokeys_rt/PoKeysLibRt.h"
 #include "pokeys_rt/PoKeysLibCore.h"
@@ -244,9 +234,6 @@ RTAPI_MP_STRING(IP, "IP Address")
 
 static int timeout_ms = 500;
 RTAPI_MP_INT(timeout_ms, "Timeout in ms")
-
-#define EXTRA_CLEANUP() static void extra_cleanup(void)
-#define EXTRA_SETUP() static int extra_setup(void)
 
 sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 {
@@ -431,43 +418,7 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 }
 
 static int myid = 0;
-// EXTRA_SETUP is executed before rtapi_app_main()
-//EXTRA_SETUP()
-static int extra_setup(void)
-{
-	
-	myid = hal_init("pokeys_rt");
-	rtapi_print_msg(RTAPI_MSG_ERR,"PoKeysRt: %s:%s: hal_init(pokeys_rt):%d\n", __FILE__, __FUNCTION__);
-	int wait_ms = 5000;
-	int retry = 5;
-	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeysRt: %s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__);
-	//usleep(wait_ms);  // wait for the HAL to start up
-	for (int i = 0; i < retry; i++)
-	{
-		if (dev == NULL)
-		{
-			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeysRt: %s:%s: TryConnectToDevice(0)\n", __FILE__, __FUNCTION__);
-			if (serial_number != "") {
-				dev = TryConnectToDevice(atoi(serial_number));
-			}
-			else{
-				dev = TryConnectToDevice(0);
-			}
 
-		}
-		if (dev != NULL)
-		{
-			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeysRt: %s:%s: Connected\n", __FILE__, __FUNCTION__);
-			break;
-		}
-	}
-
-	rtapi_print("");
-	// devSerial = extra_arg;
-	return 0;
-}
-
-//EXTRA_CLEANUP()
 static void extra_cleanup(void)
 {
 	if (dev != NULL)
