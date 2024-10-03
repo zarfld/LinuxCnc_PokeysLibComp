@@ -683,6 +683,39 @@ void update_joint_homing_params(int    jno,
     return;
 }
 
+EXTRA_SETUP()
+{
+	int wait_ms = 5000;
+	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
+
+	//usleep(wait_ms);  // wait for the HAL to start up
+	for (i = 0; i < retry; i++)
+	{
+		if (dev == NULL)
+		{
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: TryConnectToDevice(0)", __FILE__, __FUNCTION__);
+			dev = TryConnectToDevice(0);
+		}
+		if (dev != NULL)
+		{
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Connected", __FILE__, __FUNCTION__);
+			break;
+		}
+	}
+
+	rtapi_print("");
+	// devSerial = extra_arg;
+	return 0;
+}
+
+EXTRA_CLEANUP()
+{
+	if (dev != NULL)
+	{
+		PK_DisconnectDevice(dev);
+	}
+}
+
 //=====================================================================
 
 // all home functions for homing api
