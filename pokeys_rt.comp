@@ -687,9 +687,10 @@ EXTRA_SETUP()
 {
 	int wait_ms = 5000;
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
-
+	int retry = 3;
+	
 	//usleep(wait_ms);  // wait for the HAL to start up
-	for (i = 0; i < retry; i++)
+	for (int i = 0; i < retry; i++)
 	{
 		if (dev == NULL)
 		{
@@ -706,14 +707,6 @@ EXTRA_SETUP()
 	rtapi_print("");
 	// devSerial = extra_arg;
 	return 0;
-}
-
-EXTRA_CLEANUP()
-{
-	if (dev != NULL)
-	{
-		PK_DisconnectDevice(dev);
-	}
 }
 
 //=====================================================================
