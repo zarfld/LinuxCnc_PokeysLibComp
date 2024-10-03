@@ -21,6 +21,16 @@
           "kind": "build",
           "isDefault": true
         }
+      },
+      {
+        "label": "Compile homing module for pokeys",
+        "type": "shell",
+        "command": "sudo halcompile --install pokeys_homecomp.comp",
+        "problemMatcher": [],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
       }
     ]
   }

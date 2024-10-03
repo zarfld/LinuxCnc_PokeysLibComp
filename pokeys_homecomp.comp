@@ -587,8 +587,3 @@ void test_pokeys_homecomp() {
 
     rtapi_print_msg(RTAPI_MSG_INFO, "pokeys_homecomp: Unit tests passed\n");
 }
-
-int rtapi_app_main(void) {
-    test_pokeys_homecomp();
-    return 0;
-}
