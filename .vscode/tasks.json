@@ -1,87 +1,159 @@
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "Pre-Build Setup",
-      "type": "shell",
-      "command": "./install_pokeyslib.sh",
-      "problemMatcher": [],
-      "group": {
-        "kind": "build",
-        "isDefault": false
-      }
-    },
-    {
-      "label": "Compile PoKeys USpace HAL Component",
-      "type": "shell",
-      "command": "sudo halcompile --install pokeys.comp",
-      "problemMatcher": [],
-      "dependsOn": "Pre-Build Setup",
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
-    },
-    {
-      "label": "Compile PoKeys_rt.comp HAL Component",
-      "type": "shell",
-      "command": "sudo halcompile --install pokeys_rt.comp",
-      "problemMatcher": [],
-      "dependsOn": "Pre-Build Setup",
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
-    },
-    {
-      "label": "Compile homing module for pokeys",
-      "type": "shell",
-      "command": "sudo halcompile --install pokeys_homecomp.comp",
-      "problemMatcher": [],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
-    },
-    {
-      "label": "Compile pokeys_digital_io.comp",
-      "type": "shell",
-      "command": "halcompile --install pokeys_userspace/pokeys_digital_io.comp",
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Compile pokeys_analog_io.comp",
-      "type": "shell",
-      "command": "halcompile --install pokeys_userspace/pokeys_analog_io.comp",
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Compile pokeys_pev2.comp",
-      "type": "shell",
-      "command": "halcompile --install pokeys_userspace/pokeys_pev2.comp",
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Compile pokeys_counters.comp",
-      "type": "shell",
-      "command": "halcompile --install pokeys_userspace/pokeys_counters.comp",
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "problemMatcher": []
-    }
-  ]
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compile pokeys_analog_io.comp",
+            "type": "shell",
+            "command": "halcompile --install pokeys_userspace/pokeys_analog_io.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Compile pokeys_counters.comp",
+            "type": "shell",
+            "command": "halcompile --install pokeys_userspace/pokeys_counters.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Compile pokeys_digital_io.comp",
+            "type": "shell",
+            "command": "halcompile --install pokeys_userspace/pokeys_digital_io.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Compile pokeys_pev2.comp",
+            "type": "shell",
+            "command": "halcompile --install pokeys_userspace/pokeys_pev2.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Compile pokeys_poextbus.comp",
+            "type": "shell",
+            "command": "halcompile --install pokeys_userspace/pokeys_poextbus.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Compile pokeys_ponetkbd48cnc.comp",
+            "type": "shell",
+            "command": "halcompile --install pokeys_userspace/pokeys_ponetkbd48cnc.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Compile pokeys_porelay8.comp",
+            "type": "shell",
+            "command": "halcompile --install pokeys_userspace/pokeys_porelay8.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Compile pokeys_pwm.comp",
+            "type": "shell",
+            "command": "halcompile --install pokeys_userspace/pokeys_pwm.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Pre-Build Setup",
+            "type": "shell",
+            "command": "./install_pokeyslib.sh",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            }
+        },
+        {
+            "label": "Compile PoKeys USpace HAL Component",
+            "type": "shell",
+            "command": "sudo halcompile --install pokeys.comp",
+            "problemMatcher": [],
+            "dependsOn": "Pre-Build Setup",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Compile PoKeys_rt.comp HAL Component",
+            "type": "shell",
+            "command": "sudo halcompile --install pokeys_rt.comp",
+            "problemMatcher": [],
+            "dependsOn": "Pre-Build Setup",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Compile homing module for pokeys",
+            "type": "shell",
+            "command": "sudo halcompile --install pokeys_homecomp.comp",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Compile pokeys_digital_io.comp",
+            "type": "shell",
+            "command": "halcompile --install pokeys_userspace/pokeys_digital_io.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Compile pokeys_analog_io.comp",
+            "type": "shell",
+            "command": "halcompile --install pokeys_userspace/pokeys_analog_io.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Compile pokeys_pev2.comp",
+            "type": "shell",
+            "command": "halcompile --install pokeys_userspace/pokeys_pev2.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Compile pokeys_counters.comp",
+            "type": "shell",
+            "command": "halcompile --install pokeys_userspace/pokeys_counters.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        }
+    ]
 }
