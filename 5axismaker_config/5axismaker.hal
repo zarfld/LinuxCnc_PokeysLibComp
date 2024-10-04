@@ -1,0 +1,62 @@
+# HAL configuration for 5axismaker machine
+
+loadrt pokeys
+
+# X Axis
+net x-axis-pos pokeys.0.in-pos-x => axis.0.motor-pos-cmd
+net x-axis-vel pokeys.0.in-vel-x => axis.0.motor-vel-cmd
+net x-axis-enable pokeys.0.in-enable-x => axis.0.amp-enable-out
+net x-axis-pos-fb axis.0.motor-pos-fb => pokeys.0.out-pos-x
+net x-axis-vel-fb axis.0.motor-vel-fb => pokeys.0.out-vel-x
+
+# Y Axis
+net y-axis-pos pokeys.0.in-pos-y => axis.1.motor-pos-cmd
+net y-axis-vel pokeys.0.in-vel-y => axis.1.motor-vel-cmd
+net y-axis-enable pokeys.0.in-enable-y => axis.1.amp-enable-out
+net y-axis-pos-fb axis.1.motor-pos-fb => pokeys.0.out-pos-y
+net y-axis-vel-fb axis.1.motor-vel-fb => pokeys.0.out-vel-y
+
+# Z Axis
+net z-axis-pos pokeys.0.in-pos-z => axis.2.motor-pos-cmd
+net z-axis-vel pokeys.0.in-vel-z => axis.2.motor-vel-cmd
+net z-axis-enable pokeys.0.in-enable-z => axis.2.amp-enable-out
+net z-axis-pos-fb axis.2.motor-pos-fb => pokeys.0.out-pos-z
+net z-axis-vel-fb axis.2.motor-vel-fb => pokeys.0.out-vel-z
+
+# A Axis
+net a-axis-pos pokeys.0.in-pos-a => axis.3.motor-pos-cmd
+net a-axis-vel pokeys.0.in-vel-a => axis.3.motor-vel-cmd
+net a-axis-enable pokeys.0.in-enable-a => axis.3.amp-enable-out
+net a-axis-pos-fb axis.3.motor-pos-fb => pokeys.0.out-pos-a
+net a-axis-vel-fb axis.3.motor-vel-fb => pokeys.0.out-vel-a
+
+# B Axis
+net b-axis-pos pokeys.0.in-pos-b => axis.4.motor-pos-cmd
+net b-axis-vel pokeys.0.in-vel-b => axis.4.motor-vel-cmd
+net b-axis-enable pokeys.0.in-enable-b => axis.4.amp-enable-out
+net b-axis-pos-fb axis.4.motor-pos-fb => pokeys.0.out-pos-b
+net b-axis-vel-fb axis.4.motor-vel-fb => pokeys.0.out-vel-b
+
+# Spindle Control
+net spindle-cmd pokeys.0.in-spindle-cmd => spindle.0.speed-out
+net spindle-enable pokeys.0.in-spindle-enable => spindle.0.on
+net spindle-fb spindle.0.speed-in => pokeys.0.out-spindle-fb
+
+# Limit Switches
+net x-limit-min pokeys.0.in-limit-x-min => axis.0.neg-lim-sw-in
+net x-limit-max pokeys.0.in-limit-x-max => axis.0.pos-lim-sw-in
+net y-limit-min pokeys.0.in-limit-y-min => axis.1.neg-lim-sw-in
+net y-limit-max pokeys.0.in-limit-y-max => axis.1.pos-lim-sw-in
+net z-limit-min pokeys.0.in-limit-z-min => axis.2.neg-lim-sw-in
+net z-limit-max pokeys.0.in-limit-z-max => axis.2.pos-lim-sw-in
+net a-limit-min pokeys.0.in-limit-a-min => axis.3.neg-lim-sw-in
+net a-limit-max pokeys.0.in-limit-a-max => axis.3.pos-lim-sw-in
+net b-limit-min pokeys.0.in-limit-b-min => axis.4.neg-lim-sw-in
+net b-limit-max pokeys.0.in-limit-b-max => axis.4.pos-lim-sw-in
+
+# Homing
+net home-x pokeys.0.in-home-x => axis.0.home-sw-in
+net home-y pokeys.0.in-home-y => axis.1.home-sw-in
+net home-z pokeys.0.in-home-z => axis.2.home-sw-in
+net home-a pokeys.0.in-home-a => axis.3.home-sw-in
+net home-b pokeys.0.in-home-b => axis.4.home-sw-in
