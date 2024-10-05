@@ -2,8 +2,10 @@ component pokeys_analog_io "Analog IO component for PoKeys";
 
 option userspace yes;
 
-pin in float pokeys.[DevID].adcin.[AdcId].value-raw [7];
-pin out float pokeys.[DevID].adcout.[AdcId].value [7];
+pin out float pokeys.[DevID].adcin.[AdcId].value-raw [7];
+pin out float pokeys.[DevID].adcin.[AdcId].value [7];
+param rw float pokeys.[DevID].adcin.[AdcId].scale [7];
+param rw float pokeys.[DevID].adcin.[AdcId].offset [7];
 
 pin out unsigned pokeys.[DevID].info.PinCount;
 pin out unsigned pokeys.[DevID].info.PWMCount;
@@ -57,12 +59,20 @@ sPoKeysDevice* device;
 
 void setup_pins() {
     for (int i = 0; i < 7; i++) {
-        if (hal_pin_float_newf(HAL_IN, &(analog_in[i]), comp_id, "pokeys_analog_io.analog_in.%d", i) < 0) {
+        if (hal_pin_float_newf(HAL_OUT, &(analog_in[i]), comp_id, "pokeys_analog_io.analog_in.%d", i) < 0) {
             rtapi_print_msg(RTAPI_MSG_ERR, "ERROR: could not create analog_in pin %d\n", i);
             exit(1);
         }
         if (hal_pin_float_newf(HAL_OUT, &(analog_out[i]), comp_id, "pokeys_analog_io.analog_out.%d", i) < 0) {
             rtapi_print_msg(RTAPI_MSG_ERR, "ERROR: could not create analog_out pin %d\n", i);
+            exit(1);
+        }
+        if (hal_param_float_newf(HAL_RW, &(analog_scale[i]), comp_id, "pokeys_analog_io.analog_scale.%d", i) < 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "ERROR: could not create analog_scale parameter %d\n", i);
+            exit(1);
+        }
+        if (hal_param_float_newf(HAL_RW, &(analog_offset[i]), comp_id, "pokeys_analog_io.analog_offset.%d", i) < 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "ERROR: could not create analog_offset parameter %d\n", i);
             exit(1);
         }
     }
@@ -111,8 +121,10 @@ void initialize_device_info_pins() {
 void user_mainloop() {
     while (1) {
         for (int i = 0; i < 7; i++) {
-            analog_out[i] = PK_SL_AnalogInputGet(device, i);
-            PK_SL_AnalogOutputSet(device, i, analog_in[i]);
+            float raw_value = PK_SL_AnalogInputGet(device, i);
+            float scaled_value = raw_value * analog_scale[i] - analog_offset[i];
+            analog_in[i] = raw_value;
+            analog_out[i] = scaled_value;
         }
         usleep(10000);
     }
