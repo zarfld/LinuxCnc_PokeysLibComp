@@ -190,6 +190,11 @@ pin out bit digin.#.in-not[55];
 pin out bit digout.#.out[55];
 pin out bit digout.#.out-not[55];
 
+pin out float adcin.#.value-raw[7];
+pin out float adcin.#.value[7];
+param rw float adcin.#.scale[7];
+param rw float adcin.#.offset[7];
+
 license "GPL";
 author "Dominik Zarfl";
 option homemod;
@@ -361,7 +366,7 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial)
 		}
 
 		if (enm_usb_dev > 0)
-		{
+			{
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeysRt: %s:%s: PK_ConnectToDevice FastUSB\n", __FILE__, __FUNCTION__);
 			for (int i = 0; i < enm_usb_dev; i++)
 			{
@@ -734,9 +739,37 @@ EXPORT_SYMBOL(set_joint_homing_params);
 EXPORT_SYMBOL(update_joint_homing_params);
 EXPORT_SYMBOL(write_homing_out_pins);
 
+void update_analog_inputs(sPoKeysDevice* device)
+{
+    // Call PoKeysLib to get analog input values
+    PK_AnalogIOGet(device);
 
+    // Iterate through all pins and process analog inputs
+    int AnalogPinOffset = 40;  // Starting pin index for analog inputs
+    int AnalogPinCount = 7;    // Number of analog input pins
 
+    for (int i = 0; i < info_PinCount - 1; i++)
+    {
+        int AinNr = i - AnalogPinOffset;
 
+        // Check if the pin is an analog input
+        if ((AnalogIOGet == true) && (AinNr >= 0) && (AinNr < AnalogPinCount))
+        {
+            // Ensure scale is not zero
+            if (adcin_scale(AinNr) == 0)
+            {
+                adcin_scale(AinNr) = 1;
+            }
+
+            // Convert raw analog value to voltage
+            float ainVal = 3.3 * device->Pins[i].AnalogValue / 4096;
+            adcin_value_raw(AinNr) = ainVal;
+
+            // Apply scale and offset to the analog value
+            adcin_value(AinNr) = ainVal * adcin_scale(AinNr) - adcin_offset(AinNr);
+        }
+    }
+}
 
 #undef XSTR
 #undef STR
