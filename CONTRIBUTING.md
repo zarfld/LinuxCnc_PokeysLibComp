@@ -308,3 +308,28 @@ We appreciate your interest in supporting the LinuxCnc_PokeysLibComp project! Yo
 - **PayPal**: Make a one-time donation via PayPal. Visit our [PayPal donation page](https://www.paypal.com/donate?hosted_button_id=XXXXXXX) to contribute.
 
 Thank you for your support!
+
+## Setting Up Two-Factor Authentication (2FA) for GitHub Repositories
+
+To set up two-factor authentication (2FA) for GitHub repositories, follow these steps:
+
+### Enable 2FA for Your GitHub Account
+
+1. Go to your GitHub account settings.
+2. Navigate to the "Security" section.
+3. Click on "Enable two-factor authentication".
+4. Follow the prompts to set up 2FA using either a mobile app or SMS.
+
+### Require 2FA for All Collaborators
+
+1. Go to the repository's settings.
+2. Navigate to the "Manage access" section.
+3. Click on "Require two-factor authentication for all collaborators".
+4. Confirm the changes.
+
+### Verify 2FA Setup
+
+1. Ensure that all collaborators have enabled 2FA on their GitHub accounts.
+2. Check the repository's access settings to confirm that 2FA is required for all collaborators.
+
+By following these steps, you can enhance the security of your GitHub repository by requiring two-factor authentication for all collaborators. For more detailed instructions, refer to the GitHub documentation on setting up 2FA.
