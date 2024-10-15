@@ -22,9 +22,9 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [debian-latest, raspbian-bookworm, raspbian-bullseye]
-        version: [2.9.2, 2.9.3, latest]
-        type: [hybrid, PREEMPT-RT, RTAI, USPACE]
+        os: [debian-12, raspbian-bookworm]
+        version: [2.9.3, latest]
+        type: [hybrid, PREEMPT-RT, USPACE]
     runs-on: ${{ matrix.os }}
 
     steps:
