@@ -22,7 +22,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [debian-12, raspbian-bookworm]
+        os: [ubuntu-24.04, debian-bullseye, debian-bookworm, debian-sid]
         version: [2.9.3, latest]
         type: [hybrid, PREEMPT-RT, USPACE]
     runs-on: ${{ matrix.os }}
@@ -30,6 +30,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        submodules: true
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -61,6 +63,11 @@ jobs:
         echo "Runner Name: $RUNNER_NAME"
         echo "Runner OS: $RUNNER_OS"
         echo "Runner Architecture: $RUNNER_ARCH"
+
+    - name: Install dependencies
+      run: |
+        echo "Installing dependencies..."
+        bash ci-prerequisites.sh
 
     - name: Build Docker image
       run: |
@@ -145,7 +152,7 @@ jobs:
         fi
         make -j$(nproc) all
         make -j$(nproc) all 2>&1 | tee "$log_file"
-        if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+        if [ "${PIPESTATUS[0]}" -ne 0]; then
             echo "Build failed. Check the log file for details: $log_file"
             exit 1
         fi

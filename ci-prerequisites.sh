@@ -22,6 +22,10 @@ retry() {
     done
 }
 
+# Install eatmydata, git, python3, devscripts, and build-essential
+echo "Installing dependencies..."
+retry apt-get install -y eatmydata git python3 devscripts build-essential
+
 # Add caching mechanism for dependencies
 cache_dir="$HOME/.cache/linuxcnc"
 mkdir -p "$cache_dir"
