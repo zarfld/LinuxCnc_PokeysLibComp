@@ -139,3 +139,8 @@ if [ ! -f "/etc/udev/rules.d/90-usb-pokeys.rules" ]; then
     echo "Reloading udev rules..."
     udevadm control --reload-rules
 fi
+
+# Verify QEMU installation
+echo "Verifying QEMU installation..."
+qemu_version=$(qemu-system-x86_64 --version)
+echo "QEMU version: $qemu_version"
