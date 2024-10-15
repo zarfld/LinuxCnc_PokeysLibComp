@@ -5,7 +5,7 @@ build_rpi4_bullseye() {
     echo "Building Raspberry Pi 4 Bullseye image..."
     # Cross-compile for ARM
     sudo apt-get update
-    sudo apt-get install -y qemu qemu-user-static debootstrap
+    sudo apt-get install -y qemu qemu-user-static
     sudo debootstrap --arch=arm64 --foreign bullseye rpi4_bullseye http://deb.debian.org/debian
     sudo cp /usr/bin/qemu-aarch64-static rpi4_bullseye/usr/bin/
     sudo chroot rpi4_bullseye /debootstrap/debootstrap --second-stage
@@ -33,7 +33,7 @@ build_rpi4_bookworm() {
     echo "Building Raspberry Pi 4 Bookworm image..."
     # Cross-compile for ARM
     sudo apt-get update
-    sudo apt-get install -y qemu qemu-user-static debootstrap
+    sudo apt-get install -y qemu qemu-user-static
     sudo debootstrap --arch=arm64 --foreign bookworm rpi4_bookworm http://deb.debian.org/debian
     sudo cp /usr/bin/qemu-aarch64-static rpi4_bookworm/usr/bin/
     sudo chroot rpi4_bookworm /debootstrap/debootstrap --second-stage
@@ -87,7 +87,7 @@ build_raspbian_bullseye_linuxcnc_2_8_latest() {
     echo "Building Raspbian Bullseye with LinuxCNC 2.8-latest image..."
     # Cross-compile for ARM
     sudo apt-get update
-    sudo apt-get install -y qemu qemu-user-static debootstrap
+    sudo apt-get install -y qemu qemu-user-static
     sudo debootstrap --arch=arm64 --foreign bullseye raspbian_bullseye_linuxcnc_2_8_latest http://deb.debian.org/debian
     sudo cp /usr/bin/qemu-aarch64-static raspbian_bullseye_linuxcnc_2_8_latest/usr/bin/
     sudo chroot raspbian_bullseye_linuxcnc_2_8_latest /debootstrap/debootstrap --second-stage
@@ -122,3 +122,8 @@ build_rpi4_bookworm
 build_amd64_hybrid
 build_raspbian_bullseye_linuxcnc_2_8_latest
 upload_images
+
+# Verify QEMU installation
+echo "Verifying QEMU installation..."
+qemu_version=$(qemu-system-x86_64 --version)
+echo "QEMU version: $qemu_version"

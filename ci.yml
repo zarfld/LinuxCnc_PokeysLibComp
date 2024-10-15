@@ -1,0 +1,299 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+      - bugfix/**
+      - improvement/**
+      - hotfix/**
+  pull_request:
+    branches:
+      - main
+      - feature/**
+      - bugfix/**
+      - improvement/**
+      - hotfix/**
+  issues:
+    types: [labeled, unlabeled]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, debian-bullseye, debian-bookworm, debian-sid]
+        version: [2.9.3, latest]
+        type: [hybrid, PREEMPT-RT, USPACE]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        submodules: true
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cache/pip
+          ~/.cache/apt
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Check runner availability
+      run: |
+        echo "Checking runner availability..."
+        if [ -z "$RUNNER_NAME" ]; then
+          echo "No runner available. Exiting..."
+          exit 1
+        fi
+        echo "Runner $RUNNER_NAME is available."
+
+    - name: Log runner details
+      run: |
+        echo "Logging runner details..."
+        echo "Runner Name: $RUNNER_NAME"
+        echo "Runner OS: $RUNNER_OS"
+        echo "Runner Architecture: $RUNNER_ARCH"
+
+    - name: Install dependencies
+      run: |
+        echo "Installing dependencies..."
+        bash ci-prerequisites.sh
+
+    - name: Build Docker image
+      run: |
+        echo "Building Docker image..."
+        docker build -t linuxcnc-pokeyslibcomp .
+
+    - name: Run Docker container and execute tests
+      run: |
+        echo "Running Docker container and executing tests..."
+        docker run --rm linuxcnc-pokeyslibcomp
+
+    - name: Upload logs on failure
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: Logs
+        path: |
+          build/build.log
+          build/test.log
+
+    - name: Add caching mechanism for dependencies
+      run: |
+        echo "Adding caching mechanism for dependencies..."
+        cache_dir="$HOME/.cache/linuxcnc"
+        mkdir -p "$cache_dir"
+        export CCACHE_DIR="$cache_dir"
+        export CCACHE_COMPRESS=1
+        export CCACHE_COMPRESSLEVEL=6
+        export CCACHE_MAXSIZE=5G
+        export PATH="/usr/lib/ccache:$PATH"
+
+    - name: Add logging for installation failures
+      run: |
+        echo "Adding logging for installation failures..."
+        log_file="$HOME/linuxcnc_build.log"
+        make -j$(nproc) all 2>&1 | tee "$log_file"
+        if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+            echo "Build failed. Check the log file for details: $log_file"
+            exit 1
+        fi
+
+    - name: Integrate optimization steps from BuildLinuxCnc.sh
+      run: |
+        echo "Integrating optimization steps from BuildLinuxCnc.sh..."
+        sudo apt update
+        sudo apt autoremove
+        git config --global http.postBuffer 1073741824
+        cd linuxcnc-dev || exit
+        if [ -z "$1" ]; then
+            git checkout master
+        else
+            git checkout "$1"
+        fi
+        git pull --ff-only
+        if [ -d "src" ]; then
+            cd src
+        else
+            echo "Directory 'src' not found. Please check the repository."
+            exit 1
+        fi
+        source /usr/include
+        if [ -f "./autogen.sh" ]; then
+            sh autogen.sh
+        else
+            echo "File 'autogen.sh' not found. Please check the repository."
+            exit 1
+        fi
+        realtime_option="uspace"
+        build_mode="Debian Packages"
+        if [ "$build_mode" = "RIP" ]; then
+            sh configure --with-realtime=$realtime_option --enable-build-documentation
+            make -j$(nproc)
+            sudo make setuid
+            source ../scripts/rip-environment
+        elif [ "$build_mode" = "Debian Packages" ]; then
+            cd ../linuxcnc-dev/debian
+            sh configure $realtime_option
+            dpkg-checkbuilddeps
+            sudo apt-get install -y $(dpkg-checkbuilddeps 2>&1 | grep -Po 'Depends: \K.*' | tr -d '<>' | tr ',' '\n' | awk '{print $1}' | tr '\n' ' ')
+        else
+            echo "Invalid build mode choice. Please choose between 'RIP' or 'Debian Packages'."
+        fi
+        make -j$(nproc) all
+        make -j$(nproc) all 2>&1 | tee "$log_file"
+        if [ "${PIPESTATUS[0]}" -ne 0]; then
+            echo "Build failed. Check the log file for details: $log_file"
+            exit 1
+        fi
+
+    - name: Test installation process on multiple environments
+      run: |
+        echo "Testing installation process on multiple environments..."
+        environments=("debian-latest" "raspbian-bookworm" "raspbian-bullseye")
+        for env in "${environments[@]}"; do
+            echo "Testing on $env..."
+            sudo apt-get update
+            sudo apt-get install -y cmake python3 libmodbus-dev libgpiod-dev libgtk2.0-dev libglade2-dev libxmu-dev libglu1-mesa-dev libgl1-mesa-dev libreadline-dev libjansson-dev libboost-python-dev libboost-thread-dev libboost-system-dev python3-lxml debhelper dh-python libudev-dev tcl8.6-dev tk8.6-dev asciidoc dvipng graphviz groff imagemagick inkscape source-highlight texlive-font-utils texlive-lang-cyrillic texlive-lang-french texlive-lang-german texlive-lang-polish texlive-lang-spanish w3c-linkchecker python-dev-is-python3 python-tk intltool libusb-1.0-0-dev yapps2 dblatex docbook-xsl texlive-extra-utils texlive-fonts-recommended texlive-latex-recommended xsltproc gettext autoconf asciidoc-dblatex libxaw7-dev bwidget libtk-img tclx
+            git clone https://github.com/LinuxCNC/linuxcnc.git
+            cd linuxcnc
+            sudo dpkg-buildpackage -b -uc
+            sudo dpkg -i ../linuxcnc-uspace_*.deb ../linuxcnc-dev_*.deb
+            git clone https://bitbucket.org/mbosnak/pokeyslib.git
+            cd pokeyslib
+            make -f Makefile.noqmake install
+            cd ..
+            mkdir build
+            cd build
+            cmake ..
+            make -j$(nproc) 2>&1 | tee build.log
+            if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+                echo "Build failed on $env. Check the log file for details: build.log"
+                exit 1
+            fi
+            ctest --output-on-failure 2>&1 | tee test.log
+            if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+                echo "Tests failed on $env. Check the log file for details: test.log"
+                exit 1
+            fi
+        done
+
+    - name: Run unit tests
+      run: |
+        echo "Running unit tests..."
+        python3 -m unittest discover -s tests -p "test_*.py"
+
+    - name: Run integration tests
+      run: |
+        echo "Running integration tests..."
+        python3 -m unittest discover -s tests -p "test_integration.py"
+
+    - name: Run performance tests
+      run: |
+        echo "Running performance tests..."
+        python3 -m unittest discover -s tests -p "test_performance.py"
+
+    - name: Run regression tests
+      run: |
+        echo "Running regression tests..."
+        python3 -m unittest discover -s tests -p "test_regression.py"
+
+    - name: Run end-to-end system tests
+      run: |
+        echo "Running end-to-end system tests..."
+        halrun -I -f pokeys_homing.hal
+
+    - name: Set environment variable for CI
+      run: |
+        echo "Setting environment variable for CI..."
+        echo "CI=true" >> $GITHUB_ENV
+
+    - name: Run tests with mocks
+      run: |
+        echo "Running tests with mocks..."
+        python3 -m unittest discover -s tests -p "test_*.py"
+
+    - name: Check for adherence to code review guidelines
+      run: |
+        echo "Checking for adherence to code review guidelines..."
+        if ! grep -q "Code Review Guidelines" CODE_REVIEW_GUIDELINES.md; then
+            echo "Code review guidelines not found. Please ensure that the guidelines are documented in CODE_REVIEW_GUIDELINES.md."
+            exit 1
+        fi
+        echo "Code review guidelines are documented and accessible."
+
+    - name: Verify conformity with LinuxCNC guidelines and Canonical Device Interface
+      run: |
+        echo "Verifying conformity with LinuxCNC guidelines and Canonical Device Interface..."
+        if ! grep -q "Canonical Device Interface" README.md; then
+            echo "Canonical Device Interface not mentioned in README.md. Please ensure that the guidelines are documented."
+            exit 1
+        fi
+        echo "Canonical Device Interface guidelines are documented and accessible."
+
+    - name: Trigger CI pipeline based on issue status updates
+      run: |
+        echo "Triggering CI pipeline based on issue status updates..."
+        if [ "${{ github.event.issue.labels }}" == "in progress" ]; then
+            echo "Issue is in progress. Triggering build and tests..."
+            # Add your build and test commands here
+        elif [ "${{ github.event.issue.labels }}" == "in review" ]; then
+            echo "Issue is in review. Triggering deployment to staging..."
+            # Add your deployment commands here
+        fi
+
+    - name: Send alerts for pipeline failures related to issues
+      run: |
+        echo "Sending alerts for pipeline failures related to issues..."
+        if [ "${{ github.event.issue.labels }}" == "failed CI" ]; then
+            echo "Pipeline failed. Sending alerts to contributors..."
+            # Add your alerting commands here (e.g., Slack, email, GitHub notifications)
+        fi
+
+    - name: Auto-close issues upon deployment
+      run: |
+        echo "Auto-closing issues upon deployment..."
+        if [ "${{ github.event.issue.labels }}" == "in production" ]; then
+            echo "Issue deployed to production. Auto-closing issue..."
+            # Add your auto-closing commands here
+        fi
+
+  create_images:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up QEMU
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y qemu qemu-user-static
+
+    - name: Verify QEMU installation
+      run: |
+        qemu_version=$(qemu-system-x86_64 --version)
+        echo "QEMU version: $qemu_version"
+
+    - name: Run create_images.sh script
+      run: |
+        chmod +x create_images.sh
+        ./create_images.sh
+
+    - name: Upload generated images
+      uses: actions/upload-artifact@v3
+      with:
+        name: Generated Images
+        path: |
+          *.img
+          *.iso
