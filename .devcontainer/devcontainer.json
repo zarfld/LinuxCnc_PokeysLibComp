@@ -1,0 +1,26 @@
+{
+    "name": "LinuxCnc_PokeysLibComp",
+    "image": "debian:12",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "extensions": [
+        "ms-vscode.cpptools",
+        "github.copilot",
+        "eamodio.gitlens"
+    ],
+    "postCreateCommand": "cmake . && make",
+    "workspaceFolder": "/home/codespace/workspace",
+    "remoteUser": "codespace",
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:1": {
+            "installZsh": "false",
+            "installOhMyZsh": "false"
+        }
+    },
+    "onCreateCommand": "bash -c 'source /home/codespace/workspace/scripts/setup_environment.sh && source /home/codespace/workspace/scripts/build_linuxcnc.sh'"
+}

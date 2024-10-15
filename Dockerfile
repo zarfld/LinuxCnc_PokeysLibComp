@@ -1,10 +1,16 @@
-# Use the base image from jeffersonjhunt/linuxcnc-docker
-FROM jeffersonjhunt/linuxcnc-docker:latest
+# Use Debian 12 as the base image
+FROM debian:12
 
 # Install necessary dependencies for LinuxCNC and PoKeysLib
 RUN apt-get update && apt-get install -y \
+    build-essential \
     cmake \
+    linuxcnc-uspace-dev \
+    git \
     python3 \
+    python3-pip \
+    curl \
+    sudo \
     libmodbus-dev \
     libgpiod-dev \
     libgtk2.0-dev \
@@ -55,6 +61,10 @@ RUN apt-get update && apt-get install -y \
     bwidget \
     libtk-img \
     tclx
+
+# Set up non-root user 'codespace' with sudo privileges
+RUN useradd -m -s /bin/bash codespace && \
+    echo 'codespace ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Copy the project files into the Docker image
 COPY . /LinuxCnc_PokeysLibComp
