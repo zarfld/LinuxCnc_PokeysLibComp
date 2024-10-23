@@ -86,7 +86,7 @@ jobs:
 
     - name: Upload logs on failure
       if: failure()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Logs
         path: |
@@ -296,7 +296,7 @@ jobs:
         ./create_images.sh
 
     - name: Upload generated images
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Generated Images
         path: |
