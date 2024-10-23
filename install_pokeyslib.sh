@@ -17,6 +17,14 @@ else
     echo "PoKeysLib repository already cloned."
 fi
 
+# Initialize the submodule manually
+echo "Initializing the pokeyslib submodule..."
+git submodule init
+
+# Update the submodule manually
+echo "Updating the pokeyslib submodule..."
+git submodule update
+
 # Überprüfen, ob der Treiber bereits kompiliert ist
 if [ ! -f "pokeyslib/libpokeyslib.so" ]; then
     echo "Compiling and installing the PoKeys driver..."

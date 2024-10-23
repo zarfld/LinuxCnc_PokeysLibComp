@@ -280,6 +280,11 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y qemu qemu-user-static
 
+    - name: Verify QEMU installation
+      run: |
+        qemu_version=$(qemu-system-x86_64 --version)
+        echo "QEMU version: $qemu_version"
+
     - name: Run create_images.sh script
       run: |
         chmod +x create_images.sh
