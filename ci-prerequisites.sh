@@ -2,7 +2,7 @@
 
 # Update package lists
 echo "Updating package lists..."
-apt-get update
+sudo apt-get update
 
 retry() {
     local n=1
@@ -24,7 +24,7 @@ retry() {
 
 # Install eatmydata, git, python3, devscripts, and build-essential
 echo "Installing dependencies..."
-retry apt-get install -y eatmydata git python3 devscripts build-essential
+retry sudo apt-get install -y eatmydata git python3 devscripts build-essential
 
 # Add caching mechanism for dependencies
 cache_dir="$HOME/.cache/linuxcnc"
