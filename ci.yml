@@ -67,7 +67,7 @@ jobs:
     - name: Install dependencies
       run: |
         echo "Installing dependencies..."
-        bash ci-prerequisites.sh
+        sudo bash ci-prerequisites.sh
 
     - name: Build Docker image
       run: |
