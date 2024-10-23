@@ -31,7 +31,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
       with:
-        submodules: true
+        submodules: false
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -68,6 +68,11 @@ jobs:
       run: |
         echo "Installing dependencies..."
         bash ci-prerequisites.sh
+
+    - name: Install pokeyslib
+      run: |
+        chmod +x install_pokeyslib.sh
+        ./install_pokeyslib.sh
 
     - name: Build Docker image
       run: |
@@ -279,6 +284,11 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y qemu qemu-user-static
+
+    - name: Verify QEMU installation
+      run: |
+        qemu_version=$(qemu-system-x86_64 --version)
+        echo "QEMU version: $qemu_version"
 
     - name: Run create_images.sh script
       run: |
