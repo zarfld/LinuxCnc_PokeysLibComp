@@ -69,6 +69,16 @@ jobs:
         echo "Installing dependencies..."
         bash ci-prerequisites.sh
 
+    - name: Initialize and update pokeyslib submodule
+      run: |
+        git submodule init
+        git submodule update
+
+    - name: Install pokeyslib
+      run: |
+        chmod +x install_pokeyslib.sh
+        ./install_pokeyslib.sh
+
     - name: Build Docker image
       run: |
         echo "Building Docker image..."
