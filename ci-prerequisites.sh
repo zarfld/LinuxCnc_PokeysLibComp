@@ -36,7 +36,7 @@ export CCACHE_MAXSIZE=5G
 export PATH="/usr/lib/ccache:$PATH"
 
 # Optimize the installation process for faster execution
-make -j$(nproc) all
+#make -j$(nproc) all
 
 # Add logging for installation failures
 log_file="$HOME/linuxcnc_build.log"

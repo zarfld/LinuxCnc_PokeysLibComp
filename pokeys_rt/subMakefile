@@ -57,3 +57,5 @@ install_local:
 	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY: clean install
+
+all: pokeys_rt.so libPokeys.so

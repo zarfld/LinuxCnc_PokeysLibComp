@@ -22,7 +22,7 @@ install: all
 	cp libPoKeysRt.so /usr/lib/linuxcnc/modules
 	cp PoKeysLibRt.h  /usr/include/linuxcnc
 
-all: $(SOURCES) libPoKeysRt.so
+all: libPoKeysRt.so
 
 static: libPoKeysRt.a
 
