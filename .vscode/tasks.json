@@ -16,7 +16,7 @@
     {
         "label": "Install PokeysLib",
         "type": "shell",
-        "command": "./INSTALL_POKEYSLIB.SH",
+        "command": "./install_pokeyslib.sh",
         "group": {
             "kind": "build",
             "isDefault": false
