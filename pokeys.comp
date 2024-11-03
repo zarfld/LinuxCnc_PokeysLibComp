@@ -1847,7 +1847,7 @@ void user_mainloop(void)
 						PEv2_CurrentPosition(i) = intCurrentPosition[i];
 						PEv2_deb_axxisout(i) = 270 + i;
 						
-						PEv2_digin_Probe_in(i) = Get_BitOfByte(bm_ProbeStatus, i);
+						PEv2_digin_Probe_in(i) = Get_BitOfByte(bm_ProbeStatus,i);
 
 
 						 /* 
@@ -4204,3 +4204,4 @@ EXTRA_CLEANUP()
 
 
 
+ 
