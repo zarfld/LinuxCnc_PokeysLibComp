@@ -1,0 +1,3 @@
+[submodule "pokeyslib"]
+    path = pokeyslib
+    url = https://bitbucket.org/mbosnak/pokeyslib.git
