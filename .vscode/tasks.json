@@ -4,7 +4,7 @@
         {
             "label": "Compile HAL Component",
             "type": "shell",
-            "command": "halcompile --install ${file}",
+            "command": "sudo halcompile --install ${file}",
             "group": {
                 "kind": "build",
                 "isDefault": true
