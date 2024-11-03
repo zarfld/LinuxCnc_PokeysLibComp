@@ -11,18 +11,17 @@
             },
             "problemMatcher": [],
             "detail": "Compile and install the HAL component."
-        }
-    ,
-    {
-        "label": "Install PokeysLib",
-        "type": "shell",
-        "command": "chmod +x ./install_pokeyslib.sh && ./install_pokeyslib.sh",
-        "group": {
-            "kind": "build",
-            "isDefault": false
         },
-        "problemMatcher": [],
-        "detail": "Install the PokeysLib library."
-    }
+        {
+            "label": "Install PokeysLib",
+            "type": "shell",
+            "command": "chmod +x ./install_pokeyslib.sh && ./install_pokeyslib.sh",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+            "detail": "Install the PokeysLib library."
+        }
     ]
 }
