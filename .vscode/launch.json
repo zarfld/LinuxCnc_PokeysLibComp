@@ -1,13 +1,15 @@
 {
     "version": "0.2.0",
     "configurations": [
+        
         {
             "name": "Run HAL Component",
             "type": "cppdbg",
             "request": "launch",
             "program": "/usr/bin/halrun",
             "args": [
-                "loadrt", "${workspaceFolder}/your_component.so"
+                "loadrt",
+                "${workspaceFolder}/your_component.so"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -23,6 +25,37 @@
             ],
             "preLaunchTask": "Compile HAL Component",
             "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "CMake: CMake Script",
+            "type": "cmake",
+            "request": "launch",
+            "cmakeDebugType": "script",
+            "scriptPath": "${file}"
+        },
+        {
+            "name": "(gdb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "enter program name, for example ${workspaceFolder}/a.out",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
         }
     ]
 }

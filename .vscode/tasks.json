@@ -12,5 +12,17 @@
             "problemMatcher": [],
             "detail": "Compile and install the HAL component."
         }
+    ,
+    {
+        "label": "Install PokeysLib",
+        "type": "shell",
+        "command": "./INSTALL_POKEYSLIB.SH",
+        "group": {
+            "kind": "build",
+            "isDefault": false
+        },
+        "problemMatcher": [],
+        "detail": "Install the PokeysLib library."
+    }
     ]
 }
