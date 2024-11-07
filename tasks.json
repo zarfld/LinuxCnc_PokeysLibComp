@@ -31,6 +31,9 @@
                 "kind": "build",
                 "isDefault": false
             },
+            "dependsOn": [
+                "Install PokeysLib"
+            ],
             "problemMatcher": [],
             "detail": "Compile and install the Pokeys component."
         },
