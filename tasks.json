@@ -1,0 +1,67 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compile HAL Component",
+            "type": "shell",
+            "command": "sudo halcompile --install ${file}",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "detail": "Compile and install the HAL component."
+        },
+        {
+            "label": "Install PokeysLib",
+            "type": "shell",
+            "command": "chmod +x ./install_pokeyslib.sh && ./install_pokeyslib.sh",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+            "detail": "Install the PokeysLib library."
+        },
+        {
+            "label": "Compile Pokeys Component",
+            "type": "shell",
+            "command": "sudo halcompile --install pokeys.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "dependsOn": [
+                "Install PokeysLib"
+            ],
+            "problemMatcher": [],
+            "detail": "Compile and install the Pokeys component."
+        },
+        {
+            "label": "Compile Pokeys Home Component",
+            "type": "shell",
+            "command": "sudo halcompile --install pokeys_homecomp.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+            "detail": "Compile and install the Pokeys Home component."
+        },
+        {
+            "label": "Load INI Configuration",
+            "type": "shell",
+            "command": "linuxcnc -v -d $(file)",
+            "group": {
+                "kind": "none",
+                "isDefault": false
+            },
+            "dependsOn": [
+                "Compile Pokeys Component",
+                "Compile Pokeys Home Component"
+            ],
+            "problemMatcher": [],
+            "detail": "Load the INI configuration for LinuxCNC."
+        }
+    ]
+}
