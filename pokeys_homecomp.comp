@@ -421,7 +421,7 @@ void do_cancel_homing(int joint_num) {
 // overall status:
 bool get_allhomed() { 
     rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return 1; 
+    return 0; 
 }
 bool get_homing_is_active() { 
     rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);

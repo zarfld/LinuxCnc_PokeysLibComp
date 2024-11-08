@@ -73,158 +73,124 @@ setp   pokeys.0.PEv2.1.home-sequence  	   [JOINT_2]HOME_SEQUENCE
 setp   pokeys.0.PEv2.2.home-sequence  	   [JOINT_3]HOME_SEQUENCE
 
 # Link pins from pokeys_homecomp.comp to PoKeys components
-net x-homing <= pokeys-homecomp.0.joint.0.homing
-net x-homing => pokeys.0.PEv2.0.homing
+net x-homing <= joint.0.homing
+#net x-homing => pokeys.0.PEv2.0.homing
 
-net x2-homing <= pokeys-homecomp.0.joint.1.homing
-net x2-homing => pokeys.0.PEv2.6.homing
+net x2-homing <= joint.1.homing
+#net x2-homing => pokeys.0.PEv2.6.homing
 
-net y-homing <= pokeys-homecomp.0.joint.2.homing
-net y-homing => pokeys.0.PEv2.1.homing
+net y-homing <= joint.2.homing
+#net y-homing => pokeys.0.PEv2.1.homing
 
-net z-homing <= pokeys-homecomp.0.joint.3.homing
-net z-homing => pokeys.0.PEv2.2.homing
+net z-homing <= joint.3.homing
+#net z-homing => pokeys.0.PEv2.2.homing
 
-net x-homed <= pokeys-homecomp.0.joint.0.homed
-net x-homed => pokeys.0.PEv2.0.homed
+net x-homed <= joint.0.homed
+#net x-homed => pokeys.0.PEv2.0.homed
 
-net x2-homed <= pokeys-homecomp.0.joint.1.homed
-net x2-homed => pokeys.0.PEv2.6.homed
+net x2-homed <= joint.1.homed
+#net x2-homed => pokeys.0.PEv2.6.homed
 
-net y-homed <= pokeys-homecomp.0.joint.2.homed
-net y-homed => pokeys.0.PEv2.1.homed
+net y-homed <= joint.2.homed
+#net y-homed => pokeys.0.PEv2.1.homed
 
-net z-homed <= pokeys-homecomp.0.joint.3.homed
-net z-homed => pokeys.0.PEv2.2.homed
+net z-homed <= joint.3.homed
+#net z-homed => pokeys.0.PEv2.2.homed
 
-net x-home-state <= pokeys-homecomp.0.joint.0.home-state
-net x-home-state => pokeys.0.PEv2.0.home-state
+net x-home-state <= joint.0.home-state
+#net x-home-state => pokeys.0.PEv2.0.home-state
 
-net x2-home-state <= pokeys-homecomp.0.joint.1.home-state
-net x2-home-state => pokeys.0.PEv2.6.home-state
+net x2-home-state <= joint.1.home-state
+#net x2-home-state => pokeys.0.PEv2.6.home-state
 
-net y-home-state <= pokeys-homecomp.0.joint.2.home-state
-net y-home-state => pokeys.0.PEv2.1.home-state
+net y-home-state <= joint.2.home-state
+#net y-home-state => pokeys.0.PEv2.1.home-state
 
-net z-home-state <= pokeys-homecomp.0.joint.3.home-state
-net z-home-state => pokeys.0.PEv2.2.home-state
+net z-home-state <= joint.3.home-state
+#net z-home-state => pokeys.0.PEv2.2.home-state
 
-net x-index-enable <= pokeys-homecomp.0.joint.0.index-enable
-net x-index-enable => pokeys.0.PEv2.0.index-enable
+net x-index-enable <= joint.0.index-enable
+#net x-index-enable => pokeys.0.PEv2.0.index-enable
 
-net x2-index-enable <= pokeys-homecomp.0.joint.1.index-enable
-net x2-index-enable => pokeys.0.PEv2.6.index-enable
+net x2-index-enable <= joint.1.index-enable
+#net x2-index-enable => pokeys.0.PEv2.6.index-enable
 
-net y-index-enable <= pokeys-homecomp.0.joint.2.index-enable
-net y-index-enable => pokeys.0.PEv2.1.index-enable
+net y-index-enable <= joint.2.index-enable
+#net y-index-enable => pokeys.0.PEv2.1.index-enable
 
-net z-index-enable <= pokeys-homecomp.0.joint.3.index-enable
-net z-index-enable => pokeys.0.PEv2.2.index-enable
+net z-index-enable <= joint.3.index-enable
+#net z-index-enable => pokeys.0.PEv2.2.index-enable
 
-net x-PEv2_AxesState <= pokeys-homecomp.0.joint.0.PEv2_AxesState
-net x-PEv2_AxesState => pokeys.0.PEv2.0.AxesState
 
-net x2-PEv2_AxesState <= pokeys-homecomp.0.joint.1.PEv2_AxesState
-net x2-PEv2_AxesState => pokeys.0.PEv2.6.AxesState
+# thats a param rw unsigned PEv2.#.AxesSwitchConfig[8];	
+#net x-PEv2_AxesSwitchConfig <= joint.0.PEv2.AxesSwitchConfig
+#net x-PEv2_AxesSwitchConfig => pokeys.0.PEv2.0.AxesSwitchConfig
 
-net y-PEv2_AxesState <= pokeys-homecomp.0.joint.2.PEv2_AxesState
-net y-PEv2_AxesState => pokeys.0.PEv2.1.AxesState
+#net x2-PEv2_AxesSwitchConfig <= joint.1.PEv2.AxesSwitchConfig
+#net x2-PEv2_AxesSwitchConfig => pokeys.0.PEv2.6.AxesSwitchConfig
 
-net z-PEv2_AxesState <= pokeys-homecomp.0.joint.3.PEv2_AxesState
-net z-PEv2_AxesState => pokeys.0.PEv2.2.AxesState
+#net y-PEv2_AxesSwitchConfig <= joint.2.PEv2.AxesSwitchConfig
+#net y-PEv2_AxesSwitchConfig => pokeys.0.PEv2.1.AxesSwitchConfig
 
-net x-PEv2_AxesCommand <= pokeys-homecomp.0.joint.0.PEv2_AxesCommand
-net x-PEv2_AxesCommand => pokeys.0.PEv2.0.AxesCommand
+#net z-PEv2_AxesSwitchConfig <= joint.3.PEv2.AxesSwitchConfig
+#net z-PEv2_AxesSwitchConfig => pokeys.0.PEv2.2.AxesSwitchConfig
 
-net x2-PEv2_AxesCommand <= pokeys-homecomp.0.joint.1.PEv2_AxesCommand
-net x2-PEv2_AxesCommand => pokeys.0.PEv2.6.AxesCommand
-
-net y-PEv2_AxesCommand <= pokeys-homecomp.0.joint.2.PEv2_AxesCommand
-net y-PEv2_AxesCommand => pokeys.0.PEv2.1.AxesCommand
-
-net z-PEv2_AxesCommand <= pokeys-homecomp.0.joint.3.PEv2_AxesCommand
-net z-PEv2_AxesCommand => pokeys.0.PEv2.2.AxesCommand
-
-net x-PEv2_AxesConfig <= pokeys-homecomp.0.joint.0.PEv2_AxesConfig
-net x-PEv2_AxesConfig => pokeys.0.PEv2.0.AxesConfig
-
-net x2-PEv2_AxesConfig <= pokeys-homecomp.0.joint.1.PEv2_AxesConfig
-net x2-PEv2_AxesConfig => pokeys.0.PEv2.6.AxesConfig
-
-net y-PEv2_AxesConfig <= pokeys-homecomp.0.joint.2.PEv2_AxesConfig
-net y-PEv2_AxesConfig => pokeys.0.PEv2.1.AxesConfig
-
-net z-PEv2_AxesConfig <= pokeys-homecomp.0.joint.3.PEv2_AxesConfig
-net z-PEv2_AxesConfig => pokeys.0.PEv2.2.AxesConfig
-
-net x-PEv2_AxesSwitchConfig <= pokeys-homecomp.0.joint.0.PEv2_AxesSwitchConfig
-net x-PEv2_AxesSwitchConfig => pokeys.0.PEv2.0.AxesSwitchConfig
-
-net x2-PEv2_AxesSwitchConfig <= pokeys-homecomp.0.joint.1.PEv2_AxesSwitchConfig
-net x2-PEv2_AxesSwitchConfig => pokeys.0.PEv2.6.AxesSwitchConfig
-
-net y-PEv2_AxesSwitchConfig <= pokeys-homecomp.0.joint.2.PEv2_AxesSwitchConfig
-net y-PEv2_AxesSwitchConfig => pokeys.0.PEv2.1.AxesSwitchConfig
-
-net z-PEv2_AxesSwitchConfig <= pokeys-homecomp.0.joint.3.PEv2_AxesSwitchConfig
-net z-PEv2_AxesSwitchConfig => pokeys.0.PEv2.2.AxesSwitchConfig
-
-net x-PEv2_HomingSpeed <= pokeys-homecomp.0.joint.0.PEv2_HomingSpeed
+net x-PEv2_HomingSpeed <= joint.0.PEv2.HomingSpeed
 net x-PEv2_HomingSpeed => pokeys.0.PEv2.0.HomingSpeed
 
-net x2-PEv2_HomingSpeed <= pokeys-homecomp.0.joint.1.PEv2_HomingSpeed
+net x2-PEv2_HomingSpeed <= joint.1.PEv2.HomingSpeed
 net x2-PEv2_HomingSpeed => pokeys.0.PEv2.6.HomingSpeed
 
-net y-PEv2_HomingSpeed <= pokeys-homecomp.0.joint.2.PEv2_HomingSpeed
+net y-PEv2_HomingSpeed <= joint.2.PEv2.HomingSpeed
 net y-PEv2_HomingSpeed => pokeys.0.PEv2.1.HomingSpeed
 
-net z-PEv2_HomingSpeed <= pokeys-homecomp.0.joint.3.PEv2_HomingSpeed
+net z-PEv2_HomingSpeed <= joint.3.PEv2.HomingSpeed
 net z-PEv2_HomingSpeed => pokeys.0.PEv2.2.HomingSpeed
 
-net x-PEv2_HomingReturnSpeed <= pokeys-homecomp.0.joint.0.PEv2_HomingReturnSpeed
+net x-PEv2_HomingReturnSpeed <= joint.0.PEv2.HomingReturnSpeed
 net x-PEv2_HomingReturnSpeed => pokeys.0.PEv2.0.HomingReturnSpeed
 
-net x2-PEv2_HomingReturnSpeed <= pokeys-homecomp.0.joint.1.PEv2_HomingReturnSpeed
+net x2-PEv2_HomingReturnSpeed <= joint.1.PEv2.HomingReturnSpeed
 net x2-PEv2_HomingReturnSpeed => pokeys.0.PEv2.6.HomingReturnSpeed
 
-net y-PEv2_HomingReturnSpeed <= pokeys-homecomp.0.joint.2.PEv2_HomingReturnSpeed
+net y-PEv2_HomingReturnSpeed <= joint.2.PEv2.HomingReturnSpeed
 net y-PEv2_HomingReturnSpeed => pokeys.0.PEv2.1.HomingReturnSpeed
 
-net z-PEv2_HomingReturnSpeed <= pokeys-homecomp.0.joint.3.PEv2_HomingReturnSpeed
+net z-PEv2_HomingReturnSpeed <= joint.3.PEv2.HomingReturnSpeed
 net z-PEv2_HomingReturnSpeed => pokeys.0.PEv2.2.HomingReturnSpeed
 
-net x-PEv2_HomingAlgorithm <= pokeys-homecomp.0.joint.0.PEv2_HomingAlgorithm
+net x-PEv2_HomingAlgorithm <= joint.0.PEv2.HomingAlgorithm
 net x-PEv2_HomingAlgorithm => pokeys.0.PEv2.0.HomingAlgorithm
 
-net x2-PEv2_HomingAlgorithm <= pokeys-homecomp.0.joint.1.PEv2_HomingAlgorithm
+net x2-PEv2_HomingAlgorithm <= joint.1.PEv2.HomingAlgorithm
 net x2-PEv2_HomingAlgorithm => pokeys.0.PEv2.6.HomingAlgorithm
 
-net y-PEv2_HomingAlgorithm <= pokeys-homecomp.0.joint.2.PEv2_HomingAlgorithm
+net y-PEv2_HomingAlgorithm <= joint.2.PEv2.HomingAlgorithm
 net y-PEv2_HomingAlgorithm => pokeys.0.PEv2.1.HomingAlgorithm
 
-net z-PEv2_HomingAlgorithm <= pokeys-homecomp.0.joint.3.PEv2_HomingAlgorithm
+net z-PEv2_HomingAlgorithm <= joint.3.PEv2.HomingAlgorithm
 net z-PEv2_HomingAlgorithm => pokeys.0.PEv2.2.HomingAlgorithm
 
-net x-PEv2_HomeOffsets <= pokeys-homecomp.0.joint.0.PEv2_HomeOffsets
+net x-PEv2_HomeOffsets <= joint.0.PEv2.HomeOffsets
 net x-PEv2_HomeOffsets => pokeys.0.PEv2.0.HomeOffsets
 
-net x2-PEv2_HomeOffsets <= pokeys-homecomp.0.joint.1.PEv2_HomeOffsets
+net x2-PEv2_HomeOffsets <= joint.1.PEv2.HomeOffsets
 net x2-PEv2_HomeOffsets => pokeys.0.PEv2.6.HomeOffsets
 
-net y-PEv2_HomeOffsets <= pokeys-homecomp.0.joint.2.PEv2_HomeOffsets
+net y-PEv2_HomeOffsets <= joint.2.PEv2.HomeOffsets
 net y-PEv2_HomeOffsets => pokeys.0.PEv2.1.HomeOffsets
 
-net z-PEv2_HomeOffsets <= pokeys-homecomp.0.joint.3.PEv2_HomeOffsets
+net z-PEv2_HomeOffsets <= joint.3.PEv2.HomeOffsets
 net z-PEv2_HomeOffsets => pokeys.0.PEv2.2.HomeOffsets
 
-net x-PEv2_HomeBackOffDistance <= pokeys-homecomp.0.joint.0.PEv2_HomeBackOffDistance
+net x-PEv2_HomeBackOffDistance <= joint.0.PEv2.HomeBackOffDistance
 net x-PEv2_HomeBackOffDistance => pokeys.0.PEv2.0.HomeBackOffDistance
 
-net x2-PEv2_HomeBackOffDistance <= pokeys-homecomp.0.joint.1.PEv2_HomeBackOffDistance
+net x2-PEv2_HomeBackOffDistance <= joint.1.PEv2.HomeBackOffDistance
 net x2-PEv2_HomeBackOffDistance => pokeys.0.PEv2.6.HomeBackOffDistance
 
-net y-PEv2_HomeBackOffDistance <= pokeys-homecomp.0.joint.2.PEv2_HomeBackOffDistance
+net y-PEv2_HomeBackOffDistance <= joint.2.PEv2.HomeBackOffDistance
 net y-PEv2_HomeBackOffDistance => pokeys.0.PEv2.1.HomeBackOffDistance
 
-net z-PEv2_HomeBackOffDistance <= pokeys-homecomp.0.joint.3.PEv2_HomeBackOffDistance
+net z-PEv2_HomeBackOffDistance <= joint.3.PEv2.HomeBackOffDistance
 net z-PEv2_HomeBackOffDistance => pokeys.0.PEv2.2.HomeBackOffDistance
