@@ -753,7 +753,7 @@ void update_analog_inputs(sPoKeysDevice* device)
         int AinNr = i - AnalogPinOffset;
 
         // Check if the pin is an analog input
-        if ((AnalogIOGet == true) && (AinNr >= 0) && (AinNr < AnalogPinCount))
+        if ((PK_AnalogIOGet == true) && (AinNr >= 0) && (AinNr < AnalogPinCount))
         {
             // Ensure scale is not zero
             if (adcin_scale(AinNr) == 0)
