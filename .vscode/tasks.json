@@ -49,16 +49,51 @@
             "detail": "Compile and install the Pokeys Home component."
         },
         {
+            "label": "Compile kbd48CNC",
+            "type": "shell",
+            "command": "sudo halcompile --install kbd48CNC.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+            "detail": "Compile and install the kbd48CNC helper component."
+        },
+        {
+            "label": "Compile start_delay_5000",
+            "type": "shell",
+            "command": "sudo halcompile --install start_delay_5000.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+            "detail": "Compile and install the start_delay_5000 helper component."
+        },
+        {
+            "label": "Compile start_delay_3000",
+            "type": "shell",
+            "command": "sudo halcompile --install start_delay_3000.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+            "detail": "Compile and install the start_delay_3000 helper component."
+        },
+        {
             "label": "Load INI Configuration",
             "type": "shell",
-            "command": "linuxcnc -v -d ${file}",
+            "command": "linuxcnc -v -d -r ${file}",
             "group": {
                 "kind": "none",
                 "isDefault": false
             },
             "dependsOn": [
                 "Compile Pokeys Component",
-                "Compile Pokeys Home Component"
+                "Compile Pokeys Home Component",
+                "Compile kbd48CNC",
+                "Compile start_delay_5000"
             ],
             "problemMatcher": [],
             "detail": "Load the INI configuration for LinuxCNC."
