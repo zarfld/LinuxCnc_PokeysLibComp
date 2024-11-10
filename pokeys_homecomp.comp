@@ -43,6 +43,7 @@ option extra_setup;
 #include "homing.h"
 #include "stdlib.h"
 #include "rtapi.h"
+#include <pthread.h>
 
 static char* home_parms;
 RTAPI_MP_STRING(home_parms, "Example home parms");
@@ -264,123 +265,153 @@ int  homing_init(int id,
     return makepins(id, n_joints);
 }
 
+// Asynchronous helper functions
+void* async_do_homing(void* arg) {
+    int jno = *((int*)arg);
+    one_joint_home_data_t* addr = &(joint_home_data->jhd[jno]);
+    int int_AxesState = (int)(*addr->PEv2_AxesState);
+    switch (int_AxesState) {
+        case PK_PEAxisState_axHOMING_RESETTING:
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_INITIAL_SEARCH_START;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        case PK_PEAxisState_axHOMING_BACKING_OFF:
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_INITIAL_BACKOFF_WAIT;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        case PK_PEAxisState_axHOMINGSTART:
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_START;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        case PK_PEAxisState_axHOMINGSEARCH:
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_INITIAL_SEARCH_WAIT;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        case PK_PEAxisState_axHOMINGBACK:
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_FINAL_BACKOFF_START;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        case PK_PEAxisState_axHOME:
+            H[jno].homing = 1;
+            H[jno].homed = 1;
+            H[jno].home_state = HOME_FINISHED;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        default:
+            H[jno].homing = 0;
+            H[jno].home_state = HOME_IDLE;
+            break;
+    }
+    return NULL;
+}
+
+void* async_read_homing_in_pins(void* arg) {
+    int jno = *((int*)arg);
+    one_joint_home_data_t* addr = &(joint_home_data->jhd[jno]);
+    int int_AxesState = (int)(*addr->PEv2_AxesState);
+    switch (int_AxesState) {
+        case PK_PEAxisState_axHOMING_RESETTING:
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_INITIAL_SEARCH_START;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        case PK_PEAxisState_axHOMING_BACKING_OFF:
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_INITIAL_BACKOFF_WAIT;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        case PK_PEAxisState_axHOMINGSTART:
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_START;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        case PK_PEAxisState_axHOMINGSEARCH:
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_INITIAL_SEARCH_WAIT;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        case PK_PEAxisState_axHOMINGBACK:
+            H[jno].homing = 1;
+            H[jno].homed = 0;
+            H[jno].home_state = HOME_FINAL_BACKOFF_START;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        case PK_PEAxisState_axHOME:
+            H[jno].homing = 1;
+            H[jno].homed = 1;
+            H[jno].home_state = HOME_FINISHED;
+            addr->PEv2_AxesCommand = 0;
+            break;
+        default:
+            H[jno].homing = 0;
+            H[jno].home_state = HOME_IDLE;
+            break;
+    }
+    return NULL;
+}
+
+void* async_write_homing_out_pins(void* arg) {
+    int jno = *((int*)arg);
+    one_joint_home_data_t* addr = &(joint_home_data->jhd[jno]);
+    addr->homing = (hal_bit_t*)H[jno].homing;
+    addr->homed = (hal_bit_t*)H[jno].homed;
+    addr->home_state = (hal_s32_t *)H[jno].home_state;
+    addr->index_enable = (hal_bit_t*)H[jno].index_enable;
+    return NULL;
+}
+
 // once-per-servo-period functions:
 bool do_homing(void) { 
     rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function started\n", __FILE__, __FUNCTION__);
     int jno;
-    one_joint_home_data_t* addr;
+    pthread_t threads[EMCMOT_MAX_JOINTS];
     for (jno = 0; jno < EMCMOT_MAX_JOINTS; jno++) {
-        addr = &(joint_home_data->jhd[jno]);
-        int int_AxesState = (int)(*addr->PEv2_AxesState);
-        switch (int_AxesState) {
-        case PK_PEAxisState_axHOMING_RESETTING:// Stopping the axis to reset the position counters
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_INITIAL_SEARCH_START;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOMING_BACKING_OFF:// Backing off switch
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_INITIAL_BACKOFF_WAIT;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOMINGSTART:// Homing procedure is starting on axis
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_START;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOMINGSEARCH:// Homing procedure first step - going to home
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_INITIAL_SEARCH_WAIT;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOMINGBACK:// Homing procedure second step - slow homing
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_FINAL_BACKOFF_START;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOME:// Axis is homed
-            H[jno].homing = 1;
-            H[jno].homed = 1;
-            H[jno].home_state = HOME_FINISHED;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        default:
-            H[jno].homing = 0;
-            H[jno].home_state = HOME_IDLE;
-            break;
-        }
+        pthread_create(&threads[jno], NULL, async_do_homing, &jno);
+    }
+    for (jno = 0; jno < EMCMOT_MAX_JOINTS; jno++) {
+        pthread_join(threads[jno], NULL);
     }
     rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return 1; }//return 1 if allhomed
-void read_homing_in_pins(int njoints)
-{
+    return 1; 
+}
+
+void read_homing_in_pins(int njoints) {
     rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function started\n", __FILE__, __FUNCTION__);
     int jno;
-    one_joint_home_data_t* addr;
-    for ( jno = 0; jno < njoints; jno++) {
-        addr = &(joint_home_data->jhd[jno]);
-        int int_AxesState = (int)(*addr->PEv2_AxesState);
-        switch (int_AxesState) {
-        case PK_PEAxisState_axHOMING_RESETTING:// Stopping the axis to reset the position counters
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_INITIAL_SEARCH_START;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOMING_BACKING_OFF:// Backing off switch
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_INITIAL_BACKOFF_WAIT;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOMINGSTART:// Homing procedure is starting on axis
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_START;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOMINGSEARCH:// Homing procedure first step - going to home
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_INITIAL_SEARCH_WAIT;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOMINGBACK:// Homing procedure second step - slow homing
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_FINAL_BACKOFF_START;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOME:// Axis is homed
-            H[jno].homing = 1;
-            H[jno].homed = 1;
-            H[jno].home_state = HOME_FINISHED;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        default:
-            H[jno].homing = 0;
-            H[jno].home_state = HOME_IDLE;
-            break;
-        }
+    pthread_t threads[njoints];
+    for (jno = 0; jno < njoints; jno++) {
+        pthread_create(&threads[jno], NULL, async_read_homing_in_pins, &jno);
+    }
+    for (jno = 0; jno < njoints; jno++) {
+        pthread_join(threads[jno], NULL);
     }
     rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
     return;
 }
+
 void write_homing_out_pins(int njoints) {
     rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function started\n", __FILE__, __FUNCTION__);
     int jno;
-    one_joint_home_data_t* addr;
+    pthread_t threads[njoints];
     for (jno = 0; jno < njoints; jno++) {
-        addr = &(joint_home_data->jhd[jno]);
-        addr->homing = (hal_bit_t*)H[jno].homing;
-        addr->homed = (hal_bit_t*)H[jno].homed;
-        addr->home_state = (hal_s32_t *)H[jno].home_state;
-        addr->index_enable = (hal_bit_t*)H[jno].index_enable;
+        pthread_create(&threads[jno], NULL, async_write_homing_out_pins, &jno);
+    }
+    for (jno = 0; jno < njoints; jno++) {
+        pthread_join(threads[jno], NULL);
     }
     rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
     return;
