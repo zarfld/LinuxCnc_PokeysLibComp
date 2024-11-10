@@ -1,4 +1,3 @@
-
 loadusr -W kbd48CNC
 #loadusr -W start_delay_3000
 
@@ -390,22 +389,17 @@ setp kbd48CNC.0.JOGRATE.MAX [DISPLAY]MAX_LINEAR_VELOCITY
 setp kbd48CNC.0.JOGRATE.init [DISPLAY]DEFAULT_LINEAR_VELOCITY
 setp kbd48CNC.0.JOGRATE.increment 5
 
+# Detailed description of how the settings affect the machine
 
+# The `kbd48CNC.hal` settings affect the machine by configuring the connections and behavior of the kbd48CNC keyboard, mapping various buttons to HALUI signals and other components. Here are the key effects:
 
+# The file loads the `kbd48CNC` component, which provides a set of pins, parameters, and signals to interface with the device and control various functions such as jogging, button inputs, and LED outputs.
+# It defines connections for the jog buttons, including `JOG_TOGGLE`, `JOG_PLUS`, `JOG_MINUS`, `JOG_CONT`, `JOG_FAST_TOGGLE`, `JOG_INC`, `JOG_MPG`, and `JOG_STEP_*` buttons, mapping them to the corresponding HALUI signals.
+# It sets up the axis selection buttons for each axis (X, Y, Z, A, B, C), mapping them to the corresponding HALUI signals for axis selection and jogging.
+# It configures the spindle control buttons, including `SPINDLE_CW`, `SPINDLE_STOP`, and `SPINDLE_CCW`, mapping them to the corresponding HALUI signals for spindle control.
+# It defines connections for the program control buttons, including `CYCLE_START`, `FEED_HOLD`, `STOP`, `RESET`, `SINGLE_STEP`, `OPTIONAL_STOP`, `LOAD`, `CLOSE_GFILE`, and `REF`, mapping them to the corresponding HALUI signals for program control.
+# It sets up the LED outputs for the buttons, mapping them to the corresponding HALUI signals to indicate the status of various functions.
+# It configures the jog rate parameters, including `JOGRATE.MAX`, `JOGRATE.init`, and `JOGRATE.increment`, to control the jog rate for each axis.
+# It defines connections for the homing signals, linking the homing signals from the `pokeys_homecomp.comp` component to the PoKeys components.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# These settings collectively ensure proper communication and control of the machine's components, including jogging, axis selection, spindle control, program control, and homing configuration. The `kbd48CNC.hal` file plays a crucial role in configuring the kbd48CNC keyboard and its interaction with the machine.

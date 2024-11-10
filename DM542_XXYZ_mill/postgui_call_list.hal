@@ -152,3 +152,19 @@ setp pokeys.0.PEv2.params.ApplyIniSettings  [POKEYS]ApplyIniSettings
 
 net pokeys.rtc.sec <=	pokeys.0.rtc.sec
 net pokeys.rtc.sec 	=> pokeys.0.rtc.sec-ret
+
+# Detailed description of how the settings affect the machine
+
+# The file sources `custom_postgui.hal` to include any custom post-GUI HAL commands.
+# It sets the device ID for the PoKeys device using the `DEVICE_ID` parameter from the INI file.
+# It configures the probe input pin and its polarity using the `PEv2_ProbeInput` and `PEv2_ProbeInputPolarity` parameters.
+# It sets the emergency input and output pins using the `PEv2_EmergencyInputPin` and `PEv2_EmergencyOutputPin` parameters.
+# It configures the pulse generator type using the `PEv2_PulseGeneratorType` parameter.
+# It sets the axis switch configuration for each axis using the `PEv2_AxesSwitchConfig_*` parameters.
+# It enables and configures the limit and home switches for each axis, including setting the invert and filter options.
+# It sets the home sequence for each axis using the `home-sequence` parameter.
+# It links the homing signals from the `pokeys_homecomp.comp` component to the PoKeys components.
+# It applies the INI settings to the PoKeys device using the `ApplyIniSettings` parameter.
+# It sets up the real-time clock (RTC) synchronization by linking the `pokeys.rtc.sec` signal.
+
+# These settings collectively ensure proper communication and control of the machine's components, including the limit switches, homing configuration, and emergency handling. The `postgui_call_list.hal` file plays a crucial role in finalizing the machine's configuration after the GUI has been loaded.
