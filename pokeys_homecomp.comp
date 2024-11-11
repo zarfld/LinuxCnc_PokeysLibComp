@@ -194,7 +194,7 @@ static int makepins(int id, int njoints)
 
     for (jno = 0; jno < njoints; jno++) {
         addr = &(joint_home_data->jhd[jno]);
-
+ 
         retval += hal_pin_bit_newf(HAL_IN, &(addr->home_sw), id,
             "joint.%d.home-sw-in", jno);
 
