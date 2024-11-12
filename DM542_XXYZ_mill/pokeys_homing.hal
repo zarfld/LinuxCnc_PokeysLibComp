@@ -54,17 +54,17 @@ net PulseEngineState     <= pokeys.0.PEv2.PulseEngineState
  net z-AxesCommand     => pokeys.0.PEv2.2.AxesCommand
 
  # AxesConfig
-  net x-AxesConfig     <= joint.0.PEv2.AxesConfig
- net x-AxesConfig     => pokeys.0.PEv2.0.AxesConfig
+#net x-AxesConfig     <= joint.0.PEv2.AxesConfig
+# net x-AxesConfig     => pokeys.0.PEv2.0.AxesConfig
 
- net x2-AxesConfig     <= joint.1.PEv2.AxesConfig
- net x2-AxesConfig     => pokeys.0.PEv2.6.AxesConfig
+# net x2-AxesConfig     <= joint.1.PEv2.AxesConfig
+#net x2-AxesConfig     => pokeys.0.PEv2.6.AxesConfig
 
- net y-AxesConfig     <= joint.2.PEv2.AxesConfig
- net y-AxesConfig     => pokeys.0.PEv2.1.AxesConfig
+ #net y-AxesConfig     <= joint.2.PEv2.AxesConfig
+ #net y-AxesConfig     => pokeys.0.PEv2.1.AxesConfig
 
- net z-AxesConfig     <= joint.3.PEv2.AxesConfig
- net z-AxesConfig     => pokeys.0.PEv2.2.AxesConfig
+ #net z-AxesConfig     <= joint.3.PEv2.AxesConfig
+ #net z-AxesConfig     => pokeys.0.PEv2.2.AxesConfig
 
  #Homesqequence
 setp   pokeys.0.PEv2.0.home-sequence  	   [JOINT_0]HOME_SEQUENCE
@@ -135,62 +135,62 @@ net z-index-enable <= joint.3.index-enable
 #net z-PEv2_AxesSwitchConfig <= joint.3.PEv2.AxesSwitchConfig
 #net z-PEv2_AxesSwitchConfig => pokeys.0.PEv2.2.AxesSwitchConfig
 
-net x-PEv2_HomingSpeed <= joint.0.PEv2.HomingSpeed
-net x-PEv2_HomingSpeed => pokeys.0.PEv2.0.HomingSpeed
+#net x-PEv2_HomingSpeed <= joint.0.PEv2.HomingSpeed
+#net x-PEv2_HomingSpeed => pokeys.0.PEv2.0.HomingSpeed
 
-net x2-PEv2_HomingSpeed <= joint.1.PEv2.HomingSpeed
-net x2-PEv2_HomingSpeed => pokeys.0.PEv2.6.HomingSpeed
+#net x2-PEv2_HomingSpeed <= joint.1.PEv2.HomingSpeed
+#net x2-PEv2_HomingSpeed => pokeys.0.PEv2.6.HomingSpeed
 
-net y-PEv2_HomingSpeed <= joint.2.PEv2.HomingSpeed
-net y-PEv2_HomingSpeed => pokeys.0.PEv2.1.HomingSpeed
+#net y-PEv2_HomingSpeed <= joint.2.PEv2.HomingSpeed
+#net y-PEv2_HomingSpeed => pokeys.0.PEv2.1.HomingSpeed
 
-net z-PEv2_HomingSpeed <= joint.3.PEv2.HomingSpeed
-net z-PEv2_HomingSpeed => pokeys.0.PEv2.2.HomingSpeed
+#net z-PEv2_HomingSpeed <= joint.3.PEv2.HomingSpeed
+#net z-PEv2_HomingSpeed => pokeys.0.PEv2.2.HomingSpeed
 
-net x-PEv2_HomingReturnSpeed <= joint.0.PEv2.HomingReturnSpeed
-net x-PEv2_HomingReturnSpeed => pokeys.0.PEv2.0.HomingReturnSpeed
+#net x-PEv2_HomingReturnSpeed <= joint.0.PEv2.HomingReturnSpeed
+#net x-PEv2_HomingReturnSpeed => pokeys.0.PEv2.0.HomingReturnSpeed
 
-net x2-PEv2_HomingReturnSpeed <= joint.1.PEv2.HomingReturnSpeed
-net x2-PEv2_HomingReturnSpeed => pokeys.0.PEv2.6.HomingReturnSpeed
+#net x2-PEv2_HomingReturnSpeed <= joint.1.PEv2.HomingReturnSpeed
+#net x2-PEv2_HomingReturnSpeed => pokeys.0.PEv2.6.HomingReturnSpeed
 
-net y-PEv2_HomingReturnSpeed <= joint.2.PEv2.HomingReturnSpeed
-net y-PEv2_HomingReturnSpeed => pokeys.0.PEv2.1.HomingReturnSpeed
+#net y-PEv2_HomingReturnSpeed <= joint.2.PEv2.HomingReturnSpeed
+#net y-PEv2_HomingReturnSpeed => pokeys.0.PEv2.1.HomingReturnSpeed
 
-net z-PEv2_HomingReturnSpeed <= joint.3.PEv2.HomingReturnSpeed
-net z-PEv2_HomingReturnSpeed => pokeys.0.PEv2.2.HomingReturnSpeed
+#net z-PEv2_HomingReturnSpeed <= joint.3.PEv2.HomingReturnSpeed
+#net z-PEv2_HomingReturnSpeed => pokeys.0.PEv2.2.HomingReturnSpeed
 
-net x-PEv2_HomingAlgorithm <= joint.0.PEv2.HomingAlgorithm
-net x-PEv2_HomingAlgorithm => pokeys.0.PEv2.0.HomingAlgorithm
+#net x-PEv2_HomingAlgorithm <= joint.0.PEv2.HomingAlgorithm
+#net x-PEv2_HomingAlgorithm => pokeys.0.PEv2.0.HomingAlgorithm
 
-net x2-PEv2_HomingAlgorithm <= joint.1.PEv2.HomingAlgorithm
-net x2-PEv2_HomingAlgorithm => pokeys.0.PEv2.6.HomingAlgorithm
+#net x2-PEv2_HomingAlgorithm <= joint.1.PEv2.HomingAlgorithm
+#net x2-PEv2_HomingAlgorithm => pokeys.0.PEv2.6.HomingAlgorithm
 
-net y-PEv2_HomingAlgorithm <= joint.2.PEv2.HomingAlgorithm
-net y-PEv2_HomingAlgorithm => pokeys.0.PEv2.1.HomingAlgorithm
+#net y-PEv2_HomingAlgorithm <= joint.2.PEv2.HomingAlgorithm
+#net y-PEv2_HomingAlgorithm => pokeys.0.PEv2.1.HomingAlgorithm
 
-net z-PEv2_HomingAlgorithm <= joint.3.PEv2.HomingAlgorithm
-net z-PEv2_HomingAlgorithm => pokeys.0.PEv2.2.HomingAlgorithm
+#net z-PEv2_HomingAlgorithm <= joint.3.PEv2.HomingAlgorithm
+#net z-PEv2_HomingAlgorithm => pokeys.0.PEv2.2.HomingAlgorithm
 
-net x-PEv2_HomeOffsets <= joint.0.PEv2.HomeOffsets
-net x-PEv2_HomeOffsets => pokeys.0.PEv2.0.HomeOffsets
+#net x-PEv2_HomeOffsets <= joint.0.PEv2.HomeOffsets
+#net x-PEv2_HomeOffsets => pokeys.0.PEv2.0.HomeOffsets
 
-net x2-PEv2_HomeOffsets <= joint.1.PEv2.HomeOffsets
-net x2-PEv2_HomeOffsets => pokeys.0.PEv2.6.HomeOffsets
+#net x2-PEv2_HomeOffsets <= joint.1.PEv2.HomeOffsets
+#net x2-PEv2_HomeOffsets => pokeys.0.PEv2.6.HomeOffsets
 
-net y-PEv2_HomeOffsets <= joint.2.PEv2.HomeOffsets
-net y-PEv2_HomeOffsets => pokeys.0.PEv2.1.HomeOffsets
+#net y-PEv2_HomeOffsets <= joint.2.PEv2.HomeOffsets
+#net y-PEv2_HomeOffsets => pokeys.0.PEv2.1.HomeOffsets
 
-net z-PEv2_HomeOffsets <= joint.3.PEv2.HomeOffsets
-net z-PEv2_HomeOffsets => pokeys.0.PEv2.2.HomeOffsets
+#net z-PEv2_HomeOffsets <= joint.3.PEv2.HomeOffsets
+#net z-PEv2_HomeOffsets => pokeys.0.PEv2.2.HomeOffsets
 
-net x-PEv2_HomeBackOffDistance <= joint.0.PEv2.HomeBackOffDistance
-net x-PEv2_HomeBackOffDistance => pokeys.0.PEv2.0.HomeBackOffDistance
+#net x-PEv2_HomeBackOffDistance <= joint.0.PEv2.HomeBackOffDistance
+#net x-PEv2_HomeBackOffDistance => pokeys.0.PEv2.0.HomeBackOffDistance
 
-net x2-PEv2_HomeBackOffDistance <= joint.1.PEv2.HomeBackOffDistance
-net x2-PEv2_HomeBackOffDistance => pokeys.0.PEv2.6.HomeBackOffDistance
+#net x2-PEv2_HomeBackOffDistance <= joint.1.PEv2.HomeBackOffDistance
+#net x2-PEv2_HomeBackOffDistance => pokeys.0.PEv2.6.HomeBackOffDistance
 
-net y-PEv2_HomeBackOffDistance <= joint.2.PEv2.HomeBackOffDistance
-net y-PEv2_HomeBackOffDistance => pokeys.0.PEv2.1.HomeBackOffDistance
+#net y-PEv2_HomeBackOffDistance <= joint.2.PEv2.HomeBackOffDistance
+#net y-PEv2_HomeBackOffDistance => pokeys.0.PEv2.1.HomeBackOffDistance
 
-net z-PEv2_HomeBackOffDistance <= joint.3.PEv2.HomeBackOffDistance
-net z-PEv2_HomeBackOffDistance => pokeys.0.PEv2.2.HomeBackOffDistance
+#net z-PEv2_HomeBackOffDistance <= joint.3.PEv2.HomeBackOffDistance
+#net z-PEv2_HomeBackOffDistance => pokeys.0.PEv2.2.HomeBackOffDistance

@@ -1,554 +1,770 @@
-component pokeys_homecomp "homing module for pokeys";
+component pokeys_homecomp "homing module template";
 
 description """
-This component is a homing module for PoKeys. It provides pin outs and signal linking for the PoKeys homing configuration.
+Example of a homing module buildable with halcompile.
+Demonstrates required code for #includes, function definitions, etc.
 
-Pin Outs:
-- `devSerial`: Unsigned integer input pin.
-- `PulseEngineState`: Unsigned integer input pin representing the state of the pulse engine.
-- `homing`: Bit output pin indicating if the joint is homing.
-- `homed`: Bit output pin indicating if the joint is homed.
-- `home_state`: Integer output pin representing the homing state machine state.
-- `index_enable`: Bit input/output pin for index enable.
-- `PEv2_AxesState`: Unsigned integer input pin representing the state of the pulse engine axis.
-- `PEv2_AxesCommand`: Unsigned integer output pin for commands to the pulse engine.
-- `PEv2_AxesConfig`: Unsigned integer input pin for axis configuration.
-- `PEv2_AxesSwitchConfig`: Unsigned integer output pin for axis switch configuration.
-- `PEv2_HomingSpeed`: Unsigned integer input/output pin for homing speed per axis.
-- `PEv2_HomingReturnSpeed`: Unsigned integer input/output pin for homing return speed per axis.
-- `PEv2_HomingAlgorithm`: Unsigned integer input/output pin for homing algorithm configuration.
-- `PEv2_HomeOffsets`: Unsigned integer input/output pin for home position offset.
-- `PEv2_HomeBackOffDistance`: Unsigned integer input/output pin for back-off distance after homing.
+If \\fBHOMING_BASE\\fR is #defined and points to a valid homing.c file,
+an example of a customized homing module is built.  This module
+creates input hal pins joint.n.request-custom-homing that enable an
+alternate joint homing state machine for requested joints.  A hal output
+pin joint.N.is_custom-homing verifies selection"
 
-Signal Linking:
-- `is_module`: Bit output pin set to 1 to indicate that this module is being used.
+The customized homing module utilizes many of the base homing api
+routines from homing.c without modification but augments other base
+functions to add support for custom hal pins and custom joint homing
+state machines.  A user-built module will likely replace additional
+api functions or augment them with other customizations.
 
-To use this homing module, make sure to connect the appropriate signals to the corresponding pins and configure the PoKeys device accordingly.
+If \\fBHOMING_BASE\\fR Is not #defined, an  actual homing scheme is
+\\fBnot\\fR implemented but all necessary functions are included as
+skeleton code.   (All joints are effectively homed at all times and
+cannot be unhomed).
+
+See the source code file: src/emc/motion/homing.c for the baseline
+implementation that includes all functions for the default \\fBhomemod\\fR
+module.
+
+To avoid updates that overwrite homecomp.comp, best practice is
+to rename the file and its component name (example:
+\\fBuser_homecomp.comp, user_homecomp\\fR).
+
+The (renamed) component can be built and installed with
+halcompile and then substituted for the default homing module
+(\\fBhomemod\\fR) using:\n
+  $ linuxcnc \\fB-m user_homecomp\\fR someconfig.ini\n
+or by inifile setting: \\fB[EMCMOT]HOMEMOD=user_homecomp\\fR
+
+\\fBNote:\\fRIf using a deb install:\n
+1) halcompile is provided by the package linuxcnc-dev\n
+2) This source file for BRANCHNAME (master,2.9,etc) is downloadable from github:\n
+https://github.com/LinuxCNC/linuxcnc/blob/BRANCHNAME/src/hal/components/homecomp.comp
 """;
 
-pin in unsigned devSerial;
-pin in unsigned PulseEngineState;				// State of pulse engine - see ePoKeysPEState
-pin out bit is_module = 1; //one pin is required to use halcompile)
+pin out bit is_module=1; //one pin is required to use halcompile)
 
 license "GPL";
-author "Dominik Zarfl";
+author "Dewey Garrett";
 option homemod;
 option extra_setup;
 ;;
 
-#define STR(s)  #s
+/* To incorporate default homing.c file from a local git src tree:
+** enable #define HOMING_BASE set to the path to the current homing.c file.
+** (Note: CUSTOM_HOMEMODULE precludes duplicate api symbols)
+** (Edit myname as required for valid path)
+*/
+
+// #define HOMING_BASE /home/myname/linuxcnc-dev/src/emc/motion/homing.c
+
+#define STR(s) #s
 #define XSTR(s) STR(s)
 
 #include "motion.h"
 #include "homing.h"
-#include "stdlib.h"
-#include "rtapi.h"
-#include <pthread.h>
 
-static char* home_parms;
+
+static char *home_parms;
 RTAPI_MP_STRING(home_parms, "Example home parms");
 
 // EXTRA_SETUP is executed before rtapi_app_main()
-EXTRA_SETUP() {
-    if (!home_parms) { home_parms = "no_home_parms"; }
+EXTRA_SETUP()
+{
+    if (!home_parms)
+    {
+        home_parms = "no_home_parms";
+    }
     rtapi_print("@@@%s:%s: home_parms=%s\n", __FILE__, __FUNCTION__, home_parms);
-    rtapi_print("\n!!!%s: Pokeys Homing Module\n\n", __FILE__ );
+#ifndef HOMING_BASE
+    rtapi_print("\n!!!%s: Skeleton Homing Module\n\n", __FILE__);
+#else
+    rtapi_print("\n!!!%s: HOMING_BASE=%s\n"
+                "!!!Customize using hal pin(s): joint.N.request-custom-homing\n",
+                __FILE__, XSTR(HOMING_BASE));
+#endif
 
     return 0;
 }
 
 //=====================================================================
+#ifdef HOMING_BASE // { begin CUSTOM example
+#define USE_HOMING_BASE XSTR(HOMING_BASE)
 
-/* channels provided by PEv2 which might be relevant:
-pin out unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
+// NOTE: CUSTOM_HOMEMODULE: disables duplicate symbols sourced from homing.c
+#define CUSTOM_HOMEMODULE
+#include USE_HOMING_BASE
 
-// Pulse engine v2 structure...
-pin out unsigned PEv2.#.AxesState [8];				// Axis states (bit-mapped) - see ePK_PEAxisState
-pin out unsigned PEv2.#.AxesConfig [8];				// Axis configuration - see ePK_PEv2_AxisConfig
-pin in unsigned PEv2.#.AxesSwitchConfig [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
-
-pin io unsigned PEv2.#.HomingSpeed [8];			// Homing speed per axis (in %)
-pin io unsigned PEv2.#.HomingReturnSpeed [8];		// Homing return speed per axis (in % of the homing speed)
-pin io unsigned PEv2.#.HomingAlgorithm[8];		// Homing algorithm configuration
-pin io u32 PEv2.#.HomeOffsets [8];				// Home position offset
-pin io unsigned PEv2.#.HomeBackOffDistance [8];		// Back-off distance after homing
-*/
-static emcmot_joint_t* joints;
-typedef enum {
-    PK_PEAxisState_axSTOPPED = 0,        // Axis is stopped
-    PK_PEAxisState_axREADY = 1,        // Axis ready
-    PK_PEAxisState_axRUNNING = 2,        // Axis is running
-
-    PK_PEAxisState_axHOMING_RESETTING = 8,	   // Stopping the axis to reset the position counters
-    PK_PEAxisState_axHOMING_BACKING_OFF = 9,   // Backing off switch
-    PK_PEAxisState_axHOME = 10,       // Axis is homed
-    PK_PEAxisState_axHOMINGSTART = 11,       // Homing procedure is starting on axis
-    PK_PEAxisState_axHOMINGSEARCH = 12,       // Homing procedure first step - going to home
-    PK_PEAxisState_axHOMINGBACK = 13,       // Homing procedure second step - slow homing
-
-    PK_PEAxisState_axPROBED = 14,       // Probing completed for this axis
-    PK_PEAxisState_axPROBESTART = 15,       // Probing procedure is starting on axis
-    PK_PEAxisState_axPROBESEARCH = 16,       // Probing procedure - probing
-
-    PK_PEAxisState_axERROR = 20,       // Axis error
-    PK_PEAxisState_axLIMIT = 30        // Axis limit tripped
-} pokeys_home_state_t;
-
-typedef enum {
-    PK_PEAxisCommand_axIDLE = 0,        // Axis  in IDLE
-    PK_PEAxisCommand_axHOMINGSTART = 1,        // Start Homing procedure
-    PK_PEAxisCommand_axHOMINGCANCEL = 2,        // Cancel Homing procedure
-} pokeys_home_command_t;
-
-typedef enum {
-    HOME_IDLE = 0,
-    HOME_START,// 1
-    HOME_UNLOCK,// 2
-    HOME_UNLOCK_WAIT,// 3
-    HOME_INITIAL_BACKOFF_START,// 4
-    HOME_INITIAL_BACKOFF_WAIT,// 5
-    HOME_INITIAL_SEARCH_START,// 6
-    HOME_INITIAL_SEARCH_WAIT,// 7
-    HOME_SET_COARSE_POSITION,// 8
-    HOME_FINAL_BACKOFF_START,// 9
-    HOME_FINAL_BACKOFF_WAIT,// 10
-    HOME_RISE_SEARCH_START,// 11
-    HOME_RISE_SEARCH_WAIT,// 12
-    HOME_FALL_SEARCH_START,// 13
-    HOME_FALL_SEARCH_WAIT,// 14
-    HOME_SET_SWITCH_POSITION,// 15
-    HOME_INDEX_ONLY_START,// 16
-    HOME_INDEX_SEARCH_START,// 17
-    HOME_INDEX_SEARCH_WAIT,// 18
-    HOME_SET_INDEX_POSITION,// 19
-    HOME_FINAL_MOVE_START,// 20
-    HOME_FINAL_MOVE_WAIT,// 21
-    HOME_LOCK,// 22
-    HOME_LOCK_WAIT,// 23
-    HOME_FINISHED,// 24
-    HOME_ABORT// 25
-} local_home_state_t;
-
-// local per-joint data (includes hal pin data)
-typedef struct {
-    local_home_state_t home_state;           // OUT pin
-    bool         homing;               // OUT pin
-    bool         homed;                // OUT pin
-    bool         home_sw;              // IN  pin
-    bool         index_enable;         // IO  pin
-    bool         joint_in_sequence;
-    int          pause_timer;
-    double       home_offset;          // intfc, updateable
-    double       home;                 // intfc, updateable
-    double       home_final_vel;       // intfc
-    double       home_search_vel;      // intfc
-    double       home_latch_vel;       // intfc
-    int          home_flags;           // intfc
-    int          home_sequence;        // intfc, updateable
-    bool         volatile_home;        // intfc
-    bool         home_is_synchronized;
-} home_local_data;
-
-static  home_local_data H[EMCMOT_MAX_JOINTS];
-
-// data for per-joint homing-specific hal pins:
-typedef struct {
-    hal_bit_t* home_sw;      // home switch input
-    hal_bit_t* homing;       // joint is homing
-    hal_bit_t* homed;        // joint was homed
-    hal_bit_t* index_enable; // motmod sets: request reset on index
-                             //        encoder clears: index arrived
-    hal_s32_t* home_state;   // homing state machine state
-
-    hal_u32_t* PEv2_AxesState; // State of pulse engine - see ePoKeysPEState
-    hal_u32_t* PEv2_AxesCommand; // Commands to  pulse engine - see ePoKeysPECmd
-    hal_u32_t* PEv2_AxesConfig; // Axis configuration - see ePK_PEv2_AxisConfig
-    hal_u32_t* PEv2_AxesSwitchConfig; // Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
-
-    hal_u32_t* PEv2_HomingSpeed; // Homing speed per axis (in %)
-    hal_u32_t* PEv2_HomingReturnSpeed; // Homing return speed per axis (in % of the homing speed)
-    hal_u32_t* PEv2_HomingAlgorithm; // Homing algorithm configuration
-    hal_u32_t* PEv2_HomeOffsets; // Home position offset
-    hal_u32_t* PEv2_HomeBackOffDistance; // Back-off distance after homing
-
-} one_joint_home_data_t;
-
-typedef struct {
-    one_joint_home_data_t jhd[EMCMOT_MAX_JOINTS];
-} all_joints_home_data_t;
-
-static all_joints_home_data_t* joint_home_data = 0;
-
-static int makepins(int id, int njoints)
+typedef struct
 {
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function started\n", __FILE__, __FUNCTION__);
-    // home_pins needed to work with configs expecting them:
+    bool request_custom_homing;
+    bool is_custom_homing;
+} custom_home_local_data;
+
+static custom_home_local_data customH[EMCMOT_MAX_JOINTS];
+
+// data for per-joint custom-homing-specific hal pins:
+typedef struct
+{
+    hal_bit_t *request_custom_homing; // input  requests custom homing
+    hal_bit_t *is_custom_homing;      // output verifies custom homing
+} custom_one_joint_home_data_t;
+
+typedef struct
+{
+    custom_one_joint_home_data_t custom_jhd[EMCMOT_MAX_JOINTS];
+} custom_all_joints_home_data_t;
+
+static custom_all_joints_home_data_t *custom_joint_home_data = 0;
+
+static int custom_makepins(int id, int njoints)
+{
     int jno, retval;
-    one_joint_home_data_t* addr;
-    retval = 0;
-    joint_home_data = hal_malloc(sizeof(all_joints_home_data_t));
-    if (joint_home_data == 0) {
-        rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: all_joints_home_data_t malloc failed\n");
+    custom_one_joint_home_data_t *addr;
+
+    custom_joint_home_data = hal_malloc(sizeof(custom_all_joints_home_data_t));
+    if (custom_joint_home_data == 0)
+    {
+        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: custom_all_joints_home_data_t malloc failed\n");
         return -1;
     }
 
-    for (jno = 0; jno < njoints; jno++) {
+    retval = 0;
+    for (jno = 0; jno < njoints; jno++)
+    {
+        addr = &(custom_joint_home_data->custom_jhd[jno]);
+
+        retval += hal_pin_bit_newf(HAL_IN, &(addr->request_custom_homing), id,
+                                   "joint.%d.request-custom-homing", jno);
+        retval += hal_pin_bit_newf(HAL_OUT, &(addr->is_custom_homing), id,
+                                   "joint.%d.is-custom-homing", jno);
+    }
+    return retval;
+} // custom_makepins()
+
+static void custom_read_homing_in_pins(int njoints)
+{
+    int jno;
+    custom_one_joint_home_data_t *addr;
+    for (jno = 0; jno < njoints; jno++)
+    {
+        addr = &(custom_joint_home_data->custom_jhd[jno]);
+        customH[jno].request_custom_homing = *(addr->request_custom_homing); // IN
+
+        // echo for verification:
+        customH[jno].is_custom_homing = customH[jno].request_custom_homing;
+    }
+}
+
+static void custom_write_homing_out_pins(int njoints)
+{
+    int jno;
+    custom_one_joint_home_data_t *addr;
+    for (jno = 0; jno < njoints; jno++)
+    {
+        addr = &(custom_joint_home_data->custom_jhd[jno]);
+        *(addr->is_custom_homing) = customH[jno].is_custom_homing; // OUT
+    }
+}
+
+static int custom_1joint_state_machine(int joint_num)
+{
+    typedef enum
+    {
+        CUSTOM_IDLE = 0,
+        CUSTOM_1 = 1,
+        CUSTOM_2 = 2,
+        CUSTOM_3 = 3,
+        CUSTOM_4 = 4,
+        CUSTOM_FINI = 5,
+    } custom_home_state_t;
+
+    static custom_home_state_t chomestate[EMCMOT_MAX_JOINTS] = {0};
+    custom_home_state_t nextcstate;
+
+#define C_SHOW \
+    rtapi_print("H[%d].homed=%d,homing=%d,home_state=%d chomestate[%d]=%d next=%d\n", joint_num, H[joint_num].homed, H[joint_num].homing, H[joint_num].home_state, joint_num, chomestate[joint_num], nextcstate);
+
+    if (H[joint_num].home_state == HOME_IDLE)
+        return 0; // nothing to do
+
+    if ((H[joint_num].home_state == HOME_START) && (chomestate[joint_num] == CUSTOM_IDLE))
+    {
+        H[joint_num].homing = 1;
+        H[joint_num].homed = 0;
+        chomestate[joint_num] = CUSTOM_1; // set first non-idle custom_home_state
+    }
+    // For this example, just walk thru custom_home_states with prints.
+    // Note: remains in the base home_state: HOME_START for all custom_home_states.
+    //       On completion, return to HOME_IDLE, CUSTOM_IDLE states.
+    switch (chomestate[joint_num])
+    {
+    case CUSTOM_1:
+        // Each CUSTOM_* state should do something and/or check something
+        // and set nexstcstate according to the design goals.
+        // Halpin variables can be read and/or set for next write.
+        nextcstate = CUSTOM_2;
+        C_SHOW;
+        chomestate[joint_num] = nextcstate;
+        break;
+    case CUSTOM_2:
+        nextcstate = CUSTOM_3;
+        C_SHOW;
+        chomestate[joint_num] = nextcstate;
+        break;
+    case CUSTOM_3:
+        nextcstate = CUSTOM_4;
+        C_SHOW;
+        chomestate[joint_num] = nextcstate;
+        break;
+    case CUSTOM_4:
+        nextcstate = CUSTOM_FINI;
+        C_SHOW;
+        chomestate[joint_num] = nextcstate;
+        break;
+    case CUSTOM_FINI:
+        H[joint_num].homing = 0;
+        H[joint_num].homed = 1;
+        H[joint_num].home_state = HOME_IDLE;
+        nextcstate = CUSTOM_IDLE;
+        C_SHOW;
+        chomestate[joint_num] = nextcstate;
+        return 0; // finished custom_home_states
+        break;
+    case CUSTOM_IDLE:
+    default:
+        rtapi_print("Unhandled custom_home_state: %d\n", chomestate[joint_num]);
+    }
+    return 1; // return 1 if busy
+#undef C_SHOW
+} // custom_1joint_state_machine()
+
+// api functions below augment base_*() functions with custom code
+int homing_init(int id,
+                double servo_period,
+                int n_joints,
+                int n_extrajoints,
+                emcmot_joint_t *pjoints)
+{
+    int retval;
+    retval = base_homing_init(id,
+                              servo_period,
+                              n_joints,
+                              n_extrajoints,
+                              pjoints);
+    retval += custom_makepins(id, n_joints);
+    return retval;
+} // homing_init()
+
+void read_homing_in_pins(int njoints)
+{
+    base_read_homing_in_pins(njoints);
+    custom_read_homing_in_pins(njoints);
+}
+
+void write_homing_out_pins(int njoints)
+{
+    base_write_homing_out_pins(njoints);
+    custom_write_homing_out_pins(njoints);
+}
+
+/* do_homing() is adapted from homing.c:base_do_homing() augmented
+** with support for custom homing as specified on hal input pin:
+** joint.n.request-custom-homing and echoed on hal output pin
+** joint.n.is-custom-homing
+*/
+bool do_homing(void)
+{
+    int joint_num;
+    int homing_flag = 0;
+    bool beginning_allhomed = get_allhomed();
+
+    do_homing_sequence();
+    /* loop thru joints, treat each one individually */
+    for (joint_num = 0; joint_num < all_joints; joint_num++)
+    {
+        if (!H[joint_num].joint_in_sequence)
+        {
+            continue;
+        }
+        if (!GET_JOINT_ACTIVE_FLAG(&joints[joint_num]))
+        {
+            continue;
+        }
+
+        if (customH[joint_num].is_custom_homing)
+        {
+            // CUSTOM joint homing state machine:
+            homing_flag += custom_1joint_state_machine(joint_num);
+        }
+        else
+        {
+            // DEFAULT joint homing state machine:
+            homing_flag += base_1joint_state_machine(joint_num);
+        }
+    }
+    if (homing_flag > 0)
+    { /* one or more joint is homing */
+        homing_active = 1;
+    }
+    else
+    { /* is a homing sequence in progress? */
+        if (sequence_state == HOME_SEQUENCE_IDLE)
+        {
+            /* no, single joint only, we're done */
+            homing_active = 0;
+        }
+    }
+    // return 1 if homing completed this period
+    if (!beginning_allhomed && get_allhomed())
+    {
+        homing_active = 0;
+        return 1;
+    }
+    return 0;
+}
+
+//===============================================================================
+// functions below use unmodified base_*() implementation
+bool get_allhomed(void) { return base_get_allhomed(); }
+bool get_homed(int jno) { return base_get_homed(jno); }
+bool get_home_is_idle(int jno) { return base_get_home_is_idle(jno); }
+bool get_home_is_synchronized(int jno) { return base_get_home_is_synchronized(jno); }
+bool get_home_needs_unlock_first(int jno) { return base_get_home_needs_unlock_first(jno); }
+int get_home_sequence(int jno) { return base_get_home_sequence(jno); }
+bool get_homing(int jno) { return base_get_homing(jno); }
+bool get_homing_at_index_search_wait(int jno) { return base_get_homing_at_index_search_wait(jno); }
+bool get_homing_is_active(void) { return base_get_homing_is_active(); }
+bool get_index_enable(int jno) { return base_get_index_enable(jno); }
+
+void do_home_joint(int jno) { base_do_home_joint(jno); }
+void do_cancel_homing(int jno) { base_do_cancel_homing(jno); }
+void set_unhomed(int jno, motion_state_t motstate) { base_set_unhomed(jno, motstate); }
+void set_joint_homing_params(int jno,
+                             double offset,
+                             double home,
+                             double home_final_vel,
+                             double home_search_vel,
+                             double home_latch_vel,
+                             int home_flags,
+                             int home_sequence,
+                             bool volatile_home)
+{
+    base_set_joint_homing_params(jno,
+                                 offset,
+                                 home,
+                                 home_final_vel,
+                                 home_search_vel,
+                                 home_latch_vel,
+                                 home_flags,
+                                 home_sequence,
+                                 volatile_home);
+}
+void update_joint_homing_params(int jno,
+                                double offset,
+                                double home,
+                                int home_sequence)
+{
+    base_update_joint_homing_params(jno,
+                                    offset,
+                                    home,
+                                    home_sequence);
+}
+//           end   CUSTOM example
+//=====================================================================
+#else  // } { begin SKELETON example minimal api implementation
+static emcmot_joint_t *joints;
+
+typedef enum
+{
+    PK_PEAxisState_axSTOPPED = 0, // Axis is stopped
+    PK_PEAxisState_axREADY = 1,   // Axis ready
+    PK_PEAxisState_axRUNNING = 2, // Axis is running
+
+    PK_PEAxisState_axHOMING_RESETTING = 8,   // Stopping the axis to reset the position counters
+    PK_PEAxisState_axHOMING_BACKING_OFF = 9, // Backing off switch
+    PK_PEAxisState_axHOME = 10,              // Axis is homed
+    PK_PEAxisState_axHOMINGSTART = 11,       // Homing procedure is starting on axis
+    PK_PEAxisState_axHOMINGSEARCH = 12,      // Homing procedure first step - going to home
+    PK_PEAxisState_axHOMINGBACK = 13,        // Homing procedure second step - slow homing
+
+    PK_PEAxisState_axPROBED = 14,      // Probing completed for this axis
+    PK_PEAxisState_axPROBESTART = 15,  // Probing procedure is starting on axis
+    PK_PEAxisState_axPROBESEARCH = 16, // Probing procedure - probing
+
+    PK_PEAxisState_axERROR = 20, // Axis error
+    PK_PEAxisState_axLIMIT = 30  // Axis limit tripped
+} pokeys_home_state_t;
+
+typedef enum
+{
+    PK_PEAxisCommand_axIDLE = 0,         // Axis  in IDLE
+    PK_PEAxisCommand_axHOMINGSTART = 1,  // Start Homing procedure
+    PK_PEAxisCommand_axHOMINGCANCEL = 2, // Cancel Homing procedure
+} pokeys_home_command_t;
+
+typedef enum
+{
+    HOME_IDLE = 0,
+    HOME_START,                 // 1
+    HOME_UNLOCK,                // 2
+    HOME_UNLOCK_WAIT,           // 3
+    HOME_INITIAL_BACKOFF_START, // 4
+    HOME_INITIAL_BACKOFF_WAIT,  // 5
+    HOME_INITIAL_SEARCH_START,  // 6
+    HOME_INITIAL_SEARCH_WAIT,   // 7
+    HOME_SET_COARSE_POSITION,   // 8
+    HOME_FINAL_BACKOFF_START,   // 9
+    HOME_FINAL_BACKOFF_WAIT,    // 10
+    HOME_RISE_SEARCH_START,     // 11
+    HOME_RISE_SEARCH_WAIT,      // 12
+    HOME_FALL_SEARCH_START,     // 13
+    HOME_FALL_SEARCH_WAIT,      // 14
+    HOME_SET_SWITCH_POSITION,   // 15
+    HOME_INDEX_ONLY_START,      // 16
+    HOME_INDEX_SEARCH_START,    // 17
+    HOME_INDEX_SEARCH_WAIT,     // 18
+    HOME_SET_INDEX_POSITION,    // 19
+    HOME_FINAL_MOVE_START,      // 20
+    HOME_FINAL_MOVE_WAIT,       // 21
+    HOME_LOCK,                  // 22
+    HOME_LOCK_WAIT,             // 23
+    HOME_FINISHED,              // 24
+    HOME_ABORT                  // 25
+} local_home_state_t;
+
+// data for per-joint homing-specific hal pins:
+typedef struct
+{
+    hal_bit_t *home_sw;      // home switch input
+    hal_bit_t *homing;       // joint is homing
+    hal_bit_t *homed;        // joint was homed
+    hal_bit_t *index_enable; // motmod sets: request reset on index
+                             //        encoder clears: index arrived
+    hal_s32_t *home_state;   // homing state machine state
+
+    // Custom Pins for comunication with PoKeys
+    hal_u32_t *PEv2_AxesState;   // State of pulse engine - see ePoKeysPEState
+    hal_u32_t *PEv2_AxesCommand; // Commands to  pulse engine - see ePoKeysPECmd
+
+
+
+} one_joint_home_data_t;
+
+typedef struct
+{
+    // pin data for all joints
+    bool home_sw;
+    bool homing;
+    bool homed;
+    bool index_enable;
+    local_home_state_t home_state;
+
+    // Custom Pins for comunication with PoKeys
+    pokeys_home_state_t PEv2_AxesState;
+    pokeys_home_command_t PEv2_AxesCommand;
+
+    // homeparams
+    double offset;
+    double home;
+    double home_final_vel;
+    double home_search_vel;
+    double home_latch_vel;
+    int home_flags;
+    int home_sequence;
+    bool volatile_home;
+
+    bool home_is_synchronized;
+
+} home_local_data;
+
+
+
+static home_local_data H[EMCMOT_MAX_JOINTS];
+
+
+typedef struct
+{
+    one_joint_home_data_t jhd[EMCMOT_MAX_JOINTS];
+    
+} all_joints_home_data_t;
+
+static all_joints_home_data_t *joint_home_data = 0;
+
+static int makepins(int id, int njoints)
+{
+    // home_pins needed to work with configs expecting them:
+    int jno, retval;
+    one_joint_home_data_t *addr;
+
+    joint_home_data = hal_malloc(sizeof(all_joints_home_data_t));
+    if (joint_home_data == 0)
+    {
+        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: all_joints_home_data_t malloc failed\n");
+        return -1;
+    }
+
+    retval = 0;
+    for (jno = 0; jno < njoints; jno++)
+    {
         addr = &(joint_home_data->jhd[jno]);
- 
+
         retval += hal_pin_bit_newf(HAL_IN, &(addr->home_sw), id,
-            "joint.%d.home-sw-in", jno);
-
+                                   "joint.%d.home-sw-in", jno);
         retval += hal_pin_bit_newf(HAL_OUT, &(addr->homing), id,
-            "joint.%d.homing", jno);
-
+                                   "joint.%d.homing", jno);
         retval += hal_pin_bit_newf(HAL_OUT, &(addr->homed), id,
-            "joint.%d.homed", jno);
-
+                                   "joint.%d.homed", jno);
         retval += hal_pin_s32_newf(HAL_OUT, &(addr->home_state), id,
-            "joint.%d.home-state", jno);
-
+                                   "joint.%d.home-state", jno);
         retval += hal_pin_bit_newf(HAL_IO, &(addr->index_enable), id,
-            "joint.%d.index-enable", jno);
+                                   "joint.%d.index-enable", jno);
 
+        // add custom hal pins here:
         retval += hal_pin_u32_newf(HAL_IN, &(addr->PEv2_AxesState), id,
-            "joint.%d.PEv2.AxesState", jno);
-
+                                   "joint.%d.PEv2.AxesState", jno);
         retval += hal_pin_u32_newf(HAL_OUT, &(addr->PEv2_AxesCommand), id,
-            "joint.%d.PEv2.AxesCommand", jno);
-
-        retval += hal_pin_u32_newf(HAL_IN, &(addr->PEv2_AxesConfig), id,
-            "joint.%d.PEv2.AxesConfig", jno);
-
-        retval += hal_pin_u32_newf(HAL_OUT, &(addr->PEv2_AxesSwitchConfig), id,
-            "joint.%d.PEv2.AxesSwitchConfig", jno);
-
-        retval += hal_pin_u32_newf(HAL_IO, &(addr->PEv2_HomingSpeed), id,
-            "joint.%d.PEv2.HomingSpeed", jno);
-
-        retval += hal_pin_u32_newf(HAL_IO, &(addr->PEv2_HomingReturnSpeed), id,
-            "joint.%d.PEv2.HomingReturnSpeed", jno);
-
-        retval += hal_pin_u32_newf(HAL_IO, &(addr->PEv2_HomingAlgorithm), id,
-            "joint.%d.PEv2.HomingAlgorithm", jno);
-
-        retval += hal_pin_u32_newf(HAL_IO, &(addr->PEv2_HomeOffsets), id,
-            "joint.%d.PEv2.HomeOffsets", jno);
-
-        retval += hal_pin_u32_newf(HAL_IO, &(addr->PEv2_HomeBackOffDistance), id,
-            "joint.%d.PEv2.HomeBackOffDistance", jno);
+                                   "joint.%d.PEv2.AxesCommand", jno);
+        /*retval += hal_pin_s32_newf(HAL_IO, &(addr->home_sequence), id,
+                                      "joint.%d.home_sequence", jno);*/
     }
     return retval;
 }
-
 // All (skeleton) functions required for homing api follow:
-void homeMotFunctions(void(*pSetRotaryUnlock)(int, int)
-    , int (*pGetRotaryIsUnlocked)(int)
-)
+void homeMotFunctions(void (*pSetRotaryUnlock)(int, int), int (*pGetRotaryIsUnlocked)(int))
 {
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function started\n", __FILE__, __FUNCTION__);
-
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
     return;
 }
 
-// one-time initialization (return 0 if ok):
-int  homing_init(int id,
-    double servo_period,
-    int n_joints,
-    int n_extrajoints,
-    emcmot_joint_t* pjoints) {
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function started\n", __FILE__, __FUNCTION__);
+int homing_init(int id,
+                double servo_period,
+                int n_joints,
+                int n_extrajoints,
+                emcmot_joint_t *pjoints)
+{
     joints = pjoints;
-    if (n_joints == 0) { n_joints == 8; }
-
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
     return makepins(id, n_joints);
-}
 
-// Asynchronous helper functions
-void* async_do_homing(void* arg) {
-    int jno = *((int*)arg);
-    one_joint_home_data_t* addr = &(joint_home_data->jhd[jno]);
-    int int_AxesState = (int)(*addr->PEv2_AxesState);
-    switch (int_AxesState) {
-        case PK_PEAxisState_axHOMING_RESETTING:
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_INITIAL_SEARCH_START;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOMING_BACKING_OFF:
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_INITIAL_BACKOFF_WAIT;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOMINGSTART:
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_START;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOMINGSEARCH:
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_INITIAL_SEARCH_WAIT;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOMINGBACK:
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_FINAL_BACKOFF_START;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOME:
-            H[jno].homing = 1;
-            H[jno].homed = 1;
-            H[jno].home_state = HOME_FINISHED;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        default:
-            H[jno].homing = 0;
-            H[jno].home_state = HOME_IDLE;
-            break;
+    // initialize jid[] and jhd[] data here
+    for (int jno = 0; jno < EMCMOT_MAX_JOINTS; jno++)
+    {
+        
+        H[jno].offset = 0;
+        H[jno].home = 0;
+        H[jno].home_final_vel = 0;
+        H[jno].home_search_vel = 0;
+        H[jno].home_latch_vel = 0;
+        H[jno].home_flags = 0;
+        H[jno].home_sequence = 0;
+        H[jno].volatile_home = 1;
+
+        one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
+        H[jno].home_sw = 0;
+        H[jno].homing = 0;
+        H[jno].homed = 0;
+        H[jno].home_state = HOME_IDLE;
+        H[jno].index_enable = 0;
+        H[jno].PEv2_AxesState = PK_PEAxisState_axSTOPPED;
+        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE; 
     }
-    return NULL;
-}
 
-void* async_read_homing_in_pins(void* arg) {
-    int jno = *((int*)arg);
-    one_joint_home_data_t* addr = &(joint_home_data->jhd[jno]);
-    int int_AxesState = (int)(*addr->PEv2_AxesState);
-    switch (int_AxesState) {
-        case PK_PEAxisState_axHOMING_RESETTING:
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_INITIAL_SEARCH_START;
-            addr->PEv2_AxesCommand = 0;
+}
+bool do_homing(void) { return 0; }
+bool get_allhomed()
+{
+    int ret = 1;
+    for (int jno = 0; jno < EMCMOT_MAX_JOINTS; jno++) {
+        one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
+        if (!*addr->homed) {
+            ret = 0;
             break;
-        case PK_PEAxisState_axHOMING_BACKING_OFF:
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_INITIAL_BACKOFF_WAIT;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOMINGSTART:
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_START;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOMINGSEARCH:
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_INITIAL_SEARCH_WAIT;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOMINGBACK:
-            H[jno].homing = 1;
-            H[jno].homed = 0;
-            H[jno].home_state = HOME_FINAL_BACKOFF_START;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        case PK_PEAxisState_axHOME:
-            H[jno].homing = 1;
-            H[jno].homed = 1;
-            H[jno].home_state = HOME_FINISHED;
-            addr->PEv2_AxesCommand = 0;
-            break;
-        default:
-            H[jno].homing = 0;
-            H[jno].home_state = HOME_IDLE;
-            break;
-    }
-    return NULL;
-}
-
-void* async_write_homing_out_pins(void* arg) {
-    int jno = *((int*)arg);
-    one_joint_home_data_t* addr = &(joint_home_data->jhd[jno]);
-    addr->homing = (hal_bit_t*)H[jno].homing;
-    addr->homed = (hal_bit_t*)H[jno].homed;
-    addr->home_state = (hal_s32_t *)H[jno].home_state;
-    addr->index_enable = (hal_bit_t*)H[jno].index_enable;
-    return NULL;
-}
-
-// once-per-servo-period functions:
-bool do_homing(void) { 
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function started\n", __FILE__, __FUNCTION__);
-    int jno;
-    pthread_t threads[EMCMOT_MAX_JOINTS];
-    for (jno = 0; jno < EMCMOT_MAX_JOINTS; jno++) {
-        pthread_create(&threads[jno], NULL, async_do_homing, &jno);
-    }
-    for (jno = 0; jno < EMCMOT_MAX_JOINTS; jno++) {
-        pthread_join(threads[jno], NULL);
-    }
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return 1; 
-}
-
-void read_homing_in_pins(int njoints) {
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function started\n", __FILE__, __FUNCTION__);
-    int jno;
-    pthread_t threads[njoints];
-    for (jno = 0; jno < njoints; jno++) {
-        pthread_create(&threads[jno], NULL, async_read_homing_in_pins, &jno);
-    }
-    for (jno = 0; jno < njoints; jno++) {
-        pthread_join(threads[jno], NULL);
-    }
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return;
-}
-
-void write_homing_out_pins(int njoints) {
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function started\n", __FILE__, __FUNCTION__);
-    int jno;
-    pthread_t threads[njoints];
-    for (jno = 0; jno < njoints; jno++) {
-        pthread_create(&threads[jno], NULL, async_write_homing_out_pins, &jno);
-    }
-    for (jno = 0; jno < njoints; jno++) {
-        pthread_join(threads[jno], NULL);
-    }
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return;
-}
-
-// responses to EMCMOT_JOINT_HOME message:
-void do_home_joint(int joint_num) {
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function started\n", __FILE__, __FUNCTION__);
-    one_joint_home_data_t* addr;
-    addr = &(joint_home_data->jhd[joint_num]);
-    addr->PEv2_AxesState = (hal_u32_t*)PK_PEAxisState_axHOMINGSTART;
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return; 
-}
-
-// per-joint controls:
-void set_unhomed(int joint_num, motion_state_t motstate) {
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function started\n", __FILE__, __FUNCTION__);
-    one_joint_home_data_t* addr;
-	addr = &(joint_home_data->jhd[joint_num]);
-    addr->PEv2_AxesCommand = (hal_u32_t*)PK_PEAxisCommand_axHOMINGCANCEL;
-    addr->homed = 0;
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return; 
-}
-void do_cancel_homing(int joint_num) {
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function started\n", __FILE__, __FUNCTION__);
-    one_joint_home_data_t* addr;
-    addr = &(joint_home_data->jhd[joint_num]);
-    addr->PEv2_AxesCommand = (hal_u32_t*)PK_PEAxisCommand_axHOMINGCANCEL;
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return; 
-}
-
-//---------------------------------------------------------------------
-// QUERIES
-
-// overall status:
-bool get_allhomed() { 
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return 0; 
-}
-bool get_homing_is_active() { 
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return 0; 
-}
-
-// per-joint information:
-int  get_home_sequence(int jno) { 
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return H[jno].home_sequence; 
-}//return s
-bool get_homing(int jno) 
-{ 
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return H[jno].homing; 
-}
-bool get_homed(int jno) { 
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return H[jno].homed; 
-}
-bool get_index_enable(int jno) { 
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return H[jno].index_enable; 
-}
-bool get_home_needs_unlock_first(int jno) { 
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return 0; 
-}
-bool get_home_is_idle(int jno) {
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return 1; 
-}
-bool get_home_is_synchronized(int jno) { 
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return H[jno].home_is_synchronized;
-}
-bool get_homing_at_index_search_wait(int jno) { 
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return 0; 
-}
-
-static void update_home_is_synchronized(void) {
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function started\n", __FILE__, __FUNCTION__);
-
-    // invoke anytime H[*].home_sequence is altered
-    int jno, jj, all_joints;
-    all_joints = sizeof(H) / sizeof(H[0]);
-    for (jno = 0; jno < all_joints; jno++) {
-        H[jno].home_is_synchronized = 0;
-        if (H[jno].home_sequence < 0) {
-            // neg: sync all joints with same ABS(H[jno].home_sequence):
-            for (jj = 0; jj < all_joints; jj++) {
-                if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence)) {
-                    H[jj].home_is_synchronized = 1;
-                }
-            }
         }
+       // usleep(100); // Add a small delay to prevent CPU hogging
     }
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
+    return 0;
+}
+bool get_homed(int jno)
+{
+    return H[jno].homed ? 1 : 0;
+}
+bool get_home_is_idle(int jno) 
+{ 
+    return H[jno].home_state == HOME_IDLE ? 1 : 0;
+}
+bool get_home_is_synchronized(int jno) 
+{ 
+    return H[jno].home_is_synchronized ? 1 : 0;
+}
+bool get_home_needs_unlock_first(int jno) 
+{ 
+    return (H[jno].home_flags & HOME_UNLOCK_FIRST) ? 1 : 0;
+}
+int get_home_sequence(int jno) 
+{ 
+    return H[jno].home_sequence;
+}
+bool get_homing(int jno)
+{
+    one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
+    return *addr->homing ? 1 : 0;
+}
+
+bool get_homing_at_index_search_wait(int jno) { return 0; }
+bool get_homing_is_active() 
+{ 
+    int ret = 0;
+   /* for (int jno = 0; jno < EMCMOT_MAX_JOINTS; jno++) {
+        one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
+        
+        if (*addr->homing) {
+            ret = 1;
+            break;
+        }
+    }*/
+    return ret; 
+}
+bool get_index_enable(int jno) 
+{ 
+    return H[jno].index_enable ? 1 : 0; 
+}
+void read_homing_in_pins(int njoints) 
+{ 
+    int jno;
+    one_joint_home_data_t *addr;
+    for (jno = 0; jno < njoints; jno++)
+    {
+        addr = &(joint_home_data->jhd[jno]);
+        H[jno].home_sw = *(addr->home_sw); // IN
+        H[jno].index_enable = *(addr->index_enable); // IN
+
+        H[jno].PEv2_AxesState = *(addr->PEv2_AxesState); // IN
+    }
+    return; 
+}
+
+void write_homing_out_pins(int njoints)
+{ 
+    int jno;
+    one_joint_home_data_t *addr;
+    for (jno = 0; jno < njoints; jno++)
+    {
+        addr = &(joint_home_data->jhd[jno]);
+        *(addr->homing) = H[jno].homing; // OUT
+        *(addr->homed) = H[jno].homed; // OUT
+        *(addr->home_state) = H[jno].home_state; // OUT
+        *(addr->PEv2_AxesCommand) = H[jno].PEv2_AxesCommand; // OUT
+    }
+    return; 
+}
+
+void do_home_joint(int jno)
+{
+    //one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
+    int int_AxesState = H[jno].PEv2_AxesState;
+    switch (int_AxesState)
+    {
+    case PK_PEAxisState_axHOMING_RESETTING:
+        H[jno].homing = 1;
+        H[jno].homed = 0;
+        H[jno].home_state = HOME_INITIAL_SEARCH_START;
+        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+        break;
+    case PK_PEAxisState_axHOMING_BACKING_OFF:
+        H[jno].homing = 1;
+        H[jno].homed = 0;
+        H[jno].home_state = HOME_INITIAL_BACKOFF_WAIT;
+        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+        break;
+    case PK_PEAxisState_axHOMINGSTART:
+        H[jno].homing = 1;
+        H[jno].homed = 0;
+        H[jno].home_state = HOME_START;
+        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+        break;
+    case PK_PEAxisState_axHOMINGSEARCH:
+        H[jno].homing = 1;
+        H[jno].homed = 0;
+        H[jno].home_state = HOME_INITIAL_SEARCH_WAIT;
+        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+        break;
+    case PK_PEAxisState_axHOMINGBACK:
+        H[jno].homing = 1;
+        H[jno].homed = 0;
+        H[jno].home_state = HOME_FINAL_BACKOFF_START;
+        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+        break;
+    case PK_PEAxisState_axHOME:
+        H[jno].homing = 1;
+        H[jno].homed = 1;
+        H[jno].home_state = HOME_FINISHED;
+        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+        break;
+    case PK_PEAxisState_axSTOPPED:
+        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+        H[jno].homing = 1;
+        H[jno].homed = 0;
+        H[jno].home_state = HOME_START;
+        break;
+    case PK_PEAxisState_axREADY:
+        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+        H[jno].homing = 1;
+        H[jno].homed = 1;;
+        H[jno].home_state = HOME_START;
+        break;
+    default:
+        H[jno].homing = 0;
+        H[jno].home_state = HOME_IDLE;
+        break;
+    }
+    return;
+}
+void set_unhomed(int jno, motion_state_t motstate)
+{
+    //one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
+    H[jno].homed = 0;
+    return;
+}
+void do_cancel_homing(int jno)
+{
+    //one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
+    H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGCANCEL;
     return;
 }
 
-// per-joint interface parameters (one-time setup)
-void set_joint_homing_params(int    jno,
-    double offset,
-    double home,
-    double home_final_vel,
-    double home_search_vel,
-    double home_latch_vel,
-    int    home_flags,
-    int    home_sequence,
-    bool   volatile_home
-) {
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function started\n", __FILE__, __FUNCTION__);
-    H[jno].home_offset = offset;
-    H[jno].home = home;
-    H[jno].home_final_vel = home_final_vel;
-    H[jno].home_search_vel = home_search_vel;
-    H[jno].home_latch_vel = home_latch_vel;
-    H[jno].home_flags = home_flags;
-    H[jno].home_sequence = home_sequence;
-    H[jno].volatile_home = volatile_home;
-    update_home_is_synchronized();
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return;
-}
 
-// updateable interface params (for inihal pin changes typically):
-void update_joint_homing_params(int jno, double offset, double home, int home_sequence) {
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function started\n", __FILE__, __FUNCTION__);
-    H[jno].home_offset = offset;
-    H[jno].home = home;
-    H[jno].home_sequence = home_sequence;
-    rtapi_print_msg(RTAPI_MSG_DBG, "pokeys_homecomp: %s:%s: Function ended\n", __FILE__, __FUNCTION__);
-    return;
-}
+void set_joint_homing_params(int jno,
+                             double offset,
+                             double home,
+                             double home_final_vel,
+                             double home_search_vel,
+                             double home_latch_vel,
+                             int home_flags,
+                             int home_sequence,
+                             bool volatile_home) 
+                             {
+                                
+                                H[jno].offset = offset;
+                                H[jno].home = home;
+                                H[jno].home_final_vel = home_final_vel;
+                                H[jno].home_search_vel = home_search_vel;
+                                H[jno].home_latch_vel = home_latch_vel;
+                                H[jno].home_flags = home_flags;
+                                H[jno].home_sequence = home_sequence;
+                                H[jno].volatile_home = volatile_home;
+                                return; 
+                             }
+void update_joint_homing_params(int jno,
+                                double offset,
+                                double home,
+                                int home_sequence)
+                                {
+                                    H[jno].offset = offset;
+                                    H[jno].home = home;
+                                    H[jno].home_sequence = home_sequence;
+                                return; 
+                             }
+
+#endif // } end SKELETON example minimal api implementation
+//=====================================================================
 
 // all home functions for homing api
 EXPORT_SYMBOL(homeMotFunctions);
@@ -575,50 +791,6 @@ EXPORT_SYMBOL(write_homing_out_pins);
 
 #undef XSTR
 #undef STR
-
-// Unit tests for pokeys_homecomp functionalities
-void test_pokeys_homecomp() {
-    // Test initialization
-    int id = 1;
-    double servo_period = 0.001;
-    int n_joints = 4;
-    int n_extrajoints = 0;
-    emcmot_joint_t* joints = (emcmot_joint_t*)malloc(sizeof(emcmot_joint_t) * n_joints);
-    int result = homing_init(id, servo_period, n_joints, n_extrajoints, joints);
-    if (result != 0) {
-        rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_homecomp: ERROR: homing_init failed\n");
-        free(joints);
-        return;
-    }
-
-    // Test homing state transitions
-    for (int jno = 0; jno < n_joints; jno++) {
-        one_joint_home_data_t* addr = &(joint_home_data->jhd[jno]);
-        addr->PEv2_AxesState = (hal_u32_t*)PK_PEAxisState_axHOMINGSTART;
-        do_homing();
-        if (H[jno].home_state != HOME_START) {
-            rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_homecomp: ERROR: joint %d expected HOME_START but got %d\n", jno, H[jno].home_state);
-            free(joints);
-            return;
-        }
-
-        addr->PEv2_AxesState = (hal_u32_t*)PK_PEAxisState_axHOMINGSEARCH;
-        do_homing();
-        if (H[jno].home_state != HOME_INITIAL_SEARCH_WAIT) {
-            rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_homecomp: ERROR: joint %d expected HOME_INITIAL_SEARCH_WAIT but got %d\n", jno, H[jno].home_state);
-            free(joints);
-            return;
-        }
-
-        addr->PEv2_AxesState = (hal_u32_t*)PK_PEAxisState_axHOME;
-        do_homing();
-        if (H[jno].home_state != HOME_FINISHED) {
-            rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_homecomp: ERROR: joint %d expected HOME_FINISHED but got %d\n", jno, H[jno].home_state);
-            free(joints);
-            return;
-        }
-    }
-
-    rtapi_print_msg(RTAPI_MSG_INFO, "pokeys_homecomp: Unit tests passed\n");
-    free(joints);
-}
+#undef HOMING_BASE
+#undef USE_HOMING_BASE
+#undef CUSTOM_HOMEMODULE
