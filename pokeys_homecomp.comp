@@ -991,7 +991,7 @@ void do_home_joint(int jno)
         int trigered = 0;
         for (jj = 0; jj < all_joints; jj++)
         {
-            if (abs(H[jj].home_sequence) == abs(sequence_home_data.max_sequence))
+            if (abs(H[jj].home_sequence) == abs(sequence_home_data.min_sequence))
             {
                 rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: joint %d in sequence %d\n", jj, sequence_home_data.min_sequence);
                 H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
