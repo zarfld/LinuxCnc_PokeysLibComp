@@ -62,7 +62,7 @@ option extra_setup;
 
 #include "motion.h"
 #include "homing.h"
-#include <stdlib.h> 
+#include <stdlib.h>
 
 static char *home_parms;
 RTAPI_MP_STRING(home_parms, "Example home parms");
@@ -371,7 +371,7 @@ void update_joint_homing_params(int jno,
 }
 //           end   CUSTOM example
 //=====================================================================
-#else  // } { begin SKELETON example minimal api implementation
+#else // } { begin SKELETON example minimal api implementation
 static emcmot_joint_t *joints;
 static bool homing_active = 0;
 static int all_joints = 0;
@@ -460,8 +460,6 @@ typedef struct
     hal_u32_t *PEv2_AxesState;   // State of pulse engine - see ePoKeysPEState
     hal_u32_t *PEv2_AxesCommand; // Commands to  pulse engine - see ePoKeysPECmd
 
-
-
 } one_joint_home_data_t;
 
 typedef struct
@@ -488,22 +486,49 @@ typedef struct
     bool volatile_home;
 
     bool home_is_synchronized;
-    
+
     bool joint_in_sequence;
 } home_local_data;
 
-
-
 static home_local_data H[EMCMOT_MAX_JOINTS];
-
 
 typedef struct
 {
     one_joint_home_data_t jhd[EMCMOT_MAX_JOINTS];
-    
+
 } all_joints_home_data_t;
 
 static all_joints_home_data_t *joint_home_data = 0;
+
+typedef struct
+{
+    int home_sequence; // my sequence ID
+    bool homing;
+    bool homed;
+
+    int joints_in_sequence;
+    int joint_ids[EMCMOT_MAX_JOINTS];
+
+    bool is_last;
+    int next_sequence;
+
+    local_home_state_t home_state;
+
+} one_sequence_home_data_t;
+
+typedef struct
+{
+    one_sequence_home_data_t shd[EMCMOT_MAX_JOINTS];
+    int sequence_count;
+
+    int min_sequence;
+    int max_sequence;
+
+    int current_sequence;
+
+} all_sequences_home_data_t;
+
+static all_sequences_home_data_t sequence_home_data;
 
 static int makepins(int id, int njoints)
 {
@@ -550,6 +575,64 @@ void homeMotFunctions(void (*pSetRotaryUnlock)(int, int), int (*pGetRotaryIsUnlo
     return;
 }
 
+static void update_sequence_home_data(void)
+{
+    int min_sequence = abs(H[0].home_sequence);
+    int max_sequence = abs(H[0].home_sequence);
+    int sequence_count = 0;
+    int current_sequence = 0;
+
+    for(int jno = 0; jno < all_joints; jno++)
+    {
+        int seq = abs(H[jno].home_sequence);
+        if (seq < min_sequence)
+        {
+            min_sequence = seq; // find min sequence    
+        }
+        if (seq > max_sequence)
+        {
+            max_sequence = seq; // find max sequence
+        }
+    }
+    sequence_count = max_sequence - min_sequence + 1;
+
+    sequence_home_data.min_sequence = min_sequence;
+    sequence_home_data.max_sequence = max_sequence;
+    sequence_home_data.sequence_count = sequence_count;
+
+    for(int sno=min_sequence; sno<=max_sequence; sno++)
+    {
+        one_sequence_home_data_t saddr = (sequence_home_data.shd[sno]);
+        saddr.home_sequence = sno;
+        //saddr.homing = 0; should not interrupt homing
+        //saddr.homed = 0;
+        saddr.joints_in_sequence = 0;
+        if(sno == max_sequence)
+        {
+            saddr.is_last = 1;
+            saddr.next_sequence = 0;
+        }
+        else
+        {
+            saddr.is_last = 0;
+            saddr.next_sequence = sno+1;
+        }
+
+        
+        saddr.home_state = HOME_IDLE;
+
+        for(int jno = 0; jno < all_joints; jno++)
+        {
+            if (H[jno].home_sequence == sno)
+            {
+                saddr.joint_ids[saddr.joints_in_sequence] = jno;
+                saddr.joints_in_sequence++;
+            }
+        }
+    }
+}
+
+
 int homing_init(int id,
                 double servo_period,
                 int n_joints,
@@ -563,7 +646,7 @@ int homing_init(int id,
     // initialize jid[] and jhd[] data here
     for (int jno = 0; jno < EMCMOT_MAX_JOINTS; jno++)
     {
-        
+
         H[jno].offset = 0;
         H[jno].home = 0;
         H[jno].home_final_vel = 0;
@@ -580,21 +663,157 @@ int homing_init(int id,
         H[jno].home_state = HOME_IDLE;
         H[jno].index_enable = 0;
         H[jno].PEv2_AxesState = PK_PEAxisState_axSTOPPED;
-        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE; 
+        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+
+        one_sequence_home_data_t saddr = (sequence_home_data.shd[jno]);
+        saddr.home_sequence = 0;
+        saddr.homing = 0;
+        saddr.homed = 0;
+        saddr.joints_in_sequence = 0;
+        saddr.is_last = 0;
+        saddr.next_sequence = 0;
+        saddr.home_state = HOME_IDLE;
+
     }
 }
 
+bool get_sequence_homed(int seq)
+{
+    one_sequence_home_data_t addr = (sequence_home_data.shd[seq]);
+    int joints_in_sequence = addr.joints_in_sequence;
+
+    for (int jj = 0; jj < joints_in_sequence; jj++)
+    {
+        int jno = addr.joint_ids[jj];
+        if (!H[jno].homed)
+        {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+bool get_sequence_homing(int seq)
+{
+    one_sequence_home_data_t addr = (sequence_home_data.shd[seq]);
+    int joints_in_sequence = addr.joints_in_sequence;
+
+    for (int jj = 0; jj < joints_in_sequence; jj++)
+    {
+        int jno = addr.joint_ids[jj];
+        if (H[jno].homing)
+        {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+void do_home_sequence(int seq)
+{
+    one_sequence_home_data_t addr = (sequence_home_data.shd[seq]);
+
+    int joints_in_sequence = addr.joints_in_sequence;
+
+    current_sequence = seq;
+    sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
+
+    for (int jj = 0; jj < joints_in_sequence; jj++)
+    {
+        int jno = addr.joint_ids[jj];
+
+        H[jno].homed = 0;
+        H[jno].homing = 1;
+        H[jno].home_state = HOME_START;
+       
+        
+        int int_AxesState = H[jno].PEv2_AxesState;
+        switch (int_AxesState)
+        {
+            case PK_PEAxisState_axSTOPPED:
+                H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+                break;
+
+            case PK_PEAxisState_axREADY:
+                H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+                break;
+
+            default:
+                break;
+        }
+    }
+    return;
+}
+
+void check_home_sequence(int seq)
+{
+    if (sequence_state != HOME_SEQUENCE_DO_ONE_SEQUENCE)
+    {
+        return;
+    }
+     
+    one_sequence_home_data_t addr = (sequence_home_data.shd[seq]);
+    int joints_in_sequence = addr.joints_in_sequence;
+
+    if (addr.homed)
+    {
+        if (addr.is_last)
+        {
+            sequence_state = HOME_SEQUENCE_IDLE;
+        }
+        else
+        {
+            sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
+            do_home_sequence(addr.next_sequence);
+        }
+        return;
+    }
+    else if (addr.homing)
+    {
+        if (get_sequence_homed(seq))
+        {
+            addr.homed = 1;
+            addr.homing = 0;
+            addr.home_state = HOME_FINISHED;
+            if (addr.is_last)
+            {
+                sequence_state = HOME_SEQUENCE_IDLE;
+            }
+            else
+            {
+                sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
+                do_home_sequence(addr.next_sequence);
+            }
+        }
+        else if (get_sequence_homing(seq))
+        {
+            addr.homed = 0;
+            addr.homing = 1;
+            addr.home_state = HOME_START;
+        }
+        else
+        {
+            addr.homed = 0;
+            addr.homing = 0;
+            addr.home_state = HOME_IDLE;
+        }
+    }
+}
 
 bool get_allhomed()
 {
     int ret = 1;
-    for (int jno = 0; jno < EMCMOT_MAX_JOINTS; jno++) {
+    for (int jno = 0; jno < EMCMOT_MAX_JOINTS; jno++)
+    {
         one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
-        if (!*addr->homed) {
+        if (!*addr->homed)
+        {
             ret = 0;
             break;
         }
-       // usleep(100); // Add a small delay to prevent CPU hogging
+        // usleep(100); // Add a small delay to prevent CPU hogging
     }
     return ret ? 1 : 0;
 }
@@ -602,20 +821,20 @@ bool get_homed(int jno)
 {
     return H[jno].homed ? 1 : 0;
 }
-bool get_home_is_idle(int jno) 
-{ 
+bool get_home_is_idle(int jno)
+{
     return H[jno].home_state == HOME_IDLE ? 1 : 0;
 }
-bool get_home_is_synchronized(int jno) 
-{ 
+bool get_home_is_synchronized(int jno)
+{
     return H[jno].home_is_synchronized ? 1 : 0;
 }
-bool get_home_needs_unlock_first(int jno) 
-{ 
+bool get_home_needs_unlock_first(int jno)
+{
     return (H[jno].home_flags & HOME_UNLOCK_FIRST) ? 1 : 0;
 }
-int get_home_sequence(int jno) 
-{ 
+int get_home_sequence(int jno)
+{
     return H[jno].home_sequence;
 }
 bool get_homing(int jno)
@@ -625,56 +844,56 @@ bool get_homing(int jno)
 }
 
 bool get_homing_at_index_search_wait(int jno) { return 0; }
-bool get_homing_is_active() 
-{ 
+bool get_homing_is_active()
+{
     int ret = 0;
-   /* for (int jno = 0; jno < EMCMOT_MAX_JOINTS; jno++) {
-        one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
-        
-        if (*addr->homing) {
-            ret = 1;
-            break;
-        }
-    }*/
-    return ret; 
+    /* for (int jno = 0; jno < EMCMOT_MAX_JOINTS; jno++) {
+         one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
+
+         if (*addr->homing) {
+             ret = 1;
+             break;
+         }
+     }*/
+    return ret;
 }
-bool get_index_enable(int jno) 
-{ 
-    return H[jno].index_enable ? 1 : 0; 
+bool get_index_enable(int jno)
+{
+    return H[jno].index_enable ? 1 : 0;
 }
-void read_homing_in_pins(int njoints) 
-{ 
+void read_homing_in_pins(int njoints)
+{
     int jno;
     one_joint_home_data_t *addr;
     for (jno = 0; jno < njoints; jno++)
     {
         addr = &(joint_home_data->jhd[jno]);
-        H[jno].home_sw = *(addr->home_sw); // IN
+        H[jno].home_sw = *(addr->home_sw);           // IN
         H[jno].index_enable = *(addr->index_enable); // IN
 
         H[jno].PEv2_AxesState = *(addr->PEv2_AxesState); // IN
     }
-    return; 
+    return;
 }
 
 void write_homing_out_pins(int njoints)
-{ 
+{
     int jno;
     one_joint_home_data_t *addr;
     for (jno = 0; jno < njoints; jno++)
     {
         addr = &(joint_home_data->jhd[jno]);
-        *(addr->homing) = H[jno].homing; // OUT
-        *(addr->homed) = H[jno].homed; // OUT
-        *(addr->home_state) = H[jno].home_state; // OUT
+        *(addr->homing) = H[jno].homing;                     // OUT
+        *(addr->homed) = H[jno].homed;                       // OUT
+        *(addr->home_state) = H[jno].home_state;             // OUT
         *(addr->PEv2_AxesCommand) = H[jno].PEv2_AxesCommand; // OUT
     }
-    return; 
+    return;
 }
 
 void do_home_all(void)
 {
-    if(!get_homing_is_active())
+    if (!get_homing_is_active())
     {
         sequence_state = HOME_SEQUENCE_START;
     }
@@ -683,113 +902,112 @@ void do_home_all(void)
 
 void do_home_joint(int jno)
 {
-    if(jno >= 0)
+    if (jno >= 0)
     {
-    //one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
-    int int_AxesState = H[jno].PEv2_AxesState;
-    switch (int_AxesState)
-    {
-    case PK_PEAxisState_axHOMING_RESETTING:
-        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
-        break;
-    case PK_PEAxisState_axHOMING_BACKING_OFF:
-        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
-        break;
-    case PK_PEAxisState_axHOMINGSTART:
-
-        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
-        break;
-    case PK_PEAxisState_axHOMINGSEARCH:
-
-        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
-        break;
-    case PK_PEAxisState_axHOMINGBACK:
-
-        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
-        break;
-    case PK_PEAxisState_axHOME:
-
-        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
-        break;
-    case PK_PEAxisState_axSTOPPED:
-        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
-
-        if (H[jno].home_sequence < 0)
+        // one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
+        int int_AxesState = H[jno].PEv2_AxesState;
+        switch (int_AxesState)
         {
-            sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
-            int jj;
-            for (jj = 0; jj < all_joints; jj++)
-            {
-                if(abs(H[jj].home_sequence) == abs(H[jno].home_sequence))
-                {
-                    H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+        case PK_PEAxisState_axHOMING_RESETTING:
+            H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+            break;
+        case PK_PEAxisState_axHOMING_BACKING_OFF:
+            H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+            break;
+        case PK_PEAxisState_axHOMINGSTART:
 
+            H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+            break;
+        case PK_PEAxisState_axHOMINGSEARCH:
+
+            H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+            break;
+        case PK_PEAxisState_axHOMINGBACK:
+
+            H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+            break;
+        case PK_PEAxisState_axHOME:
+
+            H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+            break;
+        case PK_PEAxisState_axSTOPPED:
+            H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+
+            if (H[jno].home_sequence < 0)
+            {
+                sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
+                int jj;
+                for (jj = 0; jj < all_joints; jj++)
+                {
+                    if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence))
+                    {
+                        H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+                    }
                 }
             }
-        }
-        else
-        {
-            sequence_state = HOME_SEQUENCE_DO_ONE_JOINT;
-        }
-        
-        break;
-    case PK_PEAxisState_axREADY:
-        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
-
-
-        if (H[jno].home_sequence < 0)
-        {
-            sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
-            int jj;
-            for (jj = 0; jj < all_joints; jj++)
+            else
             {
-                if(abs(H[jj].home_sequence) == abs(H[jno].home_sequence))
-                {
-                    H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+                sequence_state = HOME_SEQUENCE_DO_ONE_JOINT;
+            }
 
+            break;
+        case PK_PEAxisState_axREADY:
+            H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+
+            if (H[jno].home_sequence < 0)
+            {
+                sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
+                int jj;
+                for (jj = 0; jj < all_joints; jj++)
+                {
+                    if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence))
+                    {
+                        H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+                    }
                 }
             }
-        }
-        else
-        {
-            sequence_state = HOME_SEQUENCE_DO_ONE_JOINT;
-        }
+            else
+            {
+                sequence_state = HOME_SEQUENCE_DO_ONE_JOINT;
+            }
 
-        break;
-    
-    default:
-        break;
-    }
+            break;
+
+        default:
+            break;
+        }
     }
     else
     {
-        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: joint number out of range\n");
+        // rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: joint number out of range\n");
 
-        for (int jj = 0; jj < all_joints; jj++)
+        // triger homing for first sequence (index 0)
+
+        //do_home_sequence(0);
+        update_sequence_home_data();
+        sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
+        int jj;
+        current_sequence = 0;
+        int trigered = 0;
+        for (jj = 0; jj < all_joints; jj++)
         {
-            int int_AxesState = H[jj].PEv2_AxesState;
-            switch (int_AxesState)
+            if (abs(H[jj].home_sequence) == abs(sequence_home_data.max_sequence))
             {
-            
-            
-            case PK_PEAxisState_axSTOPPED:
+                rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: joint %d in sequence %d\n", jj, sequence_home_data.min_sequence);
                 H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
-                break;
-            
-            case PK_PEAxisState_axREADY:
-                H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
-                break;
-
-            case PK_PEAxisState_axHOME:
-                continue;
-                break;
-
-            default:
-                break;
+                trigered ++;
             }
+            else
+            {
+                rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: joint %d not in sequence %d\n", jj, sequence_home_data.min_sequence);
+            }
+            
         }
 
-
+        if(trigered == 0)
+        {
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: no joints in sequence %d\n", sequence_home_data.shd[current_sequence].home_sequence);
+        }
     }
     return;
 }
@@ -797,12 +1015,20 @@ void do_home_joint(int jno)
 // SEQUENCE management
 static void do_homing_sequence(void)
 {
-    int i,ii;
+    int i, ii;
     int seen;
     emcmot_joint_t *joint;
     int sequence_is_set = 0;
+    if(current_sequence <0 || current_sequence >= sequence_home_data.sequence_count)
+    {
+        // no sequence set, use the first one
+        current_sequence = 0;
+    }
+    one_sequence_home_data_t addr = (sequence_home_data.shd[current_sequence]);
+    int joints_in_sequence = addr.joints_in_sequence;
 
-    switch( sequence_state ) {
+    switch (sequence_state)
+    {
     case HOME_SEQUENCE_IDLE:
         current_sequence = 0;
         /* nothing to do */
@@ -810,111 +1036,102 @@ static void do_homing_sequence(void)
 
     case HOME_SEQUENCE_DO_ONE_JOINT:
         // Expect one joint with home_state==HOME_START
-        for (i=0; i < all_joints; i++) {
-            if (H[i].home_state == HOME_START) {
-               H[i].joint_in_sequence = 1;
-               current_sequence = abs(H[i].home_sequence);
-            } else {
-               H[i].joint_in_sequence = 0;
+        for (i = 0; i < all_joints; i++)
+        {
+            if (H[i].home_state == HOME_START)
+            {
+                H[i].joint_in_sequence = 1;
+                current_sequence = abs(H[i].home_sequence);
+            }
+            else
+            {
+                H[i].joint_in_sequence = 0;
             }
         }
         sequence_is_set = 1;
-        //drop through----drop through----drop through----drop through
+        // drop through----drop through----drop through----drop through
+        break;
 
     case HOME_SEQUENCE_DO_ONE_SEQUENCE:
         // Expect multiple joints with home_state==HOME_START
         // specified by a negative sequence
         // Determine current_sequence and set H[i].joint_in_sequence
         // based on home_state[i] == HOME_START
-        if (!sequence_is_set) {
-            for (i=0; i < all_joints; i++) {
-                if (H[i].home_state == HOME_START) {
-                    if (   sequence_is_set
-                        && (abs(H[i].home_sequence) != current_sequence)) {
-                        // inconsistent sequence values
-                    }
-                    current_sequence = abs(H[i].home_sequence);
-                    sequence_is_set = 1;
-                }
-                H[i].joint_in_sequence = 1; //disprove
-                if  (   (H[i].home_state  != HOME_START)
-                     || (current_sequence != abs(H[i].home_sequence))
-                    ) {
-                    H[i].joint_in_sequence = 0;
-                }
-            }
-        }
-        sequence_state = HOME_SEQUENCE_START;
 
-        //drop through----drop through----drop through----drop through
+
+        for (int jj = 0; jj < joints_in_sequence; jj++)
+        {
+            int jno = addr.joint_ids[jj];
+        
+            H[jno].homed = 0;
+            H[jno].homing = 1;
+            H[jno].home_state = HOME_START;
+        }
+      
+        sequence_state = HOME_SEQUENCE_START;
+        break;
+        // drop through----drop through----drop through----drop through
 
     case HOME_SEQUENCE_START:
         // Request to home all joints or a single sequence
-        // A negative H[i].home_sequence means sync final move
-        if (!sequence_is_set) {
-            // sequence_is_set not otherwise established: home-all
-            for (i=0; i < EMCMOT_MAX_JOINTS; i++) {
-                H[i].joint_in_sequence = 1;
-                // unspecified joints have an unrealizable H[i].home_sequence:
-                if (H[i].home_sequence >100) {
-                   // docs: 'If HOME_SEQUENCE is not specified then this joint
-                   //        will not be homed by the HOME ALL sequence'
-                   H[i].joint_in_sequence = 0;  // per docs
-                }
-            }
-            sequence_is_set  = 1;
-            current_sequence = 0;
-        }
-        /* Initializations */
-        for(i=0; i < all_joints; i++) {
-            if (!H[i].joint_in_sequence) continue;
-            if (   (H[i].home_flags & HOME_NO_REHOME)
-                &&  H[i].homed
-               ) {
-                continue;
-            } else {
-                H[i].homed = 0;
-            }
-            if (H[i].home_sequence < 0) {
-                // If a H[i].home_sequence is neg, find all joints that
-                // have the same ABS sequence value and make them the same.
-                // Note: overrides inconsistent mixed positive/negative settings
-                //       for H[ii].home_sequence
-                for(ii=0; ii < all_joints; ii++) {
-                    if (H[ii].home_sequence == abs(H[i].home_sequence)) {
-                        H[ii].home_sequence =      H[i].home_sequence;
-                    }
-                }
+        sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
+
+        for (int jj = 0; jj < joints_in_sequence; jj++)
+        {
+            int jno = addr.joint_ids[jj];
+            int int_AxesState = H[jno].PEv2_AxesState;
+            switch (int_AxesState)
+            {
+                case PK_PEAxisState_axSTOPPED:
+                    H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+                    break;
+
+                case PK_PEAxisState_axREADY:
+                    H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+                    break;
+
+                case PK_PEAxisState_axRUNNING:
+                    H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+                    break;
+
+                case PK_PEAxisState_axERROR:
+                    sequence_state = HOME_SEQUENCE_IDLE;
+                    H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGCANCEL;
+                    return;
+                    break;
+
+                default:
+                    break;
             }
         }
-        for(i=0; i < all_joints; i++) {
-            if (!H[i].joint_in_sequence) continue;
-            if  ( H[i].home_state != HOME_IDLE && H[i].home_state != HOME_START) {
-                /* a home is already in progress, abort the home-all */
-                sequence_state = HOME_SEQUENCE_IDLE;
-                return;
-            }
-        }
+ 
         /* tell the world we're on the job */
         homing_active = 1;
-        //drop through----drop through----drop through----drop through
+        break;
+        // drop through----drop through----drop through----drop through
 
     case HOME_SEQUENCE_START_JOINTS:
         seen = 0;
         /* start all joints whose sequence number matches H[i].home_sequence */
-        for(i=0; i < all_joints; i++) {
+        for (i = 0; i < all_joints; i++)
+        {
             joint = &joints[i];
-            if(abs(H[i].home_sequence) == current_sequence) {
-                if (!H[i].joint_in_sequence) continue;
+            if (abs(H[i].home_sequence) == current_sequence)
+            {
+                if (!H[i].joint_in_sequence)
+                    continue;
                 /* start this joint */
                 joint->free_tp.enable = 0;
                 H[i].home_state = HOME_START;
                 seen++;
             }
         }
-        if (seen || current_sequence == 0) {
+        if (seen || current_sequence == 0)
+        {
             sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
-        } else {
+        }
+        else
+        {
             /* no joints have this sequence number, we're done */
             sequence_state = HOME_SEQUENCE_IDLE;
             /* tell the world */
@@ -924,23 +1141,73 @@ static void do_homing_sequence(void)
 
     case HOME_SEQUENCE_WAIT_JOINTS:
         seen = 0;
-        for(i=0; i < all_joints; i++) {
-            if (!H[i].joint_in_sequence) continue;
-            // negative H[i].home_sequence means sync final move
-            if(abs(H[i].home_sequence) != current_sequence) {
-                /* this joint is not at the current sequence number, ignore it */
-                continue;
-            }
-            if(H[i].home_state != HOME_IDLE) {
-                /* still busy homing, keep waiting */
-                seen = 1;
-                continue;
+
+        int homed_count = 0;
+
+        for (int jj = 0; jj < joints_in_sequence; jj++)
+        {
+            int jno = addr.joint_ids[jj];
+        
+            int int_AxesState = H[jno].PEv2_AxesState;
+            switch (int_AxesState)
+            {
+                case PK_PEAxisState_axSTOPPED:
+                    sequence_state = HOME_SEQUENCE_START_JOINTS; //back to start
+                    break;
+
+                case PK_PEAxisState_axREADY:
+                    sequence_state = HOME_SEQUENCE_START_JOINTS; //back to start
+                    break;
+
+                case PK_PEAxisState_axRUNNING:
+                    sequence_state = HOME_SEQUENCE_START_JOINTS; //back to start
+                    break;
+
+                case PK_PEAxisState_axHOMING_RESETTING:
+                    sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
+                    break;
+
+                case PK_PEAxisState_axHOMING_BACKING_OFF:
+                    sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
+                    break;
+                
+                case PK_PEAxisState_axHOME:
+                    homed_count++;
+                    break;
+
+                case PK_PEAxisState_axHOMINGSTART:
+                    sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
+                    break;
+
+                case PK_PEAxisState_axHOMINGSEARCH:
+                    sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
+                    break;
+
+                case PK_PEAxisState_axHOMINGBACK:
+                    sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
+                    break;
+
+                case PK_PEAxisState_axERROR:
+                    sequence_state = HOME_SEQUENCE_IDLE;
+                    H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGCANCEL;
+                    break;
+
+                default:
+                    break;
             }
         }
-        if(!seen) {
-            /* all joints at this step have finished, move on to next step */
-            current_sequence++;
-            sequence_state = HOME_SEQUENCE_START_JOINTS;
+        if (homed_count == joints_in_sequence)
+        {
+            if (addr.is_last)
+            {
+                sequence_state = HOME_SEQUENCE_IDLE;
+                homing_active = 0;
+            }
+            else
+            {
+                sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
+                current_sequence = addr.next_sequence;
+            }
         }
         break;
 
@@ -952,6 +1219,7 @@ static void do_homing_sequence(void)
         homing_active = 0;
         break;
     }
+    return;
 } // do_homing_sequence()
 
 int pokeys_1joint_state_machine(int joint_num)
@@ -964,7 +1232,8 @@ int pokeys_1joint_state_machine(int joint_num)
     homing_flag = 0;
     joint = &joints[joint_num];
     home_sw_active = H[joint_num].home_sw;
-    if (H[joint_num].home_state != HOME_IDLE) {
+    if (H[joint_num].home_state != HOME_IDLE)
+    {
         homing_flag = 1; /* at least one joint is homing */
     }
 
@@ -983,116 +1252,124 @@ int pokeys_1joint_state_machine(int joint_num)
        switch(home_state) runs only once per servo period. Do _not_ set
        'immediate_state' true unless you also change 'home_state', unless
        you want an infinite loop! */
-    do {
+    do
+    {
         immediate_state = 0;
-        switch (H[joint_num].PEv2_AxesState) 
+        switch (H[joint_num].PEv2_AxesState)
         {
-            case PK_PEAxisState_axSTOPPED:
-                /* Axis is stopped */
-                H[joint_num].homing = 0;
-                H[joint_num].home_state = HOME_IDLE;
-                break;
+        case PK_PEAxisState_axSTOPPED:
+            /* Axis is stopped */
+            H[joint_num].homing = 0;
+            H[joint_num].home_state = HOME_IDLE;
+            break;
 
-            case PK_PEAxisState_axREADY:
-                /* Axis ready */
-                H[joint_num].homing = 0;
-                H[joint_num].home_state = HOME_IDLE;
-                break;
-            
-            case PK_PEAxisState_axRUNNING:
-                /* Axis is running */
-                H[joint_num].homing = 1;
-                H[joint_num].home_state = HOME_IDLE;
-                break;
+        case PK_PEAxisState_axREADY:
+            /* Axis ready */
+            H[joint_num].homing = 0;
+            H[joint_num].home_state = HOME_IDLE;
+            break;
 
-            case PK_PEAxisState_axHOMING_RESETTING:
-                /* Stopping the axis to reset the position counters */
-                H[joint_num].homing = 1;
-                H[joint_num].home_state = HOME_UNLOCK;
-                H[joint_num].homed = 0;
-                break;
+        case PK_PEAxisState_axRUNNING:
+            /* Axis is running */
+            H[joint_num].homing = 1;
+            H[joint_num].home_state = HOME_IDLE;
+            break;
 
-            case PK_PEAxisState_axHOMING_BACKING_OFF:
-                /* Backing off switch */
-                H[joint_num].homing = 1;
-                H[joint_num].home_state = HOME_INITIAL_BACKOFF_WAIT;
-                break;
+        case PK_PEAxisState_axHOMING_RESETTING:
+            /* Stopping the axis to reset the position counters */
+            H[joint_num].homing = 1;
+            H[joint_num].home_state = HOME_UNLOCK;
+            H[joint_num].homed = 0;
+            break;
 
-            case PK_PEAxisState_axHOME:
-                /* Axis is homed */
-                H[joint_num].homing = 1;
-                H[joint_num].home_state = HOME_FINISHED;
-                H[joint_num].homed = 1;
-                break;
+        case PK_PEAxisState_axHOMING_BACKING_OFF:
+            /* Backing off switch */
+            H[joint_num].homing = 1;
+            H[joint_num].home_state = HOME_INITIAL_BACKOFF_WAIT;
+            break;
 
-            case PK_PEAxisState_axHOMINGSTART:
-                /* Homing procedure is starting on axis */
-                H[joint_num].homing = 1;
-                H[joint_num].home_state = HOME_START;
-                break;
+        case PK_PEAxisState_axHOME:
+            /* Axis is homed */
+            H[joint_num].homing = 1;
+            H[joint_num].home_state = HOME_FINISHED;
+            H[joint_num].homed = 1;
+            break;
 
-            case PK_PEAxisState_axHOMINGSEARCH:
-                /* Homing procedure first step - going to home */
-                H[joint_num].homing = 1;
-                H[joint_num].home_state = HOME_INITIAL_SEARCH_WAIT;
-                break;
+        case PK_PEAxisState_axHOMINGSTART:
+            /* Homing procedure is starting on axis */
+            H[joint_num].homing = 1;
+            H[joint_num].home_state = HOME_START;
+            break;
 
-            case PK_PEAxisState_axHOMINGBACK:
-                /* Homing procedure second step - slow homing */
-                H[joint_num].homing = 1;
-                H[joint_num].home_state = HOME_FINAL_BACKOFF_START;
-                break;
+        case PK_PEAxisState_axHOMINGSEARCH:
+            /* Homing procedure first step - going to home */
+            H[joint_num].homing = 1;
+            H[joint_num].home_state = HOME_INITIAL_SEARCH_WAIT;
+            break;
 
-            case PK_PEAxisState_axPROBED:
-                /* Probing completed for this axis */
-                H[joint_num].homing = 0;
-                H[joint_num].home_state = HOME_IDLE;
-                break;
+        case PK_PEAxisState_axHOMINGBACK:
+            /* Homing procedure second step - slow homing */
+            H[joint_num].homing = 1;
+            H[joint_num].home_state = HOME_FINAL_BACKOFF_START;
+            break;
 
-            case PK_PEAxisState_axPROBESTART:
-                /* Probing procedure is starting on axis */
-                H[joint_num].homing = 0;
-                H[joint_num].home_state = HOME_IDLE;
-                break;
+        case PK_PEAxisState_axPROBED:
+            /* Probing completed for this axis */
+            H[joint_num].homing = 0;
+            H[joint_num].home_state = HOME_IDLE;
+            break;
 
-            case PK_PEAxisState_axPROBESEARCH:
-                /* Probing procedure - probing */
-                H[joint_num].homing = 0;
-                H[joint_num].home_state = HOME_IDLE;
-                break;
+        case PK_PEAxisState_axPROBESTART:
+            /* Probing procedure is starting on axis */
+            H[joint_num].homing = 0;
+            H[joint_num].home_state = HOME_IDLE;
+            break;
 
-            case PK_PEAxisState_axERROR:
-                /* Axis error */
-                H[joint_num].homing = 0;
-                H[joint_num].home_state = HOME_IDLE;
-                break;
+        case PK_PEAxisState_axPROBESEARCH:
+            /* Probing procedure - probing */
+            H[joint_num].homing = 0;
+            H[joint_num].home_state = HOME_IDLE;
+            break;
 
-            case PK_PEAxisState_axLIMIT:    
-                /* Axis limit tripped */
-                H[joint_num].homing = 0;
-                H[joint_num].home_state = HOME_IDLE;
-                break;
+        case PK_PEAxisState_axERROR:
+            /* Axis error */
+            H[joint_num].homing = 0;
+            H[joint_num].home_state = HOME_IDLE;
+            break;
+
+        case PK_PEAxisState_axLIMIT:
+            /* Axis limit tripped */
+            H[joint_num].homing = 0;
+            H[joint_num].home_state = HOME_IDLE;
+            break;
 
         default:
             /* should never get here */
             rtapi_print_msg(RTAPI_MSG_ERR, "unknown state '%d' during homing j=%d",
-                            H[joint_num].home_state,joint_num);
+                            H[joint_num].home_state, joint_num);
             H[joint_num].home_state = HOME_ABORT;
             immediate_state = 1;
             break;
-        }        /* end of switch(H[joint_num].home_state) */
+        } /* end of switch(H[joint_num].home_state) */
     } while (immediate_state);
 
     return homing_flag;
 } // pokeys_1joint_state_machine()
 
-bool do_homing(void) 
-{ 
+bool do_homing(void)
+{
     int joint_num;
     int homing_flag = 0;
     bool beginning_allhomed = get_allhomed();
 
-    do_homing_sequence();
+    
+    if (sequence_state != HOME_SEQUENCE_IDLE)
+    {
+       // check_home_sequence(current_sequence);
+       do_homing_sequence();
+    }
+    
+
     /* loop thru joints, treat each one individually */
     for (joint_num = 0; joint_num < all_joints; joint_num++)
     {
@@ -1105,16 +1382,8 @@ bool do_homing(void)
             continue;
         }
 
-        //if (customH[joint_num].is_custom_homing)
-        //{
-            // CUSTOM joint homing state machine:
-            //homing_flag += custom_1joint_state_machine(joint_num);
-        //}
-        //else
-        //{
-            // DEFAULT joint homing state machine:
-            homing_flag += pokeys_1joint_state_machine(joint_num);
-        //}
+
+        homing_flag += pokeys_1joint_state_machine(joint_num);
     }
     // return 1 if homing completed this period
     if (!beginning_allhomed && get_allhomed())
@@ -1125,21 +1394,18 @@ bool do_homing(void)
     return 0;
 }
 
-
-
 void set_unhomed(int jno, motion_state_t motstate)
 {
-    //one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
+    // one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
     H[jno].homed = 0;
     return;
 }
 void do_cancel_homing(int jno)
 {
-    //one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
+    // one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
     H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGCANCEL;
     return;
 }
-
 
 void set_joint_homing_params(int jno,
                              double offset,
@@ -1149,29 +1415,34 @@ void set_joint_homing_params(int jno,
                              double home_latch_vel,
                              int home_flags,
                              int home_sequence,
-                             bool volatile_home) 
-                             {
-                                
-                                H[jno].offset = offset;
-                                H[jno].home = home;
-                                H[jno].home_final_vel = home_final_vel;
-                                H[jno].home_search_vel = home_search_vel;
-                                H[jno].home_latch_vel = home_latch_vel;
-                                H[jno].home_flags = home_flags;
-                                H[jno].home_sequence = home_sequence;
-                                H[jno].volatile_home = volatile_home;
-                                return; 
-                             }
+                             bool volatile_home)
+{
+
+    H[jno].offset = offset;
+    H[jno].home = home;
+    H[jno].home_final_vel = home_final_vel;
+    H[jno].home_search_vel = home_search_vel;
+    H[jno].home_latch_vel = home_latch_vel;
+    H[jno].home_flags = home_flags;
+    H[jno].home_sequence = home_sequence;
+    H[jno].volatile_home = volatile_home;
+
+    update_sequence_home_data();
+    return;
+}
 void update_joint_homing_params(int jno,
                                 double offset,
                                 double home,
                                 int home_sequence)
-                                {
-                                    H[jno].offset = offset;
-                                    H[jno].home = home;
-                                    H[jno].home_sequence = home_sequence;
-                                return; 
-                             }
+{
+    H[jno].offset = offset;
+    H[jno].home = home;
+    H[jno].home_sequence = home_sequence;
+
+    update_sequence_home_data();
+
+    return;
+}
 
 #endif // } end SKELETON example minimal api implementation
 //=====================================================================
@@ -1199,9 +1470,6 @@ EXPORT_SYMBOL(set_unhomed);
 EXPORT_SYMBOL(set_joint_homing_params);
 EXPORT_SYMBOL(update_joint_homing_params);
 EXPORT_SYMBOL(write_homing_out_pins);
-
-
-
 
 #undef XSTR
 #undef STR
