@@ -329,3 +329,9 @@ class DeviceInfo:
 # Initialize the device information pins
 device_info = DeviceInfo(device=pokeyslib, pokeyslib=pokeyslib)
 device_info.initialize_pins()
+
+# Import and initialize the UI setup tool
+from .ui_setup_tool import UISetupTool
+
+ui_setup_tool = UISetupTool()
+ui_setup_tool.run()
