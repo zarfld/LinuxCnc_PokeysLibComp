@@ -30,3 +30,6 @@ class Telemetry:
                     for key, value in transaction_data.items():
                         transaction.set_tag(key, value)
                 transaction.finish()
+
+    def track_ui_setup_tool_event(self, event_name, event_data=None):
+        self.track_event(event_name, event_data)
