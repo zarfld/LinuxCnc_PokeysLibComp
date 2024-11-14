@@ -94,3 +94,40 @@ The optional parametrization options for the `DM542_XXYZ_mill` configuration are
   * It sets up the real-time clock (RTC) synchronization by linking the `pokeys.rtc.sec` signal.
 
 These settings collectively ensure proper communication and control of the machine's components, including the limit switches, homing configuration, and emergency handling. The `postgui_call_list.hal` file plays a crucial role in finalizing the machine's configuration after the GUI has been loaded.
+
+## Homing Use Case
+
+### Interaction Between `pokeys_homecomp.comp` and `pokeys.comp`
+
+`pokeys_homecomp.comp` interacts with `pokeys.comp` by linking homing signals and pins to the PoKeys components. Here are the key points of interaction:
+
+* `pokeys_homecomp.comp` defines various pins and signals related to the homing process, including `PEv2_AxesState` and `PEv2_AxesCommand`.
+* The homing signals from `pokeys_homecomp.comp` are linked to the PoKeys components in `pokeys.comp`.
+* The `DM542_XXYZ_mill/pokeys_homing.hal` file defines the connections for homing signals and links pins from `pokeys_homecomp.comp` to PoKeys components.
+* The `DM542_XXYZ_mill/pokeys_homing.md` file provides a detailed description of the homing configuration and linking pins.
+* When homing is triggered, `pokeys_homecomp.comp` sets the `joint.#.PEv2.AxesCommand` pin, which is then received by `pokeys.comp` at `pokeys.0.PEv2.#.AxesCommand`.
+* The status of PEv2 in `pokeyslib` is set on `pokeys.0.PEv2.#.AxesState` by `pokeys.comp`, and it is received on `pokeys_homecomp.comp` at `joint.#.PEv2.AxesState`.
+* `pokeys_homecomp.comp` checks the status and represents them at `joint.#.homing`, `joint.#.homed`, and `joint.#.home-state`.
+
+This setup ensures that the homing command is correctly propagated from `pokeys_homecomp.comp` to `pokeys.comp`, and finally to the PoKeys library to execute the homing procedure. The status of the pulse engine axes is also correctly propagated from `pokeys.comp` to `pokeys_homecomp.comp`, allowing `pokeys_homecomp.comp` to manage the homing process and update the relevant status pins accordingly.
+
+### Roles of `PEv2_AxesState` and `PEv2_AxesCommand`
+
+The `PEv2_AxesState` and `PEv2_AxesCommand` play crucial roles in the homing process of the PoKeys device. Here is an explanation of their roles:
+
+* `PEv2_AxesState`: This pin represents the state of the pulse engine axes. It is used to monitor the current state of each axis during the homing process. The possible values for `PEv2_AxesState` include:
+  * `PK_PEAxisState_axHOMING_RESETTING`: Stopping the axis to reset the position counters
+  * `PK_PEAxisState_axHOMING_BACKING_OFF`: Backing off switch
+  * `PK_PEAxisState_axHOMINGSTART`: Homing procedure is starting on axis
+  * `PK_PEAxisState_axHOMINGSEARCH`: Homing procedure first step - going to home
+  * `PK_PEAxisState_axHOMINGBACK`: Homing procedure second step - slow homing
+  * `PK_PEAxisState_axHOME`: Axis is homed
+  * These values are used to manage the homing process and ensure that the pulse engine axes are correctly controlled during the homing routine.
+
+* `PEv2_AxesCommand`: This pin is used to send commands to the pulse engine axes during the homing process. The possible values for `PEv2_AxesCommand` include:
+  * `PK_PEAxisCommand_axIDLE`: Axis in IDLE state
+  * `PK_PEAxisCommand_axHOMINGSTART`: Start Homing procedure
+  * `PK_PEAxisCommand_axHOMINGCANCEL`: Cancel Homing procedure
+  * These values are used to control the state of the pulse engine axes and initiate or cancel the homing process.
+
+The `DM542_XXYZ_mill/pokeys_homing.hal` file defines the connections for these pins, linking them from `pokeys_homecomp.comp` to the PoKeys components. This setup ensures that the homing command is correctly propagated from `pokeys_homecomp.comp` to `pokeys.comp`, and finally to the PoKeys library to execute the homing procedure. The status of the pulse engine axes is also correctly propagated from `pokeys.comp` to `pokeys_homecomp.comp`, allowing `pokeys_homecomp.comp` to manage the homing process and update the relevant status pins accordingly.
