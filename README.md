@@ -843,7 +843,7 @@ We appreciate your interest in supporting the LinuxCnc_PokeysLibComp project! Yo
 
 - **GitHub Sponsors**: You can sponsor us directly through GitHub Sponsors. Visit our [GitHub Sponsors page](https://github.com/sponsors/zarfld) to learn more and become a sponsor.
 - **Patreon**: Support us on Patreon by becoming a patron. Visit our [Patreon page](https://www.patreon.com/zarfld) to learn more and contribute.
-- **PayPal**: Make a one-time donation via PayPal. Visit our [PayPal donation page]([https://www.paypal.com/donate?hosted_button_id=XXXXXXX](https://www.paypal.com/donate/?business=YJFUYJK44JFX6&no_recurring=0&item_name=Supporting+the+LinuxCnc_PokeysLibComp+project%21+Your+sponsorship+helps+us+continue+to+develop+and+maintain+this+project.&currency_code=EUR)) to contribute.
+- **PayPal**: Make a one-time donation via PayPal. Visit our [PayPal donation page](https://www.paypal.com/donate/?business=YJFUYJK44JFX6&no_recurring=0&item_name=Supporting+the+LinuxCnc_PokeysLibComp+project%21+Your+sponsorship+helps+us+continue+to+develop+and+maintain+this+project.&currency_code=EUR) to contribute.
 
 For more detailed information on sponsorship tiers and benefits, as well as instructions on how to sponsor through GitHub Sponsors, Patreon, and PayPal, please refer to our [Sponsorship Page](.github/SPONSORS.md).
 
