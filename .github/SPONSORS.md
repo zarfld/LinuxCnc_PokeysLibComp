@@ -33,6 +33,6 @@ You can sponsor us directly through GitHub Sponsors. Visit our [GitHub Sponsors 
 Support us on Patreon by becoming a patron. Visit our [Patreon page](https://www.patreon.com/zarfld) to learn more and contribute.
 
 ### PayPal
-Make a one-time donation via PayPal. Visit our [PayPal donation page](https://www.paypal.com/donate?hosted_button_id=XXXXXXX) to contribute.
+Make a one-time donation via PayPal. Visit our [PayPal donation page](https://www.paypal.com/donate/?business=YJFUYJK44JFX6&no_recurring=0&item_name=Supporting+the+LinuxCnc_PokeysLibComp+project%21+Your+sponsorship+helps+us+continue+to+develop+and+maintain+this+project.&currency_code=EUR) to contribute.
 
 Thank you for your support!
