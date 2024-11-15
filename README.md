@@ -845,6 +845,8 @@ We appreciate your interest in supporting the LinuxCnc_PokeysLibComp project! Yo
 - **Patreon**: Support us on Patreon by becoming a patron. Visit our [Patreon page](https://www.patreon.com/zarfld) to learn more and contribute.
 - **PayPal**: Make a one-time donation via PayPal. Visit our [PayPal donation page](https://www.paypal.com/donate?hosted_button_id=XXXXXXX) to contribute.
 
+For more detailed information on sponsorship tiers and benefits, as well as instructions on how to sponsor through GitHub Sponsors, Patreon, and PayPal, please refer to our [Sponsorship Page](.github/SPONSORS.md).
+
 Thank you for your support!
 
 ## Setting Up Two-Factor Authentication (2FA) for GitHub Repositories
