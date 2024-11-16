@@ -1083,3 +1083,7 @@ net analog-output-1 => pokeys.0.adcout.1.value
 3. **Verify Connections**: Ensure that the PoKeys devices are properly connected and recognized by LinuxCNC. Use the `halcmd` command to monitor the state of the inputs and outputs.
 
 By following these steps and examples, you can effectively use the Canonical Device Interface to interact with PoKeys devices in the LinuxCnc_PokeysLibComp project.
+
+## Documentation
+
+For detailed instructions on converting existing LinuxCNC HAL and INI files for use with `pokeys.comp`, `pokeys_homecomp.comp`, and `kbd48cnc.comp`, refer to the [Converting HAL and INI Files](docs/wiki/Converting_HAL_and_INI_Files.md) documentation.
