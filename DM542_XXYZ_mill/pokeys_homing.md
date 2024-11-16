@@ -142,3 +142,27 @@ The homing signals in the system are propagated through a series of connections 
 * The `DM542_XXYZ_mill/pokeys_homing.md` file provides a detailed description of the homing configuration and linking pins.
 
 This setup ensures that the homing command is correctly propagated from `pokeys_homecomp.comp` to `pokeys.comp`, and finally to the PoKeys library to execute the homing procedure. The status of the pulse engine axes is also correctly propagated from `pokeys.comp` to `pokeys_homecomp.comp`, allowing `pokeys_homecomp.comp` to manage the homing process and update the relevant status pins accordingly.
+
+## Configuration Steps for Homing Functionality
+
+To configure the homing functionality in the `LinuxCnc_PokeysLibComp` project, follow these steps:
+
+1. **Update the `DM542_XXYZ_mill/pokeys_homing.hal` file**: Define the connections for homing signals and link pins from `pokeys_homecomp.comp` to PoKeys components. Ensure that the homing signals, homed signals, home state signals, and index enable signals are correctly linked.
+
+2. **Set the home sequence for each axis**: Use the `setp` command in the `DM542_XXYZ_mill/pokeys_homing.hal` file to set the home sequence for each axis. For example:
+   ```plaintext
+   setp pokeys.0.PEv2.0.home-sequence [JOINT_0]HOME_SEQUENCE
+   setp pokeys.0.PEv2.6.home-sequence [JOINT_1]HOME_SEQUENCE
+   setp pokeys.0.PEv2.1.home-sequence [JOINT_2]HOME_SEQUENCE
+   setp pokeys.0.PEv2.2.home-sequence [JOINT_3]HOME_SEQUENCE
+   ```
+
+3. **Update the `DM542_XXYZ_mill/pokeys_homing.md` file**: Provide a detailed description of the homing configuration and linking pins. Ensure that the documentation accurately describes the homing configuration and the interaction between `pokeys_homecomp.comp` and `pokeys.comp`.
+
+4. **Verify and document the interaction between `pokeys_homecomp.comp` and `pokeys.comp`**: Ensure that the homing signals and pins are correctly linked to the PoKeys components. Confirm that the `pokeys_homing.hal` file correctly connects the homing signals and links pins from `pokeys_homecomp.comp` to PoKeys components.
+
+5. **Test the homing functionality**: Test the homing functionality with the supported PoKeys devices and document any limitations or issues. Update the `docs/wiki/Compatibility.md` file to include information about the compatibility of the homing functionality with different PoKeys devices and LinuxCNC versions.
+
+6. **Ensure that the `pokeys_homecomp.comp` file defines the necessary pins and signals**: Include `PEv2_AxesState`, `PEv2_AxesCommand`, `PEv2_AxesConfig`, `PEv2_AxesSwitchConfig`, `PEv2_HomingSpeed`, `PEv2_HomingReturnSpeed`, `PEv2_HomingAlgorithm`, `PEv2_HomeOffsets`, and `PEv2_HomeBackOffDistance`.
+
+7. **Update the `README.md` file**: Include information about the homing functionality and its configuration steps. Provide clear instructions on how to use the homing functionality, including any necessary configuration steps and examples.
