@@ -26,6 +26,10 @@
 
 **A4**: Please refer to the [Contributing](../CONTRIBUTING.md) page for guidelines on how to contribute to the project and the Wiki.
 
+### Q5: What is the Canonical Device Interface (CDI)?
+
+**A5**: The Canonical Device Interface (CDI) is a standardized interface for interacting with PoKeys devices in the LinuxCnc_PokeysLibComp project. It provides a consistent and unified way to access and control various features of PoKeys devices, ensuring compatibility and ease of use. Refer to the [User Documentation](User_Documentation.md) section for detailed usage examples and configuration steps.
+
 ## Troubleshooting
 
 ### Issue 1: The PoKeys device is not detected by LinuxCNC.

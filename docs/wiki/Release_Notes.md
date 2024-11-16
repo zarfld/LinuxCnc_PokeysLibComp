@@ -100,3 +100,24 @@
 
 ### Known Issues
 - None reported.
+
+## Version 1.6.0
+
+### New Features
+- Updated documentation to reflect the current status and capabilities of the "Canonical Device Interface".
+- Added detailed information and examples for the "Canonical Device Interface" in the `README.md` file.
+- Included specific instructions and examples for the "Canonical Device Interface" in the `docs/README.md` file.
+- Updated the compatibility section in the `docs/wiki/Compatibility.md` file to reflect the current status of the "Canonical Device Interface".
+- Added detailed usage examples for the "Canonical Device Interface" in the `docs/wiki/User_Documentation.md` file.
+- Included information about the homing functionality and its compatibility with `pokeys.comp` in the `docs/wiki/Developer_Documentation.md` file.
+- Updated the homing configuration and linking pins in the `DM542_XXYZ_mill/pokeys_homing.md` file.
+- Correctly connected the homing signals and linked pins from `pokeys_homecomp.comp` to PoKeys components in the `pokeys_homing.hal` file.
+- Added information about the compatibility of the homing functionality with different PoKeys devices and LinuxCNC versions in the `docs/wiki/Compatibility.md` file.
+- Included steps for setting up and using the "Canonical Device Interface" in the `docs/wiki/Getting_Started.md` file.
+- Added common issues and solutions related to the "Canonical Device Interface" in the `docs/wiki/FAQ_Troubleshooting.md` file.
+
+### Bug Fixes
+- None reported.
+
+### Known Issues
+- None reported.
