@@ -131,3 +131,7 @@ The `PEv2_AxesState` and `PEv2_AxesCommand` play crucial roles in the homing pro
   * These values are used to control the state of the pulse engine axes and initiate or cancel the homing process.
 
 The `DM542_XXYZ_mill/pokeys_homing.hal` file defines the connections for these pins, linking them from `pokeys_homecomp.comp` to the PoKeys components. This setup ensures that the homing command is correctly propagated from `pokeys_homecomp.comp` to `pokeys.comp`, and finally to the PoKeys library to execute the homing procedure. The status of the pulse engine axes is also correctly propagated from `pokeys.comp` to `pokeys_homecomp.comp`, allowing `pokeys_homecomp.comp` to manage the homing process and update the relevant status pins accordingly.
+
+## Conversion Instructions
+
+For detailed instructions on converting existing LinuxCNC HAL and INI files for use with `pokeys.comp`, `pokeys_homecomp.comp`, and `kbd48cnc.comp`, refer to the [Converting HAL and INI Files](../docs/wiki/Converting_HAL_and_INI_Files.md) guide.

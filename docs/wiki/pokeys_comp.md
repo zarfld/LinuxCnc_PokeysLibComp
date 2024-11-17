@@ -289,3 +289,25 @@ setp pokeys.1.PEv2.digin.Probe.invert FALSE
 ```
 
 By following these examples, you can configure the digital inputs and parameters for the `pokeys.[DevID].PEv2` component to suit your specific requirements.
+
+## Undocumented Pins and Parameters
+
+The following pins and parameters of `pokeys.comp` were not previously documented:
+
+### Pins
+
+- `pokeys.[DevID].PEv2.[PEv2Id].AxesConfig`: Axis configuration for each axis
+- `pokeys.[DevID].PEv2.[PEv2Id].HomingSpeed`: Homing speed for each axis
+- `pokeys.[DevID].PEv2.[PEv2Id].HomingReturnSpeed`: Homing return speed for each axis
+- `pokeys.[DevID].PEv2.[PEv2Id].HomingAlgorithm`: Homing algorithm configuration for each axis
+- `pokeys.[DevID].PEv2.[PEv2Id].HomeOffsets`: Home position offset for each axis
+- `pokeys.[DevID].PEv2.[PEv2Id].HomeBackOffDistance`: Back-off distance after homing for each axis
+
+### Parameters
+
+- `pokeys.[DevID].PEv2.[PEv2Id].AxesConfig`: Axis configuration for each axis
+- `pokeys.[DevID].PEv2.[PEv2Id].HomingSpeed`: Homing speed for each axis
+- `pokeys.[DevID].PEv2.[PEv2Id].HomingReturnSpeed`: Homing return speed for each axis
+- `pokeys.[DevID].PEv2.[PEv2Id].HomingAlgorithm`: Homing algorithm configuration for each axis
+- `pokeys.[DevID].PEv2.[PEv2Id].HomeOffsets`: Home position offset for each axis
+- `pokeys.[DevID].PEv2.[PEv2Id].HomeBackOffDistance`: Back-off distance after homing for each axis
