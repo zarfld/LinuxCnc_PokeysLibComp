@@ -432,3 +432,47 @@ PEv2_AxisEnableOutputPins_6=0
 PEv2_Feedback_Encoder_Id_6=0
 PEv2_InvertAxisEnable_6=1
 ```
+
+## Configuring PEv2 Parameters
+
+To configure PEv2 parameters effectively, follow these best practices:
+
+* Ensure that the `DEVICE_ID` is correctly set for the PoKeys device in the INI file.
+* Set `ApplyIniSettings` to `1` to apply settings parametrized in LinuxCNC.
+* Configure the probe input pin and its polarity using `PEv2_ProbeInput` and `PEv2_ProbeInputPolarity`.
+* Set the emergency input and output pins using `PEv2_EmergencyInputPin` and `PEv2_EmergencyOutputPin`.
+* Choose the appropriate pulse generator type with `PEv2_PulseGeneratorType` (0 for external, 1 for 3ch integrated, 2 for external smart).
+* Disable swapping of step and direction signals by setting `PEv2_PG_swap_stepdir` to `0`.
+* Enable extended I/O by setting `PEv2_PG_extended_io` to `1`.
+* For each axis, enable the axis using `PEv2_AxisEnabled_<n>` and configure the axis switch settings with `PEv2_AxesSwitchConfig_<n>`.
+* Set the filter values for the limit switches using `PEv2_FilterLimitMSwitch_<n>` and `PEv2_FilterLimitPSwitch_<n>`.
+* Configure the home switch pin, limit- switch pin, and limit+ switch pin using `PEv2_PinHomeSwitch_<n>`, `PEv2_PinLimitMSwitch_<n>`, and `PEv2_PinLimitPSwitch_<n>`.
+* Invert and enable the limit and home switches using `PEv2_InvertLimitN_<n>`, `PEv2_EnableLimitN_<n>`, `PEv2_InvertLimitP_<n>`, `PEv2_EnableLimitP_<n>`, `PEv2_InvertHome_<n>`, and `PEv2_EnableHome_<n>`.
+* Configure homing on limit switches using `PEv2_HomeOnLimitN_<n>` and `PEv2_HomeOnLimitP_<n>`.
+* Set the axis enable output pins with `PEv2_AxisEnableOutputPins_<n>`.
+* Configure the feedback encoder ID using `PEv2_Feedback_Encoder_Id_<n>`.
+* Invert the axis enable signal using `PEv2_InvertAxisEnable_<n>`.
+
+These settings can be found in the INI files such as `DM542_XXYZ_mill/Pokeys57CNC_debug_empty.ini`, `DM542_XXYZ_mill/Pokeys57CNC_DM542_XXYZ_homingdeb.ini`, and `DM542_XXYZ_mill/Pokeys57CNC_DM542_XXYZ_mill.ini`. Make sure to update your INI file with the appropriate values for your specific configuration.
+
+## Differences Between `pokeys_homecomp.comp` and `pokeys_homing.hal`
+
+The differences between `pokeys_homecomp.comp` and `pokeys_homing.hal` are as follows:
+
+* `pokeys_homecomp.comp` is a component file that defines a homing module template for LinuxCNC. It includes the necessary code for creating input and output HAL pins, as well as the implementation of a custom homing state machine. This file is used to build a customized homing module that can be integrated into LinuxCNC.
+* `pokeys_homing.hal` is a HAL configuration file that connects various signals and pins related to the Pulse Engine v2 (PEv2) and the `pokeys_homecomp` component. It maps the existing HAL pins to the new component pins and ensures that the new component pins are correctly connected and configured in the HAL files. This file is used to configure the homing behavior and interactions between the `pokeys_homecomp` component and the PoKeys device.
+* `pokeys_homecomp.comp` includes the implementation of the homing state machine, while `pokeys_homing.hal` focuses on the configuration and connection of the HAL pins related to the homing process.
+* `pokeys_homecomp.comp` defines the structure and behavior of the homing module, including the creation of custom HAL pins and the implementation of the homing state machine. On the other hand, `pokeys_homing.hal` is responsible for mapping the existing HAL pins to the new component pins and ensuring the correct configuration of the homing process.
+* `pokeys_homecomp.comp` includes the necessary code for building and installing the homing module using `halcompile`, while `pokeys_homing.hal` is a configuration file that is used to set up the homing behavior in the LinuxCNC environment.
+* `pokeys_homecomp.comp` provides a template for creating a customized homing module, while `pokeys_homing.hal` is used to configure and connect the homing-related signals and pins in the HAL files.
+
+## Differences Between `pokeys_homecomp.comp` and `kbd48CNC.comp`
+
+The differences between `pokeys_homecomp.comp` and `kbd48CNC.comp` are as follows:
+
+* `pokeys_homecomp.comp` is a homing module template for LinuxCNC, while `kbd48CNC.comp` is an abstraction for the PoKeys kbd48CNC device.
+* `pokeys_homecomp.comp` includes the implementation of a custom homing state machine, whereas `kbd48CNC.comp` focuses on handling jog and jog rate control for the kbd48CNC device.
+* `pokeys_homecomp.comp` defines input and output HAL pins related to the homing process, such as `joint.n.request-custom-homing` and `joint.N.is_custom-homing`. In contrast, `kbd48CNC.comp` defines pins related to jog control, such as `JOG_TOGGLE.Button`, `JOGRATE-PLUS.Button`, and `JOG-PLUS.Button`.
+* `pokeys_homecomp.comp` includes functions for reading and writing homing-related HAL pins, as well as managing the homing state machine. `kbd48CNC.comp` includes functions for handling jog control, jog rate adjustments, and LED indicators for the kbd48CNC device.
+* `pokeys_homecomp.comp` is designed to be built and installed using `halcompile` and can be substituted for the default homing module in LinuxCNC. `kbd48CNC.comp` is designed to interface with the kbd48CNC device and provide jog control functionality within the LinuxCNC environment.
+* `pokeys_homecomp.comp` includes extensive comments and documentation to guide users in customizing the homing module, while `kbd48CNC.comp` focuses on the implementation of jog control features for the kbd48CNC device.

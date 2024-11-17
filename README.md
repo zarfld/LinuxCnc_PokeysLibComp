@@ -638,7 +638,6 @@ Real `pokeyslib.h`:
 typedef struct sPoKeysDevice_Info {
     char deviceName[32];
     uint32_t serialNumber;
-    uint8_t deviceID;
     uint88 firmwareVersionMajor;
     uint8_t firmwareVersionMinor;
     uint8_t numberOfPins;
