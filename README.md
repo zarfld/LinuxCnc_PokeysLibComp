@@ -639,8 +639,7 @@ typedef struct sPoKeysDevice_Info {
     char deviceName[32];
     uint32_t serialNumber;
     uint8_t deviceID;
-    uint8_t deviceType;
-    uint8_t firmwareVersionMajor;
+    uint88 firmwareVersionMajor;
     uint8_t firmwareVersionMinor;
     uint8_t numberOfPins;
 } sPoKeysDevice_Info;
