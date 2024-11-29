@@ -993,20 +993,20 @@ void do_home_joint(int jno)
         {
             if (abs(H[jj].home_sequence) == abs(sequence_home_data.min_sequence))
             {
-                rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: joint %d in sequence %d\n", jj, sequence_home_data.min_sequence);
+                rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: joint %d in sequence %d\n", jj, sequence_home_data.min_sequence);
                 H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                 trigered ++;
             }
             else
             {
-                rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: joint %d not in sequence %d\n", jj, sequence_home_data.min_sequence);
+                rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: joint %d not in sequence %d\n", jj, sequence_home_data.min_sequence);
             }
             
         }
 
         if(trigered == 0)
         {
-            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: no joints in sequence %d\n", sequence_home_data.shd[current_sequence].home_sequence);
+            rtapi_print_msg(RTAPI_MSG_WARN, "HOMING: no joints in sequence %d\n", sequence_home_data.shd[current_sequence].home_sequence);
         }
     }
     return;
