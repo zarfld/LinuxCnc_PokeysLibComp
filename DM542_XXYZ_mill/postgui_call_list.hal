@@ -10,6 +10,70 @@ setp pokeys.0.PEv2.digout.Emergency.Pin [POKEYS]PEv2_EmergencyOutputPin
 setp pokeys.0.PEv2.PulseGeneratorType [POKEYS]PEv2_PulseGeneratorType
 #setp pokeys.0.PEv2.PG_swap_stepdir [POKEYS]PEv2_PG_swap_stepdir
 #setp pokeys.0.PEv2.PG_extended_io [POKEYS]PEv2_PG_extended_io
+setp pokeys.0.PEv2.0.AxisEnabled [POKEYS}PEv2_AxisEnabled_0
+setp pokeys.0.PEv2.0.AxisInverted [POKEYS}PEv2_AxisInverted_0
+setp pokeys.0.PEv2.0.AxisInternalPlanner [POKEYS}PEv2_AxisInternalPlanner_0
+setp pokeys.0.PEv2.0.AxisPositionMode [POKEYS}PEv2_AxisPositionMode_0
+setp pokeys.0.PEv2.0.AxisInvertedHome [POKEYS}PEv2_AxisInvertedHome_0
+setp pokeys.0.PEv2.0.AxisSoftLimitEnabled [POKEYS}PEv2_AxisSoftLimitEnabled_0
+setp pokeys.0.PEv2.0.AxisEnabledMasked [POKEYS}PEv2_AxisEnabledMasked_0
+
+setp pokeys.0.PEv2.1.AxisEnabled [POKEYS}PEv2_AxisEnabled_1
+setp pokeys.0.PEv2.1.AxisInverted [POKEYS}PEv2_AxisInverted_1
+setp pokeys.0.PEv2.1.AxisInternalPlanner [POKEYS}PEv2_AxisInternalPlanner_1
+setp pokeys.0.PEv2.1.AxisPositionMode [POKEYS}PEv2_AxisPositionMode_1
+setp pokeys.0.PEv2.1.AxisInvertedHome [POKEYS}PEv2_AxisInvertedHome_1
+setp pokeys.0.PEv2.1.AxisSoftLimitEnabled [POKEYS}PEv2_AxisSoftLimitEnabled_1
+setp pokeys.0.PEv2.1.AxisEnabledMasked [POKEYS}PEv2_AxisEnabledMasked_1
+
+setp pokeys.0.PEv2.2.AxisEnabled [POKEYS}PEv2_AxisEnabled_2
+setp pokeys.0.PEv2.2.AxisInverted [POKEYS}PEv2_AxisInverted_2
+setp pokeys.0.PEv2.2.AxisInternalPlanner [POKEYS}PEv2_AxisInternalPlanner_2
+setp pokeys.0.PEv2.2.AxisPositionMode [POKEYS}PEv2_AxisPositionMode_2
+setp pokeys.0.PEv2.2.AxisInvertedHome [POKEYS}PEv2_AxisInvertedHome_2
+setp pokeys.0.PEv2.2.AxisSoftLimitEnabled [POKEYS}PEv2_AxisSoftLimitEnabled_2
+setp pokeys.0.PEv2.2.AxisEnabledMasked [POKEYS}PEv2_AxisEnabledMasked_2
+
+setp pokeys.0.PEv2.3.AxisEnabled [POKEYS}PEv2_AxisEnabled_3
+setp pokeys.0.PEv2.3.AxisInverted [POKEYS}PEv2_AxisInverted_3
+setp pokeys.0.PEv2.3.AxisInternalPlanner [POKEYS}PEv2_AxisInternalPlanner_3
+setp pokeys.0.PEv2.3.AxisPositionMode [POKEYS}PEv2_AxisPositionMode_3
+setp pokeys.0.PEv2.3.AxisInvertedHome [POKEYS}PEv2_AxisInvertedHome_3
+setp pokeys.0.PEv2.3.AxisSoftLimitEnabled [POKEYS}PEv2_AxisSoftLimitEnabled_3
+setp pokeys.0.PEv2.3.AxisEnabledMasked [POKEYS}PEv2_AxisEnabledMasked_3
+
+setp pokeys.0.PEv2.4.AxisEnabled [POKEYS}PEv2_AxisEnabled_4
+setp pokeys.0.PEv2.4.AxisInverted [POKEYS}PEv2_AxisInverted_4
+setp pokeys.0.PEv2.4.AxisInternalPlanner [POKEYS}PEv2_AxisInternalPlanner_4
+setp pokeys.0.PEv2.4.AxisPositionMode [POKEYS}PEv2_AxisPositionMode_4
+setp pokeys.0.PEv2.4.AxisInvertedHome [POKEYS}PEv2_AxisInvertedHome_4
+setp pokeys.0.PEv2.4.AxisSoftLimitEnabled [POKEYS}PEv2_AxisSoftLimitEnabled_4
+setp pokeys.0.PEv2.4.AxisEnabledMasked [POKEYS}PEv2_AxisEnabledMasked_4
+
+setp pokeys.0.PEv2.5.AxisEnabled [POKEYS}PEv2_AxisEnabled_5
+setp pokeys.0.PEv2.5.AxisInverted [POKEYS}PEv2_AxisInverted_5
+setp pokeys.0.PEv2.5.AxisInternalPlanner [POKEYS}PEv2_AxisInternalPlanner_5
+setp pokeys.0.PEv2.5.AxisPositionMode [POKEYS}PEv2_AxisPositionMode_5
+setp pokeys.0.PEv2.5.AxisInvertedHome [POKEYS}PEv2_AxisInvertedHome_5
+setp pokeys.0.PEv2.5.AxisSoftLimitEnabled [POKEYS}PEv2_AxisSoftLimitEnabled_5
+setp pokeys.0.PEv2.5.AxisEnabledMasked [POKEYS}PEv2_AxisEnabledMasked_5
+
+setp pokeys.0.PEv2.6.AxisEnabled [POKEYS}PEv2_AxisEnabled_6
+setp pokeys.0.PEv2.6.AxisInverted [POKEYS}PEv2_AxisInverted_6
+setp pokeys.0.PEv2.6.AxisInternalPlanner [POKEYS}PEv2_AxisInternalPlanner_6
+setp pokeys.0.PEv2.6.AxisPositionMode [POKEYS}PEv2_AxisPositionMode_6
+setp pokeys.0.PEv2.6.AxisInvertedHome [POKEYS}PEv2_AxisInvertedHome_6
+setp pokeys.0.PEv2.6.AxisSoftLimitEnabled [POKEYS}PEv2_AxisSoftLimitEnabled_6
+setp pokeys.0.PEv2.6.AxisEnabledMasked [POKEYS}PEv2_AxisEnabledMasked_6
+
+setp pokeys.0.PEv2.7.AxisEnabled [POKEYS}PEv2_AxisEnabled_7
+setp pokeys.0.PEv2.7.AxisInverted [POKEYS}PEv2_AxisInverted_7
+setp pokeys.0.PEv2.7.AxisInternalPlanner [POKEYS}PEv2_AxisInternalPlanner_7
+setp pokeys.0.PEv2.7.AxisPositionMode [POKEYS}PEv2_AxisPositionMode_7
+setp pokeys.0.PEv2.7.AxisInvertedHome [POKEYS}PEv2_AxisInvertedHome_7
+setp pokeys.0.PEv2.7.AxisSoftLimitEnabled [POKEYS}PEv2_AxisSoftLimitEnabled_7
+setp pokeys.0.PEv2.7.AxisEnabledMasked [POKEYS}PEv2_AxisEnabledMasked_7
+
 
 setp pokeys.0.PEv2.0.AxesSwitchConfig  [POKEYS]PEv2_AxesSwitchConfig_0
 
