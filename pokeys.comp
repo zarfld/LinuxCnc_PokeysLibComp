@@ -2431,7 +2431,7 @@ void user_mainloop(void)
 					//dev->PEv2.AxisEnabledMask = PEv2_AxisEnabledMask;
 					doStateSet=true;
 				}
-				else if (rtc_loopcount==0)
+				else if (rtc_loopcount==0 && Homing_active!=true)
 				{
 					rtapi_print_msg(RTAPI_MSG_ERR, "PK_PEv2: PEv2_PulseEngineStateSetup(rtc_loopcount) (%d) \n", PEv2_PulseEngineStateSetup);
 					dev->PEv2.PulseEngineStateSetup = PEv2_PulseEngineStateSetup;
