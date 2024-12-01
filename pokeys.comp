@@ -1991,7 +1991,7 @@ void user_mainloop(void)
 							int MyHomeSequ, seq;
 							MyHomeSequ = PEv2_home_sequence(i);
 							HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
-							rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n", i, PEv2_home_sequence(i), HomingStartMaskSetup);
+							rtapi_print_msg(RTAPI_MSG_ERR, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n", i, PEv2_home_sequence(i), HomingStartMaskSetup);
 					
 							//ensure that all axes with same Sequence start homing at the same time
 							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: ensure that all axes with same Sequence start homing at the same time\n", __FILE__, __FUNCTION__);
@@ -2001,7 +2001,7 @@ void user_mainloop(void)
 								
 									if (PEv2_home_sequence(seq) == PEv2_home_sequence(i))
 									{
-									//	rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: ensure that all axes (%d) with same Sequence(%d) start homing at the same time \n", seq, PEv2_home_sequence(i));
+									//	rtapi_print_msg(RTAPI_MSG_ERR, "PK_HOMING: ensure that all axes (%d) with same Sequence(%d) start homing at the same time \n", seq, PEv2_home_sequence(i));
 					
 										HomingStartMaskSetup |= (1 << seq); // Home axis seq only (bit seq)
 										j_count++;
@@ -2012,11 +2012,11 @@ void user_mainloop(void)
 							
 							if (j_count == 0)
 							{
-								rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: no axes with same Sequence(%d) as joint(%d) found \n", PEv2_home_sequence(i),i);
+								rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: no axes with same Sequence(%d) as joint(%d) found \n", PEv2_home_sequence(i),i);
 							}
 							else
 							{
-								rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: ensured that all axes (%d) with same Sequence(%d) startmask was set (%d) \n", i, PEv2_home_sequence(i), HomingStartMaskSetup);
+								rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensured that all axes (%d) with same Sequence(%d) startmask was set (%d) \n", i, PEv2_home_sequence(i), HomingStartMaskSetup);
 					
 							}
 
@@ -2416,7 +2416,7 @@ void user_mainloop(void)
 				}
 				if (dev->PEv2.HomingStartMaskSetup != HomingStartMaskSetup && HomingStartMaskSetup !=0 && doHomingStart) 
 				{
-					rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: Startmask at trigger (%d) \n", HomingStartMaskSetup);
+					rtapi_print_msg(RTAPI_MSG_ERR, "PK_HOMING: Startmask at trigger (%d) \n", HomingStartMaskSetup);
 					
 								PEv2_deb_axxisout(i) = 5100;
 								dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
@@ -2426,12 +2426,14 @@ void user_mainloop(void)
 				}
 				else if (PulseEngineState != PEv2_PulseEngineStateSetup && doHomingStart==0)
 				{
+					rtapi_print_msg(RTAPI_MSG_ERR, "PK_PEv2: PEv2_PulseEngineStateSetup (%d) \n", PEv2_PulseEngineStateSetup);
 					dev->PEv2.PulseEngineStateSetup = PEv2_PulseEngineStateSetup;
 					//dev->PEv2.AxisEnabledMask = PEv2_AxisEnabledMask;
 					doStateSet=true;
 				}
 				else if (rtc_loopcount==0)
 				{
+					rtapi_print_msg(RTAPI_MSG_ERR, "PK_PEv2: PEv2_PulseEngineStateSetup(rtc_loopcount) (%d) \n", PEv2_PulseEngineStateSetup);
 					dev->PEv2.PulseEngineStateSetup = PEv2_PulseEngineStateSetup;
 					//dev->PEv2.AxisEnabledMask = PEv2_AxisEnabledMask;
 					doStateSet=true;
@@ -2439,6 +2441,7 @@ void user_mainloop(void)
 
 				if (PEv2_LimitOverrideSetup != dev->PEv2.LimitOverrideSetup)
 				{
+					rtapi_print_msg(RTAPI_MSG_ERR, "PK_PEv2: PEv2_LimitOverrideSetup (%d) \n", PEv2_LimitOverrideSetup);
 					dev->PEv2.LimitOverrideSetup = PEv2_LimitOverrideSetup;
 					doStateSet=true;
 				}
@@ -2447,6 +2450,7 @@ void user_mainloop(void)
 				{
 					if (PK_PEv2_PulseEngineStateSet(dev) != PK_OK)
 					{
+						rtapi_print_msg(RTAPI_MSG_ERR, "PK_PEv2: PEv2_PulseEngineStateSet (%d) \n", PEv2_PulseEngineStateSetup);
 						usleep(sleepdur);
 						if (PK_PEv2_PulseEngineStateSet(dev) != PK_OK)
 						{
@@ -2458,6 +2462,7 @@ void user_mainloop(void)
 				if (doMove==true)
 					{
 						PEv2_deb_out = 4000;
+						rtapi_print_msg(RTAPI_MSG_ERR, "PK_PEv2: PEv2_PulseEngineMove  \n" );
 						if (PK_PEv2_PulseEngineMove(dev)!=PK_OK)
 						{
 							PEv2_deb_out = 4200;
