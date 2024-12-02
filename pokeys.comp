@@ -161,7 +161,16 @@ param rw unsigned PEv2.#.digin.SoftLimit.PosMax[8] "";
 
 pin io unsigned PEv2.#.HomingSpeed [8];			// Homing speed per axis (in %)
 pin io unsigned PEv2.#.HomingReturnSpeed [8];		// Homing return speed per axis (in % of the homing speed)
-pin io unsigned PEv2.#.HomingAlgorithm[8];		// Homing algorithm configuration
+param rw unsigned PEv2.#.HomingAlgorithm[8] "";		// Homing algorithm configuration
+
+param rw bit PEv2.#.HomeAlg.OnHome.Stop[8] "";
+param rw bit PEv2.#.HomeAlg.OnHome.ArmEncoder[8] "";
+param rw bit PEv2.#.HomeAlg.OnHome.RevDirection[8] "";
+param rw bit PEv2.#.HomeAlg.OnHome.ReducedSpeed[8] "";
+param rw bit PEv2.#.HomeAlg.OutHome.Stop[8] "";
+param rw bit PEv2.#.HomeAlg.OutHome.ArmEncoder[8] "";
+param rw bit PEv2.#.HomeAlg.OutHome.RevDirection[8] "";
+param rw bit PEv2.#.HomeAlg.OutHome.ReducedSpeed[8] "";
 
 pin io u32 PEv2.#.HomeOffsets [8];				// Home position offset
 param rw unsigned PEv2.#.digin.Home.Offset[8] "";
@@ -640,6 +649,18 @@ hal_pin_u32_t EasySensors_sensorRefreshPeriod[16];
 hal_pin_u32_t EasySensors_sensorFailsafeConfig[16];
 hal_pin_u32_t EasySensors_sensorReadingID[16];
 */
+
+typedef enum
+{
+    PK_PEv2Homing_OnHomeStop = (1 << 3),         // Axis  in IDLE
+    PK_PEv2Homing_OnHomeArmEncoder = (1 << 2),  // Start Homing procedure
+    PK_PEv2Homing_OnHomeReverseDirection = (1 << 1), // Cancel Homing procedure
+	PK_PEv2Homing_OnHomeReducedSpeed = (1 << 0), // Cancel Homing procedure
+	PK_PEv2Homing_OutHomeStop = (1 << 7),         // Axis  in IDLE
+    PK_PEv2Homing_OutHomeArmEncoder = (1 << 6),  // Start Homing procedure
+    PK_PEv2Homing_OutHomeReverseDirection = (1 << 5), // Cancel Homing procedure
+	PK_PEv2Homing_OutHomeReducedSpeed = (1 << 4), // Cancel Homing procedure
+} pokeys_homing_algorithm_t;
 
 
 sPoNETmodule PoNet[16];
@@ -3460,7 +3481,7 @@ void user_mainloop(void)
 			}
 
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: rtc_lastmin = %d\n", __FILE__, __FUNCTION__, rtc_lastmin);
-			if (rtc_lastmin!=rtc_min)
+			if (rtc_lastmin!=rtc_min && HAL_Machine_On == 0)
 			{
 				alive = 0;
 
@@ -4144,7 +4165,50 @@ void user_mainloop(void)
 								 dev->PEv2.FilterHomeSwitch[i] = PEv2_digin_Home_Filter(i);
 								 doAxisConfig = true;
 							 }
-							 
+							 /*
+							 	param rw bit PEv2.#.HomeAlg.OnHome.Stop[8] "";
+								param rw bit PEv2.#.HomeAlg.OnHome.ArmEncoder[8] "";
+								param rw bit PEv2.#.HomeAlg.OnHome.RevDirection[8] "";
+								param rw bit PEv2.#.HomeAlg.OnHome.ReducedSpeed[8] "";
+								param rw bit PEv2.#.HomeAlg.OutHome.Stop[8] "";
+								param rw bit PEv2.#.HomeAlg.OutHome.ArmEncoder[8] "";
+								param rw bit PEv2.#.HomeAlg.OutHome.RevDirection[8] "";
+								param rw bit PEv2.#.HomeAlg.OutHome.ReducedSpeed[8] "";
+							 */
+							int HomingAlgorithm = 0;
+							if (PEv2_HomeAlg_OnHome_Stop(i) == true)
+							{
+								HomingAlgorithm &= PK_PEv2Homing_OnHomeStop;
+							}
+							if(PEv2_HomeAlg_OnHome_ArmEncoder(i) == true)
+							{
+								HomingAlgorithm &= PK_PEv2Homing_OnHomeArmEncoder;
+							}
+							if(PEv2_HomeAlg_OnHome_RevDirection(i) == true)
+							{
+								HomingAlgorithm &= PK_PEv2Homing_OnHomeRevDirection;
+							}
+							if(PEv2_HomeAlg_OnHome_ReducedSpeed(i) == true)
+							{
+								HomingAlgorithm &= PK_PEv2Homing_OnHomeReducedSpeed;
+							}
+							if(PEv2_HomeAlg_OutHome_Stop(i) == true)
+							{
+								HomingAlgorithm &= PK_PEv2Homing_OutHomeStop;
+							}
+							if(PEv2_HomeAlg_OutHome_ArmEncoder(i) == true)
+							{
+								HomingAlgorithm &= PK_PEv2Homing_OutHomeArmEncoder;
+							}
+							if(PEv2_HomeAlg_OutHome_RevDirection(i) == true)
+							{
+								HomingAlgorithm &= PK_PEv2Homing_OutHomeRevDirection;
+							}
+							if(PEv2_HomeAlg_OutHome_ReducedSpeed(i) == true)
+							{
+								HomingAlgorithm &= PK_PEv2Homing_OutHomeReducedSpeed;
+							}
+
 							 if (dev->PEv2.HomingAlgorithm[i] != PEv2_HomingAlgorithm(i))
 							 {
 								 dev->PEv2.HomingAlgorithm[i] = PEv2_HomingAlgorithm(i);
@@ -4182,6 +4246,7 @@ void user_mainloop(void)
 							 //dev->PEv2.AxesSwitchConfig[i] =0;
 							 if (doAxisConfig == true)
 							 {
+								rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet(%d)\n", __FILE__, __FUNCTION__, i);
 								 dev->PEv2.param1 = i;
 								 if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK)
 								 {

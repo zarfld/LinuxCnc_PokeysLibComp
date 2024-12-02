@@ -74,6 +74,77 @@ setp pokeys.0.PEv2.7.AxisInvertedHome [POKEYS]PEv2_AxisInvertedHome_7
 setp pokeys.0.PEv2.7.AxisSoftLimitEnabled [POKEYS]PEv2_AxisSoftLimitEnabled_7
 setp pokeys.0.PEv2.7.AxisEnabledMasked [POKEYS]PEv2_AxisEnabledMasked_7
 
+setp pokeys.0.PEv2.0.HomingAlgorithm [POKEYS]PEv2_HomingAlgorithm_0
+setp pokeys.0.PEv2.1.HomingAlgorithm [POKEYS]PEv2_HomingAlgorithm_1
+setp pokeys.0.PEv2.2.HomingAlgorithm [POKEYS]PEv2_HomingAlgorithm_2
+setp pokeys.0.PEv2.3.HomingAlgorithm [POKEYS]PEv2_HomingAlgorithm_3
+setp pokeys.0.PEv2.4.HomingAlgorithm [POKEYS]PEv2_HomingAlgorithm_4
+setp pokeys.0.PEv2.5.HomingAlgorithm [POKEYS]PEv2_HomingAlgorithm_5
+setp pokeys.0.PEv2.6.HomingAlgorithm [POKEYS]PEv2_HomingAlgorithm_6
+setp pokeys.0.PEv2.7.HomingAlgorithm [POKEYS]PEv2_HomingAlgorithm_7
+
+setp pokeys.0.PEv2.0.HomeAlg.OnHome.Stop [POKEYS]PEv2_HomingAlgorithm_OnHome_Stop_0
+setp pokeys.0.PEv2.1.HomeAlg.OnHome.Stop [POKEYS]PEv2_HomingAlgorithm_OnHome_Stop_1
+setp pokeys.0.PEv2.2.HomeAlg.OnHome.Stop [POKEYS]PEv2_HomingAlgorithm_OnHome_Stop_2
+setp pokeys.0.PEv2.3.HomeAlg.OnHome.Stop [POKEYS]PEv2_HomingAlgorithm_OnHome_Stop_3
+setp pokeys.0.PEv2.4.HomeAlg.OnHome.Stop [POKEYS]PEv2_HomingAlgorithm_OnHome_Stop_4
+setp pokeys.0.PEv2.5.HomeAlg.OnHome.Stop [POKEYS]PEv2_HomingAlgorithm_OnHome_Stop_5
+setp pokeys.0.PEv2.6.HomeAlg.OnHome.Stop [POKEYS]PEv2_HomingAlgorithm_OnHome_Stop_6
+setp pokeys.0.PEv2.7.HomeAlg.OnHome.Stop [POKEYS]PEv2_HomingAlgorithm_OnHome_Stop_7
+
+setp pokeys.0.PEv2.0.HomeAlg.OnHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OnHome_ArmEncoder_0
+setp pokeys.0.PEv2.1.HomeAlg.OnHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OnHome_ArmEncoder_1
+setp pokeys.0.PEv2.2.HomeAlg.OnHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OnHome_ArmEncoder_2
+setp pokeys.0.PEv2.3.HomeAlg.OnHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OnHome_ArmEncoder_3
+setp pokeys.0.PEv2.4.HomeAlg.OnHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OnHome_ArmEncoder_4
+setp pokeys.0.PEv2.5.HomeAlg.OnHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OnHome_ArmEncoder_5
+setp pokeys.0.PEv2.6.HomeAlg.OnHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OnHome_ArmEncoder_6
+setp pokeys.0.PEv2.7.HomeAlg.OnHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OnHome_ArmEncoder_7
+
+setp pokeys.0.PEv2.0.HomeAlg.OnHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OnHome_ReverseDirection_0
+setp pokeys.0.PEv2.1.HomeAlg.OnHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OnHome_ReverseDirection_1
+setp pokeys.0.PEv2.2.HomeAlg.OnHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OnHome_ReverseDirection_2
+setp pokeys.0.PEv2.3.HomeAlg.OnHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OnHome_ReverseDirection_3
+setp pokeys.0.PEv2.4.HomeAlg.OnHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OnHome_ReverseDirection_4
+setp pokeys.0.PEv2.5.HomeAlg.OnHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OnHome_ReverseDirection_5
+setp pokeys.0.PEv2.6.HomeAlg.OnHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OnHome_ReverseDirection_6
+setp pokeys.0.PEv2.7.HomeAlg.OnHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OnHome_ReverseDirection_7
+
+setp pokeys.0.PEv2.0.HomeAlg.OnHome.ReducedSpeed [POKEYS]PEv2_HomingAlgorithm_OnHome_ReducedSpeed_0
+setp pokeys.0.PEv2.1.HomeAlg.OnHome.ReducedSpeed [POKEYS]PEv2_HomingAlgorithm_OnHome_ReducedSpeed_1
+setp pokeys.0.PEv2.2.HomeAlg.OnHome.ReducedSpeed [POKEYS]PEv2_HomingAlgorithm_OnHome_ReducedSpeed_2
+setp pokeys.0.PEv2.3.HomeAlg.OnHome.ReducedSpeed [POKEYS]PEv2_HomingAlgorithm_OnHome_ReducedSpeed_3
+setp pokeys.0.PEv2.4.HomeAlg.OnHome.ReducedSpeed [POKEYS]PEv2_HomingAlgorithm_OnHome_ReducedSpeed_4
+setp pokeys.0.PEv2.5.HomeAlg.OnHome.ReducedSpeed [POKEYS]PEv2_HomingAlgorithm_OnHome_ReducedSpeed_5
+setp pokeys.0.PEv2.6.HomeAlg.OnHome.ReducedSpeed [POKEYS]PEv2_HomingAlgorithm_OnHome_ReducedSpeed_6
+setp pokeys.0.PEv2.7.HomeAlg.OnHome.ReducedSpeed [POKEYS]PEv2_HomingAlgorithm_OnHome_ReducedSpeed_7
+
+setp pokeys.0.PEv2.0.HomeAlg.OutHome.Stop [POKEYS]PEv2_HomingAlgorithm_OutHome_Stop_0
+setp pokeys.0.PEv2.1.HomeAlg.OutHome.Stop [POKEYS]PEv2_HomingAlgorithm_OutHome_Stop_1
+setp pokeys.0.PEv2.2.HomeAlg.OutHome.Stop [POKEYS]PEv2_HomingAlgorithm_OutHome_Stop_2
+setp pokeys.0.PEv2.3.HomeAlg.OutHome.Stop [POKEYS]PEv2_HomingAlgorithm_OutHome_Stop_3
+setp pokeys.0.PEv2.4.HomeAlg.OutHome.Stop [POKEYS]PEv2_HomingAlgorithm_OutHome_Stop_4
+setp pokeys.0.PEv2.5.HomeAlg.OutHome.Stop [POKEYS]PEv2_HomingAlgorithm_OutHome_Stop_5
+setp pokeys.0.PEv2.6.HomeAlg.OutHome.Stop [POKEYS]PEv2_HomingAlgorithm_OutHome_Stop_6
+setp pokeys.0.PEv2.7.HomeAlg.OutHome.Stop [POKEYS]PEv2_HomingAlgorithm_OutHome_Stop_7
+
+setp pokeys.0.PEv2.0.HomeAlg.OutHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OutHome_ArmEncoder_0
+setp pokeys.0.PEv2.1.HomeAlg.OutHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OutHome_ArmEncoder_1
+setp pokeys.0.PEv2.2.HomeAlg.OutHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OutHome_ArmEncoder_2
+setp pokeys.0.PEv2.3.HomeAlg.OutHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OutHome_ArmEncoder_3
+setp pokeys.0.PEv2.4.HomeAlg.OutHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OutHome_ArmEncoder_4
+setp pokeys.0.PEv2.5.HomeAlg.OutHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OutHome_ArmEncoder_5
+setp pokeys.0.PEv2.6.HomeAlg.OutHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OutHome_ArmEncoder_6
+setp pokeys.0.PEv2.7.HomeAlg.OutHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OutHome_ArmEncoder_7
+
+setp pokeys.0.PEv2.0.HomeAlg.OutHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OutHome_ReverseDirection_0
+setp pokeys.0.PEv2.1.HomeAlg.OutHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OutHome_ReverseDirection_1
+setp pokeys.0.PEv2.2.HomeAlg.OutHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OutHome_ReverseDirection_2
+setp pokeys.0.PEv2.3.HomeAlg.OutHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OutHome_ReverseDirection_3
+setp pokeys.0.PEv2.4.HomeAlg.OutHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OutHome_ReverseDirection_4
+setp pokeys.0.PEv2.5.HomeAlg.OutHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OutHome_ReverseDirection_5
+setp pokeys.0.PEv2.6.HomeAlg.OutHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OutHome_ReverseDirection_6
+setp pokeys.0.PEv2.7.HomeAlg.OutHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OutHome_ReverseDirection_7
 
 setp pokeys.0.PEv2.0.AxesSwitchConfig  [POKEYS]PEv2_AxesSwitchConfig_0
 
