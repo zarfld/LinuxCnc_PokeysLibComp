@@ -603,34 +603,34 @@ static void update_sequence_home_data(void)
     for(int sno=min_sequence; sno<=max_sequence; sno++)
     {
         one_sequence_home_data_t saddr = (sequence_home_data.shd[sno]);
-        saddr.home_sequence = sno;
+        sequence_home_data.shd[sno].home_sequence = sno;
         //saddr.homing = 0; should not interrupt homing
         //saddr.homed = 0;
-        saddr.joints_in_sequence = 0;
+        sequence_home_data.shd[sno].joints_in_sequence = 0;
         if(sno == max_sequence)
         {
-            saddr.is_last = 1;
-            saddr.next_sequence = 0;
+            sequence_home_data.shd[sno].is_last = 1;
+            sequence_home_data.shd[sno].next_sequence = 0;
         }
         else
         {
-            saddr.is_last = 0;
-            saddr.next_sequence = sno+1;
+            sequence_home_data.shd[sno].is_last = 0;
+            sequence_home_data.shd[sno].next_sequence = sno+1;
         }
 
         
-        saddr.home_state = HOME_IDLE;
+        sequence_home_data.shd[sno].home_state = HOME_IDLE;
 
         for(int jno = 0; jno < all_joints; jno++)
         {
             if (abs(H[jno].home_sequence) == sno)
             {
-                saddr.joint_ids[saddr.joints_in_sequence] = jno;
-                saddr.joints_in_sequence++;
+                sequence_home_data.shd[sno].joint_ids[saddr.joints_in_sequence] = jno;
+                sequence_home_data.shd[sno].joints_in_sequence++;
             }
         }
 
-        rtapi_print_msg(RTAPI_MSG_ERR,"HOMING: update_sequence_home_data(%d) joints_in_sequence:%d\n", sno, saddr.joints_in_sequence);
+        rtapi_print_msg(RTAPI_MSG_ERR,"HOMING: update_sequence_home_data(%d) joints_in_sequence:%d\n", sno, sequence_home_data.shd[sno].joints_in_sequence);
     }
 }
 
@@ -716,6 +716,7 @@ bool get_sequence_homing(int seq)
 void do_home_sequence(int seq)
 {
     one_sequence_home_data_t addr = (sequence_home_data.shd[seq]);
+    sequence_home_data.current_sequence = seq;
 
     int joints_in_sequence = addr.joints_in_sequence;
 
@@ -1029,7 +1030,7 @@ static void do_homing_sequence(void)
     int seen;
     emcmot_joint_t *joint;
     int sequence_is_set = 0;
-    if(current_sequence <0 || current_sequence >= sequence_home_data.sequence_count)
+    if(current_sequence <=0 || current_sequence >= sequence_home_data.sequence_count)
     {
         // no sequence set, use the first one
         current_sequence = 0;
@@ -1074,24 +1075,22 @@ static void do_homing_sequence(void)
         if (current_sequence ==0) 
         {
             rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_DO_ONE_JOINT current_sequence = 0\n",current_sequence);
-            if (joints_in_sequence==0)
-            {
-                addr.joints_in_sequence = joints_in_sequence_DBG;
-                rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_DO_ONE_JOINT joints_in_sequence = %d - %d - %d \n",current_sequence,addr.joints_in_sequence,joints_in_sequence_DBG,addr_dbg.joints_in_sequence);
-                for (ii = 0; ii < joints_in_sequence_DBG; ii++)
-                {
-                    addr.joint_ids[ii] = addr_dbg.joint_ids[ii];
-                    rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_DO_ONE_JOINT joints_in_sequence = %d id:%d \n",current_sequence,addr.joints_in_sequence,addr.joint_ids[ii]);
-                
-                }
-                rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_DO_ONE_JOINT current_sequence = 0\n",current_sequence);
-            }
+            current_sequence=sequence_home_data.min_sequence;
+            addr = (sequence_home_data.shd[current_sequence]);
+            joints_in_sequence = addr.joints_in_sequence; //count of all joints in sequence
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing_sequence(%d) use first HOME_SEQUENCE_DO_ONE_JOINT joints_in_sequence = %d, new current_sequence = %d\n",current_sequence,joints_in_sequence);
         }
-        else if (joints_in_sequence==0)
+        
+        if (joints_in_sequence==0)
         {
             rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_DO_ONE_JOINT joints_in_sequence = 0\n",current_sequence);
             update_sequence_home_data();
             //sequence_state = HOME_SEQUENCE_IDLE;
+             addr = (sequence_home_data.shd[current_sequence]);
+            joints_in_sequence = addr.joints_in_sequence; //count of all joints in sequence
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing_sequence(%d) after update HOME_SEQUENCE_DO_ONE_JOINT joints_in_sequence = %d \n",current_sequence,joints_in_sequence);
+        
+
             break;
         }
         else
