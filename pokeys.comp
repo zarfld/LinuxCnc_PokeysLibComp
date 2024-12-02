@@ -599,7 +599,7 @@ uint8_t PulseEngineState = 0;
 bool Pins_DigitalValueSet_ignore[55];
 
 bool Homing_active = false;
-
+bool Homing_done[8] = {false,false,false,false,false,false,false,false};
 
 int i=0;
 
@@ -630,6 +630,8 @@ typedef enum
     PK_PEAxisCommand_axHOMINGSTART = 1,  // Start Homing procedure
     PK_PEAxisCommand_axHOMINGCANCEL = 2, // Cancel Homing procedure
 } pokeys_home_command_t;
+
+pokeys_home_command_t old_PEv2_AxesCommand[8] = {0};
 /*
 sPoKeysEasySensor EasySensors[16];
 hal_pin_u32_t EasySensors_sensorValue[16];
@@ -1583,14 +1585,14 @@ void user_mainloop(void)
 					if(HAL_Machine_On==0)
 					{
 						PEv2_PulseEngineStateSetup = PK_PEState_peSTOPPED;
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_PulseEngineStateSetup = PK_PEState_peSTOPPED\n", __FILE__, __FUNCTION__);
+						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_PulseEngineStateSetup = PK_PEState_peSTOPPED\n", __FILE__, __FUNCTION__);
 					}
 					else if (PulseEngineState == PK_PEState_peSTOPPED)
 					{
 						PEv2_PulseEngineStateSetup = PK_PEState_peRUNNING;
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_PulseEngineStateSetup = PK_PEState_peRUNNING\n", __FILE__, __FUNCTION__);
+						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_PulseEngineStateSetup = PK_PEState_peRUNNING\n", __FILE__, __FUNCTION__);
 					}
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PulseEngineState = %s\n", __FILE__, __FUNCTION__, PulseEngineState);
+					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PulseEngineState = %d\n", __FILE__, __FUNCTION__, PulseEngineState);
 					switch (PulseEngineState)
 					{
 						case PK_PEState_peSTOPPED:           // Pulse engine is stopped
@@ -1620,12 +1622,9 @@ void user_mainloop(void)
 							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEState_peHOME\n", __FILE__, __FUNCTION__);
 							if (Homing_active)
 							{
-								if (PK_PEv2_HomingFinish(dev) == PK_OK)
-								{
-									rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_HomingFinish(dev) = PK_OK\n", __FILE__, __FUNCTION__);
-									Homing_active = false;
-								}
-
+								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_HomingFinish(dev) \n", __FILE__, __FUNCTION__);
+								PK_PEv2_HomingFinish(dev);
+								Homing_active = false;
 							}
 							break;
 						case PK_PEState_peHOMING:          // Axes homing is in progress
@@ -1701,7 +1700,7 @@ void user_mainloop(void)
 					float PosFb[8];
 					for (i = 0; i < PEv2_nrOfAxes; i++)
 					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_Axis[%d] \n", __FILE__, __FUNCTION__, i);
+						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] \n", __FILE__, __FUNCTION__, i);
 						IsHoming[i] = false;
 						InPosition[i] = false;
 
@@ -1717,7 +1716,7 @@ void user_mainloop(void)
 						
 						PEv2_digin_Error_in(i) = Get_BitOfByte(bm_ErrorStatus, i);
 						PEv2_digin_Error_in_not(i) = !Get_BitOfByte(bm_ErrorStatus, i);
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: intAxesState = %s\n", __FILE__, __FUNCTION__, intAxesState);
+						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: intAxesState = %d\n", __FILE__, __FUNCTION__, intAxesState);
 						switch (intAxesState)
 						{
 						case PK_PEAxisState_axSTOPPED:        // Axis is stopped
@@ -1983,7 +1982,7 @@ void user_mainloop(void)
 						*/
 
 
-						if ((intAxesState ==PK_PEAxisState_axSTOPPED || intAxesState ==PK_PEAxisState_axREADY || intAxesState==PK_PEAxisState_axHOME) && (PEv2_AxesCommand(i)==PK_PEAxisState_axHOMINGSTART || PEv2_AxesCommand(i)== PK_PEAxisCommand_axHOMINGSTART))
+						if ((intAxesState ==PK_PEAxisState_axSTOPPED || intAxesState ==PK_PEAxisState_axREADY || intAxesState==PK_PEAxisState_axHOME) && old_PEv2_AxesCommand[i] != PEv2_AxesCommand(i) && (PEv2_AxesCommand(i)==PK_PEAxisState_axHOMINGSTART || PEv2_AxesCommand(i)== PK_PEAxisCommand_axHOMINGSTART))
 						{
 							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingStart\n", __FILE__, __FUNCTION__);
 							//dev->PEv2.PulseEngineStateSetup = PK_PEAxisState_axHOMINGSTART;
@@ -2001,7 +2000,7 @@ void user_mainloop(void)
 								
 									if (PEv2_home_sequence(seq) == PEv2_home_sequence(i))
 									{
-									//	rtapi_print_msg(RTAPI_MSG_ERR, "PK_HOMING: ensure that all axes (%d) with same Sequence(%d) start homing at the same time \n", seq, PEv2_home_sequence(i));
+									//	rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensure that all axes (%d) with same Sequence(%d) start homing at the same time \n", seq, PEv2_home_sequence(i));
 					
 										HomingStartMaskSetup |= (1 << seq); // Home axis seq only (bit seq)
 										j_count++;
@@ -2022,13 +2021,13 @@ void user_mainloop(void)
 
 
 						}
-						else if(PEv2_AxesCommand(i)==PK_PEAxisCommand_axHOMINGCANCEL && (intAxesState == PK_PEAxisState_axHOMINGSTART || intAxesState == PK_PEAxisState_axHOMINGSEARCH || intAxesState == PK_PEAxisState_axHOMINGBACK))
+						else if(PEv2_AxesCommand(i)==PK_PEAxisCommand_axHOMINGCANCEL && old_PEv2_AxesCommand[i] != PEv2_AxesCommand(i) && (intAxesState == PK_PEAxisState_axHOMINGSTART || intAxesState == PK_PEAxisState_axHOMINGSEARCH || intAxesState == PK_PEAxisState_axHOMINGBACK))
 						{
 							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingCancel\n", __FILE__, __FUNCTION__);
-							dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+						//	dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
 
 						}
-						
+						old_PEv2_AxesCommand[i] = PEv2_AxesCommand(i);
 
 						tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask,i,PEv2_digout_AxisEnabled_out(i));
 						PEv2_LimitOverrideSetup = Set_BitOfByte(PEv2_LimitOverrideSetup ,i,PEv2_digout_LimitOverride_out(i));
@@ -2190,7 +2189,7 @@ void user_mainloop(void)
 											PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
 											PEv2_deb_axxisout(i) = 1320 + i;
 											last_joint_pos_cmd[i]=PEv2_joint_pos_cmd(i);
-											if (dev->PEv2.AxesState[i]=PK_PEState_peRUNNING)
+											if (dev->PEv2.AxesState[i]==PK_PEAxisState_axREADY || dev->PEv2.AxesState[i]==PK_PEAxisState_axSTOPPED)
 											{
 												//PK_PEv2_PulseEngineMove(dev);
 												doMove = true;
@@ -2264,7 +2263,7 @@ void user_mainloop(void)
 											PEv2_ReferencePositionSpeed(i) = (int)ReferenceSpeed;
 											PEv2_deb_axxisout(i) = 1420 + i;
 											last_joint_vel_cmd[i]=PEv2_joint_vel_cmd(i);
-											if (dev->PEv2.AxesState[i] = PK_PEState_peRUNNING)
+											if (dev->PEv2.AxesState[i] == PK_PEAxisState_axRUNNING || dev->PEv2.AxesState[i] == PK_PEAxisState_axREADY)
 											{
 
 													doMove = true;
@@ -2431,26 +2430,27 @@ void user_mainloop(void)
 					//dev->PEv2.AxisEnabledMask = PEv2_AxisEnabledMask;
 					doStateSet=true;
 				}
-				else if (rtc_loopcount==0 && Homing_active!=true)
+			/*	else if (rtc_loopcount==0 && Homing_active!=true)
 				{
-					rtapi_print_msg(RTAPI_MSG_ERR, "PK_PEv2: PEv2_PulseEngineStateSetup(rtc_loopcount) (%d) \n", PEv2_PulseEngineStateSetup);
-					dev->PEv2.PulseEngineStateSetup = PEv2_PulseEngineStateSetup;
+					rtapi_print_msg(RTAPI_MSG_DBG, "PK_PEv2: PEv2_PulseEngineStateSetup(rtc_loopcount) (%d) \n", PEv2_PulseEngineStateSetup);
+				//	dev->PEv2.PulseEngineStateSetup = PEv2_PulseEngineStateSetup;
 					//dev->PEv2.AxisEnabledMask = PEv2_AxisEnabledMask;
-					doStateSet=true;
-				}
+				//	doStateSet=true;
+				}*/
 
 				if (PEv2_LimitOverrideSetup != dev->PEv2.LimitOverrideSetup)
 				{
-					rtapi_print_msg(RTAPI_MSG_ERR, "PK_PEv2: PEv2_LimitOverrideSetup (%d) \n", PEv2_LimitOverrideSetup);
+					rtapi_print_msg(RTAPI_MSG_DBG, "PK_PEv2: PEv2_LimitOverrideSetup (%d) \n", PEv2_LimitOverrideSetup);
 					dev->PEv2.LimitOverrideSetup = PEv2_LimitOverrideSetup;
 					doStateSet=true;
 				}
 
 				if (doStateSet == true)
 				{
+					rtapi_print_msg(RTAPI_MSG_ERR, "PK_PEv2: PEv2_PulseEngineStateSet (%d) \n", dev->PEv2.PulseEngineStateSetup );
+						
 					if (PK_PEv2_PulseEngineStateSet(dev) != PK_OK)
 					{
-						rtapi_print_msg(RTAPI_MSG_ERR, "PK_PEv2: PEv2_PulseEngineStateSet (%d) \n", PEv2_PulseEngineStateSetup);
 						usleep(sleepdur);
 						if (PK_PEv2_PulseEngineStateSet(dev) != PK_OK)
 						{
@@ -2462,7 +2462,7 @@ void user_mainloop(void)
 				if (doMove==true)
 					{
 						PEv2_deb_out = 4000;
-						rtapi_print_msg(RTAPI_MSG_ERR, "PK_PEv2: PEv2_PulseEngineMove  \n" );
+						rtapi_print_msg(RTAPI_MSG_DBG, "PK_PEv2: PEv2_PulseEngineMove  \n" );
 						if (PK_PEv2_PulseEngineMove(dev)!=PK_OK)
 						{
 							PEv2_deb_out = 4200;
@@ -2970,7 +2970,7 @@ void user_mainloop(void)
 
 					if ((AnalogIOGet = true) && (AinNr >=0) && (AinNr < AnalogPinCount))
 					{
-						if (adcin_scale(AinNr) = 0)
+						if (adcin_scale(AinNr) == 0)
 						{
 							adcin_scale(AinNr) = 1;
 						}
