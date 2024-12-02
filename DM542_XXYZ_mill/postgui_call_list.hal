@@ -78,7 +78,7 @@ setp pokeys.0.PEv2.7.AxisEnabledMasked [POKEYS]PEv2_AxisEnabledMasked_7
 setp pokeys.0.PEv2.0.AxesSwitchConfig  [POKEYS]PEv2_AxesSwitchConfig_0
 
 setp pokeys.0.PEv2.0.digin.LimitN.Enabled [POKEYS]PEv2_EnableLimitN_0
-setp pokeys.0.PEv2.0.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitN_0
+setp pokeys.0.PEv2.0.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitP_0
 setp pokeys.0.PEv2.0.digin.Home.Enabled [POKEYS]PEv2_EnableHome_0
 setp pokeys.0.PEv2.0.digin.LimitN.invert [POKEYS]PEv2_InvertLimitN_0
 setp pokeys.0.PEv2.0.digin.LimitP.invert [POKEYS]PEv2_InvertLimitP_0
@@ -94,7 +94,7 @@ setp pokeys.0.PEv2.0.digout.AxisEnable.Pin  [POKEYS]PEv2_AxisEnableOutputPins_0
 setp pokeys.0.PEv2.0.digout.AxisEnable.invert  [POKEYS]PEv2_InvertAxisEnable_0
 
 setp pokeys.0.PEv2.1.digin.LimitN.Enabled [POKEYS]PEv2_EnableLimitN_1
-setp pokeys.0.PEv2.1.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitN_1
+setp pokeys.0.PEv2.1.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitP_1
 setp pokeys.0.PEv2.1.digin.Home.Enabled [POKEYS]PEv2_EnableHome_1
 setp pokeys.0.PEv2.1.digin.LimitN.invert [POKEYS]PEv2_InvertLimitN_1
 setp pokeys.0.PEv2.1.digin.LimitP.invert [POKEYS]PEv2_InvertLimitP_1
@@ -111,7 +111,7 @@ setp pokeys.0.PEv2.1.digout.AxisEnable.Pin  [POKEYS]PEv2_AxisEnableOutputPins_1
 setp pokeys.0.PEv2.1.digout.AxisEnable.invert  [POKEYS]PEv2_InvertAxisEnable_1
 
 setp pokeys.0.PEv2.2.digin.LimitN.Enabled [POKEYS]PEv2_EnableLimitN_2
-setp pokeys.0.PEv2.2.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitN_2
+setp pokeys.0.PEv2.2.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitP_2
 setp pokeys.0.PEv2.2.digin.Home.Enabled [POKEYS]PEv2_EnableHome_2
 setp pokeys.0.PEv2.2.digin.LimitN.invert [POKEYS]PEv2_InvertLimitN_2
 setp pokeys.0.PEv2.2.digin.LimitP.invert [POKEYS]PEv2_InvertLimitP_2
@@ -128,7 +128,7 @@ setp pokeys.0.PEv2.2.digout.AxisEnable.Pin  [POKEYS]PEv2_AxisEnableOutputPins_2
 setp pokeys.0.PEv2.2.digout.AxisEnable.invert  [POKEYS]PEv2_InvertAxisEnable_2
 
 setp pokeys.0.PEv2.3.digin.LimitN.Enabled [POKEYS]PEv2_EnableLimitN_3
-setp pokeys.0.PEv2.3.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitN_3
+setp pokeys.0.PEv2.3.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitP_3
 setp pokeys.0.PEv2.3.digin.Home.Enabled [POKEYS]PEv2_EnableHome_3
 setp pokeys.0.PEv2.3.digin.LimitN.invert [POKEYS]PEv2_InvertLimitN_3
 setp pokeys.0.PEv2.3.digin.LimitP.invert [POKEYS]PEv2_InvertLimitP_3
@@ -145,7 +145,7 @@ setp pokeys.0.PEv2.3.digout.AxisEnable.Pin  [POKEYS]PEv2_AxisEnableOutputPins_3
 setp pokeys.0.PEv2.3.digout.AxisEnable.invert  [POKEYS]PEv2_InvertAxisEnable_3
 
 setp pokeys.0.PEv2.4.digin.LimitN.Enabled [POKEYS]PEv2_EnableLimitN_4
-setp pokeys.0.PEv2.4.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitN_4
+setp pokeys.0.PEv2.4.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitP_4
 setp pokeys.0.PEv2.4.digin.Home.Enabled [POKEYS]PEv2_EnableHome_4
 setp pokeys.0.PEv2.4.digin.LimitN.invert [POKEYS]PEv2_InvertLimitN_4
 setp pokeys.0.PEv2.4.digin.LimitP.invert [POKEYS]PEv2_InvertLimitP_4
@@ -162,7 +162,7 @@ setp pokeys.0.PEv2.4.digout.AxisEnable.Pin  [POKEYS]PEv2_AxisEnableOutputPins_4
 setp pokeys.0.PEv2.4.digout.AxisEnable.invert  [POKEYS]PEv2_InvertAxisEnable_4
 
 setp pokeys.0.PEv2.5.digin.LimitN.Enabled [POKEYS]PEv2_EnableLimitN_5
-setp pokeys.0.PEv2.5.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitN_5
+setp pokeys.0.PEv2.5.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitP_5
 setp pokeys.0.PEv2.5.digin.Home.Enabled [POKEYS]PEv2_EnableHome_5
 setp pokeys.0.PEv2.5.digin.LimitN.invert [POKEYS]PEv2_InvertLimitN_5
 setp pokeys.0.PEv2.5.digin.LimitP.invert [POKEYS]PEv2_InvertLimitP_5
@@ -179,7 +179,7 @@ setp pokeys.0.PEv2.5.digout.AxisEnable.Pin  [POKEYS]PEv2_AxisEnableOutputPins_5
 setp pokeys.0.PEv2.5.digout.AxisEnable.invert  [POKEYS]PEv2_InvertAxisEnable_5
 
 setp pokeys.0.PEv2.6.digin.LimitN.Enabled [POKEYS]PEv2_EnableLimitN_6
-setp pokeys.0.PEv2.6.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitN_6
+setp pokeys.0.PEv2.6.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitP_6
 setp pokeys.0.PEv2.6.digin.Home.Enabled [POKEYS]PEv2_EnableHome_6
 setp pokeys.0.PEv2.6.digin.LimitN.invert [POKEYS]PEv2_InvertLimitN_6
 setp pokeys.0.PEv2.6.digin.LimitP.invert [POKEYS]PEv2_InvertLimitP_6
@@ -196,7 +196,7 @@ setp pokeys.0.PEv2.6.digout.AxisEnable.Pin  [POKEYS]PEv2_AxisEnableOutputPins_6
 setp pokeys.0.PEv2.6.digout.AxisEnable.invert  [POKEYS]PEv2_InvertAxisEnable_6
 
 setp pokeys.0.PEv2.7.digin.LimitN.Enabled [POKEYS]PEv2_EnableLimitN_7
-setp pokeys.0.PEv2.7.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitN_7
+setp pokeys.0.PEv2.7.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitP_7
 setp pokeys.0.PEv2.7.digin.Home.Enabled [POKEYS]PEv2_EnableHome_7
 setp pokeys.0.PEv2.7.digin.LimitN.invert [POKEYS]PEv2_InvertLimitN_7
 setp pokeys.0.PEv2.7.digin.LimitP.invert [POKEYS]PEv2_InvertLimitP_7
