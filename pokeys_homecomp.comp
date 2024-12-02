@@ -595,7 +595,7 @@ static void update_sequence_home_data(void)
         }
     }
     sequence_count = max_sequence - min_sequence + 1;
-    rtapi_print_msg(RTAPI_MSG_ERR,"HOMING: update_sequence_home_data(min_sequence:%d  to max_sequence:%d)\n", min_sequence, max_sequence);
+    rtapi_print_msg(RTAPI_MSG_DBG,"HOMING: update_sequence_home_data(min_sequence:%d  to max_sequence:%d)\n", min_sequence, max_sequence);
     sequence_home_data.min_sequence = min_sequence;
     sequence_home_data.max_sequence = max_sequence;
     sequence_home_data.sequence_count = sequence_count;
@@ -1498,7 +1498,7 @@ void set_joint_homing_params(int jno,
                              int home_sequence,
                              bool volatile_home)
 {
-    rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: set_joint_homing_params(%d) offset:%f home:%f home_final_vel:%f home_search_vel:%f home_latch_vel:%f home_flags:%d home_sequence:%d volatile_home:%d\n", jno, offset, home, home_final_vel, home_search_vel, home_latch_vel, home_flags, home_sequence, volatile_home);
+    rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: set_joint_homing_params(%d) offset:%f home:%f home_final_vel:%f home_search_vel:%f home_latch_vel:%f home_flags:%d home_sequence:%d volatile_home:%d\n", jno, offset, home, home_final_vel, home_search_vel, home_latch_vel, home_flags, home_sequence, volatile_home);
     H[jno].offset = offset;
     H[jno].home = home;
     H[jno].home_final_vel = home_final_vel;
@@ -1516,7 +1516,7 @@ void update_joint_homing_params(int jno,
                                 double home,
                                 int home_sequence)
 {
-    rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: update_joint_homing_params(%d) offset:%f home:%f home_sequence:%d\n", jno, offset, home, home_sequence);
+    rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: update_joint_homing_params(%d) offset:%f home:%f home_sequence:%d\n", jno, offset, home, home_sequence);
     H[jno].offset = offset;
     H[jno].home = home;
     H[jno].home_sequence = home_sequence;
