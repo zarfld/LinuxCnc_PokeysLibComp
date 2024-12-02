@@ -4176,42 +4176,45 @@ void user_mainloop(void)
 								param rw bit PEv2.#.HomeAlg.OutHome.ReducedSpeed[8] "";
 							 */
 							int HomingAlgorithm = 0;
-							if (PEv2_HomeAlg_OnHome_Stop(i) == true)
+							if (PEv2_HomeAlg_OnHome_Stop(i) != 0)
 							{
-								HomingAlgorithm &= PK_PEv2Homing_OnHomeStop;
+								HomingAlgorithm |= PK_PEv2Homing_OnHomeStop;
 							}
-							if(PEv2_HomeAlg_OnHome_ArmEncoder(i) == true)
+							if(PEv2_HomeAlg_OnHome_ArmEncoder(i) != 0)
 							{
-								HomingAlgorithm &= PK_PEv2Homing_OnHomeArmEncoder;
+								HomingAlgorithm |= PK_PEv2Homing_OnHomeArmEncoder;
 							}
-							if(PEv2_HomeAlg_OnHome_RevDirection(i) == true)
+							if(PEv2_HomeAlg_OnHome_RevDirection(i) != 0)
 							{
-								HomingAlgorithm &= PK_PEv2Homing_OnHomeRevDirection;
+								HomingAlgorithm |= PK_PEv2Homing_OnHomeReverseDirection;
 							}
-							if(PEv2_HomeAlg_OnHome_ReducedSpeed(i) == true)
+							if(PEv2_HomeAlg_OnHome_ReducedSpeed(i)!= 0)
 							{
-								HomingAlgorithm &= PK_PEv2Homing_OnHomeReducedSpeed;
+								HomingAlgorithm |= PK_PEv2Homing_OnHomeReducedSpeed;
 							}
-							if(PEv2_HomeAlg_OutHome_Stop(i) == true)
+							if(PEv2_HomeAlg_OutHome_Stop(i) != 0)
 							{
-								HomingAlgorithm &= PK_PEv2Homing_OutHomeStop;
+								HomingAlgorithm |= PK_PEv2Homing_OutHomeStop;
 							}
-							if(PEv2_HomeAlg_OutHome_ArmEncoder(i) == true)
+							if(PEv2_HomeAlg_OutHome_ArmEncoder(i) != 0)
 							{
-								HomingAlgorithm &= PK_PEv2Homing_OutHomeArmEncoder;
+								HomingAlgorithm |= PK_PEv2Homing_OutHomeArmEncoder;
 							}
-							if(PEv2_HomeAlg_OutHome_RevDirection(i) == true)
+							if(PEv2_HomeAlg_OutHome_RevDirection(i) != 0)
 							{
-								HomingAlgorithm &= PK_PEv2Homing_OutHomeRevDirection;
+								HomingAlgorithm |= PK_PEv2Homing_OutHomeReverseDirection;
 							}
-							if(PEv2_HomeAlg_OutHome_ReducedSpeed(i) == true)
+							if(PEv2_HomeAlg_OutHome_ReducedSpeed(i) != 0)
 							{
-								HomingAlgorithm &= PK_PEv2Homing_OutHomeReducedSpeed;
+								HomingAlgorithm |= PK_PEv2Homing_OutHomeReducedSpeed;
 							}
-
-							 if (dev->PEv2.HomingAlgorithm[i] != PEv2_HomingAlgorithm(i))
+							if(PEv2_HomingAlgorithm(i) != HomingAlgorithm)
+							{
+								PEv2_HomingAlgorithm(i) = HomingAlgorithm;
+							}
+							 if (dev->PEv2.HomingAlgorithm[i] != HomingAlgorithm)
 							 {
-								 dev->PEv2.HomingAlgorithm[i] = PEv2_HomingAlgorithm(i);
+								 dev->PEv2.HomingAlgorithm[i] = HomingAlgorithm;
 								 doAxisConfig = true;
 							 }
 							 
