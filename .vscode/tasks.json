@@ -84,7 +84,7 @@
         {
             "label": "Load INI Configuration",
             "type": "shell",
-            "command": "linuxcnc -v -d -r ${file}",
+            "command": "linuxcnc -v -d ${file}",
             "group": {
                 "kind": "none",
                 "isDefault": false
