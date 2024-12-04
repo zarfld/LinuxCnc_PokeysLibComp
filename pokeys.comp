@@ -675,7 +675,7 @@ unsigned int  sleepdur2 = 1000;
 float StepScale[8];
 
 bool DoPWM = false;
-bool DoEncoders = false;
+bool DoEncoders = true;
 
 PK_MatrixKB_Parameters MatrixKB;
 
