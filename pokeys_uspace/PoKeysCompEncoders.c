@@ -102,7 +102,7 @@ bool EncoderValuesGet = false;
 
 bool DoEncoders = true;
 
-public void PKEncoder_UpdateValues(sPoKeysDevice* dev)
+public void PKEncoder_Update(sPoKeysDevice* dev)
 {
 
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iBasicEncoderCount = %d\n", __FILE__, __FUNCTION__, dev->info.iBasicEncoderCount);
@@ -192,3 +192,16 @@ public void PKEncoder_UpdateValues(sPoKeysDevice* dev)
 			}
 
 }
+
+int PKEncoder_init(int id,
+                dsPoKeysDevice * device)
+{
+    dev = device;
+    return makepins(id, device);
+}
+
+EXPORT_SYMBOL(PKEncoder_init);
+EXPORT_SYMBOL(PKEncoder_Update);
+EXPORT_SYMBOL(write_PKEncoder_out_pins);
+EXPORT_SYMBOL(read_PKEncoder_in_pins);
+EXPORT_SYMBOL(update_PKEncoder_params);
