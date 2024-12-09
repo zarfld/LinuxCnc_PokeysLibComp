@@ -5,7 +5,7 @@ include /usr/share/linuxcnc/Makefile.modinc
 COMPONENTS = pokeys
 
 # Extra compile and link arguments
-EXTRA_COMPILE_ARGS = -v -I$(CURDIR)/pokeys_uspace
+EXTRA_COMPILE_ARGS = -I$(CURDIR)/pokeys_uspace
 EXTRA_LINK_ARGS = -lPoKeys
 
 # Define the source files

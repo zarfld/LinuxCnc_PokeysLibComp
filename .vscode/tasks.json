@@ -94,7 +94,7 @@
             },
             "problemMatcher": [],
             "detail": "Clean the build artifacts for Pokeys userspace component."
-        }        
+        },        
         {//copy header pokeys_uspace/PoKeysComp.h to /usr/include
             "label": "Copy PoKeysComp.h",
             "type": "shell",
@@ -177,7 +177,7 @@
                 "isDefault": false
             },
             "dependsOn": [
-                "Compile USpace/Pokeys Component",
+                "Build Pokeys Userspace Component",
                 "Compile Pokeys Home Component",
                 "Compile kbd48CNC",
                 "Compile start_delay_5000"
