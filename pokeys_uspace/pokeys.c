@@ -649,6 +649,8 @@ static int export(char *prefix, long extra_arg)
 						 "%s.deb.out", prefix);
 	if (r != 0)
 		return r;
+
+	//PulseEngine Pins
 	r = hal_pin_s32_newf(HAL_OUT, &(inst->PEv2_deb_out), comp_id,
 						 "%s.PEv2.deb.out", prefix);
 	if (r != 0)
@@ -663,91 +665,72 @@ static int export(char *prefix, long extra_arg)
 							 "%s.PEv2.%01d.deb.axxisout", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PEv2_deb_ishoming[j]), comp_id,
 							 "%s.PEv2.%01d.deb.ishoming", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PEv2_deb_inposition[j]), comp_id,
 							 "%s.PEv2.%01d.deb.inposition", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PEv2_deb_PosMode[j]), comp_id,
 							 "%s.PEv2.%01d.deb.PosMode", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PEv2_deb_PosModeAct[j]), comp_id,
 							 "%s.PEv2.%01d.deb.PosModeAct", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_pin_s32_newf(HAL_OUT, &(inst->PEv2_deb_velmode_count[j]), comp_id,
 							 "%s.PEv2.%01d.deb.velmode-count", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_pin_s32_newf(HAL_OUT, &(inst->PEv2_deb_posmode_count[j]), comp_id,
 							 "%s.PEv2.%01d.deb.posmode-count", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PEv2_deb_doMove[j]), comp_id,
 							 "%s.PEv2.%01d.deb.doMove", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_pin_float_newf(HAL_OUT, &(inst->PEv2_deb_RefSpeed[j]), comp_id,
 							   "%s.PEv2.%01d.deb.RefSpeed", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_pin_float_newf(HAL_OUT, &(inst->PEv2_deb_RefPos[j]), comp_id,
 							   "%s.PEv2.%01d.deb.RefPos", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_pin_float_newf(HAL_OUT, &(inst->PEv2_deb_RefPosSpeed[j]), comp_id,
 							   "%s.PEv2.%01d.deb.RefPosSpeed", prefix, j);
 		if (r != 0)
 			return r;
 	}
+
+	//AnalogOut Pins
 	for (j = 0; j < (6); j++)
 	{
 		r = hal_pin_u32_newf(HAL_OUT, &(inst->adcout_deb_out[j]), comp_id,
 							 "%s.adcout.%01d.deb.out", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (6); j++)
-	{
+
 		r = hal_pin_u32_newf(HAL_OUT, &(inst->adcout_deb_setval[j]), comp_id,
 							 "%s.adcout.%01d.deb.setval", prefix, j);
 		if (r != 0)
 			return r;
 	}
+
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->adcout_deb_outv), comp_id,
 						 "%s.adcout.deb.outv", prefix);
 	if (r != 0)
@@ -932,174 +915,131 @@ static int export(char *prefix, long extra_arg)
 						 "%s.info.EasySensors", prefix);
 	if (r != 0)
 		return r;
+
+	//PoExtBus Pins
 	for (j = 0; j < (10); j++)
 	{
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_0_in[j]), comp_id,
 							 "%s.PoExtBus.%01d.digin.0.in", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_1_in[j]), comp_id,
+
+				r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_1_in[j]), comp_id,
 							 "%s.PoExtBus.%01d.digin.1.in", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_2_in[j]), comp_id,
 							 "%s.PoExtBus.%01d.digin.2.in", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_3_in[j]), comp_id,
 							 "%s.PoExtBus.%01d.digin.3.in", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_4_in[j]), comp_id,
 							 "%s.PoExtBus.%01d.digin.4.in", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_5_in[j]), comp_id,
 							 "%s.PoExtBus.%01d.digin.5.in", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_6_in[j]), comp_id,
 							 "%s.PoExtBus.%01d.digin.6.in", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_7_in[j]), comp_id,
 							 "%s.PoExtBus.%01d.digin.7.in", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_0_in_not[j]), comp_id,
 							 "%s.PoExtBus.%01d.digin.0.in-not", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_1_in_not[j]), comp_id,
 							 "%s.PoExtBus.%01d.digin.1.in-not", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_2_in_not[j]), comp_id,
 							 "%s.PoExtBus.%01d.digin.2.in-not", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_3_in_not[j]), comp_id,
 							 "%s.PoExtBus.%01d.digin.3.in-not", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_4_in_not[j]), comp_id,
 							 "%s.PoExtBus.%01d.digin.4.in-not", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_5_in_not[j]), comp_id,
 							 "%s.PoExtBus.%01d.digin.5.in-not", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_6_in_not[j]), comp_id,
 							 "%s.PoExtBus.%01d.digin.6.in-not", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_7_in_not[j]), comp_id,
 							 "%s.PoExtBus.%01d.digin.7.in-not", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_IN, &(inst->PoExtBus_digout_0_out[j]), comp_id,
 							 "%s.PoExtBus.%01d.digout.0.out", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_IN, &(inst->PoExtBus_digout_1_out[j]), comp_id,
 							 "%s.PoExtBus.%01d.digout.1.out", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_IN, &(inst->PoExtBus_digout_2_out[j]), comp_id,
 							 "%s.PoExtBus.%01d.digout.2.out", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_IN, &(inst->PoExtBus_digout_3_out[j]), comp_id,
 							 "%s.PoExtBus.%01d.digout.3.out", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_IN, &(inst->PoExtBus_digout_4_out[j]), comp_id,
 							 "%s.PoExtBus.%01d.digout.4.out", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_IN, &(inst->PoExtBus_digout_5_out[j]), comp_id,
 							 "%s.PoExtBus.%01d.digout.5.out", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_IN, &(inst->PoExtBus_digout_6_out[j]), comp_id,
 							 "%s.PoExtBus.%01d.digout.6.out", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_IN, &(inst->PoExtBus_digout_7_out[j]), comp_id,
 							 "%s.PoExtBus.%01d.digout.7.out", prefix, j);
 		if (r != 0)
 			return r;
 	}
+
+
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->PEv2_nrOfAxes), comp_id,
 						 "%s.PEv2.nrOfAxes", prefix);
 	if (r != 0)
@@ -1126,42 +1066,33 @@ static int export(char *prefix, long extra_arg)
 							 "%s.PEv2.%01d.AxesState", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_pin_u32_newf(HAL_IN, &(inst->PEv2_AxesCommand[j]), comp_id,
 							 "%s.PEv2.%01d.AxesCommand", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_pin_u32_newf(HAL_OUT, &(inst->PEv2_AxesConfig[j]), comp_id,
 							 "%s.PEv2.%01d.AxesConfig", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_pin_u32_newf(HAL_IO, &(inst->PEv2_SoftLimitMaximum[j]), comp_id,
 							 "%s.PEv2.%01d.SoftLimitMaximum", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_pin_u32_newf(HAL_IO, &(inst->PEv2_SoftLimitMinimum[j]), comp_id,
 							 "%s.PEv2.%01d.SoftLimitMinimum", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_pin_u32_newf(HAL_IO, &(inst->PEv2_HomingSpeed[j]), comp_id,
 							 "%s.PEv2.%01d.HomingSpeed", prefix, j);
 		if (r != 0)
 			return r;
 	}
+
 	for (j = 0; j < (8); j++)
 	{
 		r = hal_pin_u32_newf(HAL_IO, &(inst->PEv2_HomingReturnSpeed[j]), comp_id,
