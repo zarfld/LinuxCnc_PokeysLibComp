@@ -64,6 +64,45 @@ typedef struct
 
 static all_encoder_data_t *encoder_data = 0;
 
+
+int PKEncoder_export(char *prefix, long extra_arg, int id, int njoints)
+{
+	int r = 0;
+	int j = 0;
+	one_encoder_data_t *addr;
+
+	for (j = 0; j < (njoints); j++)
+	{
+		addr = &(encoder_data->encoder[j]);
+
+		r = hal_pin_s32_newf(HAL_OUT, &(addr->count), id,
+							 "%s.encoder.%01d.count", prefix, j);
+		if (r != 0)
+			return r;
+		r = hal_pin_float_newf(HAL_OUT, &(addr->position[j]), id,
+							   "%s.encoder.%01d.position", prefix, j);
+		if (r != 0)
+			return r;
+
+		r = hal_pin_float_newf(HAL_OUT, &(addr->velocity[j]), id,
+							   "%s.encoder.%01d.velocity", prefix, j);
+		if (r != 0)
+			return r;
+
+		r = hal_pin_bit_newf(HAL_IN, &(addr->reset[j]), id,
+							 "%s.encoder.%01d.reset", prefix, j);
+		if (r != 0)
+			return r;
+
+		r = hal_pin_bit_newf(HAL_IN, &(addr->index_enable[j]), id,
+							 "%s.encoder.%01d.index-enable", prefix, j);
+		if (r != 0)
+			return r;
+	}
+
+	return r;
+}
+
 static int makepins(int id, int njoints)
 {
     // home_pins needed to work with configs expecting them:

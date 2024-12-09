@@ -1725,55 +1725,54 @@ static int export(char *prefix, long extra_arg)
 		if (r != 0)
 			return r;
 	}
-	for (j = 0; j < (29); j++)
+
+
+
+	// Encoder pins
+		r = PKEncoder_export(prefix, extra_arg,comp_id,29);
+		if (r != 0)
+			return r;
+/*	for (j = 0; j < (29); j++)
 	{
 		r = hal_pin_s32_newf(HAL_OUT, &(inst->encoder_count[j]), comp_id,
 							 "%s.encoder.%01d.count", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (29); j++)
-	{
 		r = hal_pin_float_newf(HAL_OUT, &(inst->encoder_position[j]), comp_id,
 							   "%s.encoder.%01d.position", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (29); j++)
-	{
+
 		r = hal_pin_float_newf(HAL_OUT, &(inst->encoder_velocity[j]), comp_id,
 							   "%s.encoder.%01d.velocity", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (29); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_IN, &(inst->encoder_reset[j]), comp_id,
 							 "%s.encoder.%01d.reset", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (29); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_IN, &(inst->encoder_index_enable[j]), comp_id,
 							 "%s.encoder.%01d.index-enable", prefix, j);
 		if (r != 0)
 			return r;
 	}
+*/
+
 	for (j = 0; j < (6); j++)
 	{
 		r = hal_pin_float_newf(HAL_IN, &(inst->adcout_value[j]), comp_id,
 							   "%s.adcout.%01d.value", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (6); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_IN, &(inst->adcout_enable[j]), comp_id,
 							 "%s.adcout.%01d.enable", prefix, j);
 		if (r != 0)
 			return r;
 	}
+
 	r = hal_pin_bit_newf(HAL_OUT, &(inst->kbd48CNC_available), comp_id,
 						 "%s.kbd48CNC.available", prefix);
 	if (r != 0)
@@ -6742,7 +6741,7 @@ EXTRA_SETUP()
 		}
 	}
 
-	PKEncoder_init(comp_id, dev);
+//	PKEncoder_init(comp_id, dev);
 	rtapi_print("");
 	// devSerial = extra_arg;
 	return 0;
