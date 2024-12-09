@@ -58,7 +58,7 @@ typedef struct
 typedef struct
 {
     one_encoder_data_t encoder[29];
-	hal_s32_t *deb_out; // pin out s32 deb.out;
+	hal_s32_t *encoder_deb_out; // pin out s32 deb.out;
 
 } all_encoder_data_t;
 
@@ -78,7 +78,7 @@ static int makepins(int id, int njoints)
     }
 
     retval = 0;
-	retval += hal_pin_s32_newf(HAL_OUT, &(encoder_data->deb_out), id,"encoder.deb.out", jno); // create pin for "pin out s32 encoder.#.count[29]"
+	retval += hal_pin_s32_newf(HAL_OUT, &(encoder_data->encoder_deb_out), id,"encoder.deb.out", jno); // create pin for "pin out s32 encoder.#.count[29]"
 		
     for (jno = 0; jno < njoints; jno++)
     {
@@ -112,26 +112,26 @@ static int makepins(int id, int njoints)
 bool initEncodersDone = 0;
 bool EncoderValuesGet = false; 
 
-bool DoEncoders = true;
-unsigned int  sleepdur = 1000;
-bool  use_sleepdur1 = true;
-unsigned int  sleepdur1 = 1000;
-unsigned int  sleepdur2 = 1000;
-sPoKeysDevice * dev = NULL;
+//bool DoEncoders = true;
+//unsigned int  sleepdur = 1000;
+//bool  use_sleepdur1 = true;
+//unsigned int  sleepdur1 = 1000;
+//unsigned int  sleepdur2 = 1000;
+
 
 void PKEncoder_Update(sPoKeysDevice* dev)
 {
 
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iBasicEncoderCount = %d\n", __FILE__, __FUNCTION__, dev->info.iBasicEncoderCount);
-			if (dev->info.iBasicEncoderCount && DoEncoders)
+			if (dev->info.iBasicEncoderCount > 0)
 			{
-				*(encoder_data->deb_out) = 216;
+				*(encoder_data->encoder_deb_out) = 216;
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EncoderValuesGet(dev)\n", __FILE__, __FUNCTION__);
 				if (PK_EncoderValuesGet(dev) == PK_OK)
 				{
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EncoderValuesGet(dev) OK\n", __FILE__, __FUNCTION__);
 					//usleep(sleepdur);
-					*(encoder_data->deb_out) = 217;
+					*(encoder_data->encoder_deb_out) = 217;
 					EncoderValuesGet = true;
 					bool resetEncoders = false;
 
@@ -141,38 +141,38 @@ void PKEncoder_Update(sPoKeysDevice* dev)
 					for (int i = 0; i < dev->info.iBasicEncoderCount; i++)
 					{
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: read encoder %d\n", __FILE__, __FUNCTION__, i);
-						*(encoder_data->deb_out) = 218*100+i;
+						*(encoder_data->encoder_deb_out) = 218*100+i;
 						//encoder_count(i) = dev->Encoders[i].encoderValue;
 						*(encoder_data->encoder[i].count) = dev->Encoders[i].encoderValue;
-						*(encoder_data->deb_out) = 2180;
+						*(encoder_data->encoder_deb_out) = 2180;
 						//encoder_position(i) = dev->Encoders[i].encoderValue * encoder_scale(i);
 						*(encoder_data->encoder[i].position) = dev->Encoders[i].encoderValue * *(encoder_data->encoder[i].scale);
-						*(encoder_data->deb_out) = 2181;
+						*(encoder_data->encoder_deb_out) = 2181;
 						if ((*(encoder_data->encoder[i].reset) != 0) || (initEncodersDone == false))
 						{
-							*(encoder_data->deb_out) = 2182;
+							*(encoder_data->encoder_deb_out) = 2182;
 							dev->Encoders[i].encoderValue = 0;
-							*(encoder_data->deb_out) = 2183;
+							*(encoder_data->encoder_deb_out) = 2183;
 							resetEncoders = true;
-							*(encoder_data->deb_out) = 2184;
+							*(encoder_data->encoder_deb_out) = 2184;
 						}
-						*(encoder_data->deb_out) = 2185;
+						*(encoder_data->encoder_deb_out) = 2185;
 						//usleep(sleepdur);
 					}
 					
 					/*
 					known issue: since update to Bullseye & Lcnc 2.9 it hangs here*/
-					*(encoder_data->deb_out) = 219;
+					*(encoder_data->encoder_deb_out) = 219;
 					if (dev->info.iUltraFastEncoders)
 					{
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: read UltraFastEncoders\n", __FILE__, __FUNCTION__);
 						//usleep(sleepdur);
-						*(encoder_data->deb_out) = 220;
+						*(encoder_data->encoder_deb_out) = 220;
 						
 						for (int i = dev->info.iBasicEncoderCount; i < (dev->info.iBasicEncoderCount + dev->info.iUltraFastEncoders); i++)
 						{
 							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: UltraFastEncoders %d\n", __FILE__, __FUNCTION__, i);
-							*(encoder_data->deb_out) = 221;
+							*(encoder_data->encoder_deb_out) = 221;
 							*(encoder_data->encoder[i].count) = dev->Encoders[i].encoderValue;
 							*(encoder_data->encoder[i].position) = dev->Encoders[i].encoderValue * *(encoder_data->encoder[i].scale);
 							if ((encoder_data->encoder[i].reset != 0) || (initEncodersDone == false))
@@ -194,17 +194,17 @@ void PKEncoder_Update(sPoKeysDevice* dev)
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: resetEncoders = %d\n", __FILE__, __FUNCTION__, resetEncoders);
 					if (resetEncoders == true)
 					{
-						*(encoder_data->deb_out) = 140;
+						*(encoder_data->encoder_deb_out) = 140;
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EncoderValuesSet(dev)\n", __FILE__, __FUNCTION__);
 						if (PK_EncoderValuesSet(dev) == PK_OK)
 						{
 							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EncoderValuesSet(dev) OK\n", __FILE__, __FUNCTION__);
 							//usleep(sleepdur);
 							resetEncoders = false;
-							*(encoder_data->deb_out) = 141;
+							*(encoder_data->encoder_deb_out) = 141;
 							initEncodersDone = true;
 						}
-						*(encoder_data->deb_out) = 142;
+						*(encoder_data->encoder_deb_out) = 142;
 					}
 					
 				}
@@ -213,21 +213,13 @@ void PKEncoder_Update(sPoKeysDevice* dev)
 }
 
 int PKEncoder_init(int id,
-                sPoKeysDevice * device)
+                sPoKeysDevice * dev)
 {
-    dev = device;
+   // dev = device;
     return makepins(id, 26);
 }
 
-int rtapi_app_main(void)
-{
-	return 0;
-}
 
-int main(void)
-{
-	return 0;
-}
 //EXPORT_SYMBOL(PKEncoder_init);
 //EXPORT_SYMBOL(PKEncoder_Update);
 //EXPORT_SYMBOL(write_PKEncoder_out_pins);

@@ -1,0 +1,25 @@
+# Include the main Makefile.inc for LinuxCNC configuration
+include /usr/share/linuxcnc/Makefile.modinc
+
+# Define the userspace component name
+COMPONENTS = pokeys
+
+# Extra compile and link arguments
+EXTRA_COMPILE_ARGS = -v -I$(CURDIR)/pokeys_uspace
+EXTRA_LINK_ARGS = -lPoKeys
+
+# Define the source files
+SOURCES = pokeys_uspace/pokeys.c
+
+# Target for all
+all: $(COMPONENTS)
+
+# Rule to build the userspace component
+$(COMPONENTS): %: $(SOURCES)
+	sudo halcompile --userspace --extra-compile-args="$(EXTRA_COMPILE_ARGS)" \
+	           --extra-link-args="$(EXTRA_LINK_ARGS)" \
+	           --install $^
+
+# Clean rule
+clean:
+	rm -f $(COMPONENTS) $(COMPONENTS:=.so) $(COMPONENTS:=.o)

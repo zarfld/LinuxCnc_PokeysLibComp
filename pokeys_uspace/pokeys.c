@@ -3113,10 +3113,11 @@ int main(int argc_, char **argv_)
 // #include "rtapi_app.h"
 #include "hal.h"
 #include "stdio.h"
+#include "PoKeysCompEncoders.c"
 
 sPoKeysDevice *dev = NULL;
 static int comp_id; /* component ID */
-bool initEncodersDone = 0;
+//bool initEncodersDone = 0;
 bool HAL_Machine_On = false;
 bool setPkConfig = false;
 bool setPinConfig = false;
