@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-int PKEncoder_init(int id, sPoKeysDevice *device);
+int PKEncoder_init(int id, sPoKeysDevice* dev);
 void PKEncoder_Update(sPoKeysDevice* dev);
 
 #ifdef __cplusplus

@@ -220,8 +220,8 @@ int PKEncoder_init(int id,
 }
 
 
-//EXPORT_SYMBOL(PKEncoder_init);
-//EXPORT_SYMBOL(PKEncoder_Update);
+EXPORT_SYMBOL(PKEncoder_init);
+EXPORT_SYMBOL(PKEncoder_Update);
 //EXPORT_SYMBOL(write_PKEncoder_out_pins);
 //EXPORT_SYMBOL(read_PKEncoder_in_pins);
 //EXPORT_SYMBOL(update_PKEncoder_params);
