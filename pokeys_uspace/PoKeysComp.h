@@ -11,6 +11,29 @@ extern "C" {
 
 typedef struct
 {
+	hal_bit_t *PoExtBus_digin_in[8];
+
+	hal_bit_t *PoExtBus_digin_in_not[8];
+
+	hal_bit_t *PoExtBus_digout_out[8];
+
+	hal_bit_t PoExtBus_digout_invert[8];
+
+	hal_u32_t PoExtBus_DataSet;
+    hal_u32_t PoExtBus_DataGet;
+	
+} one_PoExtBus_data_t;
+
+typedef struct
+{
+	one_PoExtBus_data_t PoExtBus[10];
+	hal_s32_t *PoExtBus_deb_out; // pin out s32 deb.out;
+
+	hal_u32_t PoExtBus_count;
+} all_PoExtBus_data_t;
+
+typedef struct
+{
 	// canonicaldevice interface pins
     hal_s32_t *count;      		// pointer for "pin out s32 encoder.#.count[29]"
     hal_float_t *position;		// pointer for "pin out float encoder.#.position[29]"
@@ -21,7 +44,7 @@ typedef struct
 	hal_float_t scale;			// pointer for "param rw float encoder.#.scale[29]  "The scale factor used to convert counts to position units. It is in “counts per position unit”""
 
     // Custom parameters for communication with PoKeys
-    hal_u32_t *encoderOptions;  // pointer for "pin io unsigned Encoders.#.encoderOptions [26]"		
+    hal_u32_t encoderOptions;  // pointer for "pin io unsigned Encoders.#.encoderOptions [26]"		
 													// Encoder options -    bit 0: enable encoder
 													//                      bit 1: 4x sampling
 													//                      bit 2: 2x sampling
@@ -30,8 +53,8 @@ typedef struct
 													//                      bit 5: mapped to macro for direction A
 													//                      bit 6: direct key mapping for direction B
 													//                      bit 7: mapped to macro for direction B
-    hal_u32_t *channelApin; 	// pointer for "pin io unsigned Encoders.#.channelApin [26]"         // Channel A encoder pin"
-	hal_u32_t *channelBpin; 	// pointer for "pin io unsigned Encoders.#.channelBpin [26]"         // Channel B encoder pin"
+    hal_u32_t channelApin; 	// pointer for "pin io unsigned Encoders.#.channelApin [26]"         // Channel A encoder pin"
+	hal_u32_t channelBpin; 	// pointer for "pin io unsigned Encoders.#.channelBpin [26]"         // Channel B encoder pin"
 
 } one_encoder_data_t;
 
@@ -44,6 +67,8 @@ typedef struct
 
 int PKEncoder_init(int id, sPoKeysDevice* dev);
 void PKEncoder_Update(sPoKeysDevice* dev);
+
+void PKPoExtBus_Update(sPoKeysDevice *dev);
 
 #ifdef __cplusplus
 }

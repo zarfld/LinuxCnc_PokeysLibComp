@@ -17,6 +17,7 @@
 #include "hal.h"
 #include "stdio.h"
 #include "PoKeysCompEncoders.c"
+#include "PoKeysCompPoExtBus.c"
 #include <stdlib.h>
 
 static int comp_id;
@@ -395,7 +396,7 @@ struct __comp_state
 	hal_u32_t *info_EasySensors;
 
 	// PoExtBus
-	hal_bit_t *PoExtBus_digin_0_in[10];
+	/*hal_bit_t *PoExtBus_digin_0_in[10];
 	hal_bit_t *PoExtBus_digin_1_in[10];
 	hal_bit_t *PoExtBus_digin_2_in[10];
 	hal_bit_t *PoExtBus_digin_3_in[10];
@@ -426,8 +427,8 @@ struct __comp_state
 	hal_bit_t PoExtBus_digout_4_invert[10];
 	hal_bit_t PoExtBus_digout_5_invert[10];
 	hal_bit_t PoExtBus_digout_6_invert[10];
-	hal_bit_t PoExtBus_digout_7_invert[10];
-
+	hal_bit_t PoExtBus_digout_7_invert[10]; */
+	all_PoExtBus_data_t *PoExtBus_data ;
 
 	hal_u32_t *PEv2_nrOfAxes;
 	hal_u32_t *PEv2_maxPulseFrequency;
@@ -959,7 +960,9 @@ static int export(char *prefix, long extra_arg)
 		return r;
 
 	//PoExtBus Pins
-	for (j = 0; j < (10); j++)
+	//PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoExtBus_data_t *poExtBus_data)
+	r = PKPoExtBus_export_pins( prefix, extra_arg, comp_id, 10, inst->PoExtBus_data);
+/*	for (j = 0; j < (10); j++)
 	{
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_0_in[j]), comp_id,
 							 "%s.PoExtBus.%01d.digin.0.in", prefix, j);
@@ -1080,7 +1083,7 @@ static int export(char *prefix, long extra_arg)
 		if (r != 0)
 			return r;
 	}
-
+*/
 
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->PEv2_nrOfAxes), comp_id,
 						 "%s.PEv2.nrOfAxes", prefix);
@@ -1901,6 +1904,8 @@ static int export(char *prefix, long extra_arg)
 						   "%s.devSerial", prefix);
 	if (r != 0)
 		return r;
+
+	/*
 	for (j = 0; j < (10); j++)
 	{
 		r = hal_param_bit_newf(HAL_RW, &(inst->PoExtBus_digout_0_invert[j]), comp_id,
@@ -1957,6 +1962,7 @@ static int export(char *prefix, long extra_arg)
 		if (r != 0)
 			return r;
 	}
+	*/
 	for (j = 0; j < (8); j++)
 	{
 		r = hal_param_s32_newf(HAL_RW, &(inst->PEv2_home_sequence[j]), comp_id,
@@ -2594,7 +2600,7 @@ int main(int argc_, char **argv_)
 #define info_PulseEnginev2 (*__comp_inst->info_PulseEnginev2)
 #undef info_EasySensors
 #define info_EasySensors (*__comp_inst->info_EasySensors)
-#undef PoExtBus_digin_0_in
+/*#undef PoExtBus_digin_0_in
 #define PoExtBus_digin_0_in(i) (*(__comp_inst->PoExtBus_digin_0_in[i]))
 #undef PoExtBus_digin_1_in
 #define PoExtBus_digin_1_in(i) (*(__comp_inst->PoExtBus_digin_1_in[i]))
@@ -2641,7 +2647,7 @@ int main(int argc_, char **argv_)
 #undef PoExtBus_digout_6_out
 #define PoExtBus_digout_6_out(i) (0 + *(__comp_inst->PoExtBus_digout_6_out[i]))
 #undef PoExtBus_digout_7_out
-#define PoExtBus_digout_7_out(i) (0 + *(__comp_inst->PoExtBus_digout_7_out[i]))
+#define PoExtBus_digout_7_out(i) (0 + *(__comp_inst->PoExtBus_digout_7_out[i])) */
 #undef PEv2_nrOfAxes
 #define PEv2_nrOfAxes (*__comp_inst->PEv2_nrOfAxes)
 #undef PEv2_maxPulseFrequency
@@ -3139,8 +3145,8 @@ typedef enum
 
 sPoNETmodule PoNet[16];
 
-uint8_t PoExtBus_DataSet[10];
-uint8_t PoExtBus_DataGet[10];
+//uint8_t PoExtBus_DataSet[10];
+//uint8_t PoExtBus_DataGet[10];
 
 unsigned int sleepdur = 1000;
 bool use_sleepdur1 = true;
@@ -5554,6 +5560,7 @@ void user_mainloop(void)
 				}
 
 				deb_out = 236;
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DigitalIOSet(dev)\n", __FILE__, __FUNCTION__);
 				if (DigitalIOSet = true)
 				{
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev)\n", __FILE__, __FUNCTION__);
@@ -5601,6 +5608,11 @@ void user_mainloop(void)
 				usleep(sleepdur);
 			}*/
 
+
+			//rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: info_PoExtBus = %d\n", __FILE__, __FUNCTION__, info_PoExtBus);
+			PKPoExtBus_Update(dev);
+			deb_out = 238;
+			
 			if (kbd48CNC_available != 0)
 			{
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kb48CNC\n", __FILE__, __FUNCTION__);
@@ -5768,8 +5780,8 @@ void user_mainloop(void)
 						}
 			*/
 
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PoExtBus = %d\n", __FILE__, __FUNCTION__, info_PoExtBus);
-			if (info_PoExtBus != 0)
+
+			/*if (info_PoExtBus != 0)
 			{
 
 				for (i = 0; i < 10; i++)
@@ -5879,7 +5891,7 @@ void user_mainloop(void)
 					}
 					usleep(sleepdur);
 				}
-			}
+			}*/
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PoNET = %d\n", __FILE__, __FUNCTION__, info_PoNET);
 			if (info_protI2C != 0)
 			{
@@ -6638,7 +6650,7 @@ void user_mainloop(void)
 							// dev->PEv2.AxesSwitchConfig[i] =0;
 							if (doAxisConfig == true)
 							{
-								rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet(%d)\n", __FILE__, __FUNCTION__, i);
+								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet(%d)\n", __FILE__, __FUNCTION__, i);
 								dev->PEv2.param1 = i;
 								if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK)
 								{
