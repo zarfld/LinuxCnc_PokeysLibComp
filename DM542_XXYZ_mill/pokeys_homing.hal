@@ -1,13 +1,11 @@
-show pin
-show parameter
+
 #******************************
 # connect miscellaneous signals
 #******************************
 
 #  ---HALUI signals---
 
-show pin
-show parameter
+
 
 # channels provided by PEv2 which might be relevant:
 #pin out unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
