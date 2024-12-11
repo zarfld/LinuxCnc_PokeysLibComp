@@ -7,6 +7,17 @@
 #include "rtapi_errno.h"
 #include "hal.h"
 #include "rtapi_math64.h"
+#include <unistd.h> /* UNIX standard function definitions */
+
+// #include "<math.h>"
+#include "PoKeysLib.h"
+#include "PoKeysComp.h"
+#include "rtapi.h"
+// #include "rtapi_app.h"
+#include "hal.h"
+#include "stdio.h"
+#include "PoKeysCompEncoders.c"
+#include <stdlib.h>
 
 static int comp_id;
 
@@ -313,6 +324,8 @@ MODULE_LICENSE("GPL");
 
 struct __comp_state
 {
+	
+
 	struct __comp_state *_next;
 	hal_u32_t *enum_usb_dev;
 	hal_u32_t *enum_fusb_dev;
@@ -342,6 +355,7 @@ struct __comp_state
 	hal_bit_t *connected_net;
 	hal_bit_t *alive;
 	hal_bit_t *machine_is_on;
+
 	hal_u32_t *info_PinCount;
 	hal_u32_t *info_PWMCount;
 	hal_u32_t *info_BasicEncoderCount;
@@ -379,6 +393,8 @@ struct __comp_state
 	hal_u32_t *info_PulseEngine;
 	hal_u32_t *info_PulseEnginev2;
 	hal_u32_t *info_EasySensors;
+
+	// PoExtBus
 	hal_bit_t *PoExtBus_digin_0_in[10];
 	hal_bit_t *PoExtBus_digin_1_in[10];
 	hal_bit_t *PoExtBus_digin_2_in[10];
@@ -403,6 +419,16 @@ struct __comp_state
 	hal_bit_t *PoExtBus_digout_5_out[10];
 	hal_bit_t *PoExtBus_digout_6_out[10];
 	hal_bit_t *PoExtBus_digout_7_out[10];
+	hal_bit_t PoExtBus_digout_0_invert[10];
+	hal_bit_t PoExtBus_digout_1_invert[10];
+	hal_bit_t PoExtBus_digout_2_invert[10];
+	hal_bit_t PoExtBus_digout_3_invert[10];
+	hal_bit_t PoExtBus_digout_4_invert[10];
+	hal_bit_t PoExtBus_digout_5_invert[10];
+	hal_bit_t PoExtBus_digout_6_invert[10];
+	hal_bit_t PoExtBus_digout_7_invert[10];
+
+
 	hal_u32_t *PEv2_nrOfAxes;
 	hal_u32_t *PEv2_maxPulseFrequency;
 	hal_u32_t *PEv2_bufferDepth;
@@ -431,6 +457,7 @@ struct __comp_state
 	hal_bit_t *PEv2_joint_in_position[8];
 	hal_bit_t *PEv2_joint_kb_jog_active[8];
 	hal_bit_t *PEv2_joint_wheel_jog_active[8];
+
 	hal_s32_t *PEv2_stepgen_TYPE[8];
 	hal_float_t *PEv2_stepgen_HOME[8];
 	hal_float_t *PEv2_stepgen_STEPGEN_MAXVEL[8];
@@ -450,111 +477,15 @@ struct __comp_state
 	hal_u32_t *PEv2_MPGjogMultiplier[8];
 	hal_u32_t *PEv2_MPGjogEncoder[8];
 	hal_u32_t *PEv2_MPGjogDivider[8];
-	hal_bit_t *PEv2_digin_LimitN_in[8];
-	hal_bit_t *PEv2_digin_LimitN_in_not[8];
-	hal_bit_t *PEv2_digin_LimitN_DedicatedInput[8];
-	hal_bit_t *PEv2_digin_LimitP_in[8];
-	hal_bit_t *PEv2_digin_LimitP_in_not[8];
-	hal_bit_t *PEv2_digin_LimitP_DedicatedInput[8];
-	hal_bit_t *PEv2_digin_Home_in[8];
-	hal_bit_t *PEv2_digin_Home_in_not[8];
-	hal_bit_t *PEv2_digin_Home_DedicatedInput[8];
-	hal_bit_t *PEv2_digout_AxisEnable_out[8];
+
 	hal_u32_t *PEv2_HomeBackOffDistance[8];
-	hal_u32_t *PEv2_PulseEngineEnabled;
-	hal_u32_t *PEv2_PulseGeneratorType;
-	hal_bit_t *PEv2_PG_swap_stepdir;
-	hal_bit_t *PEv2_PG_extended_io;
-	hal_u32_t *PEv2_ChargePumpEnabled;
-	hal_u32_t *PEv2_PulseEngineActivated;
-	hal_u32_t *PEv2_PulseEngineState;
 	hal_bit_t *PEv2_digin_Error_in[8];
 	hal_bit_t *PEv2_digin_Error_in_not[8];
 	hal_u32_t *PEv2_MiscInputStatus;
-	hal_bit_t *PEv2_digin_Misc_in[8];
-	hal_bit_t *PEv2_digin_Misc_in_not[8];
-	hal_u32_t *PEv2_LimitOverride;
-	hal_u32_t *PEv2_LimitOverrideSetup;
-	hal_bit_t *PEv2_digin_Probed_in;
-	hal_bit_t *PEv2_digin_Probe_in[8];
-	hal_bit_t *PEv2_digin_Probe_in_not[8];
-	hal_bit_t *PEv2_digin_Emergency_in;
-	hal_bit_t *PEv2_digin_Emergency_in_not;
-	hal_bit_t *PEv2_digout_Emergency_out;
-	hal_u32_t *PEv2_digin_SoftLimit_in[8];
-	hal_u32_t *PEv2_AxisEnabledMask;
-	hal_u32_t *PEv2_AxisEnabledStatesMask;
-	hal_bit_t *PEv2_digout_AxisEnabled_out[8];
-	hal_bit_t *PEv2_digin_AxisEnabled_in[8];
-	hal_bit_t *PEv2_digout_LimitOverride_out[8];
-	hal_u32_t *PEv2_ExternalRelayOutputs;
-	hal_u32_t *PEv2_ExternalOCOutputs;
-	hal_bit_t *PEv2_digout_ExternalRelay_out[4];
-	hal_bit_t *PEv2_digout_ExternalOC_out[4];
-	hal_u32_t *PEv2_HomingStartMaskSetup;
-	hal_u32_t *PEv2_ProbeStartMaskSetup;
-	hal_u32_t *PEv2_ProbeStatus;
-	hal_float_t *PEv2_ProbeSpeed;
+
 	hal_u32_t *PEv2_BacklashWidth[8];
 	hal_u32_t *PEv2_BacklashRegister[8];
 	hal_u32_t *PEv2_BacklashAcceleration[8];
-	hal_u32_t *PEv2_BacklashCompensationEnabled;
-	hal_u32_t *rtc_sec;
-	hal_u32_t *rtc_min;
-	hal_u32_t *rtc_hour;
-	hal_u32_t *rtc_dow;
-	hal_u32_t *rtc_dom;
-	hal_u32_t *rtc_tmp;
-	hal_u32_t *rtc_doy;
-	hal_u32_t *rtc_month;
-	hal_u32_t *rtc_year;
-	hal_u32_t *rtc_loopcount;
-	hal_u32_t *rtc_lastmin;
-	hal_u32_t *rtc_lastsec;
-	hal_u32_t *rtc_loop_frequ;
-	hal_u32_t *rtc_loop_frequ_demand;
-	hal_u32_t *rtc_sec_ret;
-	hal_u32_t *rtc_hal_latency;
-	hal_u32_t *counter_value[55];
-	hal_float_t *adcin_value_raw[7];
-	hal_float_t *adcin_value[7];
-	hal_bit_t *digin_in[55];
-	hal_bit_t *digin_in_not[55];
-	hal_bit_t *digout_out[55];
-	hal_s32_t *encoder_count[29];
-	hal_float_t *encoder_position[29];
-	hal_float_t *encoder_velocity[29];
-	hal_bit_t *encoder_reset[29];
-	hal_bit_t *encoder_index_enable[29];
-	hal_float_t *adcout_value[6];
-	hal_bit_t *adcout_enable[6];
-	hal_bit_t *kbd48CNC_available;
-	hal_u32_t *kbd48CNC_PoNetID;
-	hal_u32_t *kbd48CNC_KeyBrightness;
-	hal_u32_t *kbd48CNC_prevBrightness;
-	hal_u32_t *kbd48CNC_lightValue;
-	hal_bit_t *kbd48CNC_LED[48];
-	hal_bit_t *kbd48CNC_Button[48];
-	hal_u32_t *PoNET_moduleID[16];
-	hal_u32_t *PoNET_i2cAddress[16];
-	hal_u32_t *PoNET_moduleType[16];
-	hal_u32_t *PoNET_moduleSize[16];
-	hal_u32_t *PoNET_moduleOptions[16];
-	hal_u32_t *PoNET_PWMduty;
-	hal_u32_t *PoNET_lightValue;
-	hal_u32_t *PoNET_PoNETstatus;
-	hal_u32_t *PoNET_DevCount;
-	hal_u32_t *PoNET_statusIn[16];
-	hal_u32_t *PoNET_statusOut[16];
-	hal_u32_t devSerial;
-	hal_bit_t PoExtBus_digout_0_invert[10];
-	hal_bit_t PoExtBus_digout_1_invert[10];
-	hal_bit_t PoExtBus_digout_2_invert[10];
-	hal_bit_t PoExtBus_digout_3_invert[10];
-	hal_bit_t PoExtBus_digout_4_invert[10];
-	hal_bit_t PoExtBus_digout_5_invert[10];
-	hal_bit_t PoExtBus_digout_6_invert[10];
-	hal_bit_t PoExtBus_digout_7_invert[10];
 	hal_s32_t PEv2_home_sequence[8];
 	hal_s32_t PEv2_AxisEnabled[8];
 	hal_s32_t PEv2_AxisInverted[8];
@@ -563,8 +494,8 @@ struct __comp_state
 	hal_s32_t PEv2_AxisInvertedHome[8];
 	hal_s32_t PEv2_AxisSoftLimitEnabled[8];
 	hal_s32_t PEv2_AxisEnabledMasked[8];
-	hal_u32_t PEv2_digin_SoftLimit_PosMin[8];
-	hal_u32_t PEv2_digin_SoftLimit_PosMax[8];
+	hal_u32_t PEv2_AxesSwitchConfig[8];
+
 	hal_u32_t PEv2_HomingAlgorithm[8];
 	hal_bit_t PEv2_HomeAlg_OnHome_Stop[8];
 	hal_bit_t PEv2_HomeAlg_OnHome_ArmEncoder[8];
@@ -574,8 +505,10 @@ struct __comp_state
 	hal_bit_t PEv2_HomeAlg_OutHome_ArmEncoder[8];
 	hal_bit_t PEv2_HomeAlg_OutHome_RevDirection[8];
 	hal_bit_t PEv2_HomeAlg_OutHome_ReducedSpeed[8];
+
 	hal_u32_t PEv2_digin_Home_Offset[8];
-	hal_u32_t PEv2_AxesSwitchConfig[8];
+	hal_u32_t PEv2_digin_SoftLimit_PosMin[8];
+	hal_u32_t PEv2_digin_SoftLimit_PosMax[8];
 	hal_bit_t PEv2_digin_LimitN_Enabled[8];
 	hal_bit_t PEv2_digin_LimitP_Enabled[8];
 	hal_bit_t PEv2_digin_Home_Enabled[8];
@@ -592,15 +525,90 @@ struct __comp_state
 	hal_u32_t PEv2_digin_Home_Filter[8];
 	hal_u32_t PEv2_digout_AxisEnable_Pin[8];
 	hal_bit_t PEv2_digout_AxisEnable_invert[8];
+	hal_bit_t *PEv2_digin_Misc_in[8];
+	hal_bit_t *PEv2_digin_Misc_in_not[8];
+	hal_bit_t *PEv2_digin_Probe_in[8];
+	hal_bit_t *PEv2_digin_Probe_in_not[8];
+	hal_u32_t *PEv2_digin_SoftLimit_in[8];
+	hal_bit_t *PEv2_digout_AxisEnabled_out[8];
+	hal_bit_t *PEv2_digin_AxisEnabled_in[8];
+	hal_bit_t *PEv2_digout_LimitOverride_out[8];
+	hal_bit_t *PEv2_digin_LimitN_in[8];
+	hal_bit_t *PEv2_digin_LimitN_in_not[8];
+	hal_bit_t *PEv2_digin_LimitN_DedicatedInput[8];
+	hal_bit_t *PEv2_digin_LimitP_in[8];
+	hal_bit_t *PEv2_digin_LimitP_in_not[8];
+	hal_bit_t *PEv2_digin_LimitP_DedicatedInput[8];
+	hal_bit_t *PEv2_digin_Home_in[8];
+	hal_bit_t *PEv2_digin_Home_in_not[8];
+	hal_bit_t *PEv2_digin_Home_DedicatedInput[8];
+	hal_bit_t *PEv2_digout_AxisEnable_out[8];
+
+	hal_u32_t *PEv2_PulseEngineEnabled;
+	hal_u32_t *PEv2_PulseGeneratorType;
+	hal_bit_t *PEv2_PG_swap_stepdir;
+	hal_bit_t *PEv2_PG_extended_io;
+	hal_u32_t *PEv2_ChargePumpEnabled;
+	hal_u32_t *PEv2_PulseEngineActivated;
+	hal_u32_t *PEv2_PulseEngineState;
+
+	hal_u32_t *PEv2_LimitOverride;
+	hal_u32_t *PEv2_LimitOverrideSetup;
+
+	hal_bit_t *PEv2_digin_Probed_in;
+	hal_bit_t *PEv2_digin_Emergency_in;
+	hal_bit_t *PEv2_digin_Emergency_in_not;
+	hal_bit_t *PEv2_digout_Emergency_out;
+	hal_bit_t *PEv2_digout_ExternalRelay_out[4];
+	hal_bit_t *PEv2_digout_ExternalOC_out[4];
 	hal_u32_t PEv2_digin_Emergency_Pin;
 	hal_u32_t PEv2_digin_Emergency_invert;
 	hal_u32_t PEv2_digout_Emergency_Pin;
 	hal_u32_t PEv2_digin_Probe_Pin;
 	hal_u32_t PEv2_digin_Probe_invert;
+
+	hal_u32_t *PEv2_AxisEnabledMask;
+	hal_u32_t *PEv2_AxisEnabledStatesMask;
+
+	hal_u32_t *PEv2_ExternalRelayOutputs;
+	hal_u32_t *PEv2_ExternalOCOutputs;
+
+	hal_u32_t *PEv2_HomingStartMaskSetup;
+	hal_u32_t *PEv2_ProbeStartMaskSetup;
+	hal_u32_t *PEv2_ProbeStatus;
+	hal_float_t *PEv2_ProbeSpeed;
+	hal_u32_t *PEv2_BacklashCompensationEnabled;
+
+	hal_u32_t *rtc_sec;
+	hal_u32_t *rtc_min;
+	hal_u32_t *rtc_hour;
+	hal_u32_t *rtc_dow;
+	hal_u32_t *rtc_dom;
+	hal_u32_t *rtc_tmp;
+	hal_u32_t *rtc_doy;
+	hal_u32_t *rtc_month;
+	hal_u32_t *rtc_year;
+	hal_u32_t *rtc_loopcount;
+	hal_u32_t *rtc_lastmin;
+	hal_u32_t *rtc_lastsec;
+	hal_u32_t *rtc_loop_frequ;
+	hal_u32_t *rtc_loop_frequ_demand;
+	hal_u32_t *rtc_sec_ret;
+	hal_u32_t *rtc_hal_latency;
+
+	hal_u32_t *counter_value[55];
+	hal_float_t *adcin_value_raw[7];
+	hal_float_t *adcin_value[7];
+	hal_bit_t *digin_in[55];
+	hal_bit_t *digin_in_not[55];
+	hal_bit_t *digout_out[55];
+	hal_float_t *adcout_value[6];
+	hal_bit_t *adcout_enable[6];
+
 	hal_float_t adcin_scale[7];
 	hal_float_t adcin_offset[7];
 	hal_bit_t digout_invert[55];
-	hal_float_t encoder_scale[29];
+	
 	hal_float_t adcout_offset[6];
 	hal_float_t adcout_scale[6];
 	hal_float_t adcout_high_limit[6];
@@ -608,8 +616,38 @@ struct __comp_state
 	hal_float_t adcout_max_v[6];
 	hal_u32_t adcout_PinId[6];
 	hal_u32_t adcout_pwm_period;
+
+	all_encoder_data_t *encoder_data;
+	
+	hal_bit_t *kbd48CNC_available;
+	hal_u32_t *kbd48CNC_PoNetID;
+	hal_u32_t *kbd48CNC_KeyBrightness;
+	hal_u32_t *kbd48CNC_prevBrightness;
+	hal_u32_t *kbd48CNC_lightValue;
+	hal_bit_t *kbd48CNC_LED[48];
+	hal_bit_t *kbd48CNC_Button[48];
+	
+	hal_u32_t *PoNET_moduleID[16];
+	hal_u32_t *PoNET_i2cAddress[16];
+	hal_u32_t *PoNET_moduleType[16];
+	hal_u32_t *PoNET_moduleSize[16];
+	hal_u32_t *PoNET_moduleOptions[16];
+	hal_u32_t *PoNET_statusIn[16];
+	hal_u32_t *PoNET_statusOut[16];
+	hal_u32_t *PoNET_PWMduty;
+	hal_u32_t *PoNET_lightValue;
+	hal_u32_t *PoNET_PoNETstatus;
+	hal_u32_t *PoNET_DevCount;
+
+	
+	hal_u32_t devSerial;
+	
+
+
+
+
 };
-#include <stdlib.h>
+
 struct __comp_state *__comp_first_inst = 0, *__comp_last_inst = 0;
 
 static int __comp_get_data_size(void);
@@ -633,6 +671,10 @@ static int export(char *prefix, long extra_arg)
 	r = extra_setup(inst, prefix, extra_arg);
 	if (r != 0)
 		return r;
+
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: export %s\n", __FILE__, __FUNCTION__, prefix);
+		
+	
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->enum_usb_dev), comp_id,
 						 "%s.enum-usb-dev", prefix);
 	if (r != 0)
@@ -1729,36 +1771,12 @@ static int export(char *prefix, long extra_arg)
 
 
 	// Encoder pins
-		r = PKEncoder_export(prefix, extra_arg,comp_id,29);
-		if (r != 0)
-			return r;
-/*	for (j = 0; j < (29); j++)
-	{
-		r = hal_pin_s32_newf(HAL_OUT, &(inst->encoder_count[j]), comp_id,
-							 "%s.encoder.%01d.count", prefix, j);
-		if (r != 0)
-			return r;
-		r = hal_pin_float_newf(HAL_OUT, &(inst->encoder_position[j]), comp_id,
-							   "%s.encoder.%01d.position", prefix, j);
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: Encoder pins\n");
+		r = PKEncoder_export_pins(prefix, extra_arg,comp_id,29,*&(inst->encoder_data));
 		if (r != 0)
 			return r;
 
-		r = hal_pin_float_newf(HAL_OUT, &(inst->encoder_velocity[j]), comp_id,
-							   "%s.encoder.%01d.velocity", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_IN, &(inst->encoder_reset[j]), comp_id,
-							 "%s.encoder.%01d.reset", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_IN, &(inst->encoder_index_enable[j]), comp_id,
-							 "%s.encoder.%01d.index-enable", prefix, j);
-		if (r != 0)
-			return r;
-	}
-*/
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: Encoder pins done \n");
 
 	for (j = 0; j < (6); j++)
 	{
@@ -1799,14 +1817,13 @@ static int export(char *prefix, long extra_arg)
 							 "%s.kbd48CNC.%01d.LED", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (48); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->kbd48CNC_Button[j]), comp_id,
 							 "%s.kbd48CNC.%01d.Button", prefix, j);
 		if (r != 0)
 			return r;
 	}
+
 	for (j = 0; j < (16); j++)
 	{
 		r = hal_pin_u32_newf(HAL_OUT, &(inst->PoNET_moduleID[j]), comp_id,
@@ -1872,6 +1889,14 @@ static int export(char *prefix, long extra_arg)
 		if (r != 0)
 			return r;
 	}
+
+// params
+	r=PKEncoder_export_params(prefix, extra_arg,comp_id,29);
+	if (r != 0)
+			return r;
+	
+
+
 	r = hal_param_u32_newf(HAL_RW, &(inst->devSerial), comp_id,
 						   "%s.devSerial", prefix);
 	if (r != 0)
@@ -2232,13 +2257,13 @@ static int export(char *prefix, long extra_arg)
 		if (r != 0)
 			return r;
 	}
-	for (j = 0; j < (29); j++)
+	/*for (j = 0; j < (29); j++)
 	{
 		r = hal_param_float_newf(HAL_RW, &(inst->encoder_scale[j]), comp_id,
 								 "%s.encoder.%01d.scale", prefix, j);
 		if (r != 0)
 			return r;
-	}
+	}*/
 	for (j = 0; j < (6); j++)
 	{
 		r = hal_param_float_newf(HAL_RW, &(inst->adcout_offset[j]), comp_id,
@@ -2854,15 +2879,15 @@ int main(int argc_, char **argv_)
 #undef digout_out
 #define digout_out(i) (0 + *(__comp_inst->digout_out[i]))
 #undef encoder_count
-#define encoder_count(i) (*(__comp_inst->encoder_count[i]))
-#undef encoder_position
-#define encoder_position(i) (*(__comp_inst->encoder_position[i]))
-#undef encoder_velocity
-#define encoder_velocity(i) (*(__comp_inst->encoder_velocity[i]))
-#undef encoder_reset
-#define encoder_reset(i) (0 + *(__comp_inst->encoder_reset[i]))
-#undef encoder_index_enable
-#define encoder_index_enable(i) (0 + *(__comp_inst->encoder_index_enable[i]))
+//#define encoder_count(i) (*(__comp_inst->encoder_count[i]))
+//#undef encoder_position
+//#define encoder_position(i) (*(__comp_inst->encoder_position[i]))
+//#undef encoder_velocity
+//#define encoder_velocity(i) (*(__comp_inst->encoder_velocity[i]))
+//#undef encoder_reset
+//#define encoder_reset(i) (0 + *(__comp_inst->encoder_reset[i]))
+//#undef encoder_index_enable
+//#define encoder_index_enable(i) (0 + *(__comp_inst->encoder_index_enable[i]))
 #undef adcout_value
 #define adcout_value(i) (0 + *(__comp_inst->adcout_value[i]))
 #undef adcout_enable
@@ -3011,8 +3036,8 @@ int main(int argc_, char **argv_)
 #define adcin_offset(i) (__comp_inst->adcin_offset[i])
 #undef digout_invert
 #define digout_invert(i) (__comp_inst->digout_invert[i])
-#undef encoder_scale
-#define encoder_scale(i) (__comp_inst->encoder_scale[i])
+//#undef encoder_scale
+//#define encoder_scale(i) (__comp_inst->encoder_scale[i])
 #undef adcout_offset
 #define adcout_offset(i) (__comp_inst->adcout_offset[i])
 #undef adcout_scale
@@ -3034,16 +3059,7 @@ int main(int argc_, char **argv_)
 
 #line 577 "/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace/pokeys.comp"
 
-#include <unistd.h> /* UNIX standard function definitions */
 
-// #include "<math.h>"
-#include "PoKeysLib.h"
-#include "PoKeysComp.h"
-#include "rtapi.h"
-// #include "rtapi_app.h"
-#include "hal.h"
-#include "stdio.h"
-#include "PoKeysCompEncoders.c"
 
 sPoKeysDevice *dev = NULL;
 static int comp_id; /* component ID */
