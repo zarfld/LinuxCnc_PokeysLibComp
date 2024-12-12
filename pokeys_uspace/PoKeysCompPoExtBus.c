@@ -59,7 +59,7 @@ int PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints, al
         for (int i = 0; i < 8; i++)
         {
             int Pin_ID = 8-i;
-            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.PoExtBus.%01d.digin.%01d.in\n", __FILE__, __FUNCTION__, prefix, PoExtBusId, Pin_ID);
+            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.PoExtBus.%01d.digin.%01d.in\n", __FILE__, __FUNCTION__, prefix, PoExtBusId, Pin_ID);
             r = hal_pin_bit_newf(HAL_OUT, &(addr->PoExtBus_digin_in[i]), id,
                                  "%s.PoExtBus.%01d.digin.%01d.in", prefix, PoExtBusId, Pin_ID);
             if (r != 0)
@@ -68,7 +68,7 @@ int PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints, al
                 return r;
             }
 
-            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.PoExtBus.%01d.digin.%01d.in_not\n", __FILE__, __FUNCTION__, prefix, PoExtBusId, Pin_ID);
+            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.PoExtBus.%01d.digin.%01d.in_not\n", __FILE__, __FUNCTION__, prefix, PoExtBusId, Pin_ID);
             r = hal_pin_bit_newf(HAL_OUT, &(addr->PoExtBus_digin_in_not[i]), id,
                                  "%s.PoExtBus.%01d.digin.%01d.in_not", prefix, PoExtBusId, Pin_ID);
             if (r != 0)
@@ -77,7 +77,7 @@ int PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints, al
                 return r;
             }
 
-            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.PoExtBus.%01d.digout.%01d.out\n", __FILE__, __FUNCTION__, prefix, PoExtBusId, Pin_ID);
+            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.PoExtBus.%01d.digout.%01d.out\n", __FILE__, __FUNCTION__, prefix, PoExtBusId, Pin_ID);
             r = hal_pin_bit_newf(HAL_IN, &(addr->PoExtBus_digout_out[i]), id,
                                  "%s.PoExtBus.%01d.digout.%01d.out", prefix, PoExtBusId, Pin_ID);
             if (r != 0)
@@ -86,7 +86,7 @@ int PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints, al
                 return r;
             }
 
-            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.PoExtBus.%01d.digout.%01d.invert\n", __FILE__, __FUNCTION__, prefix, PoExtBusId, Pin_ID);
+            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.PoExtBus.%01d.digout.%01d.invert\n", __FILE__, __FUNCTION__, prefix, PoExtBusId, Pin_ID);
             r = hal_param_bit_newf(HAL_RW, &(addr->PoExtBus_digout_invert[i]), id,
                                    "%s.PoExtBus.%01d.digout.%01d.invert", prefix, PoExtBusId, Pin_ID);
             if (r != 0)
@@ -97,7 +97,7 @@ int PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints, al
 
             
         }
-        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.PoExtBus.%01d.digin.byte\n", __FILE__, __FUNCTION__, prefix, j);
+        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.PoExtBus.%01d.digin.byte\n", __FILE__, __FUNCTION__, prefix, j);
             r = hal_param_u32_newf(HAL_RO, &(addr->PoExtBus_DataGet), id,
                                    "%s.PoExtBus.%01d.digin.byte", prefix, PoExtBusId );
             if (r != 0)
@@ -106,7 +106,7 @@ int PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints, al
                 return r;
             }
 
-            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.PoExtBus.%01d.digout.byte\n", __FILE__, __FUNCTION__, prefix, j);
+            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.PoExtBus.%01d.digout.byte\n", __FILE__, __FUNCTION__, prefix, j);
             r = hal_param_u32_newf(HAL_RW, &(addr->PoExtBus_DataSet), id,
                                    "%s.PoExtBus.%01d.digout.byte", prefix, PoExtBusId );
             if (r != 0)
@@ -181,12 +181,12 @@ void PKPoExtBus_Update(sPoKeysDevice *dev)
                     //(addr->PoExtBus_DataSet) = PoExtBus_Set_BitOfByte(addr->PoExtBus_DataSet, j, (addr->PoExtBus_digout_out[j]));
                     if (*(addr->PoExtBus_digout_out[j])==1)
                     {
-                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: 3 PoExtBus.%d.out.%d = true\n", __FILE__, __FUNCTION__, i,j);
+                        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: 3 PoExtBus.%d.out.%d = true\n", __FILE__, __FUNCTION__, i,j);
                         dev->PoExtBusData[i] |= (1 << j);
                     }
                    else
                    {
-                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: 3 PoExtBus.%d.out.%d = false\n", __FILE__, __FUNCTION__, i,j);
+                        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: 3 PoExtBus.%d.out.%d = false\n", __FILE__, __FUNCTION__, i,j);
                         dev->PoExtBusData[i] &= ~(1 << j);
                     }
                 }

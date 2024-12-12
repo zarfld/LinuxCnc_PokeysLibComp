@@ -11,6 +11,42 @@ extern "C" {
 
 typedef struct
 {
+	hal_u32_t PoNET_moduleID; 		// RO Parameter
+	hal_u32_t PoNET_i2cAddress; 	// RO Parameter
+	hal_u32_t PoNET_moduleType; 	// RO Parameter
+	hal_u32_t PoNET_moduleSize;		// RO Parameter
+	hal_u32_t PoNET_moduleOptions; 	// RO Parameter
+	hal_u32_t *PoNET_statusIn[16];  // OUT pin
+	hal_u32_t *PoNET_statusOut[16]; // IN pin
+}one_PoNET_data_t;
+
+typedef struct
+{
+	hal_bit_t *LED;
+	hal_bit_t *Button;
+	
+}one_kbd48CNCButton_data_t ;
+
+typedef struct
+{
+	one_PoNET_data_t PoNET[16];
+	hal_u32_t *PoNET_PWMduty;
+	hal_u32_t *PoNET_lightValue;
+	hal_u32_t *PoNET_PoNETstatus;
+	hal_u32_t PoNET_DevCount; // RO Parameter
+
+	hal_bit_t *kbd48CNC_available;
+	hal_u32_t *kbd48CNC_PoNetID;
+	hal_u32_t *kbd48CNC_KeyBrightness;
+	hal_u32_t *kbd48CNC_prevBrightness;
+	hal_u32_t *kbd48CNC_lightValue;
+	one_kbd48CNCButton_data_t *kbd48CNCio[48];
+	uint8_t kbd48CNC_Counter;
+	hal_s32_t *deb_out;
+}all_PoNET_data_t;
+
+typedef struct
+{
 	hal_bit_t *PoExtBus_digin_in[8];
 
 	hal_bit_t *PoExtBus_digin_in_not[8];

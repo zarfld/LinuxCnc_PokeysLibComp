@@ -18,9 +18,11 @@
 #include "stdio.h"
 #include "PoKeysCompEncoders.c"
 #include "PoKeysCompPoExtBus.c"
+#include "PoKeysCompPoNet.c"
 #include <stdlib.h>
 
 static int comp_id;
+sPoKeysDevice *dev = NULL;
 
 #ifdef MODULE_INFO
 MODULE_INFO(linuxcnc, "component:pokeys:(uSpace)PoKeys IO driver");
@@ -395,39 +397,6 @@ struct __comp_state
 	hal_u32_t *info_PulseEnginev2;
 	hal_u32_t *info_EasySensors;
 
-	// PoExtBus
-	/*hal_bit_t *PoExtBus_digin_0_in[10];
-	hal_bit_t *PoExtBus_digin_1_in[10];
-	hal_bit_t *PoExtBus_digin_2_in[10];
-	hal_bit_t *PoExtBus_digin_3_in[10];
-	hal_bit_t *PoExtBus_digin_4_in[10];
-	hal_bit_t *PoExtBus_digin_5_in[10];
-	hal_bit_t *PoExtBus_digin_6_in[10];
-	hal_bit_t *PoExtBus_digin_7_in[10];
-	hal_bit_t *PoExtBus_digin_0_in_not[10];
-	hal_bit_t *PoExtBus_digin_1_in_not[10];
-	hal_bit_t *PoExtBus_digin_2_in_not[10];
-	hal_bit_t *PoExtBus_digin_3_in_not[10];
-	hal_bit_t *PoExtBus_digin_4_in_not[10];
-	hal_bit_t *PoExtBus_digin_5_in_not[10];
-	hal_bit_t *PoExtBus_digin_6_in_not[10];
-	hal_bit_t *PoExtBus_digin_7_in_not[10];
-	hal_bit_t *PoExtBus_digout_0_out[10];
-	hal_bit_t *PoExtBus_digout_1_out[10];
-	hal_bit_t *PoExtBus_digout_2_out[10];
-	hal_bit_t *PoExtBus_digout_3_out[10];
-	hal_bit_t *PoExtBus_digout_4_out[10];
-	hal_bit_t *PoExtBus_digout_5_out[10];
-	hal_bit_t *PoExtBus_digout_6_out[10];
-	hal_bit_t *PoExtBus_digout_7_out[10];
-	hal_bit_t PoExtBus_digout_0_invert[10];
-	hal_bit_t PoExtBus_digout_1_invert[10];
-	hal_bit_t PoExtBus_digout_2_invert[10];
-	hal_bit_t PoExtBus_digout_3_invert[10];
-	hal_bit_t PoExtBus_digout_4_invert[10];
-	hal_bit_t PoExtBus_digout_5_invert[10];
-	hal_bit_t PoExtBus_digout_6_invert[10];
-	hal_bit_t PoExtBus_digout_7_invert[10]; */
 	all_PoExtBus_data_t *PoExtBus_data ;
 
 	hal_u32_t *PEv2_nrOfAxes;
@@ -619,16 +588,16 @@ struct __comp_state
 	hal_u32_t adcout_pwm_period;
 
 	all_encoder_data_t *encoder_data;
-	
-	hal_bit_t *kbd48CNC_available;
+	all_PoNET_data_t *poNET_data;
+/*	hal_bit_t *kbd48CNC_available;
 	hal_u32_t *kbd48CNC_PoNetID;
 	hal_u32_t *kbd48CNC_KeyBrightness;
 	hal_u32_t *kbd48CNC_prevBrightness;
 	hal_u32_t *kbd48CNC_lightValue;
 	hal_bit_t *kbd48CNC_LED[48];
 	hal_bit_t *kbd48CNC_Button[48];
-	
-	hal_u32_t *PoNET_moduleID[16];
+*/
+/*	hal_u32_t *PoNET_moduleID[16];
 	hal_u32_t *PoNET_i2cAddress[16];
 	hal_u32_t *PoNET_moduleType[16];
 	hal_u32_t *PoNET_moduleSize[16];
@@ -638,7 +607,7 @@ struct __comp_state
 	hal_u32_t *PoNET_PWMduty;
 	hal_u32_t *PoNET_lightValue;
 	hal_u32_t *PoNET_PoNETstatus;
-	hal_u32_t *PoNET_DevCount;
+	hal_u32_t *PoNET_DevCount;*/
 
 	
 	hal_u32_t devSerial;
@@ -962,128 +931,8 @@ static int export(char *prefix, long extra_arg)
 	//PoExtBus Pins
 	//PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoExtBus_data_t *poExtBus_data)
 	r = PKPoExtBus_export_pins( prefix, extra_arg, comp_id, 10, inst->PoExtBus_data);
-/*	for (j = 0; j < (10); j++)
-	{
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_0_in[j]), comp_id,
-							 "%s.PoExtBus.%01d.digin.0.in", prefix, j);
-		if (r != 0)
-			return r;
-
-				r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_1_in[j]), comp_id,
-							 "%s.PoExtBus.%01d.digin.1.in", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_2_in[j]), comp_id,
-							 "%s.PoExtBus.%01d.digin.2.in", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_3_in[j]), comp_id,
-							 "%s.PoExtBus.%01d.digin.3.in", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_4_in[j]), comp_id,
-							 "%s.PoExtBus.%01d.digin.4.in", prefix, j);
-		if (r != 0)
-			return r;
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_5_in[j]), comp_id,
-							 "%s.PoExtBus.%01d.digin.5.in", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_6_in[j]), comp_id,
-							 "%s.PoExtBus.%01d.digin.6.in", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_7_in[j]), comp_id,
-							 "%s.PoExtBus.%01d.digin.7.in", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_0_in_not[j]), comp_id,
-							 "%s.PoExtBus.%01d.digin.0.in-not", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_1_in_not[j]), comp_id,
-							 "%s.PoExtBus.%01d.digin.1.in-not", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_2_in_not[j]), comp_id,
-							 "%s.PoExtBus.%01d.digin.2.in-not", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_3_in_not[j]), comp_id,
-							 "%s.PoExtBus.%01d.digin.3.in-not", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_4_in_not[j]), comp_id,
-							 "%s.PoExtBus.%01d.digin.4.in-not", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_5_in_not[j]), comp_id,
-							 "%s.PoExtBus.%01d.digin.5.in-not", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_6_in_not[j]), comp_id,
-							 "%s.PoExtBus.%01d.digin.6.in-not", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->PoExtBus_digin_7_in_not[j]), comp_id,
-							 "%s.PoExtBus.%01d.digin.7.in-not", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_IN, &(inst->PoExtBus_digout_0_out[j]), comp_id,
-							 "%s.PoExtBus.%01d.digout.0.out", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_IN, &(inst->PoExtBus_digout_1_out[j]), comp_id,
-							 "%s.PoExtBus.%01d.digout.1.out", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_IN, &(inst->PoExtBus_digout_2_out[j]), comp_id,
-							 "%s.PoExtBus.%01d.digout.2.out", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_IN, &(inst->PoExtBus_digout_3_out[j]), comp_id,
-							 "%s.PoExtBus.%01d.digout.3.out", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_IN, &(inst->PoExtBus_digout_4_out[j]), comp_id,
-							 "%s.PoExtBus.%01d.digout.4.out", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_IN, &(inst->PoExtBus_digout_5_out[j]), comp_id,
-							 "%s.PoExtBus.%01d.digout.5.out", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_IN, &(inst->PoExtBus_digout_6_out[j]), comp_id,
-							 "%s.PoExtBus.%01d.digout.6.out", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_IN, &(inst->PoExtBus_digout_7_out[j]), comp_id,
-							 "%s.PoExtBus.%01d.digout.7.out", prefix, j);
-		if (r != 0)
-			return r;
-	}
-*/
+	if (r != 0)
+		return r;
 
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->PEv2_nrOfAxes), comp_id,
 						 "%s.PEv2.nrOfAxes", prefix);
@@ -1793,8 +1642,11 @@ static int export(char *prefix, long extra_arg)
 		if (r != 0)
 			return r;
 	}
+	//int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoNET_data_t *poNET_data, sPoKeysDevice *dev)
 
-	r = hal_pin_bit_newf(HAL_OUT, &(inst->kbd48CNC_available), comp_id,
+	r=PKPoNet_export_pins(prefix,extra_arg,comp_id,16,inst->poNET_data ,dev);
+
+	/*r = hal_pin_bit_newf(HAL_OUT, &(inst->kbd48CNC_available), comp_id,
 						 "%s.kbd48CNC.available", prefix);
 	if (r != 0)
 		return r;
@@ -1826,8 +1678,9 @@ static int export(char *prefix, long extra_arg)
 		if (r != 0)
 			return r;
 	}
+	*/
 
-	for (j = 0; j < (16); j++)
+	/*for (j = 0; j < (16); j++)
 	{
 		r = hal_pin_u32_newf(HAL_OUT, &(inst->PoNET_moduleID[j]), comp_id,
 							 "%s.PoNET.%01d.moduleID", prefix, j);
@@ -1892,7 +1745,7 @@ static int export(char *prefix, long extra_arg)
 		if (r != 0)
 			return r;
 	}
-
+*/
 // params
 	r=PKEncoder_export_params(prefix, extra_arg,comp_id,29);
 	if (r != 0)
@@ -1905,64 +1758,7 @@ static int export(char *prefix, long extra_arg)
 	if (r != 0)
 		return r;
 
-	/*
-	for (j = 0; j < (10); j++)
-	{
-		r = hal_param_bit_newf(HAL_RW, &(inst->PoExtBus_digout_0_invert[j]), comp_id,
-							   "%s.PoExtBus.%01d.digout.0.invert", prefix, j);
-		if (r != 0)
-			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
-		r = hal_param_bit_newf(HAL_RW, &(inst->PoExtBus_digout_1_invert[j]), comp_id,
-							   "%s.PoExtBus.%01d.digout.1.invert", prefix, j);
-		if (r != 0)
-			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
-		r = hal_param_bit_newf(HAL_RW, &(inst->PoExtBus_digout_2_invert[j]), comp_id,
-							   "%s.PoExtBus.%01d.digout.2.invert", prefix, j);
-		if (r != 0)
-			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
-		r = hal_param_bit_newf(HAL_RW, &(inst->PoExtBus_digout_3_invert[j]), comp_id,
-							   "%s.PoExtBus.%01d.digout.3.invert", prefix, j);
-		if (r != 0)
-			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
-		r = hal_param_bit_newf(HAL_RW, &(inst->PoExtBus_digout_4_invert[j]), comp_id,
-							   "%s.PoExtBus.%01d.digout.4.invert", prefix, j);
-		if (r != 0)
-			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
-		r = hal_param_bit_newf(HAL_RW, &(inst->PoExtBus_digout_5_invert[j]), comp_id,
-							   "%s.PoExtBus.%01d.digout.5.invert", prefix, j);
-		if (r != 0)
-			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
-		r = hal_param_bit_newf(HAL_RW, &(inst->PoExtBus_digout_6_invert[j]), comp_id,
-							   "%s.PoExtBus.%01d.digout.6.invert", prefix, j);
-		if (r != 0)
-			return r;
-	}
-	for (j = 0; j < (10); j++)
-	{
-		r = hal_param_bit_newf(HAL_RW, &(inst->PoExtBus_digout_7_invert[j]), comp_id,
-							   "%s.PoExtBus.%01d.digout.7.invert", prefix, j);
-		if (r != 0)
-			return r;
-	}
-	*/
+	
 	for (j = 0; j < (8); j++)
 	{
 		r = hal_param_s32_newf(HAL_RW, &(inst->PEv2_home_sequence[j]), comp_id,
@@ -2600,54 +2396,7 @@ int main(int argc_, char **argv_)
 #define info_PulseEnginev2 (*__comp_inst->info_PulseEnginev2)
 #undef info_EasySensors
 #define info_EasySensors (*__comp_inst->info_EasySensors)
-/*#undef PoExtBus_digin_0_in
-#define PoExtBus_digin_0_in(i) (*(__comp_inst->PoExtBus_digin_0_in[i]))
-#undef PoExtBus_digin_1_in
-#define PoExtBus_digin_1_in(i) (*(__comp_inst->PoExtBus_digin_1_in[i]))
-#undef PoExtBus_digin_2_in
-#define PoExtBus_digin_2_in(i) (*(__comp_inst->PoExtBus_digin_2_in[i]))
-#undef PoExtBus_digin_3_in
-#define PoExtBus_digin_3_in(i) (*(__comp_inst->PoExtBus_digin_3_in[i]))
-#undef PoExtBus_digin_4_in
-#define PoExtBus_digin_4_in(i) (*(__comp_inst->PoExtBus_digin_4_in[i]))
-#undef PoExtBus_digin_5_in
-#define PoExtBus_digin_5_in(i) (*(__comp_inst->PoExtBus_digin_5_in[i]))
-#undef PoExtBus_digin_6_in
-#define PoExtBus_digin_6_in(i) (*(__comp_inst->PoExtBus_digin_6_in[i]))
-#undef PoExtBus_digin_7_in
-#define PoExtBus_digin_7_in(i) (*(__comp_inst->PoExtBus_digin_7_in[i]))
-#undef PoExtBus_digin_0_in_not
-#define PoExtBus_digin_0_in_not(i) (*(__comp_inst->PoExtBus_digin_0_in_not[i]))
-#undef PoExtBus_digin_1_in_not
-#define PoExtBus_digin_1_in_not(i) (*(__comp_inst->PoExtBus_digin_1_in_not[i]))
-#undef PoExtBus_digin_2_in_not
-#define PoExtBus_digin_2_in_not(i) (*(__comp_inst->PoExtBus_digin_2_in_not[i]))
-#undef PoExtBus_digin_3_in_not
-#define PoExtBus_digin_3_in_not(i) (*(__comp_inst->PoExtBus_digin_3_in_not[i]))
-#undef PoExtBus_digin_4_in_not
-#define PoExtBus_digin_4_in_not(i) (*(__comp_inst->PoExtBus_digin_4_in_not[i]))
-#undef PoExtBus_digin_5_in_not
-#define PoExtBus_digin_5_in_not(i) (*(__comp_inst->PoExtBus_digin_5_in_not[i]))
-#undef PoExtBus_digin_6_in_not
-#define PoExtBus_digin_6_in_not(i) (*(__comp_inst->PoExtBus_digin_6_in_not[i]))
-#undef PoExtBus_digin_7_in_not
-#define PoExtBus_digin_7_in_not(i) (*(__comp_inst->PoExtBus_digin_7_in_not[i]))
-#undef PoExtBus_digout_0_out
-#define PoExtBus_digout_0_out(i) (0 + *(__comp_inst->PoExtBus_digout_0_out[i]))
-#undef PoExtBus_digout_1_out
-#define PoExtBus_digout_1_out(i) (0 + *(__comp_inst->PoExtBus_digout_1_out[i]))
-#undef PoExtBus_digout_2_out
-#define PoExtBus_digout_2_out(i) (0 + *(__comp_inst->PoExtBus_digout_2_out[i]))
-#undef PoExtBus_digout_3_out
-#define PoExtBus_digout_3_out(i) (0 + *(__comp_inst->PoExtBus_digout_3_out[i]))
-#undef PoExtBus_digout_4_out
-#define PoExtBus_digout_4_out(i) (0 + *(__comp_inst->PoExtBus_digout_4_out[i]))
-#undef PoExtBus_digout_5_out
-#define PoExtBus_digout_5_out(i) (0 + *(__comp_inst->PoExtBus_digout_5_out[i]))
-#undef PoExtBus_digout_6_out
-#define PoExtBus_digout_6_out(i) (0 + *(__comp_inst->PoExtBus_digout_6_out[i]))
-#undef PoExtBus_digout_7_out
-#define PoExtBus_digout_7_out(i) (0 + *(__comp_inst->PoExtBus_digout_7_out[i])) */
+
 #undef PEv2_nrOfAxes
 #define PEv2_nrOfAxes (*__comp_inst->PEv2_nrOfAxes)
 #undef PEv2_maxPulseFrequency
@@ -2936,22 +2685,7 @@ int main(int argc_, char **argv_)
 #define PoNET_statusOut(i) (0 + *(__comp_inst->PoNET_statusOut[i]))
 #undef devSerial
 #define devSerial (__comp_inst->devSerial)
-#undef PoExtBus_digout_0_invert
-#define PoExtBus_digout_0_invert(i) (__comp_inst->PoExtBus_digout_0_invert[i])
-#undef PoExtBus_digout_1_invert
-#define PoExtBus_digout_1_invert(i) (__comp_inst->PoExtBus_digout_1_invert[i])
-#undef PoExtBus_digout_2_invert
-#define PoExtBus_digout_2_invert(i) (__comp_inst->PoExtBus_digout_2_invert[i])
-#undef PoExtBus_digout_3_invert
-#define PoExtBus_digout_3_invert(i) (__comp_inst->PoExtBus_digout_3_invert[i])
-#undef PoExtBus_digout_4_invert
-#define PoExtBus_digout_4_invert(i) (__comp_inst->PoExtBus_digout_4_invert[i])
-#undef PoExtBus_digout_5_invert
-#define PoExtBus_digout_5_invert(i) (__comp_inst->PoExtBus_digout_5_invert[i])
-#undef PoExtBus_digout_6_invert
-#define PoExtBus_digout_6_invert(i) (__comp_inst->PoExtBus_digout_6_invert[i])
-#undef PoExtBus_digout_7_invert
-#define PoExtBus_digout_7_invert(i) (__comp_inst->PoExtBus_digout_7_invert[i])
+
 #undef PEv2_home_sequence
 #define PEv2_home_sequence(i) (__comp_inst->PEv2_home_sequence[i])
 #undef PEv2_AxisEnabled
@@ -3067,7 +2801,7 @@ int main(int argc_, char **argv_)
 
 
 
-sPoKeysDevice *dev = NULL;
+
 static int comp_id; /* component ID */
 //bool initEncodersDone = 0;
 bool HAL_Machine_On = false;
@@ -3076,7 +2810,7 @@ bool setPinConfig = false;
 bool I2C_isscanning = false;
 bool secBlink = false;
 unsigned Loop_Frequ = 0;
-uint8_t kbd48CNC_Counter[48];
+//uint8_t kbd48CNC_Counter[48];
 uint8_t PoNet_Count = 0;
 bool posMode[8];
 uint8_t posCount[8];
@@ -3145,8 +2879,6 @@ typedef enum
 
 sPoNETmodule PoNet[16];
 
-//uint8_t PoExtBus_DataSet[10];
-//uint8_t PoExtBus_DataGet[10];
 
 unsigned int sleepdur = 1000;
 bool use_sleepdur1 = true;
@@ -3753,7 +3485,7 @@ void user_mainloop(void)
 						break;
 					}
 
-					if (info_PoNET != 0)
+					/*if (info_PoNET != 0)
 					{
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PoNET != 0\n", __FILE__, __FUNCTION__);
 						PoNet_Count = 0;
@@ -3805,7 +3537,7 @@ void user_mainloop(void)
 						}
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kb48CNC init done\n", __FILE__, __FUNCTION__);
 					}
-
+*/
 					/*			if (info_MatrixKeyboard!=0)
 								{
 									dev->matrixKB.matrixKBconfiguration = 1;
@@ -3860,7 +3592,7 @@ void user_mainloop(void)
 						}
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: setPinConfig -done\n", __FILE__, __FUNCTION__);
 					}
-					if (info_PoNET != 0)
+					/*if (info_PoNET != 0)
 					{
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PoNET = %d\n", __FILE__, __FUNCTION__, info_PoNET);
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetPoNETStatus\n", __FILE__, __FUNCTION__);
@@ -3891,7 +3623,7 @@ void user_mainloop(void)
 						}
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PoNet scan done\n", __FILE__, __FUNCTION__);
 						usleep(sleepdur);
-					}
+					}*/
 					// dev->DeviceData.DeviceLockStatus=1;
 
 					if (PEv2_params_ApplyIniSettings != 0 && info_PulseEnginev2 != 0)
@@ -5612,8 +5344,13 @@ void user_mainloop(void)
 			//rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: info_PoExtBus = %d\n", __FILE__, __FUNCTION__, info_PoExtBus);
 			PKPoExtBus_Update(dev);
 			deb_out = 238;
-			
-			if (kbd48CNC_available != 0)
+			usleep(sleepdur);
+
+			PKPoNet_Update(dev);
+			deb_out = 239;
+			usleep(sleepdur);
+
+			/*if (kbd48CNC_available != 0)
 			{
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kb48CNC\n", __FILE__, __FUNCTION__);
 				deb_out = 340;
@@ -5713,11 +5450,6 @@ void user_mainloop(void)
 						state = true;
 					}
 
-					/*while (kbd48CNC_Button(i)!=instate)
-					{
-						kbd48CNC_Button(i)=instate;
-						//usleep(sleepdur/10);
-					}*/
 
 					kbd48CNC_Button(i) = instate;
 					int tmp = dev->PoNETmodule.statusOut[ID / 8];
@@ -5732,11 +5464,7 @@ void user_mainloop(void)
 					}
 					dev->PoNETmodule.statusOut[ID / 8] = tmp;
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kbd48CNC statusOut[%d] = %d\n", __FILE__, __FUNCTION__, ID / 8, dev->PoNETmodule.statusOut[ID / 8]);
-					/*while (dev->PoNETmodule.statusOut[ID/8] != tmp)
-					{
-						dev->PoNETmodule.statusOut[ID/8] = tmp;
-						//usleep(sleepdur/10);
-					}*/
+
 				}
 
 				dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
@@ -5768,7 +5496,8 @@ void user_mainloop(void)
 
 				// dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 				// PK_PoNETSetModuleStatus(dev);
-			}
+			}*/
+			
 			/*
 						if (info_EasySensors!=0)
 						{
@@ -5781,117 +5510,7 @@ void user_mainloop(void)
 			*/
 
 
-			/*if (info_PoExtBus != 0)
-			{
-
-				for (i = 0; i < 10; i++)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoExtBusGet(dev) i = %d\n", __FILE__, __FUNCTION__, i);
-					PK_PoExtBusGet(dev);
-					PoExtBus_DataGet[i] = dev->PoExtBusData[i];
-
-					PoExtBus_digin_0_in(i) = Get_BitOfByte(PoExtBus_DataGet[i], 0);
-					PoExtBus_digin_1_in(i) = Get_BitOfByte(PoExtBus_DataGet[i], 1);
-					PoExtBus_digin_2_in(i) = Get_BitOfByte(PoExtBus_DataGet[i], 2);
-					PoExtBus_digin_3_in(i) = Get_BitOfByte(PoExtBus_DataGet[i], 3);
-					PoExtBus_digin_4_in(i) = Get_BitOfByte(PoExtBus_DataGet[i], 4);
-					PoExtBus_digin_5_in(i) = Get_BitOfByte(PoExtBus_DataGet[i], 5);
-					PoExtBus_digin_6_in(i) = Get_BitOfByte(PoExtBus_DataGet[i], 6);
-					PoExtBus_digin_7_in(i) = Get_BitOfByte(PoExtBus_DataGet[i], 7);
-
-					PoExtBus_digin_0_in_not(i) = !PoExtBus_digin_0_in(i);
-					PoExtBus_digin_1_in_not(i) = !PoExtBus_digin_1_in(i);
-					PoExtBus_digin_2_in_not(i) = !PoExtBus_digin_2_in(i);
-					PoExtBus_digin_3_in_not(i) = !PoExtBus_digin_3_in(i);
-					PoExtBus_digin_4_in_not(i) = !PoExtBus_digin_4_in(i);
-					PoExtBus_digin_5_in_not(i) = !PoExtBus_digin_5_in(i);
-					PoExtBus_digin_6_in_not(i) = !PoExtBus_digin_6_in(i);
-					PoExtBus_digin_7_in_not(i) = !PoExtBus_digin_7_in(i);
-
-					if (PoExtBus_digout_0_invert(i) == false)
-					{
-						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 0, PoExtBus_digout_0_out(i));
-					}
-					else
-					{
-						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 0, !PoExtBus_digout_0_out(i));
-					}
-
-					if (PoExtBus_digout_1_invert(i) == false)
-					{
-						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 1, PoExtBus_digout_1_out(i));
-					}
-					else
-					{
-						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 1, !PoExtBus_digout_1_out(i));
-					}
-
-					if (PoExtBus_digout_2_invert(i) == false)
-					{
-						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 2, PoExtBus_digout_2_out(i));
-					}
-					else
-					{
-						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 2, !PoExtBus_digout_2_out(i));
-					}
-
-					if (PoExtBus_digout_3_invert(i) == false)
-					{
-						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 3, PoExtBus_digout_3_out(i));
-					}
-					else
-					{
-						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 3, !PoExtBus_digout_3_out(i));
-					}
-
-					if (PoExtBus_digout_4_invert(i) == false)
-					{
-						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 4, PoExtBus_digout_4_out(i));
-					}
-					else
-					{
-						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 4, !PoExtBus_digout_4_out(i));
-					}
-
-					if (PoExtBus_digout_5_invert(i) == false)
-					{
-						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 5, PoExtBus_digout_5_out(i));
-					}
-					else
-					{
-						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 5, !PoExtBus_digout_5_out(i));
-					}
-
-					if (PoExtBus_digout_6_invert(i) == false)
-					{
-						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 6, PoExtBus_digout_6_out(i));
-					}
-					else
-					{
-						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 6, !PoExtBus_digout_6_out(i));
-					}
-
-					if (PoExtBus_digout_7_invert(i) == false)
-					{
-						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 7, PoExtBus_digout_7_out(i));
-					}
-					else
-					{
-						PoExtBus_DataSet[i] = Set_BitOfByte(PoExtBus_DataSet[i], 7, !PoExtBus_digout_7_out(i));
-					}
-
-					if (PoExtBus_DataGet[i] != PoExtBus_DataSet[i])
-					{
-
-						dev->PoExtBusData[i] = PoExtBus_DataSet[i];
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoExtBusSet(dev)\n", __FILE__, __FUNCTION__);
-						PK_PoExtBusSet(dev);
-						usleep(sleepdur);
-						PK_PoExtBusSet(dev);
-					}
-					usleep(sleepdur);
-				}
-			}*/
+		
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PoNET = %d\n", __FILE__, __FUNCTION__, info_PoNET);
 			if (info_protI2C != 0)
 			{
