@@ -589,26 +589,6 @@ struct __comp_state
 
 	all_encoder_data_t *encoder_data;
 	all_PoNET_data_t *poNET_data;
-/*	hal_bit_t *kbd48CNC_available;
-	hal_u32_t *kbd48CNC_PoNetID;
-	hal_u32_t *kbd48CNC_KeyBrightness;
-	hal_u32_t *kbd48CNC_prevBrightness;
-	hal_u32_t *kbd48CNC_lightValue;
-	hal_bit_t *kbd48CNC_LED[48];
-	hal_bit_t *kbd48CNC_Button[48];
-*/
-/*	hal_u32_t *PoNET_moduleID[16];
-	hal_u32_t *PoNET_i2cAddress[16];
-	hal_u32_t *PoNET_moduleType[16];
-	hal_u32_t *PoNET_moduleSize[16];
-	hal_u32_t *PoNET_moduleOptions[16];
-	hal_u32_t *PoNET_statusIn[16];
-	hal_u32_t *PoNET_statusOut[16];
-	hal_u32_t *PoNET_PWMduty;
-	hal_u32_t *PoNET_lightValue;
-	hal_u32_t *PoNET_PoNETstatus;
-	hal_u32_t *PoNET_DevCount;*/
-
 	
 	hal_u32_t devSerial;
 	
@@ -1645,111 +1625,19 @@ static int export(char *prefix, long extra_arg)
 	//int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoNET_data_t *poNET_data, sPoKeysDevice *dev)
 
 	r=PKPoNet_export_pins(prefix,extra_arg,comp_id,16,inst->poNET_data ,dev);
-
-	/*r = hal_pin_bit_newf(HAL_OUT, &(inst->kbd48CNC_available), comp_id,
-						 "%s.kbd48CNC.available", prefix);
 	if (r != 0)
-		return r;
-	r = hal_pin_u32_newf(HAL_IO, &(inst->kbd48CNC_PoNetID), comp_id,
-						 "%s.kbd48CNC.PoNetID", prefix);
-	if (r != 0)
-		return r;
-	r = hal_pin_u32_newf(HAL_IO, &(inst->kbd48CNC_KeyBrightness), comp_id,
-						 "%s.kbd48CNC.KeyBrightness", prefix);
-	if (r != 0)
-		return r;
-	r = hal_pin_u32_newf(HAL_IO, &(inst->kbd48CNC_prevBrightness), comp_id,
-						 "%s.kbd48CNC.prevBrightness", prefix);
-	if (r != 0)
-		return r;
-	r = hal_pin_u32_newf(HAL_IO, &(inst->kbd48CNC_lightValue), comp_id,
-						 "%s.kbd48CNC.lightValue", prefix);
-	if (r != 0)
-		return r;
-	for (j = 0; j < (48); j++)
 	{
-		r = hal_pin_bit_newf(HAL_IN, &(inst->kbd48CNC_LED[j]), comp_id,
-							 "%s.kbd48CNC.%01d.LED", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->kbd48CNC_Button[j]), comp_id,
-							 "%s.kbd48CNC.%01d.Button", prefix, j);
-		if (r != 0)
-			return r;
-	}
-	*/
-
-	/*for (j = 0; j < (16); j++)
-	{
-		r = hal_pin_u32_newf(HAL_OUT, &(inst->PoNET_moduleID[j]), comp_id,
-							 "%s.PoNET.%01d.moduleID", prefix, j);
-		if (r != 0)
-			return r;
-	}
-	for (j = 0; j < (16); j++)
-	{
-		r = hal_pin_u32_newf(HAL_OUT, &(inst->PoNET_i2cAddress[j]), comp_id,
-							 "%s.PoNET.%01d.i2cAddress", prefix, j);
-		if (r != 0)
-			return r;
-	}
-	for (j = 0; j < (16); j++)
-	{
-		r = hal_pin_u32_newf(HAL_OUT, &(inst->PoNET_moduleType[j]), comp_id,
-							 "%s.PoNET.%01d.moduleType", prefix, j);
-		if (r != 0)
-			return r;
-	}
-	for (j = 0; j < (16); j++)
-	{
-		r = hal_pin_u32_newf(HAL_OUT, &(inst->PoNET_moduleSize[j]), comp_id,
-							 "%s.PoNET.%01d.moduleSize", prefix, j);
-		if (r != 0)
-			return r;
-	}
-	for (j = 0; j < (16); j++)
-	{
-		r = hal_pin_u32_newf(HAL_OUT, &(inst->PoNET_moduleOptions[j]), comp_id,
-							 "%s.PoNET.%01d.moduleOptions", prefix, j);
-		if (r != 0)
-			return r;
-	}
-	r = hal_pin_u32_newf(HAL_IO, &(inst->PoNET_PWMduty), comp_id,
-						 "%s.PoNET.PWMduty", prefix);
-	if (r != 0)
+		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKPoNet_export_pins failed\n");
 		return r;
-	r = hal_pin_u32_newf(HAL_IO, &(inst->PoNET_lightValue), comp_id,
-						 "%s.PoNET.lightValue", prefix);
-	if (r != 0)
-		return r;
-	r = hal_pin_u32_newf(HAL_OUT, &(inst->PoNET_PoNETstatus), comp_id,
-						 "%s.PoNET.PoNETstatus", prefix);
-	if (r != 0)
-		return r;
-	r = hal_pin_u32_newf(HAL_OUT, &(inst->PoNET_DevCount), comp_id,
-						 "%s.PoNET.DevCount", prefix);
-	if (r != 0)
-		return r;
-	for (j = 0; j < (16); j++)
-	{
-		r = hal_pin_u32_newf(HAL_OUT, &(inst->PoNET_statusIn[j]), comp_id,
-							 "%s.PoNET.%01d.statusIn", prefix, j);
-		if (r != 0)
-			return r;
 	}
-	for (j = 0; j < (16); j++)
-	{
-		r = hal_pin_u32_newf(HAL_IN, &(inst->PoNET_statusOut[j]), comp_id,
-							 "%s.PoNET.%01d.statusOut", prefix, j);
-		if (r != 0)
-			return r;
-	}
-*/
+	
 // params
 	r=PKEncoder_export_params(prefix, extra_arg,comp_id,29);
 	if (r != 0)
-			return r;
+	{
+		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKEncoder_export_params failed\n");
+		return r;
+	}
 	
 
 
@@ -1765,182 +1653,129 @@ static int export(char *prefix, long extra_arg)
 							   "%s.PEv2.%01d.home-sequence", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_param_s32_newf(HAL_RW, &(inst->PEv2_AxisEnabled[j]), comp_id,
 							   "%s.PEv2.%01d.AxisEnabled", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
-		r = hal_param_s32_newf(HAL_RW, &(inst->PEv2_AxisInverted[j]), comp_id,
+
+				r = hal_param_s32_newf(HAL_RW, &(inst->PEv2_AxisInverted[j]), comp_id,
 							   "%s.PEv2.%01d.AxisInverted", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
-		r = hal_param_s32_newf(HAL_RW, &(inst->PEv2_AxisInternalPlanner[j]), comp_id,
+
+					r = hal_param_s32_newf(HAL_RW, &(inst->PEv2_AxisInternalPlanner[j]), comp_id,
 							   "%s.PEv2.%01d.AxisInternalPlanner", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
-		r = hal_param_s32_newf(HAL_RW, &(inst->PEv2_AxisPositionMode[j]), comp_id,
+
+					r = hal_param_s32_newf(HAL_RW, &(inst->PEv2_AxisPositionMode[j]), comp_id,
 							   "%s.PEv2.%01d.AxisPositionMode", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
-		r = hal_param_s32_newf(HAL_RW, &(inst->PEv2_AxisInvertedHome[j]), comp_id,
+
+					r = hal_param_s32_newf(HAL_RW, &(inst->PEv2_AxisInvertedHome[j]), comp_id,
 							   "%s.PEv2.%01d.AxisInvertedHome", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
-		r = hal_param_s32_newf(HAL_RW, &(inst->PEv2_AxisSoftLimitEnabled[j]), comp_id,
+
+					r = hal_param_s32_newf(HAL_RW, &(inst->PEv2_AxisSoftLimitEnabled[j]), comp_id,
 							   "%s.PEv2.%01d.AxisSoftLimitEnabled", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
-		r = hal_param_s32_newf(HAL_RW, &(inst->PEv2_AxisEnabledMasked[j]), comp_id,
+
+					r = hal_param_s32_newf(HAL_RW, &(inst->PEv2_AxisEnabledMasked[j]), comp_id,
 							   "%s.PEv2.%01d.AxisEnabledMasked", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
-		r = hal_param_u32_newf(HAL_RW, &(inst->PEv2_digin_SoftLimit_PosMin[j]), comp_id,
+
+					r = hal_param_u32_newf(HAL_RW, &(inst->PEv2_digin_SoftLimit_PosMin[j]), comp_id,
 							   "%s.PEv2.%01d.digin.SoftLimit.PosMin", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
-		r = hal_param_u32_newf(HAL_RW, &(inst->PEv2_digin_SoftLimit_PosMax[j]), comp_id,
+
+					r = hal_param_u32_newf(HAL_RW, &(inst->PEv2_digin_SoftLimit_PosMax[j]), comp_id,
 							   "%s.PEv2.%01d.digin.SoftLimit.PosMax", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_param_u32_newf(HAL_RW, &(inst->PEv2_HomingAlgorithm[j]), comp_id,
 							   "%s.PEv2.%01d.HomingAlgorithm", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_param_bit_newf(HAL_RW, &(inst->PEv2_HomeAlg_OnHome_Stop[j]), comp_id,
 							   "%s.PEv2.%01d.HomeAlg.OnHome.Stop", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_param_bit_newf(HAL_RW, &(inst->PEv2_HomeAlg_OnHome_ArmEncoder[j]), comp_id,
 							   "%s.PEv2.%01d.HomeAlg.OnHome.ArmEncoder", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_param_bit_newf(HAL_RW, &(inst->PEv2_HomeAlg_OnHome_RevDirection[j]), comp_id,
 							   "%s.PEv2.%01d.HomeAlg.OnHome.RevDirection", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_param_bit_newf(HAL_RW, &(inst->PEv2_HomeAlg_OnHome_ReducedSpeed[j]), comp_id,
 							   "%s.PEv2.%01d.HomeAlg.OnHome.ReducedSpeed", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_param_bit_newf(HAL_RW, &(inst->PEv2_HomeAlg_OutHome_Stop[j]), comp_id,
 							   "%s.PEv2.%01d.HomeAlg.OutHome.Stop", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_param_bit_newf(HAL_RW, &(inst->PEv2_HomeAlg_OutHome_ArmEncoder[j]), comp_id,
 							   "%s.PEv2.%01d.HomeAlg.OutHome.ArmEncoder", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
 		r = hal_param_bit_newf(HAL_RW, &(inst->PEv2_HomeAlg_OutHome_RevDirection[j]), comp_id,
 							   "%s.PEv2.%01d.HomeAlg.OutHome.RevDirection", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_param_bit_newf(HAL_RW, &(inst->PEv2_HomeAlg_OutHome_ReducedSpeed[j]), comp_id,
 							   "%s.PEv2.%01d.HomeAlg.OutHome.ReducedSpeed", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
 		r = hal_param_u32_newf(HAL_RW, &(inst->PEv2_digin_Home_Offset[j]), comp_id,
 							   "%s.PEv2.%01d.digin.Home.Offset", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
 		r = hal_param_u32_newf(HAL_RW, &(inst->PEv2_AxesSwitchConfig[j]), comp_id,
 							   "%s.PEv2.%01d.AxesSwitchConfig", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
 		r = hal_param_bit_newf(HAL_RW, &(inst->PEv2_digin_LimitN_Enabled[j]), comp_id,
 							   "%s.PEv2.%01d.digin.LimitN.Enabled", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_param_bit_newf(HAL_RW, &(inst->PEv2_digin_LimitP_Enabled[j]), comp_id,
 							   "%s.PEv2.%01d.digin.LimitP.Enabled", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_param_bit_newf(HAL_RW, &(inst->PEv2_digin_Home_Enabled[j]), comp_id,
 							   "%s.PEv2.%01d.digin.Home.Enabled", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
 		r = hal_param_bit_newf(HAL_RW, &(inst->PEv2_digin_Home_OnLimitN[j]), comp_id,
 							   "%s.PEv2.%01d.digin.Home.OnLimitN", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++)
-	{
+
 		r = hal_param_bit_newf(HAL_RW, &(inst->PEv2_digin_Home_OnLimitP[j]), comp_id,
 							   "%s.PEv2.%01d.digin.Home.OnLimitP", prefix, j);
 		if (r != 0)
 			return r;
 	}
+
+
 	for (j = 0; j < (8); j++)
 	{
 		r = hal_param_bit_newf(HAL_RW, &(inst->PEv2_digin_LimitN_invert[j]), comp_id,
@@ -2647,42 +2482,7 @@ int main(int argc_, char **argv_)
 #define adcout_value(i) (0 + *(__comp_inst->adcout_value[i]))
 #undef adcout_enable
 #define adcout_enable(i) (0 + *(__comp_inst->adcout_enable[i]))
-#undef kbd48CNC_available
-#define kbd48CNC_available (*__comp_inst->kbd48CNC_available)
-#undef kbd48CNC_PoNetID
-#define kbd48CNC_PoNetID (*__comp_inst->kbd48CNC_PoNetID)
-#undef kbd48CNC_KeyBrightness
-#define kbd48CNC_KeyBrightness (*__comp_inst->kbd48CNC_KeyBrightness)
-#undef kbd48CNC_prevBrightness
-#define kbd48CNC_prevBrightness (*__comp_inst->kbd48CNC_prevBrightness)
-#undef kbd48CNC_lightValue
-#define kbd48CNC_lightValue (*__comp_inst->kbd48CNC_lightValue)
-#undef kbd48CNC_LED
-#define kbd48CNC_LED(i) (0 + *(__comp_inst->kbd48CNC_LED[i]))
-#undef kbd48CNC_Button
-#define kbd48CNC_Button(i) (*(__comp_inst->kbd48CNC_Button[i]))
-#undef PoNET_moduleID
-#define PoNET_moduleID(i) (*(__comp_inst->PoNET_moduleID[i]))
-#undef PoNET_i2cAddress
-#define PoNET_i2cAddress(i) (*(__comp_inst->PoNET_i2cAddress[i]))
-#undef PoNET_moduleType
-#define PoNET_moduleType(i) (*(__comp_inst->PoNET_moduleType[i]))
-#undef PoNET_moduleSize
-#define PoNET_moduleSize(i) (*(__comp_inst->PoNET_moduleSize[i]))
-#undef PoNET_moduleOptions
-#define PoNET_moduleOptions(i) (*(__comp_inst->PoNET_moduleOptions[i]))
-#undef PoNET_PWMduty
-#define PoNET_PWMduty (*__comp_inst->PoNET_PWMduty)
-#undef PoNET_lightValue
-#define PoNET_lightValue (*__comp_inst->PoNET_lightValue)
-#undef PoNET_PoNETstatus
-#define PoNET_PoNETstatus (*__comp_inst->PoNET_PoNETstatus)
-#undef PoNET_DevCount
-#define PoNET_DevCount (*__comp_inst->PoNET_DevCount)
-#undef PoNET_statusIn
-#define PoNET_statusIn(i) (*(__comp_inst->PoNET_statusIn[i]))
-#undef PoNET_statusOut
-#define PoNET_statusOut(i) (0 + *(__comp_inst->PoNET_statusOut[i]))
+
 #undef devSerial
 #define devSerial (__comp_inst->devSerial)
 
@@ -2811,7 +2611,7 @@ bool I2C_isscanning = false;
 bool secBlink = false;
 unsigned Loop_Frequ = 0;
 //uint8_t kbd48CNC_Counter[48];
-uint8_t PoNet_Count = 0;
+
 bool posMode[8];
 uint8_t posCount[8];
 uint8_t velCount[8];
@@ -2877,7 +2677,7 @@ typedef enum
 	PK_PEv2Homing_OutHomeReducedSpeed = (1 << 4),	  // Cancel Homing procedure
 } pokeys_homing_algorithm_t;
 
-sPoNETmodule PoNet[16];
+
 
 
 unsigned int sleepdur = 1000;
@@ -2930,18 +2730,7 @@ uint8_t Merge_8BitsToByte(bool Bit_array[8])
 	return sum;
 }
 
-int Update_PoNet()
-{
-	if (PK_PoNETGetPoNETStatus(dev) == PK_OK)
-	{
-		usleep(sleepdur);
-	}
-	if (PK_PoNETGetModuleSettings(dev) == PK_OK)
-	{
-		usleep(sleepdur);
-	}
-	return 0;
-}
+
 
 int Config_MatrixKB()
 {
@@ -3485,59 +3274,7 @@ void user_mainloop(void)
 						break;
 					}
 
-					/*if (info_PoNET != 0)
-					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PoNET != 0\n", __FILE__, __FUNCTION__);
-						PoNet_Count = 0;
-						for (i = 0; i < 16; i++)
-						{
-							dev->PoNETmodule.moduleID = i;
-							if (PK_PoNETGetModuleSettings(dev) == PK_OK)
-							{
-								//		PoNET_moduleID(i) = i;
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PoNET_moduleID(%d)\n", __FILE__, __FUNCTION__, i);
-								PoNET_i2cAddress(i) = dev->PoNETmodule.i2cAddress;
-								PoNET_moduleType(i) = dev->PoNETmodule.moduleType;
-								PoNET_moduleSize(i) = dev->PoNETmodule.moduleSize;
-								PoNET_moduleOptions(i) = dev->PoNETmodule.moduleOptions;
-								if (dev->PoNETmodule.moduleType != 0)
-								{
-									rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PoNETmodule.moduleType(%d) = %d\n", __FILE__, __FUNCTION__, i, dev->PoNETmodule.moduleType);
-									PoNet_Count++;
-								}
-								if (dev->PoNETmodule.moduleType == 0x10 && kbd48CNC_available == 0)
-								{
-									if ((dev->PoNETmodule.moduleOptions & (1 << 7)) != 0)
-									{
-										// kbd48CNC is also detected
-										rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kb48CNC detected\n", __FILE__, __FUNCTION__);
-										kbd48CNC_PoNetID = i;
-										// dev->deviceConfig->iEnableKBD48CNC = 1;
-										kbd48CNC_available = 1;
-									}
-								}
-								usleep(sleepdur);
-							}
-							PoNET_DevCount = PoNet_Count;
-						}
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PoNet Count: %d\n", __FILE__, __FUNCTION__, PoNet_Count);
-					}
-
-					if (kbd48CNC_available != 0)
-					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kbd48CNC_available != 0\n", __FILE__, __FUNCTION__);
-						for (i = 0; i < 48; i++)
-						{
-							int offset[] = {15, 8, 7, 0};
-							int top = (i & 0xF0) + offset[(i / 4) % 4];
-							int y = i % 4;
-							int ID = top + y;
-							if (((i / 4) % 2) == 0)
-								ID = top - y;
-						}
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kb48CNC init done\n", __FILE__, __FUNCTION__);
-					}
-*/
+				
 					/*			if (info_MatrixKeyboard!=0)
 								{
 									dev->matrixKB.matrixKBconfiguration = 1;
@@ -3592,38 +3329,7 @@ void user_mainloop(void)
 						}
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: setPinConfig -done\n", __FILE__, __FUNCTION__);
 					}
-					/*if (info_PoNET != 0)
-					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PoNET = %d\n", __FILE__, __FUNCTION__, info_PoNET);
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetPoNETStatus\n", __FILE__, __FUNCTION__);
-						if (PK_PoNETGetPoNETStatus(dev) == PK_OK)
-						{
-							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetPoNETStatus=OK\n", __FILE__, __FUNCTION__);
-							for (i = 0; i < 16; i++)
-							{
-
-								dev->PoNETmodule.moduleID = i;
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetModuleSettings( %d )\n", __FILE__, __FUNCTION__, i);
-								if (PK_PoNETGetModuleSettings(dev) == PK_OK)
-								{
-									PoNet[i].moduleID = i;
-									PoNet[i].i2cAddress = dev->PoNETmodule.i2cAddress;
-									PoNet[i].moduleType = dev->PoNETmodule.moduleType;
-									PoNet[i].moduleSize = dev->PoNETmodule.moduleSize;
-									PoNet[i].moduleOptions = dev->PoNETmodule.moduleOptions;
-									rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PoNet[%d].moduleID = %d\n", __FILE__, __FUNCTION__, i, PoNet[i].moduleID);
-									rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PoNet[%d].i2cAddress = %d\n", __FILE__, __FUNCTION__, i, PoNet[i].i2cAddress);
-									rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PoNet[%d].moduleType = %d\n", __FILE__, __FUNCTION__, i, PoNet[i].moduleType);
-									rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PoNet[%d].moduleSize = %d\n", __FILE__, __FUNCTION__, i, PoNet[i].moduleSize);
-									rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PoNet[%d].moduleOptions = %d\n", __FILE__, __FUNCTION__, i, PoNet[i].moduleOptions);
-									usleep(sleepdur);
-									//	memset(dev->PoNETmodule.statusOut, 0, 10);
-								}
-							}
-						}
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PoNet scan done\n", __FILE__, __FUNCTION__);
-						usleep(sleepdur);
-					}*/
+					
 					// dev->DeviceData.DeviceLockStatus=1;
 
 					if (PEv2_params_ApplyIniSettings != 0 && info_PulseEnginev2 != 0)
@@ -5346,157 +5052,12 @@ void user_mainloop(void)
 			deb_out = 238;
 			usleep(sleepdur);
 
+			//rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: info_PoNET = %d\n", __FILE__, __FUNCTION__, info_PoNET);
 			PKPoNet_Update(dev);
 			deb_out = 239;
 			usleep(sleepdur);
 
-			/*if (kbd48CNC_available != 0)
-			{
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kb48CNC\n", __FILE__, __FUNCTION__);
-				deb_out = 340;
-				dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-				PK_PoNETGetModuleSettings(dev);
-				if (PK_PoNETGetModuleSettings(dev) != PK_OK)
-				{
-
-					if (PK_PoNETGetModuleSettings(dev) != PK_OK)
-					{
-					}
-				}
-
-				dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-				PK_PoNETGetModuleLight(dev);
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetModuleLight(dev)\n", __FILE__, __FUNCTION__);
-				if (PK_PoNETGetModuleLight(dev) == PK_OK)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetModuleLight(dev) OK\n", __FILE__, __FUNCTION__);
-					kbd48CNC_lightValue = dev->PoNETmodule.lightValue;
-
-					kbd48CNC_KeyBrightness = 255 - kbd48CNC_lightValue;
-
-					if (kbd48CNC_prevBrightness != kbd48CNC_KeyBrightness)
-					{
-						dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-						dev->PoNETmodule.PWMduty = kbd48CNC_KeyBrightness;
-						if (PK_PoNETSetModulePWM(dev) != PK_OK)
-						{
-							usleep(sleepdur);
-							if (PK_PoNETSetModulePWM(dev) != PK_OK)
-							{
-							}
-						}
-					}
-					usleep(sleepdur);
-				}
-
-				dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetModuleStatusRequest(dev)\n", __FILE__, __FUNCTION__);
-				if (PK_PoNETGetModuleStatusRequest(dev) != PK_OK)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetModuleStatusRequest(dev) failed\n", __FILE__, __FUNCTION__);
-					usleep(sleepdur);
-					dev->PoNETmodule.moduleID = 0;
-					if (PK_PoNETGetModuleStatusRequest(dev) != PK_OK)
-					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetModuleStatusRequest(dev) failed\n", __FILE__, __FUNCTION__);
-						kbd48CNC_PoNetID = 0;
-						usleep(sleepdur);
-					}
-				}
-				kbd48CNC_Counter[i] = 0;
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetModuleStatus(dev)\n", __FILE__, __FUNCTION__);
-				while (PK_PoNETGetModuleStatus(dev) != PK_OK && kbd48CNC_Counter[i] < 10)
-				{
-					kbd48CNC_Counter[i]++;
-				}
-
-				dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetModuleStatus(dev)\n", __FILE__, __FUNCTION__);
-				if (PK_PoNETGetModuleStatus(dev) != PK_OK)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetModuleStatus(dev) failed\n", __FILE__, __FUNCTION__);
-					if (PK_PoNETGetModuleStatus(dev) != PK_OK)
-					{
-						usleep(sleepdur);
-					}
-				}
-
-				for (i = 0; i < 48; i++)
-				{
-					bool state = false;
-					bool instate = false;
-					// blinking 1Hz for Debug
-					// state=secBlink;
-					int offset[] = {15, 8, 7, 0};
-
-					int top = (i & 0xF0) + offset[(i / 4) % 4];
-					int y = i % 4;
-					int ID = top + y;
-					if (((i / 4) % 2) == 0)
-					{
-						ID = top - y;
-					}
-
-					if (kbd48CNC_LED(i) == true)
-					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kbd48CNC_LED(%d) = true\n", __FILE__, __FUNCTION__, i);
-						state = true;
-					}
-
-					if ((dev->PoNETmodule.statusIn[ID / 8] & (1 << (ID % 8))) > 0)
-					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kbd48CNC statusIn[%d] = %d\n", __FILE__, __FUNCTION__, ID / 8, dev->PoNETmodule.statusIn[ID / 8]);
-						instate = true;
-						state = true;
-					}
-
-
-					kbd48CNC_Button(i) = instate;
-					int tmp = dev->PoNETmodule.statusOut[ID / 8];
-
-					if (state)
-					{
-						tmp |= (1 << (ID % 8));
-					}
-					else
-					{
-						tmp &= ~(1 << (ID % 8));
-					}
-					dev->PoNETmodule.statusOut[ID / 8] = tmp;
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kbd48CNC statusOut[%d] = %d\n", __FILE__, __FUNCTION__, ID / 8, dev->PoNETmodule.statusOut[ID / 8]);
-
-				}
-
-				dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-				PK_PoNETSetModuleStatus(dev);
-				PK_PoNETSetModuleStatus(dev);
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETSetModuleStatus(dev)\n", __FILE__, __FUNCTION__);
-				if (PK_PoNETSetModuleStatus(dev) != PK_OK)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETSetModuleStatus(dev) failed\n", __FILE__, __FUNCTION__);
-					usleep(sleepdur);
-					dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-					if (PK_PoNETSetModuleStatus(dev) != PK_OK)
-					{
-						usleep(sleepdur);
-					}
-				}
-
-				dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kbd48CNC_PoNetID = %d\n", __FILE__, __FUNCTION__, kbd48CNC_PoNetID);
-
-				if (PK_PoNETSetModuleStatus(dev) != PK_OK)
-				{
-					dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kbd48CNC PK_PoNETSetModuleStatus(dev)\n", __FILE__, __FUNCTION__);
-					if (PK_PoNETSetModuleStatus(dev) != PK_OK)
-					{
-					}
-				}
-
-				// dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
-				// PK_PoNETSetModuleStatus(dev);
-			}*/
+			
 			
 			/*
 						if (info_EasySensors!=0)
@@ -5510,11 +5071,8 @@ void user_mainloop(void)
 			*/
 
 
-		
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PoNET = %d\n", __FILE__, __FUNCTION__, info_PoNET);
-			if (info_protI2C != 0)
-			{
-			}
+	
+
 
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: rtc_lastmin = %d\n", __FILE__, __FUNCTION__, rtc_lastmin);
 			if (rtc_lastmin != rtc_min && HAL_Machine_On == 0)
