@@ -118,7 +118,7 @@ int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_P
                         (PoNet_data->kbd48CNC_PoNetID) = j;
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PoNet[%d].kbd48CNC_PoNetID = %d\n", __FILE__, __FUNCTION__, j, PoNet_data->kbd48CNC_PoNetID);
                         // dev->deviceConfig->iEnableKBD48CNC = 1;
-                        PoNet_data->kbd48CNC_available = 1;
+                        (PoNet_data->kbd48CNC_available) = 1;
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PoNet[%d].kbd48CNC_available = %d\n", __FILE__, __FUNCTION__, j, PoNet_data->kbd48CNC_available);
                     }
                 }

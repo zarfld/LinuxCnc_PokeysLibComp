@@ -11,6 +11,52 @@ extern "C" {
 
 typedef struct
 {
+	hal_u32_t *deb_out;
+	hal_u32_t *deb_setval;
+	hal_float_t *value;
+	hal_bit_t *enable;
+	hal_float_t offset;
+	hal_float_t scale;
+	hal_float_t high_limit;
+	hal_float_t low_limit;
+	hal_float_t max_v;
+	hal_u32_t PinId;
+}one_adcout_data_t;
+
+typedef struct
+{
+	hal_float_t *value_raw;
+	hal_float_t *value;
+	hal_float_t scale;
+	hal_float_t offset;
+}one_adcin_data_t;
+
+typedef struct{
+	hal_bit_t *digin_in;
+	hal_bit_t *digin_in_not;
+	hal_bit_t *digout_out;
+	hal_bit_t digout_invert;
+
+	hal_u32_t *counter_value;
+
+	bool DigitalValueSet_ignore;
+}one_digiIO_data_t;
+
+typedef struct
+{
+	one_adcout_data_t adcout[6];
+	hal_u32_t adcout_pwm_period;
+	hal_u32_t *adcout_deb_outv;
+
+	one_adcin_data_t adcin[7];
+
+	one_digiIO_data_t Pin[55];
+
+	hal_u32_t *deb_out;
+}all_IO_data_t;
+
+typedef struct
+{
 	hal_u32_t PoNET_moduleID; 		// RO Parameter
 	hal_u32_t PoNET_i2cAddress; 	// RO Parameter
 	hal_u32_t PoNET_moduleType; 	// RO Parameter

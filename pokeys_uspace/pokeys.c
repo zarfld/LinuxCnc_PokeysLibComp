@@ -19,6 +19,7 @@
 #include "PoKeysCompEncoders.c"
 #include "PoKeysCompPoExtBus.c"
 #include "PoKeysCompPoNet.c"
+#include "PoKeysCompIO.c"
 #include <stdlib.h>
 
 static int comp_id;
@@ -347,9 +348,7 @@ struct __comp_state
 	hal_float_t *PEv2_deb_RefSpeed[8];
 	hal_float_t *PEv2_deb_RefPos[8];
 	hal_float_t *PEv2_deb_RefPosSpeed[8];
-	hal_u32_t *adcout_deb_out[6];
-	hal_u32_t *adcout_deb_setval[6];
-	hal_u32_t *adcout_deb_outv;
+
 	hal_bit_t *err;
 	hal_bit_t *connected;
 	hal_bit_t *connected_usb;
@@ -566,19 +565,12 @@ struct __comp_state
 	hal_u32_t *rtc_sec_ret;
 	hal_u32_t *rtc_hal_latency;
 
-	hal_u32_t *counter_value[55];
-	hal_float_t *adcin_value_raw[7];
-	hal_float_t *adcin_value[7];
-	hal_bit_t *digin_in[55];
-	hal_bit_t *digin_in_not[55];
-	hal_bit_t *digout_out[55];
+	all_IO_data_t *IO_data;
+	/*hal_u32_t *adcout_deb_out[6];
+	hal_u32_t *adcout_deb_setval[6];
+	
 	hal_float_t *adcout_value[6];
 	hal_bit_t *adcout_enable[6];
-
-	hal_float_t adcin_scale[7];
-	hal_float_t adcin_offset[7];
-	hal_bit_t digout_invert[55];
-	
 	hal_float_t adcout_offset[6];
 	hal_float_t adcout_scale[6];
 	hal_float_t adcout_high_limit[6];
@@ -586,15 +578,24 @@ struct __comp_state
 	hal_float_t adcout_max_v[6];
 	hal_u32_t adcout_PinId[6];
 	hal_u32_t adcout_pwm_period;
+	hal_u32_t *adcout_deb_outv;
+	
+	hal_float_t *adcin_value_raw[7];
+	hal_float_t *adcin_value[7];
+	hal_float_t adcin_scale[7];
+	hal_float_t adcin_offset[7];
+
+	hal_bit_t *digin_in[55];
+	hal_bit_t *digin_in_not[55];
+	hal_bit_t *digout_out[55];
+	hal_bit_t digout_invert[55];
+
+	hal_u32_t *counter_value[55];*/
 
 	all_encoder_data_t *encoder_data;
 	all_PoNET_data_t *poNET_data;
 	
 	hal_u32_t devSerial;
-	
-
-
-
 
 };
 
@@ -710,7 +711,7 @@ static int export(char *prefix, long extra_arg)
 	}
 
 	//AnalogOut Pins
-	for (j = 0; j < (6); j++)
+	/*for (j = 0; j < (6); j++)
 	{
 		r = hal_pin_u32_newf(HAL_OUT, &(inst->adcout_deb_out[j]), comp_id,
 							 "%s.adcout.%01d.deb.out", prefix, j);
@@ -725,6 +726,8 @@ static int export(char *prefix, long extra_arg)
 
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->adcout_deb_outv), comp_id,
 						 "%s.adcout.deb.outv", prefix);
+						 
+	*/
 	if (r != 0)
 		return r;
 	r = hal_pin_bit_newf(HAL_OUT, &(inst->err), comp_id,
@@ -1557,48 +1560,35 @@ static int export(char *prefix, long extra_arg)
 						 "%s.rtc.hal-latency", prefix);
 	if (r != 0)
 		return r;
-	for (j = 0; j < (55); j++)
+
+	r=PKIO_export_pins(prefix,extra_arg,comp_id,inst->IO_data, dev);
+	/*for (j = 0; j < (55); j++)
 	{
 		r = hal_pin_u32_newf(HAL_OUT, &(inst->counter_value[j]), comp_id,
 							 "%s.counter.%01d.value", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (7); j++)
-	{
-		r = hal_pin_float_newf(HAL_OUT, &(inst->adcin_value_raw[j]), comp_id,
-							   "%s.adcin.%01d.value-raw", prefix, j);
-		if (r != 0)
-			return r;
-	}
-	for (j = 0; j < (7); j++)
-	{
-		r = hal_pin_float_newf(HAL_OUT, &(inst->adcin_value[j]), comp_id,
-							   "%s.adcin.%01d.value", prefix, j);
-		if (r != 0)
-			return r;
-	}
-	for (j = 0; j < (55); j++)
+	}*/
+
+
+	/*for (j = 0; j < (55); j++)
 	{
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->digin_in[j]), comp_id,
 							 "%s.digin.%01d.in", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (55); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->digin_in_not[j]), comp_id,
 							 "%s.digin.%01d.in-not", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (55); j++)
-	{
+
 		r = hal_pin_bit_newf(HAL_IN, &(inst->digout_out[j]), comp_id,
 							 "%s.digout.%01d.out", prefix, j);
 		if (r != 0)
 			return r;
-	}
+	}*/
+	
 
 
 
@@ -1610,7 +1600,7 @@ static int export(char *prefix, long extra_arg)
 
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: Encoder pins done \n");
 
-	for (j = 0; j < (6); j++)
+	/*for (j = 0; j < (6); j++)
 	{
 		r = hal_pin_float_newf(HAL_IN, &(inst->adcout_value[j]), comp_id,
 							   "%s.adcout.%01d.value", prefix, j);
@@ -1621,7 +1611,8 @@ static int export(char *prefix, long extra_arg)
 							 "%s.adcout.%01d.enable", prefix, j);
 		if (r != 0)
 			return r;
-	}
+	}*/
+
 	//int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoNET_data_t *poNET_data, sPoKeysDevice *dev)
 
 	r=PKPoNet_export_pins(prefix,extra_arg,comp_id,16,inst->poNET_data ,dev);
@@ -1873,27 +1864,25 @@ static int export(char *prefix, long extra_arg)
 						   "%s.PEv2.digin.Probe.invert", prefix);
 	if (r != 0)
 		return r;
-	for (j = 0; j < (7); j++)
+	/*for (j = 0; j < (7); j++)
 	{
 		r = hal_param_float_newf(HAL_RW, &(inst->adcin_scale[j]), comp_id,
 								 "%s.adcin.%01d.scale", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (7); j++)
-	{
+
 		r = hal_param_float_newf(HAL_RW, &(inst->adcin_offset[j]), comp_id,
 								 "%s.adcin.%01d.offset", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (55); j++)
+	}*/
+	/*for (j = 0; j < (55); j++)
 	{
 		r = hal_param_bit_newf(HAL_RW, &(inst->digout_invert[j]), comp_id,
 							   "%s.digout.%01d.invert", prefix, j);
 		if (r != 0)
 			return r;
-	}
+	}*/
 	/*for (j = 0; j < (29); j++)
 	{
 		r = hal_param_float_newf(HAL_RW, &(inst->encoder_scale[j]), comp_id,
@@ -1901,43 +1890,33 @@ static int export(char *prefix, long extra_arg)
 		if (r != 0)
 			return r;
 	}*/
-	for (j = 0; j < (6); j++)
+	/*for (j = 0; j < (6); j++)
 	{
 		r = hal_param_float_newf(HAL_RW, &(inst->adcout_offset[j]), comp_id,
 								 "%s.adcout.%01d.offset", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (6); j++)
-	{
+
 		r = hal_param_float_newf(HAL_RW, &(inst->adcout_scale[j]), comp_id,
 								 "%s.adcout.%01d.scale", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (6); j++)
-	{
+
 		r = hal_param_float_newf(HAL_RW, &(inst->adcout_high_limit[j]), comp_id,
 								 "%s.adcout.%01d.high-limit", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (6); j++)
-	{
+
 		r = hal_param_float_newf(HAL_RW, &(inst->adcout_low_limit[j]), comp_id,
 								 "%s.adcout.%01d.low-limit", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (6); j++)
-	{
+
 		r = hal_param_float_newf(HAL_RW, &(inst->adcout_max_v[j]), comp_id,
 								 "%s.adcout.%01d.max-v", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (6); j++)
-	{
+
 		r = hal_param_u32_newf(HAL_RO, &(inst->adcout_PinId[j]), comp_id,
 							   "%s.adcout.%01d.PinId", prefix, j);
 		if (r != 0)
@@ -1946,7 +1925,7 @@ static int export(char *prefix, long extra_arg)
 	r = hal_param_u32_newf(HAL_RW, &(inst->adcout_pwm_period), comp_id,
 						   "%s.adcout.pwm.period", prefix);
 	if (r != 0)
-		return r;
+		return r;*/
 
 	if (__comp_last_inst)
 		__comp_last_inst->_next = inst;
@@ -2686,7 +2665,7 @@ unsigned int sleepdur1 = 1000;
 unsigned int sleepdur2 = 1000;
 float StepScale[8];
 
-bool DoPWM = false;
+//bool DoPWM = false;
 bool DoEncoders = true;
 
 PK_MatrixKB_Parameters MatrixKB;
@@ -4431,15 +4410,17 @@ void user_mainloop(void)
 				deb_out = 224;
 			}
 
-			bool PinConfigurationGet = false;
+			/*bool PinConfigurationGet = false;
 			bool DigitalIOGet = false;
 			bool AnalogIOGet = false;
 			bool AnalogIOSet = false;
 			bool DigitalCounterGet = false;
 			bool DigitalIOSet = false;
-			bool EncoderValuesGet = false;
-			bool loopPins = false;
 			bool doPwmConfig = false;
+			bool loopPins = false;*/
+			
+
+			bool EncoderValuesGet = false;
 			/*
 			info_PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
 			 info_PWMCount = dev->info.iPWMCount;                        // Number of pins that support PWM output
@@ -4453,7 +4434,7 @@ void user_mainloop(void)
 			 info_TriggeredKeyMapping = dev->info.iTriggeredKeyMapping;             // Device supports triggered key mapping
 			 info_KeyRepeatDelay = dev->info.iKeyRepeatDelay;                  // Device supports user customizable key repeat rates and delays
 			 info_DigitalCounters = dev->info.iDigitalCounters;                 // Device supports digital counters			*/
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PinCount = %d\n", __FILE__, __FUNCTION__, dev->info.iPinCount);
+			/*rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PinCount = %d\n", __FILE__, __FUNCTION__, dev->info.iPinCount);
 			if (dev->info.iPinCount > 0)
 			{
 				deb_out = 210;
@@ -4484,8 +4465,8 @@ void user_mainloop(void)
 					AnalogIOGet = true;
 					loopPins = true;
 				}
-			}
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iDigitalCounters = %d\n", __FILE__, __FUNCTION__, dev->info.iDigitalCounters);
+			}*/
+			/*rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iDigitalCounters = %d\n", __FILE__, __FUNCTION__, dev->info.iDigitalCounters);
 			if (dev->info.iDigitalCounters > 0)
 			{
 				deb_out = 214;
@@ -4498,95 +4479,16 @@ void user_mainloop(void)
 					DigitalCounterGet = true;
 					loopPins = true;
 				}
-			}
+			}*/
 
 			PKEncoder_Update(dev);
-			/*
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iBasicEncoderCount = %d\n", __FILE__, __FUNCTION__, dev->info.iBasicEncoderCount);
-						if (dev->info.iBasicEncoderCount && DoEncoders)
-						{
-							deb_out = 216;
-							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EncoderValuesGet(dev)\n", __FILE__, __FUNCTION__);
-							if (PK_EncoderValuesGet(dev) == PK_OK)
-							{
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EncoderValuesGet(dev) OK\n", __FILE__, __FUNCTION__);
-								usleep(sleepdur);
-								deb_out = 217;
-								EncoderValuesGet = true;
-								bool resetEncoders = false;
+			deb_out = 220;
+			usleep(sleepdur);
 
-								resetEncoders = 0;
-
-
-								for (i = 0; i < dev->info.iBasicEncoderCount; i++)
-								{
-									rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: read encoder %d\n", __FILE__, __FUNCTION__, i);
-									deb_out = 218*100+i;
-									encoder_count(i) = dev->Encoders[i].encoderValue;
-									deb_out = 2180;
-									encoder_position(i) = dev->Encoders[i].encoderValue * encoder_scale(i);
-									deb_out = 2181;
-									if ((encoder_reset(i) != 0) || (initEncodersDone == false))
-									{
-										deb_out = 2182;
-										dev->Encoders[i].encoderValue = 0;
-										deb_out = 2183;
-										resetEncoders = true;
-										deb_out = 2184;
-									}
-									deb_out = 2185;
-									usleep(sleepdur);
-								}
-
-								deb_out = 219;
-								if (dev->info.iUltraFastEncoders)
-								{
-									rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: read UltraFastEncoders\n", __FILE__, __FUNCTION__);
-									usleep(sleepdur);
-									deb_out = 220;
-
-									for (i = dev->info.iBasicEncoderCount; i < (dev->info.iBasicEncoderCount + dev->info.iUltraFastEncoders); i++)
-									{
-										rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: UltraFastEncoders %d\n", __FILE__, __FUNCTION__, i);
-										deb_out = 221;
-										encoder_count(i) = dev->Encoders[i].encoderValue;
-										encoder_position(i) = dev->Encoders[i].encoderValue * encoder_scale(i);
-										if ((encoder_reset(i) != 0) || (initEncodersDone == false))
-										{
-											dev->Encoders[i].encoderValue = 0;
-											resetEncoders = true;
-										}
-										usleep(sleepdur);
-									}
-								}
-
-								if (dev->info.iFastEncoders)
-								{
-									for (i = dev->info.iBasicEncoderCount+ dev->info.iUltraFastEncoders; i < (dev->info.iBasicEncoderCount + dev->info.iUltraFastEncoders + dev->info.iFastEncoders ); i++)
-									{
-										encoder_count(i) = dev->Encoders[i].encoderValue;
-									}
-								}
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: resetEncoders = %d\n", __FILE__, __FUNCTION__, resetEncoders);
-								if (resetEncoders == true)
-								{
-									deb_out = 140;
-									rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EncoderValuesSet(dev)\n", __FILE__, __FUNCTION__);
-									if (PK_EncoderValuesSet(dev) == PK_OK)
-									{
-										rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EncoderValuesSet(dev) OK\n", __FILE__, __FUNCTION__);
-										usleep(sleepdur);
-										resetEncoders = false;
-										deb_out = 141;
-										initEncodersDone = true;
-									}
-									deb_out = 142;
-								}
-
-							}
-						}
-			*/
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PWMCount = %d\n", __FILE__, __FUNCTION__, dev->info.iPWMCount);
+		PKIO_Update(dev);
+		deb_out = 230;
+		usleep(sleepdur);
+/*			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PWMCount = %d\n", __FILE__, __FUNCTION__, dev->info.iPWMCount);
 			if (dev->info.iPWMCount && DoPWM)
 			{
 				adcout_deb_outv = 100;
@@ -4690,109 +4592,7 @@ void user_mainloop(void)
 						adcout_deb_setval(PwmId) = PWMduty[i];
 						usleep(sleepdur);
 
-						/*if ((max_v[PwmId] > 0.000) && (high_limit[PwmId] > 0.000) && (high_limit[PwmId] > low_limit[PwmId]))
-						{
-							adcout_deb_out(PwmId) = 110;
-							if (dev->PWM.PWMenabledChannels[i] = 0)
-							{
-								adcout_deb_out(PwmId) = 111;
-								dev->PWM.PWMenabledChannels[i] = 1;
-								doPwmConfig = true;
-							}
-							else {
-								adcout_deb_out(PwmId) = 112;
-							}
-							if (PWM_SCale[i] = 0.000)
-							{
-								adcout_deb_out(PwmId) = 200;
-								if ((high_limit[PwmId] = 0.000) && (low_limit[PwmId] = 0.000))
-								{
-									adcout_deb_out(PwmId) = 2050;
-									PWM_SCale[i] = 1;
-									high_limit[PwmId] = max_v[PwmId];
-									low_limit[PwmId] = 0.000;
-								}
-								else if ((low_limit[PwmId] = 0.000)&&(high_limit[PwmId] != 0.000)&&(max_v[PwmId] != 0.000))
-								{
-									adcout_offset(PwmId) = 0;
-									PWM_SCale[i] = high_limit[PwmId] / max_v[PwmId];
-									adcout_deb_out(PwmId) = 205;
-								}
-								else if( (high_limit[PwmId] != 0.000) && (max_v[PwmId] != 0.000))
-								{
-									adcout_offset(PwmId) = low_limit[PwmId];
-									PWM_SCale[i] = (high_limit[PwmId] - low_limit[PwmId]) / max_v[PwmId];
-									adcout_deb_out(PwmId) = 210;
-								}
-								if (PWM_SCale[i] = 0.000)
-								{
-									PWM_SCale[i] = 1;
-									adcout_deb_out(PwmId) = 220;
-								}
-							}
-							else {
-								adcout_deb_out(PwmId) = 201;
-
-								if (PWM_SCale[i] > 0.000) {
-									adcout_deb_out(PwmId) = 202;
-								}else if (PWM_SCale[i] < 0.000) {
-									adcout_deb_out(PwmId) = 203;
-								}
-							}
-							uint32_t setVal = 0;
-
-							if (adcout_enable(PwmId) == true)
-							{
-								int tmp = adcout_value(PwmId) + adcout_offset(PwmId);
-
-								if (tmp <= low_limit[PwmId])
-								{
-									tmp = low_limit[PwmId];
-								}
-								else if (tmp >= high_limit[PwmId])
-								{
-									tmp = high_limit[PwmId];
-								}
-
-								tmp = tmp * PWM_SCale[i];
-
-								setVal = (uint32_t)((tmp / max_v[PwmId]) * dev->PWM.PWMperiod);
-							}
-
-							if (*dev->PWM.PWMduty != setVal)
-							{
-								*dev->PWM.PWMduty = setVal;
-								AnalogIOSet = true;
-							}
-
-							adcout_deb_setval(PwmId) = setVal;
-
-						}
-						else if ((max_v[PwmId] > 0.000) && (PWM_SCale[i] > 0.000))
-						{
-							if (adcout_offset(PwmId) = 0)
-							{
-								low_limit[PwmId] = 0;
-								high_limit[PwmId] = max_v[PwmId] * PWM_SCale[i];
-							}
-							else
-							{
-								low_limit[PwmId] = adcout_offset(PwmId);
-								high_limit[PwmId] = adcout_offset(PwmId) + max_v[PwmId] * PWM_SCale[i];
-							}
-						}
-						else if (adcout_enable(PwmId) == true)
-						{
-							if (PWM_SCale[i] = 0.000)
-							{
-								PWM_SCale[i] = 1.0;
-								adcout_deb_out(PwmId) = 230;
-							}
-							else {
-								adcout_deb_out(PwmId) = 231;
-							}
-
-						}*/
+						
 
 						if (adcout_scale(PwmId) != PWM_SCale[i])
 						{
@@ -4854,30 +4654,13 @@ void user_mainloop(void)
 			{
 				adcout_deb_outv = 150;
 			}
-
-			if (loopPins = true)
+*/
+			/*if (loopPins = true)
 			{ // gets IO data and checks return value
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: read IO data\n", __FILE__, __FUNCTION__);
 				err = 0;
 				sPoKeysPinData iPin;
 				deb_out = 230;
-
-				/*
-				if ( PEv2_digout_Emergency_Pin!=0 && PEv2_PulseEngineEnabled!=0)
-				{	//check if pin is parametrized in HAL
-					deb_out = 231;
-					if (PEv2_digout_Emergency_out==0)
-					{
-						//error: lvalue required as left operand of assignment
-						Pins_DigitalValueSet(PEv2_digout_Emergency_Pin-1)=0;
-					}
-					else
-					{
-						//error: lvalue required as left operand of assignment
-						Pins_DigitalValueSet(PEv2_digout_Emergency_Pin-1)=1;
-					}
-
-				}*/
 
 				deb_out = 232;
 				int AnalogPinOffset = 40;
@@ -4979,25 +4762,11 @@ void user_mainloop(void)
 
 					deb_out = 2330 + i;
 				}
-				usleep(sleepdur);
+				usleep(sleepdur);*/
 
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PEv2_PulseEngineEnabled = %d\n", __FILE__, __FUNCTION__, PEv2_PulseEngineEnabled);
-				if (PEv2_PulseEngineEnabled != 0)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PulseEngineState = %d\n", __FILE__, __FUNCTION__, dev->PEv2.PulseEngineState);
-					if (dev->PEv2.PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
-					{
-						PEv2_digin_Emergency_in = false;
-						PEv2_digin_Emergency_in_not = true;
-					}
-					else
-					{
-						PEv2_digin_Emergency_in = true;
-						PEv2_digin_Emergency_in_not = false;
-					}
-				}
+			
 
-				deb_out = 236;
+				/*deb_out = 236;
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DigitalIOSet(dev)\n", __FILE__, __FUNCTION__);
 				if (DigitalIOSet = true)
 				{
@@ -5023,7 +4792,7 @@ void user_mainloop(void)
 				}
 
 				deb_out = 237;
-			}
+			}*/
 			/*else
 			{             		  //on connection error
 			   deb_out = 245;
@@ -5032,6 +4801,22 @@ void user_mainloop(void)
 			   err=1;
 
 			}*/
+
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PEv2_PulseEngineEnabled = %d\n", __FILE__, __FUNCTION__, PEv2_PulseEngineEnabled);
+			if (PEv2_PulseEngineEnabled != 0)
+			{
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PulseEngineState = %d\n", __FILE__, __FUNCTION__, dev->PEv2.PulseEngineState);
+				if (dev->PEv2.PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
+				{
+					PEv2_digin_Emergency_in = false;
+					PEv2_digin_Emergency_in_not = true;
+				}
+				else
+				{
+					PEv2_digin_Emergency_in = true;
+					PEv2_digin_Emergency_in_not = false;
+				}
+			}
 
 			/*if (info_MatrixKeyboard!=0)
 			{
