@@ -212,7 +212,7 @@ int PKIO_export_pins(char *prefix, long extra_arg, int id, all_IO_data_t *Io_dat
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.digout.%01d.out failed\n", __FILE__, __FUNCTION__, prefix, j);
             return r;
         }
-
+		IO_data->Pin[j].DigitalValueSet_ignore = 0;
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.digout.%01d.invert\n", __FILE__, __FUNCTION__, prefix, j);
 		r = hal_param_bit_newf(HAL_RW, &(IO_data->Pin[j].digout_invert), id,
 							   "%s.digout.%01d.invert", prefix, j);
@@ -636,13 +636,15 @@ rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iDigitalCounters = %d\n", __
 
                     if(PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalOutput)==1)
                     {
-					if (IO_data->Pin[i].DigitalValueSet_ignore = false)
+					if (IO_data->Pin[i].DigitalValueSet_ignore == false)
 					{
 						bool setDigoutvalue = false;
-						if (*(IO_data->Pin[i].digout_out) == 1)
+						if (*(IO_data->Pin[i]).digout_out == 1)
 						{
+                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: dev->Pins[%d].digout_out = 1\n", __FILE__, __FUNCTION__,i);
 							if (IO_data->Pin[i].digout_invert == 0)
 							{
+                                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: dev->Pins[%d].digout_invert = 0\n", __FILE__, __FUNCTION__,i);
 								setDigoutvalue = true;
 							}
 						}
@@ -650,12 +652,14 @@ rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iDigitalCounters = %d\n", __
 						{
 							if (IO_data->Pin[i].digout_invert == 1)
 							{
+                                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: dev->Pins[%d].digout_invert = 1\n", __FILE__, __FUNCTION__,i);
 								setDigoutvalue = true;
 							}
 						}
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: setDigoutvalue = %d\n", __FILE__, __FUNCTION__, setDigoutvalue);
 						if ((setDigoutvalue == true) && (dev->Pins[i].DigitalValueSet == 0))
 						{
+                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: dev->Pins[%d].DigitalValueSet = 1\n", __FILE__, __FUNCTION__,i);
 							dev->Pins[i].DigitalValueSet = 1;
 							DigitalIOSet = true;
 						}
@@ -666,6 +670,10 @@ rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iDigitalCounters = %d\n", __
 						}
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalValueSet[%d] = %d\n", __FILE__, __FUNCTION__, i, dev->Pins[i].DigitalValueSet);
 					}
+                    else
+                    {
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: IO_data->Pin[%d].DigitalValueSet_ignore = true\n", __FILE__, __FUNCTION__,i);
+                    }
                     }
                     if(PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalCounter)==1)
                     {
