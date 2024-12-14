@@ -641,10 +641,10 @@ rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iDigitalCounters = %d\n", __
 						bool setDigoutvalue = false;
 						if (*(IO_data->Pin[i]).digout_out == 1)
 						{
-                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: dev->Pins[%d].digout_out = 1\n", __FILE__, __FUNCTION__,i);
+                            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].digout_out = 1\n", __FILE__, __FUNCTION__,i);
 							if (IO_data->Pin[i].digout_invert == 0)
 							{
-                                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: dev->Pins[%d].digout_invert = 0\n", __FILE__, __FUNCTION__,i);
+                                rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].digout_invert = 0\n", __FILE__, __FUNCTION__,i);
 								setDigoutvalue = true;
 							}
 						}
@@ -652,14 +652,14 @@ rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iDigitalCounters = %d\n", __
 						{
 							if (IO_data->Pin[i].digout_invert == 1)
 							{
-                                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: dev->Pins[%d].digout_invert = 1\n", __FILE__, __FUNCTION__,i);
+                                rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].digout_invert = 1\n", __FILE__, __FUNCTION__,i);
 								setDigoutvalue = true;
 							}
 						}
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: setDigoutvalue = %d\n", __FILE__, __FUNCTION__, setDigoutvalue);
 						if ((setDigoutvalue == true) && (dev->Pins[i].DigitalValueSet == 0))
 						{
-                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: dev->Pins[%d].DigitalValueSet = 1\n", __FILE__, __FUNCTION__,i);
+                            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].DigitalValueSet = 1\n", __FILE__, __FUNCTION__,i);
 							dev->Pins[i].DigitalValueSet = 1;
 							DigitalIOSet = true;
 						}
@@ -672,7 +672,7 @@ rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iDigitalCounters = %d\n", __
 					}
                     else
                     {
-                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: IO_data->Pin[%d].DigitalValueSet_ignore = true\n", __FILE__, __FUNCTION__,i);
+                        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: IO_data->Pin[%d].DigitalValueSet_ignore = true\n", __FILE__, __FUNCTION__,i);
                     }
                     }
                     if(PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalCounter)==1)
