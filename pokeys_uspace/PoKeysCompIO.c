@@ -1,9 +1,81 @@
 #include "PoKeysLib.h"
-#include "PoKeysComp.h"
 #include "rtapi.h"
 // #include "rtapi_app.h"
 #include "hal.h"
 #include "stdio.h"
+
+#ifdef MODULE_INFO
+MODULE_INFO(linuxcnc, "pin:adcout.#.deb.out:u32:6:out::None:None");
+MODULE_INFO(linuxcnc, "pin:adcout.#.deb.setval:u32:6:out::None:None");
+MODULE_INFO(linuxcnc, "pin:adcout.deb.outv:u32:0:out::None:None");
+
+MODULE_INFO(linuxcnc, "pin:counter.#.value:u32:55:out::None:None");
+MODULE_INFO(linuxcnc, "pin:adcin.#.value-raw:float:7:out::None:None");
+MODULE_INFO(linuxcnc, "pin:adcin.#.value:float:7:out::None:None");
+MODULE_INFO(linuxcnc, "param:adcin.#.scale:float:7:rw:The input voltage (or current) will be multiplied by scale before being output to value.:None:None");
+MODULE_INFO(linuxcnc, "param:adcin.#.offset:float:7:rw:This will be subtracted from the hardware input voltage (or current) after the scale multiplier has been applied.:None:None");
+MODULE_INFO(linuxcnc, "pin:digin.#.in:bit:55:out::None:None");
+MODULE_INFO(linuxcnc, "pin:digin.#.in-not:bit:55:out::None:None");
+MODULE_INFO(linuxcnc, "pin:digout.#.out:bit:55:in::None:None");
+MODULE_INFO(linuxcnc, "param:digout.#.invert:bit:55:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
+
+MODULE_INFO(linuxcnc, "pin:adcout.#.value:float:6:in::None:None");
+MODULE_INFO(linuxcnc, "pin:adcout.#.enable:bit:6:in::None:None");
+MODULE_INFO(linuxcnc, "param:adcout.#.offset:float:6:rw:This will be added to the value before the hardware is updated:None:None");
+MODULE_INFO(linuxcnc, "param:adcout.#.scale:float:6:rw:This should be set so that an input of 1 on the value pin will cause 1V:None:None");
+MODULE_INFO(linuxcnc, "param:adcout.#.high_limit:float:6:rw:When calculating the value to output to the hardware, if value +offset is greater than high_limit, then high_limit will be used instead.:None:None");
+MODULE_INFO(linuxcnc, "param:adcout.#.low_limit:float:6:rw:When calculating the value to output to the hardware, if value +offset is less than low_limit, then low_limit will be used instead:None:None");
+MODULE_INFO(linuxcnc, "param:adcout.#.max_v:float:6:rw:max v:None:None");
+MODULE_INFO(linuxcnc, "param:adcout.#.PinId:u32:6:r:max v:None:None");
+MODULE_INFO(linuxcnc, "param:adcout.pwm.period:u32:0:rw:PWM period, shared among all channels:None:None");
+#endif // MODULE_INFO
+
+
+typedef struct
+{
+	hal_u32_t *deb_out;
+	hal_u32_t *deb_setval;
+	hal_float_t *value;
+	hal_bit_t *enable;
+	hal_float_t offset;
+	hal_float_t scale;
+	hal_float_t high_limit;
+	hal_float_t low_limit;
+	hal_float_t max_v;
+	hal_u32_t PinId;
+}one_adcout_data_t;
+
+typedef struct
+{
+	hal_float_t *value_raw;
+	hal_float_t *value;
+	hal_float_t scale;
+	hal_float_t offset;
+}one_adcin_data_t;
+
+typedef struct{
+	hal_bit_t *digin_in;
+	hal_bit_t *digin_in_not;
+	hal_bit_t *digout_out;
+	hal_bit_t digout_invert;
+
+	hal_u32_t *counter_value;
+
+	bool DigitalValueSet_ignore;
+}one_digiIO_data_t;
+
+typedef struct
+{
+	one_adcout_data_t adcout[6];
+	hal_u32_t adcout_pwm_period;
+	hal_u32_t *adcout_deb_outv;
+
+	one_adcin_data_t adcin[7];
+
+	one_digiIO_data_t Pin[55];
+
+	hal_u32_t *deb_out;
+}all_IO_data_t;
 
 static all_IO_data_t *IO_data = 0;
 

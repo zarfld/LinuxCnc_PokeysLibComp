@@ -44,9 +44,7 @@ MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.doMove:bit:8:out::None:None");
 MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.RefSpeed:float:8:out::None:None");
 MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.RefPos:float:8:out::None:None");
 MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.RefPosSpeed:float:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:adcout.#.deb.out:u32:6:out::None:None");
-MODULE_INFO(linuxcnc, "pin:adcout.#.deb.setval:u32:6:out::None:None");
-MODULE_INFO(linuxcnc, "pin:adcout.deb.outv:u32:0:out::None:None");
+
 MODULE_INFO(linuxcnc, "pin:err:bit:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:connected:bit:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:connected.usb:bit:0:out::None:None");
@@ -93,38 +91,7 @@ MODULE_INFO(linuxcnc, "pin:info.JoystickHATswitch:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:info.PulseEngine:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:info.PulseEnginev2:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:info.EasySensors:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.0.in:bit:10:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.1.in:bit:10:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.2.in:bit:10:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.3.in:bit:10:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.4.in:bit:10:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.5.in:bit:10:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.6.in:bit:10:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.7.in:bit:10:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.0.in-not:bit:10:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.1.in-not:bit:10:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.2.in-not:bit:10:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.3.in-not:bit:10:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.4.in-not:bit:10:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.5.in-not:bit:10:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.6.in-not:bit:10:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.7.in-not:bit:10:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.0.out:bit:10:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.1.out:bit:10:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.2.out:bit:10:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.3.out:bit:10:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.4.out:bit:10:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.5.out:bit:10:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.6.out:bit:10:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.7.out:bit:10:in::None:None");
-MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.0.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
-MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.1.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
-MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.2.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
-MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.3.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
-MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.4.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
-MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.5.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
-MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.6.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
-MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.7.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
+
 MODULE_INFO(linuxcnc, "pin:PEv2.nrOfAxes:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:PEv2.maxPulseFrequency:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:PEv2.bufferDepth:u32:0:out::None:None");
@@ -279,48 +246,10 @@ MODULE_INFO(linuxcnc, "pin:rtc.loop_frequ:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:rtc.loop_frequ_demand:u32:0:in::None:None");
 MODULE_INFO(linuxcnc, "pin:rtc.sec_ret:u32:0:in::None:None");
 MODULE_INFO(linuxcnc, "pin:rtc.hal_latency:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:counter.#.value:u32:55:out::None:None");
-MODULE_INFO(linuxcnc, "pin:adcin.#.value-raw:float:7:out::None:None");
-MODULE_INFO(linuxcnc, "pin:adcin.#.value:float:7:out::None:None");
-MODULE_INFO(linuxcnc, "param:adcin.#.scale:float:7:rw:The input voltage (or current) will be multiplied by scale before being output to value.:None:None");
-MODULE_INFO(linuxcnc, "param:adcin.#.offset:float:7:rw:This will be subtracted from the hardware input voltage (or current) after the scale multiplier has been applied.:None:None");
-MODULE_INFO(linuxcnc, "pin:digin.#.in:bit:55:out::None:None");
-MODULE_INFO(linuxcnc, "pin:digin.#.in-not:bit:55:out::None:None");
-MODULE_INFO(linuxcnc, "pin:digout.#.out:bit:55:in::None:None");
-MODULE_INFO(linuxcnc, "param:digout.#.invert:bit:55:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
-MODULE_INFO(linuxcnc, "pin:encoder.#.count:s32:29:out::None:None");
-MODULE_INFO(linuxcnc, "pin:encoder.#.position:float:29:out::None:None");
-MODULE_INFO(linuxcnc, "pin:encoder.#.velocity:float:29:out::None:None");
-MODULE_INFO(linuxcnc, "pin:encoder.#.reset:bit:29:in::None:None");
-MODULE_INFO(linuxcnc, "pin:encoder.#.index-enable:bit:29:in::None:None");
-MODULE_INFO(linuxcnc, "param:encoder.#.scale:float:29:rw:The scale factor used to convert counts to position units. It is in “counts per position unit”:None:None");
-MODULE_INFO(linuxcnc, "pin:adcout.#.value:float:6:in::None:None");
-MODULE_INFO(linuxcnc, "pin:adcout.#.enable:bit:6:in::None:None");
-MODULE_INFO(linuxcnc, "param:adcout.#.offset:float:6:rw:This will be added to the value before the hardware is updated:None:None");
-MODULE_INFO(linuxcnc, "param:adcout.#.scale:float:6:rw:This should be set so that an input of 1 on the value pin will cause 1V:None:None");
-MODULE_INFO(linuxcnc, "param:adcout.#.high_limit:float:6:rw:When calculating the value to output to the hardware, if value +offset is greater than high_limit, then high_limit will be used instead.:None:None");
-MODULE_INFO(linuxcnc, "param:adcout.#.low_limit:float:6:rw:When calculating the value to output to the hardware, if value +offset is less than low_limit, then low_limit will be used instead:None:None");
-MODULE_INFO(linuxcnc, "param:adcout.#.max_v:float:6:rw:max v:None:None");
-MODULE_INFO(linuxcnc, "param:adcout.#.PinId:u32:6:r:max v:None:None");
-MODULE_INFO(linuxcnc, "param:adcout.pwm.period:u32:0:rw:PWM period, shared among all channels:None:None");
-MODULE_INFO(linuxcnc, "pin:kbd48CNC.available:bit:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:kbd48CNC.PoNetID:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:kbd48CNC.KeyBrightness:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:kbd48CNC.prevBrightness:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:kbd48CNC.lightValue:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:kbd48CNC.#.LED:bit:48:in::None:None");
-MODULE_INFO(linuxcnc, "pin:kbd48CNC.#.Button:bit:48:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.#.moduleID:u32:16:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.#.i2cAddress:u32:16:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.#.moduleType:u32:16:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.#.moduleSize:u32:16:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.#.moduleOptions:u32:16:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.PWMduty:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.lightValue:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.PoNETstatus:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.DevCount:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.#.statusIn:u32:16:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.#.statusOut:u32:16:in::None:None");
+
+
+
+
 MODULE_INFO(linuxcnc, "license:GPL");
 MODULE_INFO(linuxcnc, "author:Dominik Zarfl");
 MODULE_LICENSE("GPL");
@@ -566,31 +495,6 @@ struct __comp_state
 	hal_u32_t *rtc_hal_latency;
 
 	all_IO_data_t *IO_data;
-	/*hal_u32_t *adcout_deb_out[6];
-	hal_u32_t *adcout_deb_setval[6];
-	
-	hal_float_t *adcout_value[6];
-	hal_bit_t *adcout_enable[6];
-	hal_float_t adcout_offset[6];
-	hal_float_t adcout_scale[6];
-	hal_float_t adcout_high_limit[6];
-	hal_float_t adcout_low_limit[6];
-	hal_float_t adcout_max_v[6];
-	hal_u32_t adcout_PinId[6];
-	hal_u32_t adcout_pwm_period;
-	hal_u32_t *adcout_deb_outv;
-	
-	hal_float_t *adcin_value_raw[7];
-	hal_float_t *adcin_value[7];
-	hal_float_t adcin_scale[7];
-	hal_float_t adcin_offset[7];
-
-	hal_bit_t *digin_in[55];
-	hal_bit_t *digin_in_not[55];
-	hal_bit_t *digout_out[55];
-	hal_bit_t digout_invert[55];
-
-	hal_u32_t *counter_value[55];*/
 
 	all_encoder_data_t *encoder_data;
 	all_PoNET_data_t *poNET_data;

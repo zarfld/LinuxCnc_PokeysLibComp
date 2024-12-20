@@ -5,6 +5,65 @@
 #include "hal.h"
 #include "stdio.h"
 
+
+
+#ifdef MODULE_INFO
+MODULE_INFO(linuxcnc, "pin:kbd48CNC.available:bit:0:out::None:None");
+MODULE_INFO(linuxcnc, "pin:kbd48CNC.PoNetID:u32:0:io::None:None");
+MODULE_INFO(linuxcnc, "pin:kbd48CNC.KeyBrightness:u32:0:io::None:None");
+MODULE_INFO(linuxcnc, "pin:kbd48CNC.prevBrightness:u32:0:io::None:None");
+MODULE_INFO(linuxcnc, "pin:kbd48CNC.lightValue:u32:0:io::None:None");
+MODULE_INFO(linuxcnc, "pin:kbd48CNC.#.LED:bit:48:in::None:None");
+MODULE_INFO(linuxcnc, "pin:kbd48CNC.#.Button:bit:48:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.#.moduleID:u32:16:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.#.i2cAddress:u32:16:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.#.moduleType:u32:16:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.#.moduleSize:u32:16:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.#.moduleOptions:u32:16:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.PWMduty:u32:0:io::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.lightValue:u32:0:io::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.PoNETstatus:u32:0:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.DevCount:u32:0:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.#.statusIn:u32:16:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.#.statusOut:u32:16:in::None:None");
+#endif // MODULE_INFO
+
+typedef struct
+{
+	hal_u32_t PoNET_moduleID; 		// RO Parameter
+	hal_u32_t PoNET_i2cAddress; 	// RO Parameter
+	hal_u32_t PoNET_moduleType; 	// RO Parameter
+	hal_u32_t PoNET_moduleSize;		// RO Parameter
+	hal_u32_t PoNET_moduleOptions; 	// RO Parameter
+	hal_u32_t *PoNET_statusIn[16];  // OUT pin
+	hal_u32_t *PoNET_statusOut[16]; // IN pin
+}one_PoNET_data_t;
+
+typedef struct
+{
+	hal_bit_t *LED;
+	hal_bit_t *Button;
+	
+}one_kbd48CNCButton_data_t ;
+
+typedef struct
+{
+	one_PoNET_data_t PoNET[16];
+	hal_u32_t *PoNET_PWMduty;
+	hal_u32_t *PoNET_lightValue;
+	hal_u32_t *PoNET_PoNETstatus;
+	hal_u32_t PoNET_DevCount; // RO Parameter
+
+	hal_bit_t *kbd48CNC_available;
+	hal_u32_t *kbd48CNC_PoNetID;
+	hal_u32_t *kbd48CNC_KeyBrightness;
+	hal_u32_t *kbd48CNC_prevBrightness;
+	hal_u32_t *kbd48CNC_lightValue;
+	one_kbd48CNCButton_data_t *kbd48CNCio[48];
+	uint8_t kbd48CNC_Counter;
+	hal_s32_t *deb_out;
+}all_PoNET_data_t;
+
 static all_PoNET_data_t *PoNet_data = 0;
 
 int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoNET_data_t *poNET_data, sPoKeysDevice *dev)

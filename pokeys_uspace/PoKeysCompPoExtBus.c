@@ -5,6 +5,63 @@
 #include "hal.h"
 #include "stdio.h"
 
+#ifdef MODULE_INFO
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.0.in:bit:10:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.1.in:bit:10:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.2.in:bit:10:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.3.in:bit:10:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.4.in:bit:10:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.5.in:bit:10:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.6.in:bit:10:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.7.in:bit:10:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.0.in-not:bit:10:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.1.in-not:bit:10:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.2.in-not:bit:10:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.3.in-not:bit:10:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.4.in-not:bit:10:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.5.in-not:bit:10:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.6.in-not:bit:10:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.7.in-not:bit:10:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.0.out:bit:10:in::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.1.out:bit:10:in::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.2.out:bit:10:in::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.3.out:bit:10:in::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.4.out:bit:10:in::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.5.out:bit:10:in::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.6.out:bit:10:in::None:None");
+MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.7.out:bit:10:in::None:None");
+MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.0.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
+MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.1.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
+MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.2.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
+MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.3.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
+MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.4.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
+MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.5.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
+MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.6.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
+MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.7.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
+#endif // MODULE_INFO
+
+typedef struct
+{
+	hal_bit_t *PoExtBus_digin_in[8];
+
+	hal_bit_t *PoExtBus_digin_in_not[8];
+
+	hal_bit_t *PoExtBus_digout_out[8];
+
+	hal_bit_t PoExtBus_digout_invert[8];
+
+	hal_u32_t PoExtBus_DataSet;
+    hal_u32_t PoExtBus_DataGet;
+	
+} one_PoExtBus_data_t;
+
+typedef struct
+{
+	one_PoExtBus_data_t PoExtBus[10];
+	hal_s32_t *PoExtBus_deb_out; // pin out s32 deb.out;
+
+	hal_u32_t PoExtBus_count;
+} all_PoExtBus_data_t;
 static all_PoExtBus_data_t *PoExtBus_data = 0;
 
 int PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoExtBus_data_t *poExtBus_data)
