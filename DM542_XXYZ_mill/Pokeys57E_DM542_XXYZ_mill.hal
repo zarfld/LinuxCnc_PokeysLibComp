@@ -12,7 +12,7 @@ loadusr -W pokeys
 loadrt pid names=pid.s
 #show pin
 #show parameter
-loadusr -W xhc-whb04b-6 -HsfB
+#loadusr -W xhc-whb04b-6 -HsfB
 
 
 addf motion-command-handler   servo-thread
@@ -23,6 +23,8 @@ addf motion-controller        servo-thread
 #addf pid.z.do-pid-calcs       servo-thread
 addf pid.s.do-pid-calcs       servo-thread
 
+#loadrt -W start_delay delay_ms=5000 
+loadusr -W start_delay_5000
 
 # external output signals
 #net estop-out     => pokeys.0.PEv2.digout.Emergency.out
@@ -103,8 +105,8 @@ setp   pokeys.0.PEv2.0.stepgen.MAX-LIMIT  	   [JOINT_0]MAX_LIMIT
 setp   pokeys.0.PEv2.0.stepgen.HOME-OFFSET  	   [JOINT_0]HOME_OFFSET
 setp   pokeys.0.PEv2.0.stepgen.HOME-SEARCH-VEL  	   [JOINT_0]HOME_SEARCH_VEL
 setp   pokeys.0.PEv2.0.stepgen.HOME-LATCH-VEL  	   [JOINT_0]HOME_LATCH_VEL
-setp   pokeys.0.PEv2.0.stepgen.STEPGEN-MAXVEL         [JOINT_0]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2.0.stepgen.STEPGEN-MAXACCEL           [JOINT_0]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2.0.stepgen.STEPGEN-MAXVEL         [JOINT_0]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2.0.stepgen.STEPGEN-MAXACCEL           [JOINT_0]STEPGEN_MAXACCEL
 
 # ---closedloop stepper signals---
 
@@ -120,10 +122,6 @@ net x-pos-fb     => joint.0.motor-pos-fb
 net x-enable     <= joint.0.amp-enable-out
 net x-enable     => pokeys.0.PEv2.0.digout.AxisEnable.out
 
-
-net x-homing     <= joint.0.homing
-net x-homing     => pokeys.0.PEv2.0.joint-in-homing
-
 net x-in-position     <= joint.0.in-position
 net x-in-position     => pokeys.0.PEv2.0.joint-in-position
 
@@ -136,9 +134,8 @@ net x-pos-fb               =>  joint.0.motor-pos-fb
 
 
 # ---setup home / limit switch signals---
-
-net min-home-x     =>  joint.0.home-sw-in
-net min-home-x     =>  joint.0.neg-lim-sw-in
+net home-x     =>  joint.0.home-sw-in
+net min-x     =>  joint.0.neg-lim-sw-in
 net max-x     =>  joint.0.pos-lim-sw-in
 
 #*******************
@@ -173,8 +170,8 @@ setp   pokeys.0.PEv2.6.stepgen.MAX-LIMIT  	   [JOINT_1]MAX_LIMIT
 setp   pokeys.0.PEv2.6.stepgen.HOME-OFFSET  	   [JOINT_1]HOME_OFFSET
 setp   pokeys.0.PEv2.6.stepgen.HOME-SEARCH-VEL  	   [JOINT_1]HOME_SEARCH_VEL
 setp   pokeys.0.PEv2.6.stepgen.HOME-LATCH-VEL  	   [JOINT_1]HOME_LATCH_VEL
-setp   pokeys.0.PEv2.6.stepgen.STEPGEN-MAXVEL         [JOINT_1]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2.6.stepgen.STEPGEN-MAXACCEL           [JOINT_1]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2.6.stepgen.STEPGEN-MAXVEL         [JOINT_1]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2.6.stepgen.STEPGEN-MAXACCEL           [JOINT_1]STEPGEN_MAXACCEL
 
 # ---closedloop stepper signals---
 
@@ -189,9 +186,6 @@ net x2-pos-fb     => joint.1.motor-pos-fb
 
 net x2-enable     <= joint.1.amp-enable-out
 net x2-enable     => pokeys.0.PEv2.6.digout.AxisEnable.out
-
-net x2-homing     <= joint.1.homing
-net x2-homing     => pokeys.0.PEv2.6.joint-in-homing
 
 net x2-in-position     <= joint.1.in-position
 net x2-in-position     => pokeys.0.PEv2.6.joint-in-position
@@ -241,8 +235,8 @@ setp   pokeys.0.PEv2.1.stepgen.MAX-LIMIT  	   [JOINT_2]MAX_LIMIT
 setp   pokeys.0.PEv2.1.stepgen.HOME-OFFSET  	   [JOINT_2]HOME_OFFSET
 setp   pokeys.0.PEv2.1.stepgen.HOME-SEARCH-VEL  	   [JOINT_2]HOME_SEARCH_VEL
 setp   pokeys.0.PEv2.1.stepgen.HOME-LATCH-VEL  	   [JOINT_2]HOME_LATCH_VEL
-setp   pokeys.0.PEv2.1.stepgen.STEPGEN-MAXVEL        [JOINT_2]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2.1.stepgen.STEPGEN-MAXACCEL           [JOINT_2]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2.1.stepgen.STEPGEN-MAXVEL        [JOINT_2]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2.1.stepgen.STEPGEN-MAXACCEL           [JOINT_2]STEPGEN_MAXACCEL
 
 # ---closedloop stepper signals---
 
@@ -263,17 +257,14 @@ net y-pos-fb     => joint.2.motor-pos-fb
 net y-enable     <= joint.2.amp-enable-out
 net y-enable     => pokeys.0.PEv2.1.digout.AxisEnable.out
 
-net y-homing     <= joint.2.homing
-net y-homing     => pokeys.0.PEv2.1.joint-in-homing
-
 net y-in-position     <= joint.2.in-position
 net y-in-position     => pokeys.0.PEv2.1.joint-in-position
 
 # ---setup home / limit switch signals---
 
-net y-home-sw     =>  joint.2.home-sw-in
-net y-neg-limit     =>  joint.2.neg-lim-sw-in
-net y-pos-limit     =>  joint.2.pos-lim-sw-in
+net home-y     =>  joint.2.home-sw-in
+net min-y     =>  joint.2.neg-lim-sw-in
+net max-y     =>  joint.2.pos-lim-sw-in
 
 #*******************
 #  AXIS Z JOINT 3
@@ -307,8 +298,8 @@ setp   pokeys.0.PEv2.2.stepgen.MAX-LIMIT 	   [JOINT_3]MAX_LIMIT
 setp   pokeys.0.PEv2.2.stepgen.HOME-OFFSET  	   [JOINT_3]HOME_OFFSET
 setp   pokeys.0.PEv2.2.stepgen.HOME-SEARCH-VEL  	   [JOINT_3]HOME_SEARCH_VEL
 setp   pokeys.0.PEv2.2.stepgen.HOME-LATCH-VEL  	   [JOINT_3]HOME_LATCH_VEL
-setp   pokeys.0.PEv2.2.stepgen.STEPGEN-MAXVEL         [JOINT_3]STEPGEN_MAXACCEL
-setp   pokeys.0.PEv2.2.stepgen.STEPGEN-MAXACCEL           [JOINT_3]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2.2.stepgen.STEPGEN-MAXVEL         [JOINT_3]STEPGEN_MAXVEL
+setp   pokeys.0.PEv2.2.stepgen.STEPGEN-MAXACCEL           [JOINT_3]STEPGEN_MAXACCEL
 
 # ---closedloop stepper signals---
 
@@ -324,17 +315,14 @@ net z-pos-fb     => joint.3.motor-pos-fb
 net z-enable     <= joint.3.amp-enable-out
 net z-enable     => pokeys.0.PEv2.2.digout.AxisEnable.out
 
-net z-homing     <= joint.3.homing
-net z-homing     => pokeys.0.PEv2.2.joint-in-homing
-
 net z-in-position     <= joint.3.in-position
 net z-in-position     => pokeys.0.PEv2.2.joint-in-position
 
 # ---setup home / limit switch signals---
 
-net z-home-sw     =>  joint.3.home-sw-in
-net z-neg-limit     =>  joint.3.neg-lim-sw-in
-net z-pos-limit     =>  joint.3.pos-lim-sw-in
+net home-z     =>  joint.3.home-sw-in
+net min-z     =>  joint.3.neg-lim-sw-in
+net max-z     =>  joint.3.pos-lim-sw-in
 
 #*******************
 #  SPINDLE
