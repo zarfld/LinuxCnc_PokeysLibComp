@@ -411,9 +411,10 @@ typedef enum
 
 typedef enum
 {
-    PK_PEAxisCommand_axIDLE = 0,         // Axis  in IDLE
-    PK_PEAxisCommand_axHOMINGSTART = 1,  // Start Homing procedure
-    PK_PEAxisCommand_axHOMINGCANCEL = 2, // Cancel Homing procedure
+    PK_PEAxisCommand_axIDLE = 0,           // Axis  in IDLE
+    PK_PEAxisCommand_axHOMINGSTART = 1,    // Start Homing procedure
+    PK_PEAxisCommand_axHOMINGCANCEL = 2,   // Cancel Homing procedure
+    PK_PEAxisCommand_axHOMINGFINALIZE = 3, // Finish Homing procedure
 } pokeys_home_command_t;
 
 typedef enum
@@ -934,7 +935,41 @@ void do_home_joint(int jno)
             break;
         case PK_PEAxisState_axHOME:
             rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_home_joint joint %d homed\n", jno);
-            H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+            
+            // check if all joints in sequence are homed
+            if (H[jno].home_sequence < 0)
+            {
+                int joints_in_sequence = 0;
+                int homed_in_sequence = 0;
+                int jj;
+                for (jj = 0; jj < all_joints; jj++)
+                {
+                    if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence))
+                    {
+                        joints_in_sequence++;
+                        if (H[jj].PEv2_AxesState == PK_PEAxisState_axHOME)
+                        {
+                            homed_in_sequence++;
+                        }
+                    }
+                }
+
+                if (joints_in_sequence == homed_in_sequence)
+                {
+                    for (jj = 0; jj < all_joints; jj++)
+                    {
+                        if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence))
+                        {
+                            H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
+                        }
+                    }
+                    H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
+                }
+            }
+            else
+            {
+                H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
+            }
             break;
         case PK_PEAxisState_axSTOPPED:
             rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_home_joint joint %d stopped\n", jno);

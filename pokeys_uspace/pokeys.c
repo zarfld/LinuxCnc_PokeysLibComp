@@ -2536,6 +2536,7 @@ typedef enum
 	PK_PEAxisCommand_axIDLE = 0,		 // Axis  in IDLE
 	PK_PEAxisCommand_axHOMINGSTART = 1,	 // Start Homing procedure
 	PK_PEAxisCommand_axHOMINGCANCEL = 2, // Cancel Homing procedure
+	PK_PEAxisCommand_axHOMINGFinalize = 3, // Cancel Homing procedure
 } pokeys_home_command_t;
 
 pokeys_home_command_t old_PEv2_AxesCommand[8] = {0};
@@ -3491,6 +3492,7 @@ void user_mainloop(void)
 				bool isMoving = false;
 				bool doStateSet = false;
 				bool doHomingStart = false;
+				bool doHomingEnd = false;
 				int HomingStartMaskSetup = 0;
 
 				bool InPosition[8];
@@ -3860,6 +3862,39 @@ void user_mainloop(void)
 							{
 								rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensured that all axes (%d) with same Sequence(%d) startmask was set (%d) \n", i, PEv2_home_sequence(i), HomingStartMaskSetup);
 							}
+						}
+						else if (intAxesState == PK_PEAxisState_axHOME && PEv2_AxesCommand(i) == PK_PEAxisCommand_axHOMINGFinalize)
+						{
+							int MyHomeSequ, seq;
+							MyHomeSequ = PEv2_home_sequence(i);
+							HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
+							rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n", i, PEv2_home_sequence(i), HomingStartMaskSetup);
+
+							// ensure that all axes with same Sequence start homing at the same time
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: ensure that all axes with same Sequence start homing at the same time\n", __FILE__, __FUNCTION__);
+							int j_count = 0;
+							for (seq = 0; seq < PEv2_nrOfAxes; seq++)
+							{
+
+								if (PEv2_home_sequence(seq) == PEv2_home_sequence(i))
+								{
+									//	rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensure that all axes (%d) with same Sequence(%d) start homing at the same time \n", seq, PEv2_home_sequence(i));
+
+									HomingStartMaskSetup |= (1 << seq); // Home axis seq only (bit seq)
+									j_count++;
+									doHomingEnd = true;
+								}
+							}
+
+							if (j_count == 0)
+							{
+								rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: no axes with same Sequence(%d) as joint(%d) found \n", PEv2_home_sequence(i), i);
+							}
+							else
+							{
+								rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensured that all axes (%d) with same Sequence(%d) startmask was set (%d) \n", i, PEv2_home_sequence(i), HomingStartMaskSetup);
+							}
+							
 						}
 						else if (PEv2_AxesCommand(i) == PK_PEAxisCommand_axHOMINGCANCEL && old_PEv2_AxesCommand[i] != PEv2_AxesCommand(i) && (intAxesState == PK_PEAxisState_axHOMINGSTART || intAxesState == PK_PEAxisState_axHOMINGSEARCH || intAxesState == PK_PEAxisState_axHOMINGBACK))
 						{
@@ -4234,6 +4269,16 @@ void user_mainloop(void)
 					PEv2_deb_axxisout(i) = 5100;
 					dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
 					PK_PEv2_HomingStart(dev);
+					Homing_active = true;
+				}
+				else if(dev->PEv2.HomingStartMaskSetup != HomingStartMaskSetup && HomingStartMaskSetup != 0 && doHomingEnd)
+				{
+					rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: Startmask at trigger (%d) \n", HomingStartMaskSetup);
+
+					PEv2_deb_axxisout(i) = 5100;
+					dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
+					//PK_PEv2_HomingStart(dev);
+					PK_PEv2_HomingFinish(dev);
 					Homing_active = true;
 				}
 				else if (PulseEngineState != PEv2_PulseEngineStateSetup && doHomingStart == 0)
