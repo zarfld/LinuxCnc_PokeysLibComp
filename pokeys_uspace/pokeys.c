@@ -348,6 +348,7 @@ struct __comp_state
 	hal_float_t *PEv2_MaxSpeed[8];
 	hal_float_t *PEv2_MaxAcceleration[8];
 	hal_float_t *PEv2_MaxDecceleration[8];
+	
 	hal_float_t *PEv2_joint_vel_cmd[8];
 	hal_float_t *PEv2_joint_pos_cmd[8];
 	hal_float_t *PEv2_joint_pos_fb[8];
@@ -614,24 +615,7 @@ static int export(char *prefix, long extra_arg)
 			return r;
 	}
 
-	//AnalogOut Pins
-	/*for (j = 0; j < (6); j++)
-	{
-		r = hal_pin_u32_newf(HAL_OUT, &(inst->adcout_deb_out[j]), comp_id,
-							 "%s.adcout.%01d.deb.out", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_u32_newf(HAL_OUT, &(inst->adcout_deb_setval[j]), comp_id,
-							 "%s.adcout.%01d.deb.setval", prefix, j);
-		if (r != 0)
-			return r;
-	}
-
-	r = hal_pin_u32_newf(HAL_OUT, &(inst->adcout_deb_outv), comp_id,
-						 "%s.adcout.deb.outv", prefix);
-						 
-	*/
+	
 	if (r != 0)
 		return r;
 	r = hal_pin_bit_newf(HAL_OUT, &(inst->err), comp_id,
@@ -1466,32 +1450,7 @@ static int export(char *prefix, long extra_arg)
 		return r;
 
 	r=PKIO_export_pins(prefix,extra_arg,comp_id,inst->IO_data, dev);
-	/*for (j = 0; j < (55); j++)
-	{
-		r = hal_pin_u32_newf(HAL_OUT, &(inst->counter_value[j]), comp_id,
-							 "%s.counter.%01d.value", prefix, j);
-		if (r != 0)
-			return r;
-	}*/
-
-
-	/*for (j = 0; j < (55); j++)
-	{
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->digin_in[j]), comp_id,
-							 "%s.digin.%01d.in", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_OUT, &(inst->digin_in_not[j]), comp_id,
-							 "%s.digin.%01d.in-not", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_IN, &(inst->digout_out[j]), comp_id,
-							 "%s.digout.%01d.out", prefix, j);
-		if (r != 0)
-			return r;
-	}*/
+	
 	
 
 
@@ -1503,19 +1462,6 @@ static int export(char *prefix, long extra_arg)
 			return r;
 
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: Encoder pins done \n");
-
-	/*for (j = 0; j < (6); j++)
-	{
-		r = hal_pin_float_newf(HAL_IN, &(inst->adcout_value[j]), comp_id,
-							   "%s.adcout.%01d.value", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_pin_bit_newf(HAL_IN, &(inst->adcout_enable[j]), comp_id,
-							 "%s.adcout.%01d.enable", prefix, j);
-		if (r != 0)
-			return r;
-	}*/
 
 	//int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoNET_data_t *poNET_data, sPoKeysDevice *dev)
 
@@ -1768,69 +1714,7 @@ static int export(char *prefix, long extra_arg)
 						   "%s.PEv2.digin.Probe.invert", prefix);
 	if (r != 0)
 		return r;
-	/*for (j = 0; j < (7); j++)
-	{
-		r = hal_param_float_newf(HAL_RW, &(inst->adcin_scale[j]), comp_id,
-								 "%s.adcin.%01d.scale", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_param_float_newf(HAL_RW, &(inst->adcin_offset[j]), comp_id,
-								 "%s.adcin.%01d.offset", prefix, j);
-		if (r != 0)
-			return r;
-	}*/
-	/*for (j = 0; j < (55); j++)
-	{
-		r = hal_param_bit_newf(HAL_RW, &(inst->digout_invert[j]), comp_id,
-							   "%s.digout.%01d.invert", prefix, j);
-		if (r != 0)
-			return r;
-	}*/
-	/*for (j = 0; j < (29); j++)
-	{
-		r = hal_param_float_newf(HAL_RW, &(inst->encoder_scale[j]), comp_id,
-								 "%s.encoder.%01d.scale", prefix, j);
-		if (r != 0)
-			return r;
-	}*/
-	/*for (j = 0; j < (6); j++)
-	{
-		r = hal_param_float_newf(HAL_RW, &(inst->adcout_offset[j]), comp_id,
-								 "%s.adcout.%01d.offset", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_param_float_newf(HAL_RW, &(inst->adcout_scale[j]), comp_id,
-								 "%s.adcout.%01d.scale", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_param_float_newf(HAL_RW, &(inst->adcout_high_limit[j]), comp_id,
-								 "%s.adcout.%01d.high-limit", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_param_float_newf(HAL_RW, &(inst->adcout_low_limit[j]), comp_id,
-								 "%s.adcout.%01d.low-limit", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_param_float_newf(HAL_RW, &(inst->adcout_max_v[j]), comp_id,
-								 "%s.adcout.%01d.max-v", prefix, j);
-		if (r != 0)
-			return r;
-
-		r = hal_param_u32_newf(HAL_RO, &(inst->adcout_PinId[j]), comp_id,
-							   "%s.adcout.%01d.PinId", prefix, j);
-		if (r != 0)
-			return r;
-	}
-	r = hal_param_u32_newf(HAL_RW, &(inst->adcout_pwm_period), comp_id,
-						   "%s.adcout.pwm.period", prefix);
-	if (r != 0)
-		return r;*/
-
+	
 	if (__comp_last_inst)
 		__comp_last_inst->_next = inst;
 	__comp_last_inst = inst;
@@ -2512,6 +2396,10 @@ bool Homing_done[8] = {false, false, false, false, false, false, false, false};
 bool IsHoming[8] = {false, false, false, false, false, false, false, false};
 int i = 0;
 
+float temp_MaxAcceleration[8];
+float minAccel = 0.0001;
+
+
 typedef struct
 {
 	uint8_t matrixKBconfiguration;	  // Matrix keyboard configuration (set to 1 to enable matrix keyboard support)
@@ -2540,14 +2428,7 @@ typedef enum
 } pokeys_home_command_t;
 
 pokeys_home_command_t old_PEv2_AxesCommand[8] = {0};
-/*
-sPoKeysEasySensor EasySensors[16];
-hal_pin_u32_t EasySensors_sensorValue[16];
-hal_pin_u32_t EasySensors_sensorType[16];
-hal_pin_u32_t EasySensors_sensorRefreshPeriod[16];
-hal_pin_u32_t EasySensors_sensorFailsafeConfig[16];
-hal_pin_u32_t EasySensors_sensorReadingID[16];
-*/
+
 
 typedef enum
 {
@@ -2619,12 +2500,7 @@ uint8_t Merge_8BitsToByte(bool Bit_array[8])
 int Config_MatrixKB()
 {
 
-	/* no setting
-	dev->matrixKB.matrixKBconfiguration = 1;
-	dev->matrixKB.matrixKBheight = 6;
-	dev->matrixKB.matrixKBwidth = 8;
-	PK_MatrixKBConfigurationSet(dev);
-	PK_MatrixKBConfigurationSet(dev);*/
+
 
 	if (PK_MatrixKBConfigurationGet(dev) == PK_OK)
 	{
@@ -2679,18 +2555,6 @@ int Update_MatrixKB()
 	return 0;
 }
 
-/*int Config_LCD()
-{
-	if(PK_LCDConfigurationGet(dev) == PK_OK)
-	{
-		usleep(sleepdur);
-	}
-
-	//PK_LCDConfigurationSet
-	// Change between modes PK_LCD_MODE_DIRECT and PK_LCD_MODE_BUFFERED
-	// PK_LCDChangeMode(dev, PK_LCD_MODE_DIRECT);
-	return 0;
-}*/
 
 int Update_LCD()
 {
@@ -2705,76 +2569,6 @@ int Update_LCD()
 	return 0;
 }
 
-/*
-int Init_EasySensors()
-{
-	if(PK_EasySensorsSetupGet(dev) == PK_OK)
-	{
-
-		for (i = 0; i < dev->info.iEasySensors; i++)
-		{
-			pin out u32 EasySensors.%d.sensorValue [16];            // Current sensor value
-			pin out unsigned EasySensors.%d.sensorType [16];
-			pin out unsigned EasySensors.%d.sensorRefreshPeriod [16];
-			pin out unsigned EasySensors.%d.sensorFailsafeConfig [16];
-			pin out unsigned EasySensors.%d.sensorReadingID [16];        // Sensor reading selection (see Protocol description document for details)
-
-
-			char pinName[32];
-
-			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorValue", i);  // Current sensor value
-			hal_pin_u32_new(pinName, HAL_IN,&EasySensors_sensorValue[i],comp_id);
-
-			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorType", i);  // Type of the sensor
-			hal_pin_u32_new(pinName, HAL_IN,&EasySensors_sensorType[i],comp_id);
-
-			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorRefreshPeriod", i);  // Refresh period in 0.1s
-			hal_pin_u32_new(pinName, HAL_IN,&EasySensors_sensorRefreshPeriod[i],comp_id);
-
-			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorFailsafeConfig", i);  // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
-			hal_pin_u32_new(pinName, HAL_IN,&EasySensors_sensorFailsafeConfig[i],comp_id);
-
-			snprintf(pinName, sizeof(pinName), "EasySensors.%d.sensorReadingID", i);  // Sensor reading selection (see Protocol description document for details)
-			hal_pin_u32_new(pinName, HAL_IN,&EasySensors_sensorReadingID[i],comp_id);
-
-
-		}
-		usleep(sleepdur);
-	}
-
-	//PK_EasySensorsSetupSet
-	return 0;
-}
-
-
-int Config_EasySensors()
-{
-	if(PK_EasySensorsSetupGet(dev) == PK_OK)
-	{
-		for (i = 0; i < dev->info.iEasySensors; i++)
-		{
-			EasySensors[i] = dev->EasySensors[i];
-		}
-		usleep(sleepdur);
-	}
-
-	//PK_EasySensorsSetupSet
-	return 0;
-}
-
-int Update_EasySensors()
-{
-	if(PK_EasySensorsValueGetAll(dev) == PK_OK)
-	{
-		for (i = 0; i < dev->info.iEasySensors; i++)
-		{
-			EasySensors[i] = dev->EasySensors[i];
-		}
-		usleep(sleepdur);
-	}
-	return 0;
-}
-*/
 
 int Config_PoStep()
 {
@@ -3158,40 +2952,9 @@ void user_mainloop(void)
 						break;
 					}
 
-				
-					/*			if (info_MatrixKeyboard!=0)
-								{
-									dev->matrixKB.matrixKBconfiguration = 1;
-									Config_MatrixKB;
-
-								}
-					*/
-					/*
-								if (info_EasySensors!=0)
-								{
-									Config_EasySensors;
-									for (i = 0; i < dev->info.iEasySensors; i++)
-									{
-										EasySensors_sensorValue(i) = EasySensors[i].sensorValue;            // Current sensor value
-										EasySensors_sensorType(i)= EasySensors[i].sensorType;             // Type of the sensor
-										EasySensors_sensorRefreshPeriod(i)= EasySensors[i].sensorRefreshPeriod;    // Refresh period in 0.1s
-										EasySensors_sensorFailsafeConfig(i)= EasySensors[i].sensorFailsafeConfig;   // Failsafe configuration (bits 0-5: timeout in seconds, bit 6: invalid=0, bit 7: invalid=0x7FFFFFFF)
-										EasySensors_sensorReadingID(i)= EasySensors[i].sensorReadingID;        // Sensor reading selection (see Protocol description document for details)
-										usleep(sleepdur);
-									}
-								}
-					*/
-
 					if (info_protI2C != 0)
 					{
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_protI2C = %d \n", __FILE__, __FUNCTION__, info_protI2C);
-						/* Pokeys Protokol Specification - page 65:  deprecated command, I2C bus is always activated
-
-						uint8_t * i_activated;
-						if (PK_I2SGetStatus(dev, i_activated) == PK_OK)
-						{
-							usleep(sleepdur);
-						} */
 
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_I2CBusScanStart\n", __FILE__, __FUNCTION__);
 						if (PK_I2CBusScanStart(dev) == PK_OK)
@@ -3908,9 +3671,6 @@ void user_mainloop(void)
 						PEv2_deb_axxisout(i) = 2900 + i;
 						POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 						PEv2_deb_axxisout(i) = 29000 + i;
-						/*PEv2.#.joint-in-homing*/
-
-						// PEv2.#.joint-in-position
 
 						if (PEv2_joint_in_position(i) != 0)
 						{
@@ -3923,7 +3683,7 @@ void user_mainloop(void)
 						PEv2_deb_ishoming(i) = IsHoming[i];
 						PEv2_deb_inposition(i) = InPosition[i];
 
-						if (HAL_Machine_On == true)
+						if (HAL_Machine_On != 0)
 						{
 							PEv2_deb_out = 390 + i;
 							posMode[i] = false;
@@ -4207,16 +3967,6 @@ void user_mainloop(void)
 						PEv2_deb_RefPosSpeed(i) = dev->PEv2.ReferencePositionSpeed[i];
 					}
 
-					/*
-					move is done later anyway
-					if (doMove = true)
-					{
-
-						PK_PEv2_PulseEngineMove(dev);
-						PK_PEv2_PulseEngineMove(dev);
-						PEv2_deb_out = 4100;
-					}*/
-
 					if (tAxisEnabledMask != dev->PEv2.AxisEnabledMask)
 					{
 						dev->PEv2.AxisEnabledMask = tAxisEnabledMask;
@@ -4237,10 +3987,7 @@ void user_mainloop(void)
 
 				if (PEv2_PG_extended_io != false)
 				{
-					/*
-					pin out bit PEv2.ExternalRelayOutput.#[4];			// External relay outputs
-					pin out bit PEv2.ExternalOCOutput.#[4];			// External open-collector outputs
-					*/
+
 
 					uint8_t ExternalRelayOutputs_set = 0;
 					uint8_t ExternalOCOutputs_set = 0;
@@ -4335,100 +4082,17 @@ void user_mainloop(void)
 						PEv2_deb_out = 4500;
 					}
 				}
-				/*if (doHomingStart==true)
-					{
-						PEv2_deb_out = 5000;
-						if (dev->PEv2.HomingStartMaskSetup != HomingStartMaskSetup) {
-							PEv2_deb_out = 5100;
-							dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
-						}
-						//PK_PEv2_HomingStart(dev);
 
-						if (PK_PEv2_HomingStart(dev) != PK_OK)
-						{
-							PEv2_deb_out = 5200;
-							usleep(sleepdur);
-							if (PK_PEv2_HomingStart(dev) != PK_OK)
-							{
-								usleep(sleepdur);
-							}
-						}
-
-					}*/
 
 				deb_out = 224;
 			}
 
-			/*bool PinConfigurationGet = false;
-			bool DigitalIOGet = false;
-			bool AnalogIOGet = false;
-			bool AnalogIOSet = false;
-			bool DigitalCounterGet = false;
-			bool DigitalIOSet = false;
-			bool doPwmConfig = false;
-			bool loopPins = false;*/
+
 			
 
 			bool EncoderValuesGet = false;
-			/*
-			info_PinCount = dev->info.iPinCount;                        // Number of pins, physically on the device
-			 info_PWMCount = dev->info.iPWMCount;                        // Number of pins that support PWM output
-			 info_BasicEncoderCount = dev->info.iBasicEncoderCount;               // Number of basic encoders
-			 info_EncodersCount = dev->info.iEncodersCount;                   // Number of encoder slots available
-			 info_FastEncoders = dev->info.iFastEncoders;                    // Number of fast encoders supported
-			 info_UltraFastEncoders = dev->info.iUltraFastEncoders;               // Number of available ultra fast encoders
-			 info_PWMinternalFrequency = dev->info.PWMinternalFrequency;             // Main PWM peripheral clock
-			 info_AnalogInputs = dev->info.iAnalogInputs;                    // Number of info_protI2Cavailable analog inputs
-			 info_KeyMapping = dev->info.iKeyMapping;                      // Device supports key mapping (acts as a USB keyboard)
-			 info_TriggeredKeyMapping = dev->info.iTriggeredKeyMapping;             // Device supports triggered key mapping
-			 info_KeyRepeatDelay = dev->info.iKeyRepeatDelay;                  // Device supports user customizable key repeat rates and delays
-			 info_DigitalCounters = dev->info.iDigitalCounters;                 // Device supports digital counters			*/
-			/*rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PinCount = %d\n", __FILE__, __FUNCTION__, dev->info.iPinCount);
-			if (dev->info.iPinCount > 0)
-			{
-				deb_out = 210;
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PinConfigurationGet(dev)\n", __FILE__, __FUNCTION__);
-				if (PK_PinConfigurationGet(dev) == PK_OK)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PinConfigurationGet(dev) OK\n", __FILE__, __FUNCTION__);
-					usleep(sleepdur);
-					PinConfigurationGet = true;
-					deb_out = 211;
-					loopPins = true;
-				}
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOGet(dev)\n", __FILE__, __FUNCTION__);
-				if (PK_DigitalIOGet(dev) == PK_OK)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOGet(dev) OK\n", __FILE__, __FUNCTION__);
-					usleep(sleepdur);
-					deb_out = 212;
-					DigitalIOGet = true;
-					loopPins = true;
-				}
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_AnalogIOGet(dev)\n", __FILE__, __FUNCTION__);
-				if (PK_AnalogIOGet(dev) == PK_OK)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_AnalogIOGet(dev) OK\n", __FILE__, __FUNCTION__);
-					usleep(sleepdur);
-					deb_out = 213;
-					AnalogIOGet = true;
-					loopPins = true;
-				}
-			}*/
-			/*rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iDigitalCounters = %d\n", __FILE__, __FUNCTION__, dev->info.iDigitalCounters);
-			if (dev->info.iDigitalCounters > 0)
-			{
-				deb_out = 214;
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalCounterGet(dev)\n", __FILE__, __FUNCTION__);
-				if (PK_DigitalCounterGet(dev) == PK_OK)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalCounterGet(dev) OK\n", __FILE__, __FUNCTION__);
-					usleep(sleepdur);
-					deb_out = 215;
-					DigitalCounterGet = true;
-					loopPins = true;
-				}
-			}*/
+
+	
 
 			PKEncoder_Update(dev);
 			deb_out = 220;
@@ -4437,319 +4101,7 @@ void user_mainloop(void)
 		PKIO_Update(dev);
 		deb_out = 230;
 		usleep(sleepdur);
-/*			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PWMCount = %d\n", __FILE__, __FUNCTION__, dev->info.iPWMCount);
-			if (dev->info.iPWMCount && DoPWM)
-			{
-				adcout_deb_outv = 100;
-				uint32_t PWMperiod; // PWM period, shared among all channels
 
-				uint32_t PWMduty[6];		   // PWM duty cycles (range between 0 and PWM period)
-				uint8_t PWMenabledChannels[6]; // List of enabled PWM channels
-				uint8_t PWMpinIDs[6];
-				float PWM_SCale[6];
-				float max_v[6];
-				float high_limit[6];
-				float low_limit[6];
-				float PWM_value[6];
-				float PWM_OffSet[6];
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationGet(dev)\n", __FILE__, __FUNCTION__);
-				if (PK_PWMConfigurationGet(dev) == PK_OK)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationGet(dev) OK\n", __FILE__, __FUNCTION__);
-					usleep(sleepdur);
-					PWMperiod = adcout_pwm_period;
-
-					if (PWMperiod = 0)
-					{
-						PWMperiod = 2500;
-					}
-					PWMperiod = 2500;
-					if (dev->PWM.PWMperiod != PWMperiod)
-					{
-						dev->PWM.PWMperiod = PWMperiod;
-						doPwmConfig = true;
-						PK_PWMConfigurationSet(dev);
-						usleep(sleepdur);
-					}
-
-					if (adcout_pwm_period != PWMperiod)
-					{
-						adcout_pwm_period = PWMperiod;
-					}
-
-					// Pins_PinFunction(i)=dev->Pins[i].PinFunction;
-
-					for (i = 0; i < 6; i++)
-					{
-						int PwmId = 5 - i;
-						adcout_deb_out(PwmId) = 100;
-
-						PWMduty[i] = dev->PWM.PWMduty[i];			  // PWM duty cycles (range between 0 and PWM period)
-						PWMenabledChannels[i] = adcout_enable(PwmId); // List of enabled PWM channels
-						PWMpinIDs[i] = dev->PWM.PWMpinIDs[i];
-						adcout_PinId(PwmId) = PWMpinIDs[i];
-						PWM_SCale[i] = 1;
-
-						PWM_value[i] = adcout_value(PwmId);
-						PWM_OffSet[i] = adcout_offset(PwmId);
-						max_v[i] = adcout_max_v(PwmId);
-						high_limit[i] = adcout_high_limit(PwmId);
-						low_limit[i] = adcout_low_limit(PwmId);
-
-						if (max_v[PwmId] == 0)
-						{
-							if ((PEv2_PG_extended_io == true) && (PWMpinIDs[i] = 17))
-							{
-								max_v[PwmId] = 10.000; // Pin17 0-10V
-							}
-							else
-							{
-								max_v[PwmId] = 5.000; // usually pokeys57 provide 0..5V PWM
-							}
-						}
-
-						if (high_limit[PwmId] = low_limit[PwmId])
-						{
-							if (high_limit[PwmId] == 0)
-							{
-								high_limit[PwmId] = max_v[PwmId];
-							}
-						}
-
-						if (PWMenabledChannels[i] == true)
-						{
-							float tmp = PWM_value[i] + PWM_OffSet[i];
-
-							if (tmp <= low_limit[i])
-							{
-								tmp = low_limit[i];
-							}
-							else if (tmp >= high_limit[i])
-							{
-								tmp = high_limit[i];
-							}
-
-							tmp = tmp * PWM_SCale[i];
-
-							PWMduty[i] = (uint32_t)((tmp / max_v[i]) * PWMperiod);
-						}
-						else
-						{
-							PWMduty[i] = 0;
-						}
-
-						adcout_deb_setval(PwmId) = PWMduty[i];
-						usleep(sleepdur);
-
-						
-
-						if (adcout_scale(PwmId) != PWM_SCale[i])
-						{
-							adcout_scale(PwmId) = PWM_SCale[i];
-						}
-
-						if (adcout_max_v(PwmId) != max_v[i])
-						{
-							adcout_max_v(PwmId) = max_v[i];
-						}
-
-						if (adcout_high_limit(PwmId) != high_limit[i])
-						{
-							adcout_high_limit(PwmId) = high_limit[i];
-						}
-
-						if (adcout_low_limit(PwmId) != low_limit[i])
-						{
-							adcout_low_limit(PwmId) = low_limit[i];
-						}
-
-						if (dev->PWM.PWMenabledChannels[i] != PWMenabledChannels[i])
-						{
-							dev->PWM.PWMenabledChannels[i] = PWMenabledChannels[i];
-							doPwmConfig = true;
-						}
-
-						if (dev->PWM.PWMduty[i] != PWMduty[i])
-						{
-							dev->PWM.PWMduty[i] = PWMduty[i];
-							AnalogIOSet = true;
-						}
-					}
-				}
-
-				if (doPwmConfig = true)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationSet(dev)\n", __FILE__, __FUNCTION__);
-					PK_PWMConfigurationSet(dev);
-					if (PK_PWMConfigurationSet(dev) != PK_OK)
-					{
-						usleep(sleepdur);
-						PK_PWMConfigurationSet(dev);
-					}
-				}
-
-				if (AnalogIOSet = true)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMUpdate(dev)\n", __FILE__, __FUNCTION__);
-					PK_PWMUpdate(dev);
-					if (PK_PWMUpdate(dev) != PK_OK)
-					{
-						usleep(sleepdur);
-						PK_PWMUpdate(dev);
-					}
-				}
-			}
-			else
-			{
-				adcout_deb_outv = 150;
-			}
-*/
-			/*if (loopPins = true)
-			{ // gets IO data and checks return value
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: read IO data\n", __FILE__, __FUNCTION__);
-				err = 0;
-				sPoKeysPinData iPin;
-				deb_out = 230;
-
-				deb_out = 232;
-				int AnalogPinOffset = 40;
-				int AnalogPinCount = 7;
-
-				int PwmPinOffset = 17;
-				int PwmPinCount = 6;
-
-				for (i = 0; i < info_PinCount - 1; i++)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Pin %d\n", __FILE__, __FUNCTION__, i);
-					deb_out = 2320 + i;
-					int AinNr = i - AnalogPinOffset;
-
-					if ((AnalogIOGet = true) && (AinNr >= 0) && (AinNr < AnalogPinCount))
-					{
-						if (adcin_scale(AinNr) == 0)
-						{
-							adcin_scale(AinNr) = 1;
-						}
-
-						float ainVal = 3.3 * dev->Pins[i].AnalogValue / 4096;
-
-						adcin_value_raw(AinNr) = ainVal;
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: adcin_value_raw(%d) = %f\n", __FILE__, __FUNCTION__, AinNr, adcin_value_raw(AinNr));
-						adcin_value(AinNr) = ainVal * adcin_scale(AinNr) - adcin_offset(AinNr);
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: adc value %d = %f\n", __FILE__, __FUNCTION__, AinNr, adcin_value(AinNr));
-					}
-
-					deb_out = 2321 + i;
-
-					if (DigitalIOGet = true)
-					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalValueGet\n", __FILE__, __FUNCTION__);
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[i].DigitalValueGet = %d\n", __FILE__, __FUNCTION__, dev->Pins[i].DigitalValueGet);
-						if (dev->Pins[i].DigitalValueGet == 0)
-						{
-							// Pins_DigitalValueGet(i)=false;
-							digin_in(i) = false;
-							digin_in_not(i) = true;
-						}
-						else
-						{
-							// Pins_DigitalValueGet(i)=true;
-							digin_in(i) = true;
-							digin_in_not(i) = false;
-						}
-					}
-
-					if (Pins_DigitalValueSet_ignore[i] = false)
-					{
-						bool setDigoutvalue = false;
-						if (digout_out(i) == 1)
-						{
-							if (digout_invert(i) == 0)
-							{
-								setDigoutvalue = true;
-							}
-						}
-						else
-						{
-							if (digout_invert(i) == 1)
-							{
-								setDigoutvalue = true;
-							}
-						}
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: setDigoutvalue = %d\n", __FILE__, __FUNCTION__, setDigoutvalue);
-						if ((setDigoutvalue = true) && (dev->Pins[i].DigitalValueSet = 0))
-						{
-							dev->Pins[i].DigitalValueSet = 1;
-							DigitalIOSet = true;
-						}
-						else if ((setDigoutvalue = false) && (dev->Pins[i].DigitalValueSet = 1))
-						{
-							dev->Pins[i].DigitalValueSet = 0;
-							DigitalIOSet = true;
-						}
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalValueSet[%d] = %d\n", __FILE__, __FUNCTION__, i, dev->Pins[i].DigitalValueSet);
-					}
-
-					// Pins_DigitalCounterAvailable(i)=dev->Pins[i].DigitalCounterAvailable;
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalCounterAvailable[%d] = %d\n", __FILE__, __FUNCTION__, i, dev->Pins[i].DigitalCounterAvailable);
-					if (dev->Pins[i].DigitalCounterAvailable)
-					{
-						// Pins_DigitalCounterValue(i) = dev->Pins[i].DigitalCounterValue;
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:countr value %d = %d\n", __FILE__, __FUNCTION__, i, dev->Pins[i].DigitalCounterValue);
-						counter_value(i) = dev->Pins[i].DigitalCounterValue;
-						// Pins_CounterOptions(i) = dev->Pins[i].CounterOptions;
-					}
-
-					// Pins_MappingType(i)=dev->Pins[i].MappingType;
-					// Pins_KeyCodeMacroID(i)=dev->Pins[i].KeyCodeMacroID;
-					// Pins_KeyModifier(i)=dev->Pins[i].KeyModifier;
-					// Pins_downKeyCodeMacroID(i)=dev->Pins[i].downKeyCodeMacroID;
-					// Pins_downKeyModifier(i)=dev->Pins[i].downKeyModifier;
-					// Pins_upKeyCodeMacroID(i)=dev->Pins[i].upKeyCodeMacroID;
-					// Pins_upKeyModifier(i)=dev->Pins[i].upKeyModifier;
-					// dev->Pins[i].preventUpdate=Pins_preventUpdate(i);
-
-					deb_out = 2330 + i;
-				}
-				usleep(sleepdur);*/
-
-			
-
-				/*deb_out = 236;
-				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DigitalIOSet(dev)\n", __FILE__, __FUNCTION__);
-				if (DigitalIOSet = true)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev)\n", __FILE__, __FUNCTION__);
-					if (PK_DigitalIOSet(dev) != PK_OK)
-					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) failed\n", __FILE__, __FUNCTION__);
-						usleep(sleepdur);
-					}
-					else
-					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) passed\n", __FILE__, __FUNCTION__);
-					}
-					if (PK_DigitalIOSet(dev) != PK_OK)
-					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) failed\n", __FILE__, __FUNCTION__);
-						usleep(sleepdur);
-					}
-					else
-					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) passed\n", __FILE__, __FUNCTION__);
-					}
-				}
-
-				deb_out = 237;
-			}*/
-			/*else
-			{             		  //on connection error
-			   deb_out = 245;
-			   PK_DisconnectDevice(dev);
-			   dev=NULL;  		  //tries to reconnect
-			   err=1;
-
-			}*/
 
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PEv2_PulseEngineEnabled = %d\n", __FILE__, __FUNCTION__, PEv2_PulseEngineEnabled);
 			if (PEv2_PulseEngineEnabled != 0)
@@ -4767,19 +4119,7 @@ void user_mainloop(void)
 				}
 			}
 
-			/*if (info_MatrixKeyboard!=0)
-			{
-				deb_out = 330;
-				Update_MatrixKB;
-				for (i = 0; i < 128; i++)
-				{
-				//	MatrixKB_matrixKBvalues(i) = MatrixKB.matrixKBvalues[i];
-				//	MatrixKB_matrixKBPins(i) = MatrixKB.matrixKBPins[i];
-				//	usleep(sleepdur);
-				}
-				usleep(sleepdur);
-			}*/
-
+	
 
 			//rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: info_PoExtBus = %d\n", __FILE__, __FUNCTION__, info_PoExtBus);
 			PKPoExtBus_Update(dev);
@@ -4791,30 +4131,17 @@ void user_mainloop(void)
 			deb_out = 239;
 			usleep(sleepdur);
 
-			
-			
-			/*
-						if (info_EasySensors!=0)
-						{
-							Update_EasySensors;
-							for (i = 0; i < dev->info.iEasySensors; i++)
-							{
-								EasySensors_sensorValue(i) = EasySensors[i].sensorValue;            // Current sensor value
-							}
-						}
-			*/
-
-
+	if (rtc_lastmin != rtc_min )
+	{
+		rtc_lastmin = rtc_min;
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: rtc_lastmin = %d\n", __FILE__, __FUNCTION__, rtc_lastmin);
 	
-
-
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: rtc_lastmin = %d\n", __FILE__, __FUNCTION__, rtc_lastmin);
-			if (rtc_lastmin != rtc_min && HAL_Machine_On == 0)
+			if (HAL_Machine_On == false)
 			{
 				alive = 0;
 
 				deb_out = 310;
-				rtc_lastmin = rtc_min;
+				
 
 				info_PinCount = dev->info.iPinCount;											 // Number of pins, physically on the device
 				info_PWMCount = dev->info.iPWMCount;											 // Number of pins that support PWM output
@@ -4863,7 +4190,7 @@ void user_mainloop(void)
 					setPinConfig = false;
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_params_ApplyIniSettings = %d\n", __FILE__, __FUNCTION__, PEv2_params_ApplyIniSettings);
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: HAL_Machine_On = %d\n", __FILE__, __FUNCTION__, HAL_Machine_On);
-					if ((PEv2_params_ApplyIniSettings != 0) && (HAL_Machine_On == false))
+					if ((PEv2_params_ApplyIniSettings != 0) && (HAL_Machine_On == 0))
 					{
 						// dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
 						// PK_PEv2_PulseEngineSetup(dev);
@@ -5171,9 +4498,11 @@ void user_mainloop(void)
 							if (PEv2_stepgen_STEP_SCALE(i) != 0)
 							{
 								// need to ensure positve values for the following calculations otherwise machine will not move
-								PEv2_MaxSpeed(i) = abs(PEv2_stepgen_STEPGEN_MAXVEL(i) * PEv2_stepgen_STEP_SCALE(i)) / 1000;				 // Maximum axis speed convert (mm/s) to (pulses per ms)
-								PEv2_MaxAcceleration(i) = abs(PEv2_stepgen_STEPGEN_MAXACCEL(i) * PEv2_stepgen_STEP_SCALE(i)) / 1000000;	 // Maximum axis acceleration convert (mm/s�) to (in pulses/ms/ms)
-								PEv2_MaxDecceleration(i) = abs(PEv2_stepgen_STEPGEN_MAXACCEL(i) * PEv2_stepgen_STEP_SCALE(i)) / 1000000; // Maximum axis deceleration convert (mm/s�) to (in pulses/ms/ms)
+								PEv2_MaxSpeed(i) = abs(PEv2_stepgen_STEPGEN_MAXVEL(i) * StepScale[i]);				 // Maximum axis speed convert (mm/s) to (pulses / s)
+																
+								PEv2_MaxAcceleration(i) = abs(PEv2_stepgen_STEPGEN_MAXACCEL(i) * StepScale[i]); // Maximum axis deceleration convert (mm/s²) to (in pulses/s²)
+								
+								PEv2_MaxDecceleration(i) = abs(PEv2_stepgen_STEPGEN_MAXACCEL(i) * StepScale[i]); // Maximum axis deceleration convert (mm/s²) to (in pulses/s²)
 
 								float LimitOffset = 0.0;
 								if (PEv2_stepgen_MAX_LIMIT(i) > PEv2_stepgen_MIN_LIMIT(i))
@@ -5218,9 +4547,9 @@ void user_mainloop(void)
 									PEv2_HomingReturnSpeed(i) = 50;
 								}
 								// Convert parameters... assume little-endian format
-								if (dev->PEv2.MaxSpeed[i] != PEv2_MaxSpeed(i) && PEv2_MaxSpeed(i) > 0)
+								if (dev->PEv2.MaxSpeed[i] != (PEv2_MaxSpeed(i)/1000) && PEv2_MaxSpeed(i) > 0)
 								{
-									dev->PEv2.MaxSpeed[i] = PEv2_MaxSpeed(i);
+									dev->PEv2.MaxSpeed[i] = PEv2_MaxSpeed(i)/1000;
 									doAxisConfig = true;
 								}
 								else if (PEv2_MaxSpeed(i) == 0 && dev->PEv2.MaxSpeed[i] == 0)
@@ -5228,28 +4557,19 @@ void user_mainloop(void)
 									dev->PEv2.MaxSpeed[i] = 1000;
 									doAxisConfig = true;
 								}
-								if (dev->PEv2.MaxAcceleration[i] != PEv2_MaxAcceleration(i) && PEv2_MaxAcceleration(i) > 0)
+								
+								if (dev->PEv2.MaxAcceleration[i] != PEv2_MaxDecceleration(i)/1000000) //smallest positive value
 								{
-									dev->PEv2.MaxAcceleration[i] = PEv2_MaxAcceleration(i);
+									dev->PEv2.MaxAcceleration[i] = PEv2_MaxDecceleration(i)/1000000;
 									doAxisConfig = true;
 								}
-								else if (PEv2_MaxAcceleration(i) == 0 && dev->PEv2.MaxAcceleration[i] == 0)
+								
+								if (dev->PEv2.MaxDecceleration[i] != PEv2_MaxDecceleration(i)/1000000)
 								{
-									dev->PEv2.MaxAcceleration[i] = 800;
+									dev->PEv2.MaxDecceleration[i] = PEv2_MaxDecceleration(i)/1000000;
 									doAxisConfig = true;
 								}
-
-								if (dev->PEv2.MaxDecceleration[i] != PEv2_MaxDecceleration(i) && PEv2_MaxDecceleration(i) > 0)
-								{
-									dev->PEv2.MaxDecceleration[i] = PEv2_MaxDecceleration(i);
-									doAxisConfig = true;
-								}
-								else if (PEv2_MaxDecceleration(i) == 0 && dev->PEv2.MaxDecceleration[i] == 0)
-								{
-									dev->PEv2.MaxDecceleration[i] = 800;
-									doAxisConfig = true;
-								}
-
+								
 								if (dev->PEv2.SoftLimitMinimum[i] != PEv2_digin_SoftLimit_PosMin(i))
 								{
 									dev->PEv2.SoftLimitMinimum[i] = PEv2_digin_SoftLimit_PosMin(i);
@@ -5654,6 +4974,7 @@ void user_mainloop(void)
 				alive = 0;
 				usleep(sleepdur * 50);
 			}
+		}
 		}
 	}
 
