@@ -22,23 +22,6 @@ retry() {
     done
 }
 
-# Check runner availability
-echo "Checking runner availability..."
-if [ -z "$RUNNER_NAME" ]; then
-    echo "No runner available. Exiting..."
-    exit 1
-fi
-echo "Runner $RUNNER_NAME is available."
-
-# Log runner details
-echo "Logging runner details..."
-echo "Runner Name: $RUNNER_NAME"
-echo "Runner OS: $RUNNER_OS"
-echo "Runner Architecture: $RUNNER_ARCH"
-echo "Runner Name: $RUNNER_NAME" >> runner_details.log
-echo "Runner OS: $RUNNER_OS" >> runner_details.log
-echo "Runner Architecture: $RUNNER_ARCH" >> runner_details.log
-
 if ! dpkg -s linuxcnc-dev >/dev/null 2>&1; then
     # Ask user if linuxcnc-dev should be installed
     read -p "Do you want to install linuxcnc-dev? (y/n): " install_linuxcnc_dev

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo "Compiling pokeys.comp..."
-halcompile --install pokeys.comp
-echo "pokeys.comp compiled successfully."
+echo "Compiling pokeys_uspace/pokeys.comp..."
+halcompile --install pokeys_uspace/pokeys.c
+echo "pokeys_uspace/pokeys.comp compiled successfully."
 
 echo "Compiling kbd48CNC.comp..."
 halcompile --install kbd48CNC.comp
@@ -24,22 +24,6 @@ echo "Compiling start_delay.comp..."
 halcompile --install start_delay_3000.comp
 halcompile --install start_delay_5000.comp
 echo "start_delay.comp compiled successfully."
-
-echo "Compiling pokeys_digital_io.comp..."
-halcompile --install pokeys_userspace/pokeys_digital_io.comp
-echo "pokeys_digital_io.comp compiled successfully."
-
-echo "Compiling pokeys_analog_io.comp..."
-halcompile --install pokeys_userspace/pokeys_analog_io.comp
-echo "pokeys_analog_io.comp compiled successfully."
-
-echo "Compiling pokeys_pev2.comp..."
-halcompile --install pokeys_userspace/pokeys_pev2.comp
-echo "pokeys_pev2.comp compiled successfully."
-
-echo "Compiling pokeys_counters.comp..."
-halcompile --install pokeys_userspace/pokeys_counters.comp
-echo "pokeys_counters.comp compiled successfully."
 
 echo "Compiling pokeys_rt.comp..."
 halcompile --install pokeys_rt/pokeys_rt.comp
