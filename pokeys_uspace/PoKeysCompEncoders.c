@@ -7,14 +7,6 @@
 #include "hal.h"
 #include "stdio.h"
 
-#ifdef MODULE_INFO
-MODULE_INFO(linuxcnc, "pin:encoder.#.count:s32:29:out::None:None");
-MODULE_INFO(linuxcnc, "pin:encoder.#.position:float:29:out::None:None");
-MODULE_INFO(linuxcnc, "pin:encoder.#.velocity:float:29:out::None:None");
-MODULE_INFO(linuxcnc, "pin:encoder.#.reset:bit:29:in::None:None");
-MODULE_INFO(linuxcnc, "pin:encoder.#.index-enable:bit:29:in::None:None");
-MODULE_INFO(linuxcnc, "param:encoder.#.scale:float:29:rw:The scale factor used to convert counts to position units. It is in “counts per position unit”:None:None");
-#endif // MODULE_INFO
 
 // Pin creation:
 /*
@@ -331,6 +323,16 @@ int PKEncoder_init(int id,
 	// dev = device;
 	//return makepins(id, 26);
 }
+
+
+#ifdef MODULE_INFO
+MODULE_INFO(linuxcnc, "pin:encoder.#.count:s32:29:out::None:None");
+MODULE_INFO(linuxcnc, "pin:encoder.#.position:float:29:out::None:None");
+MODULE_INFO(linuxcnc, "pin:encoder.#.velocity:float:29:out::None:None");
+MODULE_INFO(linuxcnc, "pin:encoder.#.reset:bit:29:in::None:None");
+MODULE_INFO(linuxcnc, "pin:encoder.#.index-enable:bit:29:in::None:None");
+MODULE_INFO(linuxcnc, "param:encoder.#.scale:float:29:rw:The scale factor used to convert counts to position units. It is in “counts per position unit”:None:None");
+#endif // MODULE_INFO
 
 // EXPORT_SYMBOL(PKEncoder_init);
 // EXPORT_SYMBOL(PKEncoder_Update);

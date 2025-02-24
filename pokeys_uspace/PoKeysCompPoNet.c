@@ -7,27 +7,6 @@
 
 
 
-#ifdef MODULE_INFO
-MODULE_INFO(linuxcnc, "pin:kbd48CNC.available:bit:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:kbd48CNC.PoNetID:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:kbd48CNC.KeyBrightness:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:kbd48CNC.prevBrightness:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:kbd48CNC.lightValue:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:kbd48CNC.#.LED:bit:48:in::None:None");
-MODULE_INFO(linuxcnc, "pin:kbd48CNC.#.Button:bit:48:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.#.moduleID:u32:16:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.#.i2cAddress:u32:16:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.#.moduleType:u32:16:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.#.moduleSize:u32:16:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.#.moduleOptions:u32:16:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.PWMduty:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.lightValue:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.PoNETstatus:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.DevCount:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.#.statusIn:u32:16:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PoNET.#.statusOut:u32:16:in::None:None");
-#endif // MODULE_INFO
-
 typedef struct
 {
 	hal_u32_t PoNET_moduleID; 		// RO Parameter
@@ -555,3 +534,25 @@ void PKPoNet_Update(sPoKeysDevice *dev)
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kb48CNC not available\n", __FILE__, __FUNCTION__);
     }
 }
+
+
+#ifdef MODULE_INFO
+MODULE_INFO(linuxcnc, "pin:kbd48CNC.available:bit:0:out::None:None");
+MODULE_INFO(linuxcnc, "pin:kbd48CNC.PoNetID:u32:0:io::None:None");
+MODULE_INFO(linuxcnc, "pin:kbd48CNC.KeyBrightness:u32:0:io::None:None");
+MODULE_INFO(linuxcnc, "pin:kbd48CNC.prevBrightness:u32:0:io::None:None");
+MODULE_INFO(linuxcnc, "pin:kbd48CNC.lightValue:u32:0:io::None:None");
+MODULE_INFO(linuxcnc, "pin:kbd48CNC.#.LED:bit:48:in::None:None");
+MODULE_INFO(linuxcnc, "pin:kbd48CNC.#.Button:bit:48:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.#.moduleID:u32:16:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.#.i2cAddress:u32:16:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.#.moduleType:u32:16:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.#.moduleSize:u32:16:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.#.moduleOptions:u32:16:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.PWMduty:u32:0:io::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.lightValue:u32:0:io::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.PoNETstatus:u32:0:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.DevCount:u32:0:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.#.statusIn:u32:16:out::None:None");
+MODULE_INFO(linuxcnc, "pin:PoNET.#.statusOut:u32:16:in::None:None");
+#endif // MODULE_INFO
