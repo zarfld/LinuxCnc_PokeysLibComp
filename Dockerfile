@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y \
     libboost-python-dev \
     libboost-thread-dev \
     libboost-system-dev \
+    libboost-all-dev \
     python3-lxml \
     debhelper \
     dh-python \

@@ -59,3 +59,12 @@ install(TARGETS PoKeysLib pokeys_rt
 )
 
 # Ensure compliance with LinuxCNC guidelines and the Canonical Device Interface
+
+# Set the C++ standard to use
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Add subdirectories
+add_subdirectory(pokeys_uspace)
+add_subdirectory(pokeys_rt)
+add_subdirectory(pokeys_py)
