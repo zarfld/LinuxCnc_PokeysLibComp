@@ -37,5 +37,14 @@ jobs:
       with:
         build-command: cmake -DCMAKE_BUILD_TYPE=Release .
 
+    - name: Build pokeys_uspace
+      run: make -C pokeys_uspace
+
+    - name: Build pokeys_rt
+      run: make -C pokeys_rt
+
+    - name: Build pokeys_py
+      run: make -C pokeys_py
+
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
