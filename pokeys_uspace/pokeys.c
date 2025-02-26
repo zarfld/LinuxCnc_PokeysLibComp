@@ -24,8 +24,8 @@
 #include <stdlib.h>
 #include "inifile.h"
 
-static int comp_id=0;
-sPoKeysDevice *dev = NULL;
+static int comp_id = 0;
+sPoKeysDevice* dev = NULL;
 
 #ifdef MODULE_INFO
 MODULE_INFO(linuxcnc, "component:pokeys:(uSpace)PoKeys IO driver");
@@ -112,102 +112,101 @@ MODULE_INFO(linuxcnc, "author:Dominik Zarfl");
 MODULE_LICENSE("GPL");
 #endif // MODULE_INFO
 
-struct __comp_state
-{
-	
-
-	struct __comp_state *_next;
-	hal_u32_t *enum_usb_dev;
-	hal_u32_t *enum_fusb_dev;
-	hal_u32_t *enum_udp_dev;
-
-	hal_s32_t *deb_out;
+struct __comp_state {
 
 
-	hal_bit_t *err;
-	hal_bit_t *connected;
-	hal_bit_t *connected_usb;
-	hal_bit_t *connected_fusb;
-	hal_bit_t *connected_udp;
-	hal_bit_t *connected_net;
-	hal_bit_t *alive;
-	hal_bit_t *machine_is_on;
+	struct __comp_state* _next;
+	hal_u32_t* enum_usb_dev;
+	hal_u32_t* enum_fusb_dev;
+	hal_u32_t* enum_udp_dev;
+
+	hal_s32_t* deb_out;
+
+
+	hal_bit_t* err;
+	hal_bit_t* connected;
+	hal_bit_t* connected_usb;
+	hal_bit_t* connected_fusb;
+	hal_bit_t* connected_udp;
+	hal_bit_t* connected_net;
+	hal_bit_t* alive;
+	hal_bit_t* machine_is_on;
 
 	//info pins
-	hal_u32_t *info_PinCount;
-	hal_u32_t *info_PWMCount;
-	hal_u32_t *info_BasicEncoderCount;
-	hal_u32_t *info_EncodersCount;
-	hal_u32_t *info_FastEncoders;
-	hal_u32_t *info_UltraFastEncoders;
-	hal_u32_t *info_PWMinternalFrequency;
-	hal_u32_t *info_AnalogInputs;
-	hal_u32_t *info_KeyMapping;
-	hal_u32_t *info_TriggeredKeyMapping;
-	hal_u32_t *info_KeyRepeatDelay;
-	hal_u32_t *info_DigitalCounters;
-	hal_u32_t *info_JoystickButtonAxisMapping;
-	hal_u32_t *info_JoystickAnalogToDigitalMapping;
-	hal_u32_t *info_Macros;
-	hal_u32_t *info_MatrixKeyboard;
-	hal_u32_t *info_MatrixKeyboardTriggeredMapping;
-	hal_u32_t *info_LCD;
-	hal_u32_t *info_MatrixLED;
-	hal_u32_t *info_ConnectionSignal;
-	hal_u32_t *info_PoExtBus;
-	hal_u32_t *info_PoNET;
-	hal_u32_t *info_AnalogFiltering;
-	hal_u32_t *info_InitOutputsStart;
-	hal_u32_t *info_protI2C;
-	hal_u32_t *info_prot1wire;
-	hal_u32_t *info_AdditionalOptions;
-	hal_u32_t *info_LoadStatus;
-	hal_u32_t *info_CustomDeviceName;
-	hal_u32_t *info_PoTLog27support;
-	hal_u32_t *info_SensorList;
-	hal_u32_t *info_WebInterface;
-	hal_u32_t *info_FailSafeSettings;
-	hal_u32_t *info_JoystickHATswitch;
-	hal_u32_t *info_PulseEngine;
-	hal_u32_t *info_PulseEnginev2;
-	hal_u32_t *info_EasySensors;
+	hal_u32_t* info_PinCount;
+	hal_u32_t* info_PWMCount;
+	hal_u32_t* info_BasicEncoderCount;
+	hal_u32_t* info_EncodersCount;
+	hal_u32_t* info_FastEncoders;
+	hal_u32_t* info_UltraFastEncoders;
+	hal_u32_t* info_PWMinternalFrequency;
+	hal_u32_t* info_AnalogInputs;
+	hal_u32_t* info_KeyMapping;
+	hal_u32_t* info_TriggeredKeyMapping;
+	hal_u32_t* info_KeyRepeatDelay;
+	hal_u32_t* info_DigitalCounters;
+	hal_u32_t* info_JoystickButtonAxisMapping;
+	hal_u32_t* info_JoystickAnalogToDigitalMapping;
+	hal_u32_t* info_Macros;
+	hal_u32_t* info_MatrixKeyboard;
+	hal_u32_t* info_MatrixKeyboardTriggeredMapping;
+	hal_u32_t* info_LCD;
+	hal_u32_t* info_MatrixLED;
+	hal_u32_t* info_ConnectionSignal;
+	hal_u32_t* info_PoExtBus;
+	hal_u32_t* info_PoNET;
+	hal_u32_t* info_AnalogFiltering;
+	hal_u32_t* info_InitOutputsStart;
+	hal_u32_t* info_protI2C;
+	hal_u32_t* info_prot1wire;
+	hal_u32_t* info_AdditionalOptions;
+	hal_u32_t* info_LoadStatus;
+	hal_u32_t* info_CustomDeviceName;
+	hal_u32_t* info_PoTLog27support;
+	hal_u32_t* info_SensorList;
+	hal_u32_t* info_WebInterface;
+	hal_u32_t* info_FailSafeSettings;
+	hal_u32_t* info_JoystickHATswitch;
+	hal_u32_t* info_PulseEngine;
+	hal_u32_t* info_PulseEnginev2;
+	hal_u32_t* info_EasySensors;
 
-	all_PoExtBus_data_t *PoExtBus_data ;
+	all_PoExtBus_data_t* PoExtBus_data;
 
-	PEv2_data_t *PEv2_data;
+	PEv2_data_t* PEv2_data;
 
-	
 
-	hal_u32_t *rtc_sec;
-	hal_u32_t *rtc_min;
-	hal_u32_t *rtc_hour;
-	hal_u32_t *rtc_dow;
-	hal_u32_t *rtc_dom;
-	hal_u32_t *rtc_tmp;
-	hal_u32_t *rtc_doy;
-	hal_u32_t *rtc_month;
-	hal_u32_t *rtc_year;
-	hal_u32_t *rtc_loopcount;
-	hal_u32_t *rtc_lastmin;
-	hal_u32_t *rtc_lastsec;
-	hal_u32_t *rtc_loop_frequ;
-	hal_u32_t *rtc_loop_frequ_demand;
-	hal_u32_t *rtc_sec_ret;
-	hal_u32_t *rtc_hal_latency;
 
-	all_IO_data_t *IO_data;
+	hal_u32_t* rtc_sec;
+	hal_u32_t* rtc_min;
+	hal_u32_t* rtc_hour;
+	hal_u32_t* rtc_dow;
+	hal_u32_t* rtc_dom;
+	hal_u32_t* rtc_tmp;
+	hal_u32_t* rtc_doy;
+	hal_u32_t* rtc_month;
+	hal_u32_t* rtc_year;
+	hal_u32_t* rtc_loopcount;
+	hal_u32_t* rtc_lastmin;
+	hal_u32_t* rtc_lastsec;
+	hal_u32_t* rtc_loop_frequ;
+	hal_u32_t* rtc_loop_frequ_demand;
+	hal_u32_t* rtc_sec_ret;
+	hal_u32_t* rtc_hal_latency;
 
-	all_encoder_data_t *encoder_data;
-	all_PoNET_data_t *poNET_data;
-	
+	all_IO_data_t* IO_data;
+
+	all_encoder_data_t* encoder_data;
+	all_PoNET_data_t* poNET_data;
+
 	hal_u32_t devSerial;
 
 };
 
-struct __comp_state *__comp_first_inst = 0, *__comp_last_inst = 0;
+struct __comp_state* __comp_first_inst = 0, * __comp_last_inst = 0;
 
 static int __comp_get_data_size(void);
-static int extra_setup(struct __comp_state *__comp_inst, char *prefix, long extra_arg);
+static int extra_setup(struct __comp_state* __comp_inst, char* prefix, long extra_arg);
 uint32_t device_id = 0;
 #undef TRUE
 #define TRUE (1)
@@ -218,58 +217,53 @@ uint32_t device_id = 0;
 #undef false
 #define false (0)
 
-static int export(char *prefix, long extra_arg)
-{
+static int export(char* prefix, long extra_arg) {
 	int r = 0;
 	int j = 0;
 	int sz = sizeof(struct __comp_state) + __comp_get_data_size();
-	struct __comp_state *inst = hal_malloc(sz);
+	struct __comp_state* inst = hal_malloc(sz);
 	memset(inst, 0, sz);
 	r = extra_setup(inst, prefix, extra_arg);
 	if (r != 0)
 		return r;
 
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: export %s\n", __FILE__, __FUNCTION__, prefix);
-		
+
 	//PoExtBus Pins
 	//PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoExtBus_data_t *poExtBus_data)
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PoExtBus pins\n");
-	r = PKPoExtBus_export_pins( prefix, extra_arg, comp_id, 10, inst->PoExtBus_data);
-	if (r != 0)
-	{
+	r = PKPoExtBus_export_pins(prefix, extra_arg, comp_id, 10, inst->PoExtBus_data);
+	if (r != 0) {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKPoExtBus_export_pins failed\n");
 		return r;
 	}
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PoExtBus pins done \n");
 
 
-		
-	
+
+
 	// Encoder pins
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: Encoder pins\n");
-	r = PKEncoder_export_pins(prefix, extra_arg,comp_id,29,*&(inst->encoder_data));
-	if (r != 0)
-	{
+	r = PKEncoder_export_pins(prefix, extra_arg, comp_id, 29, *&(inst->encoder_data));
+	if (r != 0) {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKEncoder_export_pins failed\n");
 		return r;
 	}
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: Encoder pins done \n");
-	
+
 	// params
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: Encoder params\n");
-	r=PKEncoder_export_params(prefix, extra_arg,comp_id,29);
-	if (r != 0)
-	{
+	r = PKEncoder_export_params(prefix, extra_arg, comp_id, 29);
+	if (r != 0) {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKEncoder_export_params failed\n");
 		return r;
 	}
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: Encoder params done \n");
-	
+
 	//int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoNET_data_t *poNET_data, sPoKeysDevice *dev)
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PoNET pins\n");
-	r=PKPoNet_export_pins(prefix,extra_arg,comp_id,16,inst->poNET_data ,dev);
-	if (r != 0)
-	{
+	r = PKPoNet_export_pins(prefix, extra_arg, comp_id, 16, inst->poNET_data, dev);
+	if (r != 0) {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKPoNet_export_pins failed\n");
 		return r;
 	}
@@ -277,9 +271,8 @@ static int export(char *prefix, long extra_arg)
 
 	// PoKeys IO pins
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: IO pins\n");
-	r=PKIO_export_pins(prefix,extra_arg,comp_id,inst->IO_data, dev);
-	if (r != 0)
-	{
+	r = PKIO_export_pins(prefix, extra_arg, comp_id, inst->IO_data, dev);
+	if (r != 0) {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKIO_export_pins failed\n");
 		return r;
 	}
@@ -287,293 +280,292 @@ static int export(char *prefix, long extra_arg)
 
 	// PoKeys PulseEngine pins
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PulseEngine pins\n");
-	r=PKPEv2_export_pins(prefix,extra_arg,comp_id,inst->PEv2_data, dev);
-	if (r != 0)
-	{
+	r = PKPEv2_export_pins(prefix, extra_arg, comp_id, inst->PEv2_data, dev);
+	if (r != 0) {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKPulseEngine_export_pins failed\n");
 		return r;
 	}
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PulseEngine pins done \n");
 
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->enum_usb_dev), comp_id,
-						 "%s.enum-usb-dev", prefix);
+		"%s.enum-usb-dev", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->enum_fusb_dev), comp_id,
-						 "%s.enum-fusb-dev", prefix);
+		"%s.enum-fusb-dev", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->enum_udp_dev), comp_id,
-						 "%s.enum-udp-dev", prefix);
+		"%s.enum-udp-dev", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_s32_newf(HAL_OUT, &(inst->deb_out), comp_id,
-						 "%s.deb.out", prefix);
+		"%s.deb.out", prefix);
 	if (r != 0)
 		return r;
 
 	r = hal_pin_bit_newf(HAL_OUT, &(inst->err), comp_id,
-						 "%s.err", prefix);
+		"%s.err", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_bit_newf(HAL_OUT, &(inst->connected), comp_id,
-						 "%s.connected", prefix);
+		"%s.connected", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_bit_newf(HAL_OUT, &(inst->connected_usb), comp_id,
-						 "%s.connected.usb", prefix);
+		"%s.connected.usb", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_bit_newf(HAL_OUT, &(inst->connected_fusb), comp_id,
-						 "%s.connected.fusb", prefix);
+		"%s.connected.fusb", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_bit_newf(HAL_OUT, &(inst->connected_udp), comp_id,
-						 "%s.connected.udp", prefix);
+		"%s.connected.udp", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_bit_newf(HAL_OUT, &(inst->connected_net), comp_id,
-						 "%s.connected.net", prefix);
+		"%s.connected.net", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_bit_newf(HAL_OUT, &(inst->alive), comp_id,
-						 "%s.alive", prefix);
+		"%s.alive", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_bit_newf(HAL_IN, &(inst->machine_is_on), comp_id,
-						 "%s.machine-is-on", prefix);
+		"%s.machine-is-on", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_PinCount), comp_id,
-						 "%s.info.PinCount", prefix);
+		"%s.info.PinCount", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_PWMCount), comp_id,
-						 "%s.info.PWMCount", prefix);
+		"%s.info.PWMCount", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_BasicEncoderCount), comp_id,
-						 "%s.info.BasicEncoderCount", prefix);
+		"%s.info.BasicEncoderCount", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_EncodersCount), comp_id,
-						 "%s.info.EncodersCount", prefix);
+		"%s.info.EncodersCount", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_FastEncoders), comp_id,
-						 "%s.info.FastEncoders", prefix);
+		"%s.info.FastEncoders", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_UltraFastEncoders), comp_id,
-						 "%s.info.UltraFastEncoders", prefix);
+		"%s.info.UltraFastEncoders", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_PWMinternalFrequency), comp_id,
-						 "%s.info.PWMinternalFrequency", prefix);
+		"%s.info.PWMinternalFrequency", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_AnalogInputs), comp_id,
-						 "%s.info.AnalogInputs", prefix);
+		"%s.info.AnalogInputs", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_KeyMapping), comp_id,
-						 "%s.info.KeyMapping", prefix);
+		"%s.info.KeyMapping", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_TriggeredKeyMapping), comp_id,
-						 "%s.info.TriggeredKeyMapping", prefix);
+		"%s.info.TriggeredKeyMapping", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_KeyRepeatDelay), comp_id,
-						 "%s.info.KeyRepeatDelay", prefix);
+		"%s.info.KeyRepeatDelay", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_DigitalCounters), comp_id,
-						 "%s.info.DigitalCounters", prefix);
+		"%s.info.DigitalCounters", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_JoystickButtonAxisMapping), comp_id,
-						 "%s.info.JoystickButtonAxisMapping", prefix);
+		"%s.info.JoystickButtonAxisMapping", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_JoystickAnalogToDigitalMapping), comp_id,
-						 "%s.info.JoystickAnalogToDigitalMapping", prefix);
+		"%s.info.JoystickAnalogToDigitalMapping", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_Macros), comp_id,
-						 "%s.info.Macros", prefix);
+		"%s.info.Macros", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_MatrixKeyboard), comp_id,
-						 "%s.info.MatrixKeyboard", prefix);
+		"%s.info.MatrixKeyboard", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_MatrixKeyboardTriggeredMapping), comp_id,
-						 "%s.info.MatrixKeyboardTriggeredMapping", prefix);
+		"%s.info.MatrixKeyboardTriggeredMapping", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_LCD), comp_id,
-						 "%s.info.LCD", prefix);
+		"%s.info.LCD", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_MatrixLED), comp_id,
-						 "%s.info.MatrixLED", prefix);
+		"%s.info.MatrixLED", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_ConnectionSignal), comp_id,
-						 "%s.info.ConnectionSignal", prefix);
+		"%s.info.ConnectionSignal", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_PoExtBus), comp_id,
-						 "%s.info.PoExtBus", prefix);
+		"%s.info.PoExtBus", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_PoNET), comp_id,
-						 "%s.info.PoNET", prefix);
+		"%s.info.PoNET", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_AnalogFiltering), comp_id,
-						 "%s.info.AnalogFiltering", prefix);
+		"%s.info.AnalogFiltering", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_InitOutputsStart), comp_id,
-						 "%s.info.InitOutputsStart", prefix);
+		"%s.info.InitOutputsStart", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_protI2C), comp_id,
-						 "%s.info.protI2C", prefix);
+		"%s.info.protI2C", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_prot1wire), comp_id,
-						 "%s.info.prot1wire", prefix);
+		"%s.info.prot1wire", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_AdditionalOptions), comp_id,
-						 "%s.info.AdditionalOptions", prefix);
+		"%s.info.AdditionalOptions", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_LoadStatus), comp_id,
-						 "%s.info.LoadStatus", prefix);
+		"%s.info.LoadStatus", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_CustomDeviceName), comp_id,
-						 "%s.info.CustomDeviceName", prefix);
+		"%s.info.CustomDeviceName", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_PoTLog27support), comp_id,
-						 "%s.info.PoTLog27support", prefix);
+		"%s.info.PoTLog27support", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_SensorList), comp_id,
-						 "%s.info.SensorList", prefix);
+		"%s.info.SensorList", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_WebInterface), comp_id,
-						 "%s.info.WebInterface", prefix);
+		"%s.info.WebInterface", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_FailSafeSettings), comp_id,
-						 "%s.info.FailSafeSettings", prefix);
+		"%s.info.FailSafeSettings", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_JoystickHATswitch), comp_id,
-						 "%s.info.JoystickHATswitch", prefix);
+		"%s.info.JoystickHATswitch", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_PulseEngine), comp_id,
-						 "%s.info.PulseEngine", prefix);
+		"%s.info.PulseEngine", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_PulseEnginev2), comp_id,
-						 "%s.info.PulseEnginev2", prefix);
+		"%s.info.PulseEnginev2", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->info_EasySensors), comp_id,
-						 "%s.info.EasySensors", prefix);
+		"%s.info.EasySensors", prefix);
 	if (r != 0)
 		return r;
 
 
 
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->rtc_sec), comp_id,
-						 "%s.rtc.sec", prefix);
+		"%s.rtc.sec", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->rtc_min), comp_id,
-						 "%s.rtc.min", prefix);
+		"%s.rtc.min", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->rtc_hour), comp_id,
-						 "%s.rtc.hour", prefix);
+		"%s.rtc.hour", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->rtc_dow), comp_id,
-						 "%s.rtc.dow", prefix);
+		"%s.rtc.dow", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->rtc_dom), comp_id,
-						 "%s.rtc.dom", prefix);
+		"%s.rtc.dom", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->rtc_tmp), comp_id,
-						 "%s.rtc.tmp", prefix);
+		"%s.rtc.tmp", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->rtc_doy), comp_id,
-						 "%s.rtc.doy", prefix);
+		"%s.rtc.doy", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->rtc_month), comp_id,
-						 "%s.rtc.month", prefix);
+		"%s.rtc.month", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->rtc_year), comp_id,
-						 "%s.rtc.year", prefix);
+		"%s.rtc.year", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->rtc_loopcount), comp_id,
-						 "%s.rtc.loopcount", prefix);
+		"%s.rtc.loopcount", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->rtc_lastmin), comp_id,
-						 "%s.rtc.lastmin", prefix);
+		"%s.rtc.lastmin", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->rtc_lastsec), comp_id,
-						 "%s.rtc.lastsec", prefix);
+		"%s.rtc.lastsec", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->rtc_loop_frequ), comp_id,
-						 "%s.rtc.loop-frequ", prefix);
+		"%s.rtc.loop-frequ", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_IN, &(inst->rtc_loop_frequ_demand), comp_id,
-						 "%s.rtc.loop-frequ-demand", prefix);
+		"%s.rtc.loop-frequ-demand", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_IN, &(inst->rtc_sec_ret), comp_id,
-						 "%s.rtc.sec-ret", prefix);
+		"%s.rtc.sec-ret", prefix);
 	if (r != 0)
 		return r;
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->rtc_hal_latency), comp_id,
-						 "%s.rtc.hal-latency", prefix);
+		"%s.rtc.hal-latency", prefix);
 	if (r != 0)
 		return r;
 
 
 
-	
 
-	
+
+
 
 
 	r = hal_param_u32_newf(HAL_RW, &(inst->devSerial), comp_id,
-						   "%s.devSerial", prefix);
+		"%s.devSerial", prefix);
 	if (r != 0)
 		return r;
 
-	
-	
+
+
 	if (__comp_last_inst)
 		__comp_last_inst->_next = inst;
 	__comp_last_inst = inst;
@@ -582,27 +574,23 @@ static int export(char *prefix, long extra_arg)
 	return 0;
 }
 static int default_count = 1, count = 0;
-char *names[16] = {
+char* names[16] = {
 	0,
 };
-int rtapi_app_main(void)
-{
+int rtapi_app_main(void) {
 	int r = 0;
 	int i;
 	comp_id = hal_init("pokeys");
 	if (comp_id < 0)
 		return comp_id;
-	if (count && names[0])
-	{
+	if (count && names[0]) {
 		rtapi_print_msg(RTAPI_MSG_ERR, "count= and names= are mutually exclusive\n");
 		return -EINVAL;
 	}
 	if (!count && !names[0])
 		count = default_count;
-	if (count)
-	{
-		for (i = 0; i < count; i++)
-		{
+	if (count) {
+		for (i = 0; i < count; i++) {
 			char buf[HAL_NAME_LEN + 1];
 			rtapi_snprintf(buf, sizeof(buf), "pokeys.%d", i);
 			r = export(buf, i);
@@ -610,13 +598,10 @@ int rtapi_app_main(void)
 				break;
 		}
 	}
-	else
-	{
+	else {
 		int max_names = sizeof(names) / sizeof(names[0]);
-		for (i = 0; (i < max_names) && names[i]; i++)
-		{
-			if (strlen(names[i]) < 1)
-			{
+		for (i = 0; (i < max_names) && names[i]; i++) {
+			if (strlen(names[i]) < 1) {
 				rtapi_print_msg(RTAPI_MSG_ERR, "names[%d] is invalid (empty string)\n", i);
 				r = -EINVAL;
 				break;
@@ -626,40 +611,32 @@ int rtapi_app_main(void)
 				break;
 		}
 	}
-	if (r)
-	{
+	if (r) {
 		hal_exit(comp_id);
 	}
-	else
-	{
+	else {
 		hal_ready(comp_id);
 	}
 	return r;
 }
 
-void rtapi_app_exit(void)
-{
+void rtapi_app_exit(void) {
 	hal_exit(comp_id);
 }
 static void user_mainloop(void);
 
-int __comp_parse_count(int *argc, char **argv)
-{
+int __comp_parse_count(int* argc, char** argv) {
 	int i;
-	for (i = 0; i < *argc; i++)
-	{
-		if (strncmp(argv[i], "count=", 6) == 0)
-		{
+	for (i = 0; i < *argc; i++) {
+		if (strncmp(argv[i], "count=", 6) == 0) {
 			errno = 0;
 			count = strtoul(&argv[i][6], NULL, 0);
-			for (; i + 1 < *argc; i++)
-			{
+			for (; i + 1 < *argc; i++) {
 				argv[i] = argv[i + 1];
 			}
 			argv[i] = NULL;
 			(*argc)--;
-			if (errno == 0)
-			{
+			if (errno == 0) {
 				return 1;
 			}
 		}
@@ -667,27 +644,21 @@ int __comp_parse_count(int *argc, char **argv)
 	return 0;
 }
 
-int __comp_parse_names(int *argc, char **argv)
-{
+int __comp_parse_names(int* argc, char** argv) {
 	int i;
-	for (i = 0; i < *argc; i++)
-	{
-		if (strncmp(argv[i], "names=", 6) == 0)
-		{
-			char *p = &argv[i][6];
+	for (i = 0; i < *argc; i++) {
+		if (strncmp(argv[i], "names=", 6) == 0) {
+			char* p = &argv[i][6];
 			int j;
-			for (; i + 1 < *argc; i++)
-			{
+			for (; i + 1 < *argc; i++) {
 				argv[i] = argv[i + 1];
 			}
 			argv[i] = NULL;
 			(*argc)--;
-			for (j = 0; j < 16; j++)
-			{
+			for (j = 0; j < 16; j++) {
 				names[j] = strtok(p, ",");
 				p = NULL;
-				if (names[j] == NULL)
-				{
+				if (names[j] == NULL) {
 					return 1;
 				}
 			}
@@ -698,16 +669,14 @@ int __comp_parse_names(int *argc, char **argv)
 }
 
 int argc = 0;
-char **argv = 0;
-int main(int argc_, char **argv_)
-{
+char** argv = 0;
+int main(int argc_, char** argv_) {
 	argc = argc_;
 	argv = argv_;
 	int found_count, found_names;
 	found_count = __comp_parse_count(&argc, argv);
 	found_names = __comp_parse_names(&argc, argv);
-	if (found_count && found_names)
-	{
+	if (found_count && found_names) {
 		rtapi_print_msg(RTAPI_MSG_ERR, "count= and names= are mutually exclusive\n");
 		return 1;
 	}
@@ -951,8 +920,7 @@ float temp_MaxAcceleration[8];
 float minAccel = 0.0001;
 
 
-typedef struct
-{
+typedef struct {
 	uint8_t matrixKBconfiguration;	  // Matrix keyboard configuration (set to 1 to enable matrix keyboard support)
 	uint8_t matrixKBwidth;			  // Matrix keyboard width (number of columns)
 	uint8_t matrixKBheight;			  // Matrix keyboard height (number of rows)
@@ -988,20 +956,16 @@ PK_MatrixKB_Parameters MatrixKB;
 
 
 
-uint8_t Merge_8BitsToByte(bool Bit_array[8])
-{
+uint8_t Merge_8BitsToByte(bool Bit_array[8]) {
 	uint8_t sum = 0;
-	for (int i = 0; i < 8; i++)
-	{
+	for (int i = 0; i < 8; i++) {
 		//    sum += Bit_array[i] - '0';
 		//    sum<<=1;
 
-		if (Bit_array[i] == true)
-		{
+		if (Bit_array[i] == true) {
 			sum |= 1 << i;
 		}
-		else
-		{
+		else {
 			sum &= ~(1 << i);
 		}
 	}
@@ -1010,27 +974,23 @@ uint8_t Merge_8BitsToByte(bool Bit_array[8])
 
 
 
-int Config_MatrixKB()
-{
+int Config_MatrixKB() {
 
 
 
-	if (PK_MatrixKBConfigurationGet(dev) == PK_OK)
-	{
+	if (PK_MatrixKBConfigurationGet(dev) == PK_OK) {
 		MatrixKB.matrixKBconfiguration = dev->matrixKB.matrixKBconfiguration;
 		MatrixKB.matrixKBwidth = dev->matrixKB.matrixKBheight;
 		MatrixKB.matrixKBheight = dev->matrixKB.matrixKBwidth;
 
-		for (i = 0; i < 8; i++)
-		{
+		for (i = 0; i < 8; i++) {
 			MatrixKB.matrixKBrowsPins[i] = dev->matrixKB.matrixKBrowsPins[i];
 			MatrixKB.matrixKBrowsPins[8 + i] = dev->matrixKB.matrixKBrowsPins[8 + i];
 
 			MatrixKB.matrixKBcolumnsPins[i] = dev->matrixKB.matrixKBcolumnsPins[i];
 		}
 
-		for (i = 0; i < 128; i++)
-		{
+		for (i = 0; i < 128; i++) {
 			MatrixKB.macroMappingOptions[i] = dev->matrixKB.macroMappingOptions[i];
 		}
 		usleep(sleepdur);
@@ -1040,25 +1000,19 @@ int Config_MatrixKB()
 	return 0;
 }
 
-int Update_MatrixKB()
-{
-	if (PK_MatrixKBStatusGet(dev) == PK_OK)
-	{
-		for (i = 0; i < 128; i++)
-		{
+int Update_MatrixKB() {
+	if (PK_MatrixKBStatusGet(dev) == PK_OK) {
+		for (i = 0; i < 128; i++) {
 			//	MatrixKB.matrixKBvalues[i] = dev->matrixKB.matrixKBvalues[i];
 		}
 		usleep(sleepdur);
 	}
-	if (PK_MatrixKBConfigurationGet(dev) == PK_OK)
-	{
+	if (PK_MatrixKBConfigurationGet(dev) == PK_OK) {
 		int i = 0;
 		int h = 0;
 		int w = 0;
-		for (h = 0; h < MatrixKB.matrixKBheight; h++)
-		{
-			for (w = 0; w < MatrixKB.matrixKBwidth; w++)
-			{
+		for (h = 0; h < MatrixKB.matrixKBheight; h++) {
+			for (w = 0; w < MatrixKB.matrixKBwidth; w++) {
 				//	MatrixKB.matrixKBPins[i] = Get_BitOfByte(MatrixKB.matrixKBrowsPins[h], w);
 				i++;
 			}
@@ -1069,29 +1023,23 @@ int Update_MatrixKB()
 }
 
 
-int Update_LCD()
-{
-	if (PK_LCDUpdate(dev) == PK_OK)
-	{
+int Update_LCD() {
+	if (PK_LCDUpdate(dev) == PK_OK) {
 		usleep(sleepdur);
 	}
-	if (PK_LCDSetCustomCharacters(dev) == PK_OK)
-	{
+	if (PK_LCDSetCustomCharacters(dev) == PK_OK) {
 		usleep(sleepdur);
 	}
 	return 0;
 }
 
 
-int Config_PoStep()
-{
-	if (PK_PoStep_ConfigurationGet(dev) == PK_OK)
-	{
+int Config_PoStep() {
+	if (PK_PoStep_ConfigurationGet(dev) == PK_OK) {
 		usleep(sleepdur);
 	}
 
-	if (PK_PoStep_DriverConfigurationGet(dev) == PK_OK)
-	{
+	if (PK_PoStep_DriverConfigurationGet(dev) == PK_OK) {
 		usleep(sleepdur);
 	}
 
@@ -1100,16 +1048,14 @@ int Config_PoStep()
 	return 0;
 }
 
-int Update_PoStep()
-{
-	if (PK_PoStep_StatusGet(dev) == PK_OK)
-	{
+int Update_PoStep() {
+	if (PK_PoStep_StatusGet(dev) == PK_OK) {
 		usleep(sleepdur);
 	}
 	return 0;
 }
 
-static char *serial_number = "";
+static char* serial_number = "";
 // Not available in userspace code.
 // RTAPI_MP_STRING(serial_number, "Device Serial Number")
 
@@ -1117,7 +1063,7 @@ static int ConnectionType = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
 // Not available in userspace code.
 // RTAPI_MP_INT(ConnectionType, "Connection Type (1..USB, 2..UDP, 3..Network, 4..fastUSB)")
 
-static char *IP = "0.0.0.0";
+static char* IP = "0.0.0.0";
 // Not available in userspace code.
 // RTAPI_MP_STRING(IP, "IP Address")
 
@@ -1129,11 +1075,10 @@ static int retry = 3;
 
 int instance_number = 0;
 
-sPoKeysDevice *TryConnectToDevice(uint32_t intSerial)
-{
+sPoKeysDevice* TryConnectToDevice(uint32_t intSerial) {
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: serial_number: %d\n", intSerial);
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: serial_number=%d\n", __FILE__, __FUNCTION__, intSerial);
-	sPoKeysDevice *retDev = NULL;
+	sPoKeysDevice* retDev = NULL;
 	uint32_t i_Timeout = 1000;
 	uint32_t enm_usb_dev = 0;
 	uint32_t enm_fusb_dev = 0;
@@ -1141,105 +1086,105 @@ sPoKeysDevice *TryConnectToDevice(uint32_t intSerial)
 	int32_t nDevs = 0;
 	uint32_t lastConectionTypeTried = 0;
 
-	if (timeout_ms > 0){
+	if (timeout_ms > 0) {
 		i_Timeout = timeout_ms;
 	}
-	if (intSerial != 0){
+	if (intSerial != 0) {
 		retDev == PK_ConnectToDevice(0); // waits for usb device
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: intSerial=%d\n", __FILE__, __FUNCTION__, intSerial);
-		if (retDev == NULL){
+		if (retDev == NULL) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_EnumerateUSBDevices\n", __FILE__, __FUNCTION__);
 			enm_usb_dev = PK_EnumerateUSBDevices();
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: enm_usb_dev :%d\n", __FILE__, __FUNCTION__, enm_usb_dev);
 			//enm_fusb_dev = PK_EnumerateFastUSBDevices();
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: enm_fusb_dev :%d\n", __FILE__, __FUNCTION__, enm_fusb_dev);
-			if (enm_usb_dev != 0 || enm_fusb_dev != 0){
+			if (enm_usb_dev != 0 || enm_fusb_dev != 0) {
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d)\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 				retDev = PK_ConnectToDeviceWSerial((uint32_t)intSerial, i_Timeout); // waits for usb device
 				lastConectionTypeTried = 1;
-				if (retDev == NULL){
+				if (retDev == NULL) {
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d) FAILED\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 					retDev = PK_ConnectToDeviceWSerial((uint32_t)intSerial, i_Timeout); // waits for usb device
 					lastConectionTypeTried = 1;
-					if (retDev == NULL){
+					if (retDev == NULL) {
 						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d) FAILED\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 
 						retDev = PK_ConnectToDeviceWSerial(intSerial, i_Timeout); // waits for usb device
 						lastConectionTypeTried = 1;
-						if (retDev == NULL){
+						if (retDev == NULL) {
 							rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d) FAILED\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 
 							retDev = PK_ConnectToDevice(0); // waits for usb device
 							lastConectionTypeTried = 1;
-							if (retDev == NULL){
+							if (retDev == NULL) {
 								rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice(0) FAILED\n", __FILE__, __FUNCTION__);
 
 								retDev = PK_ConnectToDevice(intSerial); // waits for usb device
 								lastConectionTypeTried = 1;
-								if (retDev == NULL){
+								if (retDev == NULL) {
 									rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice(%d) FAILED\n", __FILE__, __FUNCTION__, intSerial);
 								}
-								else{
+								else {
 									rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice(%d) OK\n", __FILE__, __FUNCTION__, intSerial);
 								}
 
 							}
-							else{
+							else {
 								rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice(0) OK\n", __FILE__, __FUNCTION__);
 							}
 						}
-						else{
+						else {
 							rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d) OK\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 						}
 					}
-					else{
+					else {
 						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d) OK\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 					}
 
 				}
-				else{
+				else {
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d) OK\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 				}
 
-				
+
 
 
 			}
 		}
-		if (retDev == NULL){
+		if (retDev == NULL) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial_UDP(%d, %d)\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 			retDev = PK_ConnectToDeviceWSerial_UDP(intSerial, i_Timeout); // waits for udp device
-			if (retDev == NULL){
+			if (retDev == NULL) {
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial_UDP(%d, %d) FAILED\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 			}
-			else{
+			else {
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial_UDP(%d, %d) OK\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 			}
 			lastConectionTypeTried = 2;
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: lastConectionTypeTried = 2\n", __FILE__, __FUNCTION__);
 		}
-		if (retDev == NULL){
+		if (retDev == NULL) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_SearchNetworkDevices(net_devices, %d, %d)\n", __FILE__, __FUNCTION__, i_Timeout, intSerial);
-			sPoKeysNetworkDeviceSummary *net_devices;
+			sPoKeysNetworkDeviceSummary* net_devices;
 			int32_t nDevs = PK_SearchNetworkDevices(net_devices, i_Timeout, intSerial);
-			if (nDevs != 0){
+			if (nDevs != 0) {
 				enm_udp_dev = nDevs;
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_ConnectToNetworkDevice(net_devices)\n", __FILE__, __FUNCTION__);
 				retDev = PK_ConnectToNetworkDevice(net_devices);
-				if (retDev == NULL){
+				if (retDev == NULL) {
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToNetworkDevice(net_devices) FAILED\n", __FILE__, __FUNCTION__);
 				}
-				else{
+				else {
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToNetworkDevice(net_devices) OK\n", __FILE__, __FUNCTION__);
 				}
 				lastConectionTypeTried = 3;
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: lastConectionTypeTried = 3\n", __FILE__, __FUNCTION__);
 			}
-			else{
+			else {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EnumerateNetworkDevices(net_devices, %d)\n", __FILE__, __FUNCTION__, i_Timeout);
 				//	nDevs = PK_EnumerateNetworkDevices(net_devices, i_Timeout); // does not work - it hangs here
 				// deb_out = 1135;
-				if (nDevs != 0){
+				if (nDevs != 0) {
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: nDevs: %s\n", __FILE__, __FUNCTION__, nDevs);
 					enm_udp_dev = nDevs;
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_ConnectToNetworkDevice(net_devices)\n", __FILE__, __FUNCTION__);
@@ -1250,8 +1195,7 @@ sPoKeysDevice *TryConnectToDevice(uint32_t intSerial)
 			}
 		}
 	}
-	else
-	{
+	else {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: udp_devices[16]\n", __FILE__, __FUNCTION__);
 		sPoKeysNetworkDeviceSummary udp_devices[16];
 
@@ -1262,64 +1206,55 @@ sPoKeysDevice *TryConnectToDevice(uint32_t intSerial)
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_EnumerateFastUSBDevices()\n", __FILE__, __FUNCTION__);
 		// enm_fusb_dev = PK_EnumerateFastUSBDevices();
 		//rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_EnumerateFastUSBDevices()=%d\n", __FILE__, __FUNCTION__, enm_fusb_dev);
-		
+
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_EnumerateNetworkDevices(udp_devices, %d)\n", __FILE__, __FUNCTION__, i_Timeout);
 		int32_t nDevs = PK_EnumerateNetworkDevices(udp_devices, i_Timeout); // does not work - it hangs here
-																			//	rtapi_print("");
+		//	rtapi_print("");
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: nDevs: %d\n", __FILE__, __FUNCTION__, nDevs);
 		// enm_udp_dev = nDevs;
 
-		if (nDevs != 0)
-		{
+		if (nDevs != 0) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToNetworkDevice(udp_devices) - %d\n", __FILE__, __FUNCTION__, nDevs);
-			for (int i = 0; i < 16; i++)
-			{
-				if (retDev == NULL)
-				{
+			for (int i = 0; i < 16; i++) {
+				if (retDev == NULL) {
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: udp_devices[%d].SerialNumber: %d\n", __FILE__, __FUNCTION__, i, udp_devices[i].SerialNumber);
-					if (udp_devices[i].SerialNumber != 0)
-					{
+					if (udp_devices[i].SerialNumber != 0) {
 						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial_UDP(%d, %d)\n", __FILE__, __FUNCTION__, udp_devices[i].SerialNumber, i_Timeout);
 						retDev = PK_ConnectToDeviceWSerial_UDP(udp_devices[i].SerialNumber, i_Timeout); // waits for udp device
 						lastConectionTypeTried = 2;
 						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: lastConectionTypeTried = 2\n", __FILE__, __FUNCTION__);
 					}
 				}
-				else
-				{
+				else {
 					break;
 				}
 			}
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: lastConectionTypeTried = 3\n", __FILE__, __FUNCTION__);
 		}
-		if (enm_fusb_dev > 0)
-		{
+		if (enm_fusb_dev > 0) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice FastUSB\n", __FILE__, __FUNCTION__);
-			for (int i = 0; i < enm_fusb_dev+1; i++)
-			{
+			for (int i = 0; i < enm_fusb_dev + 1; i++) {
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice(%d)\n", __FILE__, __FUNCTION__, i);
 				retDev = PK_ConnectToDevice(i);
-				if (retDev == NULL){
+				if (retDev == NULL) {
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice(%d) FAILED\n", __FILE__, __FUNCTION__, i);
 				}
-				else{
+				else {
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice(%d) OK\n", __FILE__, __FUNCTION__, i);
 				}
 			}
 			lastConectionTypeTried = 4;
 		}
 
-		if (enm_usb_dev > 0)
-		{
+		if (enm_usb_dev > 0) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice USB\n", __FILE__, __FUNCTION__);
-			for (int i = 0; i < enm_usb_dev+1; i++)
-			{
+			for (int i = 0; i < enm_usb_dev + 1; i++) {
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice(%d)\n", __FILE__, __FUNCTION__, i);
 				retDev = PK_ConnectToDevice(i);
-				if (retDev == NULL){
+				if (retDev == NULL) {
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice(%d) FAILED\n", __FILE__, __FUNCTION__, i);
 				}
-				else{
+				else {
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice(%d) OK\n", __FILE__, __FUNCTION__, i);
 				}
 			}
@@ -1327,12 +1262,10 @@ sPoKeysDevice *TryConnectToDevice(uint32_t intSerial)
 		}
 		// deb_out = 120;
 	}
-	if (retDev != NULL)
-	{
+	if (retDev != NULL) {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Connected to device\n", __FILE__, __FUNCTION__);
 		// connected = 1;
-		if (lastConectionTypeTried == 1)
-		{
+		if (lastConectionTypeTried == 1) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: USB\n", __FILE__, __FUNCTION__);
 			// cannot set pins outside of user_mainloop()
 			//	connected_usb = 1;
@@ -1340,8 +1273,7 @@ sPoKeysDevice *TryConnectToDevice(uint32_t intSerial)
 			//	connected_udp = 0;
 			//	connected_net = 0;
 		}
-		if (lastConectionTypeTried == 2)
-		{
+		if (lastConectionTypeTried == 2) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: UDP\n", __FILE__, __FUNCTION__);
 			// cannot set pins outside of user_mainloop()
 			//	connected_usb = 0;
@@ -1349,8 +1281,7 @@ sPoKeysDevice *TryConnectToDevice(uint32_t intSerial)
 			//	connected_udp = 1;
 			//	connected_net = 0;
 		}
-		if (lastConectionTypeTried == 3)
-		{
+		if (lastConectionTypeTried == 3) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Network\n", __FILE__, __FUNCTION__);
 			// cannot set pins outside of user_mainloop()
 			//	connected_usb = 0;
@@ -1360,8 +1291,7 @@ sPoKeysDevice *TryConnectToDevice(uint32_t intSerial)
 		}
 		return retDev;
 	}
-	else
-	{
+	else {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: failed to connect to device\n", __FILE__, __FUNCTION__);
 		// connected_usb = 0;
 		// connected_fusb = 0;
@@ -1374,8 +1304,7 @@ sPoKeysDevice *TryConnectToDevice(uint32_t intSerial)
 
 bool initdone = 0;
 
-void user_mainloop(void)
-{
+void user_mainloop(void) {
 
 	rtapi_print("  \n");
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: user_mainloop started  \n", __FILE__, __FUNCTION__);
@@ -1384,10 +1313,10 @@ void user_mainloop(void)
 	//  comp_id = hal_init("pokeys"); // seems already initialized
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: comp_id: %d\n", __FILE__, __FUNCTION__, comp_id);
 	rtapi_print("  \n");
-	while (0xb){
+	while (0xb) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: while(0xb) \n", __FILE__, __FUNCTION__);
 
-		FOR_ALL_INSTS(){
+		FOR_ALL_INSTS() {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: FOR_ALL_INSTS() \n", __FILE__, __FUNCTION__);
 			rtc_loopcount++;
 			HAL_Machine_On = machine_is_on;
@@ -1395,33 +1324,29 @@ void user_mainloop(void)
 			deb_out = 100;
 
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: initdone: %s\n", __FILE__, __FUNCTION__, initdone ? "true" : "false");
-			while (dev == NULL | initdone != 1)
-			{
+			while (dev == NULL | initdone != 1) {
 				Loop_Frequ = rtc_loop_frequ;
 				uint32_t lastConectionTypeTried = 0;
 				/*if (PEv2_digout_Emergency_out != true){
 					usleep(sleepdur);
 				}*/
 
-				if (dev == NULL){
+				if (dev == NULL) {
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: TryConnectToDevice %d \n", __FILE__, __FUNCTION__, devSerial);
 					dev = TryConnectToDevice(devSerial);
-					if (dev != NULL)
-					{
+					if (dev != NULL) {
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Connected to device\n", __FILE__, __FUNCTION__);
 					}
 				}
 
-				if (dev != NULL){
+				if (dev != NULL) {
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev != NULL\n", __FILE__, __FUNCTION__);
-					if (devSerial == 0)
-					{
+					if (devSerial == 0) {
 
 						devSerial = dev->DeviceData.SerialNumber;
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: devSerial: %d\n", __FILE__, __FUNCTION__, devSerial);
 					}
-					switch (dev->connectionType)
-					{
+					switch (dev->connectionType) {
 					case PK_DeviceType_USBDevice:
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: USB\n", __FILE__, __FUNCTION__);
 						connected_usb = 1;
@@ -1441,16 +1366,14 @@ void user_mainloop(void)
 
 						/*  PK_ConnectionParam_TCP = 0,
 							PK_ConnectionParam_UDP = 1*/
-						if (dev->connectionParam == 0)
-						{
+						if (dev->connectionParam == 0) {
 							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: TCP\n", __FILE__, __FUNCTION__);
 							connected_usb = 0;
 							connected_fusb = 0;
 							connected_udp = 0;
 							connected_net = 1;
 						}
-						else
-						{
+						else {
 							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: UDP\n", __FILE__, __FUNCTION__);
 							connected_usb = 0;
 							connected_fusb = 0;
@@ -1504,12 +1427,11 @@ void user_mainloop(void)
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Device info pins initialized\n", __FILE__, __FUNCTION__);
 
 
-					if (info_protI2C != 0){
+					if (info_protI2C != 0) {
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_protI2C = %d \n", __FILE__, __FUNCTION__, info_protI2C);
 
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_I2CBusScanStart\n", __FILE__, __FUNCTION__);
-						if (PK_I2CBusScanStart(dev) == PK_OK)
-						{
+						if (PK_I2CBusScanStart(dev) == PK_OK) {
 							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_I2CBusScanStart - scan started\n", __FILE__, __FUNCTION__);
 							I2C_isscanning = true;
 							usleep(sleepdur);
@@ -1517,16 +1439,15 @@ void user_mainloop(void)
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: I2C_isscanning = %d\n", __FILE__, __FUNCTION__, I2C_isscanning);
 					}
 
-					if (setPinConfig == true){
+					if (setPinConfig == true) {
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: setPinConfig = true\n", __FILE__, __FUNCTION__);
-						if (PK_PinConfigurationSet(dev) == PK_OK)
-						{
+						if (PK_PinConfigurationSet(dev) == PK_OK) {
 							usleep(sleepdur);
 							setPinConfig = false;
 						}
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: setPinConfig -done\n", __FILE__, __FUNCTION__);
 					}
-					
+
 					// dev->DeviceData.DeviceLockStatus=1;
 
 
@@ -1541,7 +1462,7 @@ void user_mainloop(void)
 			deb_out = 200;
 			// RTC
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_RTCGet(dev)\n", __FILE__, __FUNCTION__);
-			if (PK_RTCGet(dev) == PK_OK){
+			if (PK_RTCGet(dev) == PK_OK) {
 				deb_out = 210;
 				rtc_sec = dev->RTC.SEC;
 				rtc_min = dev->RTC.MIN;
@@ -1553,78 +1474,63 @@ void user_mainloop(void)
 				rtc_month = dev->RTC.MONTH;
 				rtc_year = dev->RTC.YEAR;
 
-				if (rtc_lastsec != rtc_sec)
-				{
+				if (rtc_lastsec != rtc_sec) {
 					deb_out = 211;
 					rtc_loop_frequ = rtc_loopcount;
 					rtc_loopcount = 0;
 					rtc_lastsec = rtc_sec;
 
-					if (secBlink)
-					{
+					if (secBlink) {
 						secBlink = false;
 					}
-					else
-					{
+					else {
 						secBlink = true;
 					}
 
 					// sleepdur
-					if (rtc_loop_frequ > 15)
-					{
-						if (rtc_loop_frequ_demand == 0)
-						{
+					if (rtc_loop_frequ > 15) {
+						if (rtc_loop_frequ_demand == 0) {
 							sleepdur = sleepdur * rtc_loop_frequ / 15;
 						}
-						else
-						{
+						else {
 							sleepdur = sleepdur * rtc_loop_frequ / rtc_loop_frequ_demand;
 						}
 					}
-					else
-					{
+					else {
 						sleepdur = sleepdur / 2;
 					}
-					if (sleepdur > 1000000)
-					{
+					if (sleepdur > 1000000) {
 						sleepdur = 1000000;
 					}
-					if (sleepdur < 50)
-					{
+					if (sleepdur < 50) {
 						sleepdur = 50;
 					}
 
-					if (rtc_latencycheck_set = -1)
-					{
+					if (rtc_latencycheck_set = -1) {
 						rtc_latencyCounter = 0;
 						rtc_latencycheck_set = dev->RTC.SEC;
 					}
 				}
 				// hope to get loopfrequency more stable - as on everyminute additional actions
-				if (use_sleepdur1 == false)
-				{
+				if (use_sleepdur1 == false) {
 					sleepdur2 = sleepdur;
 					sleepdur = sleepdur1;
 					use_sleepdur1 = true;
 				}
-				else
-				{
+				else {
 					sleepdur1 = sleepdur;
 				}
-				if (rtc_lastmin != rtc_min)
-				{
+				if (rtc_lastmin != rtc_min) {
 					use_sleepdur1 = false;
 					sleepdur1 = sleepdur;
 					sleepdur = sleepdur2;
 				}
 
-				if (rtc_sec_ret >= rtc_latencycheck_set && rtc_latencycheck_set > 0)
-				{
+				if (rtc_sec_ret >= rtc_latencycheck_set && rtc_latencycheck_set > 0) {
 					rtc_hal_latency = rtc_latencyCounter;
 					rtc_latencycheck_set = -1;
 				}
-				else if (rtc_latencycheck_set >= -0)
-				{
+				else if (rtc_latencycheck_set >= -0) {
 					rtc_latencyCounter++;
 				}
 				deb_out = 212;
@@ -1635,7 +1541,7 @@ void user_mainloop(void)
 			PKPEv2_Update(dev, HAL_Machine_On);
 			deb_out = 220;
 			usleep(sleepdur);
-				
+
 			PKEncoder_Update(dev);
 			deb_out = 220;
 			usleep(sleepdur);
@@ -1654,129 +1560,117 @@ void user_mainloop(void)
 			deb_out = 239;
 			usleep(sleepdur);
 
-	if (rtc_lastmin != rtc_min )
-	{
-		rtc_lastmin = rtc_min;
-		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: rtc_lastmin = %d\n", __FILE__, __FUNCTION__, rtc_lastmin);
-	
-		if (HAL_Machine_On == false)
-		{
-				alive = 0;
+			if (rtc_lastmin != rtc_min) {
+				rtc_lastmin = rtc_min;
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: rtc_lastmin = %d\n", __FILE__, __FUNCTION__, rtc_lastmin);
 
-				deb_out = 310;
+				if (HAL_Machine_On == false) {
+					alive = 0;
 
-				info_PinCount = dev->info.iPinCount;											 // Number of pins, physically on the device
-				info_PWMCount = dev->info.iPWMCount;											 // Number of pins that support PWM output
-				info_BasicEncoderCount = dev->info.iBasicEncoderCount;							 // Number of basic encoders
-				info_EncodersCount = dev->info.iEncodersCount;									 // Number of encoder slots available
-				info_FastEncoders = dev->info.iFastEncoders;									 // Number of fast encoders supported
-				info_UltraFastEncoders = dev->info.iUltraFastEncoders;							 // Number of available ultra fast encoders
-				info_PWMinternalFrequency = dev->info.PWMinternalFrequency;						 // Main PWM peripheral clock
-				info_AnalogInputs = dev->info.iAnalogInputs;									 // Number of available analog inputs
-				info_KeyMapping = dev->info.iKeyMapping;										 // Device supports key mapping (acts as a USB keyboard)
-				info_TriggeredKeyMapping = dev->info.iTriggeredKeyMapping;						 // Device supports triggered key mapping
-				info_KeyRepeatDelay = dev->info.iKeyRepeatDelay;								 // Device supports user customizable key repeat rates and delays
-				info_DigitalCounters = dev->info.iDigitalCounters;								 // Device supports digital counters
-				info_JoystickButtonAxisMapping = dev->info.iJoystickButtonAxisMapping;			 // Device supports mapping of joystick buttons
-				info_JoystickAnalogToDigitalMapping = dev->info.iJoystickAnalogToDigitalMapping; // Device supports mapping of analog inputs to digital keys
-				info_Macros = dev->info.iMacros;												 // Device supports customizable macro sequences
-				info_MatrixKeyboard = dev->info.iMatrixKeyboard;								 // Device supports matrix keyboard
-				info_MatrixKeyboardTriggeredMapping = dev->info.iMatrixKeyboardTriggeredMapping; // Device supports matrix keyboard triggered key mapping
-				info_LCD = dev->info.iLCD;														 // Device supports alphanumeric LCD display
-				info_MatrixLED = dev->info.iMatrixLED;											 // Device supports matrix LED display
-				info_ConnectionSignal = dev->info.iConnectionSignal;							 // Device supports connection signal output
-				info_PoExtBus = dev->info.iPoExtBus;											 // Device supports PoExtBus digital outputs
-				info_PoNET = dev->info.iPoNET;													 // Device supports PoNET bus devices
-				info_AnalogFiltering = dev->info.iAnalogFiltering;								 // Device supports analog inputs low-pass digital filtering
-				info_InitOutputsStart = dev->info.iInitOutputsStart;							 // Device supports initializing outputs at startup
-				info_protI2C = dev->info.iprotI2C;												 // Device supports I2C bus (master)
-				info_prot1wire = dev->info.iprot1wire;											 // Device supports 1-wire bus (master)
-				info_AdditionalOptions = dev->info.iAdditionalOptions;							 // Device supports additional options with activation keys
-				info_LoadStatus = dev->info.iLoadStatus;										 // Device supports reporting load status
-				info_CustomDeviceName = dev->info.iCustomDeviceName;							 // Device supports specifying custom device names
-				info_PoTLog27support = dev->info.iPoTLog27support;								 // Device supports PoTLog27 firmware
-				info_SensorList = dev->info.iSensorList;										 // Device supports sensor lists
-				info_WebInterface = dev->info.iWebInterface;									 // Device supports web interface
-				info_FailSafeSettings = dev->info.iFailSafeSettings;							 // Device supports fail-safe mode
-				info_JoystickHATswitch = dev->info.iJoystickHATswitch;							 // Device supports joystick HAT switch mapping
-				info_PulseEngine = dev->info.iPulseEngine;										 // Device supports Pulse engine
-				info_PulseEnginev2 = dev->info.iPulseEnginev2;									 // Device supports Pulse engine v2
-				info_EasySensors = dev->info.iEasySensors;										 // Device supports EasySensors
-				deb_out = 311;
+					deb_out = 310;
 
-				if(info_PinCount != 0)
-				{
-					PKIO_Setup(dev);
-					deb_out = 312;
+					info_PinCount = dev->info.iPinCount;											 // Number of pins, physically on the device
+					info_PWMCount = dev->info.iPWMCount;											 // Number of pins that support PWM output
+					info_BasicEncoderCount = dev->info.iBasicEncoderCount;							 // Number of basic encoders
+					info_EncodersCount = dev->info.iEncodersCount;									 // Number of encoder slots available
+					info_FastEncoders = dev->info.iFastEncoders;									 // Number of fast encoders supported
+					info_UltraFastEncoders = dev->info.iUltraFastEncoders;							 // Number of available ultra fast encoders
+					info_PWMinternalFrequency = dev->info.PWMinternalFrequency;						 // Main PWM peripheral clock
+					info_AnalogInputs = dev->info.iAnalogInputs;									 // Number of available analog inputs
+					info_KeyMapping = dev->info.iKeyMapping;										 // Device supports key mapping (acts as a USB keyboard)
+					info_TriggeredKeyMapping = dev->info.iTriggeredKeyMapping;						 // Device supports triggered key mapping
+					info_KeyRepeatDelay = dev->info.iKeyRepeatDelay;								 // Device supports user customizable key repeat rates and delays
+					info_DigitalCounters = dev->info.iDigitalCounters;								 // Device supports digital counters
+					info_JoystickButtonAxisMapping = dev->info.iJoystickButtonAxisMapping;			 // Device supports mapping of joystick buttons
+					info_JoystickAnalogToDigitalMapping = dev->info.iJoystickAnalogToDigitalMapping; // Device supports mapping of analog inputs to digital keys
+					info_Macros = dev->info.iMacros;												 // Device supports customizable macro sequences
+					info_MatrixKeyboard = dev->info.iMatrixKeyboard;								 // Device supports matrix keyboard
+					info_MatrixKeyboardTriggeredMapping = dev->info.iMatrixKeyboardTriggeredMapping; // Device supports matrix keyboard triggered key mapping
+					info_LCD = dev->info.iLCD;														 // Device supports alphanumeric LCD display
+					info_MatrixLED = dev->info.iMatrixLED;											 // Device supports matrix LED display
+					info_ConnectionSignal = dev->info.iConnectionSignal;							 // Device supports connection signal output
+					info_PoExtBus = dev->info.iPoExtBus;											 // Device supports PoExtBus digital outputs
+					info_PoNET = dev->info.iPoNET;													 // Device supports PoNET bus devices
+					info_AnalogFiltering = dev->info.iAnalogFiltering;								 // Device supports analog inputs low-pass digital filtering
+					info_InitOutputsStart = dev->info.iInitOutputsStart;							 // Device supports initializing outputs at startup
+					info_protI2C = dev->info.iprotI2C;												 // Device supports I2C bus (master)
+					info_prot1wire = dev->info.iprot1wire;											 // Device supports 1-wire bus (master)
+					info_AdditionalOptions = dev->info.iAdditionalOptions;							 // Device supports additional options with activation keys
+					info_LoadStatus = dev->info.iLoadStatus;										 // Device supports reporting load status
+					info_CustomDeviceName = dev->info.iCustomDeviceName;							 // Device supports specifying custom device names
+					info_PoTLog27support = dev->info.iPoTLog27support;								 // Device supports PoTLog27 firmware
+					info_SensorList = dev->info.iSensorList;										 // Device supports sensor lists
+					info_WebInterface = dev->info.iWebInterface;									 // Device supports web interface
+					info_FailSafeSettings = dev->info.iFailSafeSettings;							 // Device supports fail-safe mode
+					info_JoystickHATswitch = dev->info.iJoystickHATswitch;							 // Device supports joystick HAT switch mapping
+					info_PulseEngine = dev->info.iPulseEngine;										 // Device supports Pulse engine
+					info_PulseEnginev2 = dev->info.iPulseEnginev2;									 // Device supports Pulse engine v2
+					info_EasySensors = dev->info.iEasySensors;										 // Device supports EasySensors
+					deb_out = 311;
+
+					if (info_PinCount != 0) {
+						PKIO_Setup(dev);
+						deb_out = 312;
+					}
+
+
+					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PulseEnginev2 = %d\n", __FILE__, __FUNCTION__, info_PulseEnginev2);
+					if (info_PulseEnginev2 != 0) {
+						PKPEv2_Setup(dev);
+						deb_out = 313;
+
+					}
 				}
-
-
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PulseEnginev2 = %d\n", __FILE__, __FUNCTION__, info_PulseEnginev2);
-				if (info_PulseEnginev2 != 0)
-				{
-					PKPEv2_Setup(dev);
-					deb_out = 313;
-
+				else {
+					alive = 0;
+					usleep(sleepdur * 50);
 				}
 			}
-			else
-			{
-				alive = 0;
-				usleep(sleepdur * 50);
-			}
-		}
 		}
 	}
 
 	exit(0);
 };
 
-EXTRA_SETUP()
-{
+EXTRA_SETUP() {
 	int wait_ms = 5000;
-	const char *ini_path = getenv("INI_FILE_NAME");
-	FILE *fp = fopen(ini_path, "r");
-	if (fp){
+	const char* ini_path = getenv("INI_FILE_NAME");
+	FILE* fp = fopen(ini_path, "r");
+	if (fp) {
 		iniFindInt(fp, "DEVICE_ID", "POKEYS", &device_id);
 		iniFindInt(fp, "COMM_TIMEOUT", "POKEYS", &timeout_ms);
-		
+
 	}
 
 
 
 
-	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: extra_arg=%s device_id=%i \n", __FILE__, __FUNCTION__, extra_arg,device_id);
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: extra_arg=%s device_id=%i \n", __FILE__, __FUNCTION__, extra_arg, device_id);
 
 	// usleep(wait_ms);  // wait for the HAL to start up
-	for (i = 0; i < retry; i++)
-	{
-		if (dev == NULL)
-		{
+	for (i = 0; i < retry; i++) {
+		if (dev == NULL) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: TryConnectToDevice(0)\n", __FILE__, __FUNCTION__);
 			dev = TryConnectToDevice(device_id);
 		}
-		if (dev != NULL)
-		{
+		if (dev != NULL) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Connected\n", __FILE__, __FUNCTION__);
 			break;
 		}
 	}
 
-	if (dev == NULL)
-	{
+	if (dev == NULL) {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: could not connect to device\n", __FILE__, __FUNCTION__);
-		
+
 	}
-//	PKEncoder_init(comp_id, dev);
+	//	PKEncoder_init(comp_id, dev);
 	rtapi_print("");
 	// devSerial = extra_arg;
 	return 0;
 }
 
-EXTRA_CLEANUP()
-{
-	if (dev != NULL)
-	{
+EXTRA_CLEANUP() {
+	if (dev != NULL) {
 		PK_DisconnectDevice(dev);
 	}
 }
