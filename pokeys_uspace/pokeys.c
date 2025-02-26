@@ -20,6 +20,7 @@
 #include "PoKeysCompPoExtBus.c"
 #include "PoKeysCompPoNet.c"
 #include "PoKeysCompIO.c"
+#include "PoKeysCompPulseEngine.c"
 #include <stdlib.h>
 #include "inifile.h"
 
