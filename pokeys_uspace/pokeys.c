@@ -2525,25 +2525,25 @@ sPoKeysDevice *TryConnectToDevice(uint32_t intSerial)
 			enm_usb_dev = PK_EnumerateUSBDevices();
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: enm_usb_dev :%d\n", __FILE__, __FUNCTION__, enm_usb_dev);
 			if (enm_usb_dev != 0){
-				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d)", __FILE__, __FUNCTION__, intSerial, i_Timeout);
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d)\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 				retDev = PK_ConnectToDeviceWSerial(intSerial, i_Timeout); // waits for usb device
 				lastConectionTypeTried = 1;
 				if (retDev == NULL){
-					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d) FAILED", __FILE__, __FUNCTION__, intSerial, i_Timeout);
+					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d) FAILED\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 				}
 				else{
-					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d) OK", __FILE__, __FUNCTION__, intSerial, i_Timeout);
+					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d) OK\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 				}
 			}
 		}
 		if (retDev == NULL){
-			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial_UDP(%d, %d)", __FILE__, __FUNCTION__, intSerial, i_Timeout);
+			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial_UDP(%d, %d)\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 			retDev = PK_ConnectToDeviceWSerial_UDP(intSerial, i_Timeout); // waits for udp device
 			if (retDev == NULL){
-				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial_UDP(%d, %d) FAILED", __FILE__, __FUNCTION__, intSerial, i_Timeout);
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial_UDP(%d, %d) FAILED\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 			}
 			else{
-				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial_UDP(%d, %d) OK", __FILE__, __FUNCTION__, intSerial, i_Timeout);
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial_UDP(%d, %d) OK\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 			}
 			lastConectionTypeTried = 2;
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: lastConectionTypeTried = 2\n", __FILE__, __FUNCTION__);
