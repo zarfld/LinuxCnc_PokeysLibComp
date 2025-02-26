@@ -35,20 +35,6 @@
             "detail": "Install the PokeysLib library."
         },
         {
-            "label": "Compile Pokeys Component",
-            "type": "shell",
-            "command": "sudo halcompile --install pokeys.comp",
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            },
-            "dependsOn": [
-                "Install PokeysLib"
-            ],
-            "problemMatcher": [],
-            "detail": "Compile and install the Pokeys component."
-        },
-        {
             "label": "Compile USpace/Pokeys Component",
             "type": "shell",
             "command": "sudo halcompile --install --extra-link-args=\"-lPoKeys\" --extra-compile-args=\"-v -I/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace/\" --userspace pokeys_uspace/PoKeysCompEncoders.c pokeys_uspace/pokeys.c",
@@ -150,23 +136,6 @@
             },
             "problemMatcher": [],
             "detail": "Compile and install the start_delay_3000 helper component."
-        },
-        {
-            "label": "Load INI Configuration",
-            "type": "shell",
-            "command": "linuxcnc -v -d ${file}",
-            "group": {
-                "kind": "none",
-                "isDefault": false
-            },
-            "dependsOn": [
-                "Compile Pokeys Component",
-                "Compile Pokeys Home Component",
-                "Compile kbd48CNC",
-                "Compile start_delay_5000"
-            ],
-            "problemMatcher": [],
-            "detail": "Load the INI configuration for LinuxCNC."
         },
         {
             "label": "Load INI Configuration USpace/Pokeys",
