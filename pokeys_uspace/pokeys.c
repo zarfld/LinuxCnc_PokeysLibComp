@@ -31,19 +31,6 @@ MODULE_INFO(linuxcnc, "pin:enum_usb_dev:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:enum_fusb_dev:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:enum_udp_dev:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:deb.out:s32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.deb.out:s32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.deb.estop:s32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.axxisout:s32:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.ishoming:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.inposition:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.PosMode:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.PosModeAct:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.velmode_count:s32:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.posmode_count:s32:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.doMove:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.RefSpeed:float:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.RefPos:float:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.RefPosSpeed:float:8:out::None:None");
 
 MODULE_INFO(linuxcnc, "pin:err:bit:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:connected:bit:0:out::None:None");
@@ -54,6 +41,9 @@ MODULE_INFO(linuxcnc, "pin:connected.net:bit:0:out::None:None");
 MODULE_INFO(linuxcnc, "param:devSerial:u32:0:rw:PoKeys device serial number:None:None");
 MODULE_INFO(linuxcnc, "pin:alive:bit:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:machine_is_on:bit:0:in::None:None");
+
+
+// info pins
 MODULE_INFO(linuxcnc, "pin:info.PinCount:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:info.PWMCount:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:info.BasicEncoderCount:u32:0:out::None:None");
@@ -92,144 +82,9 @@ MODULE_INFO(linuxcnc, "pin:info.PulseEngine:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:info.PulseEnginev2:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:info.EasySensors:u32:0:out::None:None");
 
-MODULE_INFO(linuxcnc, "pin:PEv2.nrOfAxes:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.maxPulseFrequency:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.bufferDepth:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.slotTiming:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.params.ApplyIniSettings:bit:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.AxesState:u32:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.AxesCommand:u32:8:in::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.home_sequence:s32:8:rw:home_sequence:None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.AxesConfig:u32:8:out::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.AxisEnabled:s32:8:rw:Axis enabled:None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.AxisInverted:s32:8:rw:Axis inverted:None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.AxisInternalPlanner:s32:8:rw:Axis uses internal motion planner:None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.AxisPositionMode:s32:8:rw:Internal motion planner for this axis is in position mode:None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.AxisInvertedHome:s32:8:rw:Axis homing direction is inverted:None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.AxisSoftLimitEnabled:s32:8:rw:Use soft-limits for this axis:None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.AxisEnabledMasked:s32:8:rw:Use output enable pin masking:None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.SoftLimitMaximum:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.SoftLimitMinimum:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.SoftLimit.PosMin:u32:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.SoftLimit.PosMax:u32:8:rw::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.HomingSpeed:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.HomingReturnSpeed:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomingAlgorithm:u32:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OnHome.Stop:bit:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OnHome.ArmEncoder:bit:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OnHome.RevDirection:bit:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OnHome.ReducedSpeed:bit:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OutHome.Stop:bit:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OutHome.ArmEncoder:bit:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OutHome.RevDirection:bit:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OutHome.ReducedSpeed:bit:8:rw::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.HomeOffsets:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.Offset:u32:8:rw::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.ProbePosition:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.ProbeMaxPosition:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.CurrentPosition:s32:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.PositionSetup:s32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.ReferencePositionSpeed:u32:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.MaxSpeed:float:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.MaxAcceleration:float:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.MaxDecceleration:float:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-vel-cmd:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-pos-cmd:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-pos-fb:float:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-out-home:bit:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-in-position:bit:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-kb-jog-active:bit:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-wheel-jog-active:bit:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.TYPE:s32:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.STEPGEN_MAXVEL:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.STEPGEN_MAXACCEL:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.params.Feedback_Encoder_Id:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.DEADBAND:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.MAX-OUTPUT:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.ENCODER-SCALE:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.STEP-SCALE:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.MIN-LIMIT:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.MAX-LIMIT:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME-OFFSET:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME-SEARCH_VEL:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME-LATCH-VEL:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME-FINAL-VEL:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME-IGNORE-LIMITS:s32:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.MPGjogMultiplier:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.MPGjogEncoder:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.MPGjogDivider:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.AxesSwitchConfig:u32:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitN.Enabled:bit:8:rw:Limit- is available (PK_ASO_SWITCH_LIMIT_N):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitP.Enabled:bit:8:rw:Limit+ is available (PK_ASO_SWITCH_LIMIT_P):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.Enabled:bit:8:rw:Invert home-switch (PK_ASO_SWITCH_HOME):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.OnLimitN:bit:8:rw:Shared with Limit- (PK_ASO_SWITCH_COMBINED_LN_H):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.OnLimitP:bit:8:rw:Shared with Limit+ (PK_ASO_SWITCH_COMBINED_LP_H):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitN.invert:bit:8:rw:Invert limit- (PK_ASO_SWITCH_INVERT_LIMIT_N):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitP.invert:bit:8:rw:Invert limit+ (PK_ASO_SWITCH_INVERT_LIMIT_P):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.invert:bit:8:rw:Invert home-switch (PK_ASO_SWITCH_INVERT_HOME):None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitN.in:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitN.in-not:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitN.DedicatedInput:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitN.Pin:u32:8:rw:Limit- switch pin (0 for external dedicated input):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitN.Filter:u32:8:rw:Digital filter for limit- switch:None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitP.in:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitP.in-not:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitP.DedicatedInput:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitP.Pin:u32:8:rw:Limit+ switch pin (0 for external dedicated input):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitP.Filter:u32:8:rw:Digital filter for limit+ switch:None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Home.in:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Home.in-not:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Home.DedicatedInput:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.Pin:u32:8:rw:Home switch pin (0 for external dedicated input):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.Filter:u32:8:rw:Digital filter for home-switch:None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digout.AxisEnable.out:bit:8:in::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digout.AxisEnable.Pin:u32:8:rw:Axis enabled output pin (0 for external dedicated output):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digout.AxisEnable.invert:bit:8:rw:Invert axis enable signal:None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.HomeBackOffDistance:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.PulseEngineEnabled:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.PulseGeneratorType:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.PG_swap_stepdir:bit:0:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.PG_extended_io:bit:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.ChargePumpEnabled:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.PulseEngineActivated:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.PulseEngineState:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Error.in:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Error.in-not:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.MiscInputStatus:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.digin.Misc-#.in:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.digin.Misc-#.in-not:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.LimitOverride:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.LimitOverrideSetup:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.digin.Probed.in:bit:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Probe.in:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Probe.in-not:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.digin.Emergency.Pin:u32:0:rw::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.digin.Emergency.in:bit:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.digin.Emergency.in-not:bit:0:out::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.digin.Emergency.invert:u32:0:rw:Emergency switch polarity (set to 1 to invert):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.digout.Emergency.Pin:u32:0:rw:added in component only for estop-out to reset estop (if 0 EmergencyInput will be reused):None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.digout.Emergency.out:bit:0:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.SoftLimit.in:u32:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.AxisEnabledMask:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.AxisEnabledStatesMask:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digout.AxisEnabled.out:bit:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.AxisEnabled.in:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digout.LimitOverride.out:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.ExternalRelayOutputs:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.ExternalOCOutputs:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.digout.ExternalRelay-#.out:bit:4:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.digout.ExternalOC-#.out:bit:4:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.HomingStartMaskSetup:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.ProbeStartMaskSetup:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.digin.Probe.Pin:u32:0:rw:Probe input (0:disabled, 1-8:external inputs, 9+ Pin ID-9):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.digin.Probe.invert:u32:0:rw:Probe input polarity:None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.ProbeStatus:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.ProbeSpeed:float:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.BacklashWidth:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.BacklashRegister:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.BacklashAcceleration:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.BacklashCompensationEnabled:u32:0:io::None:None");
+
+
+//rtc pins
 MODULE_INFO(linuxcnc, "pin:rtc.sec:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:rtc.min:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:rtc.hour:u32:0:out::None:None");
@@ -263,20 +118,9 @@ struct __comp_state
 	hal_u32_t *enum_usb_dev;
 	hal_u32_t *enum_fusb_dev;
 	hal_u32_t *enum_udp_dev;
+
 	hal_s32_t *deb_out;
-	hal_s32_t *PEv2_deb_out;
-	hal_s32_t *PEv2_deb_estop;
-	hal_s32_t *PEv2_deb_axxisout[8];
-	hal_bit_t *PEv2_deb_ishoming[8];
-	hal_bit_t *PEv2_deb_inposition[8];
-	hal_bit_t *PEv2_deb_PosMode[8];
-	hal_bit_t *PEv2_deb_PosModeAct[8];
-	hal_s32_t *PEv2_deb_velmode_count[8];
-	hal_s32_t *PEv2_deb_posmode_count[8];
-	hal_bit_t *PEv2_deb_doMove[8];
-	hal_float_t *PEv2_deb_RefSpeed[8];
-	hal_float_t *PEv2_deb_RefPos[8];
-	hal_float_t *PEv2_deb_RefPosSpeed[8];
+
 
 	hal_bit_t *err;
 	hal_bit_t *connected;
@@ -287,6 +131,7 @@ struct __comp_state
 	hal_bit_t *alive;
 	hal_bit_t *machine_is_on;
 
+	//info pins
 	hal_u32_t *info_PinCount;
 	hal_u32_t *info_PWMCount;
 	hal_u32_t *info_BasicEncoderCount;
@@ -327,6 +172,20 @@ struct __comp_state
 
 	all_PoExtBus_data_t *PoExtBus_data ;
 
+	// PEv2 pins
+	hal_s32_t *PEv2_deb_out;
+	hal_s32_t *PEv2_deb_estop;
+	hal_s32_t *PEv2_deb_axxisout[8];
+	hal_bit_t *PEv2_deb_ishoming[8];
+	hal_bit_t *PEv2_deb_inposition[8];
+	hal_bit_t *PEv2_deb_PosMode[8];
+	hal_bit_t *PEv2_deb_PosModeAct[8];
+	hal_s32_t *PEv2_deb_velmode_count[8];
+	hal_s32_t *PEv2_deb_posmode_count[8];
+	hal_bit_t *PEv2_deb_doMove[8];
+	hal_float_t *PEv2_deb_RefSpeed[8];
+	hal_float_t *PEv2_deb_RefPos[8];
+	hal_float_t *PEv2_deb_RefPosSpeed[8];
 	hal_u32_t *PEv2_nrOfAxes;
 	hal_u32_t *PEv2_maxPulseFrequency;
 	hal_u32_t *PEv2_bufferDepth;
@@ -530,7 +389,62 @@ static int export(char *prefix, long extra_arg)
 
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: export %s\n", __FILE__, __FUNCTION__, prefix);
 		
+	//PoExtBus Pins
+	//PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoExtBus_data_t *poExtBus_data)
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PoExtBus pins\n");
+	r = PKPoExtBus_export_pins( prefix, extra_arg, comp_id, 10, inst->PoExtBus_data);
+	if (r != 0)
+	{
+		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKPoExtBus_export_pins failed\n");
+		return r;
+	}
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PoExtBus pins done \n");
+
+	// PoKeys IO pins
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: IO pins\n");
+	r=PKIO_export_pins(prefix,extra_arg,comp_id,inst->IO_data, dev);
+	if (r != 0)
+	{
+		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKIO_export_pins failed\n");
+		return r;
+	}
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: IO pins done \n");
+		
 	
+	// Encoder pins
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: Encoder pins\n");
+	r = PKEncoder_export_pins(prefix, extra_arg,comp_id,29,*&(inst->encoder_data));
+	if (r != 0)
+	{
+		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKEncoder_export_pins failed\n");
+		return r;
+	}
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: Encoder pins done \n");
+	
+	// params
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: Encoder params\n");
+	r=PKEncoder_export_params(prefix, extra_arg,comp_id,29);
+	if (r != 0)
+	{
+		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKEncoder_export_params failed\n");
+		return r;
+	}
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: Encoder params done \n");
+	
+	//int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoNET_data_t *poNET_data, sPoKeysDevice *dev)
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PoNET pins\n");
+	r=PKPoNet_export_pins(prefix,extra_arg,comp_id,16,inst->poNET_data ,dev);
+	if (r != 0)
+	{
+		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKPoNet_export_pins failed\n");
+		return r;
+	}
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PoNET pins done \n");
+
+
+
+
+
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->enum_usb_dev), comp_id,
 						 "%s.enum-usb-dev", prefix);
 	if (r != 0)
@@ -799,11 +713,7 @@ static int export(char *prefix, long extra_arg)
 	if (r != 0)
 		return r;
 
-	//PoExtBus Pins
-	//PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoExtBus_data_t *poExtBus_data)
-	r = PKPoExtBus_export_pins( prefix, extra_arg, comp_id, 10, inst->PoExtBus_data);
-	if (r != 0)
-		return r;
+
 
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->PEv2_nrOfAxes), comp_id,
 						 "%s.PEv2.nrOfAxes", prefix);
@@ -1449,36 +1359,10 @@ static int export(char *prefix, long extra_arg)
 	if (r != 0)
 		return r;
 
-	r=PKIO_export_pins(prefix,extra_arg,comp_id,inst->IO_data, dev);
+
+
 	
-	
 
-
-
-	// Encoder pins
-	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: Encoder pins\n");
-		r = PKEncoder_export_pins(prefix, extra_arg,comp_id,29,*&(inst->encoder_data));
-		if (r != 0)
-			return r;
-
-	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: Encoder pins done \n");
-
-	//int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoNET_data_t *poNET_data, sPoKeysDevice *dev)
-
-	r=PKPoNet_export_pins(prefix,extra_arg,comp_id,16,inst->poNET_data ,dev);
-	if (r != 0)
-	{
-		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKPoNet_export_pins failed\n");
-		return r;
-	}
-	
-// params
-	r=PKEncoder_export_params(prefix, extra_arg,comp_id,29);
-	if (r != 0)
-	{
-		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKEncoder_export_params failed\n");
-		return r;
-	}
 	
 
 
