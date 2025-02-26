@@ -21,6 +21,7 @@
 #include "PoKeysCompPoNet.c"
 #include "PoKeysCompIO.c"
 #include <stdlib.h>
+#include "inifile.h"
 
 static int comp_id=0;
 sPoKeysDevice *dev = NULL;
@@ -367,7 +368,7 @@ struct __comp_state *__comp_first_inst = 0, *__comp_last_inst = 0;
 
 static int __comp_get_data_size(void);
 static int extra_setup(struct __comp_state *__comp_inst, char *prefix, long extra_arg);
-static int device_id = 0;
+int device_id = 0;
 #undef TRUE
 #define TRUE (1)
 #undef FALSE
@@ -4869,6 +4870,15 @@ void user_mainloop(void)
 EXTRA_SETUP()
 {
 	int wait_ms = 5000;
+
+	FILE *fp = fopen(ini_path, "r");
+	if (fp){
+		iniFindInt(fp, "DEVICE_ID", "POKEYS", &device_id);
+	}
+
+
+
+
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: extra_arg=%s device_id=%i \n", __FILE__, __FUNCTION__, extra_arg,device_id);
 
 	// usleep(wait_ms);  // wait for the HAL to start up
