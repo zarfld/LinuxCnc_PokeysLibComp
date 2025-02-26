@@ -367,6 +367,7 @@ struct __comp_state *__comp_first_inst = 0, *__comp_last_inst = 0;
 
 static int __comp_get_data_size(void);
 static int extra_setup(struct __comp_state *__comp_inst, char *prefix, long extra_arg);
+static int device_id = 0;
 #undef TRUE
 #define TRUE (1)
 #undef FALSE
@@ -4868,7 +4869,7 @@ void user_mainloop(void)
 EXTRA_SETUP()
 {
 	int wait_ms = 5000;
-	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: extra_arg=%s comp_id=%i \n", __FILE__, __FUNCTION__, extra_arg,comp_id);
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: extra_arg=%s device_id=%i \n", __FILE__, __FUNCTION__, extra_arg,device_id);
 
 	// usleep(wait_ms);  // wait for the HAL to start up
 	for (i = 0; i < retry; i++)
