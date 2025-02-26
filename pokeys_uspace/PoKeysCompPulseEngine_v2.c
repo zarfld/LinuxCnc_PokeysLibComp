@@ -328,324 +328,232 @@ r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_HomingReturnSpeed[j]), comp_id,
     "%s.PEv2.%01d.HomingReturnSpeed", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_HomeOffsets[j]), comp_id,
     "%s.PEv2.%01d.HomeOffsets", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_ProbePosition[j]), comp_id,
     "%s.PEv2.%01d.ProbePosition", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_ProbeMaxPosition[j]), comp_id,
     "%s.PEv2.%01d.ProbeMaxPosition", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_s32_newf(HAL_OUT, &(PEv2_data->PEv2_CurrentPosition[j]), comp_id,
     "%s.PEv2.%01d.CurrentPosition", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_s32_newf(HAL_IO, &(PEv2_data->PEv2_PositionSetup[j]), comp_id,
     "%s.PEv2.%01d.PositionSetup", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_ReferencePositionSpeed[j]), comp_id,
     "%s.PEv2.%01d.ReferencePositionSpeed", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IO, &(PEv2_data->PEv2_MaxSpeed[j]), comp_id,
       "%s.PEv2.%01d.MaxSpeed", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IO, &(PEv2_data->PEv2_MaxAcceleration[j]), comp_id,
       "%s.PEv2.%01d.MaxAcceleration", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IO, &(PEv2_data->PEv2_MaxDecceleration[j]), comp_id,
       "%s.PEv2.%01d.MaxDecceleration", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_joint_vel_cmd[j]), comp_id,
       "%s.PEv2.%01d.joint-vel-cmd", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_joint_pos_cmd[j]), comp_id,
       "%s.PEv2.%01d.joint-pos-cmd", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_OUT, &(PEv2_data->PEv2_joint_pos_fb[j]), comp_id,
       "%s.PEv2.%01d.joint-pos-fb", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_bit_newf(HAL_IN, &(PEv2_data->PEv2_joint_out_home[j]), comp_id,
     "%s.PEv2.%01d.joint-out-home", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_bit_newf(HAL_IN, &(PEv2_data->PEv2_joint_in_position[j]), comp_id,
     "%s.PEv2.%01d.joint-in-position", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_bit_newf(HAL_IN, &(PEv2_data->PEv2_joint_kb_jog_active[j]), comp_id,
     "%s.PEv2.%01d.joint-kb-jog-active", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_bit_newf(HAL_IN, &(PEv2_data->PEv2_joint_wheel_jog_active[j]), comp_id,
     "%s.PEv2.%01d.joint-wheel-jog-active", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_s32_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_TYPE[j]), comp_id,
     "%s.PEv2.%01d.stepgen.TYPE", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_HOME[j]), comp_id,
       "%s.PEv2.%01d.stepgen.HOME", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[j]), comp_id,
       "%s.PEv2.%01d.stepgen.STEPGEN-MAXVEL", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[j]), comp_id,
       "%s.PEv2.%01d.stepgen.STEPGEN-MAXACCEL", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_params_Feedback_Encoder_Id[j]), comp_id,
       "%s.PEv2.%01d.params.Feedback-Encoder-Id", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_DEADBAND[j]), comp_id,
       "%s.PEv2.%01d.stepgen.DEADBAND", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_MAX_OUTPUT[j]), comp_id,
       "%s.PEv2.%01d.stepgen.MAX-OUTPUT", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_ENCODER_SCALE[j]), comp_id,
       "%s.PEv2.%01d.stepgen.ENCODER-SCALE", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_STEP_SCALE[j]), comp_id,
       "%s.PEv2.%01d.stepgen.STEP-SCALE", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_MIN_LIMIT[j]), comp_id,
       "%s.PEv2.%01d.stepgen.MIN-LIMIT", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_MAX_LIMIT[j]), comp_id,
       "%s.PEv2.%01d.stepgen.MAX-LIMIT", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_HOME_OFFSET[j]), comp_id,
       "%s.PEv2.%01d.stepgen.HOME-OFFSET", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[j]), comp_id,
       "%s.PEv2.%01d.stepgen.HOME-SEARCH-VEL", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[j]), comp_id,
       "%s.PEv2.%01d.stepgen.HOME-LATCH-VEL", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_HOME_FINAL_VEL[j]), comp_id,
       "%s.PEv2.%01d.stepgen.HOME-FINAL-VEL", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_s32_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_HOME_IGNORE_LIMITS[j]), comp_id,
     "%s.PEv2.%01d.stepgen.HOME-IGNORE-LIMITS", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_MPGjogMultiplier[j]), comp_id,
     "%s.PEv2.%01d.MPGjogMultiplier", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_MPGjogEncoder[j]), comp_id,
     "%s.PEv2.%01d.MPGjogEncoder", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_MPGjogDivider[j]), comp_id,
     "%s.PEv2.%01d.MPGjogDivider", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_bit_newf(HAL_OUT, &(PEv2_data->PEv2_digin_LimitN_in[j]), comp_id,
     "%s.PEv2.%01d.digin.LimitN.in", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_bit_newf(HAL_OUT, &(PEv2_data->PEv2_digin_LimitN_in_not[j]), comp_id,
     "%s.PEv2.%01d.digin.LimitN.in-not", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_bit_newf(HAL_OUT, &(PEv2_data->PEv2_digin_LimitN_DedicatedInput[j]), comp_id,
     "%s.PEv2.%01d.digin.LimitN.DedicatedInput", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_bit_newf(HAL_OUT, &(PEv2_data->PEv2_digin_LimitP_in[j]), comp_id,
     "%s.PEv2.%01d.digin.LimitP.in", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_bit_newf(HAL_OUT, &(PEv2_data->PEv2_digin_LimitP_in_not[j]), comp_id,
     "%s.PEv2.%01d.digin.LimitP.in-not", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_bit_newf(HAL_OUT, &(PEv2_data->PEv2_digin_LimitP_DedicatedInput[j]), comp_id,
     "%s.PEv2.%01d.digin.LimitP.DedicatedInput", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_bit_newf(HAL_OUT, &(PEv2_data->PEv2_digin_Home_in[j]), comp_id,
     "%s.PEv2.%01d.digin.Home.in", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_bit_newf(HAL_OUT, &(PEv2_data->PEv2_digin_Home_in_not[j]), comp_id,
     "%s.PEv2.%01d.digin.Home.in-not", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_bit_newf(HAL_OUT, &(PEv2_data->PEv2_digin_Home_DedicatedInput[j]), comp_id,
     "%s.PEv2.%01d.digin.Home.DedicatedInput", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_bit_newf(HAL_IN, &(PEv2_data->PEv2_digout_AxisEnable_out[j]), comp_id,
     "%s.PEv2.%01d.digout.AxisEnable.out", prefix, j);
 if (r != 0)
 return r;
-}
-for (j = 0; j < (8); j++)
-{
+
 r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_HomeBackOffDistance[j]), comp_id,
     "%s.PEv2.%01d.HomeBackOffDistance", prefix, j);
 if (r != 0)
@@ -1617,7 +1525,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On){
 
         int32_t intCurrentPosition[8];
         float PosFb[8];
-        for (i = 0; i < PEv2_nrOfAxes; i++)
+        for (int i = 0; i < PEv2_nrOfAxes; i++)
         {
             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_Axis[%d] \n", __FILE__, __FUNCTION__, i);
 
