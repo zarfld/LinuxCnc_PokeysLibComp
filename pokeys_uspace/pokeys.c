@@ -860,7 +860,7 @@ int main(int argc_, char** argv_) {
 	struct __comp_state *__comp_inst; \
 	for (__comp_inst = __comp_first_inst; __comp_inst; __comp_inst = __comp_inst->_next)
 
-#line 863 "/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace/pokeys.c"
+//#line 863 "/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace/pokeys.c"
 
 static int comp_id; /* component ID */
 //bool initEncodersDone = 0;
