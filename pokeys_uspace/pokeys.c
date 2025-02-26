@@ -2634,8 +2634,8 @@ sPoKeysDevice *TryConnectToDevice(uint32_t intSerial)
 
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_EnumerateFastUSBDevices()\n", __FILE__, __FUNCTION__);
 		// enm_fusb_dev = PK_EnumerateFastUSBDevices();
-		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_EnumerateFastUSBDevices()=%d\n", __FILE__, __FUNCTION__, enm_fusb_dev);
-		i_Timeout = 1000;
+		//rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_EnumerateFastUSBDevices()=%d\n", __FILE__, __FUNCTION__, enm_fusb_dev);
+		
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_EnumerateNetworkDevices(udp_devices, %d)\n", __FILE__, __FUNCTION__, i_Timeout);
 		int32_t nDevs = PK_EnumerateNetworkDevices(udp_devices, i_Timeout); // does not work - it hangs here
 																			//	rtapi_print("");
@@ -2684,7 +2684,7 @@ sPoKeysDevice *TryConnectToDevice(uint32_t intSerial)
 
 		if (enm_usb_dev > 0)
 		{
-			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice FastUSB\n", __FILE__, __FUNCTION__);
+			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice USB\n", __FILE__, __FUNCTION__);
 			for (int i = 0; i < enm_usb_dev+1; i++)
 			{
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice(%d)\n", __FILE__, __FUNCTION__, i);
