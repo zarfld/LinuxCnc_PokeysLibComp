@@ -224,6 +224,10 @@ void PKPoExtBus_Update(sPoKeysDevice* dev) {
 	}
 }
 
+void PKPoExtBus_Setup(sPoKeysDevice* dev) {
+
+}
+
 #ifdef MODULE_INFO
 MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.0.in:bit:10:out::None:None");
 MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digin.1.in:bit:10:out::None:None");

@@ -689,27 +689,26 @@ void PKIO_Update(sPoKeysDevice* dev) {
 	}
 }
 
-void PKIO_Setup(sPoKeysDevice* dev) {
+void PKIO_Setup(sPoKeysDevice* dev, bool readonly) {
 	bool PinConfigurationSet = false;
-	bool readonly = false;
+	//bool readonly = false;
 
 
 	// Setting PinFunction
 	if (PK_PinConfigurationGet(dev) == PK_OK) {
-		readonly = true;
+		//readonly = true;
 
 		for (int i = 0; i < dev->info.iPinCount - 1; i++) {
 
 
-			if (readonly) {
+			if (readonly || IO_data->Pin[i].PinFunction == 0) {
 				IO_data->Pin[i].PinFunction = dev->Pins[i].PinFunction;
 			}
 			else {
 				if (PK_CheckPinCapability(dev, i, IO_data->Pin[i].PinFunction) != 1) {
 					IO_data->Pin[i].PinFunction = 0;
 				}
-
-				if (dev->Pins[i].PinFunction != IO_data->Pin[i].PinFunction) {
+				else if (dev->Pins[i].PinFunction != IO_data->Pin[i].PinFunction) {
 					dev->Pins[i].PinFunction = IO_data->Pin[i].PinFunction;
 					PinConfigurationSet = true;
 				}

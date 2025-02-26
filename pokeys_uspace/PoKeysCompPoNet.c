@@ -466,6 +466,9 @@ void PKPoNet_Update(sPoKeysDevice* dev) {
 	}
 }
 
+void PKPoNet_Setup(sPoKeysDevice* dev) {
+
+}
 
 #ifdef MODULE_INFO
 MODULE_INFO(linuxcnc, "pin:kbd48CNC.available:bit:0:out::None:None");

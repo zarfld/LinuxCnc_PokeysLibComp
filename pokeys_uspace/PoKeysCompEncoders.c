@@ -295,6 +295,9 @@ int PKEncoder_init(int id,
 	//return makepins(id, 26);
 }
 
+void PKEncoder_Setup(sPoKeysDevice* dev) {
+
+}
 
 #ifdef MODULE_INFO
 MODULE_INFO(linuxcnc, "pin:encoder.#.count:s32:29:out::None:None");

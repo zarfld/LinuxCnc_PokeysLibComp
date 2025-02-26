@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo "Compiling pokeys_uspace/pokeys.comp..."
+echo "Compiling pokeys_uspace/pokeys.c..."
 sudo halcompile --install --userspace --extra-link-args="-L/usr/lib -lPoKeys -llinuxcncini" pokeys_uspace/pokeys.c
-echo "pokeys_uspace/pokeys.comp compiled successfully."
+echo "pokeys_uspace/pokeys.c compiled successfully."
 
 echo "Compiling kbd48CNC.comp..."
 halcompile --install kbd48CNC.comp

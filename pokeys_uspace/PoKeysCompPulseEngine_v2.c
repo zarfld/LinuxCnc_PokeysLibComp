@@ -3,7 +3,6 @@
 typedef struct {
 	hal_s32_t* PEv2_deb_out;
 	hal_s32_t* PEv2_deb_estop;
-
 	hal_s32_t* PEv2_deb_axxisout[8];
 	hal_bit_t* PEv2_deb_ishoming[8];
 	hal_bit_t* PEv2_deb_inposition[8];
@@ -36,7 +35,6 @@ typedef struct {
 	hal_float_t* PEv2_MaxSpeed[8];
 	hal_float_t* PEv2_MaxAcceleration[8];
 	hal_float_t* PEv2_MaxDecceleration[8];
-
 	hal_float_t* PEv2_joint_vel_cmd[8];
 	hal_float_t* PEv2_joint_pos_cmd[8];
 	hal_float_t* PEv2_joint_pos_fb[8];
@@ -44,7 +42,6 @@ typedef struct {
 	hal_bit_t* PEv2_joint_in_position[8];
 	hal_bit_t* PEv2_joint_kb_jog_active[8];
 	hal_bit_t* PEv2_joint_wheel_jog_active[8];
-
 	hal_s32_t* PEv2_stepgen_TYPE[8];
 	hal_float_t* PEv2_stepgen_HOME[8];
 	hal_float_t* PEv2_stepgen_STEPGEN_MAXVEL[8];
@@ -64,12 +61,10 @@ typedef struct {
 	hal_u32_t* PEv2_MPGjogMultiplier[8];
 	hal_u32_t* PEv2_MPGjogEncoder[8];
 	hal_u32_t* PEv2_MPGjogDivider[8];
-
 	hal_u32_t* PEv2_HomeBackOffDistance[8];
 	hal_bit_t* PEv2_digin_Error_in[8];
 	hal_bit_t* PEv2_digin_Error_in_not[8];
 	hal_u32_t* PEv2_MiscInputStatus;
-
 	hal_u32_t* PEv2_BacklashWidth[8];
 	hal_u32_t* PEv2_BacklashRegister[8];
 	hal_u32_t* PEv2_BacklashAcceleration[8];
@@ -82,7 +77,6 @@ typedef struct {
 	hal_s32_t PEv2_AxisSoftLimitEnabled[8];
 	hal_s32_t PEv2_AxisEnabledMasked[8];
 	hal_u32_t PEv2_AxesSwitchConfig[8];
-
 	hal_u32_t PEv2_HomingAlgorithm[8];
 	hal_bit_t PEv2_HomeAlg_OnHome_Stop[8];
 	hal_bit_t PEv2_HomeAlg_OnHome_ArmEncoder[8];
@@ -92,7 +86,6 @@ typedef struct {
 	hal_bit_t PEv2_HomeAlg_OutHome_ArmEncoder[8];
 	hal_bit_t PEv2_HomeAlg_OutHome_RevDirection[8];
 	hal_bit_t PEv2_HomeAlg_OutHome_ReducedSpeed[8];
-
 	hal_u32_t PEv2_digin_Home_Offset[8];
 	hal_u32_t PEv2_digin_SoftLimit_PosMin[8];
 	hal_u32_t PEv2_digin_SoftLimit_PosMax[8];
@@ -130,7 +123,6 @@ typedef struct {
 	hal_bit_t* PEv2_digin_Home_in_not[8];
 	hal_bit_t* PEv2_digin_Home_DedicatedInput[8];
 	hal_bit_t* PEv2_digout_AxisEnable_out[8];
-
 	hal_u32_t* PEv2_PulseEngineEnabled;
 	hal_u32_t* PEv2_PulseGeneratorType;
 	hal_bit_t* PEv2_PG_swap_stepdir;
@@ -138,10 +130,8 @@ typedef struct {
 	hal_u32_t* PEv2_ChargePumpEnabled;
 	hal_u32_t* PEv2_PulseEngineActivated;
 	hal_u32_t* PEv2_PulseEngineState;
-
 	hal_u32_t* PEv2_LimitOverride;
 	hal_u32_t* PEv2_LimitOverrideSetup;
-
 	hal_bit_t* PEv2_digin_Probed_in;
 	hal_bit_t* PEv2_digin_Emergency_in;
 	hal_bit_t* PEv2_digin_Emergency_in_not;
@@ -153,13 +143,10 @@ typedef struct {
 	hal_u32_t PEv2_digout_Emergency_Pin;
 	hal_u32_t PEv2_digin_Probe_Pin;
 	hal_u32_t PEv2_digin_Probe_invert;
-
 	hal_u32_t* PEv2_AxisEnabledMask;
 	hal_u32_t* PEv2_AxisEnabledStatesMask;
-
 	hal_u32_t* PEv2_ExternalRelayOutputs;
 	hal_u32_t* PEv2_ExternalOCOutputs;
-
 	hal_u32_t* PEv2_HomingStartMaskSetup;
 	hal_u32_t* PEv2_ProbeStartMaskSetup;
 	hal_u32_t* PEv2_ProbeStatus;
@@ -174,12 +161,10 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 	int r = 0;
 	int j = 0;
 
-
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: prefix: %s\n", __FILE__, __FUNCTION__, prefix);
 	if (dev == NULL) {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s dev == NULL\n", __FILE__, __FUNCTION__);
 	}
-
 
 	if (Pev2_data == NULL) {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s Pev2_data == NULL\n", __FILE__, __FUNCTION__);
@@ -202,6 +187,27 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		"%s.PEv2.deb.estop", prefix);
 	if (r != 0)
 		return r;
+		r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_nrOfAxes), comp_id,
+		"%s.PEv2.nrOfAxes", prefix);
+	if (r != 0)
+		return r;
+	r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_maxPulseFrequency), comp_id,
+		"%s.PEv2.maxPulseFrequency", prefix);
+	if (r != 0)
+		return r;
+	r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_bufferDepth), comp_id,
+		"%s.PEv2.bufferDepth", prefix);
+	if (r != 0)
+		return r;
+	r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_slotTiming), comp_id,
+		"%s.PEv2.slotTiming", prefix);
+	if (r != 0)
+		return r;
+	r = hal_pin_bit_newf(HAL_IO, &(PEv2_data->PEv2_params_ApplyIniSettings), comp_id,
+		"%s.PEv2.params.ApplyIniSettings", prefix);
+	if (r != 0)
+		return r;
+
 	for (j = 0; j < (8); j++) {
 		r = hal_pin_s32_newf(HAL_OUT, &(PEv2_data->PEv2_deb_axxisout[j]), comp_id,
 			"%s.PEv2.%01d.deb.axxisout", prefix, j);
@@ -257,34 +263,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 			"%s.PEv2.%01d.deb.RefPosSpeed", prefix, j);
 		if (r != 0)
 			return r;
-	}
-
-
-	if (r != 0)
-		return r;
-
-
-	r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_nrOfAxes), comp_id,
-		"%s.PEv2.nrOfAxes", prefix);
-	if (r != 0)
-		return r;
-	r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_maxPulseFrequency), comp_id,
-		"%s.PEv2.maxPulseFrequency", prefix);
-	if (r != 0)
-		return r;
-	r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_bufferDepth), comp_id,
-		"%s.PEv2.bufferDepth", prefix);
-	if (r != 0)
-		return r;
-	r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_slotTiming), comp_id,
-		"%s.PEv2.slotTiming", prefix);
-	if (r != 0)
-		return r;
-	r = hal_pin_bit_newf(HAL_IO, &(PEv2_data->PEv2_params_ApplyIniSettings), comp_id,
-		"%s.PEv2.params.ApplyIniSettings", prefix);
-	if (r != 0)
-		return r;
-	for (j = 0; j < (8); j++) {
+	
 		r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_AxesState[j]), comp_id,
 			"%s.PEv2.%01d.AxesState", prefix, j);
 		if (r != 0)
@@ -314,9 +293,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 			"%s.PEv2.%01d.HomingSpeed", prefix, j);
 		if (r != 0)
 			return r;
-	}
 
-	for (j = 0; j < (8); j++) {
 		r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_HomingReturnSpeed[j]), comp_id,
 			"%s.PEv2.%01d.HomingReturnSpeed", prefix, j);
 		if (r != 0)
@@ -580,29 +557,28 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		"%s.PEv2.PulseEngineState", prefix);
 	if (r != 0)
 		return r;
+
+	r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_MiscInputStatus), comp_id,
+		"%s.PEv2.MiscInputStatus", prefix);
+	if (r != 0)
+		return r;
+
 	for (j = 0; j < (8); j++) {
 		r = hal_pin_bit_newf(HAL_OUT, &(PEv2_data->PEv2_digin_Error_in[j]), comp_id,
 			"%s.PEv2.%01d.digin.Error.in", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++) {
+
 		r = hal_pin_bit_newf(HAL_OUT, &(PEv2_data->PEv2_digin_Error_in_not[j]), comp_id,
 			"%s.PEv2.%01d.digin.Error.in-not", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_MiscInputStatus), comp_id,
-		"%s.PEv2.MiscInputStatus", prefix);
-	if (r != 0)
-		return r;
-	for (j = 0; j < (8); j++) {
+
 		r = hal_pin_bit_newf(HAL_OUT, &(PEv2_data->PEv2_digin_Misc_in[j]), comp_id,
 			"%s.PEv2.digin.Misc-%01d.in", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++) {
+
 		r = hal_pin_bit_newf(HAL_OUT, &(PEv2_data->PEv2_digin_Misc_in_not[j]), comp_id,
 			"%s.PEv2.digin.Misc-%01d.in-not", prefix, j);
 		if (r != 0)
@@ -625,8 +601,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 			"%s.PEv2.%01d.digin.Probe.in", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++) {
+
 		r = hal_pin_bit_newf(HAL_OUT, &(PEv2_data->PEv2_digin_Probe_in_not[j]), comp_id,
 			"%s.PEv2.%01d.digin.Probe.in-not", prefix, j);
 		if (r != 0)
@@ -1335,7 +1310,6 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		PEv2_maxPulseFrequency = dev->PEv2.info.maxPulseFrequency;
 		PEv2_bufferDepth = dev->PEv2.info.bufferDepth;
 		PEv2_slotTiming = dev->PEv2.info.slotTiming;
-
 		PEv2_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 		PEv2_LimitOverride = dev->PEv2.LimitOverride;
 
@@ -1346,7 +1320,6 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		PulseEngineState = dev->PEv2.PulseEngineState;
 		PEv2_PulseEngineState = PulseEngineState;
 		PEv2_PulseEngineStateSetup = PulseEngineState;
-
 		PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 		PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 
@@ -1476,7 +1449,6 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_Axis[%d] \n", __FILE__, __FUNCTION__, i);
 
 			InPosition[i] = false;
-
 			uint8_t intAxesState = dev->PEv2.AxesState[i];
 			uint8_t intAxesCommand = PEv2_AxesCommand(i);
 			PEv2_AxesState(i) = intAxesState;
@@ -1486,7 +1458,6 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			// PEv2_CurrentPosition(i) = dev->PEv2.CurrentPosition[i];
 			intCurrentPosition[i] = dev->PEv2.CurrentPosition[i];
 			PEv2_deb_axxisout(i) = 220 + i;
-
 			PEv2_digin_Error_in(i) = Get_BitOfByte(bm_ErrorStatus, i);
 			PEv2_digin_Error_in_not(i) = !Get_BitOfByte(bm_ErrorStatus, i);
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: intAxesState = %d\n", __FILE__, __FUNCTION__, intAxesState);
@@ -1497,7 +1468,6 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axSTOPPED \n", __FILE__, __FUNCTION__, i);
 					IsHoming[i] = false;
 				}
-
 				PEv2_deb_out = 310 + i;
 				// PEv2_digin_AxisEnabled_in(i) = false;
 				// PEv2_digin_LimitOverride_in(i) = false;
@@ -2044,34 +2014,19 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 					// dev->PEv2.ReferencePositionSpeed[i]=0;
 					switch (intAxesState) {
 					case PK_PEAxisState_axHOMING_RESETTING: // Stopping the axis to reset the position counters
-						// PEv2_AxisLimitOverride(i) = true;
-						// PEv2_digin_AxisEnabled_in(i) = true;
 						break;
 					case PK_PEAxisState_axHOMING_BACKING_OFF: // Backing off switch
-						// PEv2_AxisLimitOverride(i) = true;
-						// PEv2_digin_AxisEnabled_in(i) = true;
 						break;
 					case PK_PEAxisState_axHOME: // Axis is homed
-						// PEv2_digin_AxisEnabled_in(i) = true;
-						// PEv2_AxisLimitOverride(i) = true;
-						//  PEv2_joint_
 						break;
 					case PK_PEAxisState_axHOMINGSTART: // Homing procedure is starting on axis
-						// PEv2_digin_AxisEnabled_in(i) = true;
-						// PEv2_AxisLimitOverride(i) = true;
 						break;
 					case PK_PEAxisState_axHOMINGSEARCH: // Homing procedure first step - going to home
-						// PEv2_digin_AxisEnabled_in(i) = true;
-						// PEv2_AxisLimitOverride(i) = true;
 						break;
 					case PK_PEAxisState_axHOMINGBACK: // Homing procedure second step - slow homing
-						// PEv2_digin_AxisEnabled_in(i) = true;
-						// PEv2_AxisLimitOverride(i) = true;
 						break;
 
 					default:
-						// dev->PEv2.PulseEngineStateSetup = PK_PEAxisState_axHOMINGSTART;
-
 						break;
 					}
 					PEv2_deb_axxisout(i) = 2410 + i;
@@ -2110,7 +2065,6 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, PEv2_digout_ExternalRelay_out(1));
 		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, PEv2_digout_ExternalRelay_out(2));
 		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, PEv2_digout_ExternalRelay_out(3));
-
 		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, PEv2_digout_ExternalOC_out(0));
 		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 4, PEv2_digout_ExternalOC_out(1));
 		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, PEv2_digout_ExternalOC_out(2));
@@ -2125,14 +2079,12 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 	if (dev->PEv2.HomingStartMaskSetup != HomingStartMaskSetup && HomingStartMaskSetup != 0 && doHomingStart) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: Startmask at trigger (%d) \n", HomingStartMaskSetup);
 
-
 		dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
 		PK_PEv2_HomingStart(dev);
 		Homing_active = true;
 	}
 	else if (dev->PEv2.HomingStartMaskSetup != HomingStartMaskSetup && HomingStartMaskSetup != 0 && doHomingEnd) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: Startmask at trigger (%d) \n", HomingStartMaskSetup);
-
 
 		dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
 		//PK_PEv2_HomingStart(dev);
@@ -2145,13 +2097,6 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		// dev->PEv2.AxisEnabledMask = PEv2_AxisEnabledMask;
 		doStateSet = true;
 	}
-	/*	else if (rtc_loopcount==0 && Homing_active!=true)
-		{
-			rtapi_print_msg(RTAPI_MSG_DBG, "PK_PEv2: PEv2_PulseEngineStateSetup(rtc_loopcount) (%d) \n", PEv2_PulseEngineStateSetup);
-		//	dev->PEv2.PulseEngineStateSetup = PEv2_PulseEngineStateSetup;
-			//dev->PEv2.AxisEnabledMask = PEv2_AxisEnabledMask;
-		//	doStateSet=true;
-		}*/
 
 	if (PEv2_LimitOverrideSetup != dev->PEv2.LimitOverrideSetup) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PK_PEv2: PEv2_LimitOverrideSetup (%d) \n", PEv2_LimitOverrideSetup);
@@ -2184,7 +2129,6 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			PEv2_deb_out = 4500;
 		}
 	}
-
 
 	PEv2_deb_out = 224;
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PulseEngineState = %d\n", __FILE__, __FUNCTION__, dev->PEv2.PulseEngineState);
@@ -2237,7 +2181,6 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				}
 			}
 		}
-
 
 		if (PEv2_digin_Probe_Pin != 0) { // check if pin is parametrized in HAL
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].PinFunction = %d\n", __FILE__, __FUNCTION__, PEv2_digin_Probe_Pin - 1, dev->Pins[PEv2_digin_Probe_Pin - 1].PinFunction);
@@ -2308,9 +2251,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 			dev->PEv2.EmergencySwitchPolarity = PEv2_digin_Emergency_invert;
 			DoPeSetup = true;
 		}
-		// dev->PEv2.PulseEngineBufferSize = PEv2_stepgen_PulseEngineBufferSize;
 
-		// dev->PEv2.AxisEnabledStatesMask = PEv2_stepgen_AxisEnabledStatesMask;
 		if (DoPeSetup == true) {
 			if (PK_PEv2_PulseEngineSetup(dev) != PK_OK) {
 
@@ -2330,16 +2271,12 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 			PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 			PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 			PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
-			// PEv2_stepgen_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
 			PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
-			// PEv2_stepgen_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 
 			PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 			PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 			PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
-			// PEv2_stepgen_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
 			PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
-			// PEv2_stepgen_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 		}
 
 		if (PK_PEv2_AdditionalParametersGet(dev) == PK_OK) {

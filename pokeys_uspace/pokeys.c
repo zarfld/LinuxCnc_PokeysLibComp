@@ -114,15 +114,12 @@ MODULE_LICENSE("GPL");
 
 struct __comp_state {
 
-
 	struct __comp_state* _next;
 	hal_u32_t* enum_usb_dev;
 	hal_u32_t* enum_fusb_dev;
 	hal_u32_t* enum_udp_dev;
 
 	hal_s32_t* deb_out;
-
-
 	hal_bit_t* err;
 	hal_bit_t* connected;
 	hal_bit_t* connected_usb;
@@ -174,8 +171,6 @@ struct __comp_state {
 	all_PoExtBus_data_t* PoExtBus_data;
 
 	PEv2_data_t* PEv2_data;
-
-
 
 	hal_u32_t* rtc_sec;
 	hal_u32_t* rtc_min;
@@ -230,7 +225,6 @@ static int export(char* prefix, long extra_arg) {
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: export %s\n", __FILE__, __FUNCTION__, prefix);
 
 	//PoExtBus Pins
-	//PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoExtBus_data_t *poExtBus_data)
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PoExtBus pins\n");
 	r = PKPoExtBus_export_pins(prefix, extra_arg, comp_id, 10, inst->PoExtBus_data);
 	if (r != 0) {
@@ -238,9 +232,6 @@ static int export(char* prefix, long extra_arg) {
 		return r;
 	}
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PoExtBus pins done \n");
-
-
-
 
 	// Encoder pins
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: Encoder pins\n");
@@ -485,8 +476,6 @@ static int export(char* prefix, long extra_arg) {
 	if (r != 0)
 		return r;
 
-
-
 	r = hal_pin_u32_newf(HAL_OUT, &(inst->rtc_sec), comp_id,
 		"%s.rtc.sec", prefix);
 	if (r != 0)
@@ -552,19 +541,10 @@ static int export(char* prefix, long extra_arg) {
 	if (r != 0)
 		return r;
 
-
-
-
-
-
-
-
 	r = hal_param_u32_newf(HAL_RW, &(inst->devSerial), comp_id,
 		"%s.devSerial", prefix);
 	if (r != 0)
 		return r;
-
-
 
 	if (__comp_last_inst)
 		__comp_last_inst->_next = inst;
@@ -577,6 +557,8 @@ static int default_count = 1, count = 0;
 char* names[16] = {
 	0,
 };
+
+
 int rtapi_app_main(void) {
 	int r = 0;
 	int i;
@@ -704,7 +686,6 @@ int main(int argc_, char** argv_) {
 #define enum_udp_dev (*__comp_inst->enum_udp_dev)
 #undef deb_out
 #define deb_out (*__comp_inst->deb_out)
-
 #undef adcout_deb_out
 #define adcout_deb_out(i) (*(__comp_inst->adcout_deb_out[i]))
 #undef adcout_deb_setval
@@ -801,7 +782,6 @@ int main(int argc_, char** argv_) {
 #define info_PulseEnginev2 (*__comp_inst->info_PulseEnginev2)
 #undef info_EasySensors
 #define info_EasySensors (*__comp_inst->info_EasySensors)
-
 #undef rtc_sec
 #define rtc_sec (*__comp_inst->rtc_sec)
 #undef rtc_min
@@ -847,24 +827,12 @@ int main(int argc_, char** argv_) {
 #undef digout_out
 #define digout_out(i) (0 + *(__comp_inst->digout_out[i]))
 #undef encoder_count
-//#define encoder_count(i) (*(__comp_inst->encoder_count[i]))
-//#undef encoder_position
-//#define encoder_position(i) (*(__comp_inst->encoder_position[i]))
-//#undef encoder_velocity
-//#define encoder_velocity(i) (*(__comp_inst->encoder_velocity[i]))
-//#undef encoder_reset
-//#define encoder_reset(i) (0 + *(__comp_inst->encoder_reset[i]))
-//#undef encoder_index_enable
-//#define encoder_index_enable(i) (0 + *(__comp_inst->encoder_index_enable[i]))
 #undef adcout_value
 #define adcout_value(i) (0 + *(__comp_inst->adcout_value[i]))
 #undef adcout_enable
 #define adcout_enable(i) (0 + *(__comp_inst->adcout_enable[i]))
-
 #undef devSerial
 #define devSerial (__comp_inst->devSerial)
-
-
 #undef adcin_scale
 #define adcin_scale(i) (__comp_inst->adcin_scale[i])
 #undef adcin_offset
@@ -892,10 +860,7 @@ int main(int argc_, char** argv_) {
 	struct __comp_state *__comp_inst; \
 	for (__comp_inst = __comp_first_inst; __comp_inst; __comp_inst = __comp_inst->_next)
 
-#line 926 "/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace/pokeys.c"
-
-
-
+#line 863 "/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace/pokeys.c"
 
 static int comp_id; /* component ID */
 //bool initEncodersDone = 0;
@@ -911,14 +876,10 @@ unsigned Loop_Frequ = 0;
 uint8_t rtc_latencycheck_set = 0;
 int rtc_latencyCounter = 0;
 
-
-
-
 int i = 0;
 
 float temp_MaxAcceleration[8];
 float minAccel = 0.0001;
-
 
 typedef struct {
 	uint8_t matrixKBconfiguration;	  // Matrix keyboard configuration (set to 1 to enable matrix keyboard support)
@@ -938,23 +899,15 @@ typedef struct {
 
 } PK_MatrixKB_Parameters;
 
-
-
-
 unsigned int sleepdur = 1000;
 bool use_sleepdur1 = true;
 unsigned int sleepdur1 = 1000;
 unsigned int sleepdur2 = 1000;
 
-
 //bool DoPWM = false;
 bool DoEncoders = true;
 
 PK_MatrixKB_Parameters MatrixKB;
-
-
-
-
 
 uint8_t Merge_8BitsToByte(bool Bit_array[8]) {
 	uint8_t sum = 0;
@@ -972,12 +925,7 @@ uint8_t Merge_8BitsToByte(bool Bit_array[8]) {
 	return sum;
 }
 
-
-
 int Config_MatrixKB() {
-
-
-
 	if (PK_MatrixKBConfigurationGet(dev) == PK_OK) {
 		MatrixKB.matrixKBconfiguration = dev->matrixKB.matrixKBconfiguration;
 		MatrixKB.matrixKBwidth = dev->matrixKB.matrixKBheight;
@@ -1022,7 +970,6 @@ int Update_MatrixKB() {
 	return 0;
 }
 
-
 int Update_LCD() {
 	if (PK_LCDUpdate(dev) == PK_OK) {
 		usleep(sleepdur);
@@ -1032,7 +979,6 @@ int Update_LCD() {
 	}
 	return 0;
 }
-
 
 int Config_PoStep() {
 	if (PK_PoStep_ConfigurationGet(dev) == PK_OK) {
@@ -1056,20 +1002,12 @@ int Update_PoStep() {
 }
 
 static char* serial_number = "";
-// Not available in userspace code.
-// RTAPI_MP_STRING(serial_number, "Device Serial Number")
 
 static int ConnectionType = 0; // 1..USB, 2..UDP, 3..Network, 4..fastUSB
-// Not available in userspace code.
-// RTAPI_MP_INT(ConnectionType, "Connection Type (1..USB, 2..UDP, 3..Network, 4..fastUSB)")
 
 static char* IP = "0.0.0.0";
-// Not available in userspace code.
-// RTAPI_MP_STRING(IP, "IP Address")
 
 static int timeout_ms = 2000;
-// Not available in userspace code.
-// RTAPI_MP_INT(timeout_ms, "Timeout in ms")
 
 static int retry = 3;
 
@@ -1145,10 +1083,6 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial) {
 				else {
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d) OK\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
 				}
-
-
-
-
 			}
 		}
 		if (retDev == NULL) {
@@ -1267,50 +1201,31 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial) {
 		// connected = 1;
 		if (lastConectionTypeTried == 1) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: USB\n", __FILE__, __FUNCTION__);
-			// cannot set pins outside of user_mainloop()
-			//	connected_usb = 1;
-			//	connected_fusb = 0;
-			//	connected_udp = 0;
-			//	connected_net = 0;
 		}
 		if (lastConectionTypeTried == 2) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: UDP\n", __FILE__, __FUNCTION__);
-			// cannot set pins outside of user_mainloop()
-			//	connected_usb = 0;
-			//	connected_fusb = 0;
-			//	connected_udp = 1;
-			//	connected_net = 0;
 		}
 		if (lastConectionTypeTried == 3) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Network\n", __FILE__, __FUNCTION__);
-			// cannot set pins outside of user_mainloop()
-			//	connected_usb = 0;
-			//	connected_fusb = 0;
-			//	connected_udp = 0;
-			//	connected_net = 1;
 		}
 		return retDev;
 	}
 	else {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: failed to connect to device\n", __FILE__, __FUNCTION__);
-		// connected_usb = 0;
-		// connected_fusb = 0;
-		// connected_udp = 0;
-		// connected_net = 0;
-		// err = 1;
 		return NULL;
 	}
 }
 
 bool initdone = 0;
+int doSetup = 0;
+
+int next_setup=1;
 
 void user_mainloop(void) {
 
 	rtapi_print("  \n");
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: user_mainloop started  \n", __FILE__, __FUNCTION__);
 	rtapi_print("  \n");
-	// rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: trigger hal_init('pokeys'#')\n", __FILE__, __FUNCTION__);
-	//  comp_id = hal_init("pokeys"); // seems already initialized
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: comp_id: %d\n", __FILE__, __FUNCTION__, comp_id);
 	rtapi_print("  \n");
 	while (0xb) {
@@ -1327,9 +1242,6 @@ void user_mainloop(void) {
 			while (dev == NULL | initdone != 1) {
 				Loop_Frequ = rtc_loop_frequ;
 				uint32_t lastConectionTypeTried = 0;
-				/*if (PEv2_digout_Emergency_out != true){
-					usleep(sleepdur);
-				}*/
 
 				if (dev == NULL) {
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: TryConnectToDevice %d \n", __FILE__, __FUNCTION__, devSerial);
@@ -1448,7 +1360,6 @@ void user_mainloop(void) {
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: setPinConfig -done\n", __FILE__, __FUNCTION__);
 					}
 
-					// dev->DeviceData.DeviceLockStatus=1;
 
 
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Device info pins initialized\n", __FILE__, __FUNCTION__);
@@ -1487,6 +1398,7 @@ void user_mainloop(void) {
 						secBlink = true;
 					}
 
+					doSetup = next_setup;
 					// sleepdur
 					if (rtc_loop_frequ > 15) {
 						if (rtc_loop_frequ_demand == 0) {
@@ -1560,8 +1472,8 @@ void user_mainloop(void) {
 			deb_out = 239;
 			usleep(sleepdur);
 
-			if (rtc_lastmin != rtc_min) {
-				rtc_lastmin = rtc_min;
+			if (doSetup > 0) {
+				//rtc_lastmin = rtc_min;
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: rtc_lastmin = %d\n", __FILE__, __FUNCTION__, rtc_lastmin);
 
 				if (HAL_Machine_On == false) {
@@ -1608,18 +1520,47 @@ void user_mainloop(void) {
 					info_EasySensors = dev->info.iEasySensors;										 // Device supports EasySensors
 					deb_out = 311;
 
-					if (info_PinCount != 0) {
-						PKIO_Setup(dev);
-						deb_out = 312;
+					if(doSetup == 1){
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PulseEnginev2 = %d\n", __FILE__, __FUNCTION__, info_PulseEnginev2);
+						if (info_PulseEnginev2 != 0) {
+							PKPEv2_Setup(dev);
+							deb_out = 313;
+						}
+						next_setup = 2;
 					}
-
-
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PulseEnginev2 = %d\n", __FILE__, __FUNCTION__, info_PulseEnginev2);
-					if (info_PulseEnginev2 != 0) {
-						PKPEv2_Setup(dev);
-						deb_out = 313;
-
+					else if (doSetup == 2){
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PinCount = %d\n", __FILE__, __FUNCTION__, info_PinCount);
+						if (info_PinCount != 0) {
+							PKIO_Setup(dev , );
+							deb_out = 312;
+						}
+						next_setup = 3;
 					}
+					else if (doSetup == 3){
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PoExtBus = %d\n", __FILE__, __FUNCTION__, info_PoExtBus);
+						if (info_PoExtBus != 0) {
+							PKPoExtBus_Setup(dev);
+							deb_out = 314;
+						}
+						next_setup = 4;
+					}
+					else if (doSetup == 4){
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PoNET = %d\n", __FILE__, __FUNCTION__, info_PoNET);
+						if (info_PoNET != 0) {
+							PKPoNet_Setup(dev);
+							deb_out = 315;
+						}
+						next_setup = 5;
+					}
+					else if (doSetup == 5){
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_EncodersCount = %d\n", __FILE__, __FUNCTION__, info_EncodersCount);
+						if (info_EncodersCount != 0) {
+							PKEncoder_Setup(dev);
+							deb_out = 316;
+						}
+						next_setup = 1;
+					}
+					doSetup = 0;
 				}
 				else {
 					alive = 0;
