@@ -2494,7 +2494,7 @@ static char *IP = "0.0.0.0";
 // Not available in userspace code.
 // RTAPI_MP_STRING(IP, "IP Address")
 
-static int timeout_ms = 5000;
+static int timeout_ms = 2000;
 // Not available in userspace code.
 // RTAPI_MP_INT(timeout_ms, "Timeout in ms")
 
