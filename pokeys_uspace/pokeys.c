@@ -2615,7 +2615,7 @@ sPoKeysDevice *TryConnectToDevice(uint32_t intSerial)
 		if (enm_fusb_dev > 0)
 		{
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice FastUSB\n", __FILE__, __FUNCTION__);
-			for (int i = 0; i < enm_fusb_dev; i++)
+			for (int i = 0; i < enm_fusb_dev+1; i++)
 			{
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice(%d)\n", __FILE__, __FUNCTION__, i);
 				retDev = PK_ConnectToDevice(i);
