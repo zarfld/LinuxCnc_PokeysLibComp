@@ -800,7 +800,7 @@ void PKIO_Setup(sPoKeysDevice *dev){
 		*(IO_data->adcout_deb_outv) = 100;
 		*(IO_data->adcout_deb_outv) = 100;
 		uint32_t PWMperiod; // PWM period, shared among all channels
-bool doPwmConfig = false;
+	bool doPwmConfig = false;
 
 		uint32_t PWMduty[6];		   // PWM duty cycles (range between 0 and PWM period)
 		uint8_t PWMenabledChannels[6]; // List of enabled PWM channels
