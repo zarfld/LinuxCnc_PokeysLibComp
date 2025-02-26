@@ -35,6 +35,8 @@ typedef struct{
 
 	hal_u32_t *counter_value;
 
+	hal_u32_t PinFunction;
+
 	bool DigitalValueSet_ignore;
 }one_digiIO_data_t;
 
@@ -83,8 +85,7 @@ int PKIO_export_pins(char *prefix, long extra_arg, int id, all_IO_data_t *Io_dat
 
     // AnalogOut Pins
     int analogOutCount = dev->info.iPWMCount;
-    for (j = 0; j < (analogOutCount); j++)
-    {
+    for (j = 0; j < (analogOutCount); j++){
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.adcout.%01d.deb.out\n", __FILE__, __FUNCTION__, prefix, j);
         r = hal_pin_u32_newf(HAL_OUT, &(IO_data->adcout[j].deb_out), id,
                              "%s.adcout.%01d.deb.out", prefix, j);
@@ -225,76 +226,87 @@ int PKIO_export_pins(char *prefix, long extra_arg, int id, all_IO_data_t *Io_dat
     int digitalCount = dev->info.iPinCount;
     for (j = 0; j < (digitalCount); j++)
     {
-        if(PK_CheckPinCapability(dev, j, PK_AllPinCap_digitalInput)==1)
-        {
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.digin.%01d.deb.out\n", __FILE__, __FUNCTION__, prefix, j);
-        r = hal_pin_bit_newf(HAL_OUT, &(IO_data->Pin[j].digin_in), id,
-                             "%s.digin.%01d.in", prefix, j);
-        if (r != 0)
-        {
-            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.digin.%01d.in failed\n", __FILE__, __FUNCTION__, prefix, j);
-            return r;
-        }
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.digin.%01d.in-not\n", __FILE__, __FUNCTION__, prefix, j);
-        r = hal_pin_bit_newf(HAL_OUT, &(IO_data->Pin[j].digin_in_not), id,
-                             "%s.digin.%01d.in-not", prefix, j);
-        if (r != 0)
-        {
-            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.digin.%01d.in-not failed\n", __FILE__, __FUNCTION__, prefix, j);
-            return r;
-        }
 
-
-    }
-
-        if(PK_CheckPinCapability(dev, j, PK_AllPinCap_digitalOutput)==1)
-       { 
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.digout.%01d.out\n", __FILE__, __FUNCTION__, prefix, j);
-        r = hal_pin_bit_newf(HAL_IN, &(IO_data->Pin[j].digout_out), id,
-                             "%s.digout.%01d.out", prefix, j);
-
-        if (r != 0)
-        {
-            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.digout.%01d.out failed\n", __FILE__, __FUNCTION__, prefix, j);
-            return r;
-        }
-		IO_data->Pin[j].DigitalValueSet_ignore = 0;
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.digout.%01d.invert\n", __FILE__, __FUNCTION__, prefix, j);
-		r = hal_param_bit_newf(HAL_RW, &(IO_data->Pin[j].digout_invert), id,
-							   "%s.digout.%01d.invert", prefix, j);
+		//PinFunction
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.Pins.%01d.PinFunction\n", __FILE__, __FUNCTION__, prefix, j);
+		r = hal_param_u32_newf(HAL_RW, &(IO_data->Pin[j].PinFunction), id,
+							"%s.pins.%01d.PinFunction", prefix, j);
 		if (r != 0)
 		{
-            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.digout.%01d.invert failed\n", __FILE__, __FUNCTION__, prefix, j);
-            return r;
-        }
-    }
+			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.digout.%01d.invert failed\n", __FILE__, __FUNCTION__, prefix, j);
+			return r;
+		}
 
-    if(PK_CheckPinCapability(dev, j, PK_AllPinCap_digitalCounter)==1){
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.counter.%01d.value\n", __FILE__, __FUNCTION__, prefix, j);
-        r = hal_pin_u32_newf(HAL_OUT, &(IO_data->Pin[j].counter_value), id,
-                             "%s.counter.%01d.value", prefix, j);
-        if (r != 0)
+        if(PK_CheckPinCapability(dev, j, PK_AllPinCap_digitalInput)==1)
         {
-            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.counter.%01d.value failed\n", __FILE__, __FUNCTION__, prefix, j);
-            return r;
-        }
-        }
-    }
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.digin.%01d.deb.out\n", __FILE__, __FUNCTION__, prefix, j);
+			r = hal_pin_bit_newf(HAL_OUT, &(IO_data->Pin[j].digin_in), id,
+								"%s.digin.%01d.in", prefix, j);
+			if (r != 0)
+			{
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.digin.%01d.in failed\n", __FILE__, __FUNCTION__, prefix, j);
+				return r;
+			}
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.digin.%01d.in-not\n", __FILE__, __FUNCTION__, prefix, j);
+			r = hal_pin_bit_newf(HAL_OUT, &(IO_data->Pin[j].digin_in_not), id,
+								"%s.digin.%01d.in-not", prefix, j);
+			if (r != 0)
+			{
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.digin.%01d.in-not failed\n", __FILE__, __FUNCTION__, prefix, j);
+				return r;
+			}
+		}
 
-                rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.digin.%01d.deb.out\n", __FILE__, __FUNCTION__, prefix, j);
-        r = hal_pin_u32_newf(HAL_OUT, &(IO_data->deb_out), id,
-                             "%s.digin.deb.out", prefix, j);
-        if (r != 0)
-        {
-            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.digin.deb.out failed\n", __FILE__, __FUNCTION__, prefix, j);
-            return r;
-        }
+        if(PK_CheckPinCapability(dev, j, PK_AllPinCap_digitalOutput)==1)
+     	{ 
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.digout.%01d.out\n", __FILE__, __FUNCTION__, prefix, j);
+			r = hal_pin_bit_newf(HAL_IN, &(IO_data->Pin[j].digout_out), id,
+								"%s.digout.%01d.out", prefix, j);
+
+			if (r != 0)
+			{
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.digout.%01d.out failed\n", __FILE__, __FUNCTION__, prefix, j);
+				return r;
+			}
+			IO_data->Pin[j].DigitalValueSet_ignore = 0;
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.digout.%01d.invert\n", __FILE__, __FUNCTION__, prefix, j);
+			r = hal_param_bit_newf(HAL_RW, &(IO_data->Pin[j].digout_invert), id,
+								"%s.digout.%01d.invert", prefix, j);
+			if (r != 0)
+			{
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.digout.%01d.invert failed\n", __FILE__, __FUNCTION__, prefix, j);
+				return r;
+			}
+
+		}
+
+		if(PK_CheckPinCapability(dev, j, PK_AllPinCap_digitalCounter)==1)
+		{
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.counter.%01d.value\n", __FILE__, __FUNCTION__, prefix, j);
+			r = hal_pin_u32_newf(HAL_OUT, &(IO_data->Pin[j].counter_value), id,
+								"%s.counter.%01d.value", prefix, j);
+			if (r != 0)
+			{
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.counter.%01d.value failed\n", __FILE__, __FUNCTION__, prefix, j);
+				return r;
+			}
+		}
+
+	}
+
+    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.digin.%01d.deb.out\n", __FILE__, __FUNCTION__, prefix, j);
+    r = hal_pin_u32_newf(HAL_OUT, &(IO_data->deb_out), id,
+                           "%s.digin.deb.out", prefix, j);
+    if (r != 0)
+    {
+        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.digin.deb.out failed\n", __FILE__, __FUNCTION__, prefix, j);
+        return r;
+    }
     return r;
 }
 
-void PKIO_Update(sPoKeysDevice *dev)
-{
-    			bool PinConfigurationGet = false;
+void PKIO_Update(sPoKeysDevice *dev){
+    		bool PinConfigurationGet = false;
 			bool DigitalIOGet = false;
 			bool AnalogIOGet = false;
 			bool AnalogIOSet = false;
@@ -304,12 +316,10 @@ void PKIO_Update(sPoKeysDevice *dev)
             bool loopPins = false;
             bool DoPWM = false;
 
-        if (dev->info.iPinCount > 0)
-		{
+        if (dev->info.iPinCount > 0){
 				*(IO_data->deb_out) = 210;
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PinConfigurationGet(dev)\n", __FILE__, __FUNCTION__);
-				if (PK_PinConfigurationGet(dev) == PK_OK)
-				{
+				if (PK_PinConfigurationGet(dev) == PK_OK){
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PinConfigurationGet(dev) OK\n", __FILE__, __FUNCTION__);
 					 
 					PinConfigurationGet = true;
@@ -317,8 +327,7 @@ void PKIO_Update(sPoKeysDevice *dev)
 					loopPins = true;
 				}
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOGet(dev)\n", __FILE__, __FUNCTION__);
-				if (PK_DigitalIOGet(dev) == PK_OK)
-				{
+				if (PK_DigitalIOGet(dev) == PK_OK){
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOGet(dev) OK\n", __FILE__, __FUNCTION__);
 					 
 				 	*(IO_data->deb_out) = 212;
@@ -326,8 +335,7 @@ void PKIO_Update(sPoKeysDevice *dev)
 					loopPins = true;
 				}
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_AnalogIOGet(dev)\n", __FILE__, __FUNCTION__);
-				if (PK_AnalogIOGet(dev) == PK_OK)
-				{
+				if (PK_AnalogIOGet(dev) == PK_OK){
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_AnalogIOGet(dev) OK\n", __FILE__, __FUNCTION__);
 					 
 				 	*(IO_data->deb_out) = 213;
@@ -336,129 +344,127 @@ void PKIO_Update(sPoKeysDevice *dev)
 				}
         }
 
-rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iDigitalCounters = %d\n", __FILE__, __FUNCTION__, dev->info.iDigitalCounters);
-			if (dev->info.iDigitalCounters > 0)
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iDigitalCounters = %d\n", __FILE__, __FUNCTION__, dev->info.iDigitalCounters);
+		
+		if (dev->info.iDigitalCounters > 0){
+		 	*(IO_data->deb_out) = 214;
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalCounterGet(dev)\n", __FILE__, __FUNCTION__);
+			if (PK_DigitalCounterGet(dev) == PK_OK)
 			{
-			 	*(IO_data->deb_out) = 214;
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalCounterGet(dev)\n", __FILE__, __FUNCTION__);
-				if (PK_DigitalCounterGet(dev) == PK_OK)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalCounterGet(dev) OK\n", __FILE__, __FUNCTION__);
-					 
-				 	*(IO_data->deb_out) = 215;
-					DigitalCounterGet = true;
-					loopPins = true;
-				}
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalCounterGet(dev) OK\n", __FILE__, __FUNCTION__);
+				 
+			 	*(IO_data->deb_out) = 215;
+				DigitalCounterGet = true;
+				loopPins = true;
 			}
+		}
 
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PWMCount = %d\n", __FILE__, __FUNCTION__, dev->info.iPWMCount);
-			if (dev->info.iPWMCount && DoPWM)
-			{
-				*(IO_data->adcout_deb_outv) = 100;
-                *(IO_data->adcout_deb_outv) = 100;
-				uint32_t PWMperiod; // PWM period, shared among all channels
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PWMCount = %d\n", __FILE__, __FUNCTION__, dev->info.iPWMCount);
+		if (dev->info.iPWMCount && DoPWM){
+			*(IO_data->adcout_deb_outv) = 100;
+            *(IO_data->adcout_deb_outv) = 100;
+			uint32_t PWMperiod; // PWM period, shared among all channels
 
-				uint32_t PWMduty[6];		   // PWM duty cycles (range between 0 and PWM period)
-				uint8_t PWMenabledChannels[6]; // List of enabled PWM channels
-				uint8_t PWMpinIDs[6];
-				float PWM_SCale[6];
-				float max_v[6];
-				float high_limit[6];
-				float low_limit[6];
-				float PWM_value[6];
-				float PWM_OffSet[6];
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationGet(dev)\n", __FILE__, __FUNCTION__);
-				if (PK_PWMConfigurationGet(dev) == PK_OK)
+			uint32_t PWMduty[6];		   // PWM duty cycles (range between 0 and PWM period)
+			uint8_t PWMenabledChannels[6]; // List of enabled PWM channels
+			uint8_t PWMpinIDs[6];
+			float PWM_SCale[6];
+			float max_v[6];
+			float high_limit[6];
+			float low_limit[6];
+			float PWM_value[6];
+			float PWM_OffSet[6];
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationGet(dev)\n", __FILE__, __FUNCTION__);
+		
+			if (PK_PWMConfigurationGet(dev) == PK_OK){
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationGet(dev) OK\n", __FILE__, __FUNCTION__);
+				PWMperiod = IO_data->adcout_pwm_period;
+				//PWMperiod = adcout_pwm_period;
+
+				if (PWMperiod == 0)
 				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationGet(dev) OK\n", __FILE__, __FUNCTION__);
-					PWMperiod = IO_data->adcout_pwm_period;
-					//PWMperiod = adcout_pwm_period;
-
-					if (PWMperiod = 0)
-					{
-						PWMperiod = 2500;
-					}
 					PWMperiod = 2500;
-					if (dev->PWM.PWMperiod != PWMperiod)
+				}
+				PWMperiod = 2500;
+				if (dev->PWM.PWMperiod != PWMperiod)
+				{
+					dev->PWM.PWMperiod = PWMperiod;
+					doPwmConfig = true;
+					PK_PWMConfigurationSet(dev);
+				}
+
+				if (IO_data->adcout_pwm_period != PWMperiod)
+				{
+					IO_data->adcout_pwm_period = PWMperiod;
+				}
+
+				// Pins_PinFunction(i)=dev->Pins[i].PinFunction;
+
+				for (int i = 0; i < 6; i++)
+				{
+					int PwmId = 5 - i;
+                    *(IO_data->adcout[PwmId]).deb_setval = 100;
+					//adcout_deb_out(PwmId) = 100;
+
+					PWMduty[i] = dev->PWM.PWMduty[i];			  // PWM duty cycles (range between 0 and PWM period)
+					PWMenabledChannels[i] = *(IO_data->adcout[PwmId]).enable; // List of enabled PWM channels
+					PWMpinIDs[i] = dev->PWM.PWMpinIDs[i];
+                    IO_data->adcout[PwmId].PinId = PWMpinIDs[i];
+					//adcout_PinId(PwmId) = PWMpinIDs[i];
+					PWM_SCale[i] = 1;
+
+					PWM_value[i] = *(IO_data->adcout[PwmId]).value;
+					PWM_OffSet[i] = IO_data->adcout[PwmId].offset;
+					max_v[i] = IO_data->adcout[PwmId].max_v;
+					high_limit[i] = IO_data->adcout[PwmId].high_limit;
+					low_limit[i] = IO_data->adcout[PwmId].low_limit;
+
+					if (max_v[PwmId] == 0)
 					{
-						dev->PWM.PWMperiod = PWMperiod;
-						doPwmConfig = true;
-						PK_PWMConfigurationSet(dev);
-						 
-					}
-
-					if (IO_data->adcout_pwm_period != PWMperiod)
-					{
-						IO_data->adcout_pwm_period = PWMperiod;
-					}
-
-					// Pins_PinFunction(i)=dev->Pins[i].PinFunction;
-
-					for (int i = 0; i < 6; i++)
-					{
-						int PwmId = 5 - i;
-                        *(IO_data->adcout[PwmId]).deb_setval = 100;
-						//adcout_deb_out(PwmId) = 100;
-
-						PWMduty[i] = dev->PWM.PWMduty[i];			  // PWM duty cycles (range between 0 and PWM period)
-						PWMenabledChannels[i] = *(IO_data->adcout[PwmId]).enable; // List of enabled PWM channels
-						PWMpinIDs[i] = dev->PWM.PWMpinIDs[i];
-                        IO_data->adcout[PwmId].PinId = PWMpinIDs[i];
-						//adcout_PinId(PwmId) = PWMpinIDs[i];
-						PWM_SCale[i] = 1;
-
-						PWM_value[i] = *(IO_data->adcout[PwmId]).value;
-						PWM_OffSet[i] = IO_data->adcout[PwmId].offset;
-						max_v[i] = IO_data->adcout[PwmId].max_v;
-						high_limit[i] = IO_data->adcout[PwmId].high_limit;
-						low_limit[i] = IO_data->adcout[PwmId].low_limit;
-
-						if (max_v[PwmId] == 0)
+						if ((dev->DeviceData.DeviceTypeID == PK_DeviceID_PoKeys57CNC) && (PWMpinIDs[i] = 17))
 						{
-							if ((dev->DeviceData.DeviceTypeID == PK_DeviceID_PoKeys57CNC) && (PWMpinIDs[i] = 17))
-							{
-								max_v[PwmId] = 10.000; // Pin17 0-10V
-							}
-							else
-							{
-								max_v[PwmId] = 5.000; // usually pokeys57 provide 0..5V PWM
-							}
-						}
-
-						if (high_limit[PwmId] = low_limit[PwmId])
-						{
-							if (high_limit[PwmId] == 0)
-							{
-								high_limit[PwmId] = max_v[PwmId];
-							}
-						}
-
-						if (PWMenabledChannels[i] == true)
-						{
-							float tmp = PWM_value[i] + PWM_OffSet[i];
-
-							if (tmp <= low_limit[i])
-							{
-								tmp = low_limit[i];
-							}
-							else if (tmp >= high_limit[i])
-							{
-								tmp = high_limit[i];
-							}
-
-							tmp = tmp * PWM_SCale[i];
-
-							PWMduty[i] = (uint32_t)((tmp / max_v[i]) * PWMperiod);
+							max_v[PwmId] = 10.000; // Pin17 0-10V
 						}
 						else
 						{
-							PWMduty[i] = 0;
+							max_v[PwmId] = 5.000; // usually pokeys57 provide 0..5V PWM
+						}
+					}
+
+					if (high_limit[PwmId] = low_limit[PwmId])
+					{
+						if (high_limit[PwmId] == 0)
+						{
+							high_limit[PwmId] = max_v[PwmId];
+						}
+					}
+
+					if (PWMenabledChannels[i] == true)
+					{
+						float tmp = PWM_value[i] + PWM_OffSet[i];
+
+						if (tmp <= low_limit[i])
+						{
+							tmp = low_limit[i];
+						}
+						else if (tmp >= high_limit[i])
+						{
+							tmp = high_limit[i];
 						}
 
-						*(IO_data->adcout[PwmId]).deb_setval = PWMduty[i];
+						tmp = tmp * PWM_SCale[i];
+
+						PWMduty[i] = (uint32_t)((tmp / max_v[i]) * PWMperiod);
+					}
+					else
+					{
+						PWMduty[i] = 0;
+					}
+
+					*(IO_data->adcout[PwmId]).deb_setval = PWMduty[i];
 						 
 
-						/*if ((max_v[PwmId] > 0.000) && (high_limit[PwmId] > 0.000) && (high_limit[PwmId] > low_limit[PwmId]))
+					/*if ((max_v[PwmId] > 0.000) && (high_limit[PwmId] > 0.000) && (high_limit[PwmId] > low_limit[PwmId]))
 						{
 							adcout_deb_out(PwmId) = 110;
 							if (dev->PWM.PWMenabledChannels[i] = 0)
@@ -562,134 +568,111 @@ rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iDigitalCounters = %d\n", __
 
 						}*/
 
-						if (IO_data->adcout[PwmId].scale != PWM_SCale[i])
-						{
-							IO_data->adcout[PwmId].scale = PWM_SCale[i];
-						}
-
-						if (IO_data->adcout[PwmId].max_v != max_v[i])
-						{
-							IO_data->adcout[PwmId].max_v = max_v[i];
-						}
-
-						if (IO_data->adcout[PwmId].high_limit != high_limit[i])
-						{
-							IO_data->adcout[PwmId].high_limit = high_limit[i];
-						}
-
-						if (IO_data->adcout[PwmId].low_limit != low_limit[i])
-						{
-                            IO_data->adcout[PwmId].low_limit = low_limit[i];
-							
-						}
-
-						if (dev->PWM.PWMenabledChannels[i] != PWMenabledChannels[i])
-						{
-							dev->PWM.PWMenabledChannels[i] = PWMenabledChannels[i];
-							doPwmConfig = true;
-						}
-
-						if (dev->PWM.PWMduty[i] != PWMduty[i])
-						{
-							dev->PWM.PWMduty[i] = PWMduty[i];
-							AnalogIOSet = true;
-						}
-					}
-				}
-
-				if (doPwmConfig == true)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationSet(dev)\n", __FILE__, __FUNCTION__);
-					PK_PWMConfigurationSet(dev);
-					if (PK_PWMConfigurationSet(dev) != PK_OK)
+					if (IO_data->adcout[PwmId].scale != PWM_SCale[i])
 					{
-						 
-						PK_PWMConfigurationSet(dev);
+						IO_data->adcout[PwmId].scale = PWM_SCale[i];
 					}
-				}
 
-				if (AnalogIOSet == true)
-				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMUpdate(dev)\n", __FILE__, __FUNCTION__);
-					PK_PWMUpdate(dev);
-					if (PK_PWMUpdate(dev) != PK_OK)
+					if (IO_data->adcout[PwmId].max_v != max_v[i])
 					{
-						 
-						PK_PWMUpdate(dev);
+						IO_data->adcout[PwmId].max_v = max_v[i];
+					}
+
+					if (IO_data->adcout[PwmId].high_limit != high_limit[i])
+					{
+						IO_data->adcout[PwmId].high_limit = high_limit[i];
+					}
+
+					if (IO_data->adcout[PwmId].low_limit != low_limit[i])
+					{
+                           IO_data->adcout[PwmId].low_limit = low_limit[i];
+					
+					}
+
+					if (dev->PWM.PWMenabledChannels[i] != PWMenabledChannels[i])
+					{
+						dev->PWM.PWMenabledChannels[i] = PWMenabledChannels[i];
+						doPwmConfig = true;
+					}
+
+					if (dev->PWM.PWMduty[i] != PWMduty[i])
+					{
+						dev->PWM.PWMduty[i] = PWMduty[i];
+						AnalogIOSet = true;
 					}
 				}
 			}
-			else
+
+			if (AnalogIOSet == true)
 			{
-				*(IO_data->adcout_deb_outv) = 150;
-			}
-            if (loopPins == true)
-			{ // gets IO data and checks return value
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: read IO data\n", __FILE__, __FUNCTION__);
-				
-				sPoKeysPinData iPin;
-				int AnalogPinOffset = 40;
-				int AnalogPinCount = 7;
-
-				int PwmPinOffset = 17;
-				int PwmPinCount = 6;
-
-				for (int i = 0; i < dev->info.iPinCount - 1; i++)
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMUpdate(dev)\n", __FILE__, __FUNCTION__);
+				PK_PWMUpdate(dev);
+				if (PK_PWMUpdate(dev) != PK_OK)
 				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Pin %d\n", __FILE__, __FUNCTION__, i);
-				 	*(IO_data->deb_out) = 2320 + i;
-					int AinNr = i - AnalogPinOffset;
+					PK_PWMUpdate(dev);
+				}
+			}
+		}
+		else
+		{
+			*(IO_data->adcout_deb_outv) = 150;
+		}
+        if (loopPins == true){ // gets IO data and checks return value
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: read IO data\n", __FILE__, __FUNCTION__);
+				
+			sPoKeysPinData iPin;
+			int AnalogPinOffset = 40;
+			int AnalogPinCount = 7;
 
-					if ((AnalogIOGet = true) && (AinNr >= 0) && (AinNr < AnalogPinCount))
-					{
-						if (IO_data->adcin[AinNr].scale== 0)
-						{
-                            IO_data->adcin[AinNr].scale = 1;
-							
-						}
+			int PwmPinOffset = 17;
+			int PwmPinCount = 6;
 
-						float ainVal = 3.3 * dev->Pins[i].AnalogValue / 4096;
+			for (int i = 0; i < dev->info.iPinCount - 1; i++){
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Pin %d\n", __FILE__, __FUNCTION__, i);
+			 	*(IO_data->deb_out) = 2320 + i;
+				int AinNr = i - AnalogPinOffset;
 
-						*(IO_data->adcin[AinNr].value_raw)  = ainVal;
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: IO_data->adcin[AinNr].value_raw(%d) = %f\n", __FILE__, __FUNCTION__, AinNr, IO_data->adcin[AinNr].value_raw );
-						*(IO_data->adcin[AinNr].value)  = ainVal * IO_data->adcin[AinNr].scale- IO_data->adcin[AinNr].offset ;
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: adc value %d = %f\n", __FILE__, __FUNCTION__, AinNr, IO_data->adcin[AinNr].value );
+				if ((AnalogIOGet = true) && (AinNr >= 0) && (AinNr < AnalogPinCount)){
+					if (IO_data->adcin[AinNr].scale== 0){
+                        IO_data->adcin[AinNr].scale = 1;
 					}
 
-				 	*(IO_data->deb_out) = 2321 + i;
-                    if (PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalInput)==1)
-                    {
-					if (DigitalIOGet == true)
-					{
+					float ainVal = 3.3 * dev->Pins[i].AnalogValue / 4096;
+
+					*(IO_data->adcin[AinNr].value_raw)  = ainVal;
+					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: IO_data->adcin[AinNr].value_raw(%d) = %f\n", __FILE__, __FUNCTION__, AinNr, IO_data->adcin[AinNr].value_raw );
+					*(IO_data->adcin[AinNr].value)  = ainVal * IO_data->adcin[AinNr].scale- IO_data->adcin[AinNr].offset ;
+					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: adc value %d = %f\n", __FILE__, __FUNCTION__, AinNr, IO_data->adcin[AinNr].value );
+				}
+
+			 	*(IO_data->deb_out) = 2321 + i;
+                if (PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalInput)==1){
+					if (DigitalIOGet == true){
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalValueGet\n", __FILE__, __FUNCTION__);
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[i].DigitalValueGet = %d\n", __FILE__, __FUNCTION__, dev->Pins[i].DigitalValueGet);
-						if (dev->Pins[i].DigitalValueGet == 0)
-						{
+						
+						if (dev->Pins[i].DigitalValueGet == 0){
                             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].DigitalValueGet = 0\n", __FILE__, __FUNCTION__,i);
 							// Pins_DigitalValueGet(i)=false;
 							*(IO_data->Pin[i]).digin_in = false;
                             *(IO_data->Pin[i].digin_in_not) = true;
 						}
-						else
-						{
+						else{
                             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].DigitalValueGet = 1\n", __FILE__, __FUNCTION__,i);
 							// Pins_DigitalValueGet(i)=true;
                             *(IO_data->Pin[i]).digin_in = true;
                             *(IO_data->Pin[i]).digin_in_not = false;
 
 						}
-					}}
+					}
+				}
 
-                    if(PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalOutput)==1)
-                    {
-					if (IO_data->Pin[i].DigitalValueSet_ignore == false)
-					{
+                if(PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalOutput)==1){
+					if (IO_data->Pin[i].DigitalValueSet_ignore == false){
 						bool setDigoutvalue = false;
-						if (*(IO_data->Pin[i]).digout_out == 1)
-						{
+						if (*(IO_data->Pin[i]).digout_out == 1){
                             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].digout_out = 1\n", __FILE__, __FUNCTION__,i);
-							if (IO_data->Pin[i].digout_invert == 0)
-							{
+							if (IO_data->Pin[i].digout_invert == 0){
                                 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].digout_invert = 0\n", __FILE__, __FUNCTION__,i);
 								setDigoutvalue = true;
 							}
@@ -720,13 +703,11 @@ rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iDigitalCounters = %d\n", __
                     {
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: IO_data->Pin[%d].DigitalValueSet_ignore = true\n", __FILE__, __FUNCTION__,i);
                     }
-                    }
-                    if(PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalCounter)==1)
-                    {
+                }
+                if(PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalCounter)==1){
 					// Pins_DigitalCounterAvailable(i)=dev->Pins[i].DigitalCounterAvailable;
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalCounterAvailable[%d] = %d\n", __FILE__, __FUNCTION__, i, dev->Pins[i].DigitalCounterAvailable);
-					if (dev->Pins[i].DigitalCounterAvailable)
-					{
+					if (dev->Pins[i].DigitalCounterAvailable){
 						// Pins_DigitalCounterValue(i) = dev->Pins[i].DigitalCounterValue;
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:counter value %d = %d\n", __FILE__, __FUNCTION__, i, dev->Pins[i].DigitalCounterValue);
 						dev->Pins[i].DigitalCounterValue = dev->Pins[i].DigitalCounterValue;
@@ -743,40 +724,193 @@ rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iDigitalCounters = %d\n", __
 					// dev->Pins[i].preventUpdate=Pins_preventUpdate(i);
 
 				 	*(IO_data->deb_out) = 2330 + i;
-				}
+			}
 				 
 
-                *(IO_data->deb_out) = 236;
+            *(IO_data->deb_out) = 236;
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev)\n", __FILE__, __FUNCTION__);
+			if (DigitalIOSet == true){
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev)\n", __FILE__, __FUNCTION__);
-				if (DigitalIOSet == true)
+				if (PK_DigitalIOSet(dev) != PK_OK){
+					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) failed\n", __FILE__, __FUNCTION__);
+				}
+				else{
+					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) passed\n", __FILE__, __FUNCTION__);
+				}
+				if (PK_DigitalIOSet(dev) != PK_OK){
+					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) failed\n", __FILE__, __FUNCTION__);
+				}
+				else{
+					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) passed\n", __FILE__, __FUNCTION__);
+				}
+			}
+
+			*(IO_data->deb_out) = 237;
+        }
+        else
+        {
+        	*(IO_data->deb_out) = 250;
+        }
+}
+
+void PKIO_Setup(sPoKeysDevice *dev){
+	bool PinConfigurationSet = false;
+	bool readonly = false;
+
+
+	// Setting PinFunction
+	if (PK_PinConfigurationGet(dev) == PK_OK){
+		readonly = true;
+	
+		for (int i = 0; i < dev->info.iPinCount - 1; i++){
+
+			
+			if(readonly){
+				*(IO_data->Pin[i]).PinFunction = dev->Pins[i].PinFunction;
+			}
+			else{
+				if(PK_CheckPinCapability(dev, i, *(IO_data->Pin[i]).PinFunction)!=1)
 				{
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev)\n", __FILE__, __FUNCTION__);
-					if (PK_DigitalIOSet(dev) != PK_OK)
-					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) failed\n", __FILE__, __FUNCTION__);
-						 
-					}
-					else
-					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) passed\n", __FILE__, __FUNCTION__);
-					}
-					if (PK_DigitalIOSet(dev) != PK_OK)
-					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) failed\n", __FILE__, __FUNCTION__);
-						 
-					}
-					else
-					{
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) passed\n", __FILE__, __FUNCTION__);
-					}
+					*(IO_data->Pin[i]).PinFunction = 0;
 				}
 
-			 	*(IO_data->deb_out) = 237;
-            }
-            else
-            {
-                *(IO_data->deb_out) = 250;
-            }
+				if(dev->Pins[i].PinFunction != *(IO_data->Pin[i]).PinFunction){
+					dev->Pins[i].PinFunction = *(IO_data->Pin[i]).PinFunction;
+					PinConfigurationSet = true;
+				}
+				
+			}
+		}
+
+
+		if(PinConfigurationSet == true){
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PinConfigurationSet(dev)\n", __FILE__, __FUNCTION__);
+			PK_PinConfigurationSet(dev);
+			if (PK_PinConfigurationSet(dev) != PK_OK)
+			{
+				PK_PinConfigurationSet(dev);
+			}
+
+		}
+	}
+
+
+	if (dev->info.iPWMCount && DoPWM){
+
+		*(IO_data->adcout_deb_outv) = 100;
+		*(IO_data->adcout_deb_outv) = 100;
+		uint32_t PWMperiod; // PWM period, shared among all channels
+
+		uint32_t PWMduty[6];		   // PWM duty cycles (range between 0 and PWM period)
+		uint8_t PWMenabledChannels[6]; // List of enabled PWM channels
+		uint8_t PWMpinIDs[6];
+		float PWM_SCale[6];
+		float max_v[6];
+		float high_limit[6];
+		float low_limit[6];
+		float PWM_value[6];
+		float PWM_OffSet[6];
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationGet(dev)\n", __FILE__, __FUNCTION__);
+	
+		if (PK_PWMConfigurationGet(dev) == PK_OK){
+
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationGet(dev) OK\n", __FILE__, __FUNCTION__);
+			PWMperiod = IO_data->adcout_pwm_period;
+
+			if (PWMperiod == 0)
+			{
+				PWMperiod = 2500;
+			}
+			PWMperiod = 2500;
+			if (dev->PWM.PWMperiod != PWMperiod)
+			{
+				dev->PWM.PWMperiod = PWMperiod;
+				doPwmConfig = true;
+			}
+
+			if (IO_data->adcout_pwm_period != PWMperiod)
+			{
+				IO_data->adcout_pwm_period = PWMperiod;
+			}
+
+			for (int i = 0; i < 6; i++)
+			{
+				int PwmId = 5 - i;
+				*(IO_data->adcout[PwmId]).deb_setval = 100;
+				//adcout_deb_out(PwmId) = 100;
+
+				PWMduty[i] = dev->PWM.PWMduty[i];			  // PWM duty cycles (range between 0 and PWM period)
+				PWMenabledChannels[i] = *(IO_data->adcout[PwmId]).enable; // List of enabled PWM channels
+				PWMpinIDs[i] = dev->PWM.PWMpinIDs[i];
+				IO_data->adcout[PwmId].PinId = PWMpinIDs[i];
+				//adcout_PinId(PwmId) = PWMpinIDs[i];
+				PWM_SCale[i] = 1;
+
+				PWM_value[i] = *(IO_data->adcout[PwmId]).value;
+				PWM_OffSet[i] = IO_data->adcout[PwmId].offset;
+				max_v[i] = IO_data->adcout[PwmId].max_v;
+				high_limit[i] = IO_data->adcout[PwmId].high_limit;
+				low_limit[i] = IO_data->adcout[PwmId].low_limit;
+
+
+
+				if (PWMenabledChannels[i] == true){
+					if (max_v[PwmId] == 0){
+						if ((dev->DeviceData.DeviceTypeID == PK_DeviceID_PoKeys57CNC) && (PWMpinIDs[i] = 17)){
+							max_v[PwmId] = 10.000; // Pin17 0-10V
+						}
+						else{
+							max_v[PwmId] = 5.000; // usually pokeys57 provide 0..5V PWM
+						}
+					}
+	
+					if (high_limit[PwmId] = low_limit[PwmId]){
+						if (high_limit[PwmId] == 0){
+							high_limit[PwmId] = max_v[PwmId];
+						}
+					}
+
+				}
+
+		
+
+				if (IO_data->adcout[PwmId].scale != PWM_SCale[i]){
+					IO_data->adcout[PwmId].scale = PWM_SCale[i];
+				}
+
+				if (IO_data->adcout[PwmId].max_v != max_v[i]){
+					IO_data->adcout[PwmId].max_v = max_v[i];
+				}
+
+				if (IO_data->adcout[PwmId].high_limit != high_limit[i]){
+					IO_data->adcout[PwmId].high_limit = high_limit[i];
+				}
+
+				if (IO_data->adcout[PwmId].low_limit != low_limit[i]){
+					   IO_data->adcout[PwmId].low_limit = low_limit[i];
+				
+				}
+
+				if (dev->PWM.PWMenabledChannels[i] != PWMenabledChannels[i]){
+					dev->PWM.PWMenabledChannels[i] = PWMenabledChannels[i];
+					doPwmConfig = true;
+				}
+
+			}
+
+			if (doPwmConfig == true)
+			{
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationSet(dev)\n", __FILE__, __FUNCTION__);
+				PK_PWMConfigurationSet(dev);
+				if (PK_PWMConfigurationSet(dev) != PK_OK)
+				{
+					PK_PWMConfigurationSet(dev);
+				}
+			}
+		}
+	}
+
+
 }
 
 #ifdef MODULE_INFO
