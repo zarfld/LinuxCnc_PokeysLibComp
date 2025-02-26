@@ -287,7 +287,7 @@ static int export(char *prefix, long extra_arg)
 
 	// PoKeys PulseEngine pins
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PulseEngine pins\n");
-	r=PKPulseEngine_export_pins(prefix,extra_arg,comp_id,inst->PEv2_data, dev);
+	r=PKPEv2_export_pins(prefix,extra_arg,comp_id,inst->PEv2_data, dev);
 	if (r != 0)
 	{
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKPulseEngine_export_pins failed\n");
@@ -942,7 +942,7 @@ unsigned Loop_Frequ = 0;
 uint8_t rtc_latencycheck_set = 0;
 int rtc_latencyCounter = 0;
 
-bool Pins_DigitalValueSet_ignore[55];
+
 
 
 int i = 0;
@@ -984,31 +984,16 @@ unsigned int sleepdur = 1000;
 bool use_sleepdur1 = true;
 unsigned int sleepdur1 = 1000;
 unsigned int sleepdur2 = 1000;
-float StepScale[8];
+
 
 //bool DoPWM = false;
 bool DoEncoders = true;
 
 PK_MatrixKB_Parameters MatrixKB;
 
-bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
-{
-	return (in_Byte >> Bit_Id) & 0x01;
-}
 
-uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value)
-{
 
-	if (value == true)
-	{
-		in_Byte |= 1 << Bit_Id;
-	}
-	else
-	{
-		in_Byte &= ~(1 << Bit_Id);
-	}
-	return in_Byte;
-}
+
 
 uint8_t Merge_8BitsToByte(bool Bit_array[8])
 {

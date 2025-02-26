@@ -1396,6 +1396,8 @@ float last_joint_vel_cmd[8];
 bool Homing_active = false;
 bool Homing_done[8] = {false, false, false, false, false, false, false, false};
 bool IsHoming[8] = {false, false, false, false, false, false, false, false};
+float StepScale[8];
+bool Pins_DigitalValueSet_ignore[55];
 
 pokeys_home_command_t old_PEv2_AxesCommand[8] = {0};
 
@@ -1411,6 +1413,25 @@ typedef enum
 	PK_PEv2Homing_OutHomeReverseDirection = (1 << 5), // Cancel Homing procedure
 	PK_PEv2Homing_OutHomeReducedSpeed = (1 << 4),	  // Cancel Homing procedure
 } pokeys_homing_algorithm_t;
+
+bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id)
+{
+	return (in_Byte >> Bit_Id) & 0x01;
+}
+
+uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value)
+{
+
+	if (value == true)
+	{
+		in_Byte |= 1 << Bit_Id;
+	}
+	else
+	{
+		in_Byte &= ~(1 << Bit_Id);
+	}
+	return in_Byte;
+}
 
 
 void PKPEv2_Update(sPoKeysDevice *dev){
@@ -1545,7 +1566,7 @@ void PKPEv2_Update(sPoKeysDevice *dev){
             PEv2_deb_estop = 10;
             break;
         }
-        usleep(sleepdur);
+        
     }
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_Status2Get(dev)\n", __FILE__, __FUNCTION__);
     if (PK_PEv2_Status2Get(dev) == PK_OK)
@@ -1554,18 +1575,18 @@ void PKPEv2_Update(sPoKeysDevice *dev){
         bm_DedicatedLimitNInputs = dev->PEv2.DedicatedLimitNInputs;
         bm_DedicatedLimitPInputs = dev->PEv2.DedicatedLimitPInputs;
         bm_DedicatedHomeInputs = dev->PEv2.DedicatedHomeInputs;
-        usleep(sleepdur);
+        
     }
     else
     {
-        usleep(sleepdur);
+        
         if (PK_PEv2_Status2Get(dev) == PK_OK)
         {
             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_Status2Get(dev) = PK_OK\n", __FILE__, __FUNCTION__);
             bm_DedicatedLimitNInputs = dev->PEv2.DedicatedLimitNInputs;
             bm_DedicatedLimitPInputs = dev->PEv2.DedicatedLimitPInputs;
             bm_DedicatedHomeInputs = dev->PEv2.DedicatedHomeInputs;
-            usleep(sleepdur);
+            
         }
     }
     bool doPositionSet = false;
@@ -2374,10 +2395,10 @@ void PKPEv2_Update(sPoKeysDevice *dev){
 
         if (PK_PEv2_PulseEngineStateSet(dev) != PK_OK)
         {
-            usleep(sleepdur);
+            
             if (PK_PEv2_PulseEngineStateSet(dev) != PK_OK)
             {
-                usleep(sleepdur);
+                
             }
         }
     }
@@ -2389,10 +2410,10 @@ void PKPEv2_Update(sPoKeysDevice *dev){
         if (PK_PEv2_PulseEngineMove(dev) != PK_OK)
         {
             PEv2_deb_out = 4200;
-            usleep(sleepdur);
+            
             if (PK_PEv2_PulseEngineMove(dev) != PK_OK)
             {
-                usleep(sleepdur);
+                
             }
         }
         else
@@ -2402,7 +2423,7 @@ void PKPEv2_Update(sPoKeysDevice *dev){
     }
 
 
-    deb_out = 224;
+    PEv2_deb_out = 224;
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PulseEngineState = %d\n", __FILE__, __FUNCTION__, dev->PEv2.PulseEngineState);
     if (dev->PEv2.PulseEngineState == PK_PEState_peSTOP_EMERGENCY)
     {
@@ -2419,7 +2440,7 @@ void PKPEv2_Update(sPoKeysDevice *dev){
 void PKPEv2_Setup(sPoKeysDevice *dev){
     bool DoPeSetup = false;
     bool DoPeReboot = false;
-    setPinConfig = false;
+    bool setPinConfig = false;
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_params_ApplyIniSettings = %d\n", __FILE__, __FUNCTION__, PEv2_params_ApplyIniSettings);
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: HAL_Machine_On = %d\n", __FILE__, __FUNCTION__, HAL_Machine_On);
     if ((PEv2_params_ApplyIniSettings != 0) && (HAL_Machine_On == 0))
@@ -2447,7 +2468,7 @@ void PKPEv2_Setup(sPoKeysDevice *dev){
                 break;
           }
 
-          if (PEv2_params_ApplyIniSettings != 0 && info_PulseEnginev2 != 0){
+          if (PEv2_params_ApplyIniSettings != 0 ){
             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SaveConfiguration - PEv2_params_ApplyIniSettings\n", __FILE__, __FUNCTION__);
             if (PK_SaveConfiguration(dev) != PK_OK)
             {
@@ -2459,7 +2480,7 @@ void PKPEv2_Setup(sPoKeysDevice *dev){
             }
         }
 
-        usleep(sleepdur);
+        
         if (PEv2_digin_Probe_Pin != 0)
         { // check if pin is parametrized in HAL
             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].PinFunction = %d\n", __FILE__, __FUNCTION__, PEv2_digin_Probe_Pin - 1, dev->Pins[PEv2_digin_Probe_Pin - 1].PinFunction);
@@ -2550,12 +2571,12 @@ void PKPEv2_Setup(sPoKeysDevice *dev){
         {
             if (PK_PEv2_PulseEngineSetup(dev) != PK_OK)
             {
-                usleep(sleepdur);
+                
             }
 
             if (PK_PEv2_PulseEngineSetup(dev) == PK_OK)
             {
-                usleep(sleepdur);
+                
             }
             if (DoPeReboot == true)
             {
@@ -2586,7 +2607,7 @@ void PKPEv2_Setup(sPoKeysDevice *dev){
         if (PK_PEv2_AdditionalParametersGet(dev) == PK_OK)
         {
             PEv2_digin_Emergency_Pin = dev->PEv2.EmergencyInputPin;
-            usleep(sleepdur);
+            
         }
     }
 
@@ -3150,11 +3171,11 @@ void PKPEv2_Setup(sPoKeysDevice *dev){
                 dev->PEv2.param1 = i;
                 if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK)
                 {
-                    usleep(sleepdur);
+                    
                     dev->PEv2.param1 = i;
                     if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK)
                     {
-                        usleep(sleepdur);
+                        
                     }
                 }
             }
@@ -3198,7 +3219,7 @@ void PKPEv2_Setup(sPoKeysDevice *dev){
                 // MPG 1x mode here
                 PEv2_HomeBackOffDistance(i) = dev->PEv2.HomeBackOffDistance[i];
                 PEv2_MPGjogDivider(i) = dev->PEv2.MPGjogDivider[i];
-                usleep(sleepdur);
+                
             }
         }
     }
@@ -3217,10 +3238,10 @@ void PKPEv2_Setup(sPoKeysDevice *dev){
     {
         if (PK_PinConfigurationSet(dev) != PK_OK)
         {
-            usleep(sleepdur);
+            
             if (PK_PinConfigurationSet(dev) != PK_OK)
             {
-                usleep(sleepdur);
+                
             }
             else
             {
