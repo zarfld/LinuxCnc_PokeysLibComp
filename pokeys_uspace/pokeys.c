@@ -923,7 +923,7 @@ int main(int argc_, char **argv_)
 	struct __comp_state *__comp_inst; \
 	for (__comp_inst = __comp_first_inst; __comp_inst; __comp_inst = __comp_inst->_next)
 
-#line 577 "/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace/pokeys.comp"
+#line 926 "/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace/pokeys.c"
 
 
 
@@ -938,11 +938,7 @@ bool secBlink = false;
 unsigned Loop_Frequ = 0;
 //uint8_t kbd48CNC_Counter[48];
 
-bool posMode[8];
-uint8_t posCount[8];
-uint8_t velCount[8];
-float last_joint_pos_cmd[8];
-float last_joint_vel_cmd[8];
+
 uint8_t rtc_latencycheck_set = 0;
 int rtc_latencyCounter = 0;
 

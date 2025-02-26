@@ -1387,6 +1387,12 @@ if (r != 0)
 uint8_t PEv2_PulseEngineStateSetup = 0;
 uint8_t PulseEngineState = 0;
 
+bool posMode[8];
+uint8_t posCount[8];
+uint8_t velCount[8];
+float last_joint_pos_cmd[8];
+float last_joint_vel_cmd[8];
+
 bool Homing_active = false;
 bool Homing_done[8] = {false, false, false, false, false, false, false, false};
 bool IsHoming[8] = {false, false, false, false, false, false, false, false};
@@ -1407,7 +1413,7 @@ typedef enum
 } pokeys_homing_algorithm_t;
 
 
-void PKPEv2_Update(sPoKeysDevice dev){
+void PKPEv2_Update(sPoKeysDevice *dev){
     uint8_t bm_LimitStatusP; // Limit+ status (bit-mapped)
     uint8_t bm_LimitStatusN; // Limit- status (bit-mapped)
     uint8_t bm_HomeStatus;	 // Home status (bit-mapped)
