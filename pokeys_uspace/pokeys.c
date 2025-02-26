@@ -1531,7 +1531,7 @@ void user_mainloop(void) {
 					else if (doSetup == 2){
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PinCount = %d\n", __FILE__, __FUNCTION__, info_PinCount);
 						if (info_PinCount != 0) {
-							PKIO_Setup(dev , true );
+							PKIO_Setup(dev , false );
 							deb_out = 312;
 						}
 						next_setup = 3;
