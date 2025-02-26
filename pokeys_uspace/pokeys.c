@@ -4935,6 +4935,8 @@ EXTRA_SETUP()
 	FILE *fp = fopen(ini_path, "r");
 	if (fp){
 		iniFindInt(fp, "DEVICE_ID", "POKEYS", &device_id);
+		iniFindInt(fp, "COMM_TIMEOUT", "POKEYS", &timeout_ms);
+
 	}
 
 
