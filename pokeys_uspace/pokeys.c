@@ -400,15 +400,7 @@ static int export(char *prefix, long extra_arg)
 	}
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PoExtBus pins done \n");
 
-	// PoKeys IO pins
-	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: IO pins\n");
-	r=PKIO_export_pins(prefix,extra_arg,comp_id,inst->IO_data, dev);
-	if (r != 0)
-	{
-		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKIO_export_pins failed\n");
-		return r;
-	}
-	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: IO pins done \n");
+
 		
 	
 	// Encoder pins
@@ -441,7 +433,15 @@ static int export(char *prefix, long extra_arg)
 	}
 	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PoNET pins done \n");
 
-
+	// PoKeys IO pins
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: IO pins\n");
+	r=PKIO_export_pins(prefix,extra_arg,comp_id,inst->IO_data, dev);
+	if (r != 0)
+	{
+		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PKIO_export_pins failed\n");
+		return r;
+	}
+	rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: IO pins done \n");
 
 
 
