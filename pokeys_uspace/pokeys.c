@@ -2539,6 +2539,25 @@ sPoKeysDevice *TryConnectToDevice(uint32_t intSerial)
 						lastConectionTypeTried = 1;
 						if (retDev == NULL){
 							rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d) FAILED\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
+
+							retDev = PK_ConnectToDevice(0); // waits for usb device
+							lastConectionTypeTried = 1;
+							if (retDev == NULL){
+								rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice(0) FAILED\n", __FILE__, __FUNCTION__);
+
+								retDev = PK_ConnectToDevice(intSerial); // waits for usb device
+								lastConectionTypeTried = 1;
+								if (retDev == NULL){
+									rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice(%d) FAILED\n", __FILE__, __FUNCTION__, intSerial);
+								}
+								else{
+									rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice(%d) OK\n", __FILE__, __FUNCTION__, intSerial);
+								}
+
+							}
+							else{
+								rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDevice(0) OK\n", __FILE__, __FUNCTION__);
+							}
 						}
 						else{
 							rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d) OK\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
