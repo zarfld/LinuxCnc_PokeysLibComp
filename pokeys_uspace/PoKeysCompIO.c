@@ -766,16 +766,16 @@ void PKIO_Setup(sPoKeysDevice *dev){
 
 			
 			if(readonly){
-				*(IO_data->Pin[i]).PinFunction = dev->Pins[i].PinFunction;
+				IO_data->Pin[i].PinFunction = dev->Pins[i].PinFunction;
 			}
 			else{
-				if(PK_CheckPinCapability(dev, i, *(IO_data->Pin[i]).PinFunction)!=1)
+				if(PK_CheckPinCapability(dev, i, IO_data->Pin[i].PinFunction)!=1)
 				{
-					*(IO_data->Pin[i]).PinFunction = 0;
+					IO_data->Pin[i].PinFunction = 0;
 				}
 
-				if(dev->Pins[i].PinFunction != *(IO_data->Pin[i]).PinFunction){
-					dev->Pins[i].PinFunction = *(IO_data->Pin[i]).PinFunction;
+				if(dev->Pins[i].PinFunction != IO_data->Pin[i].PinFunction){
+					dev->Pins[i].PinFunction = IO_data->Pin[i].PinFunction;
 					PinConfigurationSet = true;
 				}
 				
@@ -795,11 +795,12 @@ void PKIO_Setup(sPoKeysDevice *dev){
 	}
 
 
-	if (dev->info.iPWMCount && DoPWM){
+	if (dev->info.iPWMCount ){
 
 		*(IO_data->adcout_deb_outv) = 100;
 		*(IO_data->adcout_deb_outv) = 100;
 		uint32_t PWMperiod; // PWM period, shared among all channels
+bool doPwmConfig = false;
 
 		uint32_t PWMduty[6];		   // PWM duty cycles (range between 0 and PWM period)
 		uint8_t PWMenabledChannels[6]; // List of enabled PWM channels
