@@ -4887,7 +4887,7 @@ EXTRA_SETUP()
 		if (dev == NULL)
 		{
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: TryConnectToDevice(0)\n", __FILE__, __FUNCTION__);
-			dev = TryConnectToDevice(0);
+			dev = TryConnectToDevice(device_id);
 		}
 		if (dev != NULL)
 		{
