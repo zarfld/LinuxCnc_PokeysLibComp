@@ -1383,6 +1383,14 @@ if (r != 0)
 #undef PEv2_digin_Probe_invert
 #define PEv2_digin_Probe_invert (PEv2_data->PEv2_digin_Probe_invert)
 
+typedef enum
+{
+	PK_PEAxisCommand_axIDLE = 0,		 // Axis  in IDLE
+	PK_PEAxisCommand_axHOMINGSTART = 1,	 // Start Homing procedure
+	PK_PEAxisCommand_axHOMINGCANCEL = 2, // Cancel Homing procedure
+	PK_PEAxisCommand_axHOMINGFinalize = 3, // Cancel Homing procedure
+} pokeys_home_command_t;
+
 // pin io unsigned PEv2.PulseEngineStateSetup;		// Pulse engine new state configuration  - No Pin needed
 uint8_t PEv2_PulseEngineStateSetup = 0;
 uint8_t PulseEngineState = 0;
@@ -1401,13 +1409,7 @@ bool Pins_DigitalValueSet_ignore[55];
 bool HAL_Machine_On = false;
 pokeys_home_command_t old_PEv2_AxesCommand[8] = {0};
 
-typedef enum
-{
-	PK_PEAxisCommand_axIDLE = 0,		 // Axis  in IDLE
-	PK_PEAxisCommand_axHOMINGSTART = 1,	 // Start Homing procedure
-	PK_PEAxisCommand_axHOMINGCANCEL = 2, // Cancel Homing procedure
-	PK_PEAxisCommand_axHOMINGFinalize = 3, // Cancel Homing procedure
-} pokeys_home_command_t;
+
 
 typedef enum
 {

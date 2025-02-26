@@ -970,13 +970,6 @@ typedef struct
 
 } PK_MatrixKB_Parameters;
 
-typedef enum
-{
-	PK_PEAxisCommand_axIDLE = 0,		 // Axis  in IDLE
-	PK_PEAxisCommand_axHOMINGSTART = 1,	 // Start Homing procedure
-	PK_PEAxisCommand_axHOMINGCANCEL = 2, // Cancel Homing procedure
-	PK_PEAxisCommand_axHOMINGFinalize = 3, // Cancel Homing procedure
-} pokeys_home_command_t;
 
 
 
