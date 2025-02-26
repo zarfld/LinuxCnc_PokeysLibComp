@@ -930,7 +930,7 @@ int main(int argc_, char **argv_)
 
 static int comp_id; /* component ID */
 //bool initEncodersDone = 0;
-bool HAL_Machine_On = false;
+
 bool setPkConfig = false;
 bool setPinConfig = false;
 bool I2C_isscanning = false;
@@ -1639,7 +1639,7 @@ void user_mainloop(void)
 
 			// PulseEnginev2
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PulseEnginev2 = %d\n", __FILE__, __FUNCTION__, info_PulseEnginev2);
-			PKPEv2_Update(dev);
+			PKPEv2_Update(dev, HAL_Machine_On);
 			deb_out = 220;
 			usleep(sleepdur);
 				

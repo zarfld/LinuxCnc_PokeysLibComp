@@ -168,7 +168,7 @@ typedef struct{
 
 static PEv2_data_t *PEv2_data=NULL;
 
-int PKPEv2_export_pins(char *prefix, long extra_arg, int id, PEv2_data_t *Pev2_data, sPoKeysDevice *dev)
+int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id, PEv2_data_t *Pev2_data, sPoKeysDevice *dev)
 {
 
     int r = 0;
@@ -1398,9 +1398,16 @@ bool Homing_done[8] = {false, false, false, false, false, false, false, false};
 bool IsHoming[8] = {false, false, false, false, false, false, false, false};
 float StepScale[8];
 bool Pins_DigitalValueSet_ignore[55];
-
+bool HAL_Machine_On = false;
 pokeys_home_command_t old_PEv2_AxesCommand[8] = {0};
 
+typedef enum
+{
+	PK_PEAxisCommand_axIDLE = 0,		 // Axis  in IDLE
+	PK_PEAxisCommand_axHOMINGSTART = 1,	 // Start Homing procedure
+	PK_PEAxisCommand_axHOMINGCANCEL = 2, // Cancel Homing procedure
+	PK_PEAxisCommand_axHOMINGFinalize = 3, // Cancel Homing procedure
+} pokeys_home_command_t;
 
 typedef enum
 {
@@ -1434,7 +1441,7 @@ uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value)
 }
 
 
-void PKPEv2_Update(sPoKeysDevice *dev){
+void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On){
     uint8_t bm_LimitStatusP; // Limit+ status (bit-mapped)
     uint8_t bm_LimitStatusN; // Limit- status (bit-mapped)
     uint8_t bm_HomeStatus;	 // Home status (bit-mapped)
@@ -2442,8 +2449,8 @@ void PKPEv2_Setup(sPoKeysDevice *dev){
     bool DoPeReboot = false;
     bool setPinConfig = false;
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_params_ApplyIniSettings = %d\n", __FILE__, __FUNCTION__, PEv2_params_ApplyIniSettings);
-    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: HAL_Machine_On = %d\n", __FILE__, __FUNCTION__, HAL_Machine_On);
-    if ((PEv2_params_ApplyIniSettings != 0) && (HAL_Machine_On == 0))
+
+    if ((PEv2_params_ApplyIniSettings != 0) )
     {
         // dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
         // PK_PEv2_PulseEngineSetup(dev);
@@ -2472,10 +2479,10 @@ void PKPEv2_Setup(sPoKeysDevice *dev){
             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SaveConfiguration - PEv2_params_ApplyIniSettings\n", __FILE__, __FUNCTION__);
             if (PK_SaveConfiguration(dev) != PK_OK)
             {
-                usleep(sleepdur * 2);
+                
                 if (PK_SaveConfiguration(dev) != PK_OK)
                 {
-                    usleep(sleepdur * 2);
+                    
                 }
             }
         }
@@ -2613,7 +2620,7 @@ void PKPEv2_Setup(sPoKeysDevice *dev){
 
     uint8_t AxesConfig[8];
     uint8_t AxesSwitchConfig[8];
-    for (i = 0; i < dev->PEv2.info.nrOfAxes; i++)
+    for (int i = 0; i < dev->PEv2.info.nrOfAxes; i++)
     {
         if (PEv2_params_ApplyIniSettings != 0)
         {
