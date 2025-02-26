@@ -944,9 +944,7 @@ int rtc_latencyCounter = 0;
 
 bool Pins_DigitalValueSet_ignore[55];
 
-bool Homing_active = false;
-bool Homing_done[8] = {false, false, false, false, false, false, false, false};
-bool IsHoming[8] = {false, false, false, false, false, false, false, false};
+
 int i = 0;
 
 float temp_MaxAcceleration[8];

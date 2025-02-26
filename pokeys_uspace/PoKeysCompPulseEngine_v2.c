@@ -3234,6 +3234,7 @@ void PKPEv2_Setup(sPoKeysDevice *dev){
     }
 }
 
+#ifdef MODULE_INFO
 MODULE_INFO(linuxcnc, "pin:PEv2.deb.out:s32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:PEv2.deb.estop:s32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.axxisout:s32:8:out::None:None");
@@ -3385,3 +3386,4 @@ MODULE_INFO(linuxcnc, "pin:PEv2.#.BacklashWidth:u32:8:io::None:None");
 MODULE_INFO(linuxcnc, "pin:PEv2.#.BacklashRegister:u32:8:io::None:None");
 MODULE_INFO(linuxcnc, "pin:PEv2.#.BacklashAcceleration:u32:8:io::None:None");
 MODULE_INFO(linuxcnc, "pin:PEv2.BacklashCompensationEnabled:u32:0:io::None:None");
+#endif // MODULE_INFO
