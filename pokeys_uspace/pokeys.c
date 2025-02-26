@@ -368,7 +368,7 @@ struct __comp_state *__comp_first_inst = 0, *__comp_last_inst = 0;
 
 static int __comp_get_data_size(void);
 static int extra_setup(struct __comp_state *__comp_inst, char *prefix, long extra_arg);
-int device_id = 0;
+uint32_t device_id = 0;
 #undef TRUE
 #define TRUE (1)
 #undef FALSE
