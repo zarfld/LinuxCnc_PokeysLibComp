@@ -2526,11 +2526,11 @@ sPoKeysDevice *TryConnectToDevice(uint32_t intSerial)
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: enm_usb_dev :%d\n", __FILE__, __FUNCTION__, enm_usb_dev);
 			if (enm_usb_dev != 0){
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d)\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
-				retDev = PK_ConnectToDeviceWSerial(intSerial, i_Timeout); // waits for usb device
+				retDev = PK_ConnectToDeviceWSerial((uint32_t)intSerial, i_Timeout); // waits for usb device
 				lastConectionTypeTried = 1;
 				if (retDev == NULL){
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d) FAILED\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
-					retDev = PK_ConnectToDeviceWSerial(intSerial, i_Timeout); // waits for usb device
+					retDev = PK_ConnectToDeviceWSerial((uint32_t)intSerial, i_Timeout); // waits for usb device
 					lastConectionTypeTried = 1;
 					if (retDev == NULL){
 						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d) FAILED\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
