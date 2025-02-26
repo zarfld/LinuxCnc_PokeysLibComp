@@ -1,3 +1,4 @@
+#include <stdlib.h>
 
 typedef struct{
     hal_s32_t *PEv2_deb_out;
@@ -1518,15 +1519,13 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On){
     bool POSITION_MODE_active[8];
 
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PEv2_nrOfAxes = %d\n", __FILE__, __FUNCTION__, PEv2_nrOfAxes);
-    if (PEv2_nrOfAxes != 0)
-    {
+    if (PEv2_nrOfAxes != 0)    {
         uint8_t bm_SoftLimitStatus = dev->PEv2.SoftLimitStatus;
         int tAxisEnabledMask = 0;
 
         int32_t intCurrentPosition[8];
         float PosFb[8];
-        for (int i = 0; i < PEv2_nrOfAxes; i++)
-        {
+        for (int i = 0; i < PEv2_nrOfAxes; i++)        {
             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_Axis[%d] \n", __FILE__, __FUNCTION__, i);
 
             InPosition[i] = false;
@@ -1714,10 +1713,8 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On){
             }
 
             // calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-            if (IsHoming[i] == false)
-            {
-                if (StepScale[i] != 0)
-                {
+            if (IsHoming[i] == false)            {
+                if (StepScale[i] != 0)                {
                     PEv2_deb_axxisout(i) = 230 + i;
                     PosFb[i] = intCurrentPosition[i] / StepScale[i];
                 }
@@ -1939,8 +1936,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On){
             PEv2_deb_ishoming(i) = IsHoming[i];
             PEv2_deb_inposition(i) = InPosition[i];
 
-            if (HAL_Machine_On != 0)
-            {
+            if (HAL_Machine_On != 0)            {
                 PEv2_deb_out = 390 + i;
                 posMode[i] = false;
                 if (IsHoming[i] == false)
@@ -2174,8 +2170,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On){
                         }
                     }
                 }
-                else
-                {
+                else                {
                     PEv2_deb_axxisout(i) = 2400 + i;
                     // dev->PEv2.ReferencePositionSpeed[i]=0;
                     switch (intAxesState)
@@ -2269,7 +2264,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On){
     {
         rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: Startmask at trigger (%d) \n", HomingStartMaskSetup);
 
-        PEv2_deb_axxisout(i) = 5100;
+       
         dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
         PK_PEv2_HomingStart(dev);
         Homing_active = true;
@@ -2278,7 +2273,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On){
     {
         rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: Startmask at trigger (%d) \n", HomingStartMaskSetup);
 
-        PEv2_deb_axxisout(i) = 5100;
+       
         dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
         //PK_PEv2_HomingStart(dev);
         PK_PEv2_HomingFinish(dev);
