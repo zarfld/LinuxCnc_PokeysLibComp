@@ -6,7 +6,7 @@ COMPONENTS = pokeys
 
 # Extra compile and link arguments
 EXTRA_COMPILE_ARGS = -I$(CURDIR)/pokeys_uspace
-EXTRA_LINK_ARGS = -lPoKeys
+EXTRA_LINK_ARGS = -lPoKeys -llinuxcncini
 
 # Define the source files
 SOURCES = pokeys_uspace/pokeys.c
