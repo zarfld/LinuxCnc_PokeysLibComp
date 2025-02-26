@@ -4870,7 +4870,7 @@ void user_mainloop(void)
 EXTRA_SETUP()
 {
 	int wait_ms = 5000;
-
+	const char ini_path = getenv("INI_FILE_NAME");
 	FILE *fp = fopen(ini_path, "r");
 	if (fp){
 		iniFindInt(fp, "DEVICE_ID", "POKEYS", &device_id);
