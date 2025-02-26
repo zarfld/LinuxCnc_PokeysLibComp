@@ -4875,16 +4875,21 @@ EXTRA_SETUP()
 	{
 		if (dev == NULL)
 		{
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: TryConnectToDevice(0)", __FILE__, __FUNCTION__);
+			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: TryConnectToDevice(0)", __FILE__, __FUNCTION__);
 			dev = TryConnectToDevice(0);
 		}
 		if (dev != NULL)
 		{
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Connected", __FILE__, __FUNCTION__);
+			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Connected", __FILE__, __FUNCTION__);
 			break;
 		}
 	}
 
+	if (dev == NULL)
+	{
+		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: could not connect to device", __FILE__, __FUNCTION__);
+		
+	}
 //	PKEncoder_init(comp_id, dev);
 	rtapi_print("");
 	// devSerial = extra_arg;
