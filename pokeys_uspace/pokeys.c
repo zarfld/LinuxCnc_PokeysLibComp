@@ -22,7 +22,7 @@
 #include "PoKeysCompIO.c"
 #include <stdlib.h>
 
-static int comp_id;
+static int comp_id=0;
 sPoKeysDevice *dev = NULL;
 
 #ifdef MODULE_INFO
@@ -4868,7 +4868,7 @@ void user_mainloop(void)
 EXTRA_SETUP()
 {
 	int wait_ms = 5000;
-	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: extra_arg=%s\n", __FILE__, __FUNCTION__, extra_arg);
+	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: extra_arg=%s comp_id=%s\n", __FILE__, __FUNCTION__, extra_arg,comp_id);
 
 	// usleep(wait_ms);  // wait for the HAL to start up
 	for (i = 0; i < retry; i++)
