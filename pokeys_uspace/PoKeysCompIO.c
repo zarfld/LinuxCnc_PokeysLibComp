@@ -628,10 +628,7 @@ void PKIO_Setup(sPoKeysDevice* dev, bool readonly) {
 				IO_data->Pin[i].PinFunction = dev->Pins[i].PinFunction;
 			}
 			else {
-				if (PK_CheckPinCapability(dev, i, IO_data->Pin[i].PinFunction) != 1) {
-					IO_data->Pin[i].PinFunction = 0;
-				}
-				else if (dev->Pins[i].PinFunction != IO_data->Pin[i].PinFunction) {
+				if (dev->Pins[i].PinFunction != IO_data->Pin[i].PinFunction) {
 					dev->Pins[i].PinFunction = IO_data->Pin[i].PinFunction;
 					PinConfigurationSet = true;
 				}
