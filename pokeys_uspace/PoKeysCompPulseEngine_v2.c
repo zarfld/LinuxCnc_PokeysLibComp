@@ -2275,7 +2275,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 
 		if (DoPeSetup == true) {
 			if (PK_PEv2_PulseEngineSetup(dev) != PK_OK) {
-				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PulseEngineSetup!=PK_OK\n", __FILE__, __FUNCTION__,);
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PulseEngineSetup!=PK_OK\n", __FILE__, __FUNCTION__);
 				if (PK_PEv2_PulseEngineSetup(dev) != PK_OK) {
 
 				}
