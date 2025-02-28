@@ -1257,7 +1257,7 @@ bool Pins_DigitalValueSet_ignore[55];
 bool HAL_Machine_On = false;
 pokeys_home_command_t old_PEv2_AxesCommand[8] = { 0 };
 
-const sleepdur = 200; // 
+
 
 
 typedef enum {
