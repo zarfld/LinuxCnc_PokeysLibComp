@@ -286,41 +286,53 @@ void PKIO_Update(sPoKeysDevice* dev) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PinConfigurationGet(dev)\n", __FILE__, __FUNCTION__);
 		if (PK_PinConfigurationGet(dev) == PK_OK) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PinConfigurationGet(dev) OK\n", __FILE__, __FUNCTION__);
-
 			PinConfigurationGet = true;
 			*(IO_data->deb_out) = 211;
 			loopPins = true;
 		}
+		else{
+			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PinConfigurationGet(dev) failed\n", __FILE__, __FUNCTION__);
+		}
+		usleep(100);
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOGet(dev)\n", __FILE__, __FUNCTION__);
 		if (PK_DigitalIOGet(dev) == PK_OK) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOGet(dev) OK\n", __FILE__, __FUNCTION__);
-
 			*(IO_data->deb_out) = 212;
 			DigitalIOGet = true;
 			loopPins = true;
 		}
+		else{
+			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DigitalIOGet(dev) failed\n", __FILE__, __FUNCTION__);
+		}
+		usleep(100);
+
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_AnalogIOGet(dev)\n", __FILE__, __FUNCTION__);
 		if (PK_AnalogIOGet(dev) == PK_OK) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_AnalogIOGet(dev) OK\n", __FILE__, __FUNCTION__);
-
 			*(IO_data->deb_out) = 213;
 			AnalogIOGet = true;
 			loopPins = true;
 		}
+		else{
+			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_AnalogIOGet(dev) failed\n", __FILE__, __FUNCTION__);
+		}
+		usleep(100);
 	}
 
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iDigitalCounters = %d\n", __FILE__, __FUNCTION__, dev->info.iDigitalCounters);
-
 	if (dev->info.iDigitalCounters > 0) {
 		*(IO_data->deb_out) = 214;
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalCounterGet(dev)\n", __FILE__, __FUNCTION__);
 		if (PK_DigitalCounterGet(dev) == PK_OK) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalCounterGet(dev) OK\n", __FILE__, __FUNCTION__);
-
 			*(IO_data->deb_out) = 215;
 			DigitalCounterGet = true;
 			loopPins = true;
 		}
+		else{
+			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DigitalCounterGet(dev) failed\n", __FILE__, __FUNCTION__);
+		}
+		usleep(100);
 	}
 
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PWMCount = %d\n", __FILE__, __FUNCTION__, dev->info.iPWMCount);
@@ -344,7 +356,7 @@ void PKIO_Update(sPoKeysDevice* dev) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationGet(dev) OK\n", __FILE__, __FUNCTION__);
 			PWMperiod = IO_data->adcout_pwm_period;
 			//PWMperiod = adcout_pwm_period;
-
+			usleep(100);
 			if (PWMperiod == 0) {
 				PWMperiod = 2500;
 			}
@@ -353,6 +365,7 @@ void PKIO_Update(sPoKeysDevice* dev) {
 				dev->PWM.PWMperiod = PWMperiod;
 				doPwmConfig = true;
 				PK_PWMConfigurationSet(dev);
+				usleep(100);
 			}
 
 			if (IO_data->adcout_pwm_period != PWMperiod) {
@@ -414,111 +427,6 @@ void PKIO_Update(sPoKeysDevice* dev) {
 
 				*(IO_data->adcout[PwmId]).deb_setval = PWMduty[i];
 
-
-				/*if ((max_v[PwmId] > 0.000) && (high_limit[PwmId] > 0.000) && (high_limit[PwmId] > low_limit[PwmId]))
-					{
-						adcout_deb_out(PwmId) = 110;
-						if (dev->PWM.PWMenabledChannels[i] = 0)
-						{
-							adcout_deb_out(PwmId) = 111;
-							dev->PWM.PWMenabledChannels[i] = 1;
-							doPwmConfig = true;
-						}
-						else {
-							adcout_deb_out(PwmId) = 112;
-						}
-						if (PWM_SCale[i] = 0.000)
-						{
-							adcout_deb_out(PwmId) = 200;
-							if ((high_limit[PwmId] = 0.000) && (low_limit[PwmId] = 0.000))
-							{
-								adcout_deb_out(PwmId) = 2050;
-								PWM_SCale[i] = 1;
-								high_limit[PwmId] = max_v[PwmId];
-								low_limit[PwmId] = 0.000;
-							}
-							else if ((low_limit[PwmId] = 0.000)&&(high_limit[PwmId] != 0.000)&&(max_v[PwmId] != 0.000))
-							{
-								adcout_offset(PwmId) = 0;
-								PWM_SCale[i] = high_limit[PwmId] / max_v[PwmId];
-								adcout_deb_out(PwmId) = 205;
-							}
-							else if( (high_limit[PwmId] != 0.000) && (max_v[PwmId] != 0.000))
-							{
-								adcout_offset(PwmId) = low_limit[PwmId];
-								PWM_SCale[i] = (high_limit[PwmId] - low_limit[PwmId]) / max_v[PwmId];
-								adcout_deb_out(PwmId) = 210;
-							}
-							if (PWM_SCale[i] = 0.000)
-							{
-								PWM_SCale[i] = 1;
-								adcout_deb_out(PwmId) = 220;
-							}
-						}
-						else {
-							adcout_deb_out(PwmId) = 201;
-
-							if (PWM_SCale[i] > 0.000) {
-								adcout_deb_out(PwmId) = 202;
-							}else if (PWM_SCale[i] < 0.000) {
-								adcout_deb_out(PwmId) = 203;
-							}
-						}
-						uint32_t setVal = 0;
-
-						if (adcout_enable(PwmId) == true)
-						{
-							int tmp = adcout_value(PwmId) + adcout_offset(PwmId);
-
-							if (tmp <= low_limit[PwmId])
-							{
-								tmp = low_limit[PwmId];
-							}
-							else if (tmp >= high_limit[PwmId])
-							{
-								tmp = high_limit[PwmId];
-							}
-
-							tmp = tmp * PWM_SCale[i];
-
-							setVal = (uint32_t)((tmp / max_v[PwmId]) * dev->PWM.PWMperiod);
-						}
-
-						if (*dev->PWM.PWMduty != setVal)
-						{
-							*dev->PWM.PWMduty = setVal;
-							AnalogIOSet = true;
-						}
-
-						IO_data->adcout[PwmId].deb_setval  = setVal;
-
-					}
-					else if ((max_v[PwmId] > 0.000) && (PWM_SCale[i] > 0.000))
-					{
-						if (adcout_offset(PwmId) = 0)
-						{
-							low_limit[PwmId] = 0;
-							high_limit[PwmId] = max_v[PwmId] * PWM_SCale[i];
-						}
-						else
-						{
-							low_limit[PwmId] = adcout_offset(PwmId);
-							high_limit[PwmId] = adcout_offset(PwmId) + max_v[PwmId] * PWM_SCale[i];
-						}
-					}
-					else if (adcout_enable(PwmId) == true)
-					{
-						if (PWM_SCale[i] = 0.000)
-						{
-							PWM_SCale[i] = 1.0;
-							adcout_deb_out(PwmId) = 230;
-						}
-						else {
-							adcout_deb_out(PwmId) = 231;
-						}
-
-					}*/
-
 				if (IO_data->adcout[PwmId].scale != PWM_SCale[i]) {
 					IO_data->adcout[PwmId].scale = PWM_SCale[i];
 				}
@@ -547,16 +455,26 @@ void PKIO_Update(sPoKeysDevice* dev) {
 				}
 			}
 		}
+		else {
+			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PWMConfigurationGet(dev) failed\n", __FILE__, __FUNCTION__);
+		}
 
 		if (AnalogIOSet == true) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMUpdate(dev)\n", __FILE__, __FUNCTION__);
 			PK_PWMUpdate(dev);
+			usleep(100);
 			if (PK_PWMUpdate(dev) != PK_OK) {
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PWMUpdate(dev) failed\n", __FILE__, __FUNCTION__);
 				PK_PWMUpdate(dev);
 			}
+			else{
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMUpdate(dev) OK\n", __FILE__, __FUNCTION__);
+			}
+			usleep(100);
 		}
 	}
 	else {
+		
 		*(IO_data->adcout_deb_outv) = 150;
 	}
 	if (loopPins == true) { // gets IO data and checks return value
@@ -674,12 +592,14 @@ void PKIO_Update(sPoKeysDevice* dev) {
 			else {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) passed\n", __FILE__, __FUNCTION__);
 			}
+			usleep(100);
 			if (PK_DigitalIOSet(dev) != PK_OK) {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) failed\n", __FILE__, __FUNCTION__);
 			}
 			else {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) passed\n", __FILE__, __FUNCTION__);
 			}
+			usleep(100);
 		}
 
 		*(IO_data->deb_out) = 237;
@@ -696,10 +616,10 @@ void PKIO_Setup(sPoKeysDevice* dev, bool readonly) {
 
 	// Setting PinFunction
 	if (PK_PinConfigurationGet(dev) == PK_OK) {
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PinConfigurationGet(dev) OK\n", __FILE__, __FUNCTION__);
 		//readonly = true;
 
 		for (int i = 0; i < dev->info.iPinCount - 1; i++) {
-
 
 			if (readonly || IO_data->Pin[i].PinFunction == 0) {
 				IO_data->Pin[i].PinFunction = dev->Pins[i].PinFunction;
@@ -721,9 +641,13 @@ void PKIO_Setup(sPoKeysDevice* dev, bool readonly) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PinConfigurationSet(dev)\n", __FILE__, __FUNCTION__);
 			PK_PinConfigurationSet(dev);
 			if (PK_PinConfigurationSet(dev) != PK_OK) {
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PinConfigurationSet(dev) failed\n", __FILE__, __FUNCTION__);
 				PK_PinConfigurationSet(dev);
 			}
-
+			else{
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PinConfigurationSet(dev) passed\n", __FILE__, __FUNCTION__);
+			}
+			usleep(100);
 		}
 	}
 
@@ -750,6 +674,7 @@ void PKIO_Setup(sPoKeysDevice* dev, bool readonly) {
 
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationGet(dev) OK\n", __FILE__, __FUNCTION__);
 			PWMperiod = IO_data->adcout_pwm_period;
+			usleep(100);
 
 			if (PWMperiod == 0) {
 				PWMperiod = 2500;
@@ -832,8 +757,13 @@ void PKIO_Setup(sPoKeysDevice* dev, bool readonly) {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationSet(dev)\n", __FILE__, __FUNCTION__);
 				PK_PWMConfigurationSet(dev);
 				if (PK_PWMConfigurationSet(dev) != PK_OK) {
+					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PWMConfigurationSet(dev) failed\n", __FILE__, __FUNCTION__);
 					PK_PWMConfigurationSet(dev);
 				}
+				else{
+					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationSet(dev) passed\n", __FILE__, __FUNCTION__);
+				}
+				usleep(100);
 			}
 		}
 	}
