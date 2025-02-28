@@ -493,7 +493,7 @@ void PKIO_Update(sPoKeysDevice* dev) {
 		for (int i = 0; i < dev->info.iPinCount - 1; i++) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Pin %d\n", __FILE__, __FUNCTION__, i);
 			switch (dev->Pins[i].PinFunction) {
-			case PK_PinFunction_AnalogInput:
+			case PK_PinCap_analogInput:
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: AnalogInput\n", __FILE__, __FUNCTION__);
 				*(IO_data->deb_out) = 2320 + i;
 				int AinNr = i - AnalogPinOffset;
@@ -510,9 +510,9 @@ void PKIO_Update(sPoKeysDevice* dev) {
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: adc value %d = %f\n", __FILE__, __FUNCTION__, AinNr, IO_data->adcin[AinNr].value);
 				}
 				break;
-			case PK_PinFunction_AnalogOutput:
+			case PK_PinCap_analogOutput:
 				break;
-			case PK_PinFunction_DigitalInput:
+			case PK_PinCap_digitalInput:
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalInput\n", __FILE__, __FUNCTION__);
 				*(IO_data->deb_out) = 2321 + i;
 				if (PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalInput) == 1) {
@@ -536,7 +536,7 @@ void PKIO_Update(sPoKeysDevice* dev) {
 					}
 				}
 				break;
-			case PK_PinFunction_DigitalOutput:
+			case PK_PinCap_digitalOutput:
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalOutput\n", __FILE__, __FUNCTION__);
 				*(IO_data->deb_out) = 2322 + i;
 				if (PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalOutput) == 1) {
@@ -572,7 +572,7 @@ void PKIO_Update(sPoKeysDevice* dev) {
 					}
 				}
 				break;
-			case PK_PinFunction_DigitalCounter:
+			case PK_PinCap_digitalCounter:
 				break;
 				if (PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalCounter) == 1) {
 					// Pins_DigitalCounterAvailable(i)=dev->Pins[i].DigitalCounterAvailable;
