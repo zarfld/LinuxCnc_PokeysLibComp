@@ -51,7 +51,7 @@ typedef struct {
 }all_IO_data_t;
 
 static all_IO_data_t* IO_data = 0;
-//const safety_delay = 200; // 
+//const sleepdur = 200; // 
 
 int PKIO_export_pins(char* prefix, long extra_arg, int id, all_IO_data_t* Io_data, sPoKeysDevice* dev) {
 	int r = 0;
@@ -294,7 +294,7 @@ void PKIO_Update(sPoKeysDevice* dev) {
 		else{
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PinConfigurationGet(dev) failed\n", __FILE__, __FUNCTION__);
 		}
-		usleep(safety_delay);
+		usleep(sleepdur);
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOGet(dev)\n", __FILE__, __FUNCTION__);
 		if (PK_DigitalIOGet(dev) == PK_OK) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOGet(dev) OK\n", __FILE__, __FUNCTION__);
@@ -305,7 +305,7 @@ void PKIO_Update(sPoKeysDevice* dev) {
 		else{
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DigitalIOGet(dev) failed\n", __FILE__, __FUNCTION__);
 		}
-		usleep(safety_delay);
+		usleep(sleepdur);
 
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_AnalogIOGet(dev)\n", __FILE__, __FUNCTION__);
 		if (PK_AnalogIOGet(dev) == PK_OK) {
@@ -317,7 +317,7 @@ void PKIO_Update(sPoKeysDevice* dev) {
 		else{
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_AnalogIOGet(dev) failed\n", __FILE__, __FUNCTION__);
 		}
-		usleep(safety_delay);
+		usleep(sleepdur);
 	}
 
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_iDigitalCounters = %d\n", __FILE__, __FUNCTION__, dev->info.iDigitalCounters);
@@ -333,7 +333,7 @@ void PKIO_Update(sPoKeysDevice* dev) {
 		else{
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DigitalCounterGet(dev) failed\n", __FILE__, __FUNCTION__);
 		}
-		usleep(safety_delay);
+		usleep(sleepdur);
 	}
 
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PWMCount = %d\n", __FILE__, __FUNCTION__, dev->info.iPWMCount);
@@ -357,7 +357,7 @@ void PKIO_Update(sPoKeysDevice* dev) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationGet(dev) OK\n", __FILE__, __FUNCTION__);
 			PWMperiod = IO_data->adcout_pwm_period;
 			//PWMperiod = adcout_pwm_period;
-			usleep(safety_delay);
+			usleep(sleepdur);
 			if (PWMperiod == 0) {
 				PWMperiod = 2500;
 			}
@@ -366,7 +366,7 @@ void PKIO_Update(sPoKeysDevice* dev) {
 				dev->PWM.PWMperiod = PWMperiod;
 				doPwmConfig = true;
 				PK_PWMConfigurationSet(dev);
-				usleep(safety_delay);
+				usleep(sleepdur);
 			}
 
 			if (IO_data->adcout_pwm_period != PWMperiod) {
@@ -463,7 +463,7 @@ void PKIO_Update(sPoKeysDevice* dev) {
 		if (AnalogIOSet == true) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMUpdate(dev)\n", __FILE__, __FUNCTION__);
 			PK_PWMUpdate(dev);
-			usleep(safety_delay);
+			usleep(sleepdur);
 			if (PK_PWMUpdate(dev) != PK_OK) {
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PWMUpdate(dev) failed\n", __FILE__, __FUNCTION__);
 				PK_PWMUpdate(dev);
@@ -471,7 +471,7 @@ void PKIO_Update(sPoKeysDevice* dev) {
 			else{
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMUpdate(dev) OK\n", __FILE__, __FUNCTION__);
 			}
-			usleep(safety_delay);
+			usleep(sleepdur);
 		}
 	}
 	else {
@@ -593,14 +593,14 @@ void PKIO_Update(sPoKeysDevice* dev) {
 			else {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) passed\n", __FILE__, __FUNCTION__);
 			}
-			usleep(safety_delay);
+			usleep(sleepdur);
 			if (PK_DigitalIOSet(dev) != PK_OK) {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) failed\n", __FILE__, __FUNCTION__);
 			}
 			else {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) passed\n", __FILE__, __FUNCTION__);
 			}
-			usleep(safety_delay);
+			usleep(sleepdur);
 		}
 
 		*(IO_data->deb_out) = 237;
@@ -648,7 +648,7 @@ void PKIO_Setup(sPoKeysDevice* dev, bool readonly) {
 			else{
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PinConfigurationSet(dev) passed\n", __FILE__, __FUNCTION__);
 			}
-			usleep(safety_delay);
+			usleep(sleepdur);
 		}
 	}
 
@@ -675,7 +675,7 @@ void PKIO_Setup(sPoKeysDevice* dev, bool readonly) {
 
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationGet(dev) OK\n", __FILE__, __FUNCTION__);
 			PWMperiod = IO_data->adcout_pwm_period;
-			usleep(safety_delay);
+			usleep(sleepdur);
 
 			if (PWMperiod == 0) {
 				PWMperiod = 2500;
@@ -764,7 +764,7 @@ void PKIO_Setup(sPoKeysDevice* dev, bool readonly) {
 				else{
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationSet(dev) passed\n", __FILE__, __FUNCTION__);
 				}
-				usleep(safety_delay);
+				usleep(sleepdur);
 			}
 		}
 	}
