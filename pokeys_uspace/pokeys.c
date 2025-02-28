@@ -899,7 +899,7 @@ typedef struct {
 
 } PK_MatrixKB_Parameters;
 
-extern unsigned int sleepdur = 1000;
+unsigned int sleepdur = 1000;
 bool use_sleepdur1 = true;
 unsigned int sleepdur1 = 1000;
 unsigned int sleepdur2 = 1000;

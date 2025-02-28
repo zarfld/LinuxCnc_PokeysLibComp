@@ -4,6 +4,7 @@
 #include "hal.h"
 #include "stdio.h"
 
+extern unsigned int sleepdur;
 
 typedef struct {
 	hal_u32_t* deb_out;
@@ -269,6 +270,8 @@ int PKIO_export_pins(char* prefix, long extra_arg, int id, all_IO_data_t* Io_dat
 	}
 	return r;
 }
+
+
 
 void PKIO_Update(sPoKeysDevice* dev) {
 	bool PinConfigurationGet = false;
