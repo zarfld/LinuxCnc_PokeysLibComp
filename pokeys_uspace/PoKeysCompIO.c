@@ -51,7 +51,7 @@ typedef struct {
 }all_IO_data_t;
 
 static all_IO_data_t* IO_data = 0;
-const safety_delay = 200; // 
+//const safety_delay = 200; // 
 
 int PKIO_export_pins(char* prefix, long extra_arg, int id, all_IO_data_t* Io_data, sPoKeysDevice* dev) {
 	int r = 0;
