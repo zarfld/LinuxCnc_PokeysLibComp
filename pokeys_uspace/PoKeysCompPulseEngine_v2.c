@@ -2169,9 +2169,9 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		}
 		else {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_PulseEngineMove == PK_OK \n" __FILE__, __FUNCTION__);
-			usleep(safety_delay);
 			PEv2_deb_out = 4500;
 		}
+		usleep(safety_delay);
 	}
 
 	PEv2_deb_out = 224;
@@ -2309,7 +2309,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 			else {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_PulseEngineSetup == PK_OK \n" __FILE__, __FUNCTION__);
 			}
-
+			usleep(safety_delay);
 
 
 			if (DoPeReboot == true) {
@@ -2817,11 +2817,16 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 
 					}
 				}
+				else {
+					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet(%d) == PK_OK\n", __FILE__, __FUNCTION__, i);
+				}
+				usleep(safety_delay);
 			}
 		}
 		else {
 			dev->PEv2.param1 = i;
 			if (PK_PEv2_AxisConfigurationGet(dev) == PK_OK) {
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationGet(%d)\n", __FILE__, __FUNCTION__, i);
 				// Read the structure
 				// PEv2_AxesConfig(i) = dev->PEv2.AxesConfig[i]; readonly
 				// PEv2_AxesSwitchConfig(i)  = dev->PEv2.AxesSwitchConfig[i];
@@ -2861,6 +2866,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 			else {
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationGet(%d) != PK_OK\n", __FILE__, __FUNCTION__, i);
 			}
+			usleep(safety_delay);
 		}
 	}
 	// dev->PEv2.param1 = 0;
@@ -2875,7 +2881,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 	else {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_StatusGet() != PK_OK\n", __FILE__, __FUNCTION__);
 	}
-
+	usleep(safety_delay);
 	if (setPinConfig == true) {
 		if (PK_PinConfigurationSet(dev) != PK_OK) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PinConfigurationSet() != PK_OK\n", __FILE__, __FUNCTION__);
@@ -2889,6 +2895,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 		else {
 			setPinConfig = false;
 		}
+		usleep(safety_delay);
 	}
 }
 
