@@ -5,6 +5,7 @@
 #include "hal.h"
 #include "stdio.h"
 
+extern unsigned int sleepdur;
 
 typedef struct {
 	hal_bit_t* PoExtBus_digin_in[8];
@@ -151,6 +152,7 @@ void PKPoExtBus_Update(sPoKeysDevice* dev) {
 			*(PoExtBus_data->PoExtBus_deb_out) = 11;
 			PK_PoExtBusGet(dev);
 		}
+		usleep(sleepdur);
 		one_PoExtBus_data_t* addr;
 		*(PoExtBus_data->PoExtBus_deb_out) = 12;
 
@@ -220,6 +222,7 @@ void PKPoExtBus_Update(sPoKeysDevice* dev) {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: 9 PK_PoExtBusSet(dev) done\n", __FILE__, __FUNCTION__);
 				*(PoExtBus_data->PoExtBus_deb_out) = 210;
 			}
+			usleep(sleepdur);
 		}
 	}
 }

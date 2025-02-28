@@ -904,6 +904,9 @@ bool use_sleepdur1 = true;
 unsigned int sleepdur1 = 1000;
 unsigned int sleepdur2 = 1000;
 
+unsigned int sleepdur_S[10] = {1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000};
+
+
 //bool DoPWM = false;
 bool DoEncoders = true;
 
@@ -1399,6 +1402,10 @@ void user_mainloop(void) {
 					}
 
 					doSetup = next_setup;
+
+
+
+					
 					// sleepdur
 					if (rtc_loop_frequ > 15) {
 						if (rtc_loop_frequ_demand == 0) {

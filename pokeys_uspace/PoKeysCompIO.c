@@ -461,7 +461,7 @@ void PKIO_Update(sPoKeysDevice* dev) {
 		else {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PWMConfigurationGet(dev) failed\n", __FILE__, __FUNCTION__);
 		}
-
+		usleep(sleepdur);
 		if (AnalogIOSet == true) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMUpdate(dev)\n", __FILE__, __FUNCTION__);
 			PK_PWMUpdate(dev);
