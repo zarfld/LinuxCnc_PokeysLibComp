@@ -453,7 +453,7 @@ void PKPoNet_Update(sPoKeysDevice* dev) {
 		else {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETSetModuleStatus(dev) OK\n", __FILE__, __FUNCTION__);
 		}
-		RTAPI_MSG_ERR
+		
 		dev->PoNETmodule.moduleID = PoNet_data->kbd48CNC_PoNetID;
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kbd48CNC_PoNetID = %d\n", __FILE__, __FUNCTION__, PoNet_data->kbd48CNC_PoNetID);
 		if (PK_PoNETSetModuleStatus(dev) != PK_OK) {
