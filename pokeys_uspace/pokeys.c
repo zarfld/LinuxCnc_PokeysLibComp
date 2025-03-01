@@ -904,7 +904,7 @@ bool use_sleepdur1 = true;
 unsigned int sleepdur1 = 1000;
 unsigned int sleepdur2 = 1000;
 
-unsigned int sleepdur_S[10] = {1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000};
+unsigned int sleepdur_S[10] = { 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000 };
 
 
 //bool DoPWM = false;
@@ -1222,7 +1222,7 @@ sPoKeysDevice* TryConnectToDevice(uint32_t intSerial) {
 bool initdone = 0;
 int doSetup = 0;
 
-int next_setup=1;
+int next_setup = 1;
 
 void user_mainloop(void) {
 
@@ -1405,7 +1405,7 @@ void user_mainloop(void) {
 
 
 
-					
+
 					// sleepdur
 					if (rtc_loop_frequ > 15) {
 						if (rtc_loop_frequ_demand == 0) {
@@ -1527,7 +1527,7 @@ void user_mainloop(void) {
 					info_EasySensors = dev->info.iEasySensors;										 // Device supports EasySensors
 					deb_out = 311;
 
-					if(doSetup == 1){
+					if (doSetup == 1) {
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PulseEnginev2 = %d\n", __FILE__, __FUNCTION__, info_PulseEnginev2);
 						if (info_PulseEnginev2 != 0) {
 							PKPEv2_Setup(dev);
@@ -1535,15 +1535,15 @@ void user_mainloop(void) {
 						}
 						next_setup = 2;
 					}
-					else if (doSetup == 2){
+					else if (doSetup == 2) {
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PinCount = %d\n", __FILE__, __FUNCTION__, info_PinCount);
 						if (info_PinCount != 0) {
-							PKIO_Setup(dev , false );
+							PKIO_Setup(dev, false);
 							deb_out = 312;
 						}
 						next_setup = 3;
 					}
-					else if (doSetup == 3){
+					else if (doSetup == 3) {
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PoExtBus = %d\n", __FILE__, __FUNCTION__, info_PoExtBus);
 						if (info_PoExtBus != 0) {
 							PKPoExtBus_Setup(dev);
@@ -1551,7 +1551,7 @@ void user_mainloop(void) {
 						}
 						next_setup = 4;
 					}
-					else if (doSetup == 4){
+					else if (doSetup == 4) {
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PoNET = %d\n", __FILE__, __FUNCTION__, info_PoNET);
 						if (info_PoNET != 0) {
 							PKPoNet_Setup(dev);
@@ -1559,7 +1559,7 @@ void user_mainloop(void) {
 						}
 						next_setup = 5;
 					}
-					else if (doSetup == 5){
+					else if (doSetup == 5) {
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_EncodersCount = %d\n", __FILE__, __FUNCTION__, info_EncodersCount);
 						if (info_EncodersCount != 0) {
 							PKEncoder_Setup(dev);
@@ -1623,4 +1623,6 @@ EXTRA_CLEANUP() {
 	}
 }
 
-static int __comp_get_data_size(void) { return 0; }
+static int __comp_get_data_size(void) {
+	return 0;
+}

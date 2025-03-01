@@ -356,7 +356,7 @@ void PKPoNet_Update(sPoKeysDevice* dev) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetModuleStatusRequest(dev)\n", __FILE__, __FUNCTION__);
 		if (PK_PoNETGetModuleStatusRequest(dev) != PK_OK) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PoNETGetModuleStatusRequest(dev) failed\n", __FILE__, __FUNCTION__);
-			
+
 			usleep(sleepdur);
 			dev->PoNETmodule.moduleID = 0;
 			if (PK_PoNETGetModuleStatusRequest(dev) != PK_OK) {

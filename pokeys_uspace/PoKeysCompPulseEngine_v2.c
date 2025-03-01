@@ -187,7 +187,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		"%s.PEv2.deb.estop", prefix);
 	if (r != 0)
 		return r;
-		r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_nrOfAxes), comp_id,
+	r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_nrOfAxes), comp_id,
 		"%s.PEv2.nrOfAxes", prefix);
 	if (r != 0)
 		return r;
@@ -263,7 +263,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 			"%s.PEv2.%01d.deb.RefPosSpeed", prefix, j);
 		if (r != 0)
 			return r;
-	
+
 		r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_AxesState[j]), comp_id,
 			"%s.PEv2.%01d.AxesState", prefix, j);
 		if (r != 0)
@@ -1853,7 +1853,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 
 						dev->PEv2.param1 = i;  // redundant ??!
 						PK_PEv2_AxisConfigurationGet(dev);
-						POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3); 
+						POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 						usleep(sleepdur);
 
 						if ((ReferenceSpeed = 0)) {
@@ -2038,27 +2038,27 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 					PEv2_deb_axxisout(i) = 2400 + i;
 					// dev->PEv2.ReferencePositionSpeed[i]=0;
 					switch (intAxesState) {
-						case PK_PEAxisState_axHOMING_RESETTING: // Stopping the axis to reset the position counters
-							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMING_RESETTING\n", __FILE__, __FUNCTION__, i);
-							break;
-						case PK_PEAxisState_axHOMING_BACKING_OFF: // Backing off switch
-							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMING_BACKING_OFF\n", __FILE__, __FUNCTION__, i);
-							break;
-						case PK_PEAxisState_axHOME: // Axis is homed
-							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOME\n", __FILE__, __FUNCTION__, i);
-							break;
-						case PK_PEAxisState_axHOMINGSTART: // Homing procedure is starting on axis
-							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMINGSTART\n", __FILE__, __FUNCTION__, i);
-							break;
-						case PK_PEAxisState_axHOMINGSEARCH: // Homing procedure first step - going to home
-							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMINGSEARCH\n", __FILE__, __FUNCTION__, i);
-							break;
-						case PK_PEAxisState_axHOMINGBACK: // Homing procedure second step - slow homing
-							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMINGBACK\n", __FILE__, __FUNCTION__, i);
-							break;
+					case PK_PEAxisState_axHOMING_RESETTING: // Stopping the axis to reset the position counters
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMING_RESETTING\n", __FILE__, __FUNCTION__, i);
+						break;
+					case PK_PEAxisState_axHOMING_BACKING_OFF: // Backing off switch
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMING_BACKING_OFF\n", __FILE__, __FUNCTION__, i);
+						break;
+					case PK_PEAxisState_axHOME: // Axis is homed
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOME\n", __FILE__, __FUNCTION__, i);
+						break;
+					case PK_PEAxisState_axHOMINGSTART: // Homing procedure is starting on axis
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMINGSTART\n", __FILE__, __FUNCTION__, i);
+						break;
+					case PK_PEAxisState_axHOMINGSEARCH: // Homing procedure first step - going to home
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMINGSEARCH\n", __FILE__, __FUNCTION__, i);
+						break;
+					case PK_PEAxisState_axHOMINGBACK: // Homing procedure second step - slow homing
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMINGBACK\n", __FILE__, __FUNCTION__, i);
+						break;
 
-						default:
-							break;
+					default:
+						break;
 					}
 					PEv2_deb_axxisout(i) = 2410 + i;
 				}
@@ -2151,7 +2151,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 
 			}
 		}
-		else{
+		else {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_PulseEngineStateSet == PK_OK \n" __FILE__, __FUNCTION__);
 		}
 		usleep(sleepdur);
@@ -2330,7 +2330,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 			PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 			PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
 		}
-		else{
+		else {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_StatusGet!=PK_OK || PK_PEv2_Status2Get(dev) != PK_OK\n", __FILE__, __FUNCTION__);
 		}
 		usleep(sleepdur);
