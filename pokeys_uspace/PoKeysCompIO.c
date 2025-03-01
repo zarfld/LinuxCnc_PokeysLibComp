@@ -520,119 +520,116 @@ void PKIO_Update(sPoKeysDevice* dev) {
 				}
 			}
 
-				if (dev->Pins[i].PinFunction & PK_PinCap_analogOutput)
-			{
-				
+			if (dev->Pins[i].PinFunction & PK_PinCap_analogOutput) {
+
 			}
 
-				if (dev->Pins[i].PinFunction & PK_PinCap_digitalInput) {
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalInput\n", __FILE__, __FUNCTION__);
-					*(IO_data->deb_out) = 2321 + i;
-					if (PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalInput) == 1) {
-						if (DigitalIOGet == true) {
-							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalValueGet\n", __FILE__, __FUNCTION__);
-							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[i].DigitalValueGet = %d\n", __FILE__, __FUNCTION__, dev->Pins[i].DigitalValueGet);
+			if (dev->Pins[i].PinFunction & PK_PinCap_digitalInput) {
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalInput\n", __FILE__, __FUNCTION__);
+				*(IO_data->deb_out) = 2321 + i;
+				if (PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalInput) == 1) {
+					if (DigitalIOGet == true) {
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalValueGet\n", __FILE__, __FUNCTION__);
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[i].DigitalValueGet = %d\n", __FILE__, __FUNCTION__, dev->Pins[i].DigitalValueGet);
 
-							if (dev->Pins[i].DigitalValueGet == 0) {
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].DigitalValueGet = 0\n", __FILE__, __FUNCTION__, i);
-								// Pins_DigitalValueGet(i)=false;
-								*(IO_data->Pin[i]).digin_in = false;
-								*(IO_data->Pin[i].digin_in_not) = true;
-							}
-							else {
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].DigitalValueGet = 1\n", __FILE__, __FUNCTION__, i);
-								// Pins_DigitalValueGet(i)=true;
-								*(IO_data->Pin[i]).digin_in = true;
-								*(IO_data->Pin[i]).digin_in_not = false;
-
-							}
-						}
-					}
-				}
-
-				if (dev->Pins[i].PinFunction & PK_PinCap_digitalOutput) {
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalOutput\n", __FILE__, __FUNCTION__);
-					*(IO_data->deb_out) = 2322 + i;
-					if (PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalOutput) == 1) {
-						if (IO_data->Pin[i].DigitalValueSet_ignore == false) {
-							bool setDigoutvalue = false;
-							if (*(IO_data->Pin[i]).digout_out == 1) {
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].digout_out = 1\n", __FILE__, __FUNCTION__, i);
-								setDigoutvalue = true;
-
-							}
-
-							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: setDigoutvalue = %d\n", __FILE__, __FUNCTION__, setDigoutvalue);
-							if ((setDigoutvalue == true) && (dev->Pins[i].DigitalValueSet == 0)) {
-								rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].DigitalValueSet = 1\n", __FILE__, __FUNCTION__, i);
-								dev->Pins[i].DigitalValueSet = 1;
-								DigitalIOSet = true;
-							}
-							else if ((setDigoutvalue == false) && (dev->Pins[i].DigitalValueSet == 1)) {
-								dev->Pins[i].DigitalValueSet = 0;
-								DigitalIOSet = true;
-							}
-							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalValueSet[%d] = %d\n", __FILE__, __FUNCTION__, i, dev->Pins[i].DigitalValueSet);
+						if (dev->Pins[i].DigitalValueGet == 0) {
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].DigitalValueGet = 0\n", __FILE__, __FUNCTION__, i);
+							// Pins_DigitalValueGet(i)=false;
+							*(IO_data->Pin[i]).digin_in = false;
+							*(IO_data->Pin[i].digin_in_not) = true;
 						}
 						else {
-							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: IO_data->Pin[%d].DigitalValueSet_ignore = true\n", __FILE__, __FUNCTION__, i);
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].DigitalValueGet = 1\n", __FILE__, __FUNCTION__, i);
+							// Pins_DigitalValueGet(i)=true;
+							*(IO_data->Pin[i]).digin_in = true;
+							*(IO_data->Pin[i]).digin_in_not = false;
+
 						}
 					}
 				}
+			}
 
-				if (dev->Pins[i].PinFunction & PK_PinCap_digitalCounter) {
-					if (PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalCounter) == 1) {
-						// Pins_DigitalCounterAvailable(i)=dev->Pins[i].DigitalCounterAvailable;
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalCounterAvailable[%d] = %d\n", __FILE__, __FUNCTION__, i, dev->Pins[i].DigitalCounterAvailable);
-						if (dev->Pins[i].DigitalCounterAvailable) {
-							// Pins_DigitalCounterValue(i) = dev->Pins[i].DigitalCounterValue;
-							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:counter value %d = %d\n", __FILE__, __FUNCTION__, i, dev->Pins[i].DigitalCounterValue);
-							dev->Pins[i].DigitalCounterValue = dev->Pins[i].DigitalCounterValue;
-							// Pins_CounterOptions(i) = dev->Pins[i].CounterOptions;
+			if (dev->Pins[i].PinFunction & PK_PinCap_digitalOutput) {
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalOutput\n", __FILE__, __FUNCTION__);
+				*(IO_data->deb_out) = 2322 + i;
+				if (PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalOutput) == 1) {
+					if (IO_data->Pin[i].DigitalValueSet_ignore == false) {
+						bool setDigoutvalue = false;
+						if (*(IO_data->Pin[i]).digout_out == 1) {
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].digout_out = 1\n", __FILE__, __FUNCTION__, i);
+							setDigoutvalue = true;
+
 						}
+
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: setDigoutvalue = %d\n", __FILE__, __FUNCTION__, setDigoutvalue);
+						if ((setDigoutvalue == true) && (dev->Pins[i].DigitalValueSet == 0)) {
+							rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].DigitalValueSet = 1\n", __FILE__, __FUNCTION__, i);
+							dev->Pins[i].DigitalValueSet = 1;
+							DigitalIOSet = true;
+						}
+						else if ((setDigoutvalue == false) && (dev->Pins[i].DigitalValueSet == 1)) {
+							dev->Pins[i].DigitalValueSet = 0;
+							DigitalIOSet = true;
+						}
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalValueSet[%d] = %d\n", __FILE__, __FUNCTION__, i, dev->Pins[i].DigitalValueSet);
+					}
+					else {
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: IO_data->Pin[%d].DigitalValueSet_ignore = true\n", __FILE__, __FUNCTION__, i);
 					}
 				}
-
-
 			}
 
-			// Pins_MappingType(i)=dev->Pins[i].MappingType;
-			// Pins_KeyCodeMacroID(i)=dev->Pins[i].KeyCodeMacroID;
-			// Pins_KeyModifier(i)=dev->Pins[i].KeyModifier;
-			// Pins_downKeyCodeMacroID(i)=dev->Pins[i].downKeyCodeMacroID;
-			// Pins_downKeyModifier(i)=dev->Pins[i].downKeyModifier;
-			// Pins_upKeyCodeMacroID(i)=dev->Pins[i].upKeyCodeMacroID;
-			// Pins_upKeyModifier(i)=dev->Pins[i].upKeyModifier;
-			// dev->Pins[i].preventUpdate=Pins_preventUpdate(i);
-
-			*(IO_data->deb_out) = 2330 + i;
-		}
-
-
-		*(IO_data->deb_out) = 236;
-		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev)\n", __FILE__, __FUNCTION__);
-		if (DigitalIOSet == true) {
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev)\n", __FILE__, __FUNCTION__);
-			if (PK_DigitalIOSet(dev) != PK_OK) {
-				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DigitalIOSet(dev) failed\n", __FILE__, __FUNCTION__);
+			if (dev->Pins[i].PinFunction & PK_PinCap_digitalCounter) {
+				if (PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalCounter) == 1) {
+					// Pins_DigitalCounterAvailable(i)=dev->Pins[i].DigitalCounterAvailable;
+					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalCounterAvailable[%d] = %d\n", __FILE__, __FUNCTION__, i, dev->Pins[i].DigitalCounterAvailable);
+					if (dev->Pins[i].DigitalCounterAvailable) {
+						// Pins_DigitalCounterValue(i) = dev->Pins[i].DigitalCounterValue;
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:counter value %d = %d\n", __FILE__, __FUNCTION__, i, dev->Pins[i].DigitalCounterValue);
+						dev->Pins[i].DigitalCounterValue = dev->Pins[i].DigitalCounterValue;
+						// Pins_CounterOptions(i) = dev->Pins[i].CounterOptions;
+					}
+				}
 			}
-			else {
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) passed\n", __FILE__, __FUNCTION__);
-			}
-			usleep(sleepdur);
-			if (PK_DigitalIOSet(dev) != PK_OK) {
-				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DigitalIOSet(dev) failed\n", __FILE__, __FUNCTION__);
-			}
-			else {
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) passed\n", __FILE__, __FUNCTION__);
-			}
-			usleep(sleepdur);
-		}
 
-		*(IO_data->deb_out) = 237;
+
+		// Pins_MappingType(i)=dev->Pins[i].MappingType;
+		// Pins_KeyCodeMacroID(i)=dev->Pins[i].KeyCodeMacroID;
+		// Pins_KeyModifier(i)=dev->Pins[i].KeyModifier;
+		// Pins_downKeyCodeMacroID(i)=dev->Pins[i].downKeyCodeMacroID;
+		// Pins_downKeyModifier(i)=dev->Pins[i].downKeyModifier;
+		// Pins_upKeyCodeMacroID(i)=dev->Pins[i].upKeyCodeMacroID;
+		// Pins_upKeyModifier(i)=dev->Pins[i].upKeyModifier;
+		// dev->Pins[i].preventUpdate=Pins_preventUpdate(i);
+
+		*(IO_data->deb_out) = 2330 + i;
 	}
+
+
+	*(IO_data->deb_out) = 236;
+	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev)\n", __FILE__, __FUNCTION__);
+	if (DigitalIOSet == true) {
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev)\n", __FILE__, __FUNCTION__);
+		if (PK_DigitalIOSet(dev) != PK_OK) {
+			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DigitalIOSet(dev) failed\n", __FILE__, __FUNCTION__);
+		}
+		else {
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) passed\n", __FILE__, __FUNCTION__);
+		}
+		usleep(sleepdur);
+		if (PK_DigitalIOSet(dev) != PK_OK) {
+			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DigitalIOSet(dev) failed\n", __FILE__, __FUNCTION__);
+		}
+		else {
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_DigitalIOSet(dev) passed\n", __FILE__, __FUNCTION__);
+		}
+		usleep(sleepdur);
+	}
+
+	*(IO_data->deb_out) = 237;
+}
 	else {
-		*(IO_data->deb_out) = 250;
+	*(IO_data->deb_out) = 250;
 	}
 }
 
