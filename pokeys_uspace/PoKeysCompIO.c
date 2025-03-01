@@ -647,6 +647,23 @@ void PKIO_Setup(sPoKeysDevice* dev, bool readonly) {
 
 			if (readonly || IO_data->Pin[i].PinFunction == 0) {
 				IO_data->Pin[i].PinFunction = dev->Pins[i].PinFunction;
+
+				if (dev->Pins[i].PinFunction & PK_PinCap_digitalOutput) {
+					if (dev->Pins[i].PinFunction & PK_PinCap_invertPin) {
+						IO_data->Pin[i].digout_invert = 1;
+					}
+					else {
+						IO_data->Pin[i].digout_invert = 0;
+					}
+				}
+				else if (dev->Pins[i].PinFunction & PK_PinCap_digitalInput) {
+					if (dev->Pins[i].PinFunction & PK_PinCap_invertPin) {
+						IO_data->Pin[i].digin_invert = 1;
+					}
+					else {
+						IO_data->Pin[i].digin_invert = 0;
+					}
+				}
 			}
 			else {
 
@@ -658,13 +675,13 @@ void PKIO_Setup(sPoKeysDevice* dev, bool readonly) {
 
 						if (!(dev->Pins[i].PinFunction & PK_PinCap_invertPin)) {
 							// bitwise set PK_PinCap_invertPin
-							IO_data->Pin[i].PinFunction += PK_PinCap_invertPin;
+							IO_data->Pin[i].PinFunction += 128;
 						}
 					}
 					else {
 						// bitwise unsset PK_PinCap_invertPin
 						if (dev->Pins[i].PinFunction & PK_PinCap_invertPin) {
-							IO_data->Pin[i].PinFunction -= PK_PinCap_invertPin;
+							IO_data->Pin[i].PinFunction -= 128;
 						}
 					}
 
