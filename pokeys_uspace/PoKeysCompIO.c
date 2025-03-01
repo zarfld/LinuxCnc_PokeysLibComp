@@ -655,12 +655,17 @@ void PKIO_Setup(sPoKeysDevice* dev, bool readonly) {
 				if (dev->Pins[i].PinFunction & PK_PinCap_digitalOutput) {
 
 					if (IO_data->Pin[i].digout_invert == 1) {
-						// bitwise set PK_PinCap_invertPin
-						IO_data->Pin[i].PinFunction |= ~(PK_PinCap_invertPin);
+
+						if (!(dev->Pins[i].PinFunction & PK_PinCap_invertPin)) {
+							// bitwise set PK_PinCap_invertPin
+							IO_data->Pin[i].PinFunction += PK_PinCap_invertPin;
+						}
 					}
 					else {
 						// bitwise unsset PK_PinCap_invertPin
-						IO_data->Pin[i].PinFunction &= ~(PK_PinCap_invertPin);
+						if (dev->Pins[i].PinFunction & PK_PinCap_invertPin) {
+							IO_data->Pin[i].PinFunction -= PK_PinCap_invertPin;
+						}
 					}
 
 				}
