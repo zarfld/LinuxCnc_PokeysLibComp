@@ -652,6 +652,33 @@ void PKIO_Setup(sPoKeysDevice* dev, bool readonly) {
 				IO_data->Pin[i].PinFunction = dev->Pins[i].PinFunction;
 			}
 			else {
+
+				// for Digin and Digout Check (IO_data->Pin[i].digout_invert == 1)
+
+				if (dev->Pins[i].PinFunction & PK_PinCap_digitalOutput) {
+
+					if (IO_data->Pin[i].digout_invert == 1) {
+						// bitwise set PK_PinCap_invertPin
+						IO_data->Pin[i].PinFunction |= ~(PK_PinCap_invertPin);
+					}
+					else {
+						// bitwise unsset PK_PinCap_invertPin
+						IO_data->Pin[i].PinFunction &= ~(PK_PinCap_invertPin);
+					}
+
+				}
+				else if (dev->Pins[i].PinFunction & PK_PinCap_digitalInput) {
+
+					if (IO_data->Pin[i].digin_invert == 1) {
+						// bitwise set PK_PinCap_invertPin
+						IO_data->Pin[i].PinFunction |= ~(PK_PinCap_invertPin);
+					}
+					else {
+						// bitwise unsset PK_PinCap_invertPin
+						IO_data->Pin[i].PinFunction &= ~(PK_PinCap_invertPin);
+					}
+				}
+
 				if (dev->Pins[i].PinFunction != IO_data->Pin[i].PinFunction) {
 					dev->Pins[i].PinFunction = IO_data->Pin[i].PinFunction;
 					PinConfigurationSet = true;
@@ -659,31 +686,7 @@ void PKIO_Setup(sPoKeysDevice* dev, bool readonly) {
 
 			}
 
-			// for Digin and Digout Check (IO_data->Pin[i].digout_invert == 1)
 
-			if (dev->Pins[i].PinFunction & PK_PinCap_digitalOutput) {
-
-				if (IO_data->Pin[i].digout_invert == 1) {
-					// bitwise set PK_PinCap_invertPin
-                    dev->Pins[i].PinFunction |= ~(PK_PinCap_invertPin);
-				}
-				else {
-					// bitwise unsset PK_PinCap_invertPin
-					dev->Pins[i].PinFunction &= ~(PK_PinCap_invertPin);
-				}
-				
-			}
-			else if (dev->Pins[i].PinFunction & PK_PinCap_digitalInput) {
-
-				if (IO_data->Pin[i].digin_invert == 1) {
-					// bitwise set PK_PinCap_invertPin
-					dev->Pins[i].PinFunction |= ~(PK_PinCap_invertPin);
-				}
-				else {
-					// bitwise unsset PK_PinCap_invertPin
-					dev->Pins[i].PinFunction &= ~(PK_PinCap_invertPin);
-				}
-			}
 
 		}
 
