@@ -27,7 +27,7 @@ loadusr -W start_delay_5000
 
 # external output signals
 #net estop-out     => pokeys.0.PEv2.digout.Emergency.out
-net machine-is-on => pokeys.0.machine-is-on
+net machine.is-on => pokeys.0.machine-is-on
 # external input signals
 
 # --- MIN X---
