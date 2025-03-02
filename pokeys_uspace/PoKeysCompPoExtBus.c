@@ -6,6 +6,7 @@
 #include "stdio.h"
 
 extern unsigned int sleepdur;
+extern bool ApplyIniSettings;
 
 typedef struct {
 	hal_bit_t* PoExtBus_digin_in[8];

@@ -5,6 +5,7 @@
 #include "stdio.h"
 
 extern unsigned int sleepdur;
+extern bool ApplyIniSettings;
 
 typedef struct {
 	hal_u32_t* deb_out;
@@ -633,7 +634,7 @@ void PKIO_Update(sPoKeysDevice* dev) {
 	}
 }
 
-void PKIO_Setup(sPoKeysDevice* dev, bool readonly) {
+void PKIO_Setup(sPoKeysDevice* dev) {
 	bool PinConfigurationSet = false;
 	//bool readonly = false;
 
@@ -645,7 +646,7 @@ void PKIO_Setup(sPoKeysDevice* dev, bool readonly) {
 
 		for (int i = 0; i < dev->info.iPinCount - 1; i++) {
 
-			if (readonly || IO_data->Pin[i].PinFunction == 0) {
+			if (ApplyIniSettings==false || IO_data->Pin[i].PinFunction == 0) {
 				IO_data->Pin[i].PinFunction = dev->Pins[i].PinFunction;
 
 				if (dev->Pins[i].PinFunction & PK_PinCap_digitalOutput) {

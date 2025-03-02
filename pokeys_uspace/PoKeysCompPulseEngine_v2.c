@@ -1258,7 +1258,7 @@ bool HAL_Machine_On = false;
 pokeys_home_command_t old_PEv2_AxesCommand[8] = { 0 };
 
 extern unsigned int sleepdur;
-
+extern bool ApplyIniSettings;
 
 typedef enum {
 	PK_PEv2Homing_OnHomeStop = (1 << 3),			  // Axis  in IDLE
@@ -1297,6 +1297,13 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 	uint8_t bm_DedicatedLimitPInputs;
 	uint8_t bm_DedicatedHomeInputs;
 
+	if (PEv2_params_ApplyIniSettings == false) {
+		ApplyIniSettings = false;
+	}
+	else {
+		ApplyIniSettings = true;
+	}
+
 	if (bm_ProbeStatus != 0) {
 		PEv2_digin_Probed_in = true;
 	}
@@ -1328,7 +1335,8 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		bm_LimitStatusP = dev->PEv2.LimitStatusP; // Limit+ status (bit-mapped)
 		bm_LimitStatusN = dev->PEv2.LimitStatusN; // Limit- status (bit-mapped)
 		bm_HomeStatus = dev->PEv2.HomeStatus;	  // Home status (bit-mapped)
-		if (PEv2_params_ApplyIniSettings == false) {
+		if (ApplyIniSettings == false) {
+
 			PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
 		}
 
@@ -2190,9 +2198,9 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 	bool DoPeSetup = false;
 	bool DoPeReboot = false;
 	bool setPinConfig = false;
-	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_params_ApplyIniSettings = %d\n", __FILE__, __FUNCTION__, PEv2_params_ApplyIniSettings);
+	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: ApplyIniSettings = %d\n", __FILE__, __FUNCTION__, ApplyIniSettings);
 
-	if ((PEv2_params_ApplyIniSettings != 0)) {
+	if ((ApplyIniSettings == true)) {
 		// dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
 		// PK_PEv2_PulseEngineSetup(dev);
 
@@ -2216,7 +2224,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 			break;
 		}
 
-		if (PEv2_params_ApplyIniSettings != 0) {
+		if (ApplyIniSettings ==true) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SaveConfiguration - PEv2_params_ApplyIniSettings\n", __FILE__, __FUNCTION__);
 			if (PK_SaveConfiguration(dev) != PK_OK) {
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_SaveConfiguration - PEv2_params_ApplyIniSettings failed\n", __FILE__, __FUNCTION__);
@@ -2256,8 +2264,8 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 		if (PEv2_digout_Emergency_Pin != 0) { // check if pin is parametrized in HAL
 			if (dev->Pins[PEv2_digout_Emergency_Pin - 1].PinFunction != PK_PinCap_digitalOutput) {
 				dev->Pins[PEv2_digout_Emergency_Pin - 1].PinFunction = PK_PinCap_digitalOutput;
-				PK_SL_SetPinFunction(dev, PEv2_digin_Emergency_Pin - 1, PK_PinCap_digitalOutput);
-				Pins_DigitalValueSet_ignore[PEv2_digin_Emergency_Pin - 1] = true;
+				PK_SL_SetPinFunction(dev, PEv2_digout_Emergency_Pin - 1, PK_PinCap_digitalOutput);
+				Pins_DigitalValueSet_ignore[PEv2_digout_Emergency_Pin - 1] = true;
 				usleep(sleepdur);
 				setPinConfig = true;
 			}
@@ -2347,7 +2355,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 	uint8_t AxesConfig[8];
 	uint8_t AxesSwitchConfig[8];
 	for (int i = 0; i < dev->PEv2.info.nrOfAxes; i++) {
-		if (PEv2_params_ApplyIniSettings != 0) {
+		if (ApplyIniSettings ==true) {
 			bool doAxisConfig = false;
 			// Convert mm/s -> pulses/s
 			/* read parameters for Axis configuration - see ePK_PEv2_AxisConfig

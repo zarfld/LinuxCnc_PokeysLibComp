@@ -203,6 +203,7 @@ struct __comp_state* __comp_first_inst = 0, * __comp_last_inst = 0;
 static int __comp_get_data_size(void);
 static int extra_setup(struct __comp_state* __comp_inst, char* prefix, long extra_arg);
 uint32_t device_id = 0;
+bool ApplyIniSettings;
 #undef TRUE
 #define TRUE (1)
 #undef FALSE
@@ -1538,7 +1539,7 @@ void user_mainloop(void) {
 					else if (doSetup == 2) {
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PinCount = %d\n", __FILE__, __FUNCTION__, info_PinCount);
 						if (info_PinCount != 0) {
-							PKIO_Setup(dev, false);
+							PKIO_Setup(dev);
 							deb_out = 312;
 						}
 						next_setup = 3;
@@ -1588,6 +1589,14 @@ EXTRA_SETUP() {
 		iniFindInt(fp, "DEVICE_ID", "POKEYS", &device_id);
 		iniFindInt(fp, "COMM_TIMEOUT", "POKEYS", &timeout_ms);
 
+
+		//ApplyIniSettings
+		int tmpIniSettings=0;
+		iniFindInt(fp, "ApplyIniSettings", "POKEYS", &tmpIniSettings);
+
+		if (tmpIniSettings!=0){
+			ApplyIniSettings=true;
+		}
 	}
 
 
