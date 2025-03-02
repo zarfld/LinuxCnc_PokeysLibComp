@@ -136,8 +136,8 @@ typedef struct {
 	hal_bit_t* PEv2_digin_Emergency_in;
 	hal_bit_t* PEv2_digin_Emergency_in_not;
 	hal_bit_t* PEv2_digout_Emergency_out;
-	hal_bit_t* PEv2_digout_ExternalRelay_out[4];
-	hal_bit_t* PEv2_digout_ExternalOC_out[4];
+	hal_bit_t* PEv2_digout_ExternalRelay_out[8];
+	hal_bit_t* PEv2_digout_ExternalOC_out[8];
 	hal_u32_t PEv2_digin_Emergency_Pin;
 	hal_u32_t PEv2_digin_Emergency_invert;
 	hal_u32_t PEv2_digout_Emergency_Pin;
