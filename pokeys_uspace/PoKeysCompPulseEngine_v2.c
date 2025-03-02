@@ -1077,8 +1077,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #define PEv2_PulseGeneratorType (*PEv2_data->PEv2_PulseGeneratorType)
 #undef PEv2_PG_swap_stepdir
 #define PEv2_PG_swap_stepdir (0 + *PEv2_data->PEv2_PG_swap_stepdir)
-#undef PEv2_PG_extended_io
-#define PEv2_PG_extended_io (*PEv2_data->PEv2_PG_extended_io)
+
 #undef PEv2_ChargePumpEnabled
 #define PEv2_ChargePumpEnabled (*PEv2_data->PEv2_ChargePumpEnabled)
 #undef PEv2_PulseEngineActivated
@@ -2097,7 +2096,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_ExternalOutputsGet!=PK_OK\n", __FILE__, __FUNCTION__);
 	}
 	usleep(sleepdur);
-	if (PEv2_data->PEv2_PG_extended_io != 0) {
+	if (*PEv2_data->PEv2_PG_extended_io != 0) {
 
 
 		uint8_t ExternalRelayOutputs_set = 0;
@@ -2232,19 +2231,19 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 		case PK_DeviceID_PoKeys57CNC:
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_PoKeys57CNC\n", __FILE__, __FUNCTION__);
 			PEv2_PulseEngineEnabled = 8;
-			PEv2_data->PEv2_PG_extended_io = 1;
+			*PEv2_data->PEv2_PG_extended_io = 1;
 			break;
 		case PK_DeviceID_PoKeys57CNCdb25:
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_PoKeys57CNCdb25\n", __FILE__, __FUNCTION__);
-			PEv2_data->PEv2_PG_extended_io = 0;
+			*PEv2_data->PEv2_PG_extended_io = 0;
 			break;
 		case PK_DeviceID_57U:
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_57U\n", __FILE__, __FUNCTION__);
-			PEv2_data->PEv2_PG_extended_io = 0;
+			*PEv2_data->PEv2_PG_extended_io = 0;
 			break;
 		case PK_DeviceID_57E:
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_57E\n", __FILE__, __FUNCTION__);
-			PEv2_data->PEv2_PG_extended_io = 0;
+			*PEv2_data->PEv2_PG_extended_io = 0;
 			break;
 		}
 
