@@ -1,0 +1,118 @@
+
+#******************************
+# connect miscellaneous signals
+#******************************
+
+#  ---HALUI signals---
+
+
+
+# channels provided by PEv2 which might be relevant:
+#pin out unsigned PEv2.PulseEngineState;				// State of pulse engine - see ePoKeysPEState
+# Pulse engine v2 structure...
+#pin out unsigned PEv2.#.AxesState [8];				// Axis states (bit-mapped) - see ePK_PEAxisState
+#pin out unsigned PEv2.#.AxesCommand [8];				// Axis Command - see ePK_PEAxisState
+#pin out unsigned PEv2.#.AxesConfig [8];				// Axis configuration - see ePK_PEv2_AxisConfig
+#pin in unsigned PEv2.#.AxesSwitchConfig [8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
+
+#pin io unsigned PEv2.#.HomingSpeed [8];			// Homing speed per axis (in %)
+#pin io unsigned PEv2.#.HomingReturnSpeed [8];		// Homing return speed per axis (in % of the homing speed)
+#pin io unsigned PEv2.#.HomingAlgorithm[8];		// Homing algorithm configuration
+#pin io u32 PEv2.#.HomeOffsets [8];				// Home position offset
+#pin io unsigned PEv2.#.HomeBackOffDistance [8];		// Back-off distance after homing
+
+#PulseEngineState
+net PulseEngineState     <= pokeys.0.PEv2.PulseEngineState
+#net PulseEngineState     => pokeys-homecomp.PulseEngineState
+
+# AxesState
+ net x-AxesState     <= pokeys.0.PEv2.0.AxesState
+ #net x-AxesState     => joint.0.PEv2.AxesState
+
+ net z-AxesState     <= pokeys.0.PEv2.2.AxesState
+ #net z-AxesState     => joint.1.PEv2.AxesState
+
+# AxesCommand
+#net x-AxesCommand     <= joint.0.PEv2.AxesCommand
+# net x-AxesCommand     => pokeys.0.PEv2.0.AxesCommand
+
+#net z-AxesCommand     <= joint.1.PEv2.AxesCommand
+# net z-AxesCommand     => pokeys.0.PEv2.2.AxesCommand
+
+ # AxesConfig
+#net x-AxesConfig     <= joint.0.PEv2.AxesConfig
+# net x-AxesConfig     => pokeys.0.PEv2.0.AxesConfig
+
+ #Homesqequence
+setp   pokeys.0.PEv2.0.home-sequence  	   [JOINT_0]HOME_SEQUENCE
+setp   pokeys.0.PEv2.2.home-sequence  	   [JOINT_1]HOME_SEQUENCE
+
+
+# Link pins from pokeys_homecomp.comp to PoKeys components
+net x-homing <= joint.0.homing
+#net x-homing => pokeys.0.PEv2.0.homing
+
+net z-homing <= joint.1.homing
+#net z-homing => pokeys.0.PEv2.2.homing
+
+###net x-homed <= joint.0.homed
+#net x-homed => pokeys.0.PEv2.0.homed
+
+###net z-homed <= joint.1.homed
+#net z-homed => pokeys.0.PEv2.2.homed
+
+net x-home-state <= joint.0.home-state
+#net x-home-state => pokeys.0.PEv2.0.home-state
+
+net z-home-state <= joint.1.home-state
+#net z-home-state => pokeys.0.PEv2.2.home-state
+
+net x-index-enable <= joint.0.index-enable
+#net x-index-enable => pokeys.0.PEv2.0.index-enable
+
+net z-index-enable <= joint.1.index-enable
+#net z-index-enable => pokeys.0.PEv2.2.index-enable
+
+
+# thats a param rw unsigned PEv2.#.AxesSwitchConfig[8];	
+#net x-PEv2_AxesSwitchConfig <= joint.0.PEv2.AxesSwitchConfig
+#net x-PEv2_AxesSwitchConfig => pokeys.0.PEv2.0.AxesSwitchConfig
+
+#net x2-PEv2_AxesSwitchConfig <= joint.1.PEv2.AxesSwitchConfig
+#net x2-PEv2_AxesSwitchConfig => pokeys.0.PEv2.6.AxesSwitchConfig
+
+#net y-PEv2_AxesSwitchConfig <= joint.2.PEv2.AxesSwitchConfig
+#net y-PEv2_AxesSwitchConfig => pokeys.0.PEv2.1.AxesSwitchConfig
+
+#net z-PEv2_AxesSwitchConfig <= joint.3.PEv2.AxesSwitchConfig
+#net z-PEv2_AxesSwitchConfig => pokeys.0.PEv2.2.AxesSwitchConfig
+
+#net x-PEv2_HomingSpeed <= joint.0.PEv2.HomingSpeed
+#net x-PEv2_HomingSpeed => pokeys.0.PEv2.0.HomingSpeed
+
+#net z-PEv2_HomingSpeed <= joint.1.PEv2.HomingSpeed
+#net z-PEv2_HomingSpeed => pokeys.0.PEv2.2.HomingSpeed
+
+#net x-PEv2_HomingReturnSpeed <= joint.0.PEv2.HomingReturnSpeed
+#net x-PEv2_HomingReturnSpeed => pokeys.0.PEv2.0.HomingReturnSpeed
+
+#net z-PEv2_HomingReturnSpeed <= joint.1.PEv2.HomingReturnSpeed
+#net z-PEv2_HomingReturnSpeed => pokeys.0.PEv2.2.HomingReturnSpeed
+
+#net x-PEv2_HomingAlgorithm <= joint.0.PEv2.HomingAlgorithm
+#net x-PEv2_HomingAlgorithm => pokeys.0.PEv2.0.HomingAlgorithm
+
+#net z-PEv2_HomingAlgorithm <= joint.1.PEv2.HomingAlgorithm
+#net z-PEv2_HomingAlgorithm => pokeys.0.PEv2.2.HomingAlgorithm
+
+#net x-PEv2_HomeOffsets <= joint.0.PEv2.HomeOffsets
+#net x-PEv2_HomeOffsets => pokeys.0.PEv2.0.HomeOffsets
+
+#net z-PEv2_HomeOffsets <= joint.1.PEv2.HomeOffsets
+#net z-PEv2_HomeOffsets => pokeys.0.PEv2.2.HomeOffsets
+
+#net x-PEv2_HomeBackOffDistance <= joint.0.PEv2.HomeBackOffDistance
+#net x-PEv2_HomeBackOffDistance => pokeys.0.PEv2.0.HomeBackOffDistance
+
+#net z-PEv2_HomeBackOffDistance <= joint.1.PEv2.HomeBackOffDistance
+#net z-PEv2_HomeBackOffDistance => pokeys.0.PEv2.2.HomeBackOffDistance

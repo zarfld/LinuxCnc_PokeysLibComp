@@ -1,0 +1,349 @@
+loadrt time
+loadrt not
+
+addf time.0 servo-thread
+addf not.0 servo-thread
+
+### net prog-running not.0.in <= halui.program.is-idle
+### net prog-paused halui.program.is-paused => time.0.pause
+net cycle-timer time.0.start <= not.0.out
+#net cycle-seconds qtpyvcp.timerseconds.in <= time.0.seconds
+#net cycle-minutes qtpyvcp.timerminutes.in <= time.0.minutes
+#net cycle-hours qtpyvcp.timerhours.in <= time.0.hours
+# *** Time items required for Probe Basic to run ***
+
+#  ---manual tool change signals---
+##net tool-change-request     =>  qtpyvcp_manualtoolchange.change
+#net tool-change-confirmed   <=  qtpyvcp_manualtoolchange.changed
+#net tool-number             =>  qtpyvcp_manualtoolchange.number
+
+# *** Probe graphic simulation trigger push probe tip ***
+# net probe-in  =>  qtpyvcp.probe-in.out     <----comment this line out>
+#net probe-in  <=  qtpyvcp.probe-led.on
+
+# *** Set line below for actual spindle readout from your hal file ***
+# net spindle-rpm-filtered scale_to_rpm.out  =>  qtpyvcp.spindle-encoder-rpm.in   <----comment this line out or connect to your rpm net pin>
+
+
+#loadusr -W xhc-whb04b-6 -HaB
+#loadusr -W xhc-whb04b-6 -HsfB
+
+# These files are loaded post GUI, in the order they appear
+
+source custom_postgui.hal
+#setp pokeys.0.devSerial [POKEYS]DEVICE_ID
+setp pokeys.0.PEv2.digin.Probe.Pin [POKEYS]PEv2_ProbeInput 	
+setp pokeys.0.PEv2.digin.Probe.invert [POKEYS]PEv2_ProbeInputPolarity
+setp pokeys.0.PEv2.digin.Emergency.Pin [POKEYS]PEv2_EmergencyInputPin
+setp pokeys.0.PEv2.digout.Emergency.Pin [POKEYS]PEv2_EmergencyOutputPin
+
+setp pokeys.0.PEv2.PulseGeneratorType [POKEYS]PEv2_PulseGeneratorType
+#setp pokeys.0.PEv2.PG_swap_stepdir [POKEYS]PEv2_PG_swap_stepdir
+#setp pokeys.0.PEv2.PG_extended_io [POKEYS]PEv2_PG_extended_io
+setp pokeys.0.PEv2.0.AxisEnabled [POKEYS]PEv2_AxisEnabled_0
+setp pokeys.0.PEv2.0.AxisInverted [POKEYS]PEv2_AxisInverted_0
+setp pokeys.0.PEv2.0.AxisInternalPlanner [POKEYS]PEv2_AxisInternalPlanner_0
+setp pokeys.0.PEv2.0.AxisPositionMode [POKEYS]PEv2_AxisPositionMode_0
+setp pokeys.0.PEv2.0.AxisInvertedHome [POKEYS]PEv2_AxisInvertedHome_0
+setp pokeys.0.PEv2.0.AxisSoftLimitEnabled [POKEYS]PEv2_AxisSoftLimitEnabled_0
+setp pokeys.0.PEv2.0.AxisEnabledMasked [POKEYS]PEv2_AxisEnabledMasked_0
+
+setp pokeys.0.PEv2.2.AxisEnabled [POKEYS]PEv2_AxisEnabled_2
+setp pokeys.0.PEv2.2.AxisInverted [POKEYS]PEv2_AxisInverted_2
+setp pokeys.0.PEv2.2.AxisInternalPlanner [POKEYS]PEv2_AxisInternalPlanner_2
+setp pokeys.0.PEv2.2.AxisPositionMode [POKEYS]PEv2_AxisPositionMode_2
+setp pokeys.0.PEv2.2.AxisInvertedHome [POKEYS]PEv2_AxisInvertedHome_2
+setp pokeys.0.PEv2.2.AxisSoftLimitEnabled [POKEYS]PEv2_AxisSoftLimitEnabled_2
+setp pokeys.0.PEv2.2.AxisEnabledMasked [POKEYS]PEv2_AxisEnabledMasked_2
+
+setp pokeys.0.PEv2.0.HomingAlgorithm [POKEYS]PEv2_HomingAlgorithm_0
+setp pokeys.0.PEv2.2.HomingAlgorithm [POKEYS]PEv2_HomingAlgorithm_2
+
+
+setp pokeys.0.PEv2.0.HomeAlg.OnHome.Stop [POKEYS]PEv2_HomingAlgorithm_OnHome_Stop_0
+setp pokeys.0.PEv2.2.HomeAlg.OnHome.Stop [POKEYS]PEv2_HomingAlgorithm_OnHome_Stop_2
+
+
+setp pokeys.0.PEv2.0.HomeAlg.OnHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OnHome_ArmEncoder_0
+setp pokeys.0.PEv2.2.HomeAlg.OnHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OnHome_ArmEncoder_2
+
+
+setp pokeys.0.PEv2.0.HomeAlg.OnHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OnHome_ReverseDirection_0
+setp pokeys.0.PEv2.2.HomeAlg.OnHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OnHome_ReverseDirection_2
+
+
+setp pokeys.0.PEv2.0.HomeAlg.OnHome.ReducedSpeed [POKEYS]PEv2_HomingAlgorithm_OnHome_ReducedSpeed_0
+setp pokeys.0.PEv2.2.HomeAlg.OnHome.ReducedSpeed [POKEYS]PEv2_HomingAlgorithm_OnHome_ReducedSpeed_2
+
+
+setp pokeys.0.PEv2.0.HomeAlg.OutHome.Stop [POKEYS]PEv2_HomingAlgorithm_OutHome_Stop_0
+setp pokeys.0.PEv2.2.HomeAlg.OutHome.Stop [POKEYS]PEv2_HomingAlgorithm_OutHome_Stop_2
+
+
+setp pokeys.0.PEv2.0.HomeAlg.OutHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OutHome_ArmEncoder_0
+setp pokeys.0.PEv2.2.HomeAlg.OutHome.ArmEncoder [POKEYS]PEv2_HomingAlgorithm_OutHome_ArmEncoder_2
+
+
+setp pokeys.0.PEv2.0.HomeAlg.OutHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OutHome_ReverseDirection_0
+setp pokeys.0.PEv2.2.HomeAlg.OutHome.RevDirection [POKEYS]PEv2_HomingAlgorithm_OutHome_ReverseDirection_2
+
+
+setp pokeys.0.PEv2.0.AxesSwitchConfig  [POKEYS]PEv2_AxesSwitchConfig_0
+
+setp pokeys.0.PEv2.0.digin.LimitN.Enabled [POKEYS]PEv2_EnableLimitN_0
+setp pokeys.0.PEv2.0.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitP_0
+setp pokeys.0.PEv2.0.digin.Home.Enabled [POKEYS]PEv2_EnableHome_0
+setp pokeys.0.PEv2.0.digin.LimitN.invert [POKEYS]PEv2_InvertLimitN_0
+setp pokeys.0.PEv2.0.digin.LimitP.invert [POKEYS]PEv2_InvertLimitP_0
+setp pokeys.0.PEv2.0.digin.Home.invert [POKEYS]PEv2_InvertHome_0
+setp pokeys.0.PEv2.0.digin.Home.OnLimitN [POKEYS]PEv2_HomeOnLimitN_0
+setp pokeys.0.PEv2.0.digin.Home.OnLimitP [POKEYS]PEv2_HomeOnLimitP_0
+setp pokeys.0.PEv2.0.digin.LimitN.Filter  [POKEYS]PEv2_FilterLimitMSwitch_0
+setp pokeys.0.PEv2.0.digin.LimitP.Filter  [POKEYS]PEv2_FilterLimitPSwitch_0
+setp pokeys.0.PEv2.0.digin.Home.Pin  [POKEYS]PEv2_PinHomeSwitch_0
+setp pokeys.0.PEv2.0.digin.LimitN.Pin  [POKEYS]PEv2_PinLimitMSwitch_0
+setp pokeys.0.PEv2.0.digin.LimitP.Pin  [POKEYS]PEv2_PinLimitPSwitch_0
+setp pokeys.0.PEv2.0.digout.AxisEnable.Pin  [POKEYS]PEv2_AxisEnableOutputPins_0
+setp pokeys.0.PEv2.0.digout.AxisEnable.invert  [POKEYS]PEv2_InvertAxisEnable_0
+
+
+setp pokeys.0.PEv2.2.digin.LimitN.Enabled [POKEYS]PEv2_EnableLimitN_2
+setp pokeys.0.PEv2.2.digin.LimitP.Enabled [POKEYS]PEv2_EnableLimitP_2
+setp pokeys.0.PEv2.2.digin.Home.Enabled [POKEYS]PEv2_EnableHome_2
+setp pokeys.0.PEv2.2.digin.LimitN.invert [POKEYS]PEv2_InvertLimitN_2
+setp pokeys.0.PEv2.2.digin.LimitP.invert [POKEYS]PEv2_InvertLimitP_2
+setp pokeys.0.PEv2.2.digin.Home.invert [POKEYS]PEv2_InvertHome_2
+setp pokeys.0.PEv2.2.digin.Home.OnLimitN [POKEYS]PEv2_HomeOnLimitN_2
+setp pokeys.0.PEv2.2.digin.Home.OnLimitP [POKEYS]PEv2_HomeOnLimitP_2
+setp pokeys.0.PEv2.2.AxesSwitchConfig  [POKEYS]PEv2_AxesSwitchConfig_2
+setp pokeys.0.PEv2.2.digin.LimitN.Filter  [POKEYS]PEv2_FilterLimitMSwitch_2
+setp pokeys.0.PEv2.2.digin.LimitP.Filter  [POKEYS]PEv2_FilterLimitPSwitch_2
+setp pokeys.0.PEv2.2.digin.Home.Pin  [POKEYS]PEv2_PinHomeSwitch_2
+setp pokeys.0.PEv2.2.digin.LimitN.Pin  [POKEYS]PEv2_PinLimitMSwitch_2
+setp pokeys.0.PEv2.2.digin.LimitP.Pin  [POKEYS]PEv2_PinLimitPSwitch_2
+setp pokeys.0.PEv2.2.digout.AxisEnable.Pin  [POKEYS]PEv2_AxisEnableOutputPins_2
+setp pokeys.0.PEv2.2.digout.AxisEnable.invert  [POKEYS]PEv2_InvertAxisEnable_2
+
+
+setp pokeys.0.PEv2.params.ApplyIniSettings  [POKEYS]ApplyIniSettings
+
+net pokeys.rtc.sec <=	pokeys.0.rtc.sec
+net pokeys.rtc.sec 	=> pokeys.0.rtc.sec-ret
+
+# Detailed description of how the settings affect the machine
+
+# The file sources `custom_postgui.hal` to include any custom post-GUI HAL commands.
+# It sets the device ID for the PoKeys device using the `DEVICE_ID` parameter from the INI file.
+# It configures the probe input pin and its polarity using the `PEv2_ProbeInput` and `PEv2_ProbeInputPolarity` parameters.
+# It sets the emergency input and output pins using the `PEv2_EmergencyInputPin` and `PEv2_EmergencyOutputPin` parameters.
+# It configures the pulse generator type using the `PEv2_PulseGeneratorType` parameter.
+# It sets the axis switch configuration for each axis using the `PEv2_AxesSwitchConfig_*` parameters.
+# It enables and configures the limit and home switches for each axis, including setting the invert and filter options.
+# It sets the home sequence for each axis using the `home-sequence` parameter.
+# It links the homing signals from the `pokeys_homecomp.comp` component to the PoKeys components.
+# It applies the INI settings to the PoKeys device using the `ApplyIniSettings` parameter.
+# It sets up the real-time clock (RTC) synchronization by linking the `pokeys.rtc.sec` signal.
+
+# These settings collectively ensure proper communication and control of the machine's components, including the limit switches, homing configuration, and emergency handling. The `postgui_call_list.hal` file plays a crucial role in finalizing the machine's configuration after the GUI has been loaded.
+
+
+# *** set below for the status leds ***
+
+net pokeys_pin_26  =>  pokeys.0.digin.26.in-not
+#net pokeys_pin_26  <=  qtpyvcp.1in1.on
+
+net pokeys_pin_27  =>  pokeys.0.digin.27.in-not
+#net pokeys_pin_27  <=  qtpyvcp.1in2.on
+
+net pokeys_pin_28  =>  pokeys.0.digin.28.in-not
+#net pokeys_pin_28  <=  qtpyvcp.1in3.on
+
+net pokeys_pin_29  =>  pokeys.0.digin.29.in-not
+#net pokeys_pin_29  <=  qtpyvcp.1in4.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in5.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in6.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in7.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in8.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in9.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in10.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in11.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in12.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in13.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in14.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in15.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in16.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in17.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in18.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in19.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in20.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in21.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in22.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in23.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in24.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in25.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in26.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in27.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in28.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in29.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in30.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in31.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in32.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in1.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in2.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in3.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in4.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in5.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in6.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in7.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in8.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in9.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in10.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in11.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in12.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in13.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in14.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in15.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in16.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in17.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in18.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in19.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in20.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in21.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in22.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in23.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in24.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in25.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in26.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in27.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in28.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in29.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in30.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in31.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in32.on
+
+
+# --- OUTPUTS ---
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out1.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out2.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out3.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out4.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out5.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out6.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out7.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out8.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out9.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out10.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out11.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out12.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out13.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out14.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out15.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out16.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out1.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out2.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out3.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out4.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out5.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out6.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out7.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out8.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out9.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out10.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out11.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out12.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out13.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out14.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out15.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out16.on

@@ -2940,7 +2940,7 @@ PM2700/halshow.preferences
 PM2700/pbsplash.png
 PM2700/PM2500.png
 PM2700/PM2700_MDI_History
-PM2700/PM2700.ini
+
 PM2700/PM2700.ini.bak
 PM2700/PM2700.png
 PM2700/PM2700.tbl
@@ -2952,13 +2952,7 @@ PM2700/sim.var
 PM2700/xhc-hb04-layout1.cfg
 PM2700/xhc-hb04-layout2.cfg
 PM2700/xhc-hb04.tcl
-PM2700/xhc-whb04b-6.hal
-PM2700/hallib/core_sim_2.hal
-PM2700/hallib/PM2700_postgui.hal
-PM2700/hallib/PM2700.hal
-PM2700/hallib/pokeys_homing.hal
-PM2700/hallib/Pokeys57E_PM2700.hal
-PM2700/hallib/postgui_call_list.hal
+
 PM2700/hallib/sim_spindle_encoder.hal
 PM2700/hallib/simulated_home_xz.hal
 PM2700/hallib/simulated_lathe.hal
