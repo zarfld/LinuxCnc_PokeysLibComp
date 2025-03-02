@@ -6,6 +6,7 @@
 #include "stdio.h"
 
 extern unsigned int sleepdur;
+extern bool ApplyIniSettings;
 
 typedef struct {
 	hal_u32_t PoNET_moduleID; 		// RO Parameter

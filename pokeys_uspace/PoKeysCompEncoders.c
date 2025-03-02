@@ -197,6 +197,7 @@ int PKEncoder_export_params(char* prefix, long extra_arg, int id, int njoints) {
 bool initEncodersDone = 0;
 bool EncoderValuesGet = false;
 extern unsigned int sleepdur;
+extern bool ApplyIniSettings;
 // bool DoEncoders = true;
 // unsigned int  sleepdur = 1000;
 // bool  use_sleepdur1 = true;
