@@ -2114,8 +2114,11 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 
 		if (ExternalOCOutputs_set != dev->PEv2.ExternalOCOutputs) {
 			dev->PEv2.ExternalOCOutputs = ExternalOCOutputs_set;
-			PK_PEv2_ExternalOutputsSet(dev);
+			if(PK_PEv2_ExternalOutputsSet(dev) != PK_OK) {
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_ExternalOutputsSet!=PK_OK\n", __FILE__, __FUNCTION__);
+			}
 			usleep(sleepdur);
+			dev->PEv2.ExternalOCOutputs = ExternalOCOutputs_set;
 			PK_PEv2_ExternalOutputsSet(dev);
 			usleep(sleepdur);
 		}
