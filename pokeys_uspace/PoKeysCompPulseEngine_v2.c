@@ -2103,6 +2103,18 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		uint8_t ExternalOCOutputs_set = 0;
 
 		bool DoExternalOutputsSet = false;
+		/*strange behaviour: it seems that values on "" do the following:
+		- bit 1 / int 1 -> switches ext_Relays1
+		- bit 2 / int 2 -> switches ext_Relays3
+		- bit 3 / int 4 -> switches ext_Relays2
+		- bit 4 / int 8 -> switches ext_OC-Output1
+		- bit 5 / int 16 -> switches ext_OC-Output2
+		- bit 6 / int 32 -> switches ext_OC-Output3
+		- bit 7 / int 64 -> switches ext_OC-Output4
+		- bit 8 / int 128 -> switches switches ext_Relays0
+		
+		*/
+	/*
 		ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 0, PEv2_digout_ExternalRelay_out(0));
 		ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 1, PEv2_digout_ExternalRelay_out(1));
 		ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 2, PEv2_digout_ExternalRelay_out(2));
@@ -2120,6 +2132,16 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, PEv2_digout_ExternalOC_out(5));
 		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6, PEv2_digout_ExternalOC_out(6));
 		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7, PEv2_digout_ExternalOC_out(7));
+*/
+
+	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, PEv2_digout_ExternalRelay_out(1));
+	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, PEv2_digout_ExternalRelay_out(3));
+	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, PEv2_digout_ExternalRelay_out(2));
+	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, PEv2_digout_ExternalOC_out(0));
+	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 4, PEv2_digout_ExternalOC_out(1));
+	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, PEv2_digout_ExternalOC_out(2));
+	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6, PEv2_digout_ExternalOC_out(3));
+	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7, PEv2_digout_ExternalRelay_out(0));
 
 		if (ExternalRelayOutputs_set != dev->PEv2.ExternalRelayOutputs) {
 			dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set;
