@@ -342,6 +342,7 @@ setp   pid.s.deadband  [SPINDLE_0]DEADBAND
 setp   pid.s.maxoutput [SPINDLE_0]MAX_OUTPUT
 setp   pid.s.error-previous-target true
 
+setp   pokeys.0.PEv2.PG_extended_io 1
 setp   pokeys.0.pins.16.PinFunction	16
 setp   pokeys.0.adcout.pwm.period	2500
 setp   pokeys.0.adcout.0.max-v	10
