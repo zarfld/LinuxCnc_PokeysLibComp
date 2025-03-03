@@ -1195,30 +1195,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #undef PEv2_digin_Home_Enabled
 #define PEv2_digin_Home_Enabled(i) (PEv2_data->PEv2_digin_Home_Enabled[i])
 
-#undef PEv2_digin_Home_OnLimitP
-#define PEv2_digin_Home_OnLimitP(i) (PEv2_data->PEv2_digin_Home_OnLimitP[i])
-#undef PEv2_digin_LimitN_invert
-#define PEv2_digin_LimitN_invert(i) (PEv2_data->PEv2_digin_LimitN_invert[i])
-#undef PEv2_digin_LimitP_invert
-#define PEv2_digin_LimitP_invert(i) (PEv2_data->PEv2_digin_LimitP_invert[i])
-#undef PEv2_digin_Home_invert
-#define PEv2_digin_Home_invert(i) (PEv2_data->PEv2_digin_Home_invert[i])
-#undef PEv2_digin_LimitN_Pin
-#define PEv2_digin_LimitN_Pin(i) (PEv2_data->PEv2_digin_LimitN_Pin[i])
-#undef PEv2_digin_LimitN_Filter
-#define PEv2_digin_LimitN_Filter(i) (PEv2_data->PEv2_digin_LimitN_Filter[i])
-#undef PEv2_digin_LimitP_Pin
-#define PEv2_digin_LimitP_Pin(i) (PEv2_data->PEv2_digin_LimitP_Pin[i])
-#undef PEv2_digin_LimitP_Filter
-#define PEv2_digin_LimitP_Filter(i) (PEv2_data->PEv2_digin_LimitP_Filter[i])
-#undef PEv2_digin_Home_Pin
-#define PEv2_digin_Home_Pin(i) (PEv2_data->PEv2_digin_Home_Pin[i])
-#undef PEv2_digin_Home_Filter
-#define PEv2_digin_Home_Filter(i) (PEv2_data->PEv2_digin_Home_Filter[i])
-#undef PEv2_digout_AxisEnable_Pin
-#define PEv2_digout_AxisEnable_Pin(i) (PEv2_data->PEv2_digout_AxisEnable_Pin[i])
-#undef PEv2_digout_AxisEnable_invert
-#define PEv2_digout_AxisEnable_invert(i) (PEv2_data->PEv2_digout_AxisEnable_invert[i])
+
 
 #undef PEv2_digin_Emergency_invert
 #define PEv2_digin_Emergency_invert (PEv2_data->PEv2_digin_Emergency_invert)
@@ -1331,7 +1308,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		bm_HomeStatus = dev->PEv2.HomeStatus;	  // Home status (bit-mapped)
 		if (ApplyIniSettings == false) {
 
-			PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
+			PEv2_data->PEv2_digout_AxisEnable_invert[i] = dev->PEv2.EmergencySwitchPolarity;
 		}
 
 		// Other inputs
@@ -1654,8 +1631,8 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			   param rw bit PEv2.#.digin.LimitN.invert[8] "Invert limit- (PK_ASO_SWITCH_INVERT_LIMIT_N)";
 			   param rw bit PEv2.#.digin.LimitN.Enabled[8] "Limit- is available (PK_ASO_SWITCH_LIMIT_N)";
 			*/
-			if (PEv2_digin_LimitP_Pin(i) > 0) {
-				if (PEv2_digin_LimitP_invert(i) != 0) {
+			if (PEv2_data->PEv2_digin_LimitP_Pin[i] > 0) {
+				if (PEv2_data->PEv2_digin_LimitP_invert[i] != 0) {
 					PEv2_digin_LimitP_in(i) = !Get_BitOfByte(bm_LimitStatusP, i);
 					PEv2_digin_LimitP_in_not(i) = Get_BitOfByte(bm_LimitStatusP, i);
 				}
@@ -1666,7 +1643,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				PEv2_digin_LimitP_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedLimitPInputs, i);
 			}
 			else if (PEv2_digin_LimitP_Enabled(i) != 0) {
-				if (PEv2_digin_LimitP_invert(i) != 0) {
+				if (PEv2_data->PEv2_digin_LimitP_invert[i] != 0) {
 					PEv2_digin_LimitP_in(i) = !Get_BitOfByte(bm_DedicatedLimitPInputs, i);
 					PEv2_digin_LimitP_in_not(i) = Get_BitOfByte(bm_DedicatedLimitPInputs, i);
 					PEv2_digin_LimitP_DedicatedInput(i) = !Get_BitOfByte(bm_DedicatedLimitPInputs, i);
@@ -1678,8 +1655,8 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				}
 			}
 
-			if (PEv2_digin_LimitN_Pin(i) > 0) {
-				if (PEv2_digin_LimitN_invert(i) != 0) {
+			if (PEv2_data->PEv2_digin_LimitN_Pin[i] > 0) {
+				if (PEv2_data->PEv2_digin_LimitN_invert[i] != 0) {
 					PEv2_digin_LimitN_in(i) = !Get_BitOfByte(bm_LimitStatusN, i);
 					PEv2_digin_LimitN_in_not(i) = Get_BitOfByte(bm_LimitStatusN, i);
 				}
@@ -1690,7 +1667,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				PEv2_digin_LimitN_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedLimitNInputs, i);
 			}
 			else if (PEv2_digin_LimitN_Enabled(i) != 0) {
-				if (PEv2_digin_LimitN_invert(i) != 0) {
+				if (PEv2_data->PEv2_digin_LimitN_invert[i] != 0) {
 					PEv2_digin_LimitN_in(i) = !Get_BitOfByte(bm_DedicatedLimitNInputs, i);
 					PEv2_digin_LimitN_in_not(i) = Get_BitOfByte(bm_DedicatedLimitNInputs, i);
 					PEv2_digin_LimitN_DedicatedInput(i) = !Get_BitOfByte(bm_DedicatedLimitNInputs, i);
@@ -1703,7 +1680,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			}
 
 			if (PEv2_data->PEv2_digin_Home_Pin[i] > 0) {
-				if (PEv2_digin_Home_invert(i) != 0) {
+				if (PEv2_data->PEv2_digin_Home_invert[i] != 0) {
 					PEv2_digin_Home_in(i) = !Get_BitOfByte(bm_HomeStatus, i);
 					PEv2_digin_Home_in_not(i) = Get_BitOfByte(bm_HomeStatus, i);
 				}
@@ -1714,7 +1691,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				PEv2_digin_Home_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedHomeInputs, i);
 			}
 			else if (PEv2_digin_Home_Enabled(i)) {
-				if (PEv2_digin_Home_invert(i) != 0) {
+				if (PEv2_data->PEv2_digin_Home_invert[i] != 0) {
 					PEv2_digin_Home_in(i) = !Get_BitOfByte(bm_DedicatedHomeInputs, i);
 					PEv2_digin_Home_in_not(i) = Get_BitOfByte(bm_DedicatedHomeInputs, i);
 				}
@@ -2342,8 +2319,8 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 			dev->PEv2.PulseGeneratorType = PEv2_PulseGeneratorType;
 			DoPeSetup = true;
 		}
-		if (dev->PEv2.EmergencySwitchPolarity != PEv2_digin_Emergency_invert) {
-			dev->PEv2.EmergencySwitchPolarity = PEv2_digin_Emergency_invert;
+		if (dev->PEv2.EmergencySwitchPolarity != PEv2_data->PEv2_digin_Emergency_invert) {
+			dev->PEv2.EmergencySwitchPolarity = PEv2_data->PEv2_digin_Emergency_invert;
 			DoPeSetup = true;
 		}
 
@@ -2691,45 +2668,45 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				dev->PEv2.PinHomeSwitch[i] = 0;
 			}
 
-			if (PEv2_digin_Home_invert(i) == true) {
+			if (PEv2_data->PEv2_digin_Home_invert[i] == true) {
 				AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 7, true); // PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
 				doAxisConfig = true;
 			}
 
-			if (dev->PEv2.PinLimitMSwitch[i] != PEv2_digin_LimitN_Pin(i)) {
-				dev->PEv2.PinLimitMSwitch[i] = PEv2_digin_LimitN_Pin(i);
+			if (dev->PEv2.PinLimitMSwitch[i] != PEv2_data->PEv2_digin_LimitN_Pin[i]) {
+				dev->PEv2.PinLimitMSwitch[i] = PEv2_data->PEv2_digin_LimitN_Pin[i];
 				doAxisConfig = true;
 			}
-			if (PEv2_digin_LimitN_invert(i) == true) {
+			if (PEv2_data->PEv2_digin_LimitN_invert[i] == true) {
 				AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 5, true); // PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
 				doAxisConfig = true;
 			}
-			if (PEv2_digin_LimitP_invert(i) == true) {
+			if (PEv2_data->PEv2_digin_LimitP_invert[i] == true) {
 				AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 6, true); // PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
 				doAxisConfig = true;
 			}
 
-			if (PEv2_digin_LimitN_Pin(i) != 0) {																	   // check if pin is parametrized in HAL
+			if (PEv2_data->PEv2_digin_LimitN_Pin[i] != 0) {																	   // check if pin is parametrized in HAL
 				AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 0, true); // | PK_ASO_SWITCH_LIMIT_N;
 
-				if (dev->Pins[PEv2_digin_LimitN_Pin(i) - 1].PinFunction != PK_PinCap_digitalInput) {
-					dev->Pins[PEv2_digin_LimitN_Pin(i) - 1].PinFunction = PK_PinCap_digitalInput;
-					PK_SL_SetPinFunction(dev, PEv2_digin_LimitN_Pin(i) - 1, PK_PinCap_digitalInput);
+				if (dev->Pins[PEv2_data->PEv2_digin_LimitN_Pin[i] - 1].PinFunction != PK_PinCap_digitalInput) {
+					dev->Pins[PEv2_data->PEv2_digin_LimitN_Pin[i] - 1].PinFunction = PK_PinCap_digitalInput;
+					PK_SL_SetPinFunction(dev, PEv2_data->PEv2_digin_LimitN_Pin[i] - 1, PK_PinCap_digitalInput);
 					setPinConfig = true;
 				}
 			}
 
-			if (dev->PEv2.PinLimitPSwitch[i] != PEv2_digin_LimitP_Pin(i)) {
-				dev->PEv2.PinLimitPSwitch[i] = PEv2_digin_LimitP_Pin(i);
+			if (dev->PEv2.PinLimitPSwitch[i] != PEv2_data->PEv2_digin_LimitP_Pin[i]) {
+				dev->PEv2.PinLimitPSwitch[i] = PEv2_data->PEv2_digin_LimitP_Pin[i];
 				doAxisConfig = true;
 			}
 
-			if (PEv2_digin_LimitP_Pin(i) != 0) {																	   // check if pin is parametrized in HAL
+			if (PEv2_data->PEv2_digin_LimitP_Pin[i] != 0) {																	   // check if pin is parametrized in HAL
 				AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 1, true); // | PK_ASO_SWITCH_LIMIT_P;
 
-				if (dev->Pins[PEv2_digin_LimitP_Pin(i) - 1].PinFunction != PK_PinCap_digitalInput) {
-					dev->Pins[PEv2_digin_LimitP_Pin(i) - 1].PinFunction = PK_PinCap_digitalInput;
-					PK_SL_SetPinFunction(dev, PEv2_digin_LimitP_Pin(i) - 1, PK_PinCap_digitalInput);
+				if (dev->Pins[PEv2_data->PEv2_digin_LimitP_Pin[i] - 1].PinFunction != PK_PinCap_digitalInput) {
+					dev->Pins[PEv2_data->PEv2_digin_LimitP_Pin[i] - 1].PinFunction = PK_PinCap_digitalInput;
+					PK_SL_SetPinFunction(dev, PEv2_data->PEv2_digin_LimitP_Pin[i] - 1, PK_PinCap_digitalInput);
 					setPinConfig = true;
 				}
 			}
@@ -2754,37 +2731,37 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				doAxisConfig = true;
 			}
 
-			if (dev->PEv2.AxisEnableOutputPins[i] != PEv2_digout_AxisEnable_Pin(i)) {
-				dev->PEv2.AxisEnableOutputPins[i] = PEv2_digout_AxisEnable_Pin(i);
+			if (dev->PEv2.AxisEnableOutputPins[i] != PEv2_data->PEv2_digout_AxisEnable_Pin[i]) {
+				dev->PEv2.AxisEnableOutputPins[i] = PEv2_data->PEv2_digout_AxisEnable_Pin[i];
 				doAxisConfig = true;
 			}
 
-			if (PEv2_digout_AxisEnable_Pin(i) != 0) { // check if pin is parametrized in HAL
-				if (dev->Pins[PEv2_digout_AxisEnable_Pin(i) - 1].PinFunction != PK_PinCap_digitalOutput) {
-					dev->Pins[PEv2_digout_AxisEnable_Pin(i) - 1].PinFunction = PK_PinCap_digitalOutput;
-					PK_SL_SetPinFunction(dev, PEv2_digout_AxisEnable_Pin(i) - 1, PK_PinCap_digitalOutput);
+			if (PEv2_data->PEv2_digout_AxisEnable_Pin[i] != 0) { // check if pin is parametrized in HAL
+				if (dev->Pins[PEv2_data->PEv2_digout_AxisEnable_Pin[i] - 1].PinFunction != PK_PinCap_digitalOutput) {
+					dev->Pins[PEv2_data->PEv2_digout_AxisEnable_Pin[i] - 1].PinFunction = PK_PinCap_digitalOutput;
+					PK_SL_SetPinFunction(dev, PEv2_data->PEv2_digout_AxisEnable_Pin[i] - 1, PK_PinCap_digitalOutput);
 					setPinConfig = true;
 				}
-				Pins_DigitalValueSet_ignore[PEv2_digout_AxisEnable_Pin(i) - 1] = true;
+				Pins_DigitalValueSet_ignore[PEv2_data->PEv2_digout_AxisEnable_Pin[i] - 1] = true;
 			}
 
-			if (dev->PEv2.InvertAxisEnable[i] != PEv2_digout_AxisEnable_invert(i)) {
-				dev->PEv2.InvertAxisEnable[i] = PEv2_digout_AxisEnable_invert(i);
+			if (dev->PEv2.InvertAxisEnable[i] != PEv2_data->PEv2_digout_AxisEnable_invert[i]) {
+				dev->PEv2.InvertAxisEnable[i] = PEv2_data->PEv2_digout_AxisEnable_invert[i];
 				doAxisConfig = true;
 			}
 
-			if (dev->PEv2.FilterLimitMSwitch[i] != PEv2_digin_LimitN_Filter(i)) {
-				dev->PEv2.FilterLimitMSwitch[i] = PEv2_digin_LimitN_Filter(i);
+			if (dev->PEv2.FilterLimitMSwitch[i] != PEv2_data->PEv2_digin_LimitN_Filter[i]) {
+				dev->PEv2.FilterLimitMSwitch[i] = PEv2_data->PEv2_digin_LimitN_Filter[i];
 				doAxisConfig = true;
 			}
 
-			if (dev->PEv2.FilterLimitPSwitch[i] != PEv2_digin_LimitP_Filter(i)) {
-				dev->PEv2.FilterLimitPSwitch[i] = PEv2_digin_LimitP_Filter(i);
+			if (dev->PEv2.FilterLimitPSwitch[i] != PEv2_data->PEv2_digin_LimitP_Filter[i]) {
+				dev->PEv2.FilterLimitPSwitch[i] = PEv2_data->PEv2_digin_LimitP_Filter[i];
 				doAxisConfig = true;
 			}
 
-			if (dev->PEv2.FilterHomeSwitch[i] != PEv2_digin_Home_Filter(i)) {
-				dev->PEv2.FilterHomeSwitch[i] = PEv2_digin_Home_Filter(i);
+			if (dev->PEv2.FilterHomeSwitch[i] != PEv2_data->PEv2_digin_Home_Filter[i]) {
+				dev->PEv2.FilterHomeSwitch[i] = PEv2_data->PEv2_digin_Home_Filter[i];
 				doAxisConfig = true;
 			}
 			/*
@@ -2879,9 +2856,9 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				// PEv2_AxesConfig(i) = dev->PEv2.AxesConfig[i]; readonly
 				// PEv2_AxesSwitchConfig(i)  = dev->PEv2.AxesSwitchConfig[i];
 
-				// PEv2_digin_Home_Pin(i) = dev->PEv2.PinHomeSwitch[i];
-				// PEv2_digin_LimitN_Pin(i) = dev->PEv2.PinLimitMSwitch[i];
-				// PEv2_digin_LimitP_Pin(i) = dev->PEv2.PinLimitPSwitch[i];
+				// PEv2_data->PEv2_digin_Home_Pin[i] = dev->PEv2.PinHomeSwitch[i];
+				// PEv2_data->PEv2_digin_LimitN_Pin[i] = dev->PEv2.PinLimitMSwitch[i];
+				// PEv2_data->PEv2_digin_LimitP_Pin[i] = dev->PEv2.PinLimitPSwitch[i];
 
 				PEv2_HomingSpeed(i) = dev->PEv2.HomingSpeed[i];
 				PEv2_HomingReturnSpeed(i) = dev->PEv2.HomingReturnSpeed[i];
@@ -2898,12 +2875,12 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 
 				PEv2_MPGjogMultiplier(i) = dev->PEv2.MPGjogMultiplier[i];
 
-				// PEv2_digout_AxisEnable_Pin(i) = dev->PEv2.AxisEnableOutputPins[i];
-				PEv2_digout_AxisEnable_invert(i) = dev->PEv2.InvertAxisEnable[i];
+				// PEv2_data->PEv2_digout_AxisEnable_Pin[i] = dev->PEv2.AxisEnableOutputPins[i];
+				PEv2_data->PEv2_digout_AxisEnable_invert[i] = dev->PEv2.InvertAxisEnable[i];
 
-				PEv2_digin_LimitN_Filter(i) = dev->PEv2.FilterLimitMSwitch[i];
-				PEv2_digin_LimitP_Filter(i) = dev->PEv2.FilterLimitPSwitch[i];
-				PEv2_digin_Home_Filter(i) = dev->PEv2.FilterHomeSwitch[i];
+				PEv2_data->PEv2_digin_LimitN_Filter[i] = dev->PEv2.FilterLimitMSwitch[i];
+				PEv2_data->PEv2_digin_LimitP_Filter[i] = dev->PEv2.FilterLimitPSwitch[i];
+				PEv2_data->PEv2_digin_Home_Filter[i] = dev->PEv2.FilterHomeSwitch[i];
 
 				PEv2_HomingAlgorithm(i) = dev->PEv2.HomingAlgorithm[i];
 				// MPG 1x mode here
