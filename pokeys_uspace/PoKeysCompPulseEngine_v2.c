@@ -109,6 +109,7 @@ typedef struct {
 	hal_bit_t* PEv2_digin_Misc_in_not[8];
 	hal_bit_t* PEv2_digin_Probe_in[8];
 	hal_bit_t* PEv2_digin_Probe_in_not[8];
+	hal_u32_t PEv2_digin_Probe_Filter[8];
 	hal_u32_t* PEv2_digin_SoftLimit_in[8];
 	hal_bit_t* PEv2_digout_AxisEnabled_out[8];
 	hal_bit_t* PEv2_digin_AxisEnabled_in[8];
@@ -871,10 +872,15 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 			"%s.PEv2.%01d.digin.LimitN.Filter", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++) {
+
 		r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_digin_LimitP_Pin[j]), comp_id,
 			"%s.PEv2.%01d.digin.LimitP.Pin", prefix, j);
+		if (r != 0)
+			return r;
+
+			//PEv2_digin_Probe_Filter
+			r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_digin_Probe_Filter[j]), comp_id,
+			"%s.PEv2.%01d.digin.Probe.Filter", prefix, j);
 		if (r != 0)
 			return r;
 	}
@@ -3132,14 +3138,14 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 		if(ApplyIniSettings==false || PEv2_data->PEv2_InvertAxisEnable[AxisId]==0){
 			PEv2_data->PEv2_InvertAxisEnable[AxisId] = dev->PEv2.InvertAxisEnable[AxisId];
 		}
-		if(ApplyIniSettings==false || PEv2_data->PEv2_FilterLimitMSwitch[AxisId]==0){
-			PEv2_data->PEv2_FilterLimitMSwitch[AxisId] = dev->PEv2.FilterLimitMSwitch[AxisId];
+		if(ApplyIniSettings==false || PEv2_data->PEv2_digin_LimitN_Filter[AxisId]==0){
+			PEv2_data->PEv2_digin_LimitN_Filter[AxisId] = dev->PEv2.FilterLimitMSwitch[AxisId];
 		}
-		if(ApplyIniSettings==false || PEv2_data->PEv2_FilterLimitPSwitch[AxisId]==0){
-			PEv2_data->PEv2_FilterLimitPSwitch[AxisId] = dev->PEv2.FilterLimitPSwitch[AxisId];
+		if(ApplyIniSettings==false || PEv2_data->PEv2_digin_LimitP_Filter[AxisId]==0){
+			PEv2_data->PEv2_digin_LimitP_Filter[AxisId] = dev->PEv2.FilterLimitPSwitch[AxisId];
 		}
-		if(ApplyIniSettings==false || PEv2_data->PEv2_FilterHomeSwitch[AxisId]==0){
-			PEv2_data->PEv2_FilterHomeSwitch[AxisId] = dev->PEv2.FilterHomeSwitch[AxisId];
+		if(ApplyIniSettings==false || PEv2_data->PEv2_digin_Home_Filter[AxisId]==0){
+			PEv2_data->PEv2_digin_Home_Filter[AxisId] = dev->PEv2.FilterHomeSwitch[AxisId];
 		}
 		if(ApplyIniSettings==false || PEv2_data->PEv2_HomingAlgorithm[AxisId]==0){
 			PEv2_data->PEv2_HomingAlgorithm[AxisId] = dev->PEv2.HomingAlgorithm[AxisId];
@@ -3153,8 +3159,8 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 		if(ApplyIniSettings==false || PEv2_data->PEv2_AxisSignalOptions[AxisId]==0){
 			PEv2_data->PEv2_AxisSignalOptions[AxisId] = dev->PEv2.AxisSignalOptions[AxisId];
 		}
-		if(ApplyIniSettings==false || PEv2_data->PEv2_FilterProbeInput==0){
-			PEv2_data->PEv2_FilterProbeInput = dev->PEv2.FilterProbeInput;
+		if(ApplyIniSettings==false || PEv2_data->PEv2_digin_Probe_Filter[AxisId]==0){
+			PEv2_data->PEv2_digin_Probe_Filter[AxisId] = dev->PEv2.FilterProbeInput;
 		}
 
 	
