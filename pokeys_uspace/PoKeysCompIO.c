@@ -4,7 +4,7 @@
 #include "hal.h"
 #include "stdio.h"
 
-#include "pokeys_ini.h"
+#include "pokeys_ini.c"
 
 extern unsigned int sleepdur;
 extern bool ApplyIniSettings;
