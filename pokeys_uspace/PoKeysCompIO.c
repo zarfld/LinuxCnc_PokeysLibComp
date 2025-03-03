@@ -938,7 +938,7 @@ void PKIO_WriteIniFile(sPoKeysDevice* dev){
 		ini_write_float("POKEYS", key, IO_data->adcout[j].max_v);
 		
 		snprintf(key, sizeof(key), "AdcOut_%i_enable", j);
-		ini_write_int("POKEYS", key, IO_data->adcout[j].enable);
+		ini_write_int("POKEYS", key, *IO_data->adcout[j].enable);
 	}
 	ini_write_int("POKEYS", "AdcOut_PWM_Period", IO_data->adcout_pwm_period);
 
