@@ -2994,8 +2994,8 @@ int32_t PEv2_AdditionalParametersSet(sPoKeysDevice * device){
 	if (PK_PEv2_AdditionalParametersGet(device) == PK_OK) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersSet() == PK_OK\n", __FILE__, __FUNCTION__);
 
-		if(ApplyIniSettings==true && PEv2_data->PEv2_digin_Emergency_Pin != dev->PEv2.EmergencyInputPin){
-			dev->PEv2.EmergencyInputPin = PEv2_data->PEv2_digin_Emergency_Pin;
+		if(ApplyIniSettings==true && PEv2_data->PEv2_digin_Emergency_Pin != device->PEv2.EmergencyInputPin){
+			device->PEv2.EmergencyInputPin = PEv2_data->PEv2_digin_Emergency_Pin;
 			doSetup = true;
 		}
 	}
@@ -3055,13 +3055,13 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 			PEv2_data->PEv2_AxesConfig[AxisId] = device->PEv2.AxesConfig[AxisId];
 			uint8_t axisConfig = device->PEv2.AxesConfig[AxisId];
 
-			PEv2_data->PEv2_AxisEnabled[i]			= (int) ((axisConfig & PK_AC_ENABLED)            != 0);
-			PEv2_data->PEv2_AxisInverted[i]			= (int) ((axisConfig & PK_AC_INVERTED)           != 0);
-			PEv2_data->PEv2_AxisInternalPlanner[i]	= (int) ((axisConfig & PK_AC_INTERNAL_PLANNER)   != 0);
-			PEv2_data->PEv2_AxisPositionMode[i]		= (int) ((axisConfig & PK_AC_POSITION_MODE)      != 0);
-			PEv2_data->PEv2_AxisInvertedHome[i]		= (int) ((axisConfig & PK_AC_INVERTED_HOME)      != 0);
-			PEv2_data->PEv2_AxisSoftLimitEnabled[i]	= (int) ((axisConfig & PK_AC_SOFT_LIMIT_ENABLED) != 0);
-			PEv2_data->PEv2_AxisEnabledMasked[i]	= (int) ((axisConfig & PK_AC_ENABLED_MASKED)     != 0);
+			PEv2_data->PEv2_AxisEnabled[AxisId]			= (int) ((axisConfig & PK_AC_ENABLED)            != 0);
+			PEv2_data->PEv2_AxisInverted[AxisId]			= (int) ((axisConfig & PK_AC_INVERTED)           != 0);
+			PEv2_data->PEv2_AxisInternalPlanner[AxisId]	= (int) ((axisConfig & PK_AC_INTERNAL_PLANNER)   != 0);
+			PEv2_data->PEv2_AxisPositionMode[AxisId]		= (int) ((axisConfig & PK_AC_POSITION_MODE)      != 0);
+			PEv2_data->PEv2_AxisInvertedHome[AxisId]		= (int) ((axisConfig & PK_AC_INVERTED_HOME)      != 0);
+			PEv2_data->PEv2_AxisSoftLimitEnabled[AxisId]	= (int) ((axisConfig & PK_AC_SOFT_LIMIT_ENABLED) != 0);
+			PEv2_data->PEv2_AxisEnabledMasked[AxisId]	= (int) ((axisConfig & PK_AC_ENABLED_MASKED)     != 0);
 
 			/* PEv2_AxesSwitchConfig
 			PK_ASO_SWITCH_LIMIT_N: 1 << 0 = 1
@@ -3087,14 +3087,14 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 			PEv2_data->PEv2_AxesSwitchConfig[AxisId] = device->PEv2.AxesSwitchConfig[AxisId];
 
 			uint8_t axisSwitchConfig = device->PEv2.AxesSwitchConfig[AxisId];
-			PEv2_data->PEv2_digin_LimitN_Enabled[i]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_LIMIT_N) 		!= 0);
-			PEv2_data->PEv2_digin_LimitP_Enabled[i]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_LIMIT_P) 		!= 0);
-			PEv2_data->PEv2_digin_Home_Enabled[i]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_HOME) 			!= 0);
-			PEv2_data->PEv2_digin_Home_OnLimitN[i]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_COMBINED_LN_H) 	!= 0);
-			PEv2_data->PEv2_digin_Home_OnLimitP[i]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_COMBINED_LP_H) 	!= 0);
-			PEv2_data->PEv2_digin_LimitN_invert[i]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_INVERT_LIMIT_N)	!= 0);
-			PEv2_data->PEv2_digin_LimitP_invert[i]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_INVERT_LIMIT_P)	!= 0);
-			PEv2_data->PEv2_digin_Home_invert[i]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_INVERT_HOME)		!= 0); 
+			PEv2_data->PEv2_digin_LimitN_Enabled[AxisId]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_LIMIT_N) 		!= 0);
+			PEv2_data->PEv2_digin_LimitP_Enabled[AxisId]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_LIMIT_P) 		!= 0);
+			PEv2_data->PEv2_digin_Home_Enabled[AxisId]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_HOME) 			!= 0);
+			PEv2_data->PEv2_digin_Home_OnLimitN[AxisId]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_COMBINED_LN_H) 	!= 0);
+			PEv2_data->PEv2_digin_Home_OnLimitP[AxisId]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_COMBINED_LP_H) 	!= 0);
+			PEv2_data->PEv2_digin_LimitN_invert[AxisId]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_INVERT_LIMIT_N)	!= 0);
+			PEv2_data->PEv2_digin_LimitP_invert[AxisId]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_INVERT_LIMIT_P)	!= 0);
+			PEv2_data->PEv2_digin_Home_invert[AxisId]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_INVERT_HOME)		!= 0); 
 		}
 		if(ApplyIniSettings==false || PEv2_data->PEv2_digin_Home_Pin[AxisId]==0){
 			PEv2_data->PEv2_digin_Home_Pin[AxisId] = device->PEv2.PinHomeSwitch[AxisId];
@@ -3106,11 +3106,13 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 			PEv2_data->PEv2_digin_LimitP_Pin[AxisId] = device->PEv2.PinLimitPSwitch[AxisId];
 		}
 		if(ApplyIniSettings==false || PEv2_data->PEv2_HomingSpeed[AxisId]==0){
-			PEv2_data->PEv2_HomingSpeed[AxisId] = device->PEv2.HomingSpeed[AxisId];
+			PEv2_data->PEv2_HomingSpeed[AxisId] = device->PEv2.HomingSpeed[AxisId] * 1000;
 		}
 		if(ApplyIniSettings==false || PEv2_data->PEv2_HomingReturnSpeed[AxisId]==0){
 			PEv2_data->PEv2_HomingReturnSpeed[AxisId] = device->PEv2.HomingReturnSpeed[AxisId];
 		}
+
+
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MPGjogEncoder[AxisId]==0){
 			PEv2_data->PEv2_MPGjogEncoder[AxisId] = device->PEv2.MPGjogEncoder[AxisId];
 		}
@@ -3118,10 +3120,10 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 			PEv2_data->PEv2_MaxSpeed[AxisId] = device->PEv2.MaxSpeed[AxisId];
 		}
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MaxAcceleration[AxisId]==0){
-			PEv2_data->PEv2_MaxAcceleration[AxisId] = device->PEv2.MaxAcceleration[AxisId];
+			PEv2_data->PEv2_MaxAcceleration[AxisId] = device->PEv2.MaxAcceleration[AxisId] * 1000000;
 		}
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MaxDecceleration[AxisId]==0){
-			PEv2_data->PEv2_MaxDecceleration[AxisId] = device->PEv2.MaxDecceleration[AxisId];
+			PEv2_data->PEv2_MaxDecceleration[AxisId] = device->PEv2.MaxDecceleration[AxisId] * 1000000;
 		}
 		if(ApplyIniSettings==false || PEv2_data->PEv2_SoftLimitMinimum[AxisId]==0){
 			PEv2_data->PEv2_SoftLimitMinimum[AxisId] = device->PEv2.SoftLimitMinimum[AxisId];
@@ -3129,6 +3131,20 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 		if(ApplyIniSettings==false || PEv2_data->PEv2_SoftLimitMaximum[AxisId]==0){
 			PEv2_data->PEv2_SoftLimitMaximum[AxisId] = device->PEv2.SoftLimitMaximum[AxisId];
 		}
+
+		if (PEv2_stepgen_STEP_SCALE(i) != 0) {
+			PEv2_data->PEv2_MPGjogEncoder[AxisId] = device->PEv2.MPGjogEncoder[AxisId];
+
+			PEv2_stepgen_STEPGEN_MAXVEL(i) = device->PEv2.MaxSpeed[AxisId] / PEv2_stepgen_STEP_SCALE(i);
+			PEv2_stepgen_STEPGEN_MAXACCEL(i) = device->PEv2.MaxAcceleration[AxisId] / PEv2_stepgen_STEP_SCALE(i);
+			PEv2_stepgen_STEPGEN_MAXDECEL(i) = device->PEv2.MaxDecceleration[AxisId] / PEv2_stepgen_STEP_SCALE(i);
+
+			PEv2_stepgen_HOME_OFFSET(i) = PEv2_digin_Home_Offset(i) / PEv2_stepgen_STEP_SCALE(i);
+
+			PEv2_stepgen_HOME_SEARCH_VEL(i) = PEv2_HomingSpeed(i) * PEv2_stepgen_STEPGEN_MAXVEL(i) /100;
+			PEv2_stepgen_HOME_LATCH_VEL(i) = PEv2_HomingReturnSpeed(i) * PEv2_stepgen_HOME_SEARCH_VEL(i) /100;
+		}
+		
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MPGjogMultiplier[AxisId]==0){
 			PEv2_data->PEv2_MPGjogMultiplier[AxisId] = device->PEv2.MPGjogMultiplier[AxisId];
 		}
