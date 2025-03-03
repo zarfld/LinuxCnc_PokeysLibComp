@@ -899,29 +899,30 @@ void PKIO_ReadIniFile(sPoKeysDevice* dev) {
 }
 
 void PKIO_WriteIniFile(sPoKeysDevice* dev){
-	char strPrefix="";
+	char key[256]; // Puffer für den zusammengesetzten String
 
 	int digitalCount = dev->info.iPinCount;
 	for (int i = 0; i < digitalCount; i++) {
-		strPrefix = "Pin_" + to_string(i) ;
-		ini_write_int("POKEYS", strPrefix +"_Function", IO_data->Pin[i].PinFunction);
+		snprintf(key, sizeof(key), "Pin_%i_Function", j); 
+		ini_write_int("POKEYS", key, IO_data->Pin[i].PinFunction);
 	}
 
 	for (int i = 0; i < digitalCount; i++) {
-		strPrefix = "DigIn_" + to_string(i) ;
-		ini_write_int("POKEYS", strPrefix +"_invert", IO_data->Pin[i].digin_invert);
+		snprintf(key, sizeof(key), "DigIn_%i_invert", j); 
+		ini_write_int("POKEYS", key, IO_data->Pin[i].digin_invert);
 	}
 
 	for (int i = 0; i < digitalCount; i++) {
-		strPrefix = "DigOut" + to_string(i) ;
-		ini_write_int("POKEYS", strPrefix +"_invert", IO_data->Pin[i].digout_invert);
+
+		snprintf(key, sizeof(key), "DigOut_%i_invert", j); 
+		ini_write_int("POKEYS", key, IO_data->Pin[i].digout_invert);
 	}
 
 	int analogOutCount = dev->info.iPWMCount;
 	for (j = 0; j < (analogOutCount); j++) {
 		strPrefix = "AdcOut_" + to_string(j) ;
 		snprintf(key, sizeof(key), "AdcOut_%i_offset", j); 
-		ini_write_float("POKEYS", key", IO_data->adcout[j].offset);
+		ini_write_float("POKEYS", key, IO_data->adcout[j].offset);
 
 		snprintf(key, sizeof(key), "AdcOut_%i_scale", j);
 		ini_write_float("POKEYS", key, IO_data->adcout[j].scale);
