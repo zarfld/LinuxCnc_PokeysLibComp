@@ -61,7 +61,7 @@ typedef struct {
 	hal_u32_t PEv2_MPGjogMultiplier[8];
 	hal_u32_t PEv2_MPGjogEncoder[8];
 	hal_u32_t PEv2_MPGjogDivider[8];
-	hal_u32_t* PEv2_HomeBackOffDistance[8];
+	hal_u32_t PEv2_HomeBackOffDistance[8];
 	hal_bit_t* PEv2_digin_Error_in[8];
 	hal_bit_t* PEv2_digin_Error_in_not[8];
 	hal_u32_t* PEv2_MiscInputStatus;
@@ -525,7 +525,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		if (r != 0)
 			return r;
 
-		r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_HomeBackOffDistance[j]), comp_id,
+		r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_HomeBackOffDistance[j]), comp_id,
 			"%s.PEv2.%01d.HomeBackOffDistance", prefix, j);
 		if (r != 0)
 			return r;
@@ -1075,8 +1075,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #define PEv2_digin_Home_DedicatedInput(i) (*(PEv2_data->PEv2_digin_Home_DedicatedInput[i]))
 #undef PEv2_digout_AxisEnable_out
 #define PEv2_digout_AxisEnable_out(i) (0 + *(PEv2_data->PEv2_digout_AxisEnable_out[i]))
-#undef PEv2_HomeBackOffDistance
-#define PEv2_HomeBackOffDistance(i) (*(PEv2_data->PEv2_HomeBackOffDistance[i]))
+
 
 
 
@@ -3129,17 +3128,16 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 			PEv2_data->PEv2_SoftLimitMaximum[AxisId] = device->PEv2.SoftLimitMaximum[AxisId];
 		}
 
-		if (PEv2_stepgen_STEP_SCALE(i) != 0) {
+		if (PEv2_stepgen_STEP_SCALE(AxisId) != 0) {
 			PEv2_data->PEv2_MPGjogEncoder[AxisId] = device->PEv2.MPGjogEncoder[AxisId];
 
-			PEv2_stepgen_STEPGEN_MAXVEL(i) = device->PEv2.MaxSpeed[AxisId] / PEv2_stepgen_STEP_SCALE(i);
-			PEv2_stepgen_STEPGEN_MAXACCEL(i) = device->PEv2.MaxAcceleration[AxisId] / PEv2_stepgen_STEP_SCALE(i);
-			PEv2_stepgen_STEPGEN_MAXDECEL(i) = device->PEv2.MaxDecceleration[AxisId] / PEv2_stepgen_STEP_SCALE(i);
+			PEv2_stepgen_STEPGEN_MAXVEL(AxisId) = device->PEv2.MaxSpeed[AxisId] / PEv2_stepgen_STEP_SCALE(AxisId);
+			PEv2_stepgen_STEPGEN_MAXACCEL(AxisId) = device->PEv2.MaxAcceleration[AxisId] / PEv2_stepgen_STEP_SCALE(AxisId);
+			
+			PEv2_stepgen_HOME_OFFSET(AxisId) = PEv2_digin_Home_Offset(AxisId) / PEv2_stepgen_STEP_SCALE(AxisId);
 
-			PEv2_stepgen_HOME_OFFSET(i) = PEv2_digin_Home_Offset(i) / PEv2_stepgen_STEP_SCALE(i);
-
-			PEv2_stepgen_HOME_SEARCH_VEL(i) = PEv2_HomingSpeed(i) * PEv2_stepgen_STEPGEN_MAXVEL(i) /100;
-			PEv2_stepgen_HOME_LATCH_VEL(i) = PEv2_HomingReturnSpeed(i) * PEv2_stepgen_HOME_SEARCH_VEL(i) /100;
+			PEv2_stepgen_HOME_SEARCH_VEL(AxisId) = PEv2_HomingSpeed(AxisId) * PEv2_stepgen_STEPGEN_MAXVEL(AxisId) /100;
+			PEv2_stepgen_HOME_LATCH_VEL(AxisId) = PEv2_HomingReturnSpeed(AxisId) * PEv2_stepgen_HOME_SEARCH_VEL(AxisId) /100;
 		}
 
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MPGjogMultiplier[AxisId]==0){
