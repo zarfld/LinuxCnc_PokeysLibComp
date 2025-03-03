@@ -12,6 +12,7 @@
 // #include "<math.h>"
 #include "PoKeysLib.h"
 #include "PoKeysComp.h"
+#include "pokeys_ini.h"
 #include "rtapi.h"
 // #include "rtapi_app.h"
 #include "hal.h"
