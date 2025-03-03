@@ -3144,7 +3144,7 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 			PEv2_stepgen_HOME_SEARCH_VEL(i) = PEv2_HomingSpeed(i) * PEv2_stepgen_STEPGEN_MAXVEL(i) /100;
 			PEv2_stepgen_HOME_LATCH_VEL(i) = PEv2_HomingReturnSpeed(i) * PEv2_stepgen_HOME_SEARCH_VEL(i) /100;
 		}
-		
+
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MPGjogMultiplier[AxisId]==0){
 			PEv2_data->PEv2_MPGjogMultiplier[AxisId] = device->PEv2.MPGjogMultiplier[AxisId];
 		}
@@ -3170,7 +3170,7 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 			PEv2_data->PEv2_HomeBackOffDistance[AxisId] = device->PEv2.HomeBackOffDistance[AxisId];
 		}
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MPGjogDivider[AxisId]==0){
-			PEv2_data->PEv2_MPGjogDivider[AxisId] = device->PEv2.MPGjogDivider[AxisId];
+			*PEv2_data->PEv2_MPGjogDivider[AxisId] = device->PEv2.MPGjogDivider[AxisId];
 		}
 		/*if(ApplyIniSettings==false || PEv2_data->PEv2_AxisSignalOptions[AxisId]==0){
 			PEv2_data->PEv2_AxisSignalOptions[AxisId] = device->PEv2.AxisSignalOptions[AxisId];
