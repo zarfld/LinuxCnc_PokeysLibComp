@@ -58,9 +58,9 @@ typedef struct {
 	hal_float_t* PEv2_stepgen_HOME_LATCH_VEL[8];
 	hal_float_t* PEv2_stepgen_HOME_FINAL_VEL[8];
 	hal_s32_t* PEv2_stepgen_HOME_IGNORE_LIMITS[8];
-	hal_u32_t* PEv2_MPGjogMultiplier[8];
-	hal_u32_t* PEv2_MPGjogEncoder[8];
-	hal_u32_t* PEv2_MPGjogDivider[8];
+	hal_u32_t PEv2_MPGjogMultiplier[8];
+	hal_u32_t PEv2_MPGjogEncoder[8];
+	hal_u32_t PEv2_MPGjogDivider[8];
 	hal_u32_t* PEv2_HomeBackOffDistance[8];
 	hal_bit_t* PEv2_digin_Error_in[8];
 	hal_bit_t* PEv2_digin_Error_in_not[8];
@@ -460,17 +460,17 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		if (r != 0)
 			return r;
 
-		r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_MPGjogMultiplier[j]), comp_id,
+		r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_MPGjogMultiplier[j]), comp_id,
 			"%s.PEv2.%01d.MPGjogMultiplier", prefix, j);
 		if (r != 0)
 			return r;
 
-		r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_MPGjogEncoder[j]), comp_id,
+		r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_MPGjogEncoder[j]), comp_id,
 			"%s.PEv2.%01d.MPGjogEncoder", prefix, j);
 		if (r != 0)
 			return r;
 
-		r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_MPGjogDivider[j]), comp_id,
+		r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_MPGjogDivider[j]), comp_id,
 			"%s.PEv2.%01d.MPGjogDivider", prefix, j);
 		if (r != 0)
 			return r;
@@ -1054,10 +1054,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #define PEv2_stepgen_HOME_IGNORE_LIMITS(i) (0 + *(PEv2_data->PEv2_stepgen_HOME_IGNORE_LIMITS[i]))
 #undef PEv2_MPGjogMultiplier
 #define PEv2_MPGjogMultiplier(i) (*(PEv2_data->PEv2_MPGjogMultiplier[i]))
-#undef PEv2_MPGjogEncoder
-#define PEv2_MPGjogEncoder(i) (*(PEv2_data->PEv2_MPGjogEncoder[i]))
-#undef PEv2_MPGjogDivider
-#define PEv2_MPGjogDivider(i) (*(PEv2_data->PEv2_MPGjogDivider[i]))
+
 #undef PEv2_digin_LimitN_in
 #define PEv2_digin_LimitN_in(i) (*(PEv2_data->PEv2_digin_LimitN_in[i]))
 #undef PEv2_digin_LimitN_in_not
@@ -2798,8 +2795,8 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				doAxisConfig = true;
 			}
 
-			if (dev->PEv2.MPGjogDivider[i] != PEv2_MPGjogDivider(i)) {
-				dev->PEv2.MPGjogDivider[i] = PEv2_MPGjogDivider(i);
+			if (dev->PEv2.MPGjogDivider[i] != PEv2_data->PEv2_MPGjogDivider[i]) {
+				dev->PEv2.MPGjogDivider[i] = PEv2_data->PEv2_MPGjogDivider[i];
 				doAxisConfig = true;
 			}
 
@@ -2870,7 +2867,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				PEv2_HomingAlgorithm(i) = dev->PEv2.HomingAlgorithm[i];
 				// MPG 1x mode here
 				PEv2_HomeBackOffDistance(i) = dev->PEv2.HomeBackOffDistance[i];
-				PEv2_MPGjogDivider(i) = dev->PEv2.MPGjogDivider[i];
+				PEv2_data->PEv2_MPGjogDivider[i] = dev->PEv2.MPGjogDivider[i];
 
 			}
 			else {
@@ -3170,7 +3167,7 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 			PEv2_data->PEv2_HomeBackOffDistance[AxisId] = device->PEv2.HomeBackOffDistance[AxisId];
 		}
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MPGjogDivider[AxisId]==0){
-			*PEv2_data->PEv2_MPGjogDivider[AxisId] = device->PEv2.MPGjogDivider[AxisId];
+			PEv2_data->PEv2_MPGjogDivider[AxisId] = device->PEv2.MPGjogDivider[AxisId];
 		}
 		/*if(ApplyIniSettings==false || PEv2_data->PEv2_AxisSignalOptions[AxisId]==0){
 			PEv2_data->PEv2_AxisSignalOptions[AxisId] = device->PEv2.AxisSignalOptions[AxisId];
