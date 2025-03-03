@@ -854,17 +854,17 @@ void PKIO_ReadIniFile(sPoKeysDevice* dev) {
 
 	int digitalCount = dev->info.iPinCount;
 	for (int i = 0; i < digitalCount; i++) {
-		strPrefix = "Pin_" + to_string(i) ;
-		IO_data->Pin[i].PinFunction = ini_read_int("POKEYS", strPrefix + "_Function", 0);
+		snprintf(key, sizeof(key), "Pin_%i_Function", i);
+		IO_data->Pin[i].PinFunction = ini_read_int("POKEYS", key, 0);
 	}
 
 	for (int i = 0; i < digitalCount; i++) {
-		strPrefix = "DigIn_" + to_string(i) ;
-		IO_data->Pin[i].digin_invert = ini_read_int("POKEYS", strPrefix + "_invert", 0);
+		snprintf(key, sizeof(key), "DigIn_%i_invert", i);
+		IO_data->Pin[i].digin_invert = ini_read_int("POKEYS", key, 0);
 	}
 	for (int i = 0; i < digitalCount; i++) {
-		strPrefix = "DigOut" + to_string(i) ;
-		IO_data->Pin[i].digout_invert = ini_read_int("POKEYS", strPrefix + "_invert", 0);
+		snprintf(key, sizeof(key), "DigOut_%i_invert", i);
+		IO_data->Pin[i].digout_invert = ini_read_int("POKEYS", key, 0);
 	}
 
 	int analogOutCount = dev->info.iPWMCount;
@@ -886,15 +886,17 @@ void PKIO_ReadIniFile(sPoKeysDevice* dev) {
 		IO_data->adcout[j].max_v = ini_read_float("POKEYS", key, 0);
 		
 		snprintf(key, sizeof(key), "AdcOut_%i_enable", j);
-		IO_data->adcout[j].enable = ini_read_float("POKEYS", key, 0);
+		*IO_data->adcout[j].enable = ini_read_float("POKEYS", key, 0);
 	}
 	IO_data->adcout_pwm_period = ini_read_int("POKEYS", "AdcOut_PWM_Period", 0);
 
 	int analogInCount = 7;
 	for (int j = 0; j < (analogInCount); j++) {
-		strPrefix = "AdcIn_" + to_string(j) ;
-		IO_data->adcin[j].scale = ini_read_float("POKEYS", strPrefix + "_scale", 1);
-		IO_data->adcin[j].offset = ini_read_float("POKEYS", strPrefix + "_offset", 0);
+		snprintf(key, sizeof(key), "AdcIn_%i_scale", j);
+		IO_data->adcin[j].scale = ini_read_float("POKEYS", key, 1);
+
+		snprintf(key, sizeof(key), "AdcIn_%i_offset", j);
+		IO_data->adcin[j].offset = ini_read_float("POKEYS", key, 0);
 	}
 }
 
@@ -903,24 +905,23 @@ void PKIO_WriteIniFile(sPoKeysDevice* dev){
 
 	int digitalCount = dev->info.iPinCount;
 	for (int i = 0; i < digitalCount; i++) {
-		snprintf(key, sizeof(key), "Pin_%i_Function", j); 
+		snprintf(key, sizeof(key), "Pin_%i_Function", i); 
 		ini_write_int("POKEYS", key, IO_data->Pin[i].PinFunction);
 	}
 
 	for (int i = 0; i < digitalCount; i++) {
-		snprintf(key, sizeof(key), "DigIn_%i_invert", j); 
+		snprintf(key, sizeof(key), "DigIn_%i_invert", i); 
 		ini_write_int("POKEYS", key, IO_data->Pin[i].digin_invert);
 	}
 
 	for (int i = 0; i < digitalCount; i++) {
 
-		snprintf(key, sizeof(key), "DigOut_%i_invert", j); 
+		snprintf(key, sizeof(key), "DigOut_%i_invert", i); 
 		ini_write_int("POKEYS", key, IO_data->Pin[i].digout_invert);
 	}
 
 	int analogOutCount = dev->info.iPWMCount;
 	for (j = 0; j < (analogOutCount); j++) {
-		strPrefix = "AdcOut_" + to_string(j) ;
 		snprintf(key, sizeof(key), "AdcOut_%i_offset", j); 
 		ini_write_float("POKEYS", key, IO_data->adcout[j].offset);
 
