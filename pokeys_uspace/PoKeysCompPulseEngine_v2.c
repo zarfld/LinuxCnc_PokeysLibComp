@@ -1197,9 +1197,6 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 
 
 
-#undef PEv2_digin_Emergency_invert
-#define PEv2_digin_Emergency_invert (PEv2_data->PEv2_digin_Emergency_invert)
-
 #undef PEv2_digin_Probe_invert
 #define PEv2_digin_Probe_invert (PEv2_data->PEv2_digin_Probe_invert)
 
@@ -1308,7 +1305,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		bm_HomeStatus = dev->PEv2.HomeStatus;	  // Home status (bit-mapped)
 		if (ApplyIniSettings == false) {
 
-			PEv2_data->PEv2_digout_AxisEnable_invert[i] = dev->PEv2.EmergencySwitchPolarity;
+			PEv2_data->PEv2_digin_Emergency_invert  = dev->PEv2.EmergencySwitchPolarity;
 		}
 
 		// Other inputs
@@ -2348,12 +2345,12 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 			PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 			PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 			PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
-			PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
+			PEv2_data->PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
 
 			PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 			PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 			PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
-			PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
+			PEv2_data->PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
 		}
 		else {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_StatusGet!=PK_OK || PK_PEv2_Status2Get(dev) != PK_OK\n", __FILE__, __FUNCTION__);
@@ -2900,7 +2897,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 		PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 		PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 		// PEv2_stepgen_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
-		PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
+		PEv2_data->PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
 		// PEv2_stepgen_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 	}
 	else {
