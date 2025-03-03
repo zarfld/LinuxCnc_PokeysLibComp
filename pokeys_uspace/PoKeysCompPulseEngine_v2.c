@@ -3135,8 +3135,8 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 			
 			PEv2_data->PEv2_stepgen_HOME_OFFSET[AxisId] = PEv2_data->PEv2_digin_Home_Offset[AxisId]  / PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] ;
 
-			PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]  = PEv2_data->PEv2_HomingSpeed[AxisId]  * PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId]  /100;
-			PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[AxisId]  = PEv2_data->PEv2_HomingReturnSpeed[AxisId]  * PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]  /100;
+			PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]  = *PEv2_data->PEv2_HomingSpeed[AxisId]  * PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId]  /100;
+			PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[AxisId]  = *PEv2_data->PEv2_HomingReturnSpeed[AxisId]  * PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]  /100;
 		}
 
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MPGjogMultiplier[AxisId]==0){
