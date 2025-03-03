@@ -2276,7 +2276,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 		}
 
 		if (PEv2_data->PEv2_digin_Probe_Pin != 0) { // check if pin is parametrized in HAL
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].PinFunction = %d\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Probe_Pin - 1, dev->Pins[PEv2_digin_Probe_Pin - 1].PinFunction);
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].PinFunction = %d\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Probe_Pin - 1, dev->Pins[PEv2_data->PEv2_digin_Probe_Pin - 1].PinFunction);
 			if (dev->Pins[PEv2_data->PEv2_digin_Probe_Pin - 1].PinFunction != PK_PinCap_digitalInput) {
 				dev->Pins[PEv2_data->PEv2_digin_Probe_Pin - 1].PinFunction = PK_PinCap_digitalInput;
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SL_SetPinFunction(dev, %d, PK_PinCap_digitalInput)\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Probe_Pin - 1);
