@@ -849,7 +849,8 @@ void PKIO_Setup(sPoKeysDevice* dev) {
 
 void PKIO_ReadIniFile(sPoKeysDevice* dev) {
 
-	char *strPrefix="";
+
+	char key[256]; // Puffer für den zusammengesetzten String
 
 	int digitalCount = dev->info.iPinCount;
 	for (int i = 0; i < digitalCount; i++) {
@@ -868,15 +869,26 @@ void PKIO_ReadIniFile(sPoKeysDevice* dev) {
 
 	int analogOutCount = dev->info.iPWMCount;
 	for (int j = 0; j < (analogOutCount); j++) {
-		strPrefix = "AdcOut_" + to_string(j) ;
-		IO_data->adcout[j].offset = ini_read_float("POKEYS", strPrefix + "_offset", 0);
-		IO_data->adcout[j].scale = ini_read_float("POKEYS", strPrefix + "_scale", 1);
-		IO_data->adcout[j].high_limit = ini_read_float("POKEYS", strPrefix + "_high_limit", 5);
-		IO_data->adcout[j].low_limit = ini_read_float("POKEYS", strPrefix + "_low_limit", 0);
-		IO_data->adcout[j].max_v = ini_read_float("POKEYS", strPrefix + "_max_v", 5);
-		IO_data->adcout[j].enable = ini_read_int("POKEYS", strPrefix + "_enable", 0);
+		
+		snprintf(key, sizeof(key), "AdcOut_%i_offset", j); 
+		IO_data->adcin[j].offset = ini_read_float("POKEYS", key, 0);
+
+		snprintf(key, sizeof(key), "AdcOut_%i_scale", j);
+		IO_data->adcout[j].scale = ini_read_float("POKEYS", key, 0);
+
+		snprintf(key, sizeof(key), "AdcOut_%i_high_limit", j);
+		IO_data->adcout[j].high_limit = ini_read_float("POKEYS", key, 0);
+		
+		snprintf(key, sizeof(key), "AdcOut_%i_low_limit", j);
+		IO_data->adcout[j].low_limit = ini_read_float("POKEYS", key, 0);
+		
+		snprintf(key, sizeof(key), "AdcOut_%i_max_v", j);
+		IO_data->adcout[j].max_v = ini_read_float("POKEYS", key, 0);
+		
+		snprintf(key, sizeof(key), "AdcOut_%i_enable", j);
+		IO_data->adcout[j].enable = ini_read_float("POKEYS", key, 0);
 	}
-	IO_data->adcout_pwm_period = ini_read_int("POKEYS", "adcout_pwm_period", 0);
+	IO_data->adcout_pwm_period = ini_read_int("POKEYS", "AdcOut_PWM_Period", 0);
 
 	int analogInCount = 7;
 	for (int j = 0; j < (analogInCount); j++) {
@@ -908,20 +920,33 @@ void PKIO_WriteIniFile(sPoKeysDevice* dev){
 	int analogOutCount = dev->info.iPWMCount;
 	for (j = 0; j < (analogOutCount); j++) {
 		strPrefix = "AdcOut_" + to_string(j) ;
-		ini_write_float("POKEYS", strPrefix +"_offset", IO_data->adcout[j].offset);
-		ini_write_float("POKEYS", strPrefix +"_scale", IO_data->adcout[j].scale);
-		ini_write_float("POKEYS", strPrefix +"_high_limit", IO_data->adcout[j].high_limit);
-		ini_write_float("POKEYS", strPrefix +"_low_limit", IO_data->adcout[j].low_limit);
-		ini_write_float("POKEYS", strPrefix +"_max_v", IO_data->adcout[j].max_v);
-		ini_write_int("POKEYS", strPrefix +"_enable", IO_data->adcout[j].enable);
+		snprintf(key, sizeof(key), "AdcOut_%i_offset", j); 
+		ini_write_float("POKEYS", key", IO_data->adcout[j].offset);
+
+		snprintf(key, sizeof(key), "AdcOut_%i_scale", j);
+		ini_write_float("POKEYS", key, IO_data->adcout[j].scale);
+
+		snprintf(key, sizeof(key), "AdcOut_%i_high_limit", j);
+		ini_write_float("POKEYS", key, IO_data->adcout[j].high_limit);
+		
+		snprintf(key, sizeof(key), "AdcOut_%i_low_limit", j);
+		ini_write_float("POKEYS", key, IO_data->adcout[j].low_limit);
+		
+		snprintf(key, sizeof(key), "AdcOut_%i_max_v", j);
+		ini_write_float("POKEYS", key, IO_data->adcout[j].max_v);
+		
+		snprintf(key, sizeof(key), "AdcOut_%i_enable", j);
+		ini_write_int("POKEYS", key, IO_data->adcout[j].enable);
 	}
-	ini_write_int("POKEYS", "adcout_pwm_period", IO_data->adcout_pwm_period);
+	ini_write_int("POKEYS", "AdcOut_PWM_Period", IO_data->adcout_pwm_period);
 
 	int analogInCount = 7;
 	for (j = 0; j < (analogInCount); j++) {
-		strPrefix = "AdcIn_" + to_string(j) ;
-		ini_write_float("POKEYS", strPrefix +"_scale", IO_data->adcin[j].scale);
-		ini_write_float("POKEYS", strPrefix +"_offset", IO_data->adcin[j].offset);
+		snprintf(key, sizeof(key), "AdcIn_%i_scale", j);
+		ini_write_float("POKEYS", key, IO_data->adcin[j].scale);
+
+		snprintf(key, sizeof(key), "AdcIn_%i_offset", j);
+		ini_write_float("POKEYS", key, IO_data->adcin[j].offset);
 	}
 }
 
