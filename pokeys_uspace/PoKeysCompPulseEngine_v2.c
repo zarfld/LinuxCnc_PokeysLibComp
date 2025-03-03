@@ -44,13 +44,13 @@ typedef struct {
 	hal_bit_t* PEv2_joint_wheel_jog_active[8];
 	hal_s32_t* PEv2_stepgen_TYPE[8];
 	hal_float_t* PEv2_stepgen_HOME[8];
-	hal_float_t* PEv2_stepgen_STEPGEN_MAXVEL[8];
-	hal_float_t* PEv2_stepgen_STEPGEN_MAXACCEL[8];
+	hal_float_t PEv2_stepgen_STEPGEN_MAXVEL[8];
+	hal_float_t PEv2_stepgen_STEPGEN_MAXACCEL[8];
 	hal_float_t* PEv2_params_Feedback_Encoder_Id[8];
 	hal_float_t* PEv2_stepgen_DEADBAND[8];
 	hal_float_t* PEv2_stepgen_MAX_OUTPUT[8];
 	hal_float_t* PEv2_stepgen_ENCODER_SCALE[8];
-	hal_float_t* PEv2_stepgen_STEP_SCALE[8];
+	hal_float_t PEv2_stepgen_STEP_SCALE[8];
 	hal_float_t* PEv2_stepgen_MIN_LIMIT[8];
 	hal_float_t* PEv2_stepgen_MAX_LIMIT[8];
 	hal_float_t* PEv2_stepgen_HOME_OFFSET[8];
@@ -390,12 +390,12 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		if (r != 0)
 			return r;
 
-		r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[j]), comp_id,
+		r = hal_param_float_newf(HAL_RW, &(PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[j]), comp_id,
 			"%s.PEv2.%01d.stepgen.STEPGEN-MAXVEL", prefix, j);
 		if (r != 0)
 			return r;
 
-		r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[j]), comp_id,
+		r = hal_param_float_newf(HAL_RW, &(PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[j]), comp_id,
 			"%s.PEv2.%01d.stepgen.STEPGEN-MAXACCEL", prefix, j);
 		if (r != 0)
 			return r;
@@ -420,7 +420,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		if (r != 0)
 			return r;
 
-		r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_STEP_SCALE[j]), comp_id,
+		r = hal_param_float_newf(HAL_RW, &(PEv2_data->PEv2_stepgen_STEP_SCALE[j]), comp_id,
 			"%s.PEv2.%01d.stepgen.STEP-SCALE", prefix, j);
 		if (r != 0)
 			return r;
@@ -1025,7 +1025,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #undef PEv2_stepgen_HOME
 #define PEv2_stepgen_HOME(i) (0 + *(PEv2_data->PEv2_stepgen_HOME[i]))
 #undef PEv2_stepgen_STEPGEN_MAXVEL
-#define PEv2_stepgen_STEPGEN_MAXVEL(i) (0 + *(PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[i]))
+#define PEv2_stepgen_STEPGEN_MAXVEL(i) (0 + (PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[i]))
 #undef PEv2_stepgen_STEPGEN_MAXACCEL
 #define PEv2_stepgen_STEPGEN_MAXACCEL(i) (0 + *(PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[i]))
 #undef PEv2_params_Feedback_Encoder_Id
