@@ -1077,8 +1077,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 
 
 
-#undef PEv2_PulseEngineState
-#define PEv2_PulseEngineState (*PEv2_data->PEv2_PulseEngineState)
+
 #undef PEv2_digin_Error_in
 #define PEv2_digin_Error_in(i) (*(PEv2_data->PEv2_digin_Error_in[i]))
 #undef PEv2_digin_Error_in_not
@@ -2303,8 +2302,8 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 			dev->PEv2.ChargePumpEnabled = *PEv2_data->PEv2_ChargePumpEnabled;
 			DoPeSetup = true;
 		}
-		if (dev->PEv2.PulseGeneratorType != PEv2_PulseGeneratorType) {
-			dev->PEv2.PulseGeneratorType = PEv2_PulseGeneratorType;
+		if (dev->PEv2.PulseGeneratorType != PEv2_data->PEv2_PulseGeneratorType) {
+			dev->PEv2.PulseGeneratorType = PEv2_data->PEv2_PulseGeneratorType;
 			DoPeSetup = true;
 		}
 		if (dev->PEv2.EmergencySwitchPolarity != PEv2_data->PEv2_digin_Emergency_invert) {
