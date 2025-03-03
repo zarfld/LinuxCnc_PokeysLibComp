@@ -1042,8 +1042,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #define PEv2_stepgen_MIN_LIMIT(i) (0 + *(PEv2_data->PEv2_stepgen_MIN_LIMIT[i]))
 #undef PEv2_stepgen_MAX_LIMIT
 #define PEv2_stepgen_MAX_LIMIT(i) (0 + *(PEv2_data->PEv2_stepgen_MAX_LIMIT[i]))
-#undef PEv2_stepgen_HOME_OFFSET
-#define PEv2_stepgen_HOME_OFFSET(i) (0 + *(PEv2_data->PEv2_stepgen_HOME_OFFSET[i]))
+
 #undef PEv2_stepgen_HOME_SEARCH_VEL
 #define PEv2_stepgen_HOME_SEARCH_VEL(i) (0 + *(PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[i]))
 #undef PEv2_stepgen_HOME_LATCH_VEL
@@ -2512,7 +2511,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 					doAxisConfig = true;
 				}
 
-				PEv2_digin_Home_Offset(i) = PEv2_stepgen_HOME_OFFSET(i) * PEv2_stepgen_STEP_SCALE(i); // Home position offset
+				PEv2_digin_Home_Offset(i) = PEv2_data->PEv2_stepgen_HOME_OFFSET[i] * PEv2_stepgen_STEP_SCALE(i); // Home position offset
 
 				if (PEv2_stepgen_HOME_SEARCH_VEL(i) > 0 && PEv2_stepgen_STEPGEN_MAXVEL(i) > 0) {
 					PEv2_HomingSpeed(i) = abs(PEv2_stepgen_HOME_SEARCH_VEL(i) * 100 / PEv2_stepgen_STEPGEN_MAXVEL(i));		 // Homing speed per axis (in %)
@@ -3128,16 +3127,16 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 			PEv2_data->PEv2_SoftLimitMaximum[AxisId] = device->PEv2.SoftLimitMaximum[AxisId];
 		}
 
-		if (PEv2_stepgen_STEP_SCALE(AxisId) != 0) {
+		if (PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId]  != 0) {
 			PEv2_data->PEv2_MPGjogEncoder[AxisId] = device->PEv2.MPGjogEncoder[AxisId];
 
-			PEv2_stepgen_STEPGEN_MAXVEL(AxisId) = device->PEv2.MaxSpeed[AxisId] / PEv2_stepgen_STEP_SCALE(AxisId);
-			PEv2_stepgen_STEPGEN_MAXACCEL(AxisId) = device->PEv2.MaxAcceleration[AxisId] / PEv2_stepgen_STEP_SCALE(AxisId);
+			PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId]  = device->PEv2.MaxSpeed[AxisId] / PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] ;
+			PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[AxisId]  = device->PEv2.MaxAcceleration[AxisId] / PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] ;
 			
-			PEv2_stepgen_HOME_OFFSET(AxisId) = PEv2_digin_Home_Offset(AxisId) / PEv2_stepgen_STEP_SCALE(AxisId);
+			PEv2_data->PEv2_stepgen_HOME_OFFSET[AxisId] = PEv2_data->PEv2_digin_Home_Offset[AxisId]  / PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] ;
 
-			PEv2_stepgen_HOME_SEARCH_VEL(AxisId) = PEv2_HomingSpeed(AxisId) * PEv2_stepgen_STEPGEN_MAXVEL(AxisId) /100;
-			PEv2_stepgen_HOME_LATCH_VEL(AxisId) = PEv2_HomingReturnSpeed(AxisId) * PEv2_stepgen_HOME_SEARCH_VEL(AxisId) /100;
+			PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]  = PEv2_data->PEv2_HomingSpeed[AxisId]  * PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId]  /100;
+			PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[AxisId]  = PEv2_data->PEv2_HomingReturnSpeed[AxisId]  * PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]  /100;
 		}
 
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MPGjogMultiplier[AxisId]==0){
