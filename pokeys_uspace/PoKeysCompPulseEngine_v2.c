@@ -1074,11 +1074,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #define PEv2_digout_AxisEnable_out(i) (0 + *(PEv2_data->PEv2_digout_AxisEnable_out[i]))
 #undef PEv2_HomeBackOffDistance
 #define PEv2_HomeBackOffDistance(i) (*(PEv2_data->PEv2_HomeBackOffDistance[i]))
-#undef PEv2_PulseEngineEnabled
-#define PEv2_PulseEngineEnabled (*PEv2_data->PEv2_PulseEngineEnabled)
 
-#undef PEv2_PG_swap_stepdir
-#define PEv2_PG_swap_stepdir (0 + *PEv2_data->PEv2_PG_swap_stepdir)
 
 #undef PEv2_ChargePumpEnabled
 #define PEv2_ChargePumpEnabled (*PEv2_data->PEv2_ChargePumpEnabled)
@@ -2220,19 +2216,19 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 		case PK_DeviceID_PoKeys57CNC:
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_PoKeys57CNC\n", __FILE__, __FUNCTION__);
 			PEv2_PulseEngineEnabled = 8;
-			*PEv2_data->PEv2_PG_extended_io = 1;
+			PEv2_data->PEv2_PG_extended_io = 1;
 			break;
 		case PK_DeviceID_PoKeys57CNCdb25:
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_PoKeys57CNCdb25\n", __FILE__, __FUNCTION__);
-			*PEv2_data->PEv2_PG_extended_io = 0;
+			PEv2_data->PEv2_PG_extended_io = 0;
 			break;
 		case PK_DeviceID_57U:
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_57U\n", __FILE__, __FUNCTION__);
-			*PEv2_data->PEv2_PG_extended_io = 0;
+			PEv2_data->PEv2_PG_extended_io = 0;
 			break;
 		case PK_DeviceID_57E:
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_57E\n", __FILE__, __FUNCTION__);
-			*PEv2_data->PEv2_PG_extended_io = 0;
+			PEv2_data->PEv2_PG_extended_io = 0;
 			break;
 		}
 
@@ -2293,15 +2289,15 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 			dev->PEv2.PulseEngineActivated = 1;
 			DoPeSetup = true;
 		}
-		if (PEv2_PulseGeneratorType == 0) {
+		if (PEv2_data->PEv2_PulseGeneratorType == 0) {
 
 			if (PEv2_PG_swap_stepdir != false) {
-				PEv2_PulseGeneratorType = Set_BitOfByte(PEv2_PulseGeneratorType, 6, true); // swap step / dir signals
+				PEv2_data->PEv2_PulseGeneratorType = Set_BitOfByte(PEv2_data->PEv2_PulseGeneratorType, 6, true); // swap step / dir signals
 				DoPeSetup = true;
 			}
 
-			if (*PEv2_data->PEv2_PG_extended_io != 0) {
-				PEv2_PulseGeneratorType = Set_BitOfByte(PEv2_PulseGeneratorType, 7, true); // extended io
+			if (PEv2_data->PEv2_PG_extended_io != 0) {
+				PEv2_data->PEv2_PulseGeneratorType = Set_BitOfByte(PEv2_data->PEv2_PulseGeneratorType, 7, true); // extended io
 				DoPeSetup = true;
 			}
 		}
