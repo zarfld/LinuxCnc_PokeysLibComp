@@ -280,13 +280,13 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		if (r != 0)
 			return r;
 
-		r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_SoftLimitMaximum[j]), comp_id,
+		r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_SoftLimitMaximum[j]), comp_id,
 			"%s.PEv2.%01d.SoftLimitMaximum", prefix, j);
 		if (r != 0)
 			return r;
 
-		r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_SoftLimitMinimum[j]), comp_id,
-			"%s.PEv2.%01d.SoftLimitMinimum", prefix, j);
+		r = hal_pin_u32_newf(HAL_RW, &(PEv2_data->PEv2_SoftLimitMinimum[j]), comp_id,
+			"%s.hal_param_u32_newf.%01d.SoftLimitMinimum", prefix, j);
 		if (r != 0)
 			return r;
 
@@ -2972,7 +2972,7 @@ int32_t PEv2_AdditionalParametersGet(sPoKeysDevice * device){
 	if (PK_PEv2_AdditionalParametersGet(device) == PK_OK) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersGet() == PK_OK\n", __FILE__, __FUNCTION__);
 		if(ApplyIniSettings==false || PEv2_data->PEv2_digin_Emergency_Pin==0){
-			PEv2_data->PEv2_digin_Emergency_Pin = dev->PEv2.EmergencyInputPin;
+			PEv2_data->PEv2_digin_Emergency_Pin = device->PEv2.EmergencyInputPin;
 		}
 	}
 	else {
