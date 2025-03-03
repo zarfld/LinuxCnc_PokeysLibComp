@@ -3132,11 +3132,11 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MPGjogMultiplier[AxisId]==0){
 			PEv2_data->PEv2_MPGjogMultiplier[AxisId] = device->PEv2.MPGjogMultiplier[AxisId];
 		}
-		if(ApplyIniSettings==false || PEv2_data->PEv2_AxisEnableOutputPins[AxisId]==0){
-			PEv2_data->PEv2_AxisEnableOutputPins[AxisId] = device->PEv2.AxisEnableOutputPins[AxisId];
+		if(ApplyIniSettings==false || PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId]==0){
+			PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] = device->PEv2.AxisEnableOutputPins[AxisId];
 		}
-		if(ApplyIniSettings==false || PEv2_data->PEv2_InvertAxisEnable[AxisId]==0){
-			PEv2_data->PEv2_InvertAxisEnable[AxisId] = device->PEv2.InvertAxisEnable[AxisId];
+		if(ApplyIniSettings==false || PEv2_data->PEv2_digout_AxisEnable_invert[AxisId]==0){
+			PEv2_data->PEv2_digout_AxisEnable_invert[AxisId] = device->PEv2.InvertAxisEnable[AxisId];
 		}
 		if(ApplyIniSettings==false || PEv2_data->PEv2_digin_LimitN_Filter[AxisId]==0){
 			PEv2_data->PEv2_digin_LimitN_Filter[AxisId] = device->PEv2.FilterLimitMSwitch[AxisId];
@@ -3156,9 +3156,9 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MPGjogDivider[AxisId]==0){
 			PEv2_data->PEv2_MPGjogDivider[AxisId] = device->PEv2.MPGjogDivider[AxisId];
 		}
-		if(ApplyIniSettings==false || PEv2_data->PEv2_AxisSignalOptions[AxisId]==0){
+		/*if(ApplyIniSettings==false || PEv2_data->PEv2_AxisSignalOptions[AxisId]==0){
 			PEv2_data->PEv2_AxisSignalOptions[AxisId] = device->PEv2.AxisSignalOptions[AxisId];
-		}
+		}*/
 		if(ApplyIniSettings==false || PEv2_data->PEv2_digin_Probe_Filter[AxisId]==0){
 			PEv2_data->PEv2_digin_Probe_Filter[AxisId] = device->PEv2.FilterProbeInput;
 		}
