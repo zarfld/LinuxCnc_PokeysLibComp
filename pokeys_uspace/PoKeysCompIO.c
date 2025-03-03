@@ -921,7 +921,7 @@ void PKIO_WriteIniFile(sPoKeysDevice* dev){
 	}
 
 	int analogOutCount = dev->info.iPWMCount;
-	for (j = 0; j < (analogOutCount); j++) {
+	for (int j = 0; j < (analogOutCount); j++) {
 		snprintf(key, sizeof(key), "AdcOut_%i_offset", j); 
 		ini_write_float("POKEYS", key, IO_data->adcout[j].offset);
 
