@@ -2334,12 +2334,12 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 		if (PK_PEv2_StatusGet(dev) == PK_OK && PK_PEv2_Status2Get(dev) == PK_OK) {
 			PEv2_data->PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 			PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
-			PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
+			PEv2_data->PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 			PEv2_data->PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
 
 			PEv2_data->PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 			PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
-			PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
+			PEv2_data->PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 			PEv2_data->PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
 		}
 		else {
