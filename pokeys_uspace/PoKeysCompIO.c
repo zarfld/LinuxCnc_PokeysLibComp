@@ -849,7 +849,7 @@ void PKIO_Setup(sPoKeysDevice* dev) {
 
 void PKIO_ReadIniFile(sPoKeysDevice* dev) {
 
-	char strPrefix="";
+	char *strPrefix="";
 
 	int digitalCount = dev->info.iPinCount;
 	for (int i = 0; i < digitalCount; i++) {
@@ -867,7 +867,7 @@ void PKIO_ReadIniFile(sPoKeysDevice* dev) {
 	}
 
 	int analogOutCount = dev->info.iPWMCount;
-	for (j = 0; j < (analogOutCount); j++) {
+	for (int j = 0; j < (analogOutCount); j++) {
 		strPrefix = "AdcOut_" + to_string(j) ;
 		IO_data->adcout[j].offset = ini_read_float("POKEYS", strPrefix + "_offset", 0);
 		IO_data->adcout[j].scale = ini_read_float("POKEYS", strPrefix + "_scale", 1);
@@ -879,10 +879,10 @@ void PKIO_ReadIniFile(sPoKeysDevice* dev) {
 	IO_data->adcout_pwm_period = ini_read_int("POKEYS", "adcout_pwm_period", 0);
 
 	int analogInCount = 7;
-	for (j = 0; j < (analogInCount); j++) {
+	for (int j = 0; j < (analogInCount); j++) {
 		strPrefix = "AdcIn_" + to_string(j) ;
-		IO_data->adcin[j].scale = ini_read_float("POKEYS", strPrefix + "_scale", 1, j);
-		IO_data->adcin[j].offset = ini_read_float("POKEYS", strPrefix + "_offset", 0, j);
+		IO_data->adcin[j].scale = ini_read_float("POKEYS", strPrefix + "_scale", 1);
+		IO_data->adcin[j].offset = ini_read_float("POKEYS", strPrefix + "_offset", 0);
 	}
 }
 
