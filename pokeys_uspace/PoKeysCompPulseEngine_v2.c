@@ -127,7 +127,7 @@ typedef struct {
 	hal_u32_t PEv2_PulseGeneratorType;
 	hal_bit_t PEv2_PG_swap_stepdir;
 	hal_bit_t PEv2_PG_extended_io;
-	hal_u32_t* PEv2_ChargePumpEnabled;
+	hal_u32_t PEv2_ChargePumpEnabled;
 	hal_u32_t* PEv2_PulseEngineActivated;
 	hal_u32_t* PEv2_PulseEngineState;
 	hal_u32_t* PEv2_LimitOverride;
@@ -553,7 +553,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		"%s.PEv2.PG-extended-io", prefix);
 	if (r != 0)
 		return r;
-	r = hal_pin_u32_newf(HAL_IO, &(*PEv2_data->PEv2_ChargePumpEnabled), comp_id,
+	r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_ChargePumpEnabled), comp_id,
 		"%s.PEv2.ChargePumpEnabled", prefix);
 	if (r != 0)
 		return r;
@@ -1286,7 +1286,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		PulseEngineState = dev->PEv2.PulseEngineState;
 		*PEv2_data->PEv2_PulseEngineState = PulseEngineState;
 		PEv2_PulseEngineStateSetup = PulseEngineState;
-		*PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+		PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 		PEv2_data->PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 
 		// Switch states
@@ -2298,8 +2298,8 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 			}
 		}
 
-		if (dev->PEv2.ChargePumpEnabled != *PEv2_data->PEv2_ChargePumpEnabled) {
-			dev->PEv2.ChargePumpEnabled = *PEv2_data->PEv2_ChargePumpEnabled;
+		if (dev->PEv2.ChargePumpEnabled != PEv2_data->PEv2_ChargePumpEnabled) {
+			dev->PEv2.ChargePumpEnabled = PEv2_data->PEv2_ChargePumpEnabled;
 			DoPeSetup = true;
 		}
 		if (dev->PEv2.PulseGeneratorType != PEv2_data->PEv2_PulseGeneratorType) {
@@ -2333,12 +2333,12 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 	else {
 		if (PK_PEv2_StatusGet(dev) == PK_OK && PK_PEv2_Status2Get(dev) == PK_OK) {
 			PEv2_data->PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-			*PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+			PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 			PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 			PEv2_data->PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
 
 			PEv2_data->PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-			*PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+			PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 			PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 			PEv2_data->PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
 		}
