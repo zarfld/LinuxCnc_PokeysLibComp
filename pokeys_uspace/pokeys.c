@@ -27,6 +27,7 @@
 static int comp_id = 0;
 sPoKeysDevice* dev = NULL;
 
+
 #ifdef MODULE_INFO
 MODULE_INFO(linuxcnc, "component:pokeys:(uSpace)PoKeys IO driver");
 MODULE_INFO(linuxcnc, "pin:enum_usb_dev:u32:0:out::None:None");

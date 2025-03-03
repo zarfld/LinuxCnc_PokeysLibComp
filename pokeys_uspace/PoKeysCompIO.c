@@ -4,6 +4,8 @@
 #include "hal.h"
 #include "stdio.h"
 
+#include "pokeys_ini.h"
+
 extern unsigned int sleepdur;
 extern bool ApplyIniSettings;
 
@@ -843,6 +845,62 @@ void PKIO_Setup(sPoKeysDevice* dev) {
 	}
 
 
+}
+
+void PKIO_ReadIniFile(sPoKeysDevice* dev) {
+
+	int digitalCount = dev->info.iPinCount;
+	for (int i = 0; i < digitalCount; i++) {
+		IO_data->Pin[i].PinFunction = ini_read_int("POKEYS", "Pin_%i_Function", 0, i);
+		IO_data->Pin[i].digin_invert = ini_read_int("POKEYS", "Pin_%i_digin_invert", 0, i);
+		IO_data->Pin[i].digout_invert = ini_read_int("POKEYS", "Pin_%i_digout_invert", 0, i);
+		//IO_data->Pin[i].digin_invert
+		//IO_data->Pin[i].digout_invert
+
+	}
+
+	int analogOutCount = dev->info.iPWMCount;
+	for (j = 0; j < (analogOutCount); j++) {
+		IO_data->adcout[j].offset = ini_read_float("POKEYS", "adcout_%i_offset", 0, j);
+		IO_data->adcout[j].scale = ini_read_float("POKEYS", "adcout_%i_scale", 1, j);
+		IO_data->adcout[j].high_limit = ini_read_float("POKEYS", "adcout_%i_high_limit", 5, j);
+		IO_data->adcout[j].low_limit = ini_read_float("POKEYS", "adcout_%i_low_limit", 0, j);
+		IO_data->adcout[j].max_v = ini_read_float("POKEYS", "adcout_%i_max_v", 5, j);
+		IO_data->adcout[j].enable = ini_read_int("POKEYS", "adcout_%i_enable", 0, j);
+	}
+	IO_data->adcout_pwm_period = ini_read_int("POKEYS", "adcout_pwm_period", 0, 0);
+
+	int analogInCount = 7;
+	for (j = 0; j < (analogInCount); j++) {
+		IO_data->adcin[j].scale = ini_read_float("POKEYS", "adcin_%i_scale", 1, j);
+		IO_data->adcin[j].offset = ini_read_float("POKEYS", "adcin_%i_offset", 0, j);
+	}
+}
+
+void PKIO_WriteIniFile(sPoKeysDevice* dev){
+	int digitalCount = dev->info.iPinCount;
+	for (int i = 0; i < digitalCount; i++) {
+		ini_write_int("POKEYS", "Pin_%i_Function", IO_data->Pin[i].PinFunction, i);
+		ini_write_int("POKEYS", "Pin_%i_digin_invert", IO_data->Pin[i].digin_invert, i);
+		ini_write_int("POKEYS", "Pin_%i_digout_invert", IO_data->Pin[i].digout_invert, i);
+	}
+
+	int analogOutCount = dev->info.iPWMCount;
+	for (j = 0; j < (analogOutCount); j++) {
+		ini_write_float("POKEYS", "adcout_%i_offset", IO_data->adcout[j].offset, j);
+		ini_write_float("POKEYS", "adcout_%i_scale", IO_data->adcout[j].scale, j);
+		ini_write_float("POKEYS", "adcout_%i_high_limit", IO_data->adcout[j].high_limit, j);
+		ini_write_float("POKEYS", "adcout_%i_low_limit", IO_data->adcout[j].low_limit, j);
+		ini_write_float("POKEYS", "adcout_%i_max_v", IO_data->adcout[j].max_v, j);
+		ini_write_int("POKEYS", "adcout_%i_enable", IO_data->adcout[j].enable, j);
+	}
+	ini_write_int("POKEYS", "adcout_pwm_period", IO_data->adcout_pwm_period, 0);
+
+	int analogInCount = 7;
+	for (j = 0; j < (analogInCount); j++) {
+		ini_write_float("POKEYS", "adcin_%i_scale", IO_data->adcin[j].scale, j);
+		ini_write_float("POKEYS", "adcin_%i_offset", IO_data->adcin[j].offset, j);
+	}
 }
 
 #ifdef MODULE_INFO

@@ -529,10 +529,18 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		if (r != 0)
 			return r;
 	}
+
+	/*
 	r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_PulseEngineEnabled), comp_id,
 		"%s.PEv2.PulseEngineEnabled", prefix);
 	if (r != 0)
+		return r;*/
+
+	r = hal_param_u32_newf(HAL_RW,&(PEv2_data->PEv2_PulseEngineEnabled), comp_id,
+		"%s.PEv2.PulseEngineEnabled", prefix);
+	if (r != 0)
 		return r;
+
 	r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_PulseGeneratorType), comp_id,
 		"%s.PEv2.PulseGeneratorType", prefix);
 	if (r != 0)
@@ -638,14 +646,12 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 			"%s.PEv2.%01d.digout.AxisEnabled.out", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++) {
+
 		r = hal_pin_bit_newf(HAL_OUT, &(PEv2_data->PEv2_digin_AxisEnabled_in[j]), comp_id,
 			"%s.PEv2.%01d.digin.AxisEnabled.in", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++) {
+
 		r = hal_pin_bit_newf(HAL_OUT, &(PEv2_data->PEv2_digout_LimitOverride_out[j]), comp_id,
 			"%s.PEv2.%01d.digout.LimitOverride.out", prefix, j);
 		if (r != 0)
@@ -664,8 +670,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 			"%s.PEv2.digout.ExternalRelay-%01d.out", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++) {
+
 		r = hal_pin_bit_newf(HAL_IN, &(PEv2_data->PEv2_digout_ExternalOC_out[j]), comp_id,
 			"%s.PEv2.digout.ExternalOC-%01d.out", prefix, j);
 		if (r != 0)
@@ -692,14 +697,12 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 			"%s.PEv2.%01d.BacklashWidth", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++) {
+
 		r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_BacklashRegister[j]), comp_id,
 			"%s.PEv2.%01d.BacklashRegister", prefix, j);
 		if (r != 0)
 			return r;
-	}
-	for (j = 0; j < (8); j++) {
+
 		r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_BacklashAcceleration[j]), comp_id,
 			"%s.PEv2.%01d.BacklashAcceleration", prefix, j);
 		if (r != 0)
@@ -2101,7 +2104,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, PEv2_digout_ExternalOC_out(5));
 		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6, PEv2_digout_ExternalOC_out(6));
 		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7, PEv2_digout_ExternalOC_out(7));
-*/
+	*/
 
 	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, PEv2_digout_ExternalRelay_out(1));
 	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, PEv2_digout_ExternalRelay_out(3));
@@ -2665,6 +2668,15 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				dev->PEv2.PinHomeSwitch[i] = 0;
 			}
 
+			if (PEv2_data->PEv2_digin_Home_OnLimitN[i] == true) {
+				AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 3, true); // PK_ASO_SWITCH_COMBINED_LN_H = (1 << 3),   // 8 Home switch is shared with Limit- switch
+				doAxisConfig = true;
+			}
+			if (PEv2_data->PEv2_digin_Home_OnLimitP[i] == true) {
+				AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 4, true); // PK_ASO_SWITCH_COMBINED_LP_H = (1 << 4),   // 16 Home switch is shared with Limit+ switch
+				doAxisConfig = true;
+			}
+
 			if (PEv2_data->PEv2_digin_Home_invert[i] == true) {
 				AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 7, true); // PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
 				doAxisConfig = true;
@@ -2919,6 +2931,21 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 		}
 		usleep(sleepdur);
 	}
+}
+
+void PKPEv2_ReadIniFile(sPoKeysDevice* dev){
+	
+	PEv2_data->PEv2_digin_Probe_Pin = ini_read_int("PEv2", "PEv2_ProbeInput", 0);
+	PEv2_data->PEv2_digin_Probe_invert = ini_read_int("PEv2", "PEv2_ProbeInputPolarity", 0);
+
+	PEv2_data->PEv2_digin_Emergency_Pin = ini_read_int("PEv2", "PEv2_EmergencyInputPin", 0);
+	PEv2_data->PEv2_digin_Emergency_invert = ini_read_int("PEv2", "PEv2_EmergencyInputPolarity", 0);
+
+	*PEv2_data->PEv2_PulseGeneratorType = ini_read_int("PEv2", "PEv2_PulseGeneratorType", 0);
+	*PEv2_data->PEv2_PulseEngineEnabled = ini_read_int("PEv2", "PEv2_PulseEngineEnabled", 0);
+	*PEv2_data->PEv2_ChargePumpEnabled = ini_read_int("PEv2", "PEv2_ChargePumpEnabled", 0);
+	*PEv2_data->PEv2_PulseEngineBufferSize = ini_read_int("PEv2", "PEv2_PulseEngineBufferSize", 0);
+
 }
 
 #ifdef MODULE_INFO
