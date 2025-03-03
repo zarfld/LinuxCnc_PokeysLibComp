@@ -124,9 +124,9 @@ typedef struct {
 	hal_bit_t* PEv2_digin_Home_DedicatedInput[8];
 	hal_bit_t* PEv2_digout_AxisEnable_out[8];
 	hal_u32_t* PEv2_PulseEngineEnabled;
-	hal_u32_t* PEv2_PulseGeneratorType;
-	hal_bit_t* PEv2_PG_swap_stepdir;
-	hal_bit_t* PEv2_PG_extended_io;
+	hal_u32_t PEv2_PulseGeneratorType;
+	hal_bit_t PEv2_PG_swap_stepdir;
+	hal_bit_t PEv2_PG_extended_io;
 	hal_u32_t* PEv2_ChargePumpEnabled;
 	hal_u32_t* PEv2_PulseEngineActivated;
 	hal_u32_t* PEv2_PulseEngineState;
@@ -541,7 +541,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 	if (r != 0)
 		return r;
 
-	r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_PulseGeneratorType), comp_id,
+	r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_PulseGeneratorType), comp_id,
 		"%s.PEv2.PulseGeneratorType", prefix);
 	if (r != 0)
 		return r;
@@ -1076,8 +1076,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #define PEv2_HomeBackOffDistance(i) (*(PEv2_data->PEv2_HomeBackOffDistance[i]))
 #undef PEv2_PulseEngineEnabled
 #define PEv2_PulseEngineEnabled (*PEv2_data->PEv2_PulseEngineEnabled)
-#undef PEv2_PulseGeneratorType
-#define PEv2_PulseGeneratorType (*PEv2_data->PEv2_PulseGeneratorType)
+
 #undef PEv2_PG_swap_stepdir
 #define PEv2_PG_swap_stepdir (0 + *PEv2_data->PEv2_PG_swap_stepdir)
 
@@ -1199,10 +1198,6 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #define PEv2_digin_Home_Enabled(i) (PEv2_data->PEv2_digin_Home_Enabled[i])
 
 
-
-#undef PEv2_digin_Probe_invert
-#define PEv2_digin_Probe_invert (PEv2_data->PEv2_digin_Probe_invert)
-
 typedef enum {
 	PK_PEAxisCommand_axIDLE = 0,		 // Axis  in IDLE
 	PK_PEAxisCommand_axHOMINGSTART = 1,	 // Start Homing procedure
@@ -1293,19 +1288,19 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		PEv2_LimitOverride = dev->PEv2.LimitOverride;
 
 		// Basic engine states
-		PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-		PEv2_PulseEngineActivated = dev->PEv2.PulseEngineActivated;
+		PEv2_data->PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+		PEv2_data->PEv2_PulseEngineActivated = dev->PEv2.PulseEngineActivated;
 
 		PulseEngineState = dev->PEv2.PulseEngineState;
-		PEv2_PulseEngineState = PulseEngineState;
-		PEv2_PulseEngineStateSetup = PulseEngineState;
-		PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
-		PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
+		*PEv2_data->PEv2_PulseEngineState = PulseEngineState;
+		*PEv2_data->PEv2_PulseEngineStateSetup = PulseEngineState;
+		PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+		PEv2_data->PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 
 		// Switch states
-		bm_LimitStatusP = dev->PEv2.LimitStatusP; // Limit+ status (bit-mapped)
-		bm_LimitStatusN = dev->PEv2.LimitStatusN; // Limit- status (bit-mapped)
-		bm_HomeStatus = dev->PEv2.HomeStatus;	  // Home status (bit-mapped)
+		PEv2_data->bm_LimitStatusP = dev->PEv2.LimitStatusP; // Limit+ status (bit-mapped)
+		PEv2_data->bm_LimitStatusN = dev->PEv2.LimitStatusN; // Limit- status (bit-mapped)
+		PEv2_data->bm_HomeStatus = dev->PEv2.HomeStatus;	  // Home status (bit-mapped)
 		if (ApplyIniSettings == false) {
 
 			PEv2_data->PEv2_digin_Emergency_invert  = dev->PEv2.EmergencySwitchPolarity;
@@ -2941,10 +2936,10 @@ void PKPEv2_ReadIniFile(sPoKeysDevice* dev){
 	PEv2_data->PEv2_digin_Emergency_Pin = ini_read_int("PEv2", "PEv2_EmergencyInputPin", 0);
 	PEv2_data->PEv2_digin_Emergency_invert = ini_read_int("PEv2", "PEv2_EmergencyInputPolarity", 0);
 
-	*PEv2_data->PEv2_PulseGeneratorType = ini_read_int("PEv2", "PEv2_PulseGeneratorType", 0);
-	*PEv2_data->PEv2_PulseEngineEnabled = ini_read_int("PEv2", "PEv2_PulseEngineEnabled", 0);
-	*PEv2_data->PEv2_ChargePumpEnabled = ini_read_int("PEv2", "PEv2_ChargePumpEnabled", 0);
-	*PEv2_data->PEv2_PulseEngineBufferSize = ini_read_int("PEv2", "PEv2_PulseEngineBufferSize", 0);
+	PEv2_data->PEv2_PulseGeneratorType = ini_read_int("PEv2", "PEv2_PulseGeneratorType", 0);
+	PEv2_data->PEv2_PulseEngineEnabled = ini_read_int("PEv2", "PEv2_PulseEngineEnabled", 0);
+	PEv2_data->PEv2_ChargePumpEnabled = ini_read_int("PEv2", "PEv2_ChargePumpEnabled", 0);
+
 
 }
 
