@@ -3014,8 +3014,7 @@ int32_t PEv2_AdditionalParametersSet(sPoKeysDevice * device){
 	}
 }
 
-int32_t PK_PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId)
-{
+int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 	device->PEv2.param1 = AxisId;
 	if(PK_PEv2_AxisConfigurationGet(device) == PK_OK){
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationGet(%d) == PK_OK\n", __FILE__, __FUNCTION__, AxisId);
@@ -3091,14 +3090,14 @@ int32_t PK_PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId)
 			PEv2_data->PEv2_digin_LimitP_invert[i]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_INVERT_LIMIT_P)	!= 0);
 			PEv2_data->PEv2_digin_Home_invert[i]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_INVERT_HOME)		!= 0); 
 		}
-		if(ApplyIniSettings==false || PEv2_data->PEv2_PinHomeSwitch[AxisId]==0){
-			PEv2_data->PEv2_PinHomeSwitch[AxisId] = dev->PEv2.PinHomeSwitch[AxisId];
+		if(ApplyIniSettings==false || PEv2_data->PEv2_digin_Home_Pin[AxisId]==0){
+			PEv2_data->PEv2_digin_Home_Pin[AxisId] = dev->PEv2.PinHomeSwitch[AxisId];
 		}
-		if(ApplyIniSettings==false || PEv2_data->PEv2_PinLimitMSwitch[AxisId]==0){
-			PEv2_data->PEv2_PinLimitMSwitch[AxisId] = dev->PEv2.PinLimitMSwitch[AxisId];
+		if(ApplyIniSettings==false || PEv2_data->PEv2_digin_LimitN_Pin[AxisId]==0){
+			PEv2_data->PEv2_digin_LimitN_Pin[AxisId] = dev->PEv2.PinLimitMSwitch[AxisId];
 		}
-		if(ApplyIniSettings==false || PEv2_data->PEv2_PinLimitPSwitch[AxisId]==0){
-			PEv2_data->PEv2_PinLimitPSwitch[AxisId] = dev->PEv2.PinLimitPSwitch[AxisId];
+		if(ApplyIniSettings==false || PEv2_data->PEv2_digin_LimitP_Pin[AxisId]==0){
+			PEv2_data->PEv2_digin_LimitP_Pin[AxisId] = dev->PEv2.PinLimitPSwitch[AxisId];
 		}
 		if(ApplyIniSettings==false || PEv2_data->PEv2_HomingSpeed[AxisId]==0){
 			PEv2_data->PEv2_HomingSpeed[AxisId] = dev->PEv2.HomingSpeed[AxisId];
