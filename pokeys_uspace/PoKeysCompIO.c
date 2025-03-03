@@ -943,7 +943,7 @@ void PKIO_WriteIniFile(sPoKeysDevice* dev){
 	ini_write_int("POKEYS", "AdcOut_PWM_Period", IO_data->adcout_pwm_period);
 
 	int analogInCount = 7;
-	for (j = 0; j < (analogInCount); j++) {
+	for (int j = 0; j < (analogInCount); j++) {
 		snprintf(key, sizeof(key), "AdcIn_%i_scale", j);
 		ini_write_float("POKEYS", key, IO_data->adcin[j].scale);
 
