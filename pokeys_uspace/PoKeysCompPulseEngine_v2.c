@@ -545,15 +545,15 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		"%s.PEv2.PulseGeneratorType", prefix);
 	if (r != 0)
 		return r;
-	r = hal_pin_bit_newf(HAL_IN, &(PEv2_data->PEv2_PG_swap_stepdir), comp_id,
+	r = hal_param_bit_newf(HAL_RW, &(PEv2_data->PEv2_PG_swap_stepdir), comp_id,
 		"%s.PEv2.PG-swap-stepdir", prefix);
 	if (r != 0)
 		return r;
-	r = hal_pin_bit_newf(HAL_IO, &(PEv2_data->PEv2_PG_extended_io), comp_id,
+	r = hal_param_bit_newf(HAL_RW, &(PEv2_data->PEv2_PG_extended_io), comp_id,
 		"%s.PEv2.PG-extended-io", prefix);
 	if (r != 0)
 		return r;
-	r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_ChargePumpEnabled), comp_id,
+	r = hal_pin_u32_newf(HAL_IO, &(*PEv2_data->PEv2_ChargePumpEnabled), comp_id,
 		"%s.PEv2.ChargePumpEnabled", prefix);
 	if (r != 0)
 		return r;
@@ -1076,8 +1076,6 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #define PEv2_HomeBackOffDistance(i) (*(PEv2_data->PEv2_HomeBackOffDistance[i]))
 
 
-#undef PEv2_ChargePumpEnabled
-#define PEv2_ChargePumpEnabled (*PEv2_data->PEv2_ChargePumpEnabled)
 
 #undef PEv2_PulseEngineState
 #define PEv2_PulseEngineState (*PEv2_data->PEv2_PulseEngineState)
@@ -1289,7 +1287,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		PulseEngineState = dev->PEv2.PulseEngineState;
 		*PEv2_data->PEv2_PulseEngineState = PulseEngineState;
 		PEv2_PulseEngineStateSetup = PulseEngineState;
-		PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+		*PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 		PEv2_data->PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 
 		// Switch states
@@ -2290,7 +2288,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 		}
 		if (PEv2_data->PEv2_PulseGeneratorType == 0) {
 
-			if (PEv2_PG_swap_stepdir != false) {
+			if (PEv2_data->PEv2_PG_swap_stepdir != false) {
 				PEv2_data->PEv2_PulseGeneratorType = Set_BitOfByte(PEv2_data->PEv2_PulseGeneratorType, 6, true); // swap step / dir signals
 				DoPeSetup = true;
 			}
@@ -2301,8 +2299,8 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 			}
 		}
 
-		if (dev->PEv2.ChargePumpEnabled != PEv2_ChargePumpEnabled) {
-			dev->PEv2.ChargePumpEnabled = PEv2_ChargePumpEnabled;
+		if (dev->PEv2.ChargePumpEnabled != *PEv2_data->PEv2_ChargePumpEnabled) {
+			dev->PEv2.ChargePumpEnabled = *PEv2_data->PEv2_ChargePumpEnabled;
 			DoPeSetup = true;
 		}
 		if (dev->PEv2.PulseGeneratorType != PEv2_PulseGeneratorType) {
@@ -2336,12 +2334,12 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 	else {
 		if (PK_PEv2_StatusGet(dev) == PK_OK && PK_PEv2_Status2Get(dev) == PK_OK) {
 			PEv2_data->PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-			PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+			*PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 			PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 			PEv2_data->PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
 
 			PEv2_data->PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-			PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+			*PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 			PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 			PEv2_data->PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
 		}
@@ -2895,9 +2893,9 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 	}
 	// dev->PEv2.param1 = 0;
 	if (PK_PEv2_StatusGet(dev) == PK_OK) {
-		PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-		PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
-		PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
+		PEv2_data->PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+		PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+		PEv2_data->PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 		// PEv2_stepgen_PulseEngineBufferSize = dev->PEv2.PulseEngineBufferSize;
 		PEv2_data->PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
 		// PEv2_stepgen_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
