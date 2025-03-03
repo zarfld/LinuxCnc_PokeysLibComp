@@ -22,8 +22,8 @@ typedef struct {
 	hal_u32_t* PEv2_AxesState[8];
 	hal_u32_t* PEv2_AxesCommand[8];
 	hal_u32_t* PEv2_AxesConfig[8];
-	hal_u32_t* PEv2_SoftLimitMaximum[8];
-	hal_u32_t* PEv2_SoftLimitMinimum[8];
+	hal_u32_t PEv2_SoftLimitMaximum[8];
+	hal_u32_t PEv2_SoftLimitMinimum[8];
 	hal_u32_t* PEv2_HomingSpeed[8];
 	hal_u32_t* PEv2_HomingReturnSpeed[8];
 	hal_u32_t* PEv2_HomeOffsets[8];
@@ -285,7 +285,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		if (r != 0)
 			return r;
 
-		r = hal_pin_u32_newf(HAL_RW, &(PEv2_data->PEv2_SoftLimitMinimum[j]), comp_id,
+		r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_SoftLimitMinimum[j]), comp_id,
 			"%s.hal_param_u32_newf.%01d.SoftLimitMinimum", prefix, j);
 		if (r != 0)
 			return r;
@@ -981,7 +981,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #undef PEv2_AxesConfig
 #define PEv2_AxesConfig(i) (*(PEv2_data->PEv2_AxesConfig[i]))
 #undef PEv2_SoftLimitMaximum
-#define PEv2_SoftLimitMaximum(i) (*(PEv2_data->PEv2_SoftLimitMaximum[i]))
+
 #undef PEv2_SoftLimitMinimum
 #define PEv2_SoftLimitMinimum(i) (*(PEv2_data->PEv2_SoftLimitMinimum[i]))
 #undef PEv2_HomingSpeed
