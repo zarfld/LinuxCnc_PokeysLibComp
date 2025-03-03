@@ -878,28 +878,33 @@ void PKIO_ReadIniFile(sPoKeysDevice* dev) {
 }
 
 void PKIO_WriteIniFile(sPoKeysDevice* dev){
+	string strPrefix="";
+
 	int digitalCount = dev->info.iPinCount;
 	for (int i = 0; i < digitalCount; i++) {
-		ini_write_int("POKEYS", "Pin_%i_Function", IO_data->Pin[i].PinFunction, i);
-		ini_write_int("POKEYS", "Pin_%i_digin_invert", IO_data->Pin[i].digin_invert, i);
-		ini_write_int("POKEYS", "Pin_%i_digout_invert", IO_data->Pin[i].digout_invert, i);
+		strPrefix = "Pin_" + to_string(i) ;
+		ini_write_int("POKEYS", strPrefix +"_Function", IO_data->Pin[i].PinFunction);
+		ini_write_int("POKEYS", strPrefix +"_digin_invert", IO_data->Pin[i].digin_invert);
+		ini_write_int("POKEYS", strPrefix +"_digout_invert", IO_data->Pin[i].digout_invert);
 	}
 
 	int analogOutCount = dev->info.iPWMCount;
 	for (j = 0; j < (analogOutCount); j++) {
-		ini_write_float("POKEYS", "adcout_%i_offset", IO_data->adcout[j].offset, j);
-		ini_write_float("POKEYS", "adcout_%i_scale", IO_data->adcout[j].scale, j);
-		ini_write_float("POKEYS", "adcout_%i_high_limit", IO_data->adcout[j].high_limit, j);
-		ini_write_float("POKEYS", "adcout_%i_low_limit", IO_data->adcout[j].low_limit, j);
-		ini_write_float("POKEYS", "adcout_%i_max_v", IO_data->adcout[j].max_v, j);
-		ini_write_int("POKEYS", "adcout_%i_enable", IO_data->adcout[j].enable, j);
+		strPrefix = "adcout_" + to_string(j) ;
+		ini_write_float("POKEYS", strPrefix +"_offset", IO_data->adcout[j].offset);
+		ini_write_float("POKEYS", strPrefix +"_scale", IO_data->adcout[j].scale);
+		ini_write_float("POKEYS", strPrefix +"_high_limit", IO_data->adcout[j].high_limit);
+		ini_write_float("POKEYS", strPrefix +"_low_limit", IO_data->adcout[j].low_limit);
+		ini_write_float("POKEYS", strPrefix +"_max_v", IO_data->adcout[j].max_v);
+		ini_write_int("POKEYS", strPrefix +"_enable", IO_data->adcout[j].enable);
 	}
-	ini_write_int("POKEYS", "adcout_pwm_period", IO_data->adcout_pwm_period, 0);
+	ini_write_int("POKEYS", "adcout_pwm_period", IO_data->adcout_pwm_period);
 
 	int analogInCount = 7;
 	for (j = 0; j < (analogInCount); j++) {
-		ini_write_float("POKEYS", "adcin_%i_scale", IO_data->adcin[j].scale, j);
-		ini_write_float("POKEYS", "adcin_%i_offset", IO_data->adcin[j].offset, j);
+		strPrefix = "adcin_" + to_string(j) ;
+		ini_write_float("POKEYS", strPrefix +"_scale", IO_data->adcin[j].scale);
+		ini_write_float("POKEYS", strPrefix +"_offset", IO_data->adcin[j].offset);
 	}
 }
 
