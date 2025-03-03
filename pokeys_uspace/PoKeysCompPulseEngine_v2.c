@@ -123,7 +123,7 @@ typedef struct {
 	hal_bit_t* PEv2_digin_Home_in_not[8];
 	hal_bit_t* PEv2_digin_Home_DedicatedInput[8];
 	hal_bit_t* PEv2_digout_AxisEnable_out[8];
-	hal_u32_t* PEv2_PulseEngineEnabled;
+	hal_u32_t PEv2_PulseEngineEnabled;
 	hal_u32_t PEv2_PulseGeneratorType;
 	hal_bit_t PEv2_PG_swap_stepdir;
 	hal_bit_t PEv2_PG_extended_io;
@@ -1078,8 +1078,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 
 #undef PEv2_ChargePumpEnabled
 #define PEv2_ChargePumpEnabled (*PEv2_data->PEv2_ChargePumpEnabled)
-#undef PEv2_PulseEngineActivated
-#define PEv2_PulseEngineActivated (*PEv2_data->PEv2_PulseEngineActivated)
+
 #undef PEv2_PulseEngineState
 #define PEv2_PulseEngineState (*PEv2_data->PEv2_PulseEngineState)
 #undef PEv2_digin_Error_in
@@ -1285,18 +1284,18 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 
 		// Basic engine states
 		PEv2_data->PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
-		PEv2_data->PEv2_PulseEngineActivated = dev->PEv2.PulseEngineActivated;
+		*PEv2_data->PEv2_PulseEngineActivated = dev->PEv2.PulseEngineActivated;
 
 		PulseEngineState = dev->PEv2.PulseEngineState;
 		*PEv2_data->PEv2_PulseEngineState = PulseEngineState;
-		*PEv2_data->PEv2_PulseEngineStateSetup = PulseEngineState;
+		PEv2_PulseEngineStateSetup = PulseEngineState;
 		PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 		PEv2_data->PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 
 		// Switch states
-		PEv2_data->bm_LimitStatusP = dev->PEv2.LimitStatusP; // Limit+ status (bit-mapped)
-		PEv2_data->bm_LimitStatusN = dev->PEv2.LimitStatusN; // Limit- status (bit-mapped)
-		PEv2_data->bm_HomeStatus = dev->PEv2.HomeStatus;	  // Home status (bit-mapped)
+		bm_LimitStatusP = dev->PEv2.LimitStatusP; // Limit+ status (bit-mapped)
+		bm_LimitStatusN = dev->PEv2.LimitStatusN; // Limit- status (bit-mapped)
+		bm_HomeStatus = dev->PEv2.HomeStatus;	  // Home status (bit-mapped)
 		if (ApplyIniSettings == false) {
 
 			PEv2_data->PEv2_digin_Emergency_invert  = dev->PEv2.EmergencySwitchPolarity;
@@ -2215,7 +2214,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 		switch (dev->DeviceData.DeviceTypeID) {
 		case PK_DeviceID_PoKeys57CNC:
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_PoKeys57CNC\n", __FILE__, __FUNCTION__);
-			PEv2_PulseEngineEnabled = 8;
+			PEv2_data->PEv2_PulseEngineEnabled = 8;
 			PEv2_data->PEv2_PG_extended_io = 1;
 			break;
 		case PK_DeviceID_PoKeys57CNCdb25:
@@ -2281,11 +2280,11 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 
 		if (dev->PEv2.PulseEngineEnabled != dev->PEv2.info.nrOfAxes) {
 			dev->PEv2.PulseEngineEnabled = dev->PEv2.info.nrOfAxes;
-			PEv2_PulseEngineEnabled = dev->PEv2.info.nrOfAxes;
+			PEv2_data->PEv2_PulseEngineEnabled = dev->PEv2.info.nrOfAxes;
 			DoPeSetup = true;
 		}
 
-		if (PEv2_PulseEngineEnabled != 0) {
+		if (PEv2_data->PEv2_PulseEngineEnabled != 0) {
 			dev->PEv2.PulseEngineActivated = 1;
 			DoPeSetup = true;
 		}
@@ -2336,12 +2335,12 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 	}
 	else {
 		if (PK_PEv2_StatusGet(dev) == PK_OK && PK_PEv2_Status2Get(dev) == PK_OK) {
-			PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+			PEv2_data->PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 			PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 			PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 			PEv2_data->PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
 
-			PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+			PEv2_data->PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
 			PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 			PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 			PEv2_data->PEv2_digin_Emergency_invert = dev->PEv2.EmergencySwitchPolarity;
