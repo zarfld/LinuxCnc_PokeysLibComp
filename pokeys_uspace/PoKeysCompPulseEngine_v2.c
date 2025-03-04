@@ -2284,12 +2284,12 @@ int32_t  PEv2_AdditionalParametersSet(sPoKeysDevice * dev){
 
 			if (PEv2_data->PEv2_digin_Emergency_Pin != 0) { // check if pin is parametrized in HAL
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].PinFunction = %d\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Emergency_Pin - 1, dev->Pins[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction);
-				if (IO_data->Pins[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction == 0){
-					IO_data->Pins[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction = PK_PinCap_digitalInput;
+				if (IO_data->Pin[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction == 0){
+					IO_data->Pin[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction = PK_PinCap_digitalInput;
 				}
-				else if (IO_data->Pins[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction != PK_PinCap_digitalInput){
+				else if (IO_data->Pin[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction != PK_PinCap_digitalInput){
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Emergency input pin is not set as digital input\n", __FILE__, __FUNCTION__);
-					IO_data->Pins[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction = PK_PinCap_digitalInput;
+					IO_data->Pin[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction = PK_PinCap_digitalInput;
 				}
 
 			}
