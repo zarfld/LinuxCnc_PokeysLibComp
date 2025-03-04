@@ -2266,8 +2266,8 @@ int32_t  PEv2_AdditionalParametersSet(sPoKeysDevice * dev){
 	if (ret == PK_OK) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersSet() == PK_OK\n", __FILE__, __FUNCTION__);
 
-		if(ApplyIniSettings==true && PEv2_data->PEv2_digin_Emergency_Pin != dev->PEv2.EmergencyInputPin){
-			dev->PEv2.EmergencyInputPin = PEv2_data->PEv2_digin_Emergency_Pin;
+		if(ApplyIniSettings==true && PEv2_data->PEv2_digin_Emergency_Pin != dev->PEv2.EmergencyInputPin+9){
+			dev->PEv2.EmergencyInputPin = PEv2_data->PEv2_digin_Emergency_Pin+9;
 			doSetup = true;
 
 			if (PEv2_data->PEv2_digin_Emergency_Pin != 0) { // check if pin is parametrized in HAL
