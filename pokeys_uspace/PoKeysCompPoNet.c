@@ -31,7 +31,7 @@ typedef struct {
 	hal_u32_t* PoNET_PoNETstatus;
 	hal_u32_t PoNET_DevCount; // RO Parameter
 
-	hal_bit_t* kbd48CNC_available;
+	hal_bit_t kbd48CNC_available;
 	hal_u32_t kbd48CNC_PoNetID;
 	hal_u32_t* kbd48CNC_KeyBrightness;
 	hal_u32_t* kbd48CNC_prevBrightness;
@@ -97,7 +97,7 @@ int PKPoNet_export_pins(char* prefix, long extra_arg, int id, int njoints, all_P
 	}
 
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.kbd48CNC.available\n", __FILE__, __FUNCTION__, prefix);
-	r = hal_pin_bit_newf(HAL_OUT, &(PoNet_data->kbd48CNC_available), id,
+	r = hal_param_bit_newf(HAL_RW, &(PoNet_data->kbd48CNC_available), id,
 		"%s.kbd48CNC.available", prefix);
 	if (r != 0) {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.kbd48CNC.available failed\n", __FILE__, __FUNCTION__, prefix);
@@ -141,7 +141,7 @@ int PKPoNet_export_pins(char* prefix, long extra_arg, int id, int njoints, all_P
 						(PoNet_data->kbd48CNC_PoNetID) = j;
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PoNet[%d].kbd48CNC_PoNetID = %d\n", __FILE__, __FUNCTION__, j, PoNet_data->kbd48CNC_PoNetID);
 						// dev->deviceConfig->iEnableKBD48CNC = 1;
-						(PoNet_data->kbd48CNC_available) = 1;
+						PoNet_data->kbd48CNC_available = 1;
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PoNet[%d].kbd48CNC_available = %d\n", __FILE__, __FUNCTION__, j, PoNet_data->kbd48CNC_available);
 					}
 				}
