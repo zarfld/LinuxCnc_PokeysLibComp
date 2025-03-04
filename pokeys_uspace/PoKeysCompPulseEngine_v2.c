@@ -666,7 +666,8 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		"%s.PEv2.ExternalOCOutputs", prefix);
 	if (r != 0)
 		return r;
-	for (j = 0; j < (8); j++) {
+
+	for (j = 0; j < (4); j++) {
 		r = hal_pin_bit_newf(HAL_IN, &(PEv2_data->PEv2_digout_ExternalRelay_out[j]), comp_id,
 			"%s.PEv2.digout.ExternalRelay-%01d.out", prefix, j);
 		if (r != 0)
@@ -677,6 +678,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		if (r != 0)
 			return r;
 	}
+
 	r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_HomingStartMaskSetup), comp_id,
 		"%s.PEv2.HomingStartMaskSetup", prefix);
 	if (r != 0)
@@ -1183,35 +1185,13 @@ uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value) {
 	return in_Byte;
 }
 
-
-
-
-
-
-void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
+int32_t PEv2_StatusGet(sPoKeysDevice* dev){
 	uint8_t bm_LimitStatusP; // Limit+ status (bit-mapped)
 	uint8_t bm_LimitStatusN; // Limit- status (bit-mapped)
 	uint8_t bm_HomeStatus;	 // Home status (bit-mapped)
 	uint8_t bm_ErrorStatus;
 	uint8_t bm_ProbeStatus = dev->PEv2.ProbeStatus; // will be update in "PK_PEv2_ProbingFinish" or "PK_PEv2_ProbingFinishSimple"
-	uint8_t bm_DedicatedLimitNInputs;
-	uint8_t bm_DedicatedLimitPInputs;
-	uint8_t bm_DedicatedHomeInputs;
 
-	if (PEv2_params_ApplyIniSettings == false) {
-		ApplyIniSettings = false;
-	}
-	else {
-		ApplyIniSettings = true;
-	}
-
-	if (bm_ProbeStatus != 0) {
-		PEv2_digin_Probed_in = true;
-	}
-	else {
-		PEv2_digin_Probed_in = false;
-	}
-	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_StatusGet(dev)\n", __FILE__, __FUNCTION__);
 	if (PK_PEv2_StatusGet(dev) == PK_OK) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_StatusGet(dev) = PK_OK\n", __FILE__, __FUNCTION__);
 		// Engine info
@@ -1323,25 +1303,199 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_StatusGet(dev) != PK_OK\n", __FILE__, __FUNCTION__);
 	}
 	usleep(sleepdur);
-	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_Status2Get(dev)\n", __FILE__, __FUNCTION__);
-	if (PK_PEv2_Status2Get(dev) == PK_OK) {
+}
+
+int32_t PEv2_Status2Get(sPoKeysDevice* dev){
+	uint8_t bm_DedicatedLimitNInputs;
+	uint8_t bm_DedicatedLimitPInputs;
+	uint8_t bm_DedicatedHomeInputs;
+	int32_t ret = PK_PEv2_Status2Get(dev);
+	if (ret == PK_OK) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_Status2Get(dev) = PK_OK\n", __FILE__, __FUNCTION__);
 		bm_DedicatedLimitNInputs = dev->PEv2.DedicatedLimitNInputs;
 		bm_DedicatedLimitPInputs = dev->PEv2.DedicatedLimitPInputs;
 		bm_DedicatedHomeInputs = dev->PEv2.DedicatedHomeInputs;
+
+		for (int i = 0; i < PEv2_nrOfAxes; i++) {
+
+			if (PEv2_data->PEv2_digin_LimitN_Pin[i] > 0) {
+				PEv2_digin_LimitN_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedLimitNInputs, i);
+			}
+			else if (PEv2_digin_LimitN_Enabled(i) != 0) {
+				if (PEv2_data->PEv2_digin_LimitN_invert[i] != 0) {
+					PEv2_digin_LimitN_in(i) = !Get_BitOfByte(bm_DedicatedLimitNInputs, i);
+					PEv2_digin_LimitN_in_not(i) = Get_BitOfByte(bm_DedicatedLimitNInputs, i);
+					PEv2_digin_LimitN_DedicatedInput(i) = !Get_BitOfByte(bm_DedicatedLimitNInputs, i);
+				}
+				else {
+					PEv2_digin_LimitN_in(i) = Get_BitOfByte(bm_DedicatedLimitNInputs, i);
+					PEv2_digin_LimitN_in_not(i) = !Get_BitOfByte(bm_DedicatedLimitNInputs, i);
+					PEv2_digin_LimitN_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedLimitNInputs, i);
+				}
+			}
+
+			if (PEv2_data->PEv2_digin_LimitP_Pin[i] > 0) {
+				PEv2_digin_LimitP_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedLimitPInputs, i);
+			}
+			else if (PEv2_digin_LimitP_Enabled(i) != 0) {
+				if (PEv2_data->PEv2_digin_LimitP_invert[i] != 0) {
+					PEv2_digin_LimitP_in(i) = !Get_BitOfByte(bm_DedicatedLimitPInputs, i);
+					PEv2_digin_LimitP_in_not(i) = Get_BitOfByte(bm_DedicatedLimitPInputs, i);
+					PEv2_digin_LimitP_DedicatedInput(i) = !Get_BitOfByte(bm_DedicatedLimitPInputs, i);
+				}
+				else {
+					PEv2_digin_LimitP_in(i) = Get_BitOfByte(bm_DedicatedLimitPInputs, i);
+					PEv2_digin_LimitP_in_not(i) = !Get_BitOfByte(bm_DedicatedLimitPInputs, i);
+					PEv2_digin_LimitP_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedLimitPInputs, i);
+				}
+			}
+			
+			if (PEv2_data->PEv2_digin_Home_Pin[i] > 0) {
+				PEv2_digin_Home_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedHomeInputs, i);
+			}
+			else if (PEv2_data->PEv2_digin_Home_Enabled[i] != 0) {
+				if (PEv2_data->PEv2_digin_Home_invert[i] != 0) {
+					PEv2_digin_Home_in(i) = !Get_BitOfByte(bm_DedicatedHomeInputs, i);
+					PEv2_digin_Home_in_not(i) = Get_BitOfByte(bm_DedicatedHomeInputs, i);
+				}
+				else {
+					PEv2_digin_Home_in(i) = Get_BitOfByte(bm_DedicatedHomeInputs, i);
+					PEv2_digin_Home_in_not(i) = !Get_BitOfByte(bm_DedicatedHomeInputs, i);
+				}
+			}
+		}
 	}
 	else {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_Status2Get(dev) != PK_OK\n", __FILE__, __FUNCTION__);
-		usleep(sleepdur);
-		if (PK_PEv2_Status2Get(dev) == PK_OK) {
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_Status2Get(dev) = PK_OK\n", __FILE__, __FUNCTION__);
-			bm_DedicatedLimitNInputs = dev->PEv2.DedicatedLimitNInputs;
-			bm_DedicatedLimitPInputs = dev->PEv2.DedicatedLimitPInputs;
-			bm_DedicatedHomeInputs = dev->PEv2.DedicatedHomeInputs;
-
-		}
 	}
 	usleep(sleepdur);
+	return ret;
+}
+
+int32_t PEv2_ExternalOutputsSet(sPoKeysDevice* dev){
+
+	int32_t ret = PK_PEv2_ExternalOutputsGet(dev);
+	if (ret == PK_OK) {
+		PEv2_ExternalRelayOutputs = dev->PEv2.ExternalRelayOutputs;
+		PEv2_ExternalOCOutputs = dev->PEv2.ExternalOCOutputs;
+		rtapi_print_msg(RTAPI_MSG_INFO, "PoKeys: %s:%s: PK_PEv2_ExternalOutputsGet==PK_OK\n", __FILE__, __FUNCTION__);
+	}
+	else {
+		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_ExternalOutputsGet!=PK_OK\n", __FILE__, __FUNCTION__);
+	}
+	usleep(sleepdur);
+	if (PEv2_data->PEv2_PG_extended_io != 0) {
+
+
+		uint8_t ExternalRelayOutputs_set = 0;
+		uint8_t ExternalOCOutputs_set = 0;
+
+		bool DoExternalOutputsSet = false;
+		/*strange behaviour: it seems that values on "" do the following:
+		- bit 1 / int 1 -> switches ext_Relays1
+		- bit 2 / int 2 -> switches ext_Relays3
+		- bit 3 / int 4 -> switches ext_Relays2
+		- bit 4 / int 8 -> switches ext_OC-Output1
+		- bit 5 / int 16 -> switches ext_OC-Output2
+		- bit 6 / int 32 -> switches ext_OC-Output3
+		- bit 7 / int 64 -> switches ext_OC-Output4
+		- bit 8 / int 128 -> switches switches ext_Relays0
+		
+		*/
+		/*
+			ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 0, PEv2_digout_ExternalRelay_out(0));
+			ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 1, PEv2_digout_ExternalRelay_out(1));
+			ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 2, PEv2_digout_ExternalRelay_out(2));
+			ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 3, PEv2_digout_ExternalRelay_out(3));
+			ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 4, PEv2_digout_ExternalRelay_out(4));
+			ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 5, PEv2_digout_ExternalRelay_out(5));
+			ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 6, PEv2_digout_ExternalRelay_out(6));
+			ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 7, PEv2_digout_ExternalRelay_out(7));
+
+			ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, PEv2_digout_ExternalOC_out(0));
+			ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, PEv2_digout_ExternalOC_out(1));
+			ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, PEv2_digout_ExternalOC_out(2));
+			ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, PEv2_digout_ExternalOC_out(3));
+			ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 4, PEv2_digout_ExternalOC_out(4));
+			ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, PEv2_digout_ExternalOC_out(5));
+			ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6, PEv2_digout_ExternalOC_out(6));
+			ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7, PEv2_digout_ExternalOC_out(7));
+		*/
+
+		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, PEv2_digout_ExternalRelay_out(1));
+		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, PEv2_digout_ExternalRelay_out(3));
+		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, PEv2_digout_ExternalRelay_out(2));
+		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, PEv2_digout_ExternalOC_out(0));
+		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 4, PEv2_digout_ExternalOC_out(1));
+		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, PEv2_digout_ExternalOC_out(2));
+		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6, PEv2_digout_ExternalOC_out(3));
+		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7, PEv2_digout_ExternalRelay_out(0));
+
+		if (ExternalRelayOutputs_set != dev->PEv2.ExternalRelayOutputs) {
+			dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set;
+			DoExternalOutputsSet = true;
+		}
+		if (ExternalOCOutputs_set != dev->PEv2.ExternalOCOutputs) {
+			dev->PEv2.ExternalOCOutputs = ExternalOCOutputs_set;
+			DoExternalOutputsSet = true;
+		}
+
+
+		if(DoExternalOutputsSet){
+			dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set;
+			dev->PEv2.ExternalOCOutputs = ExternalOCOutputs_set;
+			ret = PK_PEv2_ExternalOutputsSet(dev);
+			usleep(sleepdur);
+
+			dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set;
+			dev->PEv2.ExternalOCOutputs = ExternalOCOutputs_set;
+			PK_PEv2_ExternalOutputsSet(dev);
+			usleep(sleepdur);
+		}
+	}
+
+	return ret
+}
+
+void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
+	uint8_t bm_LimitStatusP; // Limit+ status (bit-mapped)
+	uint8_t bm_LimitStatusN; // Limit- status (bit-mapped)
+	uint8_t bm_HomeStatus;	 // Home status (bit-mapped)
+	uint8_t bm_ErrorStatus;
+	uint8_t bm_ProbeStatus = dev->PEv2.ProbeStatus; // will be update in "PK_PEv2_ProbingFinish" or "PK_PEv2_ProbingFinishSimple"
+	uint8_t bm_DedicatedLimitNInputs;
+	uint8_t bm_DedicatedLimitPInputs;
+	uint8_t bm_DedicatedHomeInputs;
+
+	if (PEv2_params_ApplyIniSettings == false) {
+		ApplyIniSettings = false;
+	}
+	else {
+		ApplyIniSettings = true;
+	}
+
+	if (bm_ProbeStatus != 0) {
+		PEv2_digin_Probed_in = true;
+	}
+	else {
+		PEv2_digin_Probed_in = false;
+	}
+	
+	if (PEv2_StatusGet(dev)){
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_StatusGet(dev) = PK_OK\n", __FILE__, __FUNCTION__);
+	}
+	else {
+		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_StatusGet(dev) != PK_OK\n", __FILE__, __FUNCTION__);
+	}
+
+	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_Status2Get(dev)\n", __FILE__, __FUNCTION__);
+	if (PEv2_Status2Get(dev) == PK_OK) {
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_Status2Get(dev) = PK_OK\n", __FILE__, __FUNCTION__);
+	}
+	else {
+		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Status2Get(dev) != PK_OK\n", __FILE__, __FUNCTION__);
+	}
+
 	bool doPositionSet = false;
 	bool doMove = false;
 	bool isMoving = false;
@@ -1570,19 +1724,9 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 					PEv2_digin_LimitP_in(i) = !Get_BitOfByte(bm_LimitStatusP, i);
 					PEv2_digin_LimitP_in_not(i) = Get_BitOfByte(bm_LimitStatusP, i);
 				}
-				PEv2_digin_LimitP_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedLimitPInputs, i);
 			}
 			else if (PEv2_digin_LimitP_Enabled(i) != 0) {
-				if (PEv2_data->PEv2_digin_LimitP_invert[i] != 0) {
-					PEv2_digin_LimitP_in(i) = !Get_BitOfByte(bm_DedicatedLimitPInputs, i);
-					PEv2_digin_LimitP_in_not(i) = Get_BitOfByte(bm_DedicatedLimitPInputs, i);
-					PEv2_digin_LimitP_DedicatedInput(i) = !Get_BitOfByte(bm_DedicatedLimitPInputs, i);
-				}
-				else {
-					PEv2_digin_LimitP_in(i) = Get_BitOfByte(bm_DedicatedLimitPInputs, i);
-					PEv2_digin_LimitP_in_not(i) = !Get_BitOfByte(bm_DedicatedLimitPInputs, i);
-					PEv2_digin_LimitP_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedLimitPInputs, i);
-				}
+				// will be written from dedicated input in PEv2_Status2Get()
 			}
 
 			if (PEv2_data->PEv2_digin_LimitN_Pin[i] > 0) {
@@ -1594,19 +1738,9 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 					PEv2_digin_LimitN_in(i) = !Get_BitOfByte(bm_LimitStatusN, i);
 					PEv2_digin_LimitN_in_not(i) = Get_BitOfByte(bm_LimitStatusN, i);
 				}
-				PEv2_digin_LimitN_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedLimitNInputs, i);
 			}
 			else if (PEv2_digin_LimitN_Enabled(i) != 0) {
-				if (PEv2_data->PEv2_digin_LimitN_invert[i] != 0) {
-					PEv2_digin_LimitN_in(i) = !Get_BitOfByte(bm_DedicatedLimitNInputs, i);
-					PEv2_digin_LimitN_in_not(i) = Get_BitOfByte(bm_DedicatedLimitNInputs, i);
-					PEv2_digin_LimitN_DedicatedInput(i) = !Get_BitOfByte(bm_DedicatedLimitNInputs, i);
-				}
-				else {
-					PEv2_digin_LimitN_in(i) = Get_BitOfByte(bm_DedicatedLimitNInputs, i);
-					PEv2_digin_LimitN_in_not(i) = !Get_BitOfByte(bm_DedicatedLimitNInputs, i);
-					PEv2_digin_LimitN_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedLimitNInputs, i);
-				}
+				// will be written from dedicated input in PEv2_Status2Get()
 			}
 
 			if (PEv2_data->PEv2_digin_Home_Pin[i] > 0) {
@@ -1618,17 +1752,9 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 					PEv2_digin_Home_in(i) = Get_BitOfByte(bm_HomeStatus, i);
 					PEv2_digin_Home_in_not(i) = !Get_BitOfByte(bm_HomeStatus, i);
 				}
-				PEv2_digin_Home_DedicatedInput(i) = Get_BitOfByte(bm_DedicatedHomeInputs, i);
 			}
-			else if (PEv2_digin_Home_Enabled(i)) {
-				if (PEv2_data->PEv2_digin_Home_invert[i] != 0) {
-					PEv2_digin_Home_in(i) = !Get_BitOfByte(bm_DedicatedHomeInputs, i);
-					PEv2_digin_Home_in_not(i) = Get_BitOfByte(bm_DedicatedHomeInputs, i);
-				}
-				else {
-					PEv2_digin_Home_in(i) = Get_BitOfByte(bm_DedicatedHomeInputs, i);
-					PEv2_digin_Home_in_not(i) = !Get_BitOfByte(bm_DedicatedHomeInputs, i);
-				}
+			else if (PEv2_data->PEv2_digin_Home_Enabled[i] != 0) {
+				// will be written from dedicated input in PEv2_Status2Get()
 			}
 
 			PEv2_deb_axxisout(i) = 280;
@@ -1990,83 +2116,15 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		}
 	}
 
-	if (PK_PEv2_ExternalOutputsGet(dev) == PK_OK) {
-		PEv2_ExternalRelayOutputs = dev->PEv2.ExternalRelayOutputs;
-		PEv2_ExternalOCOutputs = dev->PEv2.ExternalOCOutputs;
+
+	if (PEv2_ExternalOutputsSet == PK_OK){
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_ExternalOutputsSet=PK_OK\n", __FILE__, __FUNCTION__);
 	}
 	else {
-		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_ExternalOutputsGet!=PK_OK\n", __FILE__, __FUNCTION__);
+		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_ExternalOutputsSet!=PK_OK\n", __FILE__, __FUNCTION__);
 	}
-	usleep(sleepdur);
-	if (PEv2_data->PEv2_PG_extended_io != 0) {
 
 
-		uint8_t ExternalRelayOutputs_set = 0;
-		uint8_t ExternalOCOutputs_set = 0;
-
-		bool DoExternalOutputsSet = false;
-		/*strange behaviour: it seems that values on "" do the following:
-		- bit 1 / int 1 -> switches ext_Relays1
-		- bit 2 / int 2 -> switches ext_Relays3
-		- bit 3 / int 4 -> switches ext_Relays2
-		- bit 4 / int 8 -> switches ext_OC-Output1
-		- bit 5 / int 16 -> switches ext_OC-Output2
-		- bit 6 / int 32 -> switches ext_OC-Output3
-		- bit 7 / int 64 -> switches ext_OC-Output4
-		- bit 8 / int 128 -> switches switches ext_Relays0
-		
-		*/
-	/*
-		ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 0, PEv2_digout_ExternalRelay_out(0));
-		ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 1, PEv2_digout_ExternalRelay_out(1));
-		ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 2, PEv2_digout_ExternalRelay_out(2));
-		ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 3, PEv2_digout_ExternalRelay_out(3));
-		ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 4, PEv2_digout_ExternalRelay_out(4));
-		ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 5, PEv2_digout_ExternalRelay_out(5));
-		ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 6, PEv2_digout_ExternalRelay_out(6));
-		ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 7, PEv2_digout_ExternalRelay_out(7));
-
-		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, PEv2_digout_ExternalOC_out(0));
-		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, PEv2_digout_ExternalOC_out(1));
-		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, PEv2_digout_ExternalOC_out(2));
-		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, PEv2_digout_ExternalOC_out(3));
-		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 4, PEv2_digout_ExternalOC_out(4));
-		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, PEv2_digout_ExternalOC_out(5));
-		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6, PEv2_digout_ExternalOC_out(6));
-		ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7, PEv2_digout_ExternalOC_out(7));
-	*/
-
-	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, PEv2_digout_ExternalRelay_out(1));
-	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, PEv2_digout_ExternalRelay_out(3));
-	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, PEv2_digout_ExternalRelay_out(2));
-	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, PEv2_digout_ExternalOC_out(0));
-	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 4, PEv2_digout_ExternalOC_out(1));
-	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, PEv2_digout_ExternalOC_out(2));
-	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6, PEv2_digout_ExternalOC_out(3));
-	ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7, PEv2_digout_ExternalRelay_out(0));
-
-		if (ExternalRelayOutputs_set != dev->PEv2.ExternalRelayOutputs) {
-			dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set;
-			DoExternalOutputsSet = true;
-		}
-		if (ExternalOCOutputs_set != dev->PEv2.ExternalOCOutputs) {
-			dev->PEv2.ExternalOCOutputs = ExternalOCOutputs_set;
-			DoExternalOutputsSet = true;
-		}
-
-
-		if(DoExternalOutputsSet){
-			dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set;
-			dev->PEv2.ExternalOCOutputs = ExternalOCOutputs_set;
-			PK_PEv2_ExternalOutputsSet(dev);
-			usleep(sleepdur);
-
-			dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set;
-			dev->PEv2.ExternalOCOutputs = ExternalOCOutputs_set;
-			PK_PEv2_ExternalOutputsSet(dev);
-			usleep(sleepdur);
-		}
-	}
 	if (dev->PEv2.HomingStartMaskSetup != HomingStartMaskSetup && HomingStartMaskSetup != 0 && doHomingStart) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: Startmask at trigger (%d) \n", HomingStartMaskSetup);
 
