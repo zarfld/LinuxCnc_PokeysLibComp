@@ -3032,7 +3032,7 @@ void PKPEv2_ReadIniFile(sPoKeysDevice* dev){
 	PEv2_data->PEv2_PulseGeneratorType = ini_read_int("POKEYS", "PEv2_PulseGeneratorType", 0);
 	PEv2_data->PEv2_digin_Emergency_invert = ini_read_int("POKEYS", "PEv2_EmergencyInputPolarity", 0);
 // not in use	*PEv2_data->PEv2_AxisEnabledStatesMask = ini_read_int("POKEYS", "PEv2_EmergencyOutputPolarity", 0);
-	for(int AxisId=0;AxisId<dev->PEv2.info.nrOfAxes){
+	for(int AxisId=0;AxisId<dev->PEv2.info.nrOfAxes;AxisId++){
 		//PEv2_AxisConfigurationGet settings
 
 					/* Section: Axis configuration
@@ -3206,7 +3206,7 @@ void PKPEv2_ReadIniFile(sPoKeysDevice* dev){
 
 		// PEv2_data->PEv2_FilterProbeInput
 		snprintf(key, sizeof(key), "PEv2_FilterProbeInput_%i", AxisId);
-		PEv2_data->PEv2_FilterProbeInput[AxisId] = ini_read_int("POKEYS", key, 0);
+		PEv2_data->PEv2_digin_Probe_Filter[AxisId] = ini_read_int("POKEYS", key, 0);
 	
 		// PEv2_data->PEv2_digin_LimitN_Filter[AxisId]
 		snprintf(key, sizeof(key), "PEv2_FilterLimitMSwitch_%i", AxisId);
