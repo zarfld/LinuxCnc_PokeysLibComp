@@ -1192,7 +1192,8 @@ int32_t PEv2_StatusGet(sPoKeysDevice* dev){
 	uint8_t bm_ErrorStatus;
 	uint8_t bm_ProbeStatus = dev->PEv2.ProbeStatus; // will be update in "PK_PEv2_ProbingFinish" or "PK_PEv2_ProbingFinishSimple"
 
-	if (PK_PEv2_StatusGet(dev) == PK_OK) {
+	int32_t ret = PK_PEv2_StatusGet(dev);
+	if (ret == PK_OK) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_StatusGet(dev) = PK_OK\n", __FILE__, __FUNCTION__);
 		// Engine info
 		PEv2_nrOfAxes = dev->PEv2.info.nrOfAxes;
@@ -1302,6 +1303,7 @@ int32_t PEv2_StatusGet(sPoKeysDevice* dev){
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_StatusGet(dev) != PK_OK\n", __FILE__, __FUNCTION__);
 	}
 	usleep(sleepdur);
+	return ret;
 }
 
 int32_t PEv2_Status2Get(sPoKeysDevice* dev){
@@ -1372,18 +1374,19 @@ int32_t PEv2_Status2Get(sPoKeysDevice* dev){
 }
 
 int32_t PEv2_ExternalOutputsSet(sPoKeysDevice* dev){
-
-	int32_t ret = PK_PEv2_ExternalOutputsGet(dev);
-	if (ret == PK_OK) {
-		PEv2_ExternalRelayOutputs = dev->PEv2.ExternalRelayOutputs;
-		PEv2_ExternalOCOutputs = dev->PEv2.ExternalOCOutputs;
-		rtapi_print_msg(RTAPI_MSG_INFO, "PoKeys: %s:%s: PK_PEv2_ExternalOutputsGet==PK_OK\n", __FILE__, __FUNCTION__);
-	}
-	else {
-		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_ExternalOutputsGet!=PK_OK\n", __FILE__, __FUNCTION__);
-	}
-	usleep(sleepdur);
+	int32_t ret = PK_OK;
 	if (PEv2_data->PEv2_PG_extended_io != 0) {
+		ret = PK_PEv2_ExternalOutputsGet(dev);
+		if (ret == PK_OK) {
+			PEv2_ExternalRelayOutputs = dev->PEv2.ExternalRelayOutputs;
+			PEv2_ExternalOCOutputs = dev->PEv2.ExternalOCOutputs;
+			rtapi_print_msg(RTAPI_MSG_INFO, "PoKeys: %s:%s: PK_PEv2_ExternalOutputsGet==PK_OK\n", __FILE__, __FUNCTION__);
+		}
+		else {
+			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_ExternalOutputsGet!=PK_OK\n", __FILE__, __FUNCTION__);
+		}
+		usleep(sleepdur);
+	
 
 
 		uint8_t ExternalRelayOutputs_set = 0;
@@ -1443,7 +1446,7 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice* dev){
 		if(DoExternalOutputsSet){
 			dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set;
 			dev->PEv2.ExternalOCOutputs = ExternalOCOutputs_set;
-			ret = PK_PEv2_ExternalOutputsSet(dev);
+			PK_PEv2_ExternalOutputsSet(dev);
 			usleep(sleepdur);
 
 			dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set;
