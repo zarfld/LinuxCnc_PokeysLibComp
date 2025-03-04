@@ -2286,7 +2286,6 @@ int32_t  PEv2_AdditionalParametersSet(sPoKeysDevice * dev){
 	else {
 		
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersSet() != PK_OK\n", __FILE__, __FUNCTION__);
-		return ret;
 	}
 	usleep(sleepdur);
 
@@ -2302,6 +2301,16 @@ int32_t  PEv2_AdditionalParametersSet(sPoKeysDevice * dev){
 		}
 		else {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersSet() == PK_OK\n", __FILE__, __FUNCTION__);
+			usleep(sleepdur);
+			if(PK_SaveConfiguration(dev)==PK_OK){
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SaveConfiguration() == PK_OK\n", __FILE__, __FUNCTION__);
+				usleep(sleepdur);
+				PK_PEv2_PulseEngineReboot(dev);
+				usleep(1000000);
+			}
+			else{
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_SaveConfiguration() != PK_OK\n", __FILE__, __FUNCTION__);
+			}
 		}
 		usleep(sleepdur);
 	}
@@ -2682,31 +2691,31 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 			}
 
 
-			if (PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] == 1) {
+			if (PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] !=0) {
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, true); // PK_ASO_SWITCH_COMBINED_LN_H = (1 << 3),   // 8 Home switch is shared with Limit- switch
 			}
 			else{
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, false); // PK_ASO_SWITCH_COMBINED_LN_H = (1 << 3),   // 8 Home switch is shared with Limit- switch
 			}
-			if (PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] == 1) {
+			if (PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] !=0) {
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4, true); // PK_ASO_SWITCH_COMBINED_LP_H = (1 << 4),   // 16 Home switch is shared with Limit+ switch
 			}
 			else{
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4, false); // PK_ASO_SWITCH_COMBINED_LP_H = (1 << 4),   // 16 Home switch is shared with Limit+ switch
 			}
-			if (PEv2_data->PEv2_digin_Home_invert[AxisId] == 1) {
+			if (PEv2_data->PEv2_digin_Home_invert[AxisId] !=0) {
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7, true); // PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
 			}
 			else{
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7, false); // PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
 			}
-			if (PEv2_data->PEv2_digin_LimitN_invert[AxisId] == 1) {
+			if (PEv2_data->PEv2_digin_LimitN_invert[AxisId] !=0) {
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5, true); // PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
 			}
 			else{
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5, false); // PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
 			}
-			if (PEv2_data->PEv2_digin_LimitP_invert[AxisId] == 1) {
+			if (PEv2_data->PEv2_digin_LimitP_invert[AxisId] !=0) {
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 6, true); // PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
 			}
 			else{
@@ -2939,7 +2948,16 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 				}
 				else {
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet(%d) == PK_OK\n", __FILE__, __FUNCTION__, AxisId);
-					
+					usleep(sleepdur);
+					if(PK_SaveConfiguration(dev)==PK_OK){
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SaveConfiguration() == PK_OK\n", __FILE__, __FUNCTION__);
+						usleep(sleepdur);
+						PK_PEv2_PulseEngineReboot(dev);
+						usleep(1000000);
+					}
+					else{
+						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_SaveConfiguration() != PK_OK\n", __FILE__, __FUNCTION__);
+					}
 				}
 				usleep(sleepdur);
 			}
