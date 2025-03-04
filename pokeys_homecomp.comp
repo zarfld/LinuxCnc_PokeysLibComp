@@ -934,11 +934,12 @@ void do_home_joint(int jno)
             H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
             break;
         case PK_PEAxisState_axHOME:
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_home_joint joint %d homed\n", jno);
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING:PK_PEAxisState_axHOME do_home_joint joint %d homed (home_sequence %d)\n", jno,H[jno].home_sequence);
             
             // check if all joints in sequence are homed
             if (H[jno].home_sequence < 0)
             {
+
                 int joints_in_sequence = 0;
                 int homed_in_sequence = 0;
                 int jj;
@@ -954,16 +955,20 @@ void do_home_joint(int jno)
                     }
                 }
 
+                rtapi_print_msg(RTAPI_MSG_ERR, "HOMING:PK_PEAxisState_axHOME joint %d joints_in_sequence:%d  homed_in_sequence:%d \n",jno, joints_in_sequence,homed_in_sequence);
                 if (joints_in_sequence == homed_in_sequence)
                 {
-                    for (jj = 0; jj < all_joints; jj++)
-                    {
-                        if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence))
+                    //if all Joints of the Sequence show Hommed
+                        for (jj = 0; jj < all_joints; jj++)
                         {
-                            H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
+
+                            if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence))
+                            {
+                                H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
+                            }
                         }
-                    }
-                    H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
+                        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
+
                 }
             }
             else
