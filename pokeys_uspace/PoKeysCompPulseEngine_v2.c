@@ -156,7 +156,7 @@ typedef struct {
 }PEv2_data_t;
 
 static PEv2_data_t* PEv2_data = NULL;
-
+extern static all_IO_data_t* IO_data;
 int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* Pev2_data, sPoKeysDevice* dev) {
 
 	int r = 0;
