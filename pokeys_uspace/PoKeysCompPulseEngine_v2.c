@@ -3045,28 +3045,28 @@ void PKPEv2_ReadIniFile(sPoKeysDevice* dev){
 				PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
 				PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
 			*/
-		snprintf(key, sizeof(key), "PEv2_AxesConfig_%i", i);
-		PEv2_data->PEv2_AxesConfig[AxisId] = ini_read_int("POKEYS", key, 0)
+		snprintf(key, sizeof(key), "PEv2_AxesConfig_%i", AxisId);
+		PEv2_data->PEv2_AxesConfig[AxisId] = ini_read_int("POKEYS", key, 0);
 
-		snprintf(key, sizeof(key), "PEv2_AxisEnabled_%i", i);
+		snprintf(key, sizeof(key), "PEv2_AxisEnabled_%i", AxisId);
 		PEv2_data->PEv2_AxisEnabled[AxisId] = ini_read_int("POKEYS", key, 0);
 
-		snprintf(key, sizeof(key), "PEv2_AxisInverted_%i", i);
+		snprintf(key, sizeof(key), "PEv2_AxisInverted_%i", AxisId);
 		PEv2_data->PEv2_AxisInverted[AxisId] = ini_read_int("POKEYS", key, 0);
 
-		snprintf(key, sizeof(key), "PEv2_AxisInternalPlanner_%i", i);
+		snprintf(key, sizeof(key), "PEv2_AxisInternalPlanner_%i", AxisId);
 		PEv2_data->PEv2_AxisInternalPlanner[AxisId] = ini_read_int("POKEYS", key, 0);
 
-		snprintf(key, sizeof(key), "PEv2_AxisPositionMode_%i", i);
+		snprintf(key, sizeof(key), "PEv2_AxisPositionMode_%i", AxisId);
 		PEv2_data->PEv2_AxisPositionMode[AxisId] = ini_read_int("POKEYS", key, 0);
 
-		snprintf(key, sizeof(key), "PEv2_AxisSoftLimitEnabled_%i", i);
+		snprintf(key, sizeof(key), "PEv2_AxisSoftLimitEnabled_%i", AxisId);
 		PEv2_data->PEv2_AxisInvertedHome[AxisId] = ini_read_int("POKEYS", key, 0);
 
-		snprintf(key, sizeof(key), "PEv2_AxisEnabled_%i", i);
+		snprintf(key, sizeof(key), "PEv2_AxisEnabled_%i", AxisId);
 		PEv2_data->PEv2_AxisSoftLimitEnabled[AxisId] = ini_read_int("POKEYS", key, 0);
 
-		snprintf(key, sizeof(key), "PEv2_AxisEnabledMasked_%i", i);
+		snprintf(key, sizeof(key), "PEv2_AxisEnabledMasked_%i", AxisId);
 		PEv2_data->PEv2_AxisEnabledMasked[AxisId] = ini_read_int("POKEYS", key, 0);
 // not in use		PEv2_data->PEv2_AxisSignalOptions[AxisId] = ini_read_int("POKEYS", "PEv2_AxisSignalOptions", 0);
 
@@ -3083,161 +3083,161 @@ void PKPEv2_ReadIniFile(sPoKeysDevice* dev){
 			PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
 		*/
 		// PEv2_data->PEv2_AxesSwitchConfig[AxisId] - PEv2_AxesSwitchConfig_0
-		snprintf(key, sizeof(key), "PEv2_AxesSwitchConfig_%i", i);
+		snprintf(key, sizeof(key), "PEv2_AxesSwitchConfig_%i", AxisId);
 		PEv2_data->PEv2_AxesSwitchConfig[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_digin_LimitN_Pin[AxisId] - PEv2_LimitN_Pin_0
-		snprintf(key, sizeof(key), "PEv2_EnableLimitN_%i", i);
+		snprintf(key, sizeof(key), "PEv2_EnableLimitN_%i", AxisId);
 		PEv2_data->PEv2_digin_LimitN_Enabled[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_digin_LimitP_Enabled[AxisId] - PEv2_EnableLimitP_0
-		snprintf(key, sizeof(key), "PEv2_EnableLimitP_%i", i);
+		snprintf(key, sizeof(key), "PEv2_EnableLimitP_%i", AxisId);
 		PEv2_data->PEv2_digin_LimitP_Enabled[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_digin_Home_Enabled[AxisId] - PEv2_EnableHome_0
-		snprintf(key, sizeof(key), "PEv2_EnableHome_%i", i);
+		snprintf(key, sizeof(key), "PEv2_EnableHome_%i", AxisId);
 		PEv2_data->PEv2_digin_Home_Enabled[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] - PEv2_HomeOnLimitN_0
-		snprintf(key, sizeof(key), "PEv2_HomeOnLimitN_%i", i);
+		snprintf(key, sizeof(key), "PEv2_HomeOnLimitN_%i", AxisId);
 		PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] - PEv2_HomeOnLimitP_0
-		snprintf(key, sizeof(key), "PEv2_HomeOnLimitP_%i", i);
+		snprintf(key, sizeof(key), "PEv2_HomeOnLimitP_%i", AxisId);
 		PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_digin_LimitN_invert[AxisId] - PEv2_InvertLimitN_0
-		snprintf(key, sizeof(key), "PEv2_InvertLimitN_%i", i);
+		snprintf(key, sizeof(key), "PEv2_InvertLimitN_%i", AxisId);
 		PEv2_data->PEv2_digin_LimitN_invert[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_digin_LimitP_invert[AxisId] - PEv2_InvertLimitP_0
-		snprintf(key, sizeof(key), "PEv2_InvertLimitP_%i", i);
+		snprintf(key, sizeof(key), "PEv2_InvertLimitP_%i", AxisId);
 		PEv2_data->PEv2_digin_LimitP_invert[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_digin_Home_invert[AxisId] - PEv2_InvertHome_0
-		snprintf(key, sizeof(key), "PEv2_InvertHome_%i", i);
+		snprintf(key, sizeof(key), "PEv2_InvertHome_%i", AxisId);
 		PEv2_data->PEv2_digin_Home_invert[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		/* Section: Pin configuration
 		*/
 		// PEv2_data->PEv2_digin_LimitN_Pin[AxisId] - PEv2_PinLimitMSwitch_0
-		snprintf(key, sizeof(key), "PEv2_PinLimitMSwitch_%i", i);
+		snprintf(key, sizeof(key), "PEv2_PinLimitMSwitch_%i", AxisId);
 		PEv2_data->PEv2_digin_LimitN_Pin[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_digin_LimitP_Pin[AxisId] - PEv2_PinLimitPSwitch_0
-		snprintf(key, sizeof(key), "PEv2_PinLimitPSwitch_%i", i);
+		snprintf(key, sizeof(key), "PEv2_PinLimitPSwitch_%i", AxisId);
 		PEv2_data->PEv2_digin_LimitP_Pin[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_digin_Home_Pin[AxisId] - PEv2_PinHomeSwitch_0
-		snprintf(key, sizeof(key), "PEv2_PinHomeSwitch_%i", i);
+		snprintf(key, sizeof(key), "PEv2_PinHomeSwitch_%i", AxisId);
 		PEv2_data->PEv2_digin_Home_Pin[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_MaxSpeed[AxisId] - PEv2_MaxSpeed_0
-		snprintf(key, sizeof(key), "PEv2_MaxSpeed_%i", i);
+		snprintf(key, sizeof(key), "PEv2_MaxSpeed_%i", AxisId);
 		PEv2_data->PEv2_MaxSpeed[AxisId] = ini_read_float("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_MaxAcceleration[AxisId]
-		snprintf(key, sizeof(key), "PEv2_MaxAcceleration_%i", i);
+		snprintf(key, sizeof(key), "PEv2_MaxAcceleration_%i", AxisId);
 		PEv2_data->PEv2_MaxAcceleration[AxisId] = ini_read_float("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_MaxDecceleration[AxisId]
-		snprintf(key, sizeof(key), "PEv2_MaxDecceleration_%i", i);
+		snprintf(key, sizeof(key), "PEv2_MaxDecceleration_%i", AxisId);
 		PEv2_data->PEv2_MaxDecceleration[AxisId] = ini_read_float("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_HomingSpeed[AxisId]
-		snprintf(key, sizeof(key), "PEv2_HomingSpeed_%i", i);
+		snprintf(key, sizeof(key), "PEv2_HomingSpeed_%i", AxisId);
 		PEv2_data->PEv2_HomingSpeed[AxisId] = ini_read_float("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_HomingReturnSpeed[AxisId]
-		snprintf(key, sizeof(key), "PEv2_HomingReturnSpeed_%i", i);
+		snprintf(key, sizeof(key), "PEv2_HomingReturnSpeed_%i", AxisId);
 		PEv2_data->PEv2_HomingReturnSpeed[AxisId] = ini_read_float("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_HomingAlgorithm[AxisId]
-		snprintf(key, sizeof(key), "PEv2_HomingAlgorithm_%i", i);
+		snprintf(key, sizeof(key), "PEv2_HomingAlgorithm_%i", AxisId);
 		PEv2_data->PEv2_HomingAlgorithm[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_HomeAlg_OnHome_Stop[AxisId]
-		snprintf(key, sizeof(key), "PEv2_HomeAlg_OnHome_Stop_%i", i);
+		snprintf(key, sizeof(key), "PEv2_HomeAlg_OnHome_Stop_%i", AxisId);
 		PEv2_data->PEv2_HomeAlg_OnHome_Stop[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_HomeAlg_OnHome_ArmEncoder[AxisId]
-		snprintf(key, sizeof(key), "PEv2_HomeAlg_OnHome_ArmEncoder_%i", i);
+		snprintf(key, sizeof(key), "PEv2_HomeAlg_OnHome_ArmEncoder_%i", AxisId);
 		PEv2_data->PEv2_HomeAlg_OnHome_ArmEncoder[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_HomeAlg_OnHome_RevDirection[AxisId]
-		snprintf(key, sizeof(key), "PEv2_HomeAlg_OnHome_RevDirection_%i", i);
+		snprintf(key, sizeof(key), "PEv2_HomeAlg_OnHome_RevDirection_%i", AxisId);
 		PEv2_data->PEv2_HomeAlg_OnHome_RevDirection[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_HomeAlg_OnHome_ReducedSpeed[AxisId]
-		snprintf(key, sizeof(key), "PEv2_HomeAlg_OnHome_ReducedSpeed_%i", i);
+		snprintf(key, sizeof(key), "PEv2_HomeAlg_OnHome_ReducedSpeed_%i", AxisId);
 		PEv2_data->PEv2_HomeAlg_OnHome_ReducedSpeed[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_HomeAlg_OutHome_Stop[AxisId]
-		snprintf(key, sizeof(key), "PEv2_HomeAlg_OutHome_Stop_%i", i);
+		snprintf(key, sizeof(key), "PEv2_HomeAlg_OutHome_Stop_%i", AxisId);
 		PEv2_data->PEv2_HomeAlg_OutHome_Stop[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_HomeAlg_OutHome_ArmEncoder[AxisId]
-		snprintf(key, sizeof(key), "PEv2_HomeAlg_OutHome_ArmEncoder_%i", i);
+		snprintf(key, sizeof(key), "PEv2_HomeAlg_OutHome_ArmEncoder_%i", AxisId);
 		PEv2_data->PEv2_HomeAlg_OutHome_ArmEncoder[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_HomeAlg_OutHome_RevDirection[AxisId]
-		snprintf(key, sizeof(key), "PEv2_HomeAlg_OutHome_RevDirection_%i", i);
+		snprintf(key, sizeof(key), "PEv2_HomeAlg_OutHome_RevDirection_%i", AxisId);
 		PEv2_data->PEv2_HomeAlg_OutHome_RevDirection[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_HomeAlg_OutHome_ReducedSpeed[AxisId]
-		snprintf(key, sizeof(key), "PEv2_HomeAlg_OutHome_ReducedSpeed_%i", i);
+		snprintf(key, sizeof(key), "PEv2_HomeAlg_OutHome_ReducedSpeed_%i", AxisId);
 		PEv2_data->PEv2_HomeAlg_OutHome_ReducedSpeed[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_HomeBackOffDistance[AxisId]
-		snprintf(key, sizeof(key), "PEv2_HomeBackOffDistance_%i", i);
+		snprintf(key, sizeof(key), "PEv2_HomeBackOffDistance_%i", AxisId);
 		PEv2_data->PEv2_HomeBackOffDistance[AxisId] = ini_read_float("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_MPGjogEncoder[AxisId]
-		snprintf(key, sizeof(key), "PEv2_MPGjogEncoder_%i", i);
+		snprintf(key, sizeof(key), "PEv2_MPGjogEncoder_%i", AxisId);
 		PEv2_data->PEv2_MPGjogEncoder[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_MPGjogDivider[AxisId]
-		snprintf(key, sizeof(key), "PEv2_MPGjogDivider_%i", i);
+		snprintf(key, sizeof(key), "PEv2_MPGjogDivider_%i", AxisId);
 		PEv2_data->PEv2_MPGjogDivider[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_MPGjogMultiplier[AxisId]
-		snprintf(key, sizeof(key), "PEv2_MPGjogMultiplier_%i", i);
+		snprintf(key, sizeof(key), "PEv2_MPGjogMultiplier_%i", AxisId);
 		PEv2_data->PEv2_MPGjogMultiplier[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_FilterProbeInput
-		snprintf(key, sizeof(key), "PEv2_FilterProbeInput_%i", i);
+		snprintf(key, sizeof(key), "PEv2_FilterProbeInput_%i", AxisId);
 		PEv2_data->PEv2_FilterProbeInput[AxisId] = ini_read_int("POKEYS", key, 0);
 	
 		// PEv2_data->PEv2_digin_LimitN_Filter[AxisId]
-		snprintf(key, sizeof(key), "PEv2_FilterLimitMSwitch_%i", i);
+		snprintf(key, sizeof(key), "PEv2_FilterLimitMSwitch_%i", AxisId);
 		PEv2_data->PEv2_digin_LimitN_Filter[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_digin_LimitP_Filter[AxisId]
-		snprintf(key, sizeof(key), "PEv2_FilterLimitPSwitch_%i", i);
+		snprintf(key, sizeof(key), "PEv2_FilterLimitPSwitch_%i", AxisId);
 		PEv2_data->PEv2_digin_LimitP_Filter[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_digin_Home_Filter[AxisId]
-		snprintf(key, sizeof(key), "PEv2_FilterHomeSwitch_%i", i);
+		snprintf(key, sizeof(key), "PEv2_FilterHomeSwitch_%i", AxisId);
 		PEv2_data->PEv2_digin_Home_Filter[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_digin_Probe_Filter[AxisId]
-		snprintf(key, sizeof(key), "PEv2_FilterProbeSwitch_%i", i);
+		snprintf(key, sizeof(key), "PEv2_FilterProbeSwitch_%i", AxisId);
 		PEv2_data->PEv2_digin_Probe_Filter[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_SoftLimitMinimum[AxisId]
-		snprintf(key, sizeof(key), "PEv2_SoftLimitMinimum_%i", i);
+		snprintf(key, sizeof(key), "PEv2_SoftLimitMinimum_%i", AxisId);
 		PEv2_data->PEv2_SoftLimitMinimum[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_SoftLimitMaximum[AxisId]
-		snprintf(key, sizeof(key), "PEv2_SoftLimitMaximum_%i", i);
+		snprintf(key, sizeof(key), "PEv2_SoftLimitMaximum_%i", AxisId);
 		PEv2_data->PEv2_SoftLimitMaximum[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - PEv2_AxisEnableOutputPins_0
-		snprintf(key, sizeof(key), "PEv2_AxisEnableOutputPins_%i", i);
+		snprintf(key, sizeof(key), "PEv2_AxisEnableOutputPins_%i", AxisId);
 		PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] = ini_read_int("POKEYS", key, 0);
 
 		// PEv2_data->PEv2_digout_AxisEnable_invert[AxisId] - PEv2_InvertAxisEnable_0
-		snprintf(key, sizeof(key), "PEv2_InvertAxisEnable_%i", i);
+		snprintf(key, sizeof(key), "PEv2_InvertAxisEnable_%i", AxisId);
 		PEv2_data->PEv2_digout_AxisEnable_invert[AxisId] = ini_read_int("POKEYS", key, 0);
 
 	}
