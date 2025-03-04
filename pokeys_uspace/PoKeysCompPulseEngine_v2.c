@@ -2680,31 +2680,33 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 			else {
 				dev->PEv2.PinHomeSwitch[AxisId] = 0;
 			}
-			if (PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] == true) {
+
+
+			if (PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] == 1) {
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, true); // PK_ASO_SWITCH_COMBINED_LN_H = (1 << 3),   // 8 Home switch is shared with Limit- switch
 			}
 			else{
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, false); // PK_ASO_SWITCH_COMBINED_LN_H = (1 << 3),   // 8 Home switch is shared with Limit- switch
 			}
-			if (PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] == true) {
+			if (PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] == 1) {
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4, true); // PK_ASO_SWITCH_COMBINED_LP_H = (1 << 4),   // 16 Home switch is shared with Limit+ switch
 			}
 			else{
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4, false); // PK_ASO_SWITCH_COMBINED_LP_H = (1 << 4),   // 16 Home switch is shared with Limit+ switch
 			}
-			if (PEv2_data->PEv2_digin_Home_invert[AxisId] == true) {
+			if (PEv2_data->PEv2_digin_Home_invert[AxisId] == 1) {
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7, true); // PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
 			}
 			else{
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7, false); // PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
 			}
-			if (PEv2_data->PEv2_digin_LimitN_invert[AxisId] == true) {
+			if (PEv2_data->PEv2_digin_LimitN_invert[AxisId] == 1) {
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5, true); // PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
 			}
 			else{
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5, false); // PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
 			}
-			if (PEv2_data->PEv2_digin_LimitP_invert[AxisId] == true) {
+			if (PEv2_data->PEv2_digin_LimitP_invert[AxisId] == 1) {
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 6, true); // PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
 			}
 			else{
