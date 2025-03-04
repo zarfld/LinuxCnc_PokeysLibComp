@@ -21,7 +21,7 @@ typedef struct {
 	hal_bit_t* PEv2_params_ApplyIniSettings;
 	hal_u32_t* PEv2_AxesState[8];
 	hal_u32_t* PEv2_AxesCommand[8];
-	hal_u32_t* PEv2_AxesConfig[8];
+	hal_u32_t PEv2_AxesConfig[8];
 	hal_u32_t PEv2_SoftLimitMaximum[8];
 	hal_u32_t PEv2_SoftLimitMinimum[8];
 	hal_u32_t PEv2_HomingSpeed[8];
@@ -275,7 +275,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		if (r != 0)
 			return r;
 
-		r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_AxesConfig[j]), comp_id,
+		r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_AxesConfig[j]), comp_id,
 			"%s.PEv2.%01d.AxesConfig", prefix, j);
 		if (r != 0)
 			return r;
@@ -978,12 +978,8 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #define PEv2_AxesState(i) (*(PEv2_data->PEv2_AxesState[i]))
 #undef PEv2_AxesCommand
 #define PEv2_AxesCommand(i) (0 + *(PEv2_data->PEv2_AxesCommand[i]))
-#undef PEv2_AxesConfig
-#define PEv2_AxesConfig(i) (*(PEv2_data->PEv2_AxesConfig[i]))
-#undef PEv2_SoftLimitMaximum
 
-#undef PEv2_SoftLimitMinimum
-#define PEv2_SoftLimitMinimum(i) (*(PEv2_data->PEv2_SoftLimitMinimum[i]))
+
 
 
 
@@ -2973,7 +2969,7 @@ int32_t PEv2_AdditionalParametersGet(sPoKeysDevice * device){
 	usleep(sleepdur);
 }
 
-ePK_RETURN_CODES PEv2_AdditionalParametersSet(sPoKeysDevice * device){
+int32_t  PEv2_AdditionalParametersSet(sPoKeysDevice * device){
 	bool doSetup = false;
 	int32_t ret = PK_PEv2_AdditionalParametersGet(device);
 	if (ret == PK_OK) {
@@ -3007,7 +3003,7 @@ ePK_RETURN_CODES PEv2_AdditionalParametersSet(sPoKeysDevice * device){
 	}
 }
 
-ePK_RETURN_CODES PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
+int32_t  PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 	device->PEv2.param1 = AxisId;
 	if(PK_PEv2_AxisConfigurationGet(device) == PK_OK){
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationGet(%d) == PK_OK\n", __FILE__, __FUNCTION__, AxisId);
