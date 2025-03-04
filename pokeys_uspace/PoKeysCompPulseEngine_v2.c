@@ -2973,10 +2973,10 @@ int32_t PEv2_AdditionalParametersGet(sPoKeysDevice * device){
 	usleep(sleepdur);
 }
 
-int32_t PEv2_AdditionalParametersSet(sPoKeysDevice * device){
+ePK_RETURN_CODES PEv2_AdditionalParametersSet(sPoKeysDevice * device){
 	bool doSetup = false;
-	int32_t ret = PK_OK;
-	if (PK_PEv2_AdditionalParametersGet(device) == PK_OK) {
+	int32_t ret = PK_PEv2_AdditionalParametersGet(device);
+	if (ret == PK_OK) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersSet() == PK_OK\n", __FILE__, __FUNCTION__);
 
 		if(ApplyIniSettings==true && PEv2_data->PEv2_digin_Emergency_Pin != device->PEv2.EmergencyInputPin){
@@ -2987,12 +2987,13 @@ int32_t PEv2_AdditionalParametersSet(sPoKeysDevice * device){
 	else {
 		
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersSet() != PK_OK\n", __FILE__, __FUNCTION__);
-		ret = PK_ERR;
+		return ret;
 	}
 	usleep(sleepdur);
 
 	if(doSetup==true) {
-		if (PK_PEv2_AdditionalParametersSet(device) != PK_OK) {
+		ret = PK_PEv2_AdditionalParametersSet(device);
+		if (ret != PK_OK) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersSet() != PK_OK\n", __FILE__, __FUNCTION__);
 			if (PK_PEv2_AdditionalParametersSet(device) != PK_OK) {
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersSet() != PK_OK\n", __FILE__, __FUNCTION__);
@@ -3000,12 +3001,13 @@ int32_t PEv2_AdditionalParametersSet(sPoKeysDevice * device){
 		}
 		else {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersSet() == PK_OK\n", __FILE__, __FUNCTION__);
+			return ret;
 		}
 		usleep(sleepdur);
 	}
 }
 
-int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
+ePK_RETURN_CODES PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 	device->PEv2.param1 = AxisId;
 	if(PK_PEv2_AxisConfigurationGet(device) == PK_OK){
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationGet(%d) == PK_OK\n", __FILE__, __FUNCTION__, AxisId);
