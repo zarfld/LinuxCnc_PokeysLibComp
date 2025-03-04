@@ -2943,7 +2943,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_PulseEngineSetup != PK_OK\n", __FILE__, __FUNCTION__);
 		}
 
-
+		// Set Probe pin - but it will be send to pokeys on PK_PEv2_ProbingStart(dev) or PK_PEv2_ProbingHybridStart(dev)
 		if (PEv2_data->PEv2_digin_Probe_Pin != 0) { // check if pin is parametrized in HAL
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: IO_data->Pin[%d].PinFunction = %d\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Probe_Pin - 1, IO_data->Pin[PEv2_data->PEv2_digin_Probe_Pin - 1].PinFunction);
 			if (IO_data->Pin[PEv2_data->PEv2_digin_Probe_Pin - 1].PinFunction != PK_PinCap_digitalInput) {
@@ -2951,8 +2951,6 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 			}
 		}
 
-		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2.EmergencyInputPin = %d\n", __FILE__, __FUNCTION__, dev->PEv2.EmergencyInputPin);
-		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_digin_Emergency_Pin = %d\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Emergency_Pin);
 		if(PEv2_AdditionalParametersSet(dev)==PK_OK){
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_AdditionalParametersSet == PK_OK\n", __FILE__, __FUNCTION__);
 		}
@@ -2967,8 +2965,6 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				Pins_DigitalValueSet_ignore[PEv2_data->PEv2_digout_Emergency_Pin - 1] = true;
 			}
 		}
-
-
 	}
 	else {
 		if (PK_PEv2_StatusGet(dev) == PK_OK && PK_PEv2_Status2Get(dev) == PK_OK) {

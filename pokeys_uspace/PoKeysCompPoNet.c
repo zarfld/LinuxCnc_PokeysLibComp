@@ -32,7 +32,7 @@ typedef struct {
 	hal_u32_t PoNET_DevCount; // RO Parameter
 
 	hal_bit_t* kbd48CNC_available;
-	hal_u32_t* kbd48CNC_PoNetID;
+	hal_u32_t kbd48CNC_PoNetID;
 	hal_u32_t* kbd48CNC_KeyBrightness;
 	hal_u32_t* kbd48CNC_prevBrightness;
 	hal_u32_t* kbd48CNC_lightValue;
@@ -105,7 +105,7 @@ int PKPoNet_export_pins(char* prefix, long extra_arg, int id, int njoints, all_P
 	}
 
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.kbd48CNC.PoNetID\n", __FILE__, __FUNCTION__, prefix);
-	r = hal_pin_u32_newf(HAL_IO, &(PoNet_data->kbd48CNC_PoNetID), id,
+	r = hal_param_u32_newf(HAL_RW, &(PoNet_data->kbd48CNC_PoNetID), id,
 		"%s.kbd48CNC.PoNetID", prefix);
 	if (r != 0) {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.kbd48CNC.PoNetID failed\n", __FILE__, __FUNCTION__, prefix);
