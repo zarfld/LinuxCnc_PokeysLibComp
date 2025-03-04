@@ -2399,13 +2399,13 @@ int32_t  PEv2_AxisConfigurationGet(sPoKeysDevice * dev, int AxisId){
 			PEv2_data->PEv2_digin_LimitP_invert[AxisId]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_INVERT_LIMIT_P)	!= 0);
 			PEv2_data->PEv2_digin_Home_invert[AxisId]	= (int) ((axisSwitchConfig & PK_ASO_SWITCH_INVERT_HOME)		!= 0); 
 		}
-		if(ApplyIniSettings==false || PEv2_data->PEv2_digin_Home_Pin[AxisId]==0){
+		if(ApplyIniSettings==false ){
 			PEv2_data->PEv2_digin_Home_Pin[AxisId] = dev->PEv2.PinHomeSwitch[AxisId];
 		}
-		if(ApplyIniSettings==false || PEv2_data->PEv2_digin_LimitN_Pin[AxisId]==0){
+		if(ApplyIniSettings==false ){
 			PEv2_data->PEv2_digin_LimitN_Pin[AxisId] = dev->PEv2.PinLimitMSwitch[AxisId];
 		}
-		if(ApplyIniSettings==false || PEv2_data->PEv2_digin_LimitP_Pin[AxisId]==0){
+		if(ApplyIniSettings==false ){
 			PEv2_data->PEv2_digin_LimitP_Pin[AxisId] = dev->PEv2.PinLimitPSwitch[AxisId];
 		}
 		if(ApplyIniSettings==false || PEv2_data->PEv2_HomingSpeed[AxisId]==0){
@@ -2600,55 +2600,6 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 				PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
 			*/
 			AxesSwitchConfig[AxisId] = PEv2_data->PEv2_AxesSwitchConfig[AxisId]; // initial value from ini file
-
-			if (PEv2_data->PEv2_digin_LimitN_Enabled[AxisId] != 0) {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 0, true); // PK_ASO_SWITCH_LIMIT_N ;
-			}
-			else {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 0, false); // PK_ASO_SWITCH_LIMIT_N ;
-			}
-			if (PEv2_data->PEv2_digin_LimitP_Enabled[AxisId] != 0) {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 1, true); // PK_ASO_SWITCH_LIMIT_P ;
-			}
-			else {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 1, false); // PK_ASO_SWITCH_LIMIT_P ;
-			}
-			if (PEv2_data->PEv2_digin_Home_Enabled[AxisId] != 0) {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 2, true); // PK_ASO_SWITCH_HOME ;
-			}
-			else {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 2, false); // PK_ASO_SWITCH_HOME ;
-			}
-			if (PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] != 0) {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, false); // PK_ASO_SWITCH_COMBINED_LN_H ;
-			}
-			else {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, true); // PK_ASO_SWITCH_COMBINED_LN_H ;
-			}
-			if (PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] != 0) {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4, true); // PK_ASO_SWITCH_COMBINED_LP_H ;
-			}
-			else {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4, false); // PK_ASO_SWITCH_COMBINED_LP_H ;
-			}
-			if (PEv2_data->PEv2_digin_LimitN_invert[AxisId] != 0) {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5, true); // PK_ASO_SWITCH_INVERT_LIMIT_N ;
-			}
-			else {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5, false); // PK_ASO_SWITCH_INVERT_LIMIT_N ;
-			}
-			if (PEv2_data->PEv2_digin_LimitP_invert[AxisId] != 0) {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 6, true); // PK_ASO_SWITCH_INVERT_LIMIT_P ;
-			}
-			else {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 6, false); // PK_ASO_SWITCH_INVERT_LIMIT_P ;
-			}
-			if (PEv2_data->PEv2_digin_Home_invert[AxisId] != 0) {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7, true); // PK_ASO_SWITCH_INVERT_HOME ;
-			}
-			else {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7, false); // PK_ASO_SWITCH_INVERT_HOME ;
-			}
 			if (PEv2_data->PEv2_digin_Home_Pin[AxisId] != 0) {
 				// path if pin (not dedicated) is used for home switch
 				// check if pin is parametrized in HAL
@@ -2691,7 +2642,57 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 			else {
 				dev->PEv2.PinHomeSwitch[AxisId] = 0;
 			}
+			if (PEv2_data->PEv2_digin_LimitN_Enabled[AxisId] != 0) {
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 0, true); // PK_ASO_SWITCH_LIMIT_N ;
+			}
+			else {
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 0, false); // PK_ASO_SWITCH_LIMIT_N ;
+			}
+			if (PEv2_data->PEv2_digin_LimitP_Enabled[AxisId] != 0) {
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 1, true); // PK_ASO_SWITCH_LIMIT_P ;
+			}
+			else {
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 1, false); // PK_ASO_SWITCH_LIMIT_P ;
+			}
+			if (PEv2_data->PEv2_digin_Home_Enabled[AxisId] != 0) {
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 2, true); // PK_ASO_SWITCH_HOME ;
+			}
+			else {
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 2, false); // PK_ASO_SWITCH_HOME ;
+			}
 
+			if (PEv2_data->PEv2_digin_LimitN_invert[AxisId] != 0) {
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5, true); // PK_ASO_SWITCH_INVERT_LIMIT_N ;
+			}
+			else {
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5, false); // PK_ASO_SWITCH_INVERT_LIMIT_N ;
+			}
+			if (PEv2_data->PEv2_digin_LimitP_invert[AxisId] != 0) {
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 6, true); // PK_ASO_SWITCH_INVERT_LIMIT_P ;
+			}
+			else {
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 6, false); // PK_ASO_SWITCH_INVERT_LIMIT_P ;
+			}
+			if (PEv2_data->PEv2_digin_Home_invert[AxisId] != 0) {
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7, true); // PK_ASO_SWITCH_INVERT_HOME ;
+			}
+			else {
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7, false); // PK_ASO_SWITCH_INVERT_HOME ;
+			}
+
+
+			if (PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] != 0) {
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, true); // PK_ASO_SWITCH_COMBINED_LN_H ;
+			}
+			else {
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, false); // PK_ASO_SWITCH_COMBINED_LN_H ;
+			}
+			if (PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] != 0) {
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4, true); // PK_ASO_SWITCH_COMBINED_LP_H ;
+			}
+			else {
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4, false); // PK_ASO_SWITCH_COMBINED_LP_H ;
+			}
 
 			if (PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] !=0) {
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, true); // PK_ASO_SWITCH_COMBINED_LN_H = (1 << 3),   // 8 Home switch is shared with Limit- switch
