@@ -1332,8 +1332,7 @@ static void do_homing_sequence(void)
     return;
 } // do_homing_sequence()
 
-int pokeys_1joint_state_machine(int joint_num)
-{
+int pokeys_1joint_state_machine(int joint_num){
     emcmot_joint_t *joint;
     double offset, tmp;
     int home_sw_active, homing_flag;
@@ -1362,11 +1361,9 @@ int pokeys_1joint_state_machine(int joint_num)
        switch(home_state) runs only once per servo period. Do _not_ set
        'immediate_state' true unless you also change 'home_state', unless
        you want an infinite loop! */
-    do
-    {
+    do    {
         immediate_state = 0;
-        switch (H[joint_num].PEv2_AxesState)
-        {
+        switch (H[joint_num].PEv2_AxesState)        {
         case PK_PEAxisState_axSTOPPED:
             /* Axis is stopped */
             rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d stopped\n", joint_num);
@@ -1407,9 +1404,51 @@ int pokeys_1joint_state_machine(int joint_num)
         case PK_PEAxisState_axHOME:
             rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homed\n", joint_num);
             /* Axis is homed */
-            H[joint_num].homing = 0;
-            H[joint_num].home_state = HOME_FINISHED;
-            H[joint_num].homed = 1;
+            
+
+            // check if all joints in sequence are homed
+            if (H[joint_num].home_sequence < 0)
+            {
+
+                int joints_in_sequence = 0;
+                int homed_in_sequence = 0;
+                int jj;
+                for (jj = 0; jj < all_joints; jj++)
+                {
+                    if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence))
+                    {
+                        joints_in_sequence++;
+                        if (H[jj].PEv2_AxesState == PK_PEAxisState_axHOME)
+                        {
+                            homed_in_sequence++;
+                        }
+                    }
+                }
+
+                rtapi_print_msg(RTAPI_MSG_ERR, "HOMING:PK_PEAxisState_axHOME joint %d joints_in_sequence:%d  homed_in_sequence:%d \n",jno, joints_in_sequence,homed_in_sequence);
+                if (joints_in_sequence == homed_in_sequence)                {
+                    //if all Joints of the Sequence show Hommed
+                    for (jj = 0; jj < all_joints; jj++)                        {
+                            if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence))                            {
+                                H[jj].homing = 0;
+                                H[jj].home_state = HOME_FINISHED;
+                                H[jj].homed = 1;
+                            }
+                        }
+                    H[joint_num].homing = 0;
+                    H[joint_num].home_state = HOME_FINISHED;
+                    H[joint_num].homed = 1;
+
+                }
+            }
+            else
+            {
+                H[joint_num].homing = 0;
+                H[joint_num].home_state = HOME_FINISHED;
+                H[joint_num].homed = 1;
+            }
+
+
             break;
 
         case PK_PEAxisState_axHOMINGSTART:
