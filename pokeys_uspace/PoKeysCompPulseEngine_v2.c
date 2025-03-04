@@ -2181,7 +2181,7 @@ int32_t PEv2_PulseEngineSetup(sPoKeysDevice * dev){
 	if (dev->PEv2.PulseEngineEnabled != dev->PEv2.info.nrOfAxes) {
 		dev->PEv2.PulseEngineEnabled = dev->PEv2.info.nrOfAxes;
 		PEv2_data->PEv2_PulseEngineEnabled = dev->PEv2.info.nrOfAxes;
-		DoPeSetup = true;
+		doSetup = true;
 	}
 
 	//dev->PEv2.PulseEngineEnabled = PEv2_data->PEv2_PulseEngineEnabled;
@@ -2638,12 +2638,12 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 
 				if (dev->PEv2.PinHomeSwitch[AxisId] != Home) {
 					dev->PEv2.PinHomeSwitch[AxisId] = Home;
-					doAxisConfig = true;
+					doSetup = true;
 				}
 				if (Home != LimM && Home != LimP) {
 					if (dev->PEv2.PinHomeSwitch[AxisId] != Home) {
 						dev->PEv2.PinHomeSwitch[AxisId] = Home;
-						doAxisConfig = true;
+						doSetup = true;
 					}
 				}
 				else if (Home == LimP) {
@@ -2767,7 +2767,7 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 			else if (PEv2_data->PEv2_MaxSpeed[AxisId] == 0 && dev->PEv2.MaxSpeed[AxisId] == 0) {
 				PEv2_data->PEv2_MaxSpeed[AxisId]=1;
 				dev->PEv2.MaxSpeed[AxisId] = 1000;
-				doAxisConfig = true;
+				doSetup = true;
 			}
 			if(dev->PEv2.MaxAcceleration[AxisId] != PEv2_data->PEv2_MaxAcceleration[AxisId]/ 1000000){
 				dev->PEv2.MaxAcceleration[AxisId] = PEv2_data->PEv2_MaxDecceleration[AxisId] / 1000000;
