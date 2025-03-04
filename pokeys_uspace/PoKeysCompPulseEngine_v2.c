@@ -1204,6 +1204,10 @@ uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value) {
 }
 
 
+
+
+
+
 void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 	uint8_t bm_LimitStatusP; // Limit+ status (bit-mapped)
 	uint8_t bm_LimitStatusN; // Limit- status (bit-mapped)
@@ -2157,10 +2161,36 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 	}
 }
 
-
-
-int32_t PEv2_PulseEngineSetup(sPoKeysDevice * device){
+int32_t PEv2_PulseEngineSetup(sPoKeysDevice * dev){
 	bool doSetup = false;
+
+	switch (dev->DeviceData.DeviceTypeID) {
+		case PK_DeviceID_PoKeys57CNC:
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_PoKeys57CNC\n", __FILE__, __FUNCTION__);
+			PEv2_data->PEv2_PulseEngineEnabled = 8;
+			PEv2_data->PEv2_PG_extended_io = 1;
+			break;
+		case PK_DeviceID_PoKeys57CNCdb25:
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_PoKeys57CNCdb25\n", __FILE__, __FUNCTION__);
+			PEv2_data->PEv2_PG_extended_io = 0;
+			break;
+		case PK_DeviceID_57U:
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_57U\n", __FILE__, __FUNCTION__);
+			PEv2_data->PEv2_PG_extended_io = 0;
+			break;
+		case PK_DeviceID_57E:
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_57E\n", __FILE__, __FUNCTION__);
+			PEv2_data->PEv2_PG_extended_io = 0;
+			break;
+	}
+
+
+
+	if (dev->PEv2.PulseEngineEnabled != dev->PEv2.info.nrOfAxes) {
+		dev->PEv2.PulseEngineEnabled = dev->PEv2.info.nrOfAxes;
+		PEv2_data->PEv2_PulseEngineEnabled = dev->PEv2.info.nrOfAxes;
+		DoPeSetup = true;
+	}
 
 	//dev->PEv2.PulseEngineEnabled = PEv2_data->PEv2_PulseEngineEnabled;
 	if (dev->PEv2.PulseEngineEnabled != PEv2_data->PEv2_PulseEngineEnabled) {
@@ -2173,6 +2203,22 @@ int32_t PEv2_PulseEngineSetup(sPoKeysDevice * device){
 		doSetup = true;
 	}
 	//dev->PEv2.PulseGeneratorType = PEv2_data->PEv2_PulseGeneratorType;
+
+	if (PEv2_data->PEv2_PG_swap_stepdir != false) {
+		PEv2_data->PEv2_PulseGeneratorType = Set_BitOfByte(PEv2_data->PEv2_PulseGeneratorType, 6, true); // swap step / dir signals
+	}
+	else{
+		PEv2_data->PEv2_PulseGeneratorType = Set_BitOfByte(PEv2_data->PEv2_PulseGeneratorType, 6, false); // swap step / dir signals
+	}
+
+	if (PEv2_data->PEv2_PG_extended_io != 0) {
+		PEv2_data->PEv2_PulseGeneratorType = Set_BitOfByte(PEv2_data->PEv2_PulseGeneratorType, 7, true); // extended io
+	}
+	else{
+		PEv2_data->PEv2_PulseGeneratorType = Set_BitOfByte(PEv2_data->PEv2_PulseGeneratorType, 7, false); // no extended io
+	}
+
+
 	if (dev->PEv2.PulseGeneratorType != PEv2_data->PEv2_PulseGeneratorType) {
 		dev->PEv2.PulseGeneratorType = PEv2_data->PEv2_PulseGeneratorType;
 		doSetup = true;
@@ -2194,12 +2240,24 @@ int32_t PEv2_PulseEngineSetup(sPoKeysDevice * device){
 	if(doSetup==true) {
 		if (PK_PEv2_PulseEngineSetup(device) != PK_OK) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PulseEngineSetup() != PK_OK\n", __FILE__, __FUNCTION__);
+			usleep(sleepdur);
 			if (PK_PEv2_PulseEngineSetup(device) != PK_OK) {
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PulseEngineSetup() != PK_OK\n", __FILE__, __FUNCTION__);
 			}
 		}
 		else {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_PulseEngineSetup() == PK_OK\n", __FILE__, __FUNCTION__);
+			usleep(sleepdur);
+			if(PK_SaveConfiguration(dev)==PK_OK){
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SaveConfiguration() == PK_OK\n", __FILE__, __FUNCTION__);
+				usleep(sleepdur);
+				PK_PEv2_PulseEngineReboot(dev);
+				usleep(1000000);
+			}
+			else{
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_SaveConfiguration() != PK_OK\n", __FILE__, __FUNCTION__);
+			}
+
 		}
 		usleep(sleepdur);
 	}
@@ -2231,6 +2289,15 @@ int32_t  PEv2_AdditionalParametersSet(sPoKeysDevice * dev){
 		if(ApplyIniSettings==true && PEv2_data->PEv2_digin_Emergency_Pin != dev->PEv2.EmergencyInputPin){
 			dev->PEv2.EmergencyInputPin = PEv2_data->PEv2_digin_Emergency_Pin;
 			doSetup = true;
+
+			if (PEv2_data->PEv2_digin_Emergency_Pin != 0) { // check if pin is parametrized in HAL
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].PinFunction = %d\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Emergency_Pin - 1, dev->Pins[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction);
+				dev->Pins[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction = PK_PinCap_digitalInput;
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SL_SetPinFunction(dev, %d, PK_PinCap_digitalInput)\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Emergency_Pin - 1);
+				PK_SL_SetPinFunction(dev, PEv2_data->PEv2_digin_Emergency_Pin - 1, PK_PinCap_digitalInput);
+				usleep(sleepdur);
+				setPinConfig = true;
+			}
 		}
 	}
 	else {
@@ -2875,36 +2942,13 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 		// dev->PEv2.AxisEnabledStatesMask=0; //Disable axis power when not in Running state
 		// PK_PEv2_PulseEngineSetup(dev);
 
-		switch (dev->DeviceData.DeviceTypeID) {
-		case PK_DeviceID_PoKeys57CNC:
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_PoKeys57CNC\n", __FILE__, __FUNCTION__);
-			PEv2_data->PEv2_PulseEngineEnabled = 8;
-			PEv2_data->PEv2_PG_extended_io = 1;
-			break;
-		case PK_DeviceID_PoKeys57CNCdb25:
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_PoKeys57CNCdb25\n", __FILE__, __FUNCTION__);
-			PEv2_data->PEv2_PG_extended_io = 0;
-			break;
-		case PK_DeviceID_57U:
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_57U\n", __FILE__, __FUNCTION__);
-			PEv2_data->PEv2_PG_extended_io = 0;
-			break;
-		case PK_DeviceID_57E:
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_57E\n", __FILE__, __FUNCTION__);
-			PEv2_data->PEv2_PG_extended_io = 0;
-			break;
+		if(PEv2_PulseEngineSetup(dev)==PK_OK){
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_PulseEngineSetup == PK_OK\n", __FILE__, __FUNCTION__);
+		}
+		else{
+			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_PulseEngineSetup != PK_OK\n", __FILE__, __FUNCTION__);
 		}
 
-		if (ApplyIniSettings ==true) {
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SaveConfiguration - PEv2_params_ApplyIniSettings\n", __FILE__, __FUNCTION__);
-			if (PK_SaveConfiguration(dev) != PK_OK) {
-				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_SaveConfiguration - PEv2_params_ApplyIniSettings failed\n", __FILE__, __FUNCTION__);
-			}
-			else {
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SaveConfiguration - PEv2_params_ApplyIniSettings OK\n", __FILE__, __FUNCTION__);
-				usleep(sleepdur);
-			}
-		}
 
 		if (PEv2_data->PEv2_digin_Probe_Pin != 0) { // check if pin is parametrized in HAL
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].PinFunction = %d\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Probe_Pin - 1, dev->Pins[PEv2_data->PEv2_digin_Probe_Pin - 1].PinFunction);
@@ -2919,19 +2963,14 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2.EmergencyInputPin = %d\n", __FILE__, __FUNCTION__, dev->PEv2.EmergencyInputPin);
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_digin_Emergency_Pin = %d\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Emergency_Pin);
-		if (dev->PEv2.EmergencyInputPin != PEv2_data->PEv2_digin_Emergency_Pin) {
-			PEv2_AdditionalParametersSet(dev);
-			DoPeSetup = true;
-			if (PEv2_data->PEv2_digin_Emergency_Pin != 0) { // check if pin is parametrized in HAL
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].PinFunction = %d\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Emergency_Pin - 1, dev->Pins[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction);
-				dev->Pins[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction = PK_PinCap_digitalInput;
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SL_SetPinFunction(dev, %d, PK_PinCap_digitalInput)\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Emergency_Pin - 1);
-				PK_SL_SetPinFunction(dev, PEv2_data->PEv2_digin_Emergency_Pin - 1, PK_PinCap_digitalInput);
-				usleep(sleepdur);
-				setPinConfig = true;
-			}
+		if(PEv2_AdditionalParametersSet(dev)==PK_OK){
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_AdditionalParametersSet == PK_OK\n", __FILE__, __FUNCTION__);
+		}
+		else{
+			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_AdditionalParametersSet != PK_OK\n", __FILE__, __FUNCTION__);
 		}
 
+		// that Pin is not defined explicitely on pokeys
 		if (PEv2_data->PEv2_digout_Emergency_Pin != 0) { // check if pin is parametrized in HAL
 			if (dev->Pins[PEv2_data->PEv2_digout_Emergency_Pin - 1].PinFunction != PK_PinCap_digitalOutput) {
 				dev->Pins[PEv2_data->PEv2_digout_Emergency_Pin - 1].PinFunction = PK_PinCap_digitalOutput;
@@ -2942,60 +2981,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 			}
 		}
 
-		if (dev->PEv2.PulseEngineEnabled != dev->PEv2.info.nrOfAxes) {
-			dev->PEv2.PulseEngineEnabled = dev->PEv2.info.nrOfAxes;
-			PEv2_data->PEv2_PulseEngineEnabled = dev->PEv2.info.nrOfAxes;
-			DoPeSetup = true;
-		}
 
-		if (PEv2_data->PEv2_PulseEngineEnabled != 0) {
-			dev->PEv2.PulseEngineActivated = 1;
-			DoPeSetup = true;
-		}
-		if (PEv2_data->PEv2_PulseGeneratorType == 0) {
-
-			if (PEv2_data->PEv2_PG_swap_stepdir != false) {
-				PEv2_data->PEv2_PulseGeneratorType = Set_BitOfByte(PEv2_data->PEv2_PulseGeneratorType, 6, true); // swap step / dir signals
-				DoPeSetup = true;
-			}
-
-			if (PEv2_data->PEv2_PG_extended_io != 0) {
-				PEv2_data->PEv2_PulseGeneratorType = Set_BitOfByte(PEv2_data->PEv2_PulseGeneratorType, 7, true); // extended io
-				DoPeSetup = true;
-			}
-		}
-
-		if (dev->PEv2.ChargePumpEnabled != PEv2_data->PEv2_ChargePumpEnabled) {
-			dev->PEv2.ChargePumpEnabled = PEv2_data->PEv2_ChargePumpEnabled;
-			DoPeSetup = true;
-		}
-		if (dev->PEv2.PulseGeneratorType != PEv2_data->PEv2_PulseGeneratorType) {
-			dev->PEv2.PulseGeneratorType = PEv2_data->PEv2_PulseGeneratorType;
-			DoPeSetup = true;
-		}
-		if (dev->PEv2.EmergencySwitchPolarity != PEv2_data->PEv2_digin_Emergency_invert) {
-			dev->PEv2.EmergencySwitchPolarity = PEv2_data->PEv2_digin_Emergency_invert;
-			DoPeSetup = true;
-		}
-
-		if (DoPeSetup == true) {
-			if (PK_PEv2_PulseEngineSetup(dev) != PK_OK) {
-				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PulseEngineSetup!=PK_OK\n", __FILE__, __FUNCTION__);
-				if (PK_PEv2_PulseEngineSetup(dev) != PK_OK) {
-
-				}
-			}
-			else {
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_PulseEngineSetup == PK_OK \n" __FILE__, __FUNCTION__);
-			}
-			usleep(sleepdur);
-
-
-			if (DoPeReboot == true) {
-				PK_PEv2_PulseEngineReboot(dev);
-				usleep(1000000);
-			}
-		}
 	}
 	else {
 		if (PK_PEv2_StatusGet(dev) == PK_OK && PK_PEv2_Status2Get(dev) == PK_OK) {
@@ -3027,10 +3013,10 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 	for (int i = 0; i < dev->PEv2.info.nrOfAxes; i++) {
 		if (ApplyIniSettings ==true) {
 			bool doAxisConfig = false;
-			PEv2_AdditionalParametersSet(dev, i);			
+			PEv2_AxisConfigurationSet(dev, i);			
 		}
 		else {
-			PEv2_AdditionalParametersGet(dev, i);
+			PEv2_AxisConfigurationGet(dev, i);
 		}
 	}
 	// dev->PEv2.param1 = 0;
