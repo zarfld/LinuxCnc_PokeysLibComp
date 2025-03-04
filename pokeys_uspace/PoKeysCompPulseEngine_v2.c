@@ -1038,8 +1038,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #define PEv2_stepgen_HOME_FINAL_VEL(i) (0 + *(PEv2_data->PEv2_stepgen_HOME_FINAL_VEL[i]))
 #undef PEv2_stepgen_HOME_IGNORE_LIMITS
 #define PEv2_stepgen_HOME_IGNORE_LIMITS(i) (0 + *(PEv2_data->PEv2_stepgen_HOME_IGNORE_LIMITS[i]))
-#undef PEv2_MPGjogMultiplier
-#define PEv2_MPGjogMultiplier(i) (*(PEv2_data->PEv2_MPGjogMultiplier[i]))
+
 
 #undef PEv2_digin_LimitN_in
 #define PEv2_digin_LimitN_in(i) (*(PEv2_data->PEv2_digin_LimitN_in[i]))
@@ -2686,13 +2685,13 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				doAxisConfig = true;
 			}
 
-			if (dev->PEv2.MPGjogEncoder[i] != PEv2_MPGjogEncoder(i)) {
-				dev->PEv2.MPGjogEncoder[i] = PEv2_MPGjogEncoder(i);
+			if (dev->PEv2.MPGjogEncoder[i] != PEv2_data->PEv2_MPGjogEncoder[i]) {
+				dev->PEv2.MPGjogEncoder[i] = PEv2_data->PEv2_MPGjogEncoder[i];
 				doAxisConfig = true;
 			}
 
-			if (dev->PEv2.MPGjogMultiplier[i] != PEv2_MPGjogMultiplier(i)) {
-				dev->PEv2.MPGjogMultiplier[i] = PEv2_MPGjogMultiplier(i);
+			if (dev->PEv2.MPGjogMultiplier[i] != PEv2_data->PEv2_MPGjogMultiplier[i]) {
+				dev->PEv2.MPGjogMultiplier[i] = PEv2_data->PEv2_MPGjogMultiplier[i];
 				doAxisConfig = true;
 			}
 
@@ -2773,8 +2772,8 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 			}
 
 			// MPG 1x mode here
-			if (dev->PEv2.HomeBackOffDistance[i] != PEv2_HomeBackOffDistance(i)) {
-				dev->PEv2.HomeBackOffDistance[i] = PEv2_HomeBackOffDistance(i);
+			if (dev->PEv2.HomeBackOffDistance[i] != PEv2_data->PEv2_HomeBackOffDistance[i]) {
+				dev->PEv2.HomeBackOffDistance[i] = PEv2_data->PEv2_HomeBackOffDistance[i];
 				doAxisConfig = true;
 			}
 
@@ -2828,7 +2827,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				PEv2_data->PEv2_HomingSpeed[i] = dev->PEv2.HomingSpeed[i];
 				PEv2_data->PEv2_HomingReturnSpeed[i] = dev->PEv2.HomingReturnSpeed[i];
 
-				PEv2_MPGjogEncoder(i) = dev->PEv2.MPGjogEncoder[i];
+				PEv2_data->PEv2_MPGjogEncoder[i] = dev->PEv2.MPGjogEncoder[i];
 
 				// Convert parameters... assume little-endian format
 				PEv2_data->PEv2_MaxSpeed[i] = dev->PEv2.MaxSpeed[i];
@@ -2838,7 +2837,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				PEv2_digin_SoftLimit_PosMin(i) = dev->PEv2.SoftLimitMinimum[i];
 				PEv2_digin_SoftLimit_PosMax(i) = dev->PEv2.SoftLimitMaximum[i];
 
-				PEv2_MPGjogMultiplier(i) = dev->PEv2.MPGjogMultiplier[i];
+				PEv2_data->PEv2_MPGjogMultiplier[i] = dev->PEv2.MPGjogMultiplier[i];
 
 				// PEv2_data->PEv2_digout_AxisEnable_Pin[i] = dev->PEv2.AxisEnableOutputPins[i];
 				PEv2_data->PEv2_digout_AxisEnable_invert[i] = dev->PEv2.InvertAxisEnable[i];
@@ -2849,7 +2848,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 
 				PEv2_HomingAlgorithm(i) = dev->PEv2.HomingAlgorithm[i];
 				// MPG 1x mode here
-				PEv2_HomeBackOffDistance(i) = dev->PEv2.HomeBackOffDistance[i];
+				PEv2_data->PEv2_HomeBackOffDistance[i] = dev->PEv2.HomeBackOffDistance[i];
 				PEv2_data->PEv2_MPGjogDivider[i] = dev->PEv2.MPGjogDivider[i];
 
 			}
