@@ -2250,7 +2250,7 @@ int32_t PEv2_AdditionalParametersGet(sPoKeysDevice * dev){
 	if (PK_PEv2_AdditionalParametersGet(dev) == PK_OK) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersGet() == PK_OK\n", __FILE__, __FUNCTION__);
 		if(ApplyIniSettings==false || PEv2_data->PEv2_digin_Emergency_Pin==0){
-			PEv2_data->PEv2_digin_Emergency_Pin = dev->PEv2.EmergencyInputPin;
+			PEv2_data->PEv2_digin_Emergency_Pin = dev->PEv2.EmergencyInputPin-9;
 		}
 	}
 	else {
@@ -2268,7 +2268,7 @@ int32_t  PEv2_AdditionalParametersSet(sPoKeysDevice * dev){
 
 		// seems to apply here also defines the extenal input (values 1-8) or PoKeys pin (0-based Pin ID + 9)
 		if(ApplyIniSettings==true && PEv2_data->PEv2_digin_Emergency_Pin != dev->PEv2.EmergencyInputPin+9){
-			dev->PEv2.EmergencyInputPin = PEv2_data->PEv2_digin_Emergency_Pin+9;
+			dev->PEv2.EmergencyInputPin = PEv2_data->PEv2_digin_Emergency_Pin+9; //(0:dedicated, 1-8:external inputs, 9+ Pin ID-9)
 			doSetup = true;
 
 			if (PEv2_data->PEv2_digin_Emergency_Pin != 0) { // check if pin is parametrized in HAL
@@ -2291,8 +2291,8 @@ int32_t  PEv2_AdditionalParametersSet(sPoKeysDevice * dev){
 	usleep(sleepdur);
 
 	if(doSetup==true) {
-		PK_PEv2_AdditionalParametersSet(dev);
-		ret = PK_OK;
+		ret = PK_PEv2_AdditionalParametersSet(dev);
+		
 		if (ret != PK_OK) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersSet() != PK_OK\n", __FILE__, __FUNCTION__);
 			usleep(sleepdur);
@@ -2620,10 +2620,10 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 2, false); // PK_ASO_SWITCH_HOME ;
 			}
 			if (PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] != 0) {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, true); // PK_ASO_SWITCH_COMBINED_LN_H ;
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, false); // PK_ASO_SWITCH_COMBINED_LN_H ;
 			}
 			else {
-				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, false); // PK_ASO_SWITCH_COMBINED_LN_H ;
+				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, true); // PK_ASO_SWITCH_COMBINED_LN_H ;
 			}
 			if (PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] != 0) {
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4, true); // PK_ASO_SWITCH_COMBINED_LP_H ;
