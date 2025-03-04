@@ -1484,7 +1484,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		PEv2_digin_Probed_in = false;
 	}
 	
-	if (PEv2_StatusGet(dev)){
+	if (PEv2_StatusGet(dev)==PK_OK){
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_StatusGet(dev) = PK_OK\n", __FILE__, __FUNCTION__);
 	}
 	else {
