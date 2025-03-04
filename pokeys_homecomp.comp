@@ -1425,7 +1425,7 @@ int pokeys_1joint_state_machine(int joint_num){
                     }
                 }
 
-                rtapi_print_msg(RTAPI_MSG_ERR, "HOMING:PK_PEAxisState_axHOME joint %d joints_in_sequence:%d  homed_in_sequence:%d \n",joint_num, joints_in_sequence,homed_in_sequence);
+               // rtapi_print_msg(RTAPI_MSG_ERR, "pokeys_1joint_state_machine:PK_PEAxisState_axHOME joint %d joints_in_sequence:%d  homed_in_sequence:%d \n",joint_num, joints_in_sequence,homed_in_sequence);
                 if (joints_in_sequence == homed_in_sequence)                {
                     //if all Joints of the Sequence show Hommed
                     for (jj = 0; jj < all_joints; jj++)                        {
@@ -1433,11 +1433,13 @@ int pokeys_1joint_state_machine(int joint_num){
                                 H[jj].homing = 0;
                                 H[jj].home_state = HOME_FINISHED;
                                 H[jj].homed = 1;
+                                H[joint_num].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                             }
                         }
                     H[joint_num].homing = 0;
                     H[joint_num].home_state = HOME_FINISHED;
                     H[joint_num].homed = 1;
+                    H[joint_num].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
 
                 }
             }
