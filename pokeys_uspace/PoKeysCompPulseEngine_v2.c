@@ -2645,30 +2645,37 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 				int LimP = PEv2_data->PEv2_digin_LimitP_Pin[AxisId];
 				int LimM = PEv2_data->PEv2_digin_LimitN_Pin[AxisId];
 
-				if (dev->PEv2.PinHomeSwitch[AxisId] != Home) {
-					dev->PEv2.PinHomeSwitch[AxisId] = Home;
-					doSetup = true;
-				}
+				
 				if (Home != LimM && Home != LimP) {
 					if (dev->PEv2.PinHomeSwitch[AxisId] != Home) {
 						dev->PEv2.PinHomeSwitch[AxisId] = Home;
 						doSetup = true;
 					}
+					if (IO_data->Pin[Home - 1].PinFunction != PK_PinCap_digitalInput) {
+						IO_data->Pin[Home - 1].PinFunction = PK_PinCap_digitalInput;
+					}
 				}
 				else if (Home == LimP) {
 					// dev->PEv2.PinHomeSwitch[AxisId]=0;
 					//AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4, true); // 16 Home switch is shared with Limit+ switch
+					if (dev->PEv2.PinHomeSwitch[AxisId] != 0) {
+						dev->PEv2.PinHomeSwitch[AxisId] = 0;
+						doSetup = true;
+					}
+
 					PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] = true;
 				}
 				else if (Home == LimM) {
 					// dev->PEv2.PinHomeSwitch(i)=0;
 					//AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, true); // 8 Home switch is shared with Limit- switch
+					if (dev->PEv2.PinHomeSwitch[AxisId] != 0) {
+						dev->PEv2.PinHomeSwitch[AxisId] = 0;
+						doSetup = true;
+					}
 					PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] = true;
 				}
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 2, true); // | PK_ASO_SWITCH_HOME;
-				if (IO_data->Pin[Home - 1].PinFunction != PK_PinCap_digitalInput) {
-					IO_data->Pin[Home - 1].PinFunction = PK_PinCap_digitalInput;
-				}
+				
 			}
 			else {
 				dev->PEv2.PinHomeSwitch[AxisId] = 0;
