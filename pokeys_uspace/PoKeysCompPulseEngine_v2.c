@@ -1456,7 +1456,7 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice* dev){
 		}
 	}
 
-	return PK_OK;
+	return ret;
 }
 
 void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
@@ -2119,7 +2119,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 	}
 
 
-	if (PEv2_ExternalOutputsSet == PK_OK){
+	if (PEv2_ExternalOutputsSet(dev) == PK_OK){
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_ExternalOutputsSet=PK_OK\n", __FILE__, __FUNCTION__);
 	}
 	else {
