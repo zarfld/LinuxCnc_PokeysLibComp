@@ -1012,10 +1012,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #define PEv2_stepgen_TYPE(i) (0 + *(PEv2_data->PEv2_stepgen_TYPE[i]))
 #undef PEv2_stepgen_HOME
 #define PEv2_stepgen_HOME(i) (0 + *(PEv2_data->PEv2_stepgen_HOME[i]))
-#undef PEv2_stepgen_STEPGEN_MAXVEL
-#define PEv2_stepgen_STEPGEN_MAXVEL(i) (0 + (PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[i]))
-#undef PEv2_stepgen_STEPGEN_MAXACCEL
-#define PEv2_stepgen_STEPGEN_MAXACCEL(i) (0 + *(PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[i]))
+
 #undef PEv2_params_Feedback_Encoder_Id
 #define PEv2_params_Feedback_Encoder_Id(i) (0 + *(PEv2_data->PEv2_params_Feedback_Encoder_Id[i]))
 #undef PEv2_stepgen_DEADBAND
@@ -2459,9 +2456,9 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				// need to ensure positve values for the following calculations otherwise machine will not move
 				PEv2_data->PEv2_MaxSpeed[i] = abs(PEv2_stepgen_STEPGEN_MAXVEL(i) * StepScale[i]);				 // Maximum axis speed convert (mm/s) to (pulses / s)
 
-				PEv2_data->PEv2_MaxAcceleration[i] = abs(PEv2_stepgen_STEPGEN_MAXACCEL(i) * StepScale[i]); // Maximum axis deceleration convert (mm/s²) to (in pulses/s²)
+				PEv2_data->PEv2_MaxAcceleration[i] = abs(PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[i] * StepScale[i]); // Maximum axis deceleration convert (mm/s²) to (in pulses/s²)
 
-				PEv2_data->PEv2_MaxDecceleration[i] = abs(PEv2_stepgen_STEPGEN_MAXACCEL(i) * StepScale[i]); // Maximum axis deceleration convert (mm/s²) to (in pulses/s²)
+				PEv2_data->PEv2_MaxDecceleration[i] = abs(PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[i] * StepScale[i]); // Maximum axis deceleration convert (mm/s²) to (in pulses/s²)
 
 				float LimitOffset = 0.0;
 				if (PEv2_stepgen_MAX_LIMIT(i) > PEv2_stepgen_MIN_LIMIT(i)) {
