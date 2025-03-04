@@ -2509,7 +2509,7 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 				PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
 			*/
 			AxesConfig[AxisId] = 0;
-			if (PEv2_AxisEnabled(i) != 0) {
+			if (PEv2_data->PEv2_AxisEnabled[AxisId] != 0) {
 				AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 0, true); // PK_AC_ENABLED ;
 			}
 			else {
