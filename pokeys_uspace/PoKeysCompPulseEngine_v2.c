@@ -32,9 +32,9 @@ typedef struct {
 	hal_s32_t* PEv2_CurrentPosition[8];
 	hal_s32_t* PEv2_PositionSetup[8];
 	hal_u32_t* PEv2_ReferencePositionSpeed[8];
-	hal_float_t* PEv2_MaxSpeed[8];
-	hal_float_t* PEv2_MaxAcceleration[8];
-	hal_float_t* PEv2_MaxDecceleration[8];
+	hal_float_t PEv2_MaxSpeed[8];
+	hal_float_t PEv2_MaxAcceleration[8];
+	hal_float_t PEv2_MaxDecceleration[8];
 	hal_float_t* PEv2_joint_vel_cmd[8];
 	hal_float_t* PEv2_joint_pos_cmd[8];
 	hal_float_t* PEv2_joint_pos_fb[8];
@@ -53,7 +53,7 @@ typedef struct {
 	hal_float_t PEv2_stepgen_STEP_SCALE[8];
 	hal_float_t* PEv2_stepgen_MIN_LIMIT[8];
 	hal_float_t* PEv2_stepgen_MAX_LIMIT[8];
-	hal_float_t* PEv2_stepgen_HOME_OFFSET[8];
+	hal_float_t PEv2_stepgen_HOME_OFFSET[8];
 	hal_float_t PEv2_stepgen_HOME_SEARCH_VEL[8];
 	hal_float_t PEv2_stepgen_HOME_LATCH_VEL[8];
 	hal_float_t* PEv2_stepgen_HOME_FINAL_VEL[8];
@@ -330,17 +330,17 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		if (r != 0)
 			return r;
 
-		r = hal_pin_float_newf(HAL_IO, &(PEv2_data->PEv2_MaxSpeed[j]), comp_id,
+		r = hal_param_float_newf(HAL_RW, &(PEv2_data->PEv2_MaxSpeed[j]), comp_id,
 			"%s.PEv2.%01d.MaxSpeed", prefix, j);
 		if (r != 0)
 			return r;
 
-		r = hal_pin_float_newf(HAL_IO, &(PEv2_data->PEv2_MaxAcceleration[j]), comp_id,
+		r = hal_param_float_newf(HAL_RW, &(PEv2_data->PEv2_MaxAcceleration[j]), comp_id,
 			"%s.PEv2.%01d.MaxAcceleration", prefix, j);
 		if (r != 0)
 			return r;
 
-		r = hal_pin_float_newf(HAL_IO, &(PEv2_data->PEv2_MaxDecceleration[j]), comp_id,
+		r = hal_param_float_newf(HAL_RW, &(PEv2_data->PEv2_MaxDecceleration[j]), comp_id,
 			"%s.PEv2.%01d.MaxDecceleration", prefix, j);
 		if (r != 0)
 			return r;
@@ -435,7 +435,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		if (r != 0)
 			return r;
 
-		r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_HOME_OFFSET[j]), comp_id,
+		r = hal_param_float_newf(HAL_RW, &(PEv2_data->PEv2_stepgen_HOME_OFFSET[j]), comp_id,
 			"%s.PEv2.%01d.stepgen.HOME-OFFSET", prefix, j);
 		if (r != 0)
 			return r;
@@ -986,8 +986,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #define PEv2_SoftLimitMinimum(i) (*(PEv2_data->PEv2_SoftLimitMinimum[i]))
 
 
-#undef PEv2_HomeOffsets
-#define PEv2_HomeOffsets(i) (*(PEv2_data->PEv2_HomeOffsets[i]))
+
 #undef PEv2_ProbePosition
 #define PEv2_ProbePosition(i) (*(PEv2_data->PEv2_ProbePosition[i]))
 #undef PEv2_ProbeMaxPosition
@@ -998,12 +997,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #define PEv2_PositionSetup(i) (*(PEv2_data->PEv2_PositionSetup[i]))
 #undef PEv2_ReferencePositionSpeed
 #define PEv2_ReferencePositionSpeed(i) (*(PEv2_data->PEv2_ReferencePositionSpeed[i]))
-#undef PEv2_MaxSpeed
-#define PEv2_MaxSpeed(i) (*(PEv2_data->PEv2_MaxSpeed[i]))
-#undef PEv2_MaxAcceleration
-#define PEv2_MaxAcceleration(i) (*(PEv2_data->PEv2_MaxAcceleration[i]))
-#undef PEv2_MaxDecceleration
-#define PEv2_MaxDecceleration(i) (*(PEv2_data->PEv2_MaxDecceleration[i]))
+
 #undef PEv2_joint_vel_cmd
 #define PEv2_joint_vel_cmd(i) (0 + *(PEv2_data->PEv2_joint_vel_cmd[i]))
 #undef PEv2_joint_pos_cmd
@@ -1161,8 +1155,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #undef PEv2_HomingAlgorithm
 #define PEv2_HomingAlgorithm(i) (PEv2_data->PEv2_HomingAlgorithm[i])
 
-#undef PEv2_digin_Home_Offset
-#define PEv2_digin_Home_Offset(i) (PEv2_data->PEv2_digin_Home_Offset[i])
+
 
 #undef PEv2_digin_LimitN_Enabled
 #define PEv2_digin_LimitN_Enabled(i) (PEv2_data->PEv2_digin_LimitN_Enabled[i])
@@ -2477,11 +2470,11 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 
 			if (PEv2_stepgen_STEP_SCALE(i) != 0) {
 				// need to ensure positve values for the following calculations otherwise machine will not move
-				PEv2_MaxSpeed(i) = abs(PEv2_stepgen_STEPGEN_MAXVEL(i) * StepScale[i]);				 // Maximum axis speed convert (mm/s) to (pulses / s)
+				PEv2_data->PEv2_MaxSpeed[i] = abs(PEv2_stepgen_STEPGEN_MAXVEL(i) * StepScale[i]);				 // Maximum axis speed convert (mm/s) to (pulses / s)
 
-				PEv2_MaxAcceleration(i) = abs(PEv2_stepgen_STEPGEN_MAXACCEL(i) * StepScale[i]); // Maximum axis deceleration convert (mm/s²) to (in pulses/s²)
+				PEv2_data->PEv2_MaxAcceleration[i] = abs(PEv2_stepgen_STEPGEN_MAXACCEL(i) * StepScale[i]); // Maximum axis deceleration convert (mm/s²) to (in pulses/s²)
 
-				PEv2_MaxDecceleration(i) = abs(PEv2_stepgen_STEPGEN_MAXACCEL(i) * StepScale[i]); // Maximum axis deceleration convert (mm/s²) to (in pulses/s²)
+				PEv2_data->PEv2_MaxDecceleration[i] = abs(PEv2_stepgen_STEPGEN_MAXACCEL(i) * StepScale[i]); // Maximum axis deceleration convert (mm/s²) to (in pulses/s²)
 
 				float LimitOffset = 0.0;
 				if (PEv2_stepgen_MAX_LIMIT(i) > PEv2_stepgen_MIN_LIMIT(i)) {
@@ -2508,7 +2501,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 					doAxisConfig = true;
 				}
 
-				PEv2_digin_Home_Offset(i) = PEv2_data->PEv2_stepgen_HOME_OFFSET[i] * PEv2_stepgen_STEP_SCALE(i); // Home position offset
+				PEv2_data->PEv2_digin_Home_Offset[i] = PEv2_data->PEv2_stepgen_HOME_OFFSET[i] * PEv2_stepgen_STEP_SCALE(i); // Home position offset
 
 				if (PEv2_stepgen_HOME_SEARCH_VEL(i) > 0 && PEv2_stepgen_STEPGEN_MAXVEL(i) > 0) {
 					PEv2_data->PEv2_HomingSpeed[i] = abs(PEv2_stepgen_HOME_SEARCH_VEL(i) * 100 / PEv2_stepgen_STEPGEN_MAXVEL(i));		 // Homing speed per axis (in %)
@@ -2519,23 +2512,23 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 					PEv2_data->PEv2_HomingReturnSpeed[i] = 50;
 				}
 				// Convert parameters... assume little-endian format
-				if (dev->PEv2.MaxSpeed[i] != (PEv2_MaxSpeed(i) / 1000) && PEv2_MaxSpeed(i) > 0) {
-					dev->PEv2.MaxSpeed[i] = PEv2_MaxSpeed(i) / 1000;
+				if (dev->PEv2.MaxSpeed[i] != (PEv2_data->PEv2_MaxSpeed[i] / 1000) && PEv2_data->PEv2_MaxSpeed[i] > 0) {
+					dev->PEv2.MaxSpeed[i] = PEv2_data->PEv2_MaxSpeed[i] / 1000;
 					doAxisConfig = true;
 				}
-				else if (PEv2_MaxSpeed(i) == 0 && dev->PEv2.MaxSpeed[i] == 0) {
+				else if (PEv2_data->PEv2_MaxSpeed[i] == 0 && dev->PEv2.MaxSpeed[i] == 0) {
 					dev->PEv2.MaxSpeed[i] = 1000;
 					doAxisConfig = true;
 				}
 
-				if (dev->PEv2.MaxAcceleration[i] != PEv2_MaxDecceleration(i) / 1000000) //smallest positive value
+				if (dev->PEv2.MaxAcceleration[i] != PEv2_data->PEv2_MaxDecceleration[i] / 1000000) //smallest positive value
 				{
-					dev->PEv2.MaxAcceleration[i] = PEv2_MaxDecceleration(i) / 1000000;
+					dev->PEv2.MaxAcceleration[i] = PEv2_data->PEv2_MaxDecceleration[i] / 1000000;
 					doAxisConfig = true;
 				}
 
-				if (dev->PEv2.MaxDecceleration[i] != PEv2_MaxDecceleration(i) / 1000000) {
-					dev->PEv2.MaxDecceleration[i] = PEv2_MaxDecceleration(i) / 1000000;
+				if (dev->PEv2.MaxDecceleration[i] != PEv2_data->PEv2_MaxDecceleration[i] / 1000000) {
+					dev->PEv2.MaxDecceleration[i] = PEv2_data->PEv2_MaxDecceleration[i] / 1000000;
 					doAxisConfig = true;
 				}
 
@@ -2549,8 +2542,8 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 					doAxisConfig = true;
 				}
 
-				if (dev->PEv2.HomeOffsets[i] != PEv2_digin_Home_Offset(i)) {
-					dev->PEv2.HomeOffsets[i] = PEv2_digin_Home_Offset(i);
+				if (dev->PEv2.HomeOffsets[i] != PEv2_data->PEv2_digin_Home_Offset[i]) {
+					dev->PEv2.HomeOffsets[i] = PEv2_data->PEv2_digin_Home_Offset[i];
 					doAxisConfig = true;
 				}
 
@@ -2843,9 +2836,9 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				PEv2_MPGjogEncoder(i) = dev->PEv2.MPGjogEncoder[i];
 
 				// Convert parameters... assume little-endian format
-				PEv2_MaxSpeed(i) = dev->PEv2.MaxSpeed[i];
-				PEv2_MaxAcceleration(i) = dev->PEv2.MaxAcceleration[i];
-				PEv2_MaxDecceleration(i) = dev->PEv2.MaxDecceleration[i];
+				PEv2_data->PEv2_MaxSpeed[i] = dev->PEv2.MaxSpeed[i];
+				PEv2_data->PEv2_MaxAcceleration[i] = dev->PEv2.MaxAcceleration[i];
+				PEv2_data->PEv2_MaxDecceleration[i] = dev->PEv2.MaxDecceleration[i];
 
 				PEv2_digin_SoftLimit_PosMin(i) = dev->PEv2.SoftLimitMinimum[i];
 				PEv2_digin_SoftLimit_PosMax(i) = dev->PEv2.SoftLimitMaximum[i];
