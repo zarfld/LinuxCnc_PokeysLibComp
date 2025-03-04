@@ -1523,7 +1523,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			InPosition[i] = false;
 			uint8_t intAxesState = dev->PEv2.AxesState[i];
 			uint8_t intAxesCommand = PEv2_AxesCommand(i);
-			PEv2_AxesState(i) = intAxesState;
+			*PEv2_data->PEv2_AxesState[i] = intAxesState;
 			PEv2_deb_axxisout(i) = 200 + i;
 			StepScale[i] = PEv2_data->PEv2_stepgen_STEP_SCALE[i];
 			PEv2_deb_axxisout(i) = 210 + i;
@@ -1809,6 +1809,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				// ensure that all axes with same Sequence start homing at the same time
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: ensure that all axes with same Sequence start homing at the same time\n", __FILE__, __FUNCTION__);
 				int j_count = 0;
+				bool allhomed = true;
 				for (seq = 0; seq < PEv2_nrOfAxes; seq++) {
 
 					if (PEv2_home_sequence(seq) == PEv2_home_sequence(i)) {
@@ -1816,10 +1817,16 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 
 						HomingStartMaskSetup |= (1 << seq); // Home axis seq only (bit seq)
 						j_count++;
-						doHomingEnd = true;
+
+						if(*PEv2_data->PEv2_AxesState[i] != PK_PEAxisState_axHOME){
+							allhomed = false;
+						}
+						
 					}
 				}
-
+				if (allhomed==true){
+					doHomingEnd = true;
+				}
 				if (j_count == 0) {
 					rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: no axes with same Sequence(%d) as joint(%d) found \n", PEv2_home_sequence(i), i);
 				}
