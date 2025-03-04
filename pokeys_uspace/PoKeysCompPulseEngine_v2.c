@@ -2408,7 +2408,7 @@ int32_t  PEv2_AxisConfigurationGet(sPoKeysDevice * dev, int AxisId){
 			PEv2_data->PEv2_MPGjogEncoder[AxisId] = dev->PEv2.MPGjogEncoder[AxisId];
 		}
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MaxSpeed[AxisId]==0){
-			PEv2_data->PEv2_MaxSpeed[AxisId] = dev->PEv2.MaxSpeed[AxisId];
+			PEv2_data->PEv2_MaxSpeed[AxisId] = dev->PEv2.MaxSpeed[AxisId] *1000;
 		}
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MaxAcceleration[AxisId]==0){
 			PEv2_data->PEv2_MaxAcceleration[AxisId] = dev->PEv2.MaxAcceleration[AxisId] * 1000000;
@@ -2423,16 +2423,34 @@ int32_t  PEv2_AxisConfigurationGet(sPoKeysDevice * dev, int AxisId){
 			PEv2_data->PEv2_SoftLimitMaximum[AxisId] = dev->PEv2.SoftLimitMaximum[AxisId];
 		}
 
-		if (PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId]  != 0) {
+		if(ApplyIniSettings==false || PEv2_data->PEv2_MPGjogEncoder[AxisId]==0){
 			PEv2_data->PEv2_MPGjogEncoder[AxisId] = dev->PEv2.MPGjogEncoder[AxisId];
+		}
 
-			PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId]  = dev->PEv2.MaxSpeed[AxisId] / PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] ;
-			PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[AxisId]  = dev->PEv2.MaxAcceleration[AxisId] / PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] ;
+		if (PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId]  != 0) {
 			
-			PEv2_data->PEv2_stepgen_HOME_OFFSET[AxisId] = PEv2_data->PEv2_digin_Home_Offset[AxisId]  / PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] ;
+			if(ApplyIniSettings==false || PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId]==0){
+				PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId]  =  PEv2_data->PEv2_MaxSpeed[AxisId] / PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] ;
+			}
+			
+			if(ApplyIniSettings==false || PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[AxisId]==0){
+				PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[AxisId]  = PEv2_data->PEv2_MaxAcceleration[AxisId] / PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] ;
+			}
+			
+			if(ApplyIniSettings==false || PEv2_data->PEv2_stepgen_HOME_OFFSET[AxisId]==0){
+				PEv2_data->PEv2_stepgen_HOME_OFFSET[AxisId] = PEv2_data->PEv2_digin_Home_Offset[AxisId]  / PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] ;
+			}
+			
 
-			PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]  = PEv2_data->PEv2_HomingSpeed[AxisId]  * PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId]  /100;
-			PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[AxisId]  = PEv2_data->PEv2_HomingReturnSpeed[AxisId]  * PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]  /100;
+			if(ApplyIniSettings==false || PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]==0){
+				PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]  = PEv2_data->PEv2_HomingSpeed[AxisId]  * PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId]  /100;
+			}
+			
+
+			if(ApplyIniSettings==false || PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[AxisId]==0){
+				PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[AxisId]  = PEv2_data->PEv2_HomingReturnSpeed[AxisId]  * PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]  /100;
+			}
+			
 		}
 
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MPGjogMultiplier[AxisId]==0){
@@ -3031,7 +3049,7 @@ void PKPEv2_ReadIniFile(sPoKeysDevice* dev){
 	PEv2_data->PEv2_ChargePumpEnabled = ini_read_int("POKEYS", "PEv2_ChargePumpEnabled", 0);
 	PEv2_data->PEv2_PulseGeneratorType = ini_read_int("POKEYS", "PEv2_PulseGeneratorType", 0);
 	PEv2_data->PEv2_digin_Emergency_invert = ini_read_int("POKEYS", "PEv2_EmergencyInputPolarity", 0);
-// not in use	*PEv2_data->PEv2_AxisEnabledStatesMask = ini_read_int("POKEYS", "PEv2_EmergencyOutputPolarity", 0);
+	// not in use	*PEv2_data->PEv2_AxisEnabledStatesMask = ini_read_int("POKEYS", "PEv2_EmergencyOutputPolarity", 0);
 	for(int AxisId=0;AxisId<dev->PEv2.info.nrOfAxes;AxisId++){
 		//PEv2_AxisConfigurationGet settings
 
@@ -3068,7 +3086,7 @@ void PKPEv2_ReadIniFile(sPoKeysDevice* dev){
 
 		snprintf(key, sizeof(key), "PEv2_AxisEnabledMasked_%i", AxisId);
 		PEv2_data->PEv2_AxisEnabledMasked[AxisId] = ini_read_int("POKEYS", key, 0);
-// not in use		PEv2_data->PEv2_AxisSignalOptions[AxisId] = ini_read_int("POKEYS", "PEv2_AxisSignalOptions", 0);
+		// not in use		PEv2_data->PEv2_AxisSignalOptions[AxisId] = ini_read_int("POKEYS", "PEv2_AxisSignalOptions", 0);
 
 
 		/* Section: Axis switch configuration
