@@ -1217,7 +1217,6 @@ int32_t PEv2_StatusGet(sPoKeysDevice* dev){
 		bm_LimitStatusN = dev->PEv2.LimitStatusN; // Limit- status (bit-mapped)
 		bm_HomeStatus = dev->PEv2.HomeStatus;	  // Home status (bit-mapped)
 		if (ApplyIniSettings == false) {
-
 			PEv2_data->PEv2_digin_Emergency_invert  = dev->PEv2.EmergencySwitchPolarity;
 		}
 
@@ -1454,7 +1453,7 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice* dev){
 		}
 	}
 
-	return ret
+	return ret;
 }
 
 void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
