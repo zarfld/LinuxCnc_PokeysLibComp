@@ -1096,8 +1096,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #define PEv2_digin_SoftLimit_in(i) (*(PEv2_data->PEv2_digin_SoftLimit_in[i]))
 #undef PEv2_AxisEnabledMask
 #define PEv2_AxisEnabledMask (*PEv2_data->PEv2_AxisEnabledMask)
-#undef PEv2_AxisEnabledStatesMask
-#define PEv2_AxisEnabledStatesMask (*PEv2_data->PEv2_AxisEnabledStatesMask)
+
 #undef PEv2_digout_AxisEnabled_out
 #define PEv2_digout_AxisEnabled_out(i) (0 + *(PEv2_data->PEv2_digout_AxisEnabled_out[i]))
 #undef PEv2_digin_AxisEnabled_in
@@ -1247,7 +1246,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		PEv2_maxPulseFrequency = dev->PEv2.info.maxPulseFrequency;
 		PEv2_bufferDepth = dev->PEv2.info.bufferDepth;
 		PEv2_slotTiming = dev->PEv2.info.slotTiming;
-		PEv2_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
+		*PEv2_data->PEv2_AxisEnabledStatesMask = dev->PEv2.AxisEnabledStatesMask;
 		PEv2_LimitOverride = dev->PEv2.LimitOverride;
 
 		// Basic engine states
@@ -2930,8 +2929,8 @@ int32_t PEv2_PulseEngineSetup(sPoKeysDevice * device){
 		doSetup = true;
 	}
 	//device->PEv2.AxisEnabledStatesMask = PEv2_data->PEv2_AxisEnabledStatesMask;
-	if (device->PEv2.AxisEnabledStatesMask != PEv2_data->PEv2_AxisEnabledStatesMask) {
-		device->PEv2.AxisEnabledStatesMask = PEv2_data->PEv2_AxisEnabledStatesMask;
+	if (device->PEv2.AxisEnabledStatesMask != *PEv2_data->PEv2_AxisEnabledStatesMask) {
+		device->PEv2.AxisEnabledStatesMask = *PEv2_data->PEv2_AxisEnabledStatesMask;
 		doSetup = true;
 	}
 	
