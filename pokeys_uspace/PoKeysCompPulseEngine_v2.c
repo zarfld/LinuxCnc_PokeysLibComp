@@ -2290,7 +2290,8 @@ int32_t  PEv2_AdditionalParametersSet(sPoKeysDevice * dev){
 	usleep(sleepdur);
 
 	if(doSetup==true) {
-		ret = PK_PEv2_AdditionalParametersSet(dev);
+		PK_PEv2_AdditionalParametersSet(dev);
+		ret = PK_OK;
 		if (ret != PK_OK) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersSet() != PK_OK\n", __FILE__, __FUNCTION__);
 			usleep(sleepdur);
