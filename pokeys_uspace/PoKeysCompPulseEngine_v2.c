@@ -2515,37 +2515,37 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 			else {
 				AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 0, false); // PK_AC_ENABLED ;
 			}
-			if (PEv2_AxisInverted(i) != 0) {
+			if (PEv2_data->PEv2_AxisInverted[AxisId] != 0) {
 				AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 1, true); // PK_AC_INVERTED ;
 			}
 			else {
 				AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 1, false); // PK_AC_INVERTED ;
 			}
-			if (PEv2_AxisInternalPlanner(i) != 0) {
+			if (PEv2_data->PEv2_AxisInternalPlanner[AxisId] != 0) {
 				AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 2, true); // PK_AC_INTERNAL_PLANNER ;
 			}
 			else {
 				AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 2, false); // PK_AC_INTERNAL_PLANNER ;
 			}
-			if (PEv2_AxisPositionMode(i) != 0) {
+			if (PEv2_data->PEv2_AxisPositionMode[AxisId] != 0) {
 				AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 3, true); // PK_AC_POSITION_MODE ;
 			}
 			else {
 				AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 3, false); // PK_AC_POSITION_MODE ;
 			}
-			if (PEv2_AxisInvertedHome(i) != 0) {
+			if (PEv2_data->PEv2_AxisInvertedHome[AxisId] != 0) {
 				AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 4, true); // PK_AC_INVERTED_HOME ;
 			}
 			else {
 				AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 4, false); // PK_AC_INVERTED_HOME ;
 			}
-			if (PEv2_AxisSoftLimitEnabled(i) != 0) {
+			if (PEv2_data->PEv2_AxisSoftLimitEnabled[AxisId] != 0) {
 				AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 5, true); // PK_AC_SOFT_LIMIT_ENABLED ;
 			}
 			else {
 				AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 5, false); // PK_AC_SOFT_LIMIT_ENABLED ;
 			}
-			if (PEv2_AxisEnabledMasked(i) != 0) {
+			if (PEv2_data->PEv2_AxisEnabledMasked[AxisId] != 0) {
 				AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 7, true); // PK_AC_ENABLED_MASKED ;
 			}
 			else {
