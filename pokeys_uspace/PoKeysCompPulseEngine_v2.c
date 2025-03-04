@@ -2454,7 +2454,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 
 			if (PEv2_data->PEv2_stepgen_STEP_SCALE[i] != 0) {
 				// need to ensure positve values for the following calculations otherwise machine will not move
-				PEv2_data->PEv2_MaxSpeed[i] = abs(PEv2_stepgen_STEPGEN_MAXVEL(i) * StepScale[i]);				 // Maximum axis speed convert (mm/s) to (pulses / s)
+				PEv2_data->PEv2_MaxSpeed[i] = abs(PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[i] * StepScale[i]);				 // Maximum axis speed convert (mm/s) to (pulses / s)
 
 				PEv2_data->PEv2_MaxAcceleration[i] = abs(PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[i] * StepScale[i]); // Maximum axis deceleration convert (mm/s²) to (in pulses/s²)
 
@@ -2553,7 +2553,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
 			*/
 			// PEv2_stepgen_AxesConfig(i) = PK_AC_ENABLED_MASKED;
-			if (PEv2_stepgen_STEPGEN_MAXVEL(i) != 0) {
+			if (PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[i] != 0) {
 				AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 0, true); // PK_AC_ENABLED ;
 				AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 2, true); // PK_AC_INTERNAL_PLANNER;
 			}
