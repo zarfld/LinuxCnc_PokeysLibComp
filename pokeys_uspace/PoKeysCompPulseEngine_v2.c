@@ -3105,10 +3105,10 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * device, int AxisId){
 			PEv2_data->PEv2_MaxSpeed[AxisId] = device->PEv2.MaxSpeed[AxisId];
 		}
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MaxAcceleration[AxisId]==0){
-			*PEv2_data->PEv2_MaxAcceleration[AxisId] = device->PEv2.MaxAcceleration[AxisId] * 1000000;
+			PEv2_data->PEv2_MaxAcceleration[AxisId] = device->PEv2.MaxAcceleration[AxisId] * 1000000;
 		}
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MaxDecceleration[AxisId]==0){
-			*PEv2_data->PEv2_MaxDecceleration[AxisId] = device->PEv2.MaxDecceleration[AxisId] * 1000000;
+			PEv2_data->PEv2_MaxDecceleration[AxisId] = device->PEv2.MaxDecceleration[AxisId] * 1000000;
 		}
 		if(ApplyIniSettings==false || PEv2_data->PEv2_SoftLimitMinimum[AxisId]==0){
 			PEv2_data->PEv2_SoftLimitMinimum[AxisId] = device->PEv2.SoftLimitMinimum[AxisId];
