@@ -2649,7 +2649,9 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 				AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 3, true); // PK_AC_POSITION_MODE;
 				// posMode[AxisId] = true;
 			}
-
+			if(PEv2_data->PEv2_AxesConfig[AxisId] != AxesConfig[AxisId]){
+				PEv2_data->PEv2_AxesConfig[AxisId] =AxesConfig[AxisId];
+				}
 			if(dev->PEv2.AxesConfig[AxisId] != PEv2_data->PEv2_AxesConfig[AxisId]){
 				dev->PEv2.AxesConfig[AxisId] =PEv2_data->PEv2_AxesConfig[AxisId];
 				doSetup = true;
