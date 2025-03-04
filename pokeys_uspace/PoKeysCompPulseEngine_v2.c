@@ -1191,8 +1191,9 @@ int32_t PEv2_StatusGet(sPoKeysDevice* dev){
 	uint8_t bm_HomeStatus;	 // Home status (bit-mapped)
 	uint8_t bm_ErrorStatus;
 	uint8_t bm_ProbeStatus = dev->PEv2.ProbeStatus; // will be update in "PK_PEv2_ProbingFinish" or "PK_PEv2_ProbingFinishSimple"
+	int32_t ret = PK_OK;
+	ret = PK_PEv2_StatusGet(dev);
 
-	int32_t ret = PK_PEv2_StatusGet(dev);
 	if (ret == PK_OK) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_StatusGet(dev) = PK_OK\n", __FILE__, __FUNCTION__);
 		// Engine info
@@ -1300,7 +1301,7 @@ int32_t PEv2_StatusGet(sPoKeysDevice* dev){
 
 	}
 	else {
-		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_StatusGet(dev) != PK_OK\n", __FILE__, __FUNCTION__);
+		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_StatusGet(dev) != PK_OK (%i)\n", __FILE__, __FUNCTION__, ret);
 	}
 	usleep(sleepdur);
 	return ret;
@@ -1484,10 +1485,10 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 	}
 	
 	if (PEv2_StatusGet(dev)){
-		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_StatusGet(dev) = PK_OK\n", __FILE__, __FUNCTION__);
+		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_StatusGet(dev) = PK_OK\n", __FILE__, __FUNCTION__);
 	}
 	else {
-		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_StatusGet(dev) != PK_OK\n", __FILE__, __FUNCTION__);
+		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_StatusGet(dev) != PK_OK\n", __FILE__, __FUNCTION__);
 	}
 
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_Status2Get(dev)\n", __FILE__, __FUNCTION__);
