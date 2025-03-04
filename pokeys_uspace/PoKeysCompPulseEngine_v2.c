@@ -2283,7 +2283,7 @@ int32_t  PEv2_AdditionalParametersSet(sPoKeysDevice * dev){
 			doSetup = true;
 
 			if (PEv2_data->PEv2_digin_Emergency_Pin != 0) { // check if pin is parametrized in HAL
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].PinFunction = %d\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Emergency_Pin - 1, dev->Pins[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction);
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: IO_data->Pin[%d].PinFunction = %d\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Emergency_Pin - 1, IO_data->Pin[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction);
 				if (IO_data->Pin[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction == 0){
 					IO_data->Pin[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction = PK_PinCap_digitalInput;
 				}
@@ -2660,10 +2660,8 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 					PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] = true;
 				}
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 2, true); // | PK_ASO_SWITCH_HOME;
-				if (dev->Pins[Home - 1].PinFunction != PK_PinCap_digitalInput) {
-					dev->Pins[Home - 1].PinFunction = PK_PinCap_digitalInput;
-					PK_SL_SetPinFunction(dev, Home - 1, PK_PinCap_digitalInput);
-					setPinConfig = true;
+				if (IO_data->Pin[Home - 1].PinFunction != PK_PinCap_digitalInput) {
+					IO_data->Pin[Home - 1].PinFunction = PK_PinCap_digitalInput;
 				}
 			}
 			else {
@@ -2710,10 +2708,8 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 			if (PEv2_data->PEv2_digin_LimitN_Pin[AxisId] != 0) {																	   // check if pin is parametrized in HAL
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 0, true); // | PK_ASO_SWITCH_LIMIT_N;
 
-				if (dev->Pins[PEv2_data->PEv2_digin_LimitN_Pin[AxisId] - 1].PinFunction != PK_PinCap_digitalInput) {
-					dev->Pins[PEv2_data->PEv2_digin_LimitN_Pin[AxisId] - 1].PinFunction = PK_PinCap_digitalInput;
-					PK_SL_SetPinFunction(dev, PEv2_data->PEv2_digin_LimitN_Pin[AxisId] - 1, PK_PinCap_digitalInput);
-					setPinConfig = true;
+				if (IO_data->Pin[PEv2_data->PEv2_digin_LimitN_Pin[AxisId] - 1].PinFunction != PK_PinCap_digitalInput) {
+					IO_data->Pin[PEv2_data->PEv2_digin_LimitN_Pin[AxisId] - 1].PinFunction = PK_PinCap_digitalInput;
 				}
 			}
 
@@ -2724,10 +2720,8 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 			if (PEv2_data->PEv2_digin_LimitP_Pin[AxisId] != 0) {																	   // check if pin is parametrized in HAL
 				AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 1, true); // | PK_ASO_SWITCH_LIMIT_P;
 
-				if (dev->Pins[PEv2_data->PEv2_digin_LimitP_Pin[AxisId] - 1].PinFunction != PK_PinCap_digitalInput) {
-					dev->Pins[PEv2_data->PEv2_digin_LimitP_Pin[AxisId] - 1].PinFunction = PK_PinCap_digitalInput;
-					PK_SL_SetPinFunction(dev, PEv2_data->PEv2_digin_LimitP_Pin[AxisId] - 1, PK_PinCap_digitalInput);
-					setPinConfig = true;
+				if (IO_data->Pin[PEv2_data->PEv2_digin_LimitP_Pin[AxisId] - 1].PinFunction != PK_PinCap_digitalInput) {
+					IO_data->Pin[PEv2_data->PEv2_digin_LimitP_Pin[AxisId] - 1].PinFunction = PK_PinCap_digitalInput;
 				}
 			}
 
@@ -2819,10 +2813,8 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 				doSetup = true;
 			}
 			if (PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] != 0) { // check if pin is parametrized in HAL
-				if (dev->Pins[PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - 1].PinFunction != PK_PinCap_digitalOutput) {
-					dev->Pins[PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - 1].PinFunction = PK_PinCap_digitalOutput;
-					PK_SL_SetPinFunction(dev, PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - 1, PK_PinCap_digitalOutput);
-					setPinConfig = true;
+				if (IO_data->Pin[PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - 1].PinFunction != PK_PinCap_digitalOutput) {
+					IO_data->Pin[PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - 1].PinFunction = PK_PinCap_digitalOutput;
 				}
 				Pins_DigitalValueSet_ignore[PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - 1] = true;
 			}
@@ -2953,13 +2945,9 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 
 
 		if (PEv2_data->PEv2_digin_Probe_Pin != 0) { // check if pin is parametrized in HAL
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].PinFunction = %d\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Probe_Pin - 1, dev->Pins[PEv2_data->PEv2_digin_Probe_Pin - 1].PinFunction);
-			if (dev->Pins[PEv2_data->PEv2_digin_Probe_Pin - 1].PinFunction != PK_PinCap_digitalInput) {
-				dev->Pins[PEv2_data->PEv2_digin_Probe_Pin - 1].PinFunction = PK_PinCap_digitalInput;
-				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SL_SetPinFunction(dev, %d, PK_PinCap_digitalInput)\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Probe_Pin - 1);
-				PK_SL_SetPinFunction(dev, PEv2_data->PEv2_digin_Probe_Pin - 1, PK_PinCap_digitalInput);
-				usleep(sleepdur);
-				setPinConfig = true;
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: IO_data->Pin[%d].PinFunction = %d\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Probe_Pin - 1, IO_data->Pin[PEv2_data->PEv2_digin_Probe_Pin - 1].PinFunction);
+			if (IO_data->Pin[PEv2_data->PEv2_digin_Probe_Pin - 1].PinFunction != PK_PinCap_digitalInput) {
+				IO_data->Pin[PEv2_data->PEv2_digin_Probe_Pin - 1].PinFunction = PK_PinCap_digitalInput;
 			}
 		}
 
@@ -2974,12 +2962,9 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 
 		// that Pin is not defined explicitely on pokeys
 		if (PEv2_data->PEv2_digout_Emergency_Pin != 0) { // check if pin is parametrized in HAL
-			if (dev->Pins[PEv2_data->PEv2_digout_Emergency_Pin - 1].PinFunction != PK_PinCap_digitalOutput) {
-				dev->Pins[PEv2_data->PEv2_digout_Emergency_Pin - 1].PinFunction = PK_PinCap_digitalOutput;
-				PK_SL_SetPinFunction(dev, PEv2_data->PEv2_digout_Emergency_Pin - 1, PK_PinCap_digitalOutput);
+			if (IO_data->Pin[PEv2_data->PEv2_digout_Emergency_Pin - 1].PinFunction != PK_PinCap_digitalOutput) {
+				IO_data->Pin[PEv2_data->PEv2_digout_Emergency_Pin - 1].PinFunction = PK_PinCap_digitalOutput;
 				Pins_DigitalValueSet_ignore[PEv2_data->PEv2_digout_Emergency_Pin - 1] = true;
-				usleep(sleepdur);
-				setPinConfig = true;
 			}
 		}
 
