@@ -1024,20 +1024,13 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #define PEv2_stepgen_MAX_OUTPUT(i) (0 + *(PEv2_data->PEv2_stepgen_MAX_OUTPUT[i]))
 #undef PEv2_stepgen_ENCODER_SCALE
 #define PEv2_stepgen_ENCODER_SCALE(i) (0 + *(PEv2_data->PEv2_stepgen_ENCODER_SCALE[i]))
-#undef PEv2_stepgen_STEP_SCALE
-#define PEv2_stepgen_STEP_SCALE(i) (0 + *(PEv2_data->PEv2_stepgen_STEP_SCALE[i]))
+
 #undef PEv2_stepgen_MIN_LIMIT
 #define PEv2_stepgen_MIN_LIMIT(i) (0 + *(PEv2_data->PEv2_stepgen_MIN_LIMIT[i]))
 #undef PEv2_stepgen_MAX_LIMIT
 #define PEv2_stepgen_MAX_LIMIT(i) (0 + *(PEv2_data->PEv2_stepgen_MAX_LIMIT[i]))
 
 
-#undef PEv2_stepgen_HOME_LATCH_VEL
-#define PEv2_stepgen_HOME_LATCH_VEL(i) (0 + *(PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[i]))
-#undef PEv2_stepgen_HOME_FINAL_VEL
-#define PEv2_stepgen_HOME_FINAL_VEL(i) (0 + *(PEv2_data->PEv2_stepgen_HOME_FINAL_VEL[i]))
-#undef PEv2_stepgen_HOME_IGNORE_LIMITS
-#define PEv2_stepgen_HOME_IGNORE_LIMITS(i) (0 + *(PEv2_data->PEv2_stepgen_HOME_IGNORE_LIMITS[i]))
 
 
 #undef PEv2_digin_LimitN_in
@@ -1394,7 +1387,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			uint8_t intAxesCommand = PEv2_AxesCommand(i);
 			PEv2_AxesState(i) = intAxesState;
 			PEv2_deb_axxisout(i) = 200 + i;
-			StepScale[i] = PEv2_stepgen_STEP_SCALE(i);
+			StepScale[i] = PEv2_data->PEv2_stepgen_STEP_SCALE[i];
 			PEv2_deb_axxisout(i) = 210 + i;
 			// PEv2_CurrentPosition(i) = dev->PEv2.CurrentPosition[i];
 			intCurrentPosition[i] = dev->PEv2.CurrentPosition[i];
@@ -2462,7 +2455,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				AxesSwitchConfig[i] = Set_BitOfByte(AxesSwitchConfig[i], 7, false); // PK_ASO_SWITCH_INVERT_HOME ;
 			}
 
-			if (PEv2_stepgen_STEP_SCALE(i) != 0) {
+			if (PEv2_data->PEv2_stepgen_STEP_SCALE[i] != 0) {
 				// need to ensure positve values for the following calculations otherwise machine will not move
 				PEv2_data->PEv2_MaxSpeed[i] = abs(PEv2_stepgen_STEPGEN_MAXVEL(i) * StepScale[i]);				 // Maximum axis speed convert (mm/s) to (pulses / s)
 
@@ -2477,16 +2470,16 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 						LimitOffset = abs(PEv2_stepgen_MIN_LIMIT(i)); // shift reference to 0 and make sure it is positive
 					}
 
-					PEv2_digin_SoftLimit_PosMax(i) = (PEv2_stepgen_MAX_LIMIT(i) + LimitOffset) * PEv2_stepgen_STEP_SCALE(i); // Soft limit maximum position
-					PEv2_digin_SoftLimit_PosMin(i) = (PEv2_stepgen_MIN_LIMIT(i) + LimitOffset) * PEv2_stepgen_STEP_SCALE(i); // Soft limit minimum position
+					PEv2_digin_SoftLimit_PosMax(i) = (PEv2_stepgen_MAX_LIMIT(i) + LimitOffset) * PEv2_data->PEv2_stepgen_STEP_SCALE[i]; // Soft limit maximum position
+					PEv2_digin_SoftLimit_PosMin(i) = (PEv2_stepgen_MIN_LIMIT(i) + LimitOffset) * PEv2_data->PEv2_stepgen_STEP_SCALE[i]; // Soft limit minimum position
 					// AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 5, true);  // PK_AC_SOFT_LIMIT_ENABLED ;
 				}
 				else {
 					if (PEv2_stepgen_MAX_LIMIT(i) != abs(PEv2_stepgen_MAX_LIMIT(i))) {
 						LimitOffset = abs(PEv2_stepgen_MAX_LIMIT(i)); // shift reference to 0 and make sure it is positive
 					}
-					PEv2_digin_SoftLimit_PosMax(i) = (PEv2_stepgen_MIN_LIMIT(i) + LimitOffset) * PEv2_stepgen_STEP_SCALE(i); // Soft limit maximum position
-					PEv2_digin_SoftLimit_PosMin(i) = (PEv2_stepgen_MAX_LIMIT(i) + LimitOffset) * PEv2_stepgen_STEP_SCALE(i); // Soft limit minimum position
+					PEv2_digin_SoftLimit_PosMax(i) = (PEv2_stepgen_MIN_LIMIT(i) + LimitOffset) * PEv2_data->PEv2_stepgen_STEP_SCALE[i]; // Soft limit maximum position
+					PEv2_digin_SoftLimit_PosMin(i) = (PEv2_stepgen_MAX_LIMIT(i) + LimitOffset) * PEv2_data->PEv2_stepgen_STEP_SCALE[i]; // Soft limit minimum position
 					// AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 1, true);  // PK_AC_INVERTED ;
 					// AxesConfig[i] = Set_BitOfByte(AxesConfig[i], 5, true);  // PK_AC_SOFT_LIMIT_ENABLED ;
 				}
@@ -2495,7 +2488,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 					doAxisConfig = true;
 				}
 
-				PEv2_data->PEv2_digin_Home_Offset[i] = PEv2_data->PEv2_stepgen_HOME_OFFSET[i] * PEv2_stepgen_STEP_SCALE(i); // Home position offset
+				PEv2_data->PEv2_digin_Home_Offset[i] = PEv2_data->PEv2_stepgen_HOME_OFFSET[i] * PEv2_data->PEv2_stepgen_STEP_SCALE[i]; // Home position offset
 
 				if (PEv2_stepgen_HOME_SEARCH_VEL(i) > 0 && PEv2_stepgen_STEPGEN_MAXVEL(i) > 0) {
 					PEv2_data->PEv2_HomingSpeed[i] = abs(PEv2_stepgen_HOME_SEARCH_VEL(i) * 100 / PEv2_stepgen_STEPGEN_MAXVEL(i));		 // Homing speed per axis (in %)
