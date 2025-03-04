@@ -2487,9 +2487,9 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 
 				PEv2_data->PEv2_digin_Home_Offset[i] = PEv2_data->PEv2_stepgen_HOME_OFFSET[i] * PEv2_data->PEv2_stepgen_STEP_SCALE[i]; // Home position offset
 
-				if (PEv2_stepgen_HOME_SEARCH_VEL(i) > 0 && PEv2_stepgen_STEPGEN_MAXVEL(i) > 0) {
-					PEv2_data->PEv2_HomingSpeed[i] = abs(PEv2_stepgen_HOME_SEARCH_VEL(i) * 100 / PEv2_stepgen_STEPGEN_MAXVEL(i));		 // Homing speed per axis (in %)
-					PEv2_data->PEv2_HomingReturnSpeed[i] = abs(PEv2_stepgen_HOME_LATCH_VEL(i) * 100 / PEv2_stepgen_HOME_SEARCH_VEL(i)); // Homing return speed per axis (in % of the homing speed)
+				if (PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[i] > 0 && PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[i] > 0) {
+					PEv2_data->PEv2_HomingSpeed[i] = abs(PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[i] * 100 / PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[i]);		 // Homing speed per axis (in %)
+					PEv2_data->PEv2_HomingReturnSpeed[i] = abs(PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[i] * 100 / PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[i]); // Homing return speed per axis (in % of the homing speed)
 				}
 				else {
 					PEv2_data->PEv2_HomingSpeed[i] = 30;
