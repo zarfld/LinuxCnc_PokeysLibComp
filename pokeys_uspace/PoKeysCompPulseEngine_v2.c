@@ -24,9 +24,9 @@ typedef struct {
 	hal_u32_t* PEv2_AxesConfig[8];
 	hal_u32_t PEv2_SoftLimitMaximum[8];
 	hal_u32_t PEv2_SoftLimitMinimum[8];
-	hal_u32_t* PEv2_HomingSpeed[8];
-	hal_u32_t* PEv2_HomingReturnSpeed[8];
-	hal_u32_t* PEv2_HomeOffsets[8];
+	hal_u32_t PEv2_HomingSpeed[8];
+	hal_u32_t PEv2_HomingReturnSpeed[8];
+	hal_u32_t PEv2_HomeOffsets[8];
 	hal_u32_t* PEv2_ProbePosition[8];
 	hal_u32_t* PEv2_ProbeMaxPosition[8];
 	hal_s32_t* PEv2_CurrentPosition[8];
@@ -290,17 +290,17 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		if (r != 0)
 			return r;
 
-		r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_HomingSpeed[j]), comp_id,
+		r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_HomingSpeed[j]), comp_id,
 			"%s.PEv2.%01d.HomingSpeed", prefix, j);
 		if (r != 0)
 			return r;
 
-		r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_HomingReturnSpeed[j]), comp_id,
+		r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_HomingReturnSpeed[j]), comp_id,
 			"%s.PEv2.%01d.HomingReturnSpeed", prefix, j);
 		if (r != 0)
 			return r;
 
-		r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_HomeOffsets[j]), comp_id,
+		r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_HomeOffsets[j]), comp_id,
 			"%s.PEv2.%01d.HomeOffsets", prefix, j);
 		if (r != 0)
 			return r;
@@ -984,10 +984,8 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 
 #undef PEv2_SoftLimitMinimum
 #define PEv2_SoftLimitMinimum(i) (*(PEv2_data->PEv2_SoftLimitMinimum[i]))
-#undef PEv2_HomingSpeed
-#define PEv2_HomingSpeed(i) (*(PEv2_data->PEv2_HomingSpeed[i]))
-#undef PEv2_HomingReturnSpeed
-#define PEv2_HomingReturnSpeed(i) (*(PEv2_data->PEv2_HomingReturnSpeed[i]))
+
+
 #undef PEv2_HomeOffsets
 #define PEv2_HomeOffsets(i) (*(PEv2_data->PEv2_HomeOffsets[i]))
 #undef PEv2_ProbePosition
@@ -2513,12 +2511,12 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				PEv2_digin_Home_Offset(i) = PEv2_data->PEv2_stepgen_HOME_OFFSET[i] * PEv2_stepgen_STEP_SCALE(i); // Home position offset
 
 				if (PEv2_stepgen_HOME_SEARCH_VEL(i) > 0 && PEv2_stepgen_STEPGEN_MAXVEL(i) > 0) {
-					PEv2_HomingSpeed(i) = abs(PEv2_stepgen_HOME_SEARCH_VEL(i) * 100 / PEv2_stepgen_STEPGEN_MAXVEL(i));		 // Homing speed per axis (in %)
-					PEv2_HomingReturnSpeed(i) = abs(PEv2_stepgen_HOME_LATCH_VEL(i) * 100 / PEv2_stepgen_HOME_SEARCH_VEL(i)); // Homing return speed per axis (in % of the homing speed)
+					PEv2_data->PEv2_HomingSpeed[i] = abs(PEv2_stepgen_HOME_SEARCH_VEL(i) * 100 / PEv2_stepgen_STEPGEN_MAXVEL(i));		 // Homing speed per axis (in %)
+					PEv2_data->PEv2_HomingReturnSpeed[i] = abs(PEv2_stepgen_HOME_LATCH_VEL(i) * 100 / PEv2_stepgen_HOME_SEARCH_VEL(i)); // Homing return speed per axis (in % of the homing speed)
 				}
 				else {
-					PEv2_HomingSpeed(i) = 30;
-					PEv2_HomingReturnSpeed(i) = 50;
+					PEv2_data->PEv2_HomingSpeed[i] = 30;
+					PEv2_data->PEv2_HomingReturnSpeed[i] = 50;
 				}
 				// Convert parameters... assume little-endian format
 				if (dev->PEv2.MaxSpeed[i] != (PEv2_MaxSpeed(i) / 1000) && PEv2_MaxSpeed(i) > 0) {
@@ -2556,13 +2554,13 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 					doAxisConfig = true;
 				}
 
-				if (dev->PEv2.HomingSpeed[i] != PEv2_HomingSpeed(i)) {
-					dev->PEv2.HomingSpeed[i] = PEv2_HomingSpeed(i);
+				if (dev->PEv2.HomingSpeed[i] != PEv2_data->PEv2_HomingSpeed[i]) {
+					dev->PEv2.HomingSpeed[i] = PEv2_data->PEv2_HomingSpeed[i];
 					doAxisConfig = true;
 				}
 
-				if (dev->PEv2.HomingReturnSpeed[i] != PEv2_HomingReturnSpeed(i)) {
-					dev->PEv2.HomingReturnSpeed[i] = PEv2_HomingReturnSpeed(i);
+				if (dev->PEv2.HomingReturnSpeed[i] != PEv2_data->PEv2_HomingReturnSpeed[i]) {
+					dev->PEv2.HomingReturnSpeed[i] = PEv2_data->PEv2_HomingReturnSpeed[i];
 					doAxisConfig = true;
 				}
 			}
@@ -2690,13 +2688,13 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				}
 			}
 
-			if (dev->PEv2.HomingSpeed[i] != PEv2_HomingSpeed(i)) {
-				dev->PEv2.HomingSpeed[i] = PEv2_HomingSpeed(i);
+			if (dev->PEv2.HomingSpeed[i] != PEv2_data->PEv2_HomingSpeed[i]) {
+				dev->PEv2.HomingSpeed[i] = PEv2_data->PEv2_HomingSpeed[i];
 				doAxisConfig = true;
 			}
 
-			if (dev->PEv2.HomingReturnSpeed[i] != PEv2_HomingReturnSpeed(i)) {
-				dev->PEv2.HomingReturnSpeed[i] = PEv2_HomingReturnSpeed(i);
+			if (dev->PEv2.HomingReturnSpeed[i] != PEv2_data->PEv2_HomingReturnSpeed[i]) {
+				dev->PEv2.HomingReturnSpeed[i] = PEv2_data->PEv2_HomingReturnSpeed[i];
 				doAxisConfig = true;
 			}
 
@@ -2839,8 +2837,8 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 				// PEv2_data->PEv2_digin_LimitN_Pin[i] = dev->PEv2.PinLimitMSwitch[i];
 				// PEv2_data->PEv2_digin_LimitP_Pin[i] = dev->PEv2.PinLimitPSwitch[i];
 
-				PEv2_HomingSpeed(i) = dev->PEv2.HomingSpeed[i];
-				PEv2_HomingReturnSpeed(i) = dev->PEv2.HomingReturnSpeed[i];
+				PEv2_data->PEv2_HomingSpeed[i] = dev->PEv2.HomingSpeed[i];
+				PEv2_data->PEv2_HomingReturnSpeed[i] = dev->PEv2.HomingReturnSpeed[i];
 
 				PEv2_MPGjogEncoder(i) = dev->PEv2.MPGjogEncoder[i];
 
