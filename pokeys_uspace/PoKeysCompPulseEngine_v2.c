@@ -51,8 +51,8 @@ typedef struct {
 	hal_float_t* PEv2_stepgen_MAX_OUTPUT[8];
 	hal_float_t* PEv2_stepgen_ENCODER_SCALE[8];
 	hal_float_t PEv2_stepgen_STEP_SCALE[8];
-	hal_float_t* PEv2_stepgen_MIN_LIMIT[8];
-	hal_float_t* PEv2_stepgen_MAX_LIMIT[8];
+	hal_float_t PEv2_stepgen_MIN_LIMIT[8];
+	hal_float_t PEv2_stepgen_MAX_LIMIT[8];
 	hal_float_t PEv2_stepgen_HOME_OFFSET[8];
 	hal_float_t PEv2_stepgen_HOME_SEARCH_VEL[8];
 	hal_float_t PEv2_stepgen_HOME_LATCH_VEL[8];
@@ -425,12 +425,12 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		if (r != 0)
 			return r;
 
-		r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_MIN_LIMIT[j]), comp_id,
+		r = hal_param_float_newf(HAL_RW, &(PEv2_data->PEv2_stepgen_MIN_LIMIT[j]), comp_id,
 			"%s.PEv2.%01d.stepgen.MIN-LIMIT", prefix, j);
 		if (r != 0)
 			return r;
 
-		r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_MAX_LIMIT[j]), comp_id,
+		r = hal_param_float_newf(HAL_RW, &(PEv2_data->PEv2_stepgen_MAX_LIMIT[j]), comp_id,
 			"%s.PEv2.%01d.stepgen.MAX-LIMIT", prefix, j);
 		if (r != 0)
 			return r;
@@ -1021,14 +1021,6 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #define PEv2_stepgen_MAX_OUTPUT(i) (0 + *(PEv2_data->PEv2_stepgen_MAX_OUTPUT[i]))
 #undef PEv2_stepgen_ENCODER_SCALE
 #define PEv2_stepgen_ENCODER_SCALE(i) (0 + *(PEv2_data->PEv2_stepgen_ENCODER_SCALE[i]))
-
-#undef PEv2_stepgen_MIN_LIMIT
-#define PEv2_stepgen_MIN_LIMIT(i) (0 + *(PEv2_data->PEv2_stepgen_MIN_LIMIT[i]))
-#undef PEv2_stepgen_MAX_LIMIT
-#define PEv2_stepgen_MAX_LIMIT(i) (0 + *(PEv2_data->PEv2_stepgen_MAX_LIMIT[i]))
-
-
-
 
 #undef PEv2_digin_LimitN_in
 #define PEv2_digin_LimitN_in(i) (*(PEv2_data->PEv2_digin_LimitN_in[i]))
