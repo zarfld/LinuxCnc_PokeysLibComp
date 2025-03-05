@@ -552,7 +552,7 @@ net estop-ext     <=  pokeys.0.PEv2.digin.Emergency.in
 net estop-reset halui.estop.reset => pokeys.0.PoExtBus.0.digout.2.out
 
 # ------ pressing a real button instead of using the UI can reset the system
-net reset-button pokeys.0.input-53 => halui.estop.reset
+#net reset-button pokeys.0.input-53 => halui.estop.reset
 
 #  ---manual tool change signals---
 
