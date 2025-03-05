@@ -122,24 +122,33 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            if (!context.payload.pull_request) {
+              console.log("Not a pull request event. Skipping issue closure.");
+              return;
+            }
+      
             const branch = context.payload.pull_request.head.ref;
-
+            console.log(`Branch name: ${branch}`);
+      
             // Find an open issue that has a label matching the merged branch name
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              labels: [branch]  // Ensure labels is an array
+              labels: [branch]
             });
-
+      
             if (issues.length > 0) {
               const issueNum = issues[0].number;
+              console.log(`Closing issue #${issueNum}`);
+      
               await github.rest.issues.update({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issueNum,
                 state: 'closed'
-              })
+              });
+            } else {
+              console.log(`No open issues found with label "${branch}".`);
             }
-
- 
+         
