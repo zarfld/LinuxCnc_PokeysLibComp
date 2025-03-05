@@ -714,6 +714,155 @@ bool get_sequence_homing(int seq)
     return 0;
 }
 
+int pokeys_1joint_state_machine(int joint_num){
+    emcmot_joint_t *joint;
+    double offset, tmp;
+    int home_sw_active, homing_flag;
+    bool immediate_state = 0;
+
+    homing_flag = 0;
+    joint = &joints[joint_num];
+    home_sw_active = H[joint_num].home_sw;
+    if (H[joint_num].home_state != HOME_IDLE)
+    {
+        homing_flag = 1; /* at least one joint is homing */
+    }
+
+    /* when a joint is homing, 'check_for_faults()' ignores its limit
+       switches, so that this code can do the right thing with them. Once
+       the homing process is finished, the 'check_for_faults()' resumes
+       checking */
+
+    /* homing state machine */
+
+    /* Some portions of the homing sequence can run thru two or more
+       states during a single servo period.  This is done using
+       'immediate_state'.  If a state transition sets it true (non-zero),
+       this 'do-while' will loop executing switch(home_state) immediately
+       to run the new state code.  Otherwise, the loop will fall thru, and
+       switch(home_state) runs only once per servo period. Do _not_ set
+       'immediate_state' true unless you also change 'home_state', unless
+       you want an infinite loop! */
+    do    {
+        immediate_state = 0;
+        switch (H[joint_num].PEv2_AxesState)        {
+        case PK_PEAxisState_axSTOPPED:
+            /* Axis is stopped */
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d stopped\n", joint_num);
+            H[joint_num].homing = 0;
+            H[joint_num].homed = 0;
+            H[joint_num].home_state = HOME_IDLE;
+            break;
+
+        case PK_PEAxisState_axREADY:
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d ready\n", joint_num);
+            /* Axis ready */
+            H[joint_num].homing = 0;
+            H[joint_num].home_state = HOME_IDLE;
+            break;
+
+        case PK_PEAxisState_axRUNNING:
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d running\n", joint_num);
+            /* Axis is running */
+            H[joint_num].homing = 0;
+            H[joint_num].home_state = HOME_IDLE;
+            break;
+
+        case PK_PEAxisState_axHOMING_RESETTING:
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homing resetting\n", joint_num);
+            /* Stopping the axis to reset the position counters */
+            H[joint_num].homing = 1;
+            H[joint_num].home_state = HOME_UNLOCK;
+            H[joint_num].homed = 0;
+            break;
+
+        case PK_PEAxisState_axHOMING_BACKING_OFF:
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homing backing off\n", joint_num);
+            /* Backing off switch */
+            H[joint_num].homing = 1;
+            H[joint_num].home_state = HOME_INITIAL_BACKOFF_WAIT;
+            break;
+
+        case PK_PEAxisState_axHOME:
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine joint %d homed\n", joint_num);
+            /* Axis is homed */
+            
+            H[joint_num].homing = 0;
+            H[joint_num].home_state = HOME_FINISHED;
+            H[joint_num].homed = 1;
+            
+            break;
+
+        case PK_PEAxisState_axHOMINGSTART:
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homing start\n", joint_num);
+            /* Homing procedure is starting on axis */
+            H[joint_num].homing = 1;
+            H[joint_num].home_state = HOME_START;
+            break;
+
+        case PK_PEAxisState_axHOMINGSEARCH:
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homing search\n", joint_num);
+            /* Homing procedure first step - going to home */
+            H[joint_num].homing = 1;
+            H[joint_num].home_state = HOME_INITIAL_SEARCH_WAIT;
+            break;
+
+        case PK_PEAxisState_axHOMINGBACK:
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homing back\n", joint_num);
+            /* Homing procedure second step - slow homing */
+            H[joint_num].homing = 1;
+            H[joint_num].home_state = HOME_FINAL_BACKOFF_START;
+            break;
+
+        case PK_PEAxisState_axPROBED:
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d probed\n", joint_num);
+            /* Probing completed for this axis */
+            H[joint_num].homing = 0;
+            H[joint_num].home_state = HOME_IDLE;
+            break;
+
+        case PK_PEAxisState_axPROBESTART:
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d probed start\n", joint_num);
+            /* Probing procedure is starting on axis */
+            H[joint_num].homing = 0;
+            H[joint_num].home_state = HOME_IDLE;
+            break;
+
+        case PK_PEAxisState_axPROBESEARCH:
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d probe search\n", joint_num);
+            /* Probing procedure - probing */
+            H[joint_num].homing = 0;
+            H[joint_num].home_state = HOME_IDLE;
+            break;
+
+        case PK_PEAxisState_axERROR:
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d error\n", joint_num);
+            /* Axis error */
+            H[joint_num].homing = 0;
+            H[joint_num].home_state = HOME_IDLE;
+            break;
+
+        case PK_PEAxisState_axLIMIT:
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d limit\n", joint_num);
+            /* Axis limit tripped */
+            H[joint_num].homing = 0;
+            H[joint_num].home_state = HOME_IDLE;
+            break;
+
+        default:
+            /* should never get here */
+            rtapi_print_msg(RTAPI_MSG_DBG, "unknown state '%d' during homing j=%d",
+                            H[joint_num].home_state, joint_num);
+            H[joint_num].home_state = HOME_ABORT;
+            immediate_state = 1;
+            break;
+        } /* end of switch(H[joint_num].home_state) */
+    } while (immediate_state);
+
+    return homing_flag;
+} // pokeys_1joint_state_machine()
+
+
 void do_home_sequence(int seq){
     one_sequence_home_data_t addr = (sequence_home_data.shd[seq]);
     sequence_home_data.current_sequence = seq;
@@ -1322,153 +1471,6 @@ static void do_homing_sequence(void) {
     return;
 } // do_homing_sequence()
 
-int pokeys_1joint_state_machine(int joint_num){
-    emcmot_joint_t *joint;
-    double offset, tmp;
-    int home_sw_active, homing_flag;
-    bool immediate_state = 0;
-
-    homing_flag = 0;
-    joint = &joints[joint_num];
-    home_sw_active = H[joint_num].home_sw;
-    if (H[joint_num].home_state != HOME_IDLE)
-    {
-        homing_flag = 1; /* at least one joint is homing */
-    }
-
-    /* when a joint is homing, 'check_for_faults()' ignores its limit
-       switches, so that this code can do the right thing with them. Once
-       the homing process is finished, the 'check_for_faults()' resumes
-       checking */
-
-    /* homing state machine */
-
-    /* Some portions of the homing sequence can run thru two or more
-       states during a single servo period.  This is done using
-       'immediate_state'.  If a state transition sets it true (non-zero),
-       this 'do-while' will loop executing switch(home_state) immediately
-       to run the new state code.  Otherwise, the loop will fall thru, and
-       switch(home_state) runs only once per servo period. Do _not_ set
-       'immediate_state' true unless you also change 'home_state', unless
-       you want an infinite loop! */
-    do    {
-        immediate_state = 0;
-        switch (H[joint_num].PEv2_AxesState)        {
-        case PK_PEAxisState_axSTOPPED:
-            /* Axis is stopped */
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d stopped\n", joint_num);
-            H[joint_num].homing = 0;
-            H[joint_num].homed = 0;
-            H[joint_num].home_state = HOME_IDLE;
-            break;
-
-        case PK_PEAxisState_axREADY:
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d ready\n", joint_num);
-            /* Axis ready */
-            H[joint_num].homing = 0;
-            H[joint_num].home_state = HOME_IDLE;
-            break;
-
-        case PK_PEAxisState_axRUNNING:
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d running\n", joint_num);
-            /* Axis is running */
-            H[joint_num].homing = 0;
-            H[joint_num].home_state = HOME_IDLE;
-            break;
-
-        case PK_PEAxisState_axHOMING_RESETTING:
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homing resetting\n", joint_num);
-            /* Stopping the axis to reset the position counters */
-            H[joint_num].homing = 1;
-            H[joint_num].home_state = HOME_UNLOCK;
-            H[joint_num].homed = 0;
-            break;
-
-        case PK_PEAxisState_axHOMING_BACKING_OFF:
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homing backing off\n", joint_num);
-            /* Backing off switch */
-            H[joint_num].homing = 1;
-            H[joint_num].home_state = HOME_INITIAL_BACKOFF_WAIT;
-            break;
-
-        case PK_PEAxisState_axHOME:
-            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine joint %d homed\n", joint_num);
-            /* Axis is homed */
-            
-            H[joint_num].homing = 0;
-            H[joint_num].home_state = HOME_FINISHED;
-            H[joint_num].homed = 1;
-            
-            break;
-
-        case PK_PEAxisState_axHOMINGSTART:
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homing start\n", joint_num);
-            /* Homing procedure is starting on axis */
-            H[joint_num].homing = 1;
-            H[joint_num].home_state = HOME_START;
-            break;
-
-        case PK_PEAxisState_axHOMINGSEARCH:
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homing search\n", joint_num);
-            /* Homing procedure first step - going to home */
-            H[joint_num].homing = 1;
-            H[joint_num].home_state = HOME_INITIAL_SEARCH_WAIT;
-            break;
-
-        case PK_PEAxisState_axHOMINGBACK:
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homing back\n", joint_num);
-            /* Homing procedure second step - slow homing */
-            H[joint_num].homing = 1;
-            H[joint_num].home_state = HOME_FINAL_BACKOFF_START;
-            break;
-
-        case PK_PEAxisState_axPROBED:
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d probed\n", joint_num);
-            /* Probing completed for this axis */
-            H[joint_num].homing = 0;
-            H[joint_num].home_state = HOME_IDLE;
-            break;
-
-        case PK_PEAxisState_axPROBESTART:
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d probed start\n", joint_num);
-            /* Probing procedure is starting on axis */
-            H[joint_num].homing = 0;
-            H[joint_num].home_state = HOME_IDLE;
-            break;
-
-        case PK_PEAxisState_axPROBESEARCH:
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d probe search\n", joint_num);
-            /* Probing procedure - probing */
-            H[joint_num].homing = 0;
-            H[joint_num].home_state = HOME_IDLE;
-            break;
-
-        case PK_PEAxisState_axERROR:
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d error\n", joint_num);
-            /* Axis error */
-            H[joint_num].homing = 0;
-            H[joint_num].home_state = HOME_IDLE;
-            break;
-
-        case PK_PEAxisState_axLIMIT:
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d limit\n", joint_num);
-            /* Axis limit tripped */
-            H[joint_num].homing = 0;
-            H[joint_num].home_state = HOME_IDLE;
-            break;
-
-        default:
-            /* should never get here */
-            rtapi_print_msg(RTAPI_MSG_DBG, "unknown state '%d' during homing j=%d",
-                            H[joint_num].home_state, joint_num);
-            H[joint_num].home_state = HOME_ABORT;
-            immediate_state = 1;
-            break;
-        } /* end of switch(H[joint_num].home_state) */
-    } while (immediate_state);
-
-    return homing_flag;
-} // pokeys_1joint_state_machine()
 
 bool do_homing(void)
 {
