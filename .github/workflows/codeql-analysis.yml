@@ -38,7 +38,7 @@ jobs:
         build-command: cmake -DCMAKE_BUILD_TYPE=Release .
 
     - name: Build pokeys_uspace
-      run: make -C pokeys_uspace
+      run: make -f pokeys_uspace/Submakefile all
 
     - name: Build pokeys_rt
       run: make -C pokeys_rt
