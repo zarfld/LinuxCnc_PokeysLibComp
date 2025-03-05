@@ -55,36 +55,38 @@ jobs:
         ./install_pokeyslib.sh
 
     - name: Build Pokeys Userspace Component
-      run: sudo halcompile --install --userspace --extra-link-args="-L/usr/lib -lPoKeys -llinuxcncini" pokeys_uspace/pokeys.c
+      run: sudo halcompile --install --userspace --extra-link-args="-L/usr/lib -lPoKeys -llinuxcncini" pokeys_uspace/pokeys.c  | tee -a /home/pi/linuxcnc_build.log
 
     - name: Compile Pokeys HAL Components
       run: |
-        sudo halcompile --install pokeys_homecomp.comp
-        sudo halcompile --install kbd48CNC.comp
-        sudo halcompile --install start_delay_3000.comp
-        sudo halcompile --install start_delay_5000.comp
+        sudo halcompile --install pokeys_homecomp.comp | tee -a /home/pi/linuxcnc_build.log
+        sudo halcompile --install kbd48CNC.comp | tee -a /home/pi/linuxcnc_build.log
+        sudo halcompile --install start_delay_3000.comp | tee -a /home/pi/linuxcnc_build.log
+        sudo halcompile --install start_delay_5000.comp | tee -a /home/pi/linuxcnc_build.log
 
     - name: Final Install
-      run: sudo bash install.sh
+      run: sudo bash install.sh | tee -a /home/pi/linuxcnc_build.log
 
     - name: Upload logs on failure
       if: failure()
       uses: actions/upload-artifact@v4
       with:
         name: Logs
-        path: |
-          build/build.log
-          build/test.log
+        path: /home/pi/linuxcnc_build.log
+        if-no-files-found: ignore
 
-    - name: Add logging for installation failures
-      run: |
-        echo "Adding logging for installation failures..."
-        log_file="$HOME/linuxcnc_build.log"
-        make -j$(nproc) all 2>&1 | tee "$log_file"
-        if [ "${PIPESTATUS[0]}" -ne 0 ]; then
-            echo "Build failed. Check the log file for details: $log_file"
-            exit 1
-        fi
+    - name: Comment on issue about failure
+      if: ${{ failure() }}
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: | 
+          github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: '❌ Build/test pipeline failed. Logs have been attached as an artifact. Please review the log for details.'
+          })&#8203;:contentReference[oaicite:7]{index=7}
 
     - name: Check for adherence to code review guidelines
       run: |
@@ -104,29 +106,32 @@ jobs:
         fi
         echo "Canonical Device Interface guidelines are documented and accessible."
 
-    - name: Trigger CI pipeline based on issue status updates
-      run: |
-        echo "Triggering CI pipeline based on issue status updates..."
-        if [ "${{ github.event.issue.labels }}" == "in progress" ]; then
-            echo "Issue is in progress. Triggering build and tests..."
-            # Add your build and test commands here
-        elif [ "${{ github.event.issue.labels }}" == "in review" ]; then
-            echo "Issue is in review. Triggering deployment to staging..."
-            # Add your deployment commands here
-        fi
+  close-issue:
+    # Only run on pull_request events where the PR was merged into the main branch
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' }}&#8203;:contentReference[oaicite:8]{index=8}
+    runs-on: self-hosted  # also runs on the Pi runner
+    steps:
+      - name: Close associated issue
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const branch = context.payload.pull_request.head.ref;
+            // Find an open issue that has a label matching the merged branch name
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: branch
+            });
+            if (issues.length > 0) {
+              const issueNum = issues[0].number;
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNum,
+                state: 'closed'
+              });&#8203;:contentReference[oaicite:9]{index=9}
+            }
 
-    - name: Send alerts for pipeline failures related to issues
-      run: |
-        echo "Sending alerts for pipeline failures related to issues..."
-        if [ "${{ github.event.issue.labels }}" == "failed CI" ]; then
-            echo "Pipeline failed. Sending alerts to contributors..."
-            # Add your alerting commands here (e.g., Slack, email, GitHub notifications)
-        fi
-
-    - name: Auto-close issues upon deployment
-      run: |
-        echo "Auto-closing issues upon deployment..."
-        if [ "${{ github.event.issue.labels }}" == "in production" ]; then
-            echo "Issue deployed to production. Auto-closing issue..."
-            # Add your auto-closing commands here
-        fi
+ 
