@@ -36,6 +36,7 @@ jobs:
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
+        tools: /home/cnc/actions-runner/_work/_tool/CodeQL/2.20.5/arm64
         languages: ${{ matrix.language }}
 
     - name: Autobuild
