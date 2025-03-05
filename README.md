@@ -2,7 +2,7 @@
 
 ## Overview
 
-The LinuxCnc_PokeysLibComp project integrates PoKeys devices with LinuxCNC, providing real-time control and monitoring capabilities. This repository contains the necessary components, scripts, and documentation to set up and use PoKeys devices with LinuxCNC.
+The LinuxCnc_PokeysLibComp project integrates PoKeys devices with LinuxCNC, providing control and monitoring capabilities. This repository contains the necessary components, scripts, and documentation to set up and use PoKeys devices with LinuxCNC.
 
 ## Directory Structure
 
