@@ -33,10 +33,17 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y cmake libboost-all-dev
 
+    - name: Download and Extract CodeQL (ARM64)
+      run: |
+        mkdir -p ~/codeql && cd ~/codeql
+        curl -L -o codeql.tar.gz https://github.com/github/codeql-cli-binaries/releases/latest/download/codeql-linux64.tar.gz
+        tar -xzf codeql.tar.gz
+        echo "CODEQL_PATH=$(pwd)/codeql" >> $GITHUB_ENV
+
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
-        tools: /home/cnc/actions-runner/_work/_tool/CodeQL/2.20.5/arm64
+        tools: ${{ env.CODEQL_PATH }}
         languages: ${{ matrix.language }}
 
     - name: Autobuild
