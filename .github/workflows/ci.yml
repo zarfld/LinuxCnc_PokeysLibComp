@@ -23,6 +23,12 @@ jobs:
     runs-on: self-hosted
 
     steps:
+    - name: reinit runner directory
+      run: |
+        sudo chown -R cnc:cnc /home/cnc/actions-runner
+        sudo chown -R cnc:cnc /home/cnc/actions-runner/_work
+        chmod -R u+rwx /home/cnc/actions-runner/_work
+
     - name: Checkout code
       uses: actions/checkout@v3
       with:
@@ -117,7 +123,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const branch = context.payload.pull_request.head.ref;
-            
+
             // Find an open issue that has a label matching the merged branch name
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner,
