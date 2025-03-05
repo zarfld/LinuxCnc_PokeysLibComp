@@ -55,24 +55,24 @@ jobs:
         ./install_pokeyslib.sh
 
     - name: Build Pokeys Userspace Component
-      run: sudo halcompile --install --userspace --extra-link-args="-L/usr/lib -lPoKeys -llinuxcncini" pokeys_uspace/pokeys.c | tee -a /home/pi/linuxcnc_build.log
+      run: sudo halcompile --install --userspace --extra-link-args="-L/usr/lib -lPoKeys -llinuxcncini" pokeys_uspace/pokeys.c | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
 
     - name: Compile Pokeys HAL Components
       run: |
-        sudo halcompile --install pokeys_homecomp.comp | tee -a /home/pi/linuxcnc_build.log
-        sudo halcompile --install kbd48CNC.comp | tee -a /home/pi/linuxcnc_build.log
-        sudo halcompile --install start_delay_3000.comp | tee -a /home/pi/linuxcnc_build.log
-        sudo halcompile --install start_delay_5000.comp | tee -a /home/pi/linuxcnc_build.log
+        sudo halcompile --install pokeys_homecomp.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+        sudo halcompile --install kbd48CNC.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+        sudo halcompile --install start_delay_3000.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+        sudo halcompile --install start_delay_5000.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
 
     - name: Final Install
-      run: sudo bash install.sh | tee -a /home/pi/linuxcnc_build.log
+      run: sudo bash install.sh | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
 
     - name: Upload logs on failure
       if: failure()
       uses: actions/upload-artifact@v4
       with:
         name: Logs
-        path: /home/pi/linuxcnc_build.log
+        path: /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
         if-no-files-found: ignore
 
     - name: Comment on issue about failure
