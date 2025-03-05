@@ -117,13 +117,15 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const branch = context.payload.pull_request.head.ref;
+            
             // Find an open issue that has a label matching the merged branch name
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              labels: branch
+              labels: [branch]  // Ensure labels is an array
             });
+
             if (issues.length > 0) {
               const issueNum = issues[0].number;
               await github.rest.issues.update({
@@ -131,7 +133,7 @@ jobs:
                 repo: context.repo.repo,
                 issue_number: issueNum,
                 state: 'closed'
-              });&#8203;:contentReference[oaicite:9]{index=9}
+              })
             }
 
  
