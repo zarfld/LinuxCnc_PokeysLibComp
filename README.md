@@ -132,6 +132,10 @@ Count: 55
 - pokeys.[DevID].Pin.[PinID].PinFunction			  int 		PinFunction to be set for corresponding pin see ePK_PinCap
 
 the PinFunction can be set using followin enumeration. Note that e.g. digitalInput or digitalOutput could be directly inverted on pokeys by adding value 128 (PK_PinCap_digitalOutput+PK_PinCap_invertPin or 2 + 128 = 130):
+
+add. Note: for PK_PinCap_analogOutput has not been used so far currently only PWM functionality has been used instead that is what is being used for (pins 18, 20, 21 and 22)
+
+```
       enum ePK_PinCap
       {
           PK_PinCap_pinRestricted  = 0,           // Pin is not used
@@ -144,6 +148,7 @@ the PinFunction can be set using followin enumeration. Note that e.g. digitalInp
           PK_PinCap_digitalCounter = 64,          // Digital counter (only on selected pins)
           PK_PinCap_invertPin      = 128          // Invert digital pin polarity (set together with digital input, output or triggered input)
       };
+```
 
 ### Digital Input
 
