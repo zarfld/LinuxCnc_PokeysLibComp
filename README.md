@@ -191,6 +191,8 @@ Count: 7
 
 ### Analog Output (PWM)
 
+![image](https://github.com/user-attachments/assets/2cbabe83-ed07-4ff1-9151-ba896d139e8b)
+
 Count: 6
 
 #### Pins
@@ -238,7 +240,38 @@ Count: 29
 - `pokeys.[DevID].rtc.loop_frequ`: Actual loop frequency of pokeys.comp updated after rtc.sec changed
 - `pokeys.[DevID].rtc.loop_frequ_demand`: Demand value for loop frequency (if 0, default of 10Hz will be used)
 
+### Pulse Engine
 
+![image](https://github.com/user-attachments/assets/7e5205bd-206e-47c1-8ed5-7084deec5348)
+
+#### Pulse Generator options
+![image](https://github.com/user-attachments/assets/11616183-3ac6-4e62-9b90-539d05009d5a)
+
+#### Motion Parameters
+![image](https://github.com/user-attachments/assets/e5ecda16-c469-4b2d-9326-4ca26beaaf1a)
+
+#### Emergency Pin
+
+#### Limit Switches
+![image](https://github.com/user-attachments/assets/77c3ed81-c1cf-4005-b674-b3e04fdacf3a)
+
+#### Home/Ref switch
+![image](https://github.com/user-attachments/assets/8e240b6d-f876-46a8-af00-23ac77b827f3)
+
+#### Axis enable output pin
+![image](https://github.com/user-attachments/assets/2df47a81-f1a3-40c2-99a2-010a8b672413)
+
+#### Aux. outputs
+![image](https://github.com/user-attachments/assets/3d8df6b2-d5df-4afc-9c14-a8d45ca47309)
+
+#### MPG jog setup
+![image](https://github.com/user-attachments/assets/860896a5-b3c9-4c95-8bd4-eb01fc9b2f43)
+
+#### Pulse Engine State
+![image](https://github.com/user-attachments/assets/441ab118-b71e-4c6e-b30c-4ac1906a8ee7)
+
+
+#### Parameters
 
 ## Running Tests
 
