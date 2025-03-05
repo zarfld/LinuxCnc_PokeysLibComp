@@ -55,7 +55,7 @@ jobs:
         ./install_pokeyslib.sh
 
     - name: Build Pokeys Userspace Component
-      run: sudo halcompile --install --userspace --extra-link-args="-L/usr/lib -lPoKeys -llinuxcncini" pokeys_uspace/pokeys.c  | tee -a /home/pi/linuxcnc_build.log
+      run: sudo halcompile --install --userspace --extra-link-args="-L/usr/lib -lPoKeys -llinuxcncini" pokeys_uspace/pokeys.c | tee -a /home/pi/linuxcnc_build.log
 
     - name: Compile Pokeys HAL Components
       run: |
