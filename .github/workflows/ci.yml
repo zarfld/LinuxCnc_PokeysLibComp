@@ -20,33 +20,13 @@ on:
 
 jobs:
   build:
-    strategy:
-      matrix:
-        os: [ubuntu-24.04, debian-bullseye, debian-bookworm, debian-sid]
-        version: [2.9.3, latest]
-        type: [hybrid, PREEMPT-RT, USPACE]
-    runs-on: ${{ matrix.os }}
+    runs-on: self-hosted
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
       with:
         submodules: false
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-
-    - name: Cache dependencies
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~/.cache/pip
-          ~/.cache/apt
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
 
     - name: Check runner availability
       run: |
@@ -67,22 +47,25 @@ jobs:
     - name: Install dependencies
       run: |
         echo "Installing dependencies..."
-        bash ci-prerequisites.sh
+        sudo bash prerequisites.sh
 
     - name: Install pokeyslib
       run: |
         chmod +x install_pokeyslib.sh
         ./install_pokeyslib.sh
 
-    - name: Build Docker image
-      run: |
-        echo "Building Docker image..."
-        docker build -t linuxcnc-pokeyslibcomp .
+    - name: Build Pokeys Userspace Component
+      run: sudo halcompile --install --userspace --extra-link-args="-L/usr/lib -lPoKeys -llinuxcncini" pokeys_uspace/pokeys.c
 
-    - name: Run Docker container and execute tests
+    - name: Compile Pokeys HAL Components
       run: |
-        echo "Running Docker container and executing tests..."
-        docker run --rm linuxcnc-pokeyslibcomp
+        halcompile --install pokeys_homecomp.comp
+        halcompile --install kbd48CNC.comp
+        halcompile --install start_delay_3000.comp
+        halcompile --install start_delay_5000.comp
+
+    - name: Final Install
+      run: sudo bash install.sh
 
     - name: Upload logs on failure
       if: failure()
@@ -92,17 +75,6 @@ jobs:
         path: |
           build/build.log
           build/test.log
-
-    - name: Add caching mechanism for dependencies
-      run: |
-        echo "Adding caching mechanism for dependencies..."
-        cache_dir="$HOME/.cache/linuxcnc"
-        mkdir -p "$cache_dir"
-        export CCACHE_DIR="$cache_dir"
-        export CCACHE_COMPRESS=1
-        export CCACHE_COMPRESSLEVEL=6
-        export CCACHE_MAXSIZE=5G
-        export PATH="/usr/lib/ccache:$PATH"
 
     - name: Add logging for installation failures
       run: |
@@ -272,33 +244,3 @@ jobs:
             echo "Issue deployed to production. Auto-closing issue..."
             # Add your auto-closing commands here
         fi
-
-  create_images:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Set up QEMU
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y qemu qemu-user-static
-
-    - name: Verify QEMU installation
-      run: |
-        qemu_version=$(qemu-system-x86_64 --version)
-        echo "QEMU version: $qemu_version"
-
-    - name: Run create_images.sh script
-      run: |
-        chmod +x create_images.sh
-        ./create_images.sh
-
-    - name: Upload generated images
-      uses: actions/upload-artifact@v3
-      with:
-        name: Generated Images
-        path: |
-          *.img
-          *.iso
