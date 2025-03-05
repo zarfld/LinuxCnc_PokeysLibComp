@@ -44,9 +44,19 @@ jobs:
         build-command: cmake -DCMAKE_BUILD_TYPE=Release .
 
     - name: Build pokeys_uspace
+      if: ${{ matrix.language == 'cpp' }}
       run: make -f pokeys_uspace/Submakefile all
 
+    - name: Compile Pokeys HAL Components
+      if: ${{ matrix.language == 'cpp' }}
+      run: |
+        sudo halcompile --install pokeys_homecomp.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+        sudo halcompile --install kbd48CNC.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+        sudo halcompile --install start_delay_3000.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+        sudo halcompile --install start_delay_5000.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+
     - name: Build pokeys_py
+      if: ${{ matrix.language == 'python' }}
       run: make -C pokeys_py
 
     - name: Perform CodeQL Analysis
