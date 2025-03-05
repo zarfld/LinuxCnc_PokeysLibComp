@@ -19,6 +19,12 @@ jobs:
         language: [ 'cpp', 'python' ]
 
     steps:
+    - name: reinit runner directory
+      run: |
+        sudo chown -R cnc:cnc /home/cnc/actions-runner
+        sudo chown -R cnc:cnc /home/cnc/actions-runner/_work
+        chmod -R u+rwx /home/cnc/actions-runner/_work
+
     - name: Checkout repository
       uses: actions/checkout@v3
 
