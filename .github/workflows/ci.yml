@@ -59,10 +59,10 @@ jobs:
 
     - name: Compile Pokeys HAL Components
       run: |
-        halcompile --install pokeys_homecomp.comp
-        halcompile --install kbd48CNC.comp
-        halcompile --install start_delay_3000.comp
-        halcompile --install start_delay_5000.comp
+        sudo halcompile --install pokeys_homecomp.comp
+        sudo halcompile --install kbd48CNC.comp
+        sudo halcompile --install start_delay_3000.comp
+        sudo halcompile --install start_delay_5000.comp
 
     - name: Final Install
       run: sudo bash install.sh
