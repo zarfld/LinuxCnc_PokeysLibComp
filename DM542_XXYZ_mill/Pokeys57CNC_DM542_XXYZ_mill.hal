@@ -23,7 +23,7 @@ addf pid.s.do-pid-calcs       servo-thread
 loadusr -W start_delay_5000
 
 # external output signals
-#net estop-out     => pokeys.0.PEv2.digout.Emergency.out
+
 net machine-is-on => pokeys.0.machine-is-on
 # external input signals
 
@@ -54,7 +54,7 @@ net home-z     <=  pokeys.0.PEv2.2.digin.Home.in
 #net abort     <=  [HMOT](CARD0).gpio.024.in
 
 # --- ESTOP-EXT ---
-net estop-ext     <=  pokeys.0.PEv2.digin.Emergency.in
+
 #setp pokeys.0.pokeys.0.PEv2.digin.Emergency.invert 1
 #
 
@@ -539,8 +539,20 @@ net machine-is-enabled        <=  motion.motion-enabled
 
 #  ---estop signals---
 
+# ------The state of LinuxCNC's E-Stop mode is sent to an external PoExtBus open-collector or relay output for monitoring
+net estop-out iocontrol.0.user-enable-out => pokeys.0.PoExtBus.0.digout.1.out
 net estop-out     <=  iocontrol.0.user-enable-out
+net estop-out     => pokeys.0.PEv2.digout.Emergency.out
+
+# ------ The PNOZ safety relay's output contacts (K1/K2 on terminals 13 & 23) are wired to a PoKeys digital input.
 net estop-ext     =>  iocontrol.0.emc-enable-in
+net estop-ext     <=  pokeys.0.PEv2.digin.Emergency.in
+
+# ------ The PNOZ reset requires a pulse on terminals T33-T34. Use PoExtBus output 2 to generate this reset signal.
+net estop-reset halui.estop.reset => pokeys.0.PoExtBus.0.digout.2.out
+
+# ------ pressing a real button instead of using the UI can reset the system
+net reset-button pokeys.0.input-53 => halui.estop.reset
 
 #  ---manual tool change signals---
 
