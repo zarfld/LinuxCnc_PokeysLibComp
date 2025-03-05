@@ -8,8 +8,9 @@ The LinuxCnc_PokeysLibComp project integrates PoKeys devices with LinuxCNC, prov
 
 The repository is organized into the following directories:
 
-- `pokeys_py/`: Contains Python scripts for interfacing with PoKeys devices.
-- `pokeys_rt/`: Contains real-time components for PoKeys devices.
+- `pokeys_uspace/`: Contains Source of pokeys userspace component for interfacing with PoKeys devices.
+- `pokeys_py/`: prepared for Contains Python scripts for interfacing with PoKeys devices.
+- `pokeys_rt/`: prepared for real-time components for PoKeys devices.
 - `tests/`: Contains unit tests, integration tests, and other testing-related files.
 - `docs/`: Contains project-related documentation.
 - `scripts/`: Contains scripts for setup, configuration, and auxiliary tasks.
@@ -41,25 +42,108 @@ The project has been tested with the following hardware:
 
 The following features have been implemented and tested:
 
-- Connecting to USB devices
-- Connecting to network devices
-- Reading device data
-- Reading digital inputs
-- Writing digital outputs
-- Reading analog inputs
-- PoExtBus writing
-- PoExtBus reading
-- Setting pin functions
-- Reading pin functions
-- PWM operations
-- Pulse engine operations
-- Matrix keyboard setup
-- Matrix keyboard reading
-- kbd48CNC set LED
-- kbd48CNC get Button Status
-- Using encoders
+- [e] Connecting to USB devices
+- [x] Connecting to network devices
+- [x] Reading device data
+- [x] Reading digital inputs
+- [x] Writing digital outputs
+- [x] Reading analog inputs
+- [x] PoExtBus writing
+- [x] PoExtBus reading
+- [ ] LCD operations
+- [ ] Matrix LED
+- [x] Setting pin functions
+- [x] Reading pin functions
+- [ ] Setting pin key codes
+- [ ] Reading pin key codes
+- [X] PWM operations
+- [x] Pulse engine operations
+- [i] Matrix keyboard setup
+- [i] Matrix keyboard reading
+- [x] kbd48CNC set LED
+- [x] kbd48CNC get Button Status
+- [x] Using encoders
+- [ ] I2C operations
+- [ ] SPI operation
+- [ ] PoIL operations
+- [i] 1-wire operations
+
+
+x ... available
+i ... implemented but not tested
+! ... implemented but not working yet
+p ... planned
+e ... known issue 
+
+
+### PoRelay8:
+- [x] needs to be connected in Parallel to kbd48CNC with white PoExt Cable OR using Canbus (connecting it using the Red PoExtBus cable to the i2C extender which is delivered with kbd48CNC will not work)
+- [x] if it is used together with "non smart" PoExtBus devices (e.g. PoExtBusOC16) use "PoExtBus - Smart" page on Pokeys-SW to set "Sequence ID"
+- [ ] inputs not available (yet?)
+
+### PoExtBusOC16
+- [x] can be set using pokeys.0.PoExtBus.#.Out-0..7  (all 16outs can be used pokeys.0.PoExtBus.0 and pokeys.0.PoExtBus.1)
+- [ ] inputs not available
+
+### PoExtBusOC16CNC
+- see "PulseEnginev2"
+
+### kbd48CNC:
+- [x] using as PoNet-extension buard attached to Pokeys57E
+- [x] using CanBus (6Pin MicroMatch Connector) directly on Pokeys57CNC
+
+### Pokeys57E
+- [x] connected using Ethernet
+- [x] Read&Set of Digital IO on HalPins pokeys.0.Pins.*.DigitalValueGet / DigitalValueSet
+- [x] Readt of AnalogValue IO on HalPins pokeys.0.Pins.*.AnalogValue on the pins that support that
+- periphals listed above was tested on this device.
+
+changing structure of IOs to "Canonical Device Interface" in work
+
+### Pokeys57CNC
+- [x] connected using USB
+- [x] connected using Ethernet
+- [x] LinuxCNC example config in Work (using the pinsetup as available on PCB)
+- [x] Switchng OC Outputs  pokeys.0.PEv2.ExternalOCOutput.0..3
+- [x] Switchng Relay Outputs (SSR1 & 2 -> pokeys.0.PEv2.ExternalRelayOutput.0 & 1) (SSR1 & 2 -> pokeys.0.PEv2.ExternalRelayOutput.0 & 1)
+- using USB connection seems "faster" than using ethernet - may depend on networksetup (networkswitch vs. direct connection)
+
+### Pokeys57E
+- [ ] connected using USB  (currently could not connect on newer distributions see issue #231 )
+
+### PulseEnginev2 
+- [x] Setting Status Running/Stop depending on LinuxCNC state ("machine-on")
+- [x] Reading Status of Limit+/- and Home switches
+- [x] setting External OC and RelayOutputs - in case that "Extended IO" is available and activated (Pokeys57CNC)
+- [x] setting PinConfiguration for Limits, Home, Probe & Emergency switches based in LinuxCNC-INI configuration - not reliable
+- [x] parametrizing MaxSpeed, MaxAccelleration, ... based on LinuxCNC configuarion (mm/sec to pulses/sec conversion is being done using JOINT.*.STEPSCALE)
+
 
 ## HAL Interface
+
+### Pokeys Pin 
+![image](https://github.com/user-attachments/assets/d0f7cb2d-aeb1-4d77-87f3-09857c2719b9)
+
+
+Count: 55
+
+#### Parameters
+
+- pokeys.[DevID].Pin.[PinID].PinFunction			  int 		PinFunction to be set for corresponding pin see ePK_PinCap
+
+the PinFunction can be set using followin enumeration. Note that e.g. digitalInput or digitalOutput could be directly inverted on pokeys by adding value 128 (PK_PinCap_digitalOutput+PK_PinCap_invertPin or 2 + 128 = 130):
+      enum ePK_PinCap
+      {
+          PK_PinCap_pinRestricted  = 0,           // Pin is not used
+          PK_PinCap_reserved       = 1,           // --
+          PK_PinCap_digitalInput   = 2,           // Digital input
+          PK_PinCap_digitalOutput  = 4,           // Digital output
+          PK_PinCap_analogInput    = 8,           // Analog input (only on selected pins)
+          PK_PinCap_analogOutput   = 16,          // Analog output (only on selected pins)
+          PK_PinCap_triggeredInput = 32,          // Triggered input
+          PK_PinCap_digitalCounter = 64,          // Digital counter (only on selected pins)
+          PK_PinCap_invertPin      = 128          // Invert digital pin polarity (set together with digital input, output or triggered input)
+      };
 
 ### Digital Input
 
@@ -67,24 +151,12 @@ Count: 55
 
 #### Pins
 
-- `pokeys.[DevID].digin.[PinID].in`: State of the hardware input
-- `pokeys.[DevID].digin.[PinID].in-not`: Inverted state of the input
+- pokeys.[DevID].digin.[PinID].in			  bit		State of the hardware input
+- pokeys.[DevID].digin.[PinID].in-not		bit		Inverted state of the input.
 
 #### Parameters
 
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.Home.Pin`: Home switch pin (0 for external dedicated input)
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.Home.Filter`: Digital filter for Home switch
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.Home.invert`: Invert Home (PoKeys functionality)
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitN.Pin`: Limit- switch pin (0 for external dedicated input)
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitN.Filter`: Digital filter for limit- switch
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitN.invert`: Invert limit- (PoKeys functionality)
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitP.Pin`: Limit+ switch pin (0 for external dedicated input)
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitP.Filter`: Digital filter for limit+ switch
-- `pokeys.[DevID].PEv2.[PEv2Id].digin.LimitP.invert`: Invert limit+ (PoKeys functionality)
-- `pokeys.[DevID].PEv2.digin.Emergency.Pin`
-- `pokeys.[DevID].PEv2.digin.Emergency.invert`
-- `pokeys.[DevID].PEv2.digin.Probe.Pin`
-- `pokeys.[DevID].PEv2.digin.Probe.invert`
+- `pokeys.[DevID].digin.[PinID].invert`  bit     invert Pin on pokeys using PK_PinCap_invertPin on PinFunction
 
 ### Digital Output
 
@@ -92,11 +164,11 @@ Count: 55
 
 #### Pins
 
-- `pokeys.[DevID].digout.[PinID].out`: Value to be written (possibly inverted) to the hardware output
+- `pokeys.[DevID].digout.[PinID].out`  bit     Value to be written (possibly inverted) to the hardware output
 
 #### Parameters
 
-- `pokeys.[DevID].digout.[PinID].invert`: If TRUE, out is inverted before writing to the hardware
+- `pokeys.[DevID].digout.[PinID].invert`  bit     invert Pin on pokeys using PK_PinCap_invertPin on PinFunction
 
 ### Analog Input
 
@@ -104,15 +176,15 @@ Count: 7
 
 #### Pins
 
-- `pokeys.[DevID].adcin.[AdcId].value-raw`: The hardware reading
-- `pokeys.[DevID].adcin.[AdcId].value`: The hardware reading, scaled according to the scale and offset parameters
+- `pokeys.[DevID].adcin.[AdcId].value-raw`			float    The hardware reading 
+- `pokeys.[DevID].adcin.[AdcId].value`				  float    The hardware reading, scaled according to the scale and offset parameters
 
 #### Parameters
 
-- `pokeys.[DevID].adcin.[AdcId].scale`: The input voltage (or current) will be multiplied by scale before being output to value
-- `pokeys.[DevID].adcin.[AdcId].offset`: This will be subtracted from the hardware input voltage (or current) after the scale multiplier has been applied
+- `pokeys.[DevID].adcin.[AdcId].scale`				  float    The input voltage (or current) will be multiplied by scale before being output to value
+- `pokeys.[DevID].adcin.[AdcId].offset`				  float    This will be subtracted from the hardware input voltage (or current) after the scale multiplier has been applied
 
-### Analog Output
+### Analog Output (PWM)
 
 Count: 6
 
@@ -136,13 +208,15 @@ Count: 29
 
 #### Pins
 
-- `pokeys.[DevID].encoder.[EncId].count`: Encoder value in counts
-- `pokeys.[DevID].encoder.[EncId].position`: Encoder value in position units (see parameter “scale”)
-- `pokeys.[DevID].encoder.[EncId].reset`: When True, force counter to zero
+- pokeys.[DevID].encoder.[EncId].count;			S32	Encoder value in counts.
+- pokeys.[DevID].encoder.[EncId].position;		FLOAT Encoder value in position units (see parameter “scale”).
+- ~~pokeys.[DevID].encoder.[EncId].velocity;		FLOAT Velocity in position units per second~~
+- pokeys.[DevID].encoder.[EncId].reset;			BIT	When True, force counter to zero
+- ~~pokeys.[DevID].encoder.[EncId].index-enable;	BIT	(bidirectional) When True, reset to zero on next index pulse, and set pin False.~~
 
 #### Parameters
 
-- `pokeys.[DevID].encoder.[EncId].scale`: The scale factor used to convert counts to position units. It is in “counts per position unit”
+- pokeys.[DevID]. encoder.[EncId].scale	FLOAT	"The scale factor used to convert counts to position units. It is in “counts per position unit”";
 
 ### Real-Time Clock
 
@@ -158,6 +232,8 @@ Count: 29
 - `pokeys.[DevID].rtc.year`: Year
 - `pokeys.[DevID].rtc.loop_frequ`: Actual loop frequency of pokeys.comp updated after rtc.sec changed
 - `pokeys.[DevID].rtc.loop_frequ_demand`: Demand value for loop frequency (if 0, default of 10Hz will be used)
+
+
 
 ## Running Tests
 
