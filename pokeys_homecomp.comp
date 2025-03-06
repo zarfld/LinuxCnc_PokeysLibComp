@@ -1427,9 +1427,13 @@ static void do_homing_sequence(void) {
                     break;
                 
                 case PK_PEAxisState_axHOME:
-                    rtapi_print_msg(RTAPI_MSG_ERR, "HOMING.do_homing_sequence: do_homing_sequence joint %d PK_PEAxisState_axHOME\n", jno);
+                    
                     sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
-                    homed_count++;
+                    if (H[jno].homed == 1 && H[jno].homing == 0)
+                    {
+                        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING.do_homing_sequence: do_homing_sequence joint %d PK_PEAxisState_axHOME\n", jno);
+                        homed_cnt++;
+                    }
                     break;
 
                 case PK_PEAxisState_axHOMINGSTART:
@@ -1469,8 +1473,9 @@ static void do_homing_sequence(void) {
             else
             {
                 rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing_sequence(%d) finished continue with sequence(%d) \n", current_sequence,addr.next_sequence);
-                sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
                 current_sequence = addr.next_sequence;
+                sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
+                
             }
         }
         break;
