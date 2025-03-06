@@ -811,7 +811,7 @@ int pokeys_1joint_state_machine(int joint_num){
             rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine joint %d homing back\n", joint_num);
             /* Homing procedure second step - slow homing */
             H[joint_num].homing = 1;
-            H[joint_num].home_state = HOME_FINAL_BACKOFF_START;
+            H[joint_num].home_state = HOME_FINAL_MOVE_WAIT;
             break;
 
         case PK_PEAxisState_axPROBED:
@@ -1456,8 +1456,7 @@ static void do_homing_sequence(void) {
             if (addr.is_last)
             {
                 rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: last do_homing_sequence(%d) finished\n", current_sequence);
-                sequence_state = HOME_SEQUENCE_IDLE;
-                homing_active = 0;
+                sequence_state = HOME_SEQUENCE_END_JOINTS;
             }
             else
             {
@@ -1468,6 +1467,12 @@ static void do_homing_sequence(void) {
         }
         break;
 
+    case HOME_SEQUENCE_END_JOINTS:
+        /* nothing to do */
+        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_END_JOINTS\n",current_sequence);
+        sequence_state = HOME_SEQUENCE_IDLE;
+        homing_active = 0;
+        break;
     default:
         /* should never get here */
         rtapi_print_msg(RTAPI_MSG_ERR, "unknown state '%d' during homing sequence",
