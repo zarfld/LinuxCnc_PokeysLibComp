@@ -969,9 +969,12 @@ bool get_allhomed()
             ret = 0;
             break;
         }
-        usleep(100); // Add a small delay to prevent CPU hogging
+        usleep(10); // Add a small delay to prevent CPU hogging
     }
-    //rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_allhomed homed %d\n", ret);
+    if(ret==1){
+        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_allhomed homed %d\n", ret);
+    }
+    
     return ret ? 1 : 0;
 }
 bool get_homed(int jno)
@@ -1003,20 +1006,7 @@ bool get_homing(int jno)
 bool get_homing_at_index_search_wait(int jno) { return 0; }
 bool get_homing_is_active()
 {
-    int ret = 0;
-    for (int jno = 0; jno < EMCMOT_MAX_JOINTS; jno++)
-    {
-        
-        one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
-        if (!*addr->homing)
-        {
-            ret = 1;
-            break;
-        }
-        usleep(100); // Add a small delay to prevent CPU hogging
-    }
-    // rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_homing_is_active homing %d\n", ret);
-    return ret;
+    return homing_active;
 }
 bool get_index_enable(int jno)
 {
