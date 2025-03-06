@@ -1535,7 +1535,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			PEv2_digin_Error_in_not(i) = !Get_BitOfByte(bm_ErrorStatus, i);
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: intAxesState = %d\n", __FILE__, __FUNCTION__, intAxesState);
 			if (intAxesState != oldAxxiState[i]) {
-				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Status Changed -intAxesState != oldAxxiState[%d] \n", __FILE__, __FUNCTION__, i);
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Status Changed: %d -intAxesState != oldAxxiState[%d] \n", __FILE__, __FUNCTION__, intAxesState, i);
 				oldAxxiState[i] = intAxesState;
 			}
 			switch (intAxesState) {
