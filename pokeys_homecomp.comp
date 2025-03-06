@@ -222,6 +222,7 @@ static int custom_1joint_state_machine(int joint_num)
         chomestate[joint_num] = nextcstate;
         break;
     case CUSTOM_FINI:
+        rtapi_print("HOMING: custom_1joint_state_machine joint %d finished\n", joint_num);
         H[joint_num].homing = 0;
         H[joint_num].homed = 1;
         H[joint_num].home_state = HOME_IDLE;
@@ -788,7 +789,7 @@ int pokeys_1joint_state_machine(int joint_num){
         case PK_PEAxisState_axHOME:
             rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine joint %d homed\n", joint_num);
             /* Axis is homed */
-            
+            usleep(100);
             H[joint_num].homing = 0;
             H[joint_num].home_state = HOME_FINISHED;
             H[joint_num].homed = 1;
@@ -903,24 +904,21 @@ void do_home_sequence(int seq){
     return;
 }
 
-void check_home_sequence(int seq)
-{
-    if (sequence_state != HOME_SEQUENCE_DO_ONE_SEQUENCE)
-    {
+void check_home_sequence(int seq){
+    if (sequence_state != HOME_SEQUENCE_DO_ONE_SEQUENCE)    {
         return;
     }
      
     one_sequence_home_data_t addr = (sequence_home_data.shd[seq]);
     int joints_in_sequence = addr.joints_in_sequence;
 
-    if (addr.homed)
-    {
-        if (addr.is_last)
-        {
+    if (addr.homed)    {
+        if (addr.is_last)        {
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: check_home_sequence sequence %d homed - finished\n", seq);
             sequence_state = HOME_SEQUENCE_IDLE;
         }
-        else
-        {
+        else        {
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: check_home_sequence sequence %d homed - next sequ.\n", seq);
             sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
             do_home_sequence(addr.next_sequence);
         }
@@ -930,6 +928,7 @@ void check_home_sequence(int seq)
     {
         if (get_sequence_homed(seq))
         {
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: check_home_sequence sequence %d homed\n", seq);
             addr.homed = 1;
             addr.homing = 0;
             addr.home_state = HOME_FINISHED;
@@ -1050,6 +1049,7 @@ void write_homing_out_pins(int njoints)
         *(addr->home_state) = H[jno].home_state;             // OUT
         *(addr->PEv2_AxesCommand) = H[jno].PEv2_AxesCommand; // OUT
     }
+    rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: write_homing_out_pins\n");
     return;
 }
 
