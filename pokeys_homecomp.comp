@@ -976,7 +976,7 @@ bool get_allhomed()
             ret = 0;
             break;
         }
-        usleep(10); // Add a small delay to prevent CPU hogging
+        //usleep(10); // Add a small delay to prevent CPU hogging
     }
     if(ret==1){
         rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_allhomed homed %d\n", ret);
