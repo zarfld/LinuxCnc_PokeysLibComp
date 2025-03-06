@@ -1536,7 +1536,7 @@ bool do_homing(void)
     else{
         rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing homing_flag %d\n", homing_flag);
     }
-    rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: beginning_allhomed: %d / end_allhomed: %d  \n", beginning_allhomed, end_allhomed);
+    rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: beginning_allhomed: %d / end_allhomed: %d  homing_active: %d \n", beginning_allhomed, end_allhomed, homing_active);
     return 0;
 }
 
