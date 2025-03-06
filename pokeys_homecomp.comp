@@ -891,6 +891,13 @@ void do_home_sequence(int seq){
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                 break;
 
+            case PK_PEAxisState_axHOME:
+                H[jno].home_state = HOME_FINISHED;
+                H[jno].homed = 1;
+                H[jno].homing = 0;
+                H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+                break;
+
             default:
                 break;
         }
