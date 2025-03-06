@@ -1243,15 +1243,15 @@ static void do_homing_sequence(void) {
     int seen;
     emcmot_joint_t *joint;
     int sequence_is_set = 0;
+    rtapi_print_msg(RTAPI_MSG_ERR, "HOMING:>do_homing_sequence(%d) sequence_state = %d\n",current_sequence,sequence_state);
     if(current_sequence <sequence_home_data.min_sequence || current_sequence >sequence_home_data.max_sequence)    {
         // no sequence set, use the first one
         current_sequence = sequence_home_data.min_sequence ;
     }
     one_sequence_home_data_t addr = (sequence_home_data.shd[current_sequence]);
     int joints_in_sequence = addr.joints_in_sequence;
-
-    switch (sequence_state)
-    {
+    rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing_sequence(%d) joints_in_sequence = %d\n",current_sequence,joints_in_sequence);
+    switch (sequence_state)    {
     case HOME_SEQUENCE_IDLE:
         current_sequence = sequence_home_data.min_sequence;
         /* nothing to do */
