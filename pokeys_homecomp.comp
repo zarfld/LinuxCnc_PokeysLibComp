@@ -777,7 +777,7 @@ int pokeys_1joint_state_machine(int joint_num){
             break;
 
         case PK_PEAxisState_axHOMING_BACKING_OFF:
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homing backing off\n", joint_num);
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine joint %d homing backing off\n", joint_num);
             /* Backing off switch */
             H[joint_num].homing = 1;
             H[joint_num].home_state = HOME_INITIAL_BACKOFF_WAIT;
@@ -808,7 +808,7 @@ int pokeys_1joint_state_machine(int joint_num){
             break;
 
         case PK_PEAxisState_axHOMINGBACK:
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homing back\n", joint_num);
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine joint %d homing back\n", joint_num);
             /* Homing procedure second step - slow homing */
             H[joint_num].homing = 1;
             H[joint_num].home_state = HOME_FINAL_BACKOFF_START;
@@ -851,8 +851,7 @@ int pokeys_1joint_state_machine(int joint_num){
 
         default:
             /* should never get here */
-            rtapi_print_msg(RTAPI_MSG_DBG, "unknown state '%d' during homing j=%d",
-                            H[joint_num].home_state, joint_num);
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine unknown state '%d' during homing j=%d", H[joint_num].home_state, joint_num);
             H[joint_num].home_state = HOME_ABORT;
             immediate_state = 1;
             break;
