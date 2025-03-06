@@ -384,7 +384,8 @@ typedef enum
     HOME_SEQUENCE_DO_ONE_JOINT,
     HOME_SEQUENCE_DO_ONE_SEQUENCE,
     HOME_SEQUENCE_START_JOINTS,
-    HOME_SEQUENCE_WAIT_JOINTS
+    HOME_SEQUENCE_WAIT_JOINTS,
+    HOME_SEQUENCE_END
 } home_sequence_state_t;
 static home_sequence_state_t sequence_state = HOME_SEQUENCE_IDLE;
 
@@ -1456,7 +1457,7 @@ static void do_homing_sequence(void) {
             if (addr.is_last)
             {
                 rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: last do_homing_sequence(%d) finished\n", current_sequence);
-                sequence_state = HOME_SEQUENCE_END_JOINTS;
+                sequence_state = HOME_SEQUENCE_END;
             }
             else
             {
@@ -1467,7 +1468,7 @@ static void do_homing_sequence(void) {
         }
         break;
 
-    case HOME_SEQUENCE_END_JOINTS:
+    case HOME_SEQUENCE_END:
         /* nothing to do */
         rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_END_JOINTS\n",current_sequence);
         sequence_state = HOME_SEQUENCE_IDLE;
