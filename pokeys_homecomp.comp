@@ -1409,7 +1409,7 @@ static void do_homing_sequence(void) {
         break;
 
     case HOME_SEQUENCE_WAIT_JOINTS:
-        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS joints_in_sequence: %d\n",current_sequence,joints_in_sequence);
+        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS joints_in_sequence: %d \n",current_sequence,joints_in_sequence);
         seen = 0;
 
         int homed_count = 0;
@@ -1480,7 +1480,7 @@ static void do_homing_sequence(void) {
                     break;
             }
         }
-        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS homed_count:%d joints_in_sequence:%d\n",current_sequence,homed_count,joints_in_sequence);
+        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS homed_count:%d joints_in_sequence:%d \n",current_sequence,homed_count,joints_in_sequence);
         if (homed_count == joints_in_sequence)
         {
             if (addr.is_last)
@@ -1506,6 +1506,7 @@ static void do_homing_sequence(void) {
         homing_active = 0;
         break;
     }
+    rtapi_print_msg(RTAPI_MSG_ERR, "HOMING:<do_homing_sequence(%d) sequence_state %d\n", current_sequence, sequence_state);
     return;
 } // do_homing_sequence()
 
