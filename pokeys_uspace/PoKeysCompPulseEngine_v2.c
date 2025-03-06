@@ -2299,7 +2299,7 @@ int32_t PEv2_PulseEngineSetup(sPoKeysDevice * dev){
 			if(PK_SaveConfiguration(dev)==PK_OK){
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SaveConfiguration() == PK_OK\n", __FILE__, __FUNCTION__);
 				usleep(sleepdur);
-				PK_PEv2_PulseEngineReboot(dev);
+			//	PK_PEv2_PulseEngineReboot(dev);
 				usleep(1000000);
 			}
 			else{
@@ -2375,7 +2375,7 @@ int32_t  PEv2_AdditionalParametersSet(sPoKeysDevice * dev){
 			if(PK_SaveConfiguration(dev)==PK_OK){
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SaveConfiguration() == PK_OK\n", __FILE__, __FUNCTION__);
 				usleep(sleepdur);
-				PK_PEv2_PulseEngineReboot(dev);
+			//	PK_PEv2_PulseEngineReboot(dev);
 				usleep(1000000);
 			}
 			else{
@@ -3027,7 +3027,7 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 					if(PK_SaveConfiguration(dev)==PK_OK){
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SaveConfiguration() == PK_OK\n", __FILE__, __FUNCTION__);
 						usleep(sleepdur);
-						PK_PEv2_PulseEngineReboot(dev);
+					//	PK_PEv2_PulseEngineReboot(dev);
 						usleep(1000000);
 					}
 					else{
