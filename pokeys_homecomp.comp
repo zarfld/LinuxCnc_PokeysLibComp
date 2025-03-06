@@ -866,7 +866,7 @@ void do_home_sequence(int seq){
     one_sequence_home_data_t addr = (sequence_home_data.shd[seq]);
     sequence_home_data.current_sequence = seq;
 
-    int joints_in_sequence = addr.joints_in_sequence;
+    int joints_in_sequence = *addr.joints_in_sequence;
 
     current_sequence = seq;
     sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
