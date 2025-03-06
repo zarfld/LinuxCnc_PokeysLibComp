@@ -1432,7 +1432,7 @@ static void do_homing_sequence(void) {
                     if (H[jno].homed == 1 && H[jno].homing == 0)
                     {
                         rtapi_print_msg(RTAPI_MSG_ERR, "HOMING.do_homing_sequence: do_homing_sequence joint %d PK_PEAxisState_axHOME\n", jno);
-                        homed_cnt++;
+                        homed_count++;
                     }
                     break;
 
