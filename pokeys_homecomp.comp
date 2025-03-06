@@ -869,7 +869,7 @@ int pokeys_1joint_state_machine(int joint_num){
             /* should never get here */
             rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine unknown state '%d' during homing j=%d", H[joint_num].home_state, joint_num);
             H[joint_num].home_state = HOME_ABORT;
-            immediate_state = 1;
+           // immediate_state = 1;
             break;
         } /* end of switch(H[joint_num].home_state) */
     } while (immediate_state);
@@ -899,14 +899,17 @@ void do_home_sequence(int seq){
         int int_AxesState = H[jno].PEv2_AxesState;
         switch (int_AxesState)        {
             case PK_PEAxisState_axSTOPPED:
+                rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_home_sequence joint %d stopped\n", jno);
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                 break;
 
             case PK_PEAxisState_axREADY:
+                rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_home_sequence joint %d ready\n", jno);
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                 break;
 
             default:
+                rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_home_sequence joint %d unknown state %d\n", jno, int_AxesState);
                 break;
         }
     }
