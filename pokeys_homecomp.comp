@@ -1519,14 +1519,16 @@ bool do_homing(void)
     {
         if (!H[joint_num].joint_in_sequence)
         {
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing joint %d not in sequence\n", joint_num);
             continue;
         }
         if (!GET_JOINT_ACTIVE_FLAG(&joints[joint_num]))
         {
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing joint %d not active\n", joint_num);
             continue;
         }
 
-        
+        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing joint %d - pokeys_1joint_state_machine\n", joint_num);
         homing_flag += pokeys_1joint_state_machine(joint_num);
         rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing joint: %d homing_flag: %d \n", joint_num, homing_flag);
     }
