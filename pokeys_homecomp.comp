@@ -1007,6 +1007,7 @@ bool get_homing_is_active()
              break;
          }
      }*/
+     rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_homing_is_active homing %d\n", ret);
     return ret;
 }
 bool get_index_enable(int jno)
