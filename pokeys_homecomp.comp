@@ -792,7 +792,7 @@ int pokeys_1joint_state_machine(int joint_num){
             H[joint_num].homing = 0;
             H[joint_num].home_state = HOME_FINISHED;
             H[joint_num].homed = 1;
-            homing_flag = 1;
+            homing_flag = 0;
             break;
 
         case PK_PEAxisState_axHOMINGSTART:
@@ -1397,7 +1397,7 @@ static void do_homing_sequence(void) {
 
         for (int jj = 0; jj < joints_in_sequence; jj++)        {
             int jno = addr.joint_ids[jj];
-            pokeys_1joint_state_machine(jno);
+            //pokeys_1joint_state_machine(jno);
             int int_AxesState = H[jno].PEv2_AxesState;
             rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS joint %d AxesState %d\n",current_sequence, jno, int_AxesState);
             switch (int_AxesState)            {
@@ -1428,18 +1428,11 @@ static void do_homing_sequence(void) {
                 
                 case PK_PEAxisState_axHOME:
                     rtapi_print_msg(RTAPI_MSG_ERR, "HOMING:  do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS joint %d PK_PEAxisState_axHOME\n",current_sequence, jno);
-                    if(H[jno].homed == 0)
+                    if(H[jno].homed == 1)
                     {
-                        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING:  do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS joint %d PK_PEAxisState_axHOME no flags set yet\n",current_sequence, jno);
-                        H[jno].homed = 1;
-                        H[jno].homing = 0;
-                        H[jno].home_state = HOME_FINISHED;
-                    }
-                    else{
-                        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING:  do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS joint %d PK_PEAxisState_axHOME\n",current_sequence, jno);
+                        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING:  do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS joint %d PK_PEAxisState_axHOME flags set ok\n",current_sequence, jno);
                         homed_count++;
                     }
-                    
                     break;
 
                 case PK_PEAxisState_axHOMINGSTART:
@@ -1474,8 +1467,9 @@ static void do_homing_sequence(void) {
             if (addr.is_last)
             {
                 rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS last finished\n", current_sequence);
-                sequence_state = HOME_SEQUENCE_IDLE;
-                homing_active = 0;
+                // is set  in bool do_homing(void) based on pokeys_1joint_state_machine(joint_num)
+                //sequence_state = HOME_SEQUENCE_IDLE;
+               // homing_active = 0; is set  in bool do_homing(void)
             }
             else
             {
@@ -1532,10 +1526,11 @@ bool do_homing(void)
     // return 1 if homing completed this period
 
     bool end_allhomed = get_allhomed();
-    if (!beginning_allhomed && beginning_allhomed)
+    if (!beginning_allhomed && beginning_allhomed && homing_flag == 0)
     {
         rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing homing completed\n");
         homing_active = 0;
+        sequence_state = HOME_SEQUENCE_IDLE;
         return 1;
     }
     else{
