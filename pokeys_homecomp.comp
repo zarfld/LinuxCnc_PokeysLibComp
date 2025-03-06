@@ -1523,8 +1523,9 @@ bool do_homing(void)
             continue;
         }
 
-        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing joint %d\n", joint_num);
+        
         homing_flag += pokeys_1joint_state_machine(joint_num);
+        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing joint: %d homing_flag: %d \n", joint_num, homing_flag);
     }
     // return 1 if homing completed this period
 
@@ -1535,7 +1536,10 @@ bool do_homing(void)
         homing_active = 0;
         return 1;
     }
-    rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing homing_flag %d\n", homing_flag);
+    else{
+        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing homing_flag %d\n", homing_flag);
+    }
+    rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: beginning_allhomed: %d / end_allhomed: %d  \n", beginning_allhomed, end_allhomed);
     return 0;
 }
 
