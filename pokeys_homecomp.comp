@@ -1049,7 +1049,7 @@ void write_homing_out_pins(int njoints)
         *(addr->home_state) = H[jno].home_state;             // OUT
         *(addr->PEv2_AxesCommand) = H[jno].PEv2_AxesCommand; // OUT
     }
-    rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: write_homing_out_pins\n");
+  //  rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: write_homing_out_pins\n");
     return;
 }
 
