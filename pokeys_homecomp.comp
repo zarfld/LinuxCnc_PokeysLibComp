@@ -873,7 +873,7 @@ void do_home_sequence(int seq){
 
     for (int jj = 0; jj < joints_in_sequence; jj++)    {
         int jno = addr.joint_ids[jj];
-        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING:  %s:%s: do_home_sequence(%d) joint %d\n", __FILE__, __FUNCTION__, seq, jno);
+        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING:  %s:%s: do_home_sequence(%d) joint %d (of %d)\n", __FILE__, __FUNCTION__, seq, jno,joints_in_sequence);
         pokeys_1joint_state_machine(jno);
 
         H[jno].homed = 0;
