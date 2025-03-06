@@ -958,6 +958,7 @@ bool get_allhomed()
     int ret = 1;
     for (int jno = 0; jno < EMCMOT_MAX_JOINTS; jno++)
     {
+        rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_allhomed joint %d homed %d\n", jno, H[jno].homed);
         one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
         if (!*addr->homed)
         {
