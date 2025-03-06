@@ -1156,6 +1156,7 @@ bool Pins_DigitalValueSet_ignore[55];
 bool HAL_Machine_On = false;
 pokeys_home_command_t old_PEv2_AxesCommand[8] = { 0 };
 
+int oldAxxiState[8] = { 0 };
 extern unsigned int sleepdur;
 extern bool ApplyIniSettings;
 
@@ -1533,6 +1534,10 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			PEv2_digin_Error_in(i) = Get_BitOfByte(bm_ErrorStatus, i);
 			PEv2_digin_Error_in_not(i) = !Get_BitOfByte(bm_ErrorStatus, i);
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: intAxesState = %d\n", __FILE__, __FUNCTION__, intAxesState);
+			if (intAxesState != oldAxxiState[i]) {
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Status Changed -intAxesState != oldAxxiState[%d] \n", __FILE__, __FUNCTION__, i);
+				oldAxxiState[i] = intAxesState;
+			}
 			switch (intAxesState) {
 			case PK_PEAxisState_axSTOPPED: // Axis is stopped
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axSTOPPED\n", __FILE__, __FUNCTION__);

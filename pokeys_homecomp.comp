@@ -1548,7 +1548,7 @@ bool do_homing(void)
     // return 1 if homing completed this period
 
     bool end_allhomed = get_allhomed();
-    if (!beginning_allhomed && end_allhomed && homing_flag == 0)
+    if (beginning_allhomed == 0 && end_allhomed == 1 && homing_flag == 0)
     {
         rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing homing completed\n");
         homing_active = 0;
