@@ -964,9 +964,9 @@ bool get_allhomed()
             ret = 0;
             break;
         }
-        // usleep(100); // Add a small delay to prevent CPU hogging
+        usleep(100); // Add a small delay to prevent CPU hogging
     }
-    rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_allhomed homed %d\n", ret);
+    //rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_allhomed homed %d\n", ret);
     return ret ? 1 : 0;
 }
 bool get_homed(int jno)
@@ -999,15 +999,18 @@ bool get_homing_at_index_search_wait(int jno) { return 0; }
 bool get_homing_is_active()
 {
     int ret = 0;
-    /* for (int jno = 0; jno < EMCMOT_MAX_JOINTS; jno++) {
-         one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
-
-         if (*addr->homing) {
-             ret = 1;
-             break;
-         }
-     }*/
-     rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_homing_is_active homing %d\n", ret);
+    for (int jno = 0; jno < EMCMOT_MAX_JOINTS; jno++)
+    {
+        
+        one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
+        if (!*addr->homing)
+        {
+            ret = 1;
+            break;
+        }
+        usleep(100); // Add a small delay to prevent CPU hogging
+    }
+    // rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_homing_is_active homing %d\n", ret);
     return ret;
 }
 bool get_index_enable(int jno)
@@ -1497,6 +1500,7 @@ bool do_homing(void)
     if (sequence_state != HOME_SEQUENCE_IDLE)
     {
        // check_home_sequence(current_sequence);
+       rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing sequence_state %d\n", sequence_state);
        do_homing_sequence();
     }
     
@@ -1513,12 +1517,13 @@ bool do_homing(void)
             continue;
         }
 
-
+        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing joint %d\n", joint_num);
         homing_flag += pokeys_1joint_state_machine(joint_num);
     }
     // return 1 if homing completed this period
     if (!beginning_allhomed && get_allhomed())
     {
+        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_homing homing completed\n");
         homing_active = 0;
         return 1;
     }
