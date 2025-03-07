@@ -1,6 +1,12 @@
 {
     "files.associations": {
         "*.comp": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "system_error": "c",
+        "array": "c",
+        "functional": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c"
     }
 }
