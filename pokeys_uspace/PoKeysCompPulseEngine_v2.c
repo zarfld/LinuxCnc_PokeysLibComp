@@ -1245,6 +1245,22 @@ int32_t PEv2_StatusGet(sPoKeysDevice* dev){
 				PEv2_PulseEngineStateSetup = PK_PEState_peRUNNING;
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_PulseEngineStateSetup = PK_PEState_peRUNNING\n", __FILE__, __FUNCTION__);
 			}
+			if (dev->PEv2.EmergencyInputPin != 0){
+				int PinId = dev->PEv2.EmergencyInputPin-9-1;
+				int polarity = dev->PEv2.EmergencySwitchPolarity;
+				if (dev->Pins[PinId].DigitalValueGet == 0 && polarity == false) {
+					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Emergency Switch is pressed PinId: %d polarity:%d \n", __FILE__, __FUNCTION__, PinId ,polarity);
+					PEv2_digin_Emergency_in = *(IO_data->Pin[PinId]).digin_in;
+					PEv2_digin_Emergency_in_not = *(IO_data->Pin[PinId]).digin_in_not;
+					PEv2_deb_estop = 6;
+				}
+				else {
+					PEv2_digin_Emergency_in = *(IO_data->Pin[PinId]).digin_in_not;
+					PEv2_digin_Emergency_in_not = *(IO_data->Pin[PinId]).digin_in;
+					PEv2_deb_estop = 7;
+				}
+			}
+			
 			break;
 		case PK_PEState_peINTERNAL: // PEv1: Internal motion controller is in use, PEv2: not used
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEState_peINTERNAL\n", __FILE__, __FUNCTION__);
@@ -1293,10 +1309,10 @@ int32_t PEv2_StatusGet(sPoKeysDevice* dev){
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEState_peSTOP_LIMIT\n", __FILE__, __FUNCTION__);
 			break;
 		case PK_PEState_peSTOP_EMERGENCY: // Pulse engine stopped due to emergency switch
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEState_peSTOP_EMERGENCY\n", __FILE__, __FUNCTION__);
+			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEState_peSTOP_EMERGENCY\n", __FILE__, __FUNCTION__);
 			PEv2_digin_Emergency_in = true;
 			PEv2_digin_Emergency_in_not = false;
-			PEv2_deb_estop = 10;
+			PEv2_deb_estop = 8;
 			break;
 		}
 
@@ -2205,12 +2221,30 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 	PEv2_deb_out = 224;
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PulseEngineState = %d\n", __FILE__, __FUNCTION__, dev->PEv2.PulseEngineState);
 	if (dev->PEv2.PulseEngineState == PK_PEState_peSTOP_EMERGENCY) {
-		PEv2_digin_Emergency_in = false;
-		PEv2_digin_Emergency_in_not = true;
+		PEv2_digin_Emergency_in = true;
+		PEv2_digin_Emergency_in_not = false;
+		PEv2_deb_estop = 9;
+	}
+	else if (dev->PEv2.EmergencyInputPin != 0){
+		int PinId = dev->PEv2.EmergencyInputPin-9-1;
+		int polarity = dev->PEv2.EmergencySwitchPolarity;
+		if (dev->Pins[PinId].DigitalValueGet == 0 && polarity == false) {
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Emergency Switch is pressed PinId: %d polarity:%d \n", __FILE__, __FUNCTION__, PinId ,polarity);
+			PEv2_digin_Emergency_in = *(IO_data->Pin[PinId]).digin_in ;
+			PEv2_digin_Emergency_in_not = *(IO_data->Pin[PinId]).digin_in_not ;;
+
+			PEv2_deb_estop = 10;
+		}
+		else {
+			PEv2_digin_Emergency_in = *(IO_data->Pin[PinId]).digin_in_not ;
+			PEv2_digin_Emergency_in_not = *(IO_data->Pin[PinId]).digin_in ;
+			PEv2_deb_estop = 11;
+		}
 	}
 	else {
 		PEv2_digin_Emergency_in = true;
 		PEv2_digin_Emergency_in_not = false;
+		PEv2_deb_estop = 12;
 	}
 }
 
