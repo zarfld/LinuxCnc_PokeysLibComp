@@ -1533,11 +1533,12 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		uint8_t bm_SoftLimitStatus = dev->PEv2.SoftLimitStatus;
 		int tAxisEnabledMask = 0;
 		uint8_t bm_DoPositionSet = 0;
+		bool finalizingHoming[8];
 		int32_t intCurrentPosition[8];
 		float PosFb[8];
 		for (int i = 0; i < PEv2_nrOfAxes; i++) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_Axis[%d] \n", __FILE__, __FUNCTION__, i);
-
+			finalizingHoming[i] = false;
 			InPosition[i] = false;
 			uint8_t intAxesState = dev->PEv2.AxesState[i];
 			uint8_t intAxesCommand = PEv2_AxesCommand(i);
@@ -1624,6 +1625,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				PEv2_data->PEv2_HomeOffsets[i] = 0; // no offset for debugging
 				dev->PEv2.PositionSetup[i]=0;
 				bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);
+				finalizingHoming[i] = true;
 				// PEv2_digin_AxisEnabled_in(i) = true;
 				// PEv2_digin_LimitOverride_in(i) = true;
 				// PEv2_joint_
@@ -1722,7 +1724,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			}
 
 			// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-			if (IsHoming[i] == false) {
+			if (IsHoming[i] == false ) {
 				if (StepScale[i] != 0) {
 					PEv2_deb_axxisout(i) = 230 + i;
 					PosFb[i] = ( intCurrentPosition[i]- PEv2_data->PEv2_HomeOffsets[i]) / StepScale[i];
@@ -2165,7 +2167,13 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		if (bm_DoPositionSet != 0) {
 			PEv2_deb_out = 4000;
 			dev->PEv2.param2 = bm_DoPositionSet;
-			PK_PEv2_PositionSet(dev);
+			if (PK_PEv2_PositionSet(dev)!=PK_OK){
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PositionSet!=PK_OK\n", __FILE__, __FUNCTION__);
+				usleep(sleepdur);
+				if (PK_PEv2_PositionSet(dev) != PK_OK) {
+					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PositionSet!=PK_OK\n", __FILE__, __FUNCTION__);
+				}
+			}
 			for (int i = 0; i < PEv2_nrOfAxes; i++){
 				// if bit is set, then set IsHoming to false
 				if(bm_DoPositionSet & (1 << i)){
