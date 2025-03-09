@@ -35,7 +35,9 @@ typedef struct {
 	hal_float_t PEv2_MaxSpeed[8];
 	hal_float_t PEv2_MaxAcceleration[8];
 	hal_float_t PEv2_MaxDecceleration[8];
-	
+	hal_float_t* PEv2_params_Feedback_Encoder_Id[8];
+	hal_s32_t PEv2_HomePosition[8];
+
 	hal_float_t* PEv2_joint_vel_cmd[8];
 	hal_float_t* PEv2_joint_pos_cmd[8];
 	hal_float_t* PEv2_joint_pos_fb[8];
@@ -44,16 +46,17 @@ typedef struct {
 	hal_bit_t* PEv2_joint_kb_jog_active[8];
 	hal_bit_t* PEv2_joint_wheel_jog_active[8];
 	hal_s32_t* PEv2_stepgen_TYPE[8];
-	hal_float_t* PEv2_stepgen_HOME[8];
+	hal_float_t PEv2_stepgen_HOME[8];
 	hal_float_t PEv2_stepgen_STEPGEN_MAXVEL[8];
 	hal_float_t PEv2_stepgen_STEPGEN_MAXACCEL[8];
-	hal_float_t* PEv2_params_Feedback_Encoder_Id[8];
+	
 	hal_float_t* PEv2_stepgen_DEADBAND[8];
 	hal_float_t* PEv2_stepgen_MAX_OUTPUT[8];
 	hal_float_t* PEv2_stepgen_ENCODER_SCALE[8];
 	hal_float_t PEv2_stepgen_STEP_SCALE[8];
 	hal_float_t PEv2_stepgen_MIN_LIMIT[8];
 	hal_float_t PEv2_stepgen_MAX_LIMIT[8];
+	
 	hal_float_t PEv2_stepgen_HOME_OFFSET[8];
 	hal_float_t PEv2_stepgen_HOME_SEARCH_VEL[8];
 	hal_float_t PEv2_stepgen_HOME_LATCH_VEL[8];
@@ -346,6 +349,13 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		if (r != 0)
 			return r;
 
+		//PEv2_HomePosition
+		r = hal_param_s32_newf(HAL_RW, &(PEv2_data->PEv2_HomePosition[j]), comp_id,
+			"%s.PEv2.%01d.HomePosition", prefix, j);
+		if (r != 0)
+			return r;
+
+
 		r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_joint_vel_cmd[j]), comp_id,
 			"%s.PEv2.%01d.joint-vel-cmd", prefix, j);
 		if (r != 0)
@@ -386,7 +396,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 		if (r != 0)
 			return r;
 
-		r = hal_pin_float_newf(HAL_IN, &(PEv2_data->PEv2_stepgen_HOME[j]), comp_id,
+		r = hal_param_float_newf(HAL_RW, &(PEv2_data->PEv2_stepgen_HOME[j]), comp_id,
 			"%s.PEv2.%01d.stepgen.HOME", prefix, j);
 		if (r != 0)
 			return r;
@@ -1002,7 +1012,7 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #undef PEv2_stepgen_TYPE
 #define PEv2_stepgen_TYPE(i) (0 + *(PEv2_data->PEv2_stepgen_TYPE[i]))
 #undef PEv2_stepgen_HOME
-#define PEv2_stepgen_HOME(i) (0 + *(PEv2_data->PEv2_stepgen_HOME[i]))
+#define PEv2_stepgen_HOME(i) (0 + (PEv2_data->PEv2_stepgen_HOME[i]))
 
 #undef PEv2_params_Feedback_Encoder_Id
 #define PEv2_params_Feedback_Encoder_Id(i) (0 + *(PEv2_data->PEv2_params_Feedback_Encoder_Id[i]))
@@ -1623,7 +1633,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				//IsHoming[i] = false;
 				// PEv2_data->PEv2_HomeOffsets[i] = intCurrentPosition[i]; 
 				PEv2_data->PEv2_HomeOffsets[i] = 0; // no offset for debugging
-				dev->PEv2.PositionSetup[i]=0;
+				dev->PEv2.PositionSetup[i]=PEv2_data->PEv2_HomePosition[i];
 				bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);
 				finalizingHoming[i] = true;
 				// PEv2_digin_AxisEnabled_in(i) = true;
@@ -2167,6 +2177,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		if (bm_DoPositionSet != 0) {
 			PEv2_deb_out = 4000;
 			dev->PEv2.param2 = bm_DoPositionSet;
+			//dev->PEv2.PositionSetup[i]=PEv2_data->PEv2_HomePosition[AxisId];
 			if (PK_PEv2_PositionSet(dev)!=PK_OK){
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PositionSet!=PK_OK\n", __FILE__, __FUNCTION__);
 				usleep(sleepdur);
@@ -2593,6 +2604,8 @@ int32_t  PEv2_AxisConfigurationGet(sPoKeysDevice * dev, int AxisId){
 		if(ApplyIniSettings==false || PEv2_data->PEv2_SoftLimitMaximum[AxisId]==0){
 			PEv2_data->PEv2_SoftLimitMaximum[AxisId] = dev->PEv2.SoftLimitMaximum[AxisId];
 		}
+//PEv2_data->PEv2_HomePosition[j]
+
 
 		if(ApplyIniSettings==false || PEv2_data->PEv2_MPGjogEncoder[AxisId]==0){
 			PEv2_data->PEv2_MPGjogEncoder[AxisId] = dev->PEv2.MPGjogEncoder[AxisId];
@@ -2941,6 +2954,7 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 
 				PEv2_data->PEv2_MaxDecceleration[AxisId] = 1.5* abs(PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[AxisId] * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId]); // Maximum axis deceleration convert (mm/s²) to (in pulses/s²)
 
+				//PEv2_data->PEv2_HomePosition[AxisId]
 			}
 			if (PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] > 0 && PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] > 0) {
 				PEv2_data->PEv2_HomingSpeed[AxisId] = abs(PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] * 100 / PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId]);		 // Homing speed per axis (in %)
@@ -2991,21 +3005,60 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId){
 			if (PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId] > PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId]) {
 
 				if (PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] != abs(PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId])) {
+					// in pokeys only positive values are allowed
 					LimitOffset = abs(PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId]); // shift reference to 0 and make sure it is positive
+					if(PEv2_data->PEv2_stepgen_HOME[AxisId]==0){
+						PEv2_data->PEv2_HomePosition[AxisId]=LimitOffset * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId];
+					}
+					else{
+						PEv2_data->PEv2_HomePosition[AxisId]=(LimitOffset+PEv2_data->PEv2_stepgen_HOME[AxisId]) * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId];
+					}
+				
+				}
+				else{
+					// PEv2_stepgen_HOME[AxisId]
+				// 
+					if(PEv2_data->PEv2_stepgen_HOME[AxisId]==0){
+						PEv2_data->PEv2_HomePosition[AxisId]=0;
+					}
+					else{
+						PEv2_data->PEv2_HomePosition[AxisId]=PEv2_data->PEv2_stepgen_HOME[AxisId] * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId];
+					}
 				}
 
 				PEv2_data->PEv2_digin_SoftLimit_PosMax[AxisId] = (PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId] + LimitOffset) * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId]; // Soft limit maximum position
 				PEv2_data->PEv2_digin_SoftLimit_PosMin[AxisId] = (PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] + LimitOffset) * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId]; // Soft limit minimum position
 				// AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 5, true);  // PK_AC_SOFT_LIMIT_ENABLED ;
+
+				
+
 			}
 			else {
+				// for pokeys MaxLimits must be higher than MinLimits otherwise machine will not move
 				if (PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId] != abs(PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId])) {
 					LimitOffset = abs(PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId]); // shift reference to 0 and make sure it is positive
+				
+					if(PEv2_data->PEv2_stepgen_HOME[AxisId]==0){
+						PEv2_data->PEv2_HomePosition[AxisId]=LimitOffset * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId];
+					}
+					else{
+						PEv2_data->PEv2_HomePosition[AxisId]=(LimitOffset+PEv2_data->PEv2_stepgen_HOME[AxisId]) * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId];
+					}
+				
+				}
+				else{
+					if(PEv2_data->PEv2_stepgen_HOME[AxisId]==0){
+						PEv2_data->PEv2_HomePosition[AxisId]=0;
+					}
+					else{
+						PEv2_data->PEv2_HomePosition[AxisId]=PEv2_data->PEv2_stepgen_HOME[AxisId] * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId];
+					}
 				}
 				PEv2_data->PEv2_digin_SoftLimit_PosMax[AxisId] = (PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] + LimitOffset) * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId]; // Soft limit maximum position
 				PEv2_data->PEv2_digin_SoftLimit_PosMin[AxisId] = (PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId] + LimitOffset) * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId]; // Soft limit minimum position
 				// AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 1, true);  // PK_AC_INVERTED ;
 				// AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 5, true);  // PK_AC_SOFT_LIMIT_ENABLED ;
+				
 			}
 			if(dev->PEv2.SoftLimitMinimum[AxisId] != PEv2_data->PEv2_SoftLimitMinimum[AxisId]){
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: SoftLimitMinimum[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_SoftLimitMinimum[AxisId]);
