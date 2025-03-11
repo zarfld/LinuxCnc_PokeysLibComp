@@ -1762,6 +1762,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 					PEv2_deb_axxisout(i) = 240 + i;
 					PosFb[i] =  (PEv2_data->PEv2_PositionScale[i] * (intCurrentPosition[i]) - PEv2_data->PEv2_PositionOffset[i]);
 				}
+				PEv2_joint_pos_fb(i) = PosFb[i];
 			}
 			else {
 				// when homing, use the command position as feedback
@@ -1769,6 +1770,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				// which causes FERROR
 				//PosFb[i] = PEv2_joint_pos_cmd(i);
 				PosFb[i] = 0;
+				PEv2_joint_pos_fb(i) = 0;
 				/*if (StepScale[i] != 0) {
 					PEv2_deb_axxisout(i) = 230 + i;
 					PosFb[i] = ( intCurrentPosition[i]- PEv2_data->PEv2_HomeOffsets[i]) / StepScale[i];
@@ -1780,7 +1782,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			}
 
 			PEv2_deb_axxisout(i) = 250 + i;
-			PEv2_joint_pos_fb(i) = PosFb[i];
+			
 			PEv2_deb_axxisout(i) = 260 + i;
 			PEv2_CurrentPosition(i) = intCurrentPosition[i];
 			PEv2_deb_axxisout(i) = 270 + i;
