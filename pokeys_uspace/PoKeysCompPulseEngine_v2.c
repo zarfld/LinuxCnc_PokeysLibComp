@@ -2234,11 +2234,11 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		}
 		if (tAxisEnabledMask != dev->PEv2.AxisEnabledMask) {
 			dev->PEv2.AxisEnabledMask = tAxisEnabledMask;
-			doStateSet = true;
+			doStateSet = 1;
 		}
 		if (PEv2_LimitOverrideSetup != dev->PEv2.LimitOverrideSetup) {
 			dev->PEv2.LimitOverrideSetup = PEv2_LimitOverrideSetup;
-			doStateSet = true;
+			doStateSet = 1;
 		}
 	}
 
