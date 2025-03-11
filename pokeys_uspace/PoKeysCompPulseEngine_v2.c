@@ -1640,6 +1640,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				if (IsHoming[i] == true) {
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOME - finalizingHoming[i] = true\n", __FILE__, __FUNCTION__, i);
 					finalizingHoming[i] = true;
+					PEv2_joint_pos_fb(i) = 0;
 				}
 				
 				PEv2_deb_out = 340 + i;
@@ -1667,6 +1668,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				// PEv2_digin_LimitOverride_in(i) = true;
 				allhomed = false;
 				IsHoming[i] = true;
+				PEv2_joint_pos_fb(i) = 0;
 				Homing_active = true;
 				PEv2_deb_out = 340 + i;
 				break;
@@ -1679,6 +1681,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				// PEv2_digin_LimitOverride_in(i) = true;
 				allhomed = false;
 				IsHoming[i] = true;
+				PEv2_joint_pos_fb(i) = 0;
 				Homing_active = true;
 				PEv2_deb_out = 340 + i;
 				break;
@@ -1690,6 +1693,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				// PEv2_digin_AxisEnabled_in(i) = true;
 				// PEv2_digin_LimitOverride_in(i) = true;
 				IsHoming[i] = true;
+				PEv2_joint_pos_fb(i) = 0;
 				allhomed = false;
 				Homing_active = true;
 				PEv2_deb_out = 340 + i;
@@ -1752,7 +1756,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			}
 
 			// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-			if (IsHoming[i] == false && finalizingHoming[i]==false) {
+			if (IsHoming[i] == false) {
 
 				if (StepScale[i] != 0) {
 					PEv2_deb_axxisout(i) = 230 + i;
@@ -2211,7 +2215,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				// if bit is set, then set IsHoming to false
 				if(bm_DoPositionSet & (1 << i)){
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].DoPositionSet = 0 \n", __FILE__, __FUNCTION__, i);
-					//IsHoming[i] = false;
+					IsHoming[i] = false;
 					finalizingHoming[i]==false;
 				}
 				
