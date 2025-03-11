@@ -1557,18 +1557,18 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		uint8_t bm_DoPositionSet = 0;
 		bool finalizingHoming[8];
 		int32_t intCurrentPosition[8];
-		float PosFb[8];
+		float PosFb[8] = { 0 };
 		for (int i = 0; i < PEv2_nrOfAxes; i++) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_Axis[%d] \n", __FILE__, __FUNCTION__, i);
 			finalizingHoming[i] = false;
 			InPosition[i] = false;
 			uint8_t intAxesState = dev->PEv2.AxesState[i];
-			uint8_t intAxesCommand = PEv2_AxesCommand(i);
+			uint8_t intAxesCommand = *(PEv2_data->PEv2_AxesCommand[i]);
 			*PEv2_data->PEv2_AxesState[i] = intAxesState;
 			PEv2_deb_axxisout(i) = 200 + i;
 			StepScale[i] = PEv2_data->PEv2_stepgen_STEP_SCALE[i];
 			PEv2_deb_axxisout(i) = 210 + i;
-			// PEv2_CurrentPosition(i) = dev->PEv2.CurrentPosition[i];
+			// *(PEv2_data->PEv2_CurrentPosition[i]) = dev->PEv2.CurrentPosition[i];
 			intCurrentPosition[i] = dev->PEv2.CurrentPosition[i];
 			PEv2_deb_axxisout(i) = 220 + i;
 			PEv2_digin_Error_in(i) = Get_BitOfByte(bm_ErrorStatus, i);
@@ -1637,22 +1637,25 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				break;
 			case PK_PEAxisState_axHOME: // Axis is homed
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOME\n", __FILE__, __FUNCTION__);
-				if (IsHoming[i] == true) {
+				if(finalizingHoming[i] == true){
+					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOME - IsHoming[i] = false\n", __FILE__, __FUNCTION__, i);
+					IsHoming[i] = false;
+					dev->PEv2.PositionSetup[i]=PEv2_data->PEv2_HomePosition[i];
+					bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);
+				} else if (IsHoming[i] == true) {
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOME - finalizingHoming[i] = true\n", __FILE__, __FUNCTION__, i);
 					finalizingHoming[i] = true;
-					PEv2_joint_pos_fb(i) = 0;
+					*(PEv2_data->PEv2_joint_pos_fb[i]) = 0;
+					// PEv2_data->PEv2_HomeOffsets[i] = intCurrentPosition[i]; 
+					PEv2_data->PEv2_HomeOffsets[i] = 0; // no offset for debugging
+					dev->PEv2.PositionSetup[i]=PEv2_data->PEv2_HomePosition[i];
+					bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);
 				}
 				
 				PEv2_deb_out = 340 + i;
-				if(finalizingHoming[i] == false){
-					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOME - IsHoming[i] = false\n", __FILE__, __FUNCTION__, i);
-					IsHoming[i] = false;
-				}
 				
-				// PEv2_data->PEv2_HomeOffsets[i] = intCurrentPosition[i]; 
-				PEv2_data->PEv2_HomeOffsets[i] = 0; // no offset for debugging
-				dev->PEv2.PositionSetup[i]=PEv2_data->PEv2_HomePosition[i];
-				bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);
+				
+				
 
 				
 				// PEv2_digin_AxisEnabled_in(i) = true;
@@ -1668,7 +1671,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				// PEv2_digin_LimitOverride_in(i) = true;
 				allhomed = false;
 				IsHoming[i] = true;
-				PEv2_joint_pos_fb(i) = 0;
+				*(PEv2_data->PEv2_joint_pos_fb[i]) = 0;
 				Homing_active = true;
 				PEv2_deb_out = 340 + i;
 				break;
@@ -1681,7 +1684,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				// PEv2_digin_LimitOverride_in(i) = true;
 				allhomed = false;
 				IsHoming[i] = true;
-				PEv2_joint_pos_fb(i) = 0;
+				
 				Homing_active = true;
 				PEv2_deb_out = 340 + i;
 				break;
@@ -1693,7 +1696,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				// PEv2_digin_AxisEnabled_in(i) = true;
 				// PEv2_digin_LimitOverride_in(i) = true;
 				IsHoming[i] = true;
-				PEv2_joint_pos_fb(i) = 0;
+				
 				allhomed = false;
 				Homing_active = true;
 				PEv2_deb_out = 340 + i;
@@ -1766,7 +1769,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 					PEv2_deb_axxisout(i) = 240 + i;
 					PosFb[i] =  (PEv2_data->PEv2_PositionScale[i] * (intCurrentPosition[i]) - PEv2_data->PEv2_PositionOffset[i]);
 				}
-				PEv2_joint_pos_fb(i) = PosFb[i];
+				*(PEv2_data->PEv2_joint_pos_fb[i]) = PosFb[i];
 			}
 			else {
 				// when homing, use the command position as feedback
@@ -1774,7 +1777,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				// which causes FERROR
 				//PosFb[i] = PEv2_joint_pos_cmd(i);
 				PosFb[i] = 0;
-				PEv2_joint_pos_fb(i) = 0;
+				*(PEv2_data->PEv2_joint_pos_fb[i]) = 0;
 				/*if (StepScale[i] != 0) {
 					PEv2_deb_axxisout(i) = 230 + i;
 					PosFb[i] = ( intCurrentPosition[i]- PEv2_data->PEv2_HomeOffsets[i]) / StepScale[i];
@@ -1788,7 +1791,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			PEv2_deb_axxisout(i) = 250 + i;
 			
 			PEv2_deb_axxisout(i) = 260 + i;
-			PEv2_CurrentPosition(i) = intCurrentPosition[i];
+			*(PEv2_data->PEv2_CurrentPosition[i]) = intCurrentPosition[i];
 			PEv2_deb_axxisout(i) = 270 + i;
 
 			PEv2_digin_Probe_in(i) = Get_BitOfByte(bm_ProbeStatus, i);
@@ -1852,7 +1855,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			bm_ErrorStatus
 			*/
 
-			if ((intAxesState == PK_PEAxisState_axSTOPPED || intAxesState == PK_PEAxisState_axREADY || intAxesState == PK_PEAxisState_axHOME) && old_PEv2_AxesCommand[i] != PEv2_AxesCommand(i) && (PEv2_AxesCommand(i) == PK_PEAxisState_axHOMINGSTART || PEv2_AxesCommand(i) == PK_PEAxisCommand_axHOMINGSTART)) {
+			if ((intAxesState == PK_PEAxisState_axSTOPPED || intAxesState == PK_PEAxisState_axREADY || intAxesState == PK_PEAxisState_axHOME) && old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) && (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisState_axHOMINGSTART || *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGSTART)) {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingStart\n", __FILE__, __FUNCTION__);
 
 				int MyHomeSequ, seq;
@@ -1882,7 +1885,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 					rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensured that all axes (%d) with same Sequence(%d) startmask was set (%d) \n", i, PEv2_home_sequence(i), HomingStartMaskSetup);
 				}
 			}
-			else if (intAxesState == PK_PEAxisState_axHOME && PEv2_AxesCommand(i) == PK_PEAxisCommand_axHOMINGFinalize) {
+			else if (intAxesState == PK_PEAxisState_axHOME && *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGFinalize) {
 				int MyHomeSequ, seq;
 				MyHomeSequ = PEv2_home_sequence(i);
 				HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
@@ -1917,11 +1920,11 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				}
 
 			}
-			else if (PEv2_AxesCommand(i) == PK_PEAxisCommand_axHOMINGCANCEL && old_PEv2_AxesCommand[i] != PEv2_AxesCommand(i) && (intAxesState == PK_PEAxisState_axHOMINGSTART || intAxesState == PK_PEAxisState_axHOMINGSEARCH || intAxesState == PK_PEAxisState_axHOMINGBACK)) {
+			else if (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGCANCEL && old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) && (intAxesState == PK_PEAxisState_axHOMINGSTART || intAxesState == PK_PEAxisState_axHOMINGSEARCH || intAxesState == PK_PEAxisState_axHOMINGBACK)) {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingCancel\n", __FILE__, __FUNCTION__);
 				//	dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
 			}
-			old_PEv2_AxesCommand[i] = PEv2_AxesCommand(i);
+			old_PEv2_AxesCommand[i] = *(PEv2_data->PEv2_AxesCommand[i]);
 
 			tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask, i, PEv2_digout_AxisEnabled_out(i));
 			PEv2_LimitOverrideSetup = Set_BitOfByte(PEv2_LimitOverrideSetup, i, PEv2_digout_LimitOverride_out(i));
@@ -1942,7 +1945,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				PEv2_deb_out = 390 + i;
 				posMode[i] = false;
 				if (IsHoming[i] == false) {
-					float VelCmd = PEv2_joint_vel_cmd(i);
+					float VelCmd = *(PEv2_data->PEv2_joint_vel_cmd[i]);
 					float PosCmd = PEv2_joint_pos_cmd(i);
 
 					PEv2_deb_out = 400 + i;
@@ -1956,7 +1959,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 						ReferenceSpeed = VelCmd * StepScale[i];
 						PEv2_deb_axxisout(i) = 1110 + i;
 						ReferencePosition = PosCmd * StepScale[i] + PEv2_data->PEv2_HomeOffsets[i];
-					//	PEv2_PositionSetup(i) = ReferencePosition;
+					//	*(PEv2_data->PEv2_PositionSetup[i]) = ReferencePosition;
 						PEv2_deb_axxisout(i) = 1120 + i;
 					}
 					else {
@@ -1964,7 +1967,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 						ReferenceSpeed = VelCmd;
 						PEv2_deb_axxisout(i) = 1210 + i;
 						ReferencePosition = PosCmd + PEv2_data->PEv2_HomeOffsets[i];
-						//PEv2_PositionSetup(i) = ReferencePosition;
+						//*(PEv2_data->PEv2_PositionSetup[i]) = ReferencePosition;
 						PEv2_deb_axxisout(i) = 1220 + i;
 					}
 
@@ -2096,7 +2099,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 								PEv2_ReferencePositionSpeed(i) = 0;
 								last_joint_vel_cmd[i] = 0;
 								doMove = true;
-								// PEv2_joint_pos_fb(i) = PEv2_joint_pos_cmd(i);
+								
 							}
 
 							POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
@@ -2130,13 +2133,13 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 					else {
 						if (InPosition[i] != true) {
 							PEv2_deb_axxisout(i) = 14100 + i;
-							if (last_joint_vel_cmd[i] != PEv2_joint_vel_cmd(i)) {
+							if (last_joint_vel_cmd[i] != *(PEv2_data->PEv2_joint_vel_cmd[i])) {
 								PEv2_deb_axxisout(i) = 1410 + i;
 
 								dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferenceSpeed;
 								PEv2_ReferencePositionSpeed(i) = (int)ReferenceSpeed;
 								PEv2_deb_axxisout(i) = 1420 + i;
-								last_joint_vel_cmd[i] = PEv2_joint_vel_cmd(i);
+								last_joint_vel_cmd[i] = *(PEv2_data->PEv2_joint_vel_cmd[i]);
 								if (dev->PEv2.AxesState[i] == PK_PEAxisState_axRUNNING || dev->PEv2.AxesState[i] == PK_PEAxisState_axREADY) {
 
 									doMove = true;
@@ -2158,7 +2161,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 								PEv2_ReferencePositionSpeed(i) = 0;
 								last_joint_vel_cmd[i] = 0;
 								doMove = true;
-								// PEv2_joint_pos_fb(i) = PEv2_joint_pos_cmd(i);
+								
 							}
 						}
 					}
@@ -2213,7 +2216,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			}
 			for (int i = 0; i < PEv2_nrOfAxes; i++){
 				// if bit is set, then set IsHoming to false
-				if(bm_DoPositionSet & (1 << i)){
+				if(bm_DoPositionSet & (1 << i) && finalizingHoming[i]==true){
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].DoPositionSet = 0 \n", __FILE__, __FUNCTION__, i);
 					IsHoming[i] = false;
 					finalizingHoming[i]==false;
