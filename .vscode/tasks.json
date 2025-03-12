@@ -37,7 +37,7 @@
         {
             "label": "Compile USpace/Pokeys Component",
             "type": "shell",
-            "command": "sudo halcompile --install --extra-link-args=\"-lPoKeys\" --extra-compile-args=\"-v -I/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace/\" --pokeys_uspace/pokeys.c",
+            "command": "sudo halcompile --install --extra-link-args=\"-lPoKeys\" --extra-compile-args=\"-v -I/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace/*\" --pokeys_uspace/pokeys.c",
             "group": {
                 "kind": "build",
                 "isDefault": false
