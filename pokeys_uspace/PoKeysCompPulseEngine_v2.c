@@ -1844,7 +1844,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
 			if (IsHoming[i] == false) {
 
-				PosFb[i] = (intCurrentPosition[i] / PEv2_data->PEv2_PositionScale[i]) + PEv2_data->PEv2_PositionOffset[i];
+				PosFb[i] = (intCurrentPosition[i] / PEv2_data->PEv2_PositionScale[i]) - PEv2_data->PEv2_PositionOffset[i];
 
 				*(PEv2_data->PEv2_joint_pos_fb[i]) = PosFb[i];
 			}
