@@ -1579,6 +1579,11 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		int32_t intCurrentPosition[8] = { 0 };
 		float PosFb[8] = { 0 };
 		for (int i = 0; i < PEv2_nrOfAxes; i++) {
+
+			if (PEv2_data->PEv2_AxisEnabled[j]== false){
+				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] is disabled\n", __FILE__, __FUNCTION__, i);
+				continue;
+			}
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_Axis[%d] \n", __FILE__, __FUNCTION__, i);
 			finalizingHoming[i] = false;
 			InPosition[i] = false;
