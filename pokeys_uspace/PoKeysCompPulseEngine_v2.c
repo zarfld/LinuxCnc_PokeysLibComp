@@ -1677,6 +1677,8 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 					if(Homing_FinalMoveActive[i] == false){
 						Homing_FinalMoveActive[i] = true;
 						
+						InPosition[i] = false;
+
 						dev->PEv2.ReferencePositionSpeed[i] = (int32_t)PEv2_data->PEv2_HomePosition[i];
 						PEv2_ReferencePositionSpeed(i) = (int)PEv2_data->PEv2_HomePosition[i];
 						posMode[i] = true;
@@ -1693,6 +1695,20 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 						}
 					}
 					
+				}
+				else if(Homing_FinalMoveActive[i] != false){
+					//	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
+					intAxesState = 19;
+					if ((dev->PEv2.CurrentPosition[i] != (int32_t)PEv2_data->PEv2_HomePosition[i])){
+						intAxesState = 19;
+						InPosition[i] = false;
+					}
+					else {
+						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOME - InPosition[i] = true\n", __FILE__, __FUNCTION__, i);
+						InPosition[i] = true;
+						IsHoming[i] = false;
+						Homing_FinalMoveActive[i] = false;
+					}
 				}
 				/*if(finalizingHoming[i] == true){
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOME - IsHoming[i] = false\n", __FILE__, __FUNCTION__, i);
@@ -1727,6 +1743,12 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				// PEv2_digin_AxisEnabled_in(i) = true;
 				// PEv2_digin_LimitOverride_in(i) = true;
 				allhomed = false;
+				
+				Homing_ArmEncodereDone[i] = false;
+				Homing_FinalMoveDone[i] = false;
+				Homing_FinalMoveActive[i] = false;
+				Homing_done[i] = false;
+
 				IsHoming[i] = true;
 				*(PEv2_data->PEv2_joint_pos_fb[i]) = 0;
 				Homing_active = true;
@@ -1818,7 +1840,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			// placed here to as substates PK_PEAxisState_axHOME
 			*PEv2_data->PEv2_AxesState[i] = intAxesState;
 			// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-			if (IsHoming[i] == false && Homing_active == false) {
+			if (IsHoming[i] == false) {
 
 				PosFb[i] = (  intCurrentPosition[i]  / PEv2_data->PEv2_PositionScale[i]  ) - PEv2_data->PEv2_PositionOffset[i];
 				
