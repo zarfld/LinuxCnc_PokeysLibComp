@@ -2692,7 +2692,7 @@ int32_t  PEv2_AxisConfigurationGet(sPoKeysDevice* dev, int AxisId) {
 			PEv2_data->PEv2_digin_LimitP_Pin[AxisId] = dev->PEv2.PinLimitPSwitch[AxisId];
 		}
 		if (ApplyIniSettings == false || PEv2_data->PEv2_HomingSpeed[AxisId] == 0) {
-			PEv2_data->PEv2_HomingSpeed[AxisId] = dev->PEv2.HomingSpeed[AxisId] * 1000;
+			PEv2_data->PEv2_HomingSpeed[AxisId] = dev->PEv2.HomingSpeed[AxisId];
 		}
 		if (ApplyIniSettings == false || PEv2_data->PEv2_HomingReturnSpeed[AxisId] == 0) {
 			PEv2_data->PEv2_HomingReturnSpeed[AxisId] = dev->PEv2.HomingReturnSpeed[AxisId];
@@ -2738,12 +2738,12 @@ int32_t  PEv2_AxisConfigurationGet(sPoKeysDevice* dev, int AxisId) {
 			}
 
 
-			if (ApplyIniSettings == false || PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] == 0) {
+			if (ApplyIniSettings == false ) {
 				PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] = PEv2_data->PEv2_HomingSpeed[AxisId] * PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] / 100;
 			}
 
 
-			if (ApplyIniSettings == false || PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[AxisId] == 0) {
+			if (ApplyIniSettings == false ) {
 				PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[AxisId] = PEv2_data->PEv2_HomingReturnSpeed[AxisId] * PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] / 100;
 			}
 
@@ -3068,7 +3068,7 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice* dev, int AxisId) {
 
 				//PEv2_data->PEv2_HomePosition[AxisId]
 			}
-			if (PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] > 0 && PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] > 0) {
+			if (PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] > 0 && PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] > 0 && PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] > PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]) {
 				PEv2_data->PEv2_HomingSpeed[AxisId] = abs(PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] * 100 / PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId]);		 // Homing speed per axis (in %)
 				PEv2_data->PEv2_HomingReturnSpeed[AxisId] = abs(PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[AxisId] * 100 / PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]); // Homing return speed per axis (in % of the homing speed)
 			}
