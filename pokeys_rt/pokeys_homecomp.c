@@ -541,7 +541,66 @@ int pokeys_1joint_state_machine(int joint_num){
             /* Backing off switch */
             H[joint_num].homing = 1;
             H[joint_num].home_state = HOME_INITIAL_BACKOFF_WAIT;
+           
             homing_flag = 1;
+            break;
+
+        case PK_PEAxisState_axHOMINGARMENCODER:
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homing arm encoder\n", joint_num);
+            /* Pokeys resets encoder position to zeros */
+            H[joint_num].homing = 1;
+            H[joint_num].home_state = HOME_SET_INDEX_POSITION;
+            break;
+        
+        case PK_PEAxisState_axHOMINGWaitFINALMOVE:
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homing wait final move\n", joint_num);
+            /* waiting for sync before Pokeys moves to homeposition */
+            H[joint_num].homing = 1;
+            int joints_in_sequence = 0;
+            int ready_in_sequence = 0;
+            int jj;
+            for (jj = 0; jj < all_joints; jj++)
+            {
+                if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence))
+                {
+                    joints_in_sequence++;
+                    if (H[jj].PEv2_AxesState == PK_PEAxisState_axHOMINGWaitFINALMOVE)
+                    {
+                        ready_in_sequence++;
+                    }
+                }
+            }
+
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING:PK_PEAxisState_axHOME joint %d joints_in_sequence:%d  ready_in_sequence:%d \n",joint_num, joints_in_sequence,ready_in_sequence);
+            if (joints_in_sequence == ready_in_sequence)
+            {
+                //if all Joints of the Sequence show Hommed
+                for (jj = 0; jj < all_joints; jj++)
+                {
+
+                    if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence))
+                    {
+                        rtapi_print_msg(RTAPI_MSG_DBG, "HOMING:do_home_joint.PK_PEAxisState_axHOME joint %d homed (home_sequence %d)\n", jj,H[joint_num].home_sequence);
+                        //H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
+                        H[jj].home_state = HOME_FINAL_MOVE_START;
+                        H[jj].homing = 0;
+                        H[jj].homed = 1;
+                    }
+                }
+                rtapi_print_msg(RTAPI_MSG_DBG, "HOMING:do_home_joint.PK_PEAxisState_axHOME joint %d homed (home_sequence %d)\n", joint_num,H[joint_num].home_sequence);
+                //H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
+                H[joint_num].home_state = HOME_FINAL_MOVE_START;
+                H[joint_num].homing = 0;
+                H[joint_num].homed = 1;
+
+            }
+           
+            break;
+        case PK_PEAxisState_axHOMINGFINALMOVE:
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homing final move\n", joint_num);
+            /* Pokeys moves to homeposition */
+            H[joint_num].homing = 1;
+            H[joint_num].home_state = HOME_FINAL_MOVE_WAIT;
             break;
 
         case PK_PEAxisState_axHOME:
