@@ -96,7 +96,7 @@
         {
             "label": "Compile Pokeys Home Component",
             "type": "shell",
-            "command": "sudo halcompile --install pokeys_homecomp.comp",
+            "command": "sudo halcompile --install pokeys_rt/pokeys_homecomp.c",
             "group": {
                 "kind": "build",
                 "isDefault": false

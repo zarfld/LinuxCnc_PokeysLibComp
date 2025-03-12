@@ -157,16 +157,23 @@ typedef enum
     PK_PEAxisState_axPROBESTART = 15,  // Probing procedure is starting on axis
     PK_PEAxisState_axPROBESEARCH = 16, // Probing procedure - probing
 
+    PK_PEAxisState_axHOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
+    PK_PEAxisState_axHOMINGWaitFINALMOVE = 18,          // (linuxcnc spec additional state) Pokeys moves to homeposition
+    PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
+
     PK_PEAxisState_axERROR = 20, // Axis error
     PK_PEAxisState_axLIMIT = 30  // Axis limit tripped
 } pokeys_home_state_t;
 
 typedef enum
 {
-    PK_PEAxisCommand_axIDLE = 0,           // Axis  in IDLE
-    PK_PEAxisCommand_axHOMINGSTART = 1,    // Start Homing procedure
-    PK_PEAxisCommand_axHOMINGCANCEL = 2,   // Cancel Homing procedure
-    PK_PEAxisCommand_axHOMINGFINALIZE = 3, // Finish Homing procedure
+    PK_PEAxisCommand_axIDLE = 0,                // Axis  in IDLE
+    PK_PEAxisCommand_axHOMINGSTART = 1,         // Start Homing procedure
+    PK_PEAxisCommand_axARMENCODER = 2,           // reset position to zeros
+    PK_PEAxisCommand_axHOMINGWAITFINALMOVE = 3,     // move to homeposition
+    PK_PEAxisCommand_axHOMINGFINALMOVE = 4,     // move to homeposition
+    PK_PEAxisCommand_axHOMINGCANCEL = 5,        // Cancel Homing procedure
+    PK_PEAxisCommand_axHOMINGFINALIZE = 6,      // Finish Homing procedure
 } pokeys_home_command_t;
 
 typedef enum

@@ -1154,11 +1154,15 @@ int PKPEv2_export_pins(char* prefix, long extra_arg, int comp_id, PEv2_data_t* P
 #define PEv2_digin_Home_Enabled(i) (PEv2_data->PEv2_digin_Home_Enabled[i])
 
 
-typedef enum {
-	PK_PEAxisCommand_axIDLE = 0,		 // Axis  in IDLE
-	PK_PEAxisCommand_axHOMINGSTART = 1,	 // Start Homing procedure
-	PK_PEAxisCommand_axHOMINGCANCEL = 2, // Cancel Homing procedure
-	PK_PEAxisCommand_axHOMINGFinalize = 3, // Cancel Homing procedure
+typedef enum
+{
+    PK_PEAxisCommand_axIDLE = 0,                // Axis  in IDLE
+    PK_PEAxisCommand_axHOMINGSTART = 1,         // Start Homing procedure
+    PK_PEAxisCommand_axARMENCODER = 2,           // reset position to zeros
+    PK_PEAxisCommand_axHOMINGWAITFINALMOVE = 3,     // move to homeposition
+    PK_PEAxisCommand_axHOMINGFINALMOVE = 4,     // move to homeposition
+    PK_PEAxisCommand_axHOMINGCANCEL = 5,        // Cancel Homing procedure
+    PK_PEAxisCommand_axHOMINGFINALIZE = 6,      // Finish Homing procedure
 } pokeys_home_command_t;
 
 // pin io unsigned PEv2.PulseEngineStateSetup;		// Pulse engine new state configuration  - No Pin needed
@@ -1173,6 +1177,8 @@ float last_joint_vel_cmd[8];
 
 bool Homing_active = false;
 bool Homing_done[8] = { false, false, false, false, false, false, false, false };
+bool Homing_ArmEncodereDone[8] = { false, false, false, false, false, false, false, false };
+bool Homing_FinalMoveDone[8] = { false, false, false, false, false, false, false, false };
 bool IsHoming[8] = { false, false, false, false, false, false, false, false };
 float StepScale[8];
 bool Pins_DigitalValueSet_ignore[55];
@@ -1233,7 +1239,7 @@ int32_t PEv2_StatusGet(sPoKeysDevice* dev){
 		*PEv2_data->PEv2_PulseEngineActivated = dev->PEv2.PulseEngineActivated;
 
 		PulseEngineState = dev->PEv2.PulseEngineState;
-		*PEv2_data->PEv2_PulseEngineState = PulseEngineState;
+		//
 		PEv2_PulseEngineStateSetup = PulseEngineState;
 		PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
 		PEv2_data->PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
@@ -1564,7 +1570,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			InPosition[i] = false;
 			uint8_t intAxesState = dev->PEv2.AxesState[i];
 			uint8_t intAxesCommand = *(PEv2_data->PEv2_AxesCommand[i]);
-			*PEv2_data->PEv2_AxesState[i] = intAxesState;
+			// *PEv2_data->PEv2_AxesState[i] = intAxesState; moved later as there were introduced substates of Home
 			PEv2_deb_axxisout(i) = 200 + i;
 			StepScale[i] = PEv2_data->PEv2_stepgen_STEP_SCALE[i];
 			PEv2_deb_axxisout(i) = 210 + i;
@@ -1637,6 +1643,11 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				break;
 			case PK_PEAxisState_axHOME: // Axis is homed
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOME\n", __FILE__, __FUNCTION__);
+
+				if (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axARMENCODER && Homing_ArmEncodereDone[i] !=true){
+					dev->PEv2.PositionSetup[i]=PEv2_data->PEv2_HomePosition[i];
+					bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);
+				}
 				if(finalizingHoming[i] == true){
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOME - IsHoming[i] = false\n", __FILE__, __FUNCTION__, i);
 					IsHoming[i] = false;
@@ -1758,6 +1769,8 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				break;
 			}
 
+			// placed here to as substates PK_PEAxisState_axHOME
+			*PEv2_data->PEv2_AxesState[i] = intAxesState;
 			// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
 			if (IsHoming[i] == false) {
 
@@ -2218,8 +2231,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				// if bit is set, then set IsHoming to false
 				if(bm_DoPositionSet & (1 << i) && finalizingHoming[i]==true){
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].DoPositionSet = 0 \n", __FILE__, __FUNCTION__, i);
-					IsHoming[i] = false;
-					finalizingHoming[i]==false;
+					Homing_ArmEncodereDone[i] = true;
 				}
 				
 			}
