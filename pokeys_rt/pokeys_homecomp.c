@@ -578,7 +578,7 @@ int pokeys_1joint_state_machine(int joint_num){
             if (joints_in_sequence == ready_in_sequence)
             {
                 //if all Joints of the Sequence show Hommed
-                for (jj = 0; jj < all_joints; jj++)
+                for (int jj = 0; jj < all_joints; jj++)
                 {
 
                     if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence))
@@ -628,7 +628,7 @@ int pokeys_1joint_state_machine(int joint_num){
             if (joints_in_sequence == homed_in_sequence)
             {
                 //if all Joints of the Sequence show Hommed
-                for (jj = 0; jj < all_joints; jj++)
+                for (int jj = 0; jj < all_joints; jj++)
                 {
 
                     if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence))
