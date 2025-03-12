@@ -82,7 +82,7 @@ void rtapi_app_exit(void) {
 #define is_module (*__comp_inst->is_module)
 
 
-#line 51 "pokeys_homecomp.comp"
+//#line 51 "pokeys_homecomp.comp"
 
 /* To incorporate default homing.c file from a local git src tree:
 ** enable #define HOMING_BASE set to the path to the current homing.c file.
