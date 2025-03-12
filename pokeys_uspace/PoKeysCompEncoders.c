@@ -7,7 +7,8 @@
 #include "hal.h"
 #include "stdio.h"
 
-
+extern unsigned int sleepdur;
+extern bool ApplyIniSettings; 
 // Pin creation:
 /*
 pin out s32 encoder.#.count[29];
