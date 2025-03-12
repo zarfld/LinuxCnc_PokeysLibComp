@@ -1159,10 +1159,10 @@ typedef enum
     PK_PEAxisCommand_axIDLE = 0,                // Axis  in IDLE
     PK_PEAxisCommand_axHOMINGSTART = 1,         // Start Homing procedure
     PK_PEAxisCommand_axARMENCODER = 2,           // reset position to zeros
-    PK_PEAxisCommand_axHOMINGWAITFINALMOVE = 3,     // move to homeposition
-    PK_PEAxisCommand_axHOMINGFINALMOVE = 4,     // move to homeposition
-    PK_PEAxisCommand_axHOMINGCANCEL = 5,        // Cancel Homing procedure
-    PK_PEAxisCommand_axHOMINGFINALIZE = 6,      // Finish Homing procedure
+    PK_PEAxisCommand_axHOMINGWaitFinalMove = 3,     // move to homeposition
+    PK_PEAxisCommand_axHOMINGFinalLMove = 4,     // move to homeposition
+    PK_PEAxisCommand_axHOMINGCancel = 5,        // Cancel Homing procedure
+    PK_PEAxisCommand_axHOMINGFinalize = 6,      // Finish Homing procedure
 } pokeys_home_command_t;
 
 // pin io unsigned PEv2.PulseEngineStateSetup;		// Pulse engine new state configuration  - No Pin needed
@@ -1178,6 +1178,7 @@ float last_joint_vel_cmd[8];
 bool Homing_active = false;
 bool Homing_done[8] = { false, false, false, false, false, false, false, false };
 bool Homing_ArmEncodereDone[8] = { false, false, false, false, false, false, false, false };
+bool Homing_FinalMoveActive[8] = { false, false, false, false, false, false, false, false };
 bool Homing_FinalMoveDone[8] = { false, false, false, false, false, false, false, false };
 bool IsHoming[8] = { false, false, false, false, false, false, false, false };
 float StepScale[8];
@@ -1645,8 +1646,26 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOME\n", __FILE__, __FUNCTION__);
 
 				if (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axARMENCODER && Homing_ArmEncodereDone[i] !=true){
+					//PK_PEAxisState_axHOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
+					intAxesState = 17;
 					dev->PEv2.PositionSetup[i]=PEv2_data->PEv2_HomePosition[i];
 					bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);
+				}
+				else if((*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axARMENCODER && Homing_ArmEncodereDone[i] ==true) || (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGWaitFinalMove)){
+					//PK_PEAxisState_axHOMINGWaitFINALMOVE = 18,          // (linuxcnc spec additional state) Pokeys moves to homeposition
+					intAxesState = 18;
+
+				}
+				else if(*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGFinalLMove && Homing_FinalMoveDone[i] !=true ) {
+				//	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
+					intAxesState = 19;
+					if(Homing_FinalMoveActive[i] == false){
+						Homing_FinalMoveActive[i] = true;
+						PEv2_data->PEv2_HomeOffsets[i] = intCurrentPosition[i]; 
+						dev->PEv2.PositionSetup[i]=PEv2_data->PEv2_HomePosition[i];
+						bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);
+					}
+					dev->PEv2.PositionSetup[i]=PEv2_data->PEv2_HomePosition[i];
 				}
 				if(finalizingHoming[i] == true){
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOME - IsHoming[i] = false\n", __FILE__, __FUNCTION__, i);
@@ -1933,7 +1952,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				}
 
 			}
-			else if (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGCANCEL && old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) && (intAxesState == PK_PEAxisState_axHOMINGSTART || intAxesState == PK_PEAxisState_axHOMINGSEARCH || intAxesState == PK_PEAxisState_axHOMINGBACK)) {
+			else if (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGCancel && old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) && (intAxesState == PK_PEAxisState_axHOMINGSTART || intAxesState == PK_PEAxisState_axHOMINGSEARCH || intAxesState == PK_PEAxisState_axHOMINGBACK)) {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingCancel\n", __FILE__, __FUNCTION__);
 				//	dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
 			}
