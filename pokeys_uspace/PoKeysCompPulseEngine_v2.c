@@ -1567,16 +1567,16 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 	bool doHomingEnd = false;
 	int HomingStartMaskSetup = 0;
 	bool allhomed = true;
-	bool InPosition[8];
-	bool POSITION_MODE_active[8];
+	bool InPosition[8] = { false };
+	bool POSITION_MODE_active[8] = { false }
 
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PEv2_nrOfAxes = %d\n", __FILE__, __FUNCTION__, PEv2_nrOfAxes);
 	if (PEv2_nrOfAxes != 0) {
 		uint8_t bm_SoftLimitStatus = dev->PEv2.SoftLimitStatus;
 		int tAxisEnabledMask = 0;
 		uint8_t bm_DoPositionSet = 0;
-		bool finalizingHoming[8];
-		int32_t intCurrentPosition[8];
+		bool finalizingHoming[8] = { false };
+		int32_t intCurrentPosition[8] = { 0 };
 		float PosFb[8] = { 0 };
 		for (int i = 0; i < PEv2_nrOfAxes; i++) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_Axis[%d] \n", __FILE__, __FUNCTION__, i);
@@ -1849,9 +1849,9 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				// when homing, use the command position as feedback
 				// during homing the position is being reset to 0, so the feedback would be 0
 				// which causes FERROR
-				//PosFb[i] = PEv2_joint_pos_cmd(i);
-				PosFb[i] = 0;
-				*(PEv2_data->PEv2_joint_pos_fb[i]) = 0;
+				PosFb[i] = PEv2_joint_pos_cmd(i);
+				//PosFb[i] = 0;
+				
 				/*if (StepScale[i] != 0) {
 					PEv2_deb_axxisout(i) = 230 + i;
 					PosFb[i] = ( intCurrentPosition[i]- PEv2_data->PEv2_HomeOffsets[i]) / StepScale[i];
@@ -2597,8 +2597,8 @@ int32_t  PEv2_AdditionalParametersSet(sPoKeysDevice* dev) {
 int32_t  PEv2_AxisConfigurationGet(sPoKeysDevice* dev, int AxisId) {
 	dev->PEv2.param1 = AxisId;
 	int32_t ret = PK_PEv2_AxisConfigurationGet(dev);
-	uint8_t AxesConfig[8];
-	uint8_t AxesSwitchConfig[8];
+	uint8_t AxesConfig[8] = {0 0 0 0 0 0 0 0};
+	uint8_t AxesSwitchConfig[8] = { 0 0 0 0 0 0 0 0 };
 
 	if (ret == PK_OK) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationGet(%d) == PK_OK\n", __FILE__, __FUNCTION__, AxisId);
@@ -2785,8 +2785,8 @@ int32_t  PEv2_AxisConfigurationGet(sPoKeysDevice* dev, int AxisId) {
 
 int32_t PEv2_AxisConfigurationSet(sPoKeysDevice* dev, int AxisId) {
 	bool doSetup = false;
-	uint8_t AxesConfig[8];
-	uint8_t AxesSwitchConfig[8];
+	uint8_t AxesConfig[8] = { 0 0 0 0 0 0 0 0};
+	uint8_t AxesSwitchConfig[8] = { 0 0 0 0 0 0 0 0 };
 	int32_t ret = PEv2_AxisConfigurationGet(dev, AxisId);
 	if (ret == PK_OK) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_AxisConfigurationSet(%d) == PK_OK\n", __FILE__, __FUNCTION__, AxisId);
