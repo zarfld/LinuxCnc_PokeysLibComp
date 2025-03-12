@@ -1676,9 +1676,9 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 					Homing_FinalMoveDone[i] = true;
 					if(Homing_FinalMoveActive[i] == false){
 						Homing_FinalMoveActive[i] = true;
-						ReferencePosition = PEv2_data->PEv2_HomePosition[i];
-						dev->PEv2.ReferencePositionSpeed[i] = (int32_t)ReferencePosition;
-						PEv2_ReferencePositionSpeed(i) = (int)ReferencePosition;
+						
+						dev->PEv2.ReferencePositionSpeed[i] = (int32_t)PEv2_data->PEv2_HomePosition[i];
+						PEv2_ReferencePositionSpeed(i) = (int)PEv2_data->PEv2_HomePosition[i];
 						posMode[i] = true;
 						doMove = true;
 
@@ -1818,7 +1818,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			// placed here to as substates PK_PEAxisState_axHOME
 			*PEv2_data->PEv2_AxesState[i] = intAxesState;
 			// calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-			if (IsHoming[i] == false && homing_active == false) {
+			if (IsHoming[i] == false && Homing_active == false) {
 
 				PosFb[i] = (  intCurrentPosition[i]  / PEv2_data->PEv2_PositionScale[i]  ) - PEv2_data->PEv2_PositionOffset[i];
 				
