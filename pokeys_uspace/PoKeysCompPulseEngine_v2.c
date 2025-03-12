@@ -3396,7 +3396,7 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 	for (int i = 0; i < dev->PEv2.info.nrOfAxes; i++) {
 	
 		if (ApplyIniSettings == true) {
-			if (PEv2_data->PEv2_AxesEnabled[i] != 0) {
+			if (PEv2_data->PEv2_AxisEnabled[i] != 0) {
 				PEv2_AxisConfigurationSet(dev, i);
 			}
 			
