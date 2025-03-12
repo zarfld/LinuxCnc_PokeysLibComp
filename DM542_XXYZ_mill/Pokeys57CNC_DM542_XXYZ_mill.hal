@@ -545,7 +545,7 @@ net estop-out     <=  iocontrol.0.user-enable-out
 net estop-out     => pokeys.0.PEv2.digout.Emergency.out
 
 # ------ The PNOZ safety relay's output contacts (K1/K2 on terminals 13 & 23) are wired to a PoKeys digital input.
-net estop-ext     =>  iocontrol.0.emc-enable-in
+#net estop-ext     =>  iocontrol.0.emc-enable-in
 net estop-ext     <=  pokeys.0.PEv2.digin.Emergency.in
 
 # ------ The PNOZ reset requires a pulse on terminals T33-T34. Use PoExtBus output 2 to generate this reset signal.

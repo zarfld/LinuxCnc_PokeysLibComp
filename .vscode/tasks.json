@@ -37,7 +37,7 @@
         {
             "label": "Compile USpace/Pokeys Component",
             "type": "shell",
-            "command": "sudo halcompile --install --extra-link-args=\"-lPoKeys\" --extra-compile-args=\"-v -I/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace/\" --userspace pokeys_uspace/PoKeysCompEncoders.c pokeys_uspace/pokeys.c",
+            "command": "sudo halcompile --install --extra-link-args=\"-lPoKeys\" --extra-compile-args=\"-v -I/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace/\" pokeys_uspace/pokeys.c",
             "group": {
                 "kind": "build",
                 "isDefault": false
@@ -96,7 +96,7 @@
         {
             "label": "Compile Pokeys Home Component",
             "type": "shell",
-            "command": "sudo halcompile --install pokeys_homecomp.comp",
+            "command": "sudo halcompile --install pokeys_rt/pokeys_homecomp.c",
             "group": {
                 "kind": "build",
                 "isDefault": false

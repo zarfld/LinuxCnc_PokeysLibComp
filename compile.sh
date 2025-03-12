@@ -14,7 +14,7 @@ echo "kbd48CNC.comp compiled successfully."
 read -p "Do you want to compile of pokeys_homecomp.comp (needs LinuxCNC version 2.9. or higher? (y/n): " answer
 if [[ $answer == "y" ]]; then
     echo "Compiling pokeys_homecomp.comp..."
-    halcompile --install pokeys_homecomp.comp
+    halcompile --install pokeys_rt/pokeys_homecomp.c
     echo "pokeys_homecomp.comp compiled successfully."
 else
     echo "Skipping compilation of pokeys_homecomp.comp. LinuxCNC version is not higher than 2.9."
