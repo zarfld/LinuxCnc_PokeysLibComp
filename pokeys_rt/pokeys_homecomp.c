@@ -504,6 +504,9 @@ int pokeys_1joint_state_machine(int joint_num){
        you want an infinite loop! */
     do    {
         immediate_state = 0;
+        int joints_in_sequence = 0;
+        int ready_in_sequence = 0;
+
         switch (H[joint_num].PEv2_AxesState)        {
         case PK_PEAxisState_axSTOPPED:
             /* Axis is stopped */
@@ -556,10 +559,10 @@ int pokeys_1joint_state_machine(int joint_num){
             rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homing wait final move\n", joint_num);
             /* waiting for sync before Pokeys moves to homeposition */
             H[joint_num].homing = 1;
-            int joints_in_sequence = 0;
-            int ready_in_sequence = 0;
-            int jj;
-            for (jj = 0; jj < all_joints; jj++)
+            joints_in_sequence = 0;
+            ready_in_sequence = 0;
+
+            for (int jj = 0; jj < all_joints; jj++)
             {
                 if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence))
                 {
@@ -606,10 +609,10 @@ int pokeys_1joint_state_machine(int joint_num){
         case PK_PEAxisState_axHOME:
             rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homed\n", joint_num);
             /* Axis is homed */
-            int joints_in_sequence = 0;
-            int homed_in_sequence = 0;
-            int jj;
-            for (jj = 0; jj < all_joints; jj++)
+            joints_in_sequence = 0;
+            homed_in_sequence = 0;
+      
+            for (int jj = 0; jj < all_joints; jj++)
             {
                 if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence))
                 {
