@@ -1568,7 +1568,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 	int HomingStartMaskSetup = 0;
 	bool allhomed = true;
 	bool InPosition[8] = { false };
-	bool POSITION_MODE_active[8] = { false }
+	bool POSITION_MODE_active[8] = { false };
 
 	rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PEv2_nrOfAxes = %d\n", __FILE__, __FUNCTION__, PEv2_nrOfAxes);
 	if (PEv2_nrOfAxes != 0) {
@@ -2597,8 +2597,8 @@ int32_t  PEv2_AdditionalParametersSet(sPoKeysDevice* dev) {
 int32_t  PEv2_AxisConfigurationGet(sPoKeysDevice* dev, int AxisId) {
 	dev->PEv2.param1 = AxisId;
 	int32_t ret = PK_PEv2_AxisConfigurationGet(dev);
-	uint8_t AxesConfig[8] = {0 0 0 0 0 0 0 0};
-	uint8_t AxesSwitchConfig[8] = { 0 0 0 0 0 0 0 0 };
+	uint8_t AxesConfig[8] = { 0 };
+	uint8_t AxesSwitchConfig[8] = { 0 };
 
 	if (ret == PK_OK) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationGet(%d) == PK_OK\n", __FILE__, __FUNCTION__, AxisId);
@@ -2785,8 +2785,8 @@ int32_t  PEv2_AxisConfigurationGet(sPoKeysDevice* dev, int AxisId) {
 
 int32_t PEv2_AxisConfigurationSet(sPoKeysDevice* dev, int AxisId) {
 	bool doSetup = false;
-	uint8_t AxesConfig[8] = { 0 0 0 0 0 0 0 0};
-	uint8_t AxesSwitchConfig[8] = { 0 0 0 0 0 0 0 0 };
+	uint8_t AxesConfig[8] = { 0 };
+	uint8_t AxesSwitchConfig[8] = { 0 };
 	int32_t ret = PEv2_AxisConfigurationGet(dev, AxisId);
 	if (ret == PK_OK) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_AxisConfigurationSet(%d) == PK_OK\n", __FILE__, __FUNCTION__, AxisId);
