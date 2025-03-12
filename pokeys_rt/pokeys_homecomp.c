@@ -610,7 +610,7 @@ int pokeys_1joint_state_machine(int joint_num){
             rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homed\n", joint_num);
             /* Axis is homed */
             joints_in_sequence = 0;
-            homed_in_sequence = 0;
+           int homed_in_sequence = 0;
       
             for (int jj = 0; jj < all_joints; jj++)
             {
