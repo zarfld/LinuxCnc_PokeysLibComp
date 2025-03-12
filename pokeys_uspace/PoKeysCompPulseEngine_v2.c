@@ -1661,7 +1661,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 				if ((*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axARMENCODER && Homing_ArmEncodereDone[i] != true) || Homing_ArmEncodereDone[i] != true) {
 					//PK_PEAxisState_axHOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
 					intAxesState = 17;
-					dev->PEv2.PositionSetup[i] = PEv2_data->PEv2_HomePosition[i];
+					dev->PEv2.PositionSetup[i] = PEv2_data->PEv2_ZeroPosition[i];
 					bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);
 				}
 				else if ((*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axARMENCODER && Homing_ArmEncodereDone[i] == true) || (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGWaitFinalMove)) {
@@ -2290,7 +2290,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			}
 			for (int i = 0; i < PEv2_nrOfAxes; i++) {
 				// if bit is set, then set IsHoming to false
-				if (bm_DoPositionSet & (1 << i) && finalizingHoming[i] == true) {
+				if (bm_DoPositionSet & (1 << i) ) {
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].DoPositionSet = 0 \n", __FILE__, __FUNCTION__, i);
 					Homing_ArmEncodereDone[i] = true;
 				}
