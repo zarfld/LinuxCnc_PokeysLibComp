@@ -1581,7 +1581,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 		for (int i = 0; i < PEv2_nrOfAxes; i++) {
 
 			if (PEv2_data->PEv2_AxisEnabled[i]== false){
-				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] is disabled\n", __FILE__, __FUNCTION__, i);
+				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_Axis[%d] is disabled\n", __FILE__, __FUNCTION__, i);
 				continue;
 			}
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_Axis[%d] \n", __FILE__, __FUNCTION__, i);
@@ -3394,8 +3394,12 @@ void PKPEv2_Setup(sPoKeysDevice* dev) {
 
 
 	for (int i = 0; i < dev->PEv2.info.nrOfAxes; i++) {
+	
 		if (ApplyIniSettings == true) {
-			PEv2_AxisConfigurationSet(dev, i);
+			if (PEv2_data->PEv2_AxesEnabled[i] != 0) {
+				PEv2_AxisConfigurationSet(dev, i);
+			}
+			
 		}
 		else {
 			PEv2_AxisConfigurationGet(dev, i);
