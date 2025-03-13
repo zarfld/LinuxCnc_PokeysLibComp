@@ -10,7 +10,7 @@ The repository is organized into the following directories:
 
 - `pokeys_uspace/`: Contains Source of pokeys userspace component for interfacing with PoKeys devices.
 - `pokeys_py/`: prepared for Contains Python scripts for interfacing with PoKeys devices.
-- `pokeys_rt/`: prepared for real-time components for PoKeys devices.
+- `pokeys_rt/`: Contains Source of pokeys_homecomp real-time component for PoKeys devices.
 - `tests/`: Contains unit tests, integration tests, and other testing-related files.
 - `docs/`: Contains project-related documentation.
 - `scripts/`: Contains scripts for setup, configuration, and auxiliary tasks.
