@@ -2079,10 +2079,8 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 						POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 						usleep(sleepdur);
 
-						dev->PEv2.param1 = i;  // redundant ??!
-						PK_PEv2_AxisConfigurationGet(dev);
-						POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-						//usleep(sleepdur);
+						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: "Position Mode" Axis:%i InPosition[i] == false POSITION_MODE_active[i] = %d \n", __FILE__, __FUNCTION__, i, POSITION_MODE_active[i]);
+						
 
 						if (ReferenceSpeed == 0) {
 							posMode[i] = true;
@@ -2105,11 +2103,11 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 								dev->PEv2.param1 = i;
 
 								if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK) {
-									rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet!=PK_OK\n", __FILE__, __FUNCTION__);
+									rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: "switch to Position Mode" PK_PEv2_AxisConfigurationSet!=PK_OK\n", __FILE__, __FUNCTION__);
 									PK_PEv2_AxisConfigurationSet(dev);
 								}
 								else {
-									rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet=PK_OK\n", __FILE__, __FUNCTION__);
+									rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: "switch to Position Mode" PK_PEv2_AxisConfigurationSet=PK_OK\n", __FILE__, __FUNCTION__);
 								}
 								usleep(sleepdur);
 							}
@@ -2126,17 +2124,18 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 						dev->PEv2.param1 = i;
 						PK_PEv2_AxisConfigurationGet(dev);
 						POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
+						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: "Velocity Mode" Axis:%i InPosition[i] == true POSITION_MODE_active[i] = %d \n", __FILE__, __FUNCTION__, i, POSITION_MODE_active[i]);
 						usleep(sleepdur);
 						if (POSITION_MODE_active[i] == true) {
 							velCount[i]++;
 							dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
 							dev->PEv2.param1 = i;
 							if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK) {
-								rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet!=PK_OK\n", __FILE__, __FUNCTION__);
+								rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: "switch to Velocity Mode" PK_PEv2_AxisConfigurationSet!=PK_OK\n", __FILE__, __FUNCTION__);
 								PK_PEv2_AxisConfigurationSet(dev);
 							}
 							else {
-								rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet=PK_OK\n", __FILE__, __FUNCTION__);
+								rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: "switch to Velocity Mode" PK_PEv2_AxisConfigurationSet=PK_OK\n", __FILE__, __FUNCTION__);
 							}
 							usleep(sleepdur);
 
