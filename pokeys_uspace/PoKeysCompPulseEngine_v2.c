@@ -2059,7 +2059,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 					if ((InPosition[i] == true) && (dev->PEv2.CurrentPosition[i] != (int32_t)ReferencePosition)) {
 						InPosition[i] = false;
 					}
-					if (InPosition[i] = false) {
+					if (InPosition[i] == false) {
 						dev->PEv2.param1 = i;
 						PK_PEv2_AxisConfigurationGet(dev);
 						POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
@@ -2070,7 +2070,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 						POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 						//usleep(sleepdur);
 
-						if ((ReferenceSpeed = 0)) {
+						if ((ReferenceSpeed == 0)) {
 							posMode[i] = true;
 
 							dev->PEv2.param1 = i;
@@ -2185,7 +2185,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 							}
 
 							POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-							if (POSITION_MODE_active[i] = true) {
+							if (POSITION_MODE_active[i] == true) {
 								dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
 								dev->PEv2.param1 = i;
 								PK_PEv2_AxisConfigurationSet(dev);
