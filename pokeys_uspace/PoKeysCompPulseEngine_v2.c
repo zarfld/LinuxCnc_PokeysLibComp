@@ -2026,7 +2026,35 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			if (HAL_Machine_On != 0) {
 				PEv2_deb_out = 390 + i;
 				posMode[i] = false;
-				if (IsHoming[i] == false) {
+				if (IsHoming[i]) {
+					PEv2_deb_axxisout(i) = 2400 + i;
+					// dev->PEv2.ReferencePositionSpeed[i]=0;
+					switch (intAxesState) {
+					case PK_PEAxisState_axHOMING_RESETTING: // Stopping the axis to reset the position counters
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMING_RESETTING\n", __FILE__, __FUNCTION__, i);
+						break;
+					case PK_PEAxisState_axHOMING_BACKING_OFF: // Backing off switch
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMING_BACKING_OFF\n", __FILE__, __FUNCTION__, i);
+						break;
+					case PK_PEAxisState_axHOME: // Axis is homed
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOME\n", __FILE__, __FUNCTION__, i);
+						break;
+					case PK_PEAxisState_axHOMINGSTART: // Homing procedure is starting on axis
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMINGSTART\n", __FILE__, __FUNCTION__, i);
+						break;
+					case PK_PEAxisState_axHOMINGSEARCH: // Homing procedure first step - going to home
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMINGSEARCH\n", __FILE__, __FUNCTION__, i);
+						break;
+					case PK_PEAxisState_axHOMINGBACK: // Homing procedure second step - slow homing
+						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMINGBACK\n", __FILE__, __FUNCTION__, i);
+						break;
+
+					default:
+						break;
+					}
+					PEv2_deb_axxisout(i) = 2410 + i;
+				}
+				else {
 					float VelCmd = *(PEv2_data->PEv2_joint_vel_cmd[i]);
 					float PosCmd = PEv2_joint_pos_cmd(i);
 
@@ -2056,7 +2084,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 					/*
 					for the last short move before in-position is reached switch to positionmode for more precise positioning
 					*/
-					if ((InPosition[i] == true) && (dev->PEv2.CurrentPosition[i] != (int32_t)ReferencePosition)) {
+					if (InPosition[i] && (dev->PEv2.CurrentPosition[i] != (int32_t)ReferencePosition)) {
 						InPosition[i] = false;
 					}
 					if (InPosition[i] == false) {
@@ -2070,7 +2098,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 						POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 						//usleep(sleepdur);
 
-						if ((ReferenceSpeed == 0)) {
+						if (ReferenceSpeed == 0) {
 							posMode[i] = true;
 
 							dev->PEv2.param1 = i;
@@ -2248,34 +2276,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 						}
 					}
 				}
-				else {
-					PEv2_deb_axxisout(i) = 2400 + i;
-					// dev->PEv2.ReferencePositionSpeed[i]=0;
-					switch (intAxesState) {
-					case PK_PEAxisState_axHOMING_RESETTING: // Stopping the axis to reset the position counters
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMING_RESETTING\n", __FILE__, __FUNCTION__, i);
-						break;
-					case PK_PEAxisState_axHOMING_BACKING_OFF: // Backing off switch
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMING_BACKING_OFF\n", __FILE__, __FUNCTION__, i);
-						break;
-					case PK_PEAxisState_axHOME: // Axis is homed
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOME\n", __FILE__, __FUNCTION__, i);
-						break;
-					case PK_PEAxisState_axHOMINGSTART: // Homing procedure is starting on axis
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMINGSTART\n", __FILE__, __FUNCTION__, i);
-						break;
-					case PK_PEAxisState_axHOMINGSEARCH: // Homing procedure first step - going to home
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMINGSEARCH\n", __FILE__, __FUNCTION__, i);
-						break;
-					case PK_PEAxisState_axHOMINGBACK: // Homing procedure second step - slow homing
-						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axHOMINGBACK\n", __FILE__, __FUNCTION__, i);
-						break;
-
-					default:
-						break;
-					}
-					PEv2_deb_axxisout(i) = 2410 + i;
-				}
+				 
 			}
 			else {
 				PEv2_deb_out = 3900 + i;
