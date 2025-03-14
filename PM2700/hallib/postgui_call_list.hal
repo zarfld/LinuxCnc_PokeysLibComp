@@ -1,12 +1,12 @@
-loadrt time
-loadrt not
+#loadrt time
+#loadrt not
 
-addf time.0 servo-thread
-addf not.0 servo-thread
+#ddf time.0 servo-thread
+#addf not.0 servo-thread
 
 ### net prog-running not.0.in <= halui.program.is-idle
 ### net prog-paused halui.program.is-paused => time.0.pause
-net cycle-timer time.0.start <= not.0.out
+#net cycle-timer time.0.start <= not.0.out
 #net cycle-seconds qtpyvcp.timerseconds.in <= time.0.seconds
 #net cycle-minutes qtpyvcp.timerminutes.in <= time.0.minutes
 #net cycle-hours qtpyvcp.timerhours.in <= time.0.hours
@@ -30,7 +30,7 @@ net cycle-timer time.0.start <= not.0.out
 
 # These files are loaded post GUI, in the order they appear
 
-source custom_postgui.hal
+#source custom_postgui.hal
 #setp pokeys.0.devSerial [POKEYS]DEVICE_ID
 setp pokeys.0.PEv2.digin.Probe.Pin [POKEYS]PEv2_ProbeInput 	
 setp pokeys.0.PEv2.digin.Probe.invert [POKEYS]PEv2_ProbeInputPolarity

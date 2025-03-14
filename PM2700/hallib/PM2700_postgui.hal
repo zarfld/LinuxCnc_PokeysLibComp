@@ -8,20 +8,20 @@ addf not.0 servo-thread
 net prog-running not.0.in <= halui.program.is-idle
 net prog-paused halui.program.is-paused => time.0.pause
 net cycle-timer time.0.start <= not.0.out
-net cycle-seconds qtpyvcp.timerseconds.in <= time.0.seconds
-net cycle-minutes qtpyvcp.timerminutes.in <= time.0.minutes
-net cycle-hours qtpyvcp.timerhours.in <= time.0.hours
+#net cycle-seconds qtpyvcp.timerseconds.in <= time.0.seconds
+#net cycle-minutes qtpyvcp.timerminutes.in <= time.0.minutes
+#net cycle-hours qtpyvcp.timerhours.in <= time.0.hours
 
 #  ---manual tool change signals---
-net tool-change-request     =>  qtpyvcp_manualtoolchange.change
-net tool-change-confirmed   <=  qtpyvcp_manualtoolchange.changed
-net tool-number             =>  qtpyvcp_manualtoolchange.number
+#net tool-change-request     =>  qtpyvcp_manualtoolchange.change
+#net tool-change-confirmed   <=  qtpyvcp_manualtoolchange.changed
+#net tool-number             =>  qtpyvcp_manualtoolchange.number
 
 # *** Set line below for actual spindle readout from your hal file ***
-net spindle-rpm-filtered.0 scale_to_rpm.0.out  =>  qtpyvcp.spindle-encoder-rpm.in
+#net spindle-rpm-filtered.0 scale_to_rpm.0.out  =>  qtpyvcp.spindle-encoder-rpm.in
 
 # *** set below for the status leds ***
-net pokeys.0.digin.26.in  <=  qtpyvcp.1in1.on
+#net pokeys.0.digin.26.in  <=  qtpyvcp.1in1.on
 
 #net enter-hal-input-name-here  <=  qtpyvcp.1in2.on
 

@@ -2053,7 +2053,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 						PEv2_deb_axxisout(i) = 1100 + i;
 						ReferenceSpeed = VelCmd * StepScale[i];
 						PEv2_deb_axxisout(i) = 1110 + i;
-						ReferencePosition = PosCmd * StepScale[i] + PEv2_data->PEv2_HomeOffsets[i];
+						ReferencePosition = (PosCmd + PEv2_data->PEv2_PositionOffset[i] ) * PEv2_data->PEv2_PositionScale[i];
 						//	*(PEv2_data->PEv2_PositionSetup[i]) = ReferencePosition;
 						PEv2_deb_axxisout(i) = 1120 + i;
 					}
@@ -2061,7 +2061,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 						PEv2_deb_axxisout(i) = 1200 + i;
 						ReferenceSpeed = VelCmd;
 						PEv2_deb_axxisout(i) = 1210 + i;
-						ReferencePosition = PosCmd + PEv2_data->PEv2_HomeOffsets[i];
+						ReferencePosition = PosCmd;
 						//*(PEv2_data->PEv2_PositionSetup[i]) = ReferencePosition;
 						PEv2_deb_axxisout(i) = 1220 + i;
 					}
@@ -2070,6 +2070,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 					for the last short move before in-position is reached switch to positionmode for more precise positioning
 					*/
 					if (InPosition[i] && (dev->PEv2.CurrentPosition[i] != (int32_t)ReferencePosition)) {
+						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Axis:%i InPosition[i] && (dev->PEv2.CurrentPosition[i] (%d) != (int32_t)ReferencePosition (%d)) \n", __FILE__, __FUNCTION__, i, dev->PEv2.CurrentPosition[i], (int32_t)ReferencePosition);
 						InPosition[i] = false;
 					}
 					if (InPosition[i] == false) {
@@ -2078,10 +2079,8 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 						POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
 						usleep(sleepdur);
 
-						dev->PEv2.param1 = i;  // redundant ??!
-						PK_PEv2_AxisConfigurationGet(dev);
-						POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-						//usleep(sleepdur);
+						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: 'Position Mode' Axis:%i InPosition[i] == false POSITION_MODE_active[i] = %d \n", __FILE__, __FUNCTION__, i, POSITION_MODE_active[i]);
+						
 
 						if (ReferenceSpeed == 0) {
 							posMode[i] = true;
@@ -2104,11 +2103,11 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 								dev->PEv2.param1 = i;
 
 								if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK) {
-									rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet!=PK_OK\n", __FILE__, __FUNCTION__);
+									rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: 'switch to Position Mode' PK_PEv2_AxisConfigurationSet!=PK_OK\n", __FILE__, __FUNCTION__);
 									PK_PEv2_AxisConfigurationSet(dev);
 								}
 								else {
-									rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet=PK_OK\n", __FILE__, __FUNCTION__);
+									rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: 'switch to Position Mode' PK_PEv2_AxisConfigurationSet=PK_OK\n", __FILE__, __FUNCTION__);
 								}
 								usleep(sleepdur);
 							}
@@ -2125,17 +2124,18 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 						dev->PEv2.param1 = i;
 						PK_PEv2_AxisConfigurationGet(dev);
 						POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
+						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: 'Velocity Mode' Axis:%i InPosition[i] == true POSITION_MODE_active[i] = %d \n", __FILE__, __FUNCTION__, i, POSITION_MODE_active[i]);
 						usleep(sleepdur);
 						if (POSITION_MODE_active[i] == true) {
 							velCount[i]++;
 							dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
 							dev->PEv2.param1 = i;
 							if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK) {
-								rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet!=PK_OK\n", __FILE__, __FUNCTION__);
+								rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: 'switch to Velocity Mode' PK_PEv2_AxisConfigurationSet!=PK_OK\n", __FILE__, __FUNCTION__);
 								PK_PEv2_AxisConfigurationSet(dev);
 							}
 							else {
-								rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet=PK_OK\n", __FILE__, __FUNCTION__);
+								rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: 'switch to Velocity Mode' PK_PEv2_AxisConfigurationSet=PK_OK\n", __FILE__, __FUNCTION__);
 							}
 							usleep(sleepdur);
 
@@ -2236,7 +2236,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 								PEv2_deb_axxisout(i) = 1420 + i;
 								last_joint_vel_cmd[i] = *(PEv2_data->PEv2_joint_vel_cmd[i]);
 								if (dev->PEv2.AxesState[i] == PK_PEAxisState_axRUNNING || dev->PEv2.AxesState[i] == PK_PEAxisState_axREADY || dev->PEv2.AxesState[i] == PK_PEAxisState_axHOME) {
-
+									rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axRUNNING || PK_PEAxisState_axREADY || PK_PEAxisState_axHOME\n", __FILE__, __FUNCTION__, i);
 									doMove = true;
 									PEv2_deb_axxisout(i) = 1430 + i;
 								}
