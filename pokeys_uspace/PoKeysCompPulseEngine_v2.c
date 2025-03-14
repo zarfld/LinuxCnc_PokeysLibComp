@@ -2236,7 +2236,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 								PEv2_deb_axxisout(i) = 1420 + i;
 								last_joint_vel_cmd[i] = *(PEv2_data->PEv2_joint_vel_cmd[i]);
 								if (dev->PEv2.AxesState[i] == PK_PEAxisState_axRUNNING || dev->PEv2.AxesState[i] == PK_PEAxisState_axREADY || dev->PEv2.AxesState[i] == PK_PEAxisState_axHOME) {
-
+									rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Axis:%i PK_PEAxisState_axRUNNING || PK_PEAxisState_axREADY || PK_PEAxisState_axHOME\n", __FILE__, __FUNCTION__, i);
 									doMove = true;
 									PEv2_deb_axxisout(i) = 1430 + i;
 								}
