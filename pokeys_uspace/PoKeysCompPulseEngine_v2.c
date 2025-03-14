@@ -2053,7 +2053,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 						PEv2_deb_axxisout(i) = 1100 + i;
 						ReferenceSpeed = VelCmd * StepScale[i];
 						PEv2_deb_axxisout(i) = 1110 + i;
-						ReferencePosition = PosCmd * StepScale[i] + PEv2_data->PEv2_HomeOffsets[i];
+						ReferencePosition = PosCmd * StepScale[i];
 						//	*(PEv2_data->PEv2_PositionSetup[i]) = ReferencePosition;
 						PEv2_deb_axxisout(i) = 1120 + i;
 					}
@@ -2061,7 +2061,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 						PEv2_deb_axxisout(i) = 1200 + i;
 						ReferenceSpeed = VelCmd;
 						PEv2_deb_axxisout(i) = 1210 + i;
-						ReferencePosition = PosCmd + PEv2_data->PEv2_HomeOffsets[i];
+						ReferencePosition = PosCmd;
 						//*(PEv2_data->PEv2_PositionSetup[i]) = ReferencePosition;
 						PEv2_deb_axxisout(i) = 1220 + i;
 					}
