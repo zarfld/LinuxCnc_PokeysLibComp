@@ -1288,21 +1288,6 @@ int32_t PEv2_StatusGet(sPoKeysDevice* dev) {
 				PEv2_PulseEngineStateSetup = PK_PEState_peRUNNING;
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_PulseEngineStateSetup = PK_PEState_peRUNNING\n", __FILE__, __FUNCTION__);
 			}
-			if (dev->PEv2.EmergencyInputPin != 0) {
-				int PinId = dev->PEv2.EmergencyInputPin - 9 - 1;
-				int polarity = dev->PEv2.EmergencySwitchPolarity;
-				if (dev->Pins[PinId].DigitalValueGet == 0 && polarity == false) {
-					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Emergency Switch is pressed PinId: %d polarity:%d \n", __FILE__, __FUNCTION__, PinId, polarity);
-					PEv2_digin_Emergency_in = *(IO_data->Pin[PinId]).digin_in;
-					PEv2_digin_Emergency_in_not = *(IO_data->Pin[PinId]).digin_in_not;
-					PEv2_deb_estop = 6;
-				}
-				else {
-					PEv2_digin_Emergency_in = *(IO_data->Pin[PinId]).digin_in_not;
-					PEv2_digin_Emergency_in_not = *(IO_data->Pin[PinId]).digin_in;
-					PEv2_deb_estop = 7;
-				}
-			}
 
 			break;
 		case PK_PEState_peINTERNAL: // PEv1: Internal motion controller is in use, PEv2: not used
@@ -2405,14 +2390,16 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 	else if (dev->PEv2.EmergencyInputPin != 0) {
 		int PinId = dev->PEv2.EmergencyInputPin - 9 - 1;
 		int polarity = dev->PEv2.EmergencySwitchPolarity;
-		if (dev->Pins[PinId].DigitalValueGet == 0 && polarity == false) {
-			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Emergency Switch is pressed PinId: %d polarity:%d \n", __FILE__, __FUNCTION__, PinId, polarity);
+		if (polarity == false) {
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Emergency Switch PinId: %d polarity:%d \n", __FILE__, __FUNCTION__, PinId, polarity);
 			PEv2_digin_Emergency_in = *(IO_data->Pin[PinId]).digin_in;
 			PEv2_digin_Emergency_in_not = *(IO_data->Pin[PinId]).digin_in_not;;
 
 			PEv2_deb_estop = 10;
 		}
 		else {
+			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Emergency Switch inverted PinId: %d polarity:%d \n", __FILE__, __FUNCTION__, PinId, polarity);
+			
 			PEv2_digin_Emergency_in = *(IO_data->Pin[PinId]).digin_in_not;
 			PEv2_digin_Emergency_in_not = *(IO_data->Pin[PinId]).digin_in;
 			PEv2_deb_estop = 11;
