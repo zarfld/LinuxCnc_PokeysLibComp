@@ -2070,6 +2070,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 					for the last short move before in-position is reached switch to positionmode for more precise positioning
 					*/
 					if (InPosition[i] && (dev->PEv2.CurrentPosition[i] != (int32_t)ReferencePosition)) {
+						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Axis:%i InPosition[i] && (dev->PEv2.CurrentPosition[i] (%d) != (int32_t)ReferencePosition (%d)) \n", __FILE__, __FUNCTION__, i, dev->PEv2.CurrentPosition[i], (int32_t)ReferencePosition);
 						InPosition[i] = false;
 					}
 					if (InPosition[i] == false) {
