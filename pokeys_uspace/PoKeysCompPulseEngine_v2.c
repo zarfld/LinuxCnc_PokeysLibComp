@@ -1578,7 +1578,7 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 			PEv2_deb_axxisout(i) = 200 + i;
 			StepScale[i] = PEv2_data->PEv2_stepgen_STEP_SCALE[i];
 			PEv2_deb_axxisout(i) = 210 + i;
-			// *(PEv2_data->PEv2_CurrentPosition[i]) = dev->PEv2.CurrentPosition[i];
+			*(PEv2_data->PEv2_CurrentPosition[i]) = dev->PEv2.CurrentPosition[i];
 			intCurrentPosition[i] = dev->PEv2.CurrentPosition[i];
 			PEv2_deb_axxisout(i) = 220 + i;
 			PEv2_digin_Error_in(i) = Get_BitOfByte(bm_ErrorStatus, i);
@@ -1836,7 +1836,8 @@ void PKPEv2_Update(sPoKeysDevice* dev, bool HAL_Machine_On) {
 
 				PosFb[i] = (intCurrentPosition[i] / PEv2_data->PEv2_PositionScale[i]) - PEv2_data->PEv2_PositionOffset[i];
 
-				*(PEv2_data->PEv2_joint_pos_fb[i]) = PosFb[i];
+				*(PEv2_data->PEv2_joint_pos_fb[i]) = ((float)intCurrentPosition[i] / PEv2_data->PEv2_PositionScale[i]) - PEv2_data->PEv2_PositionOffset[i];
+
 			}
 			else {
 				// when homing, use the command position as feedback
