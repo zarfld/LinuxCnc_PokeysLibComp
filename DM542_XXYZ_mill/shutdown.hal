@@ -1,2 +1,9 @@
 # Include your shutdown HAL commands here
 # This file will not be overwritten when you run PNCconf again
+
+setp halui.estop.activate 0
+loadusr -W start_delay_5000
+setp halui.estop.activate 1
+
+setp halui.estop.activate 0
+setp halui.estop.activate 1
