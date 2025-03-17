@@ -12,6 +12,9 @@ set(POKEYSLIB_MAKEFILE ${POKEYSLIB_DIR}/Makefile.noqmake)
 set(SUBMAKEFILE_DIR ${CMAKE_SOURCE_DIR}/pokeys_uspace)
 set(SUBMAKEFILE ${SUBMAKEFILE_DIR}/Submakefile)
 
+# Define a temporary install location
+set(POKEYSLIB_INSTALL_DIR ${CMAKE_BINARY_DIR}/pokeyslib_install)
+
 # Clone PoKeysLib if it doesn't exist
 if(NOT EXISTS ${POKEYSLIB_DIR})
     message(STATUS "Cloning PoKeysLib into ${POKEYSLIB_DIR}")
@@ -34,6 +37,16 @@ add_custom_target(pokeyslib ALL
     COMMAND ${MAKE_EXECUTABLE} -f ${POKEYSLIB_MAKEFILE}
     WORKING_DIRECTORY ${POKEYSLIB_DIR}
     COMMENT "Building PoKeysLib using Makefile.noqmake"
+)
+
+# Post-build step: Copy `libPoKeys.so` to a local install dir instead of `/usr/lib/`
+add_custom_command(
+    TARGET pokeyslib POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${POKEYSLIB_INSTALL_DIR}/usr/lib
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${POKEYSLIB_INSTALL_DIR}/usr/include
+    COMMAND ${CMAKE_COMMAND} -E copy ${POKEYSLIB_DIR}/libPoKeys.so ${POKEYSLIB_INSTALL_DIR}/usr/lib/
+    COMMAND ${CMAKE_COMMAND} -E copy ${POKEYSLIB_DIR}/PoKeysLib.h ${POKEYSLIB_INSTALL_DIR}/usr/include/
+    COMMENT "Copying PoKeysLib artifacts to ${POKEYSLIB_INSTALL_DIR}"
 )
 
 include_directories(
