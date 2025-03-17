@@ -553,12 +553,14 @@ int pokeys_1joint_state_machine(int joint_num){
             /* Pokeys resets encoder position to zeros */
             H[joint_num].homing = 1;
             H[joint_num].home_state = HOME_SET_INDEX_POSITION;
+            H[joint_num].index_enable = 1;
             break;
         
         case PK_PEAxisState_axHOMINGWaitFINALMOVE:
             rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homing wait final move\n", joint_num);
             /* waiting for sync before Pokeys moves to homeposition */
             H[joint_num].homing = 1;
+            H[joint_num].index_enable = 1;
             joints_in_sequence = 0;
             ready_in_sequence = 0;
 
@@ -604,6 +606,7 @@ int pokeys_1joint_state_machine(int joint_num){
             /* Pokeys moves to homeposition */
             H[joint_num].homing = 1;
             H[joint_num].home_state = HOME_FINAL_MOVE_WAIT;
+            H[joint_num].index_enable = 1;
             break;
 
         case PK_PEAxisState_axHOME:
@@ -611,7 +614,7 @@ int pokeys_1joint_state_machine(int joint_num){
             /* Axis is homed */
             joints_in_sequence = 0;
            int homed_in_sequence = 0;
-      
+           H[joint_num].index_enable = 0;
             for (int jj = 0; jj < all_joints; jj++)
             {
                 if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence))
@@ -911,6 +914,7 @@ void write_homing_out_pins(int njoints)
         *(addr->homing) = H[jno].homing;                     // OUT
         *(addr->homed) = H[jno].homed;                       // OUT
         *(addr->home_state) = H[jno].home_state;             // OUT
+        *(addr->index_enable) = H[jno].index_enable;             // OUT
         org_cmd = *(addr->PEv2_AxesCommand);
         *(addr->PEv2_AxesCommand) = H[jno].PEv2_AxesCommand; // OUT
         if (org_cmd != H[jno].PEv2_AxesCommand)
