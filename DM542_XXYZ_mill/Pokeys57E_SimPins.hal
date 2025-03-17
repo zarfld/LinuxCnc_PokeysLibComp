@@ -11,7 +11,7 @@
 
 #Pin12 -> Pin37 : Y min
 #Pin13 -> Pin38 : Y home
-#Pin14 -> Pin38 : Z min
+#Pin14 -> Pin39 : Z min
 #Pin15 -> Pin40 : Z Home
 
 #PWM -> Analog in
@@ -24,7 +24,7 @@
 #PE1 -> PoStep -> Stepper -> Encoder -> FastEncoder1 (pin1 & Pin2)
 #PE3 -> PoStep -> Stepper -> Encoder -> FastEncoder2 (pin5 & Pin6)
 # first install nine comparators
-loadrt wcomp names=wcomp_xmin,wcomp_xhome,wcomp_x2min, wcomp_x2home,wcomp_ymin, wcomp_yhome,wcomp_zmin, wcomp_zhome
+loadrt wcomp names=wcomp_xmin,wcomp_xhome,wcomp_x2min,wcomp_x2home,wcomp_ymin,wcomp_yhome,wcomp_zmin,wcomp_zhome
 
 # add comparators to servo thread so they will be evaluated
 # every servo period
@@ -39,21 +39,25 @@ addf wcomp_zhome servo-thread
 
 # connect position feedback from step generators
 # to window comparators
-net Xpos-fb => wcomp_xmin.in
-net Xpos-fb => wcomp_xmax.in
-net Xpos-fb => wcomp_xhome.in
-net Ypos-fb => wcomp_ymin.in
-net Ypos-fb => wcomp_ymax.in
-net Ypos-fb => wcomp_yhome.in
-net Zpos-fb => wcomp_zmin.in
-net Zpos-fb => wcomp_zmax.in
-net Zpos-fb => wcomp_zhome.in
+net x-pos-fb => wcomp_xmin.in
+net x-pos-fb => wcomp_xhome.in
+net x2-pos-fb => wcomp_x2min.in
+net x2-pos-fb => wcomp_x2home.in
+net y-pos-fb => wcomp_ymin.in
+net y-pos-fb => wcomp_yhome.in
+net z-pos-fb => wcomp_zmin.in
+net z-pos-fb => wcomp_zhome.in
 
 # connect simulated switch outputs to motion controller
 net XminSim wcomp_xmin.out => pokeys.0.digout.22.out
 net XhomeSim wcomp_xhome.out => pokeys.0.digout.23.out
-net X2minSim wcomp_x2in.out => pokeys.0.digout.24.out
+net X2minSim wcomp_x2min.out => pokeys.0.digout.24.out
 net X2homeSim wcomp_x2home.out => pokeys.0.digout.25.out
+
+setp pokeys.0.pins.22.PinFunction 4
+setp pokeys.0.pins.23.PinFunction 4
+setp pokeys.0.pins.24.PinFunction 4
+setp pokeys.0.pins.25.PinFunction 4
 
 #net pokeys.0.PEv2.0.digin.LimitN.in  => joint.0.neg-lim-sw-in
 #net pokeys.0.PEv2.1.digin.LimitP.in => joint.0.pos-lim-sw-in
@@ -62,6 +66,9 @@ net X2homeSim wcomp_x2home.out => pokeys.0.digout.25.out
 net YminSim wcomp_ymin.out => pokeys.0.digout.11.out
 net YhomeSim wcomp_yhome.out => pokeys.0.digout.12.out
 
+setp pokeys.0.pins.11.PinFunction 4
+setp pokeys.0.pins.12.PinFunction 4
+
 #net pokeys.0.PEv2.1.digin.LimitN.in => joint.1.neg-lim-sw-in
 #net pokeys.0.PEv2.1.digin.LimitP.in => joint.1.pos-lim-sw-in
 #net pokeys.0.PEv2.1.digin.Home.in => joint.1.home-sw-in
@@ -69,52 +76,55 @@ net YhomeSim wcomp_yhome.out => pokeys.0.digout.12.out
 net ZminSim wcomp_zmin.out => pokeys.0.digout.13.out
 net ZhomeSim wcomp_zhome.out => pokeys.0.digout.14.out
 
-net pokeys.0.PEv2.2.digin.LimitN.in => joint.2.neg-lim-sw-in
-net pokeys.0.PEv2.2.digin.LimitP.in => joint.2.pos-lim-sw-in
-net pokeys.0.PEv2.2.digin.Home.in => joint.2.home-sw-in
+setp pokeys.0.pins.13.PinFunction 4
+setp pokeys.0.pins.14.PinFunction 4
+
+#net pokeys.0.PEv2.2.digin.LimitN.in => joint.2.neg-lim-sw-in
+#net pokeys.0.PEv2.2.digin.LimitP.in => joint.2.pos-lim-sw-in
+#net pokeys.0.PEv2.2.digin.Home.in => joint.2.home-sw-in
 
 # configure the points at which the simulated switches trip
 # X axis first
 # set min limit switch to trip at -10.2, release at -1000
-setp wcomp_xmin.max -10.2
+setp wcomp_xmin.max -1.2
 setp wcomp_xmin.min -1000
 # set max limit switch to trip at +10.2, release at +10.21
-setp wcomp_xmax.min 10.20
-setp wcomp_xmax.max 10.21
+#setp wcomp_xmax.min 10.20
+#setp wcomp_xmax.max 10.21
 # set home switch to trip at 9.5 and release at 9.75
-setp wcomp_xhome.min 9.5
-setp wcomp_xhome.max 9.75
+setp wcomp_xhome.min 851
+setp wcomp_xhome.max 859
 
 # X2 axis
 # set min limit switch to trip at -10.2, release at -1000
-setp wcomp_x2min.max -10.1
+#setp wcomp_x2min.max -1.1
 setp wcomp_x2min.min -1000
 # set max limit switch to trip at +10.2, release at +10.21
-setp wcomp_x2max.min 10.23
-setp wcomp_x2max.max 10.25
+#setp wcomp_x2max.min 10.23
+#setp wcomp_x2max.max 10.25
 # set home switch to trip at 9.5 and release at 9.75
-setp wcomp_x2home.min 9.55
-setp wcomp_x2home.max 9.8
+setp wcomp_x2home.min 852
+setp wcomp_x2home.max 860
 
 # Y axis
 # set min limit switch to trip at -10.2, release at -1000
-setp wcomp_ymin.max -10.2
+setp wcomp_ymin.max -1.2
 setp wcomp_ymin.min -1000
 # set max limit switch to trip at +10.2, release at +10.21
-setp wcomp_ymax.min 10.20
-setp wcomp_ymax.max 10.21
+#setp wcomp_ymax.min 10.20
+#setp wcomp_ymax.max 10.21
 # set home switch to trip at 9.5 and release at 9.75
-setp wcomp_yhome.min 9.5
-setp wcomp_yhome.max 9.75
+setp wcomp_yhome.min 351
+setp wcomp_yhome.max 355
 
 # Z axis
 # set min limit switch to trip at -2.1, release at -1000
-setp wcomp_zmin.max -2.1
+setp wcomp_zmin.max -102
 setp wcomp_zmin.min -1000
 # set max limit switch to trip at +4.05,release at +5
-setp wcomp_zmax.min 4.05
-setp wcomp_zmax.max 5
+#setp wcomp_zmax.min 4.05
+#setp wcomp_zmax.max 5
 # set home switch to trip at 3.9 and release at 4.1
-setp wcomp_zhome.min 3.9
+setp wcomp_zhome.min 0.1
 setp wcomp_zhome.max 4.1
 
