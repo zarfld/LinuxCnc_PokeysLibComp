@@ -1,0 +1,109 @@
+component pokeys "Real-time PoKeys IO driver (Ethernet)";
+license "GPL"; // indicates GPL v2 or later
+
+// Pins und Parameter deklarieren (identisch zu pokeys_uspace)
+pin out bit connected "Connection status (true wenn verbunden)";
+pin out bit connected.usb "USB verbunden (immer 0 in RT)";
+pin out bit connected.udp "UDP (Ethernet) verbunden";
+pin out bit err    "Fehlerstatus";
+pin out bit alive  "Heartbeat";
+param rw u32 devSerial "Seriennummer des PoKeys-Geräts";
+pin in  bit machine_is_on "Maschinensignal (vom LinuxCNC gesetzt)";
+// ... Dynamische Arrays für I/O:
+pin out bit in-# [55]  "digitale Eingänge vom Gerät";
+pin in  bit out-# [55] "digitale Ausgänge zum Gerät";
+
+pin in u32 axis_cmd#[8] "Achsen-Sollwerte (Position/Speed)";
+pin in u32 analog-in-#[4] "Analog-Eingänge vom Gerät";
+pin out u32 analog_out#[4] "Analog-Ausgänge zum Gerät";
+// (MAXPINS wird zur Laufzeit durch info.PinCount begrenzt)
+// Analog-Input/Output-Pins, Encoder-Pins, PoNET usw. werden ähnlich definiert...
+function servo_thread;
+function slow_thread;
+;;
+#include "PoKeysLib.h"
+#include "hal.h"
+#include <stdint.h>
+
+static sPoKeysDevice *dev = NULL;
+static int counter = 0;   // Zähler für Slow-Updates
+
+FUNCTION(servo_thread) {  // wird mit Servo-Thread-Periode aufgerufen
+    if (!dev) {
+        // Noch keine Verbindung: Versuche verbinden, wenn Serial angegeben
+        if (devSerial != 0) {
+            dev = PK_ConnectToDeviceWSerial_UDP(devSerial, 1000);  // 1s Timeout
+            if (dev) {
+                connected = 1;
+                connected_udp = 1;
+                err = 0;
+                // Gerätekonfiguration auslesen, Info-Pins setzen:
+                
+               
+                // ... weitere info.* aus dev oder PK_* Funktionen
+                // Optionale: Ethernet-Kommunikation optimieren
+                PK_SetEthernetRetryCountAndTimeout(dev, 1, 1, period/1000000); 
+            } else {
+                connected = 0;
+                connected_udp = 0;
+                err = 1;
+            }
+        }
+        return; // ohne Gerät keine weiteren Aktionen
+    }
+    // Gerät verbunden: Pulse-Engine-Updates
+    // Beispiel: Achsen-Sollwerte übertragen
+    
+    for (int axis=0; axis<dev->PEv2.info.nrOfAxes; ++axis) {
+        double cmd = axis_cmd(axis);     // HAL-Pin: Achse Sollposition/Speed
+        dev->PEv2.ReferencePositionSpeed[axis]= cmd; 
+        // alternativ: PK_PEv2_SetAxisPosition(dev, axis, cmd)
+    }
+    // Evtl. Achs Enable/Disable aus machine_is_on steuern:
+    if (machine_is_on) {
+    //    PK_PEv2_Start(dev);   // PulseEngine Bewegung aktivieren, wenn Maschine an
+    } else {
+    //    PK_PEv2_Stop(dev);    // Nothalt aller Achsen
+    }
+    // Alive-Heartbeat toggeln (z.B. alle 50ms)
+    static int hb_counter = 0;
+    if (++hb_counter >= 50 * (1000000.0 / period)) {  // period in ns
+        alive = !alive;
+        hb_counter = 0;
+    }
+}
+
+FUNCTION(slow_thread) {  // wird ebenfalls im Servo-Thread-Kontext aufgerufen
+    if (!dev) return;
+
+    int info_PinCount = dev->info.iPinCount;
+    // slow-Loop nur alle 20ms (50Hz) ausführen:
+    if (++counter < (20000000 / period)) {  // period [ns], 20ms = 20e6 ns
+        return;
+    }
+    counter = 0;
+    // *** Ein-/Ausgänge aktualisieren *** 
+    // Eingänge lesen:
+    if (PK_DigitalIOGet(dev) == PK_OK) {
+        err = 0;
+        for (int i=0; i < 55; ++i) {
+            in(i) = dev->Pins[i].DigitalValueGet;   // digitaler Eingangswert
+        }
+    } else {
+        err = 1;
+    }
+    if (PK_AnalogIOGet(dev) == PK_OK) {
+
+    // Ausgänge schreiben (nur wenn Werte geändert oder regelmäßig, um Watchdog im Gerät zu bedienen):
+    for (int i=0; i < dev->info.iPinCount; ++i) {
+        dev->Pins[i].DigitalValueSet = out(i); 
+    }
+    PK_DigitalIOSet(dev);  // neue Ausgangswerte senden
+    // Falls PWM/Analog-Ausgänge vorhanden:
+    // dev->PWM.channels[ch].value = analog_out[ch]; PK_PWMSet(dev);
+    // PoNET-Module abfragen:
+    //PK_PoNETGetValues(dev);
+    // z.B. Zustand eines PoNET Keyboards in HAL-Pins schreiben...
+    // PoExtBus aktualisieren (Outputs schreiben, Inputs lesen falls vorhanden):
+    //PK_PoExtBusUpdate(dev);
+}

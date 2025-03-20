@@ -50,6 +50,21 @@
             "detail": "Compile and install the Pokeys component."
         },
         {
+            "label": "Compile RT/Pokeys Component",
+            "type": "shell",
+            "command": "sudo halcompile --install --extra-link-args=\"-lPoKeys\" --extra-compile-args=\"-v -I/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_rt/\" pokeys_rt/pokeys.comp",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "dependsOn": [
+                "Install PokeysLib",
+                "Copy PoKeysComp.h"
+            ],
+            "problemMatcher": [],
+            "detail": "Compile and install the Pokeys component."
+        },
+        {
             "label": "Build Pokeys Userspace Component",
             "type": "shell",
             "command": "make",
