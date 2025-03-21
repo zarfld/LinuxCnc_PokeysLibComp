@@ -399,8 +399,7 @@ int homing_init(int id,
                 double servo_period,
                 int n_joints,
                 int n_extrajoints,
-                emcmot_joint_t *pjoints)
-{
+                emcmot_joint_t *pjoints) {
     joints = pjoints;
     all_joints = n_joints;
     return makepins(id, n_joints);
@@ -439,8 +438,7 @@ int homing_init(int id,
     }
 }
 
-bool get_sequence_homed(int seq)
-{
+bool get_sequence_homed(int seq){
     one_sequence_home_data_t addr = (sequence_home_data.shd[seq]);
     int joints_in_sequence = addr.joints_in_sequence;
 
@@ -456,8 +454,7 @@ bool get_sequence_homed(int seq)
     return 1;
 }
 
-bool get_sequence_homing(int seq)
-{
+bool get_sequence_homing(int seq){
     one_sequence_home_data_t addr = (sequence_home_data.shd[seq]);
     int joints_in_sequence = addr.joints_in_sequence;
 
@@ -818,8 +815,7 @@ void check_home_sequence(int seq){
     }
 }
 
-bool get_allhomed()
-{
+bool get_allhomed(){
    /* int ret = 1;
     for (int jno = 0; jno < EMCMOT_MAX_JOINTS; jno++)
     {
@@ -838,39 +834,36 @@ bool get_allhomed()
     return allhomed;
     //return ret ? 1 : 0;
 }
-bool get_homed(int jno)
-{
+bool get_homed(int jno){
     if(H[jno].homed==1){
         rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_homed homed %d\n", H[jno].homed);
     }
     return H[jno].homed ? 1 : 0;
 }
-bool get_home_is_idle(int jno)
-{
+bool get_home_is_idle(int jno){
     return H[jno].home_state == HOME_IDLE ? 1 : 0;
 }
-bool get_home_is_synchronized(int jno)
-{
+bool get_home_is_synchronized(int jno){
     return H[jno].home_is_synchronized ? 1 : 0;
 }
-bool get_home_needs_unlock_first(int jno)
-{
+bool get_home_needs_unlock_first(int jno){
     return (H[jno].home_flags & HOME_UNLOCK_FIRST) ? 1 : 0;
 }
-int get_home_sequence(int jno)
-{
+int get_home_sequence(int jno){
     return H[jno].home_sequence;
 }
-bool get_homing(int jno)
-{
+bool get_homing(int jno){
     one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
 
     return *addr->homing ? 1 : 0;
 }
 
-bool get_homing_at_index_search_wait(int jno) { return 0; }
-bool get_homing_is_active()
-{
+bool get_homing_at_index_search_wait(int jno) { 
+   // return 0; 
+   return H[jno].index_enable ? 1 : 0;
+}
+
+bool get_homing_is_active(){
     if (homing_active != homing_active_old)
     {
         rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_homing_is_active ==  %d\n", homing_active);
@@ -878,12 +871,10 @@ bool get_homing_is_active()
     }
     return homing_active;
 }
-bool get_index_enable(int jno)
-{
+bool get_index_enable(int jno){
     return H[jno].index_enable ? 1 : 0;
 }
-void read_homing_in_pins(int njoints)
-{
+void read_homing_in_pins(int njoints){
     int jno;
     int org_state;
     one_joint_home_data_t *addr;
@@ -903,8 +894,7 @@ void read_homing_in_pins(int njoints)
     return;
 }
 
-void write_homing_out_pins(int njoints)
-{
+void write_homing_out_pins(int njoints){
     int jno;
     one_joint_home_data_t *addr;
     int org_cmd;
@@ -926,8 +916,7 @@ void write_homing_out_pins(int njoints)
     return;
 }
 
-void do_home_all(void)
-{
+void do_home_all(void){
     if (!get_homing_is_active())
     {
         sequence_state = HOME_SEQUENCE_START;
@@ -1455,8 +1444,7 @@ void set_joint_homing_params(int jno,
                              double home_latch_vel,
                              int home_flags,
                              int home_sequence,
-                             bool volatile_home)
-{
+                             bool volatile_home){
     rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: set_joint_homing_params(%d) offset:%f home:%f home_final_vel:%f home_search_vel:%f home_latch_vel:%f home_flags:%d home_sequence:%d volatile_home:%d\n", jno, offset, home, home_final_vel, home_search_vel, home_latch_vel, home_flags, home_sequence, volatile_home);
     H[jno].offset = offset;
     H[jno].home = home;
@@ -1473,8 +1461,7 @@ void set_joint_homing_params(int jno,
 void update_joint_homing_params(int jno,
                                 double offset,
                                 double home,
-                                int home_sequence)
-{
+                                int home_sequence){
     rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: update_joint_homing_params(%d) offset:%f home:%f home_sequence:%d\n", jno, offset, home, home_sequence);
     H[jno].offset = offset;
     H[jno].home = home;
