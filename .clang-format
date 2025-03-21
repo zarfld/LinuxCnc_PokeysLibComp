@@ -1,21 +1,20 @@
 ---
-BasedOnStyle: LLVM # LLVM is closest to LinuxCNC style
-IndentWidth: 4 # Use 4 spaces for indentation
-TabWidth: 8 # Tabs correspond to 8 spaces
-UseTab: Never # Always use spaces instead of tabs
-BreakBeforeBraces: Attach # Keep opening braces on the same line
-AllowShortIfStatementsOnASingleLine: false # No single-line if statements
-AllowShortLoopsOnASingleLine: false # No single-line loops
-ColumnLimit: 80 # Enforce max line width of 80 chars
-SpaceBeforeParens: ControlStatements # Space before 'if', 'while', 'for' conditions
-PointerAlignment: Right # Align pointer/reference to variable name (e.g., `int* ptr`)
-AlignConsecutiveDeclarations: false # Do not align variable declarations
-AlignTrailingComments: true # Align trailing comments for readability
-IndentCaseLabels: true # Indent case labels inside switch statements
-SortIncludes: false # Preserve include order
-SpacesInParentheses: false # No spaces inside parentheses
-SpacesInCStyleCast: false # No extra space in C-style casts
-Cpp11BracedListStyle: false # Keep traditional C-style list formatting
-ReflowComments: false # Do not automatically reflow comments
-AllowShortFunctionsOnASingleLine: None # Enforce multiline functions
-FixNamespaceComments: true # Ensure correct closing comments for namespaces
+BasedOnStyle: LLVM
+IndentWidth: 4
+TabWidth: 8
+UseTab: Never
+BreakBeforeBraces: Attach
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+ColumnLimit: 80
+SpaceBeforeParens: ControlStatements
+PointerAlignment: Right
+AlignConsecutiveDeclarations: false
+AlignTrailingComments: true
+IndentCaseLabels: true
+SortIncludes: false
+SpacesInParentheses: false
+Cpp11BracedListStyle: false
+ReflowComments: false
+AllowShortFunctionsOnASingleLine: None
+FixNamespaceComments: true
