@@ -588,10 +588,10 @@ typedef struct {
                             //                        bit 1: 4x sampling
                             //                        bit 2: 2x sampling
                             //                        bit 3: reserved
-        //                        bit 4: direct key mapping for direction A
-        //                        bit 5: mapped to macro for direction A
-        //                        bit 6: direct key mapping for direction B
-        //                        bit 7: mapped to macro for direction B
+    //                        bit 4: direct key mapping for direction A
+    //                        bit 5: mapped to macro for direction A
+    //                        bit 6: direct key mapping for direction B
+    //                        bit 7: mapped to macro for direction B
     uint8_t channelApin;     // Channel A encoder pin
     uint8_t channelBpin;     // Channel B encoder pin
     uint8_t dirAkeyCode;     // USB keyboard key code for direction A
@@ -813,10 +813,10 @@ typedef struct {
     uint16_t TCPtimeout;       // TCP timeout value
     uint8_t
         AdditionalNetworkOptions; // Additional network options: bits 7:4 are 0xA, lower are the following:
-        // - bit 3: reserved
-        // - bit 2: disable IP configuration via UDP broadcast
-        // - bit 1: disable automatic device IP configuration during discovery
-        // - bit 0: disable automatic device discovery mechanism
+    // - bit 3: reserved
+    // - bit 2: disable IP configuration via UDP broadcast
+    // - bit 1: disable automatic device IP configuration during discovery
+    // - bit 0: disable automatic device discovery mechanism
     uint8_t DHCP; // DHCP setting of the device
 } sPoKeysNetworkDeviceInfo;
 
