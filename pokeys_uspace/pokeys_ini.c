@@ -15,7 +15,8 @@ void get_pokeys_ini_path(int device_id, char *buffer, size_t size) {
     }
 
     // Verzeichnis extrahieren
-    strncpy(buffer, ini_path, size);
+    strncpy(buffer, ini_path, size - 1);
+    buffer[size - 1] = '\0'; // Ensure null-termination
     char *last_slash = strrchr(buffer, '/');
     if (last_slash) {
         *last_slash = '\0'; // Trenne den Dateinamen ab
@@ -26,7 +27,8 @@ void get_pokeys_ini_path(int device_id, char *buffer, size_t size) {
 }
 
 void set_pokeys_ini_path(const char *path) {
-    strncpy(pokeys_ini_path, path, sizeof(pokeys_ini_path));
+    strncpy(pokeys_ini_path, path, sizeof(pokeys_ini_path) - 1);
+    pokeys_ini_path[sizeof(pokeys_ini_path) - 1] = '\0'; // Ensure null-termination
 }
 
 // **2. INI-Datei nach Integer-Wert durchsuchen**
@@ -77,7 +79,8 @@ void ini_read_string(const char *section, const char *key, char *buffer,
                      size_t size, const char *default_value) {
     FILE *fp = fopen(pokeys_ini_path, "r");
     if (!fp) {
-        strncpy(buffer, default_value, size);
+        strncpy(buffer, default_value, size - 1);
+        buffer[size - 1] = '\0'; // Ensure null-termination
         return;
     }
 
@@ -88,14 +91,16 @@ void ini_read_string(const char *section, const char *key, char *buffer,
             in_section = (strncmp(line, section, strlen(section)) == 0);
         }
         if (in_section && strstr(line, key) && strchr(line, '=')) {
-            strncpy(buffer, strchr(line, '=') + 1, size);
+            strncpy(buffer, strchr(line, '=') + 1, size - 1);
+            buffer[size - 1] = '\0'; // Ensure null-termination
             buffer[strcspn(buffer, "\r\n")] = 0; // Entferne Newline-Zeichen
             fclose(fp);
             return;
         }
     }
     fclose(fp);
-    strncpy(buffer, default_value, size);
+    strncpy(buffer, default_value, size - 1);
+    buffer[size - 1] = '\0'; // Ensure null-termination
 }
 
 // **5. INI-Werte schreiben (ersetzen oder hinzufügen)**

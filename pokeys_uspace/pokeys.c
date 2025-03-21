@@ -1051,7 +1051,7 @@ sPoKeysDevice *TryConnectToDevice(uint32_t intSerial) {
         i_Timeout = timeout_ms;
     }
     if (intSerial != 0) {
-        retDev == PK_ConnectToDevice(0); // waits for usb device
+        retDev = PK_ConnectToDevice(0); // waits for usb device
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: intSerial=%d\n",
                         __FILE__, __FUNCTION__, intSerial);
         if (retDev == NULL) {
@@ -1416,7 +1416,7 @@ void user_mainloop(void) {
             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: initdone: %s\n",
                             __FILE__, __FUNCTION__,
                             initdone ? "true" : "false");
-            while (dev == NULL | initdone != 1) {
+            while (dev == NULL || initdone != 1) {
                 Loop_Frequ = rtc_loop_frequ;
                 uint32_t lastConectionTypeTried = 0;
 
@@ -1700,7 +1700,7 @@ void user_mainloop(void) {
                         sleepdur = 50;
                     }
 
-                    if (rtc_latencycheck_set = -1) {
+                    if (rtc_latencycheck_set == -1) {
                         rtc_latencyCounter = 0;
                         rtc_latencycheck_set = dev->RTC.SEC;
                     }
