@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static char pokeys_ini_path[MAX_PATH_LENGTH] = {0};
+static char pokeys_ini_path[MAX_PATH_LENGTH] = { 0 };
 extern uint32_t device_id;
 extern bool ApplyIniSettings;
 
@@ -32,7 +32,8 @@ void set_pokeys_ini_path(const char *path) {
 // **2. INI-Datei nach Integer-Wert durchsuchen**
 int ini_read_int(const char *section, const char *key, int default_value) {
     FILE *fp = fopen(pokeys_ini_path, "r");
-    if (!fp) return default_value;
+    if (!fp)
+        return default_value;
 
     char line[256];
     int in_section = 0;
@@ -50,9 +51,11 @@ int ini_read_int(const char *section, const char *key, int default_value) {
 }
 
 // **3. INI-Datei nach Float-Wert durchsuchen**
-float ini_read_float(const char *section, const char *key, float default_value) {
+float ini_read_float(const char *section, const char *key,
+                     float default_value) {
     FILE *fp = fopen(pokeys_ini_path, "r");
-    if (!fp) return default_value;
+    if (!fp)
+        return default_value;
 
     char line[256];
     int in_section = 0;
@@ -70,7 +73,8 @@ float ini_read_float(const char *section, const char *key, float default_value) 
 }
 
 // **4. INI-Datei nach String durchsuchen**
-void ini_read_string(const char *section, const char *key, char *buffer, size_t size, const char *default_value) {
+void ini_read_string(const char *section, const char *key, char *buffer,
+                     size_t size, const char *default_value) {
     FILE *fp = fopen(pokeys_ini_path, "r");
     if (!fp) {
         strncpy(buffer, default_value, size);
@@ -97,7 +101,8 @@ void ini_read_string(const char *section, const char *key, char *buffer, size_t 
 // **5. INI-Werte schreiben (ersetzen oder hinzufügen)**
 void ini_write_int(const char *section, const char *key, int value) {
     FILE *fp = fopen(pokeys_ini_path, "a"); // Anhängen, wenn Datei existiert
-    if (!fp) return;
+    if (!fp)
+        return;
 
     fprintf(fp, "[%s]\n%s=%d\n", section, key, value);
     fclose(fp);
@@ -105,7 +110,8 @@ void ini_write_int(const char *section, const char *key, int value) {
 
 void ini_write_float(const char *section, const char *key, float value) {
     FILE *fp = fopen(pokeys_ini_path, "a");
-    if (!fp) return;
+    if (!fp)
+        return;
 
     fprintf(fp, "[%s]\n%s=%.2f\n", section, key, value);
     fclose(fp);
@@ -113,7 +119,8 @@ void ini_write_float(const char *section, const char *key, float value) {
 
 void ini_write_string(const char *section, const char *key, const char *value) {
     FILE *fp = fopen(pokeys_ini_path, "a");
-    if (!fp) return;
+    if (!fp)
+        return;
 
     fprintf(fp, "[%s]\n%s=%s\n", section, key, value);
     fclose(fp);

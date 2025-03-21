@@ -198,10 +198,7 @@ enum ePK_I2C_STATUS {
     PK_I2C_STAT_IN_PROGRESS = 0x10
 };
 
-enum ePK_LCD_MODE {
-    PK_LCD_MODE_DIRECT = 0,
-    PK_LCD_MODE_BUFFERED = 1
-};
+enum ePK_LCD_MODE { PK_LCD_MODE_DIRECT = 0, PK_LCD_MODE_BUFFERED = 1 };
 
 typedef struct {
     uint32_t iPinCount;
@@ -420,9 +417,9 @@ typedef struct {
 typedef struct {
     uint32_t PWMperiod;
     uint32_t reserved;
-    uint32_t* PWMduty;
-    uint8_t* PWMenabledChannels;
-    uint8_t* PWMpinIDs;
+    uint32_t *PWMduty;
+    uint8_t *PWMenabledChannels;
+    uint8_t *PWMpinIDs;
 } sPoKeysPWM;
 
 typedef struct {
@@ -601,23 +598,23 @@ typedef struct {
 } sPoKeysFailsafeSettings;
 
 typedef struct {
-    void* devHandle;
-    void* devHandle2;
+    void *devHandle;
+    void *devHandle2;
     sPoKeysDevice_Info info;
     sPoKeysDevice_Data DeviceData;
-    sPoKeysNetworkDeviceInfo* netDeviceData;
-    sPoKeysPinData* Pins;
-    sPoKeysEncoder* Encoders;
+    sPoKeysNetworkDeviceInfo *netDeviceData;
+    sPoKeysPinData *Pins;
+    sPoKeysEncoder *Encoders;
     sMatrixKeyboard matrixKB;
     sPoKeysPWM PWM;
-    sPoKeysMatrixLED* MatrixLED;
+    sPoKeysMatrixLED *MatrixLED;
     sPoKeysLCD LCD;
     sPoKeysPEv2 PEv2;
     sPoKeysPoStepInterface PoSteps;
     sPoNETmodule PoNETmodule;
     sPoILStatus PoIL;
     sPoKeysRTC RTC;
-    sPoKeysEasySensor* EasySensors;
+    sPoKeysEasySensor *EasySensors;
     sPoKeysOtherPeripherals otherPeripherals;
     sPoKeysFailsafeSettings failsafeSettings;
     uint8_t FastEncodersConfiguration;
@@ -625,7 +622,7 @@ typedef struct {
     uint8_t UltraFastEncoderConfiguration;
     uint8_t UltraFastEncoderOptions;
     uint32_t UltraFastEncoderFilter;
-    uint8_t* PoExtBusData;
+    uint8_t *PoExtBusData;
     uint8_t connectionType;
     uint8_t connectionParam;
     uint8_t requestID;
@@ -637,13 +634,13 @@ typedef struct {
     uint8_t response[68];
     uint8_t multiPartData[448];
     uint64_t reserved64;
-    uint8_t* multiPartBuffer;
+    uint8_t *multiPartBuffer;
 } sPoKeysDevice;
 
 // Mocked PoKeysLib functions
 
 class PoKeysLibMock {
-public:
+  public:
     std::unordered_map<uint8_t, uint8_t> digital_inputs;
     std::unordered_map<uint8_t, uint8_t> digital_outputs;
     std::unordered_map<uint8_t, uint32_t> analog_inputs;
@@ -654,99 +651,111 @@ public:
     std::unordered_map<uint8_t, float> velocity_commands;
     std::unordered_map<uint8_t, uint8_t> homing_status;
 
-    void PK_SL_SetPinFunction(sPoKeysDevice* device, uint8_t pin, uint8_t function) {
+    void PK_SL_SetPinFunction(sPoKeysDevice *device, uint8_t pin,
+                              uint8_t function) {
         // Mock implementation
     }
 
-    uint8_t PK_SL_DigitalInputGet(sPoKeysDevice* device, uint8_t pin) {
+    uint8_t PK_SL_DigitalInputGet(sPoKeysDevice *device, uint8_t pin) {
         return digital_inputs[pin];
     }
 
-    void PK_SL_DigitalOutputSet(sPoKeysDevice* device, uint8_t pin, uint8_t value) {
+    void PK_SL_DigitalOutputSet(sPoKeysDevice *device, uint8_t pin,
+                                uint8_t value) {
         digital_outputs[pin] = value;
     }
 
-    uint32_t PK_SL_AnalogInputGet(sPoKeysDevice* device, uint8_t pin) {
+    uint32_t PK_SL_AnalogInputGet(sPoKeysDevice *device, uint8_t pin) {
         return analog_inputs[pin];
     }
 
-    void PK_SL_AnalogOutputSet(sPoKeysDevice* device, uint8_t pin, uint32_t value) {
+    void PK_SL_AnalogOutputSet(sPoKeysDevice *device, uint8_t pin,
+                               uint32_t value) {
         analog_outputs[pin] = value;
     }
 
-    int32_t PK_IsCounterAvailable(sPoKeysDevice* device, uint8_t pin) {
+    int32_t PK_IsCounterAvailable(sPoKeysDevice *device, uint8_t pin) {
         return counters.count(pin) > 0;
     }
 
-    int32_t PK_DigitalCounterGet(sPoKeysDevice* device) {
+    int32_t PK_DigitalCounterGet(sPoKeysDevice *device) {
         // Mock implementation
         return PK_OK;
     }
 
-    void PK_DigitalCounterClear(sPoKeysDevice* device) {
-        for (auto& counter : counters) {
+    void PK_DigitalCounterClear(sPoKeysDevice *device) {
+        for (auto &counter : counters) {
             counter.second = 0;
         }
     }
 
-    void PK_PWM_Setup(sPoKeysDevice* device, uint8_t channel, uint32_t frequency, uint32_t duty_cycle) {
-        pwm_channels[channel] = {frequency, duty_cycle};
+    void PK_PWM_Setup(sPoKeysDevice *device, uint8_t channel,
+                      uint32_t frequency, uint32_t duty_cycle) {
+        pwm_channels[channel] = { frequency, duty_cycle };
     }
 
-    std::pair<uint32_t, uint32_t> PK_PWM_Fetch(sPoKeysDevice* device, uint8_t channel) {
+    std::pair<uint32_t, uint32_t> PK_PWM_Fetch(sPoKeysDevice *device,
+                                               uint8_t channel) {
         return pwm_channels[channel];
     }
 
-    void PK_PWM_Set(sPoKeysDevice* device, uint8_t channel, uint32_t frequency, uint32_t duty_cycle) {
-        pwm_channels[channel] = {frequency, duty_cycle};
+    void PK_PWM_Set(sPoKeysDevice *device, uint8_t channel, uint32_t frequency,
+                    uint32_t duty_cycle) {
+        pwm_channels[channel] = { frequency, duty_cycle };
     }
 
-    void PK_PEv2_AxisConfigurationSet(sPoKeysDevice* device, uint8_t axis, const sPoKeysPEv2& parameters) {
+    void PK_PEv2_AxisConfigurationSet(sPoKeysDevice *device, uint8_t axis,
+                                      const sPoKeysPEv2 &parameters) {
         // Mock implementation
     }
 
-    int32_t PK_PEv2_StatusGet(sPoKeysDevice* device) {
+    int32_t PK_PEv2_StatusGet(sPoKeysDevice *device) {
         // Mock implementation
         return PK_OK;
     }
 
-    float PK_PEv2_GetPosition(sPoKeysDevice* device, uint8_t axis) {
+    float PK_PEv2_GetPosition(sPoKeysDevice *device, uint8_t axis) {
         return position_feedback[axis];
     }
 
-    void PK_PEv2_SetPosition(sPoKeysDevice* device, uint8_t axis, float position) {
+    void PK_PEv2_SetPosition(sPoKeysDevice *device, uint8_t axis,
+                             float position) {
         position_feedback[axis] = position;
     }
 
-    void PK_PEv2_SetVelocity(sPoKeysDevice* device, uint8_t axis, float velocity) {
+    void PK_PEv2_SetVelocity(sPoKeysDevice *device, uint8_t axis,
+                             float velocity) {
         velocity_commands[axis] = velocity;
     }
 
-    void PK_PEv2_StartHoming(sPoKeysDevice* device, uint8_t axis) {
+    void PK_PEv2_StartHoming(sPoKeysDevice *device, uint8_t axis) {
         homing_status[axis] = PK_PEAxisState_axHOMINGSTART;
     }
 
-    void PK_PEv2_CancelHoming(sPoKeysDevice* device, uint8_t axis) {
+    void PK_PEv2_CancelHoming(sPoKeysDevice *device, uint8_t axis) {
         homing_status[axis] = PK_PEAxisState_axHOME;
     }
 
-    uint8_t PK_PEv2_GetHomingStatus(sPoKeysDevice* device, uint8_t axis) {
+    uint8_t PK_PEv2_GetHomingStatus(sPoKeysDevice *device, uint8_t axis) {
         return homing_status[axis];
     }
 
-    void PK_PoNETGetModuleSettings(sPoKeysDevice* device, uint8_t module_id) {
+    void PK_PoNETGetModuleSettings(sPoKeysDevice *device, uint8_t module_id) {
         // Mock implementation
     }
 
-    void PK_PoNETGetModuleStatusRequest(sPoKeysDevice* device, uint8_t module_id) {
+    void PK_PoNETGetModuleStatusRequest(sPoKeysDevice *device,
+                                        uint8_t module_id) {
         // Mock implementation
     }
 
-    const char* PK_PoNETGetModuleStatus(sPoKeysDevice* device, uint8_t module_id) {
+    const char *PK_PoNETGetModuleStatus(sPoKeysDevice *device,
+                                        uint8_t module_id) {
         return "module_status";
     }
 
-    void PK_PoNETSetModuleStatus(sPoKeysDevice* device, uint8_t module_id, const char* data) {
+    void PK_PoNETSetModuleStatus(sPoKeysDevice *device, uint8_t module_id,
+                                 const char *data) {
         // Mock implementation
     }
 };

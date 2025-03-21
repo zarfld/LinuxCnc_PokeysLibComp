@@ -36,9 +36,9 @@
 #define rtapi_inb(x) (0)
 #define rtapi_inw(x) (0)
 #define rtapi_inl(x) (0)
-#define rtapi_outb(x,y) ((void)0)
-#define rtapi_outw(x,y) ((void)0)
-#define rtapi_outl(x,y) ((void)0)
+#define rtapi_outb(x, y) ((void)0)
+#define rtapi_outw(x, y) ((void)0)
+#define rtapi_outl(x, y) ((void)0)
 #endif
 
 #endif
