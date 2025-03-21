@@ -2,6 +2,22 @@
 extern unsigned int sleepdur;
 #endif
 
+extern bool HAL_Machine_On;
+extern bool Homing_active ;
+extern bool posMode[8];
+extern bool Pins_DigitalValueSet_ignore[55];
+
+typedef enum {
+    PK_PEv2Homing_OnHomeStop = (1 << 3),              // Axis  in IDLE
+    PK_PEv2Homing_OnHomeArmEncoder = (1 << 2),        // Start Homing procedure
+    PK_PEv2Homing_OnHomeReverseDirection = (1 << 1),  // Cancel Homing procedure
+    PK_PEv2Homing_OnHomeReducedSpeed = (1 << 0),      // Cancel Homing procedure
+    PK_PEv2Homing_OutHomeStop = (1 << 7),             // Axis  in IDLE
+    PK_PEv2Homing_OutHomeArmEncoder = (1 << 6),       // Start Homing procedure
+    PK_PEv2Homing_OutHomeReverseDirection = (1 << 5), // Cancel Homing procedure
+    PK_PEv2Homing_OutHomeReducedSpeed = (1 << 4),     // Cancel Homing procedure
+} pokeys_homing_algorithm_t;
+
 typedef struct {
     hal_s32_t *PEv2_deb_out;
     hal_s32_t *PEv2_deb_estop;
@@ -144,6 +160,7 @@ typedef struct {
     hal_u32_t PEv2_ChargePumpEnabled;
     hal_u32_t *PEv2_PulseEngineActivated;
     hal_u32_t *PEv2_PulseEngineState;
+    hal_u32_t *PEv2_PulseEngineStateSetup;
     hal_u32_t *PEv2_LimitOverride;
     hal_u32_t *PEv2_LimitOverrideSetup;
     hal_bit_t *PEv2_digin_Probed_in;
@@ -167,6 +184,8 @@ typedef struct {
     hal_float_t *PEv2_ProbeSpeed;
     hal_u32_t *PEv2_BacklashCompensationEnabled;
 } PEv2_data_t;
+
+extern PEv2_data_t *PEv2_data;
 
 int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id,
                        PEv2_data_t *Pev2_data, sPoKeysDevice *dev) {
@@ -1104,21 +1123,21 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
                         "PoKeys: %s:%s: PK_PEv2_StatusGet(dev) = PK_OK\n",
                         __FILE__, __FUNCTION__);
         // Engine info
-        PEv2_nrOfAxes = dev->PEv2.info.nrOfAxes;
-        PEv2_maxPulseFrequency = dev->PEv2.info.maxPulseFrequency;
-        PEv2_bufferDepth = dev->PEv2.info.bufferDepth;
-        PEv2_slotTiming = dev->PEv2.info.slotTiming;
+        (*PEv2_data->PEv2_nrOfAxes) = dev->PEv2.info.nrOfAxes;
+        (*PEv2_data->PEv2_maxPulseFrequency) = dev->PEv2.info.maxPulseFrequency;
+        (*PEv2_data->PEv2_bufferDepth)= dev->PEv2.info.bufferDepth;
+        (*PEv2_data->PEv2_slotTiming) = dev->PEv2.info.slotTiming;
         *PEv2_data->PEv2_AxisEnabledStatesMask =
             dev->PEv2.AxisEnabledStatesMask;
-        PEv2_LimitOverride = dev->PEv2.LimitOverride;
+        (*PEv2_data->PEv2_LimitOverride) = dev->PEv2.LimitOverride;
 
         // Basic engine states
         PEv2_data->PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
         *PEv2_data->PEv2_PulseEngineActivated = dev->PEv2.PulseEngineActivated;
 
-        PulseEngineState = dev->PEv2.PulseEngineState;
+        *(PEv2_data->PEv2_PulseEngineState) = dev->PEv2.PulseEngineState;
         //
-        PEv2_PulseEngineStateSetup = PulseEngineState;
+        *(PEv2_data->PEv2_PulseEngineStateSetup) = *(PEv2_data->PEv2_PulseEngineState) ;
         PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
         PEv2_data->PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 
@@ -1133,33 +1152,33 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
 
         // Other inputs
         bm_ErrorStatus = dev->PEv2.ErrorInputStatus;
-        PEv2_MiscInputStatus = dev->PEv2.MiscInputStatus;
+        (*PEv2_data->PEv2_MiscInputStatus) = dev->PEv2.MiscInputStatus;
 
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: HAL_Machine_On = %s\n",
                         __FILE__, __FUNCTION__, HAL_Machine_On);
 
         if (HAL_Machine_On == 0) {
-            PEv2_PulseEngineStateSetup = PK_PEState_peSTOPPED;
+            *(PEv2_data->PEv2_PulseEngineStateSetup) = PK_PEState_peSTOPPED;
             rtapi_print_msg(RTAPI_MSG_DBG,
                             "PoKeys: %s:%s: PEv2_PulseEngineStateSetup = "
                             "PK_PEState_peSTOPPED\n",
                             __FILE__, __FUNCTION__);
-        } else if (PulseEngineState == PK_PEState_peSTOPPED) {
-            PEv2_PulseEngineStateSetup = PK_PEState_peRUNNING;
+        } else if (*(PEv2_data->PEv2_PulseEngineState)  == PK_PEState_peSTOPPED) {
+            *(PEv2_data->PEv2_PulseEngineStateSetup) = PK_PEState_peRUNNING;
             rtapi_print_msg(RTAPI_MSG_DBG,
                             "PoKeys: %s:%s: PEv2_PulseEngineStateSetup = "
                             "PK_PEState_peRUNNING\n",
                             __FILE__, __FUNCTION__);
         }
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PulseEngineState = %d\n",
-                        __FILE__, __FUNCTION__, PulseEngineState);
-        switch (PulseEngineState) {
+                        __FILE__, __FUNCTION__, *(PEv2_data->PEv2_PulseEngineState) );
+        switch (*(PEv2_data->PEv2_PulseEngineState) ) {
             case PK_PEState_peSTOPPED: // Pulse engine is stopped
                 rtapi_print_msg(RTAPI_MSG_DBG,
                                 "PoKeys: %s:%s: PK_PEState_peSTOPPED\n",
                                 __FILE__, __FUNCTION__);
                 if (HAL_Machine_On != 0) {
-                    PEv2_PulseEngineStateSetup = PK_PEState_peRUNNING;
+                    *(PEv2_data->PEv2_PulseEngineStateSetup) = PK_PEState_peRUNNING;
                     rtapi_print_msg(RTAPI_MSG_DBG,
                                     "PoKeys: %s:%s: PEv2_PulseEngineStateSetup "
                                     "= PK_PEState_peRUNNING\n",
@@ -1248,9 +1267,9 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
                 rtapi_print_msg(RTAPI_MSG_ERR,
                                 "PoKeys: %s:%s: PK_PEState_peSTOP_EMERGENCY\n",
                                 __FILE__, __FUNCTION__);
-                PEv2_digin_Emergency_in = true;
-                PEv2_digin_Emergency_in_not = false;
-                PEv2_deb_estop = 8;
+                (*PEv2_data->PEv2_digin_Emergency_in) = true;
+                (*PEv2_data->PEv2_digin_Emergency_in_not) = false;
+                (*PEv2_data->PEv2_deb_estop) = 8;
                 break;
         }
 
@@ -1278,63 +1297,63 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
         bm_DedicatedLimitPInputs = dev->PEv2.DedicatedLimitPInputs;
         bm_DedicatedHomeInputs = dev->PEv2.DedicatedHomeInputs;
 
-        for (int i = 0; i < PEv2_nrOfAxes; i++) {
+        for (int i = 0; i < (*PEv2_data->PEv2_nrOfAxes); i++) {
 
             if (PEv2_data->PEv2_digin_LimitN_Pin[i] > 0) {
-                PEv2_digin_LimitN_DedicatedInput(i) =
+                *(PEv2_data->PEv2_digin_LimitN_DedicatedInput[i]) =
                     Get_BitOfByte(bm_DedicatedLimitNInputs, i);
-            } else if (PEv2_digin_LimitN_Enabled(i) != 0) {
+            } else if (PEv2_data->PEv2_digin_LimitN_Enabled[i] != 0) {
                 if (PEv2_data->PEv2_digin_LimitN_invert[i] != 0) {
-                    PEv2_digin_LimitN_in(i) =
+                    *(PEv2_data->PEv2_digin_LimitN_in[i])=
                         !Get_BitOfByte(bm_DedicatedLimitNInputs, i);
-                    PEv2_digin_LimitN_in_not(i) =
+                    *(PEv2_data->PEv2_digin_LimitN_in_not[i]) =
                         Get_BitOfByte(bm_DedicatedLimitNInputs, i);
-                    PEv2_digin_LimitN_DedicatedInput(i) =
+                    *(PEv2_data->PEv2_digin_LimitN_DedicatedInput[i]) =
                         !Get_BitOfByte(bm_DedicatedLimitNInputs, i);
                 } else {
-                    PEv2_digin_LimitN_in(i) =
+                    *(PEv2_data->PEv2_digin_LimitN_in[i])=
                         Get_BitOfByte(bm_DedicatedLimitNInputs, i);
-                    PEv2_digin_LimitN_in_not(i) =
+                    *(PEv2_data->PEv2_digin_LimitN_in_not[i]) =
                         !Get_BitOfByte(bm_DedicatedLimitNInputs, i);
-                    PEv2_digin_LimitN_DedicatedInput(i) =
+                    *(PEv2_data->PEv2_digin_LimitN_DedicatedInput[i]) =
                         Get_BitOfByte(bm_DedicatedLimitNInputs, i);
                 }
             }
 
             if (PEv2_data->PEv2_digin_LimitP_Pin[i] > 0) {
-                PEv2_digin_LimitP_DedicatedInput(i) =
+                *(PEv2_data->PEv2_digin_LimitP_DedicatedInput[i])=
                     Get_BitOfByte(bm_DedicatedLimitPInputs, i);
-            } else if (PEv2_digin_LimitP_Enabled(i) != 0) {
+            } else if (PEv2_data->PEv2_digin_LimitP_Enabled[i] != 0) {
                 if (PEv2_data->PEv2_digin_LimitP_invert[i] != 0) {
-                    PEv2_digin_LimitP_in(i) =
+                    *(PEv2_data->PEv2_digin_LimitP_in[i]) =
                         !Get_BitOfByte(bm_DedicatedLimitPInputs, i);
-                    PEv2_digin_LimitP_in_not(i) =
+                    *(PEv2_data->PEv2_digin_LimitP_in_not[i]) =
                         Get_BitOfByte(bm_DedicatedLimitPInputs, i);
-                    PEv2_digin_LimitP_DedicatedInput(i) =
+                    *(PEv2_data->PEv2_digin_LimitP_DedicatedInput[i])=
                         !Get_BitOfByte(bm_DedicatedLimitPInputs, i);
                 } else {
-                    PEv2_digin_LimitP_in(i) =
+                    *(PEv2_data->PEv2_digin_LimitP_in[i]) =
                         Get_BitOfByte(bm_DedicatedLimitPInputs, i);
-                    PEv2_digin_LimitP_in_not(i) =
+                    *(PEv2_data->PEv2_digin_LimitP_in_not[i]) =
                         !Get_BitOfByte(bm_DedicatedLimitPInputs, i);
-                    PEv2_digin_LimitP_DedicatedInput(i) =
+                    *(PEv2_data->PEv2_digin_LimitP_DedicatedInput[i])=
                         Get_BitOfByte(bm_DedicatedLimitPInputs, i);
                 }
             }
 
             if (PEv2_data->PEv2_digin_Home_Pin[i] > 0) {
-                PEv2_digin_Home_DedicatedInput(i) =
+                *(PEv2_data->PEv2_digin_Home_DedicatedInput[i]) =
                     Get_BitOfByte(bm_DedicatedHomeInputs, i);
             } else if (PEv2_data->PEv2_digin_Home_Enabled[i] != 0) {
                 if (PEv2_data->PEv2_digin_Home_invert[i] != 0) {
-                    PEv2_digin_Home_in(i) =
+                    *(PEv2_data->PEv2_digin_Home_in[i])=
                         !Get_BitOfByte(bm_DedicatedHomeInputs, i);
-                    PEv2_digin_Home_in_not(i) =
+                    *(PEv2_data->PEv2_digin_Home_in_not[i])=
                         Get_BitOfByte(bm_DedicatedHomeInputs, i);
                 } else {
-                    PEv2_digin_Home_in(i) =
+                    *(PEv2_data->PEv2_digin_Home_in[i])=
                         Get_BitOfByte(bm_DedicatedHomeInputs, i);
-                    PEv2_digin_Home_in_not(i) =
+                    *(PEv2_data->PEv2_digin_Home_in_not[i])=
                         !Get_BitOfByte(bm_DedicatedHomeInputs, i);
                 }
             }
@@ -1355,8 +1374,8 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
     if (PEv2_data->PEv2_PG_extended_io != 0) {
         ret = PK_PEv2_ExternalOutputsGet(dev);
         if (ret == PK_OK) {
-            PEv2_ExternalRelayOutputs = dev->PEv2.ExternalRelayOutputs;
-            PEv2_ExternalOCOutputs = dev->PEv2.ExternalOCOutputs;
+            (*PEv2_data->PEv2_ExternalRelayOutputs) = dev->PEv2.ExternalRelayOutputs;
+            (*PEv2_data->PEv2_ExternalOCOutputs) = dev->PEv2.ExternalOCOutputs;
             rtapi_print_msg(
                 RTAPI_MSG_INFO,
                 "PoKeys: %s:%s: PK_PEv2_ExternalOutputsGet==PK_OK\n", __FILE__,
@@ -1407,21 +1426,21 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
 		*/
 
         ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0,
-                                              PEv2_digout_ExternalRelay_out(1));
+            *(PEv2_data->PEv2_digout_ExternalRelay_out[1]));
         ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1,
-                                              PEv2_digout_ExternalRelay_out(3));
+            *(PEv2_data->PEv2_digout_ExternalRelay_out[3]));
         ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2,
-                                              PEv2_digout_ExternalRelay_out(2));
+            *(PEv2_data->PEv2_digout_ExternalRelay_out[2]));
         ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3,
-                                              PEv2_digout_ExternalOC_out(0));
+            *(PEv2_data->PEv2_digout_ExternalRelay_out[0]));
         ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 4,
-                                              PEv2_digout_ExternalOC_out(1));
+            *(PEv2_data->PEv2_digout_ExternalOC_out[1]));
         ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5,
-                                              PEv2_digout_ExternalOC_out(2));
+            *(PEv2_data->PEv2_digout_ExternalOC_out[2]));
         ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6,
-                                              PEv2_digout_ExternalOC_out(3));
+            *(PEv2_data->PEv2_digout_ExternalOC_out[3]));
         ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7,
-                                              PEv2_digout_ExternalRelay_out(0));
+            *(PEv2_data->PEv2_digout_ExternalOC_out[0]));
 
         if (ExternalRelayOutputs_set != dev->PEv2.ExternalRelayOutputs) {
             dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set;
