@@ -1,4 +1,4 @@
 [submodule "external/pokeyslib"]
-	path = external/pokeyslib
-	url = https://bitbucket.org/mbosnak/pokeyslib.git
-    branch = master
+path = external/pokeyslib
+url = https://bitbucket.org/mbosnak/pokeyslib.git
+branch = master
