@@ -9,5 +9,6 @@
         "type_traits": "c",
         "utility": "c",
         "compare": "c"
-    }
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
