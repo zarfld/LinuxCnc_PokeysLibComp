@@ -5,7 +5,9 @@
 #include "hal.h"
 #include "stdio.h"
 
+#ifdef ULAPI
 extern unsigned int sleepdur;
+#endif
 extern bool ApplyIniSettings;
 
 typedef struct {
@@ -125,7 +127,9 @@ int PKPoNet_export_pins(char* prefix, long extra_arg, int id, int njoints, all_P
 	PoNet_data->PoNET_DevCount = 0;
 	for (j = 0; j < 16; j++) // up to 16 PoNet Devices Supported
 	{
-		usleep(sleepdur);
+		#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 		dev->PoNETmodule.moduleID = j;
 		if (PK_PoNETGetModuleSettings(dev) == PK_OK) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PoNet[%d].moduleID = %d\n", __FILE__, __FUNCTION__, j, dev->PoNETmodule.moduleID);
@@ -287,7 +291,9 @@ void PKPoNet_Update(sPoKeysDevice* dev) {
 		dev->PoNETmodule.moduleID = PoNet_data->kbd48CNC_PoNetID;
 		*(PoNet_data->deb_out) = 210;
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kbd48CNC_PoNetID = %d\n", __FILE__, __FUNCTION__, (PoNet_data->kbd48CNC_PoNetID));
-		usleep(sleepdur);
+		#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 		*(PoNet_data->deb_out) = 220;
 		if (PK_PoNETGetModuleSettings(dev) != PK_OK) {
 			*(PoNet_data->deb_out) = 230;
@@ -300,12 +306,16 @@ void PKPoNet_Update(sPoKeysDevice* dev) {
 			*(PoNet_data->deb_out) = 250;
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s PK_PoNETGetModuleSettings(dev) OK\n", __FILE__, __FUNCTION__);
 		}
-		usleep(sleepdur);
+		#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 
 		dev->PoNETmodule.moduleID = PoNet_data->kbd48CNC_PoNetID;
 		*(PoNet_data->deb_out) = 260;
 		PK_PoNETGetModuleLight(dev);
-		usleep(sleepdur);
+		#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 		*(PoNet_data->deb_out) = 270;
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetModuleLight(dev)\n", __FILE__, __FUNCTION__);
 		if (PK_PoNETGetModuleLight(dev) == PK_OK) {
@@ -328,7 +338,9 @@ void PKPoNet_Update(sPoKeysDevice* dev) {
 				*(PoNet_data->deb_out) = 320;
 				dev->PoNETmodule.PWMduty = *(PoNet_data->kbd48CNC_KeyBrightness);
 				*(PoNet_data->deb_out) = 330;
-				usleep(sleepdur);
+				#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 				if (PK_PoNETSetModulePWM(dev) != PK_OK) {
 					*(PoNet_data->deb_out) = 340;
 					if (PK_PoNETSetModulePWM(dev) != PK_OK) {
@@ -341,7 +353,9 @@ void PKPoNet_Update(sPoKeysDevice* dev) {
 		else {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PoNETGetModuleLight(dev) failed\n", __FILE__, __FUNCTION__);
 			*(PoNet_data->deb_out) = 370;
-			usleep(sleepdur);
+			#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 			if (PK_PoNETGetModuleLight(dev) != PK_OK) {
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PoNETGetModuleLight(dev) failed\n", __FILE__, __FUNCTION__);
 				*(PoNet_data->deb_out) = 380;
@@ -351,14 +365,18 @@ void PKPoNet_Update(sPoKeysDevice* dev) {
 			}
 			*(PoNet_data->deb_out) = 390;
 		}
-		usleep(sleepdur);
+		#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 
 		dev->PoNETmodule.moduleID = PoNet_data->kbd48CNC_PoNetID;
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetModuleStatusRequest(dev)\n", __FILE__, __FUNCTION__);
 		if (PK_PoNETGetModuleStatusRequest(dev) != PK_OK) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PoNETGetModuleStatusRequest(dev) failed\n", __FILE__, __FUNCTION__);
 
-			usleep(sleepdur);
+			#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 			dev->PoNETmodule.moduleID = 0;
 			if (PK_PoNETGetModuleStatusRequest(dev) != PK_OK) {
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PoNETGetModuleStatusRequest(dev) failed\n", __FILE__, __FUNCTION__);
@@ -368,18 +386,22 @@ void PKPoNet_Update(sPoKeysDevice* dev) {
 		else {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetModuleStatusRequest(dev) OK\n", __FILE__, __FUNCTION__);
 		}
-		usleep(sleepdur);
-
-		usleep(sleepdur);
+		#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 		PoNet_data->kbd48CNC_Counter = 0;
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetModuleStatus(dev)\n", __FILE__, __FUNCTION__);
 		while (PK_PoNETGetModuleStatus(dev) != PK_OK && PoNet_data->kbd48CNC_Counter < 10) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PoNETGetModuleStatus(dev) failed kbd48CNC_Counter %d\n", __FILE__, __FUNCTION__, PoNet_data->kbd48CNC_Counter);
 			PoNet_data->kbd48CNC_Counter++;
-			usleep(sleepdur);
+			#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 		}
 
-		usleep(sleepdur);
+		#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 		dev->PoNETmodule.moduleID = PoNet_data->kbd48CNC_PoNetID;
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetModuleStatus(dev)\n", __FILE__, __FUNCTION__);
 		if (PK_PoNETGetModuleStatus(dev) != PK_OK) {
@@ -390,7 +412,9 @@ void PKPoNet_Update(sPoKeysDevice* dev) {
 		else {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETGetModuleStatus(dev) OK\n", __FILE__, __FUNCTION__);
 		}
-		usleep(sleepdur);
+		#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 
 		for (int i = 0; i < 48; i++) {
 			bool state = false;
@@ -452,9 +476,13 @@ void PKPoNet_Update(sPoKeysDevice* dev) {
 
 		dev->PoNETmodule.moduleID = PoNet_data->kbd48CNC_PoNetID;
 		PK_PoNETSetModuleStatus(dev);
-		usleep(sleepdur);
+		#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 		PK_PoNETSetModuleStatus(dev);
-		usleep(sleepdur);
+		#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETSetModuleStatus(dev)\n", __FILE__, __FUNCTION__);
 		if (PK_PoNETSetModuleStatus(dev) != PK_OK) {
@@ -467,7 +495,9 @@ void PKPoNet_Update(sPoKeysDevice* dev) {
 		else {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PoNETSetModuleStatus(dev) OK\n", __FILE__, __FUNCTION__);
 		}
-		usleep(sleepdur);
+		#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 
 		dev->PoNETmodule.moduleID = PoNet_data->kbd48CNC_PoNetID;
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kbd48CNC_PoNetID = %d\n", __FILE__, __FUNCTION__, PoNet_data->kbd48CNC_PoNetID);
@@ -481,7 +511,9 @@ void PKPoNet_Update(sPoKeysDevice* dev) {
 		else {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kbd48CNC PK_PoNETSetModuleStatus(dev) OK\n", __FILE__, __FUNCTION__);
 		}
-		usleep(sleepdur);
+		#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 
 		// dev->PoNETmodule.moduleID = kbd48CNC_PoNetID;
 		// PK_PoNETSetModuleStatus(dev);

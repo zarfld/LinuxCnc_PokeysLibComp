@@ -1,3 +1,7 @@
+#ifdef ULAPI
+extern unsigned int sleepdur;
+#endif
+
 typedef struct {
 	hal_s32_t* PEv2_deb_out;
 	hal_s32_t* PEv2_deb_estop;
@@ -1106,7 +1110,9 @@ int32_t PEv2_StatusGet(sPoKeysDevice* dev) {
 	else {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_StatusGet(dev) != PK_OK (%i)\n", __FILE__, __FUNCTION__, ret);
 	}
-	usleep(sleepdur);
+	#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 	return ret;
 }
 
@@ -1173,7 +1179,9 @@ int32_t PEv2_Status2Get(sPoKeysDevice* dev) {
 	else {
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_Status2Get(dev) != PK_OK\n", __FILE__, __FUNCTION__);
 	}
-	usleep(sleepdur);
+	#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 	return ret;
 }
 
@@ -1189,7 +1197,9 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice* dev) {
 		else {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_ExternalOutputsGet!=PK_OK\n", __FILE__, __FUNCTION__);
 		}
-		usleep(sleepdur);
+		#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 
 
 
@@ -1251,12 +1261,16 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice* dev) {
 			dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set;
 			dev->PEv2.ExternalOCOutputs = ExternalOCOutputs_set;
 			PK_PEv2_ExternalOutputsSet(dev);
-			usleep(sleepdur);
+			#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 
 			dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set;
 			dev->PEv2.ExternalOCOutputs = ExternalOCOutputs_set;
 			PK_PEv2_ExternalOutputsSet(dev);
-			usleep(sleepdur);
+			#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 		}
 	}
 
@@ -1342,17 +1356,23 @@ int32_t PEv2_PulseEngineSetup(sPoKeysDevice* dev) {
 	if (doSetup == true) {
 		if (PK_PEv2_PulseEngineSetup(dev) != PK_OK) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PulseEngineSetup() != PK_OK\n", __FILE__, __FUNCTION__);
-			usleep(sleepdur);
+			#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 			if (PK_PEv2_PulseEngineSetup(dev) != PK_OK) {
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PulseEngineSetup() != PK_OK\n", __FILE__, __FUNCTION__);
 			}
 		}
 		else {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_PulseEngineSetup() == PK_OK\n", __FILE__, __FUNCTION__);
-			usleep(sleepdur);
+			#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 			if (PK_SaveConfiguration(dev) == PK_OK) {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SaveConfiguration() == PK_OK\n", __FILE__, __FUNCTION__);
-				usleep(sleepdur);
+				#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 				//	PK_PEv2_PulseEngineReboot(dev);
 				usleep(1000000);
 			}
@@ -1361,7 +1381,9 @@ int32_t PEv2_PulseEngineSetup(sPoKeysDevice* dev) {
 			}
 
 		}
-		usleep(sleepdur);
+		#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 	}
 
 
@@ -1379,7 +1401,9 @@ int32_t PEv2_AdditionalParametersGet(sPoKeysDevice* dev) {
 
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersGet() != PK_OK\n", __FILE__, __FUNCTION__);
 	}
-	usleep(sleepdur);
+	#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 }
 
 int32_t  PEv2_AdditionalParametersSet(sPoKeysDevice* dev) {
@@ -1410,14 +1434,18 @@ int32_t  PEv2_AdditionalParametersSet(sPoKeysDevice* dev) {
 
 		rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersSet() != PK_OK\n", __FILE__, __FUNCTION__);
 	}
-	usleep(sleepdur);
+	#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 
 	if (doSetup == true) {
 		ret = PK_PEv2_AdditionalParametersSet(dev);
 
 		if (ret != PK_OK) {
 			rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersSet() != PK_OK\n", __FILE__, __FUNCTION__);
-			usleep(sleepdur);
+			#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 			ret = PK_PEv2_AdditionalParametersSet(dev);
 			if (ret != PK_OK) {
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersSet() != PK_OK\n", __FILE__, __FUNCTION__);
@@ -1425,18 +1453,24 @@ int32_t  PEv2_AdditionalParametersSet(sPoKeysDevice* dev) {
 		}
 		else {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AdditionalParametersSet() == PK_OK\n", __FILE__, __FUNCTION__);
-			usleep(sleepdur);
+			#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 			if (PK_SaveConfiguration(dev) == PK_OK) {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SaveConfiguration() == PK_OK\n", __FILE__, __FUNCTION__);
-				usleep(sleepdur);
+				#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 				//	PK_PEv2_PulseEngineReboot(dev);
-				usleep(1000000);
+				//usleep(1000000);
 			}
 			else {
 				rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_SaveConfiguration() != PK_OK\n", __FILE__, __FUNCTION__);
 			}
 		}
-		usleep(sleepdur);
+		#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 	}
 	return ret;
 }
@@ -2143,10 +2177,14 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice* dev, int AxisId) {
 				}
 				else {
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet(%d) == PK_OK\n", __FILE__, __FUNCTION__, AxisId);
+					#ifdef ULAPI
 					usleep(sleepdur);
+					#endif
 					if (PK_SaveConfiguration(dev) == PK_OK) {
 						rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SaveConfiguration() == PK_OK\n", __FILE__, __FUNCTION__);
-						usleep(sleepdur);
+						#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 						//	PK_PEv2_PulseEngineReboot(dev);
 						usleep(1000000);
 					}
@@ -2154,7 +2192,9 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice* dev, int AxisId) {
 						rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_SaveConfiguration() != PK_OK\n", __FILE__, __FUNCTION__);
 					}
 				}
-				usleep(sleepdur);
+				#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 			}
 			return ret;
 		}

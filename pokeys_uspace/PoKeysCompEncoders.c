@@ -7,7 +7,9 @@
 #include "hal.h"
 #include "stdio.h"
 
+#ifdef ULAPI
 extern unsigned int sleepdur;
+#endif
 extern bool ApplyIniSettings;
 
 // Pin creation:
@@ -213,7 +215,9 @@ void PKEncoder_Update(sPoKeysDevice* dev) {
 		rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EncoderValuesGet(dev)\n", __FILE__, __FUNCTION__);
 		if (PK_EncoderValuesGet(dev) == PK_OK) {
 			rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EncoderValuesGet(dev) OK\n", __FILE__, __FUNCTION__);
-			usleep(sleepdur);
+			#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 			*(encoder_data->encoder_deb_out) = 217;
 			EncoderValuesGet = true;
 			bool resetEncoders = false;
@@ -243,7 +247,9 @@ void PKEncoder_Update(sPoKeysDevice* dev) {
 					*(encoder_data->encoder_deb_out) = 2214;
 				}
 				*(encoder_data->encoder_deb_out) = 2215;
-				usleep(sleepdur);
+				#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 			}
 
 			/*
@@ -251,7 +257,9 @@ void PKEncoder_Update(sPoKeysDevice* dev) {
 			*(encoder_data->encoder_deb_out) = 219;
 			if (dev->info.iUltraFastEncoders) {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: read UltraFastEncoders\n", __FILE__, __FUNCTION__);
-				usleep(sleepdur);
+				#ifdef ULAPI
+					usleep(sleepdur);
+					#endif
 				*(encoder_data->encoder_deb_out) = 220;
 
 				for (int i = dev->info.iBasicEncoderCount; i < (dev->info.iBasicEncoderCount + dev->info.iUltraFastEncoders); i++) {
@@ -263,7 +271,9 @@ void PKEncoder_Update(sPoKeysDevice* dev) {
 						dev->Encoders[i].encoderValue = 0;
 						resetEncoders = true;
 					}
+					#ifdef ULAPI
 					usleep(sleepdur);
+					#endif
 				}
 			}
 			/*
@@ -280,7 +290,9 @@ void PKEncoder_Update(sPoKeysDevice* dev) {
 				rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EncoderValuesSet(dev)\n", __FILE__, __FUNCTION__);
 				if (PK_EncoderValuesSet(dev) == PK_OK) {
 					rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EncoderValuesSet(dev) OK\n", __FILE__, __FUNCTION__);
+					#ifdef ULAPI
 					usleep(sleepdur);
+					#endif
 					resetEncoders = false;
 					*(encoder_data->encoder_deb_out) = 141;
 					initEncodersDone = true;
