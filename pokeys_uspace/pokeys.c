@@ -1227,6 +1227,20 @@ int doSetup = 0;
 
 int next_setup = 1;
 
+void pokeys_read_ini(sPoKeysDevice* dev){
+
+	PKIO_ReadIniFile(dev );
+	PKPEv2_ReadIniFile(dev);
+	PKEncoder_ReadIniFile(dev);
+}
+
+void pokeys_write_ini(sPoKeysDevice* dev){
+
+	PKIO_WriteIniFile(dev );
+	PKPEv2_WriteIniFile(dev);
+	PKEncoder_WriteIniFile(dev);
+}
+
 void user_mainloop(void) {
 
 	rtapi_print("  \n");

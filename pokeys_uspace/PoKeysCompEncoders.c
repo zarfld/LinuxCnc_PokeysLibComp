@@ -301,6 +301,14 @@ void PKEncoder_Setup(sPoKeysDevice* dev) {
 
 }
 
+void PKEncoder_ReadIniFile(sPoKeysDevice* dev){
+
+}
+
+void PKEncoder_WriteIniFile(sPoKeysDevice* dev){
+
+}
+
 #ifdef MODULE_INFO
 MODULE_INFO(linuxcnc, "pin:encoder.#.count:s32:29:out::None:None");
 MODULE_INFO(linuxcnc, "pin:encoder.#.position:float:29:out::None:None");
