@@ -28,7 +28,8 @@ void get_pokeys_ini_path(int device_id, char *buffer, size_t size) {
 
 void set_pokeys_ini_path(const char *path) {
     strncpy(pokeys_ini_path, path, sizeof(pokeys_ini_path) - 1);
-    pokeys_ini_path[sizeof(pokeys_ini_path) - 1] = '\0'; // Ensure null-termination
+    pokeys_ini_path[sizeof(pokeys_ini_path) - 1] =
+        '\0'; // Ensure null-termination
 }
 
 // **2. INI-Datei nach Integer-Wert durchsuchen**
@@ -92,7 +93,7 @@ void ini_read_string(const char *section, const char *key, char *buffer,
         }
         if (in_section && strstr(line, key) && strchr(line, '=')) {
             strncpy(buffer, strchr(line, '=') + 1, size - 1);
-            buffer[size - 1] = '\0'; // Ensure null-termination
+            buffer[size - 1] = '\0';             // Ensure null-termination
             buffer[strcspn(buffer, "\r\n")] = 0; // Entferne Newline-Zeichen
             fclose(fp);
             return;
