@@ -112,6 +112,12 @@ jobs:
         fi
         echo "Canonical Device Interface guidelines are documented and accessible."
 
+    - name: Set up environment variables for PoKeys57CNC
+      run: echo "POKEYS57CNC_ID=${{ secrets.POKEYS57CNC_ID }}" >> $GITHUB_ENV
+
+    - name: Set up environment variables for PoKeys57E
+      run: echo "POKEYS57E_ID=${{ secrets.POKEYS57E_ID }}" >> $GITHUB_ENV
+
   close-issue2:
     # Only run on pull_request events where the PR was merged into the main branch
     if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' }}&#8203;:contentReference[oaicite:8]{index=8}
