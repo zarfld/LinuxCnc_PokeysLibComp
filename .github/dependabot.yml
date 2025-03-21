@@ -19,4 +19,4 @@ updates:
   - package-ecosystem: "submodules"
     directory: "/"                  # root of your repo
     schedule:
-      interval: "weekly"
+      interval: "daily"
