@@ -703,11 +703,10 @@ int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id,
     if (r != 0)
         return r;
 
-        
-        r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_PulseEngineStateSetup), comp_id,
-        "%s.PEv2.PulseEngineStateSetup", prefix);
-if (r != 0)
-return r;
+    r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_PulseEngineStateSetup),
+                         comp_id, "%s.PEv2.PulseEngineStateSetup", prefix);
+    if (r != 0)
+        return r;
 
     r = hal_pin_u32_newf(HAL_OUT, &(PEv2_data->PEv2_MiscInputStatus), comp_id,
                          "%s.PEv2.MiscInputStatus", prefix);
