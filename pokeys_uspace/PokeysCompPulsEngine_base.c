@@ -1182,7 +1182,7 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
             PEv2_data->PEv2_digin_Emergency_invert =
                 dev->PEv2.EmergencySwitchPolarity;
         }
-
+        *PEv2_data->PEv2_deb_out = 1022;
         // Other inputs
         bm_ErrorStatus = dev->PEv2.ErrorInputStatus;
         (*PEv2_data->PEv2_MiscInputStatus) = dev->PEv2.MiscInputStatus;
@@ -1207,6 +1207,7 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PulseEngineState = %d\n",
                         __FILE__, __FUNCTION__,
                         *(PEv2_data->PEv2_PulseEngineState));
+                        *PEv2_data->PEv2_deb_out = 1023;
         switch (*(PEv2_data->PEv2_PulseEngineState)) {
             case PK_PEState_peSTOPPED: // Pulse engine is stopped
                 rtapi_print_msg(RTAPI_MSG_DBG,
