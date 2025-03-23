@@ -1468,7 +1468,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
     int bm_DoPositionSet = 0;
     bool do_move = false;
 
-    for (axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
+    for (int axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
         if (PEv2_data->PEv2_home_sequence[axis] == seq) {
             joints_in_Sequence++;
             if (PEv2_data->PEv2_HomingStatus[axis] == RequiredState) {
@@ -1479,7 +1479,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
         }
     }
 
-    for (axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
+    for (int axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
         if (PEv2_data->PEv2_home_sequence[axis] == seq) {
             switch (NextState) {
                 case PK_Homing_axHOMINGSTART:
