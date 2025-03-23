@@ -1535,6 +1535,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
 
                     break;
                 case PK_Homing_axHOMINGFinalize:
+                    // for RequiredState == PK_Homing_axHOMINGSTART also ansure that PEv2_data->PEv2_AxesState[axis] is on PK_PEState_peHOME
                     if (RequiredState == PK_Homing_axHOMINGSTART && *(PEv2_data->PEv2_AxesState[axis]) != PK_PEState_peHOME) {
                         return 1; // not all joints in sequence are ready
                     }
