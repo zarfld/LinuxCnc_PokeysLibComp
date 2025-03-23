@@ -139,6 +139,11 @@ static char *home_parms;
 RTAPI_MP_STRING(home_parms, "Example home parms");
 
 // EXTRA_SETUP is executed before rtapi_app_main()
+/**
+ * @brief Extra setup function
+    * @param home_parms
+    * @return 0 on success, -1 on failure
+    */
 EXTRA_SETUP() {
     if (!home_parms) {
         home_parms = "no_home_parms";
@@ -164,7 +169,11 @@ static bool homing_active = 0;
 static bool homing_active_old = 0;
 static int all_joints = 0;
 static int current_sequence = 0;
-
+/**
+ * @brief State of the homing sequence
+    * @param joint_num
+    * @return 1 if at least one joint is homing
+    */
 typedef enum {
     HOME_SEQUENCE_IDLE = 0,
     HOME_SEQUENCE_START,
@@ -174,7 +183,11 @@ typedef enum {
     HOME_SEQUENCE_WAIT_JOINTS
 } home_sequence_state_t;
 static home_sequence_state_t sequence_state = HOME_SEQUENCE_IDLE;
-
+/**
+ * @brief State of the pulse engine
+    * @param joint_num
+    * @return 1 if at least one joint is homing
+    */
 typedef enum {
     PK_PEAxisState_axSTOPPED = 0, // Axis is stopped
     PK_PEAxisState_axREADY = 1,   // Axis ready
@@ -204,7 +217,11 @@ typedef enum {
     PK_PEAxisState_axERROR = 20, // Axis error
     PK_PEAxisState_axLIMIT = 30  // Axis limit tripped
 } pokeys_home_state_t;
-
+/**
+ * @brief Commands to the pulse engine
+    * @param joint_num
+    * @return 1 if at least one joint is homing
+    */
 typedef enum {
     PK_PEAxisCommand_axIDLE = 0,                // Axis  in IDLE
     PK_PEAxisCommand_axHOMINGSTART = 1,         // Start Homing procedure
@@ -215,6 +232,11 @@ typedef enum {
     PK_PEAxisCommand_axHOMINGFINALIZE = 6,      // Finish Homing procedure
 } pokeys_home_command_t;
 
+/**
+ * @brief State machine for the homing process
+    * @param joint_num
+    * @return 1 if at least one joint is homing
+    */
 typedef enum {
     HOME_IDLE = 0,
     HOME_START,                 // 1
@@ -244,7 +266,16 @@ typedef enum {
     HOME_ABORT                  // 25
 } local_home_state_t;
 
-// data for per-joint homing-specific hal pins:
+/**
+ * @brief Data structure for one joint
+    * @param home_sw
+    * @param homing
+    * @param homed
+    * @param index_enable
+    * @param home_state
+    * @param PEv2_AxesState
+    * @param PEv2_AxesCommand
+    */
 typedef struct {
     hal_bit_t *home_sw;      // home switch input
     hal_bit_t *homing;       // joint is homing
@@ -259,6 +290,16 @@ typedef struct {
 
 } one_joint_home_data_t;
 
+/**
+ * @brief Data structure for one joint
+    * @param home_sw
+    * @param homing
+    * @param homed
+    * @param index_enable
+    * @param home_state
+    * @param PEv2_AxesState
+    * @param PEv2_AxesCommand
+    */
 typedef struct {
     // pin data for all joints
     bool home_sw;
@@ -286,15 +327,35 @@ typedef struct {
     bool joint_in_sequence;
 } home_local_data;
 
+
 static home_local_data H[EMCMOT_MAX_JOINTS];
 
+/**
+ * @brief Data structure for one joint
+    * @param home_sw
+    * @param homing
+    * @param homed
+    * @param index_enable
+    * @param home_state
+    * @param PEv2_AxesState
+    * @param PEv2_AxesCommand
+    */
 typedef struct {
     one_joint_home_data_t jhd[EMCMOT_MAX_JOINTS];
 
 } all_joints_home_data_t;
 
 static all_joints_home_data_t *joint_home_data = 0;
-
+/**
+ * @brief Data structure for one sequence
+    * @param home_sequence
+    * @param homing
+    * @param homed
+    * @param joints_in_sequence
+    * @param joint_ids
+    * @param is_last
+    * @param next_sequence
+    */
 typedef struct {
     int home_sequence; // my sequence ID
     bool homing;
@@ -310,6 +371,14 @@ typedef struct {
 
 } one_sequence_home_data_t;
 
+/**
+ * @brief Data structure for all sequences
+    * @param shd
+    * @param sequence_count
+    * @param min_sequence
+    * @param max_sequence
+    * @param current_sequence
+    */
 typedef struct {
     one_sequence_home_data_t shd[EMCMOT_MAX_JOINTS];
     int sequence_count;
@@ -323,6 +392,12 @@ typedef struct {
 
 static all_sequences_home_data_t sequence_home_data;
 static bool allhomed = 0;
+/**
+ * @brief Create hal pins for all joints
+    * @param id
+    * @param njoints
+    * @return 0 on success, -1 on failure
+    */
 static int makepins(int id, int njoints) {
     // home_pins needed to work with configs expecting them:
     int jno, retval;
@@ -360,12 +435,26 @@ static int makepins(int id, int njoints) {
     }
     return retval;
 }
-// All (skeleton) functions required for homing api follow:
+/**
+ * @brief Set the home parameters for a joint
+    * @param joint_num
+    * @param offset
+    * @param home
+    * @param home_final_vel
+    * @param home_search_vel
+    * @param home_latch_vel
+    * @param home_flags
+    * @return 0 on success, -1 on failure
+    */
 void homeMotFunctions(void (*pSetRotaryUnlock)(int, int),
                       int (*pGetRotaryIsUnlocked)(int)) {
     return;
 }
-
+/**
+ * @brief Update the home data for all joints
+    * @param joint_num
+    * @return 0 on success, -1 on failure
+    */
 static void update_sequence_home_data(void) {
     int min_sequence = abs(H[0].home_sequence);
     int max_sequence = abs(H[0].home_sequence);
@@ -420,7 +509,16 @@ static void update_sequence_home_data(void) {
             sno, sequence_home_data.shd[sno].joints_in_sequence);
     }
 }
-
+/**
+ * @brief Initialize the homing module
+    *
+    * @param id
+    * @param servo_period
+    * @param n_joints
+    * @param n_extrajoints
+    * @param pjoints
+    * @return 0 on success, -1 on failure
+    */
 int homing_init(int id, double servo_period, int n_joints, int n_extrajoints,
                 emcmot_joint_t *pjoints) {
     joints = pjoints;
@@ -458,7 +556,11 @@ int homing_init(int id, double servo_period, int n_joints, int n_extrajoints,
         saddr.home_state = HOME_IDLE;
     }
 }
-
+/**
+ * @brief Check if all joints in the sequence are homed
+* @param seq
+* @return 1 if all joints are homed
+*/
 bool get_sequence_homed(int seq) {
     one_sequence_home_data_t addr = (sequence_home_data.shd[seq]);
     int joints_in_sequence = addr.joints_in_sequence;
@@ -473,7 +575,11 @@ bool get_sequence_homed(int seq) {
                     seq);
     return 1;
 }
-
+/**
+ * @brief Check if at least one joint in the sequence is homing
+    * @param seq
+    * @return 1 if at least one joint is homing
+    */
 bool get_sequence_homing(int seq) {
     one_sequence_home_data_t addr = (sequence_home_data.shd[seq]);
     int joints_in_sequence = addr.joints_in_sequence;
@@ -487,7 +593,12 @@ bool get_sequence_homing(int seq) {
 
     return 0;
 }
-
+/**
+ * @brief Homing state machine for one joint
+*
+* @param joint_num
+* @return 1 if at least one joint is homing
+*/
 int pokeys_1joint_state_machine(int joint_num) {
     emcmot_joint_t *joint;
     double offset, tmp;
@@ -808,7 +919,11 @@ int pokeys_1joint_state_machine(int joint_num) {
 
     return homing_flag;
 } // pokeys_1joint_state_machine()
-
+/**
+ * @brief Do home sequence
+ *
+ * @param seq
+ */
 void do_home_sequence(int seq) {
     one_sequence_home_data_t addr = (sequence_home_data.shd[seq]);
     sequence_home_data.current_sequence = seq;
@@ -853,7 +968,11 @@ void do_home_sequence(int seq) {
     }
     return;
 }
-
+/**
+ * @brief Check the home sequence
+ *
+ * @param seq
+ */
 void check_home_sequence(int seq) {
     if (sequence_state != HOME_SEQUENCE_DO_ONE_SEQUENCE) {
         return;
@@ -907,7 +1026,12 @@ void check_home_sequence(int seq) {
         }
     }
 }
-
+/**
+ * @brief Get the homed object
+ *
+ * @return true
+ * @return false
+ */
 bool get_allhomed() {
     /* int ret = 1;
     for (int jno = 0; jno < EMCMOT_MAX_JOINTS; jno++)
@@ -927,6 +1051,14 @@ bool get_allhomed() {
     return allhomed;
     //return ret ? 1 : 0;
 }
+
+/**
+ * @brief Get the homed object  
+ * 
+ * @param jno 
+ * @return true 
+ * @return false 
+ */*/
 bool get_homed(int jno) {
     if (H[jno].homed == 1) {
         rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_homed homed %d\n",
