@@ -1387,8 +1387,21 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         HomingStartMaskSetup);
 
         dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
+         if (PK_PEv2_HomingStart(dev) != PK_OK) {
+            rtapi_print_msg(RTAPI_MSG_ERR,
+                            "PoKeys: %s:%s: PK_PEv2_HomingStart!=PK_OK   HomingStartMaskSetup = %d\n",
+                            __FILE__, __FUNCTION__,HomingStartMaskSetup);
+
+        }
+        else{
+            rtapi_print_msg(RTAPI_MSG_DBG,
+                            "PoKeys: %s:%s: PK_PEv2_HomingStart=PK_OK\n",
+                            __FILE__, __FUNCTION__);
+                            Homing_active = true;
+        }
+        
+        dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
         PK_PEv2_HomingStart(dev);
-        Homing_active = true;
 #ifdef ULAPI
         usleep(sleepdur);
 #endif

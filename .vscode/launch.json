@@ -57,10 +57,10 @@
       "name": "Attach to Pokeys Userspace Component",
       "type": "cppdbg",
       "request": "attach",
-      "program": "/usr/lib/linuxcnc/modules/pokeys",
+      "program": "/usr/lib/linuxcnc/modules/pokeys.so",
       "processId": "${command:pickProcess}",
-      "MIMode": "gdb"
-      "preLaunchTask": "Load INI ConfigurationDebug USpace/Pokeys"
+      "MIMode": "gdb",
+     
     }
   ]
 }
