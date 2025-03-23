@@ -1466,7 +1466,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
     int sequence_joints_ready = 0;
     int HomingStartMaskSetup = 0;
     int bm_DoPositionSet = 0;
-    bool = false;
+    bool do_move= false;
 
     for (axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
         if (PEv2_data->PEv2_home_sequence[axis] == seq) {
@@ -1554,7 +1554,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
         case PK_Homing_axHOMINGWaitFinalMove:
             break;
         case PK_Homing_axHOMINGFINALMOVE:
-            if (doMove == true) {
+            if (do_move == true) {
                 rtapi_print_msg(RTAPI_MSG_DBG, "PK_PEv2: PEv2_PulseEngineMove  \n");
                 if (PK_PEv2_PulseEngineMove(dev) != PK_OK) {
                     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PulseEngineMove!=PK_OK\n", __FILE__, __FUNCTION__);
