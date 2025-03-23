@@ -3,9 +3,14 @@ name: Generate Doxygen Docs
 on:
   push:
     paths:
-      - 'src/**'
-      - 'Doxyfile'
+      - 'pokeys_rt/**'
+      - 'pokeys_uspace/**'
+  pull_request:
+    paths:
+      - 'pokeys_rt/**'
+      - 'pokeys_uspace/**'
   workflow_dispatch:
+
 
 jobs:
   build-docs:
