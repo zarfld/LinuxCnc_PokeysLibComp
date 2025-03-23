@@ -1480,7 +1480,6 @@ void pokeys_write_ini(sPoKeysDevice *dev) {
 
 void pokeys_update(sPoKeysDevice *dev) {
 
-  
     // PulseEnginev2
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PulseEnginev2 = %d\n",
                     __FILE__, __FUNCTION__, info_PulseEnginev2);
