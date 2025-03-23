@@ -8,17 +8,7 @@
 
 // Mocked PoKeysLib structures and enums
 
-enum ePK_PinCap {
-    PK_PinCap_pinRestricted = 0,
-    PK_PinCap_reserved = 1,
-    PK_PinCap_digitalInput = 2,
-    PK_PinCap_digitalOutput = 4,
-    PK_PinCap_analogInput = 8,
-    PK_PinCap_analogOutput = 16,
-    PK_PinCap_triggeredInput = 32,
-    PK_PinCap_digitalCounter = 64,
-    PK_PinCap_invertPin = 128
-};
+enum ePK_PinCap { PK_PinCap_pinRestricted = 0, PK_PinCap_reserved = 1, PK_PinCap_digitalInput = 2, PK_PinCap_digitalOutput = 4, PK_PinCap_analogInput = 8, PK_PinCap_analogOutput = 16, PK_PinCap_triggeredInput = 32, PK_PinCap_digitalCounter = 64, PK_PinCap_invertPin = 128 };
 
 typedef enum {
     PK_AllPinCap_digitalInput = 1,
@@ -113,16 +103,9 @@ typedef struct {
     uint32_t devTypes;
 } sPoKeys_PinCapabilities;
 
-enum ePK_DeviceConnectionType {
-    PK_DeviceType_USBDevice = 0,
-    PK_DeviceType_NetworkDevice = 1,
-    PK_DeviceType_FastUSBDevice = 2
-};
+enum ePK_DeviceConnectionType { PK_DeviceType_USBDevice = 0, PK_DeviceType_NetworkDevice = 1, PK_DeviceType_FastUSBDevice = 2 };
 
-enum ePK_DeviceConnectionParam {
-    PK_ConnectionParam_TCP = 0,
-    PK_ConnectionParam_UDP = 1
-};
+enum ePK_DeviceConnectionParam { PK_ConnectionParam_TCP = 0, PK_ConnectionParam_UDP = 1 };
 
 enum ePK_PEState {
     PK_PEState_peSTOPPED = 0,
@@ -159,44 +142,13 @@ enum ePK_PEAxisState {
     PK_PEAxisState_axLIMIT = 30
 };
 
-enum ePK_PEv2_AxisConfig {
-    PK_AC_ENABLED = (1 << 0),
-    PK_AC_INVERTED = (1 << 1),
-    PK_AC_INTERNAL_PLANNER = (1 << 2),
-    PK_AC_POSITION_MODE = (1 << 3),
-    PK_AC_INVERTED_HOME = (1 << 4),
-    PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),
-    PK_AC_ENABLED_MASKED = (1 << 7)
-};
+enum ePK_PEv2_AxisConfig { PK_AC_ENABLED = (1 << 0), PK_AC_INVERTED = (1 << 1), PK_AC_INTERNAL_PLANNER = (1 << 2), PK_AC_POSITION_MODE = (1 << 3), PK_AC_INVERTED_HOME = (1 << 4), PK_AC_SOFT_LIMIT_ENABLED = (1 << 5), PK_AC_ENABLED_MASKED = (1 << 7) };
 
-enum ePK_PEv2_AxisSwitchOptions {
-    PK_ASO_SWITCH_LIMIT_N = (1 << 0),
-    PK_ASO_SWITCH_LIMIT_P = (1 << 1),
-    PK_ASO_SWITCH_HOME = (1 << 2),
-    PK_ASO_SWITCH_COMBINED_LN_H = (1 << 3),
-    PK_ASO_SWITCH_COMBINED_LP_H = (1 << 4),
-    PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),
-    PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),
-    PK_ASO_SWITCH_INVERT_HOME = (1 << 7)
-};
+enum ePK_PEv2_AxisSwitchOptions { PK_ASO_SWITCH_LIMIT_N = (1 << 0), PK_ASO_SWITCH_LIMIT_P = (1 << 1), PK_ASO_SWITCH_HOME = (1 << 2), PK_ASO_SWITCH_COMBINED_LN_H = (1 << 3), PK_ASO_SWITCH_COMBINED_LP_H = (1 << 4), PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5), PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6), PK_ASO_SWITCH_INVERT_HOME = (1 << 7) };
 
-enum ePK_RETURN_CODES {
-    PK_OK = 0,
-    PK_ERR_GENERIC = -1,
-    PK_ERR_NOT_CONNECTED = -5,
-    PK_ERR_TRANSFER = -10,
-    PK_ERR_PARAMETER = -20,
-    PK_ERR_NOT_SUPPORTED = -30,
-    PK_ERR_CANNOT_CLAIM_USB = -100,
-    PK_ERR_CANNOT_CONNECT = -101
-};
+enum ePK_RETURN_CODES { PK_OK = 0, PK_ERR_GENERIC = -1, PK_ERR_NOT_CONNECTED = -5, PK_ERR_TRANSFER = -10, PK_ERR_PARAMETER = -20, PK_ERR_NOT_SUPPORTED = -30, PK_ERR_CANNOT_CLAIM_USB = -100, PK_ERR_CANNOT_CONNECT = -101 };
 
-enum ePK_I2C_STATUS {
-    PK_I2C_STAT_ERR = 0,
-    PK_I2C_STAT_OK = 1,
-    PK_I2C_STAT_COMPLETE = 1,
-    PK_I2C_STAT_IN_PROGRESS = 0x10
-};
+enum ePK_I2C_STATUS { PK_I2C_STAT_ERR = 0, PK_I2C_STAT_OK = 1, PK_I2C_STAT_COMPLETE = 1, PK_I2C_STAT_IN_PROGRESS = 0x10 };
 
 enum ePK_LCD_MODE { PK_LCD_MODE_DIRECT = 0, PK_LCD_MODE_BUFFERED = 1 };
 
@@ -651,8 +603,7 @@ class PoKeysLibMock {
     std::unordered_map<uint8_t, float> velocity_commands;
     std::unordered_map<uint8_t, uint8_t> homing_status;
 
-    void PK_SL_SetPinFunction(sPoKeysDevice *device, uint8_t pin,
-                              uint8_t function) {
+    void PK_SL_SetPinFunction(sPoKeysDevice *device, uint8_t pin, uint8_t function) {
         // Mock implementation
     }
 
@@ -660,8 +611,7 @@ class PoKeysLibMock {
         return digital_inputs[pin];
     }
 
-    void PK_SL_DigitalOutputSet(sPoKeysDevice *device, uint8_t pin,
-                                uint8_t value) {
+    void PK_SL_DigitalOutputSet(sPoKeysDevice *device, uint8_t pin, uint8_t value) {
         digital_outputs[pin] = value;
     }
 
@@ -669,8 +619,7 @@ class PoKeysLibMock {
         return analog_inputs[pin];
     }
 
-    void PK_SL_AnalogOutputSet(sPoKeysDevice *device, uint8_t pin,
-                               uint32_t value) {
+    void PK_SL_AnalogOutputSet(sPoKeysDevice *device, uint8_t pin, uint32_t value) {
         analog_outputs[pin] = value;
     }
 
@@ -689,23 +638,19 @@ class PoKeysLibMock {
         }
     }
 
-    void PK_PWM_Setup(sPoKeysDevice *device, uint8_t channel,
-                      uint32_t frequency, uint32_t duty_cycle) {
+    void PK_PWM_Setup(sPoKeysDevice *device, uint8_t channel, uint32_t frequency, uint32_t duty_cycle) {
         pwm_channels[channel] = { frequency, duty_cycle };
     }
 
-    std::pair<uint32_t, uint32_t> PK_PWM_Fetch(sPoKeysDevice *device,
-                                               uint8_t channel) {
+    std::pair<uint32_t, uint32_t> PK_PWM_Fetch(sPoKeysDevice *device, uint8_t channel) {
         return pwm_channels[channel];
     }
 
-    void PK_PWM_Set(sPoKeysDevice *device, uint8_t channel, uint32_t frequency,
-                    uint32_t duty_cycle) {
+    void PK_PWM_Set(sPoKeysDevice *device, uint8_t channel, uint32_t frequency, uint32_t duty_cycle) {
         pwm_channels[channel] = { frequency, duty_cycle };
     }
 
-    void PK_PEv2_AxisConfigurationSet(sPoKeysDevice *device, uint8_t axis,
-                                      const sPoKeysPEv2 &parameters) {
+    void PK_PEv2_AxisConfigurationSet(sPoKeysDevice *device, uint8_t axis, const sPoKeysPEv2 &parameters) {
         // Mock implementation
     }
 
@@ -718,13 +663,11 @@ class PoKeysLibMock {
         return position_feedback[axis];
     }
 
-    void PK_PEv2_SetPosition(sPoKeysDevice *device, uint8_t axis,
-                             float position) {
+    void PK_PEv2_SetPosition(sPoKeysDevice *device, uint8_t axis, float position) {
         position_feedback[axis] = position;
     }
 
-    void PK_PEv2_SetVelocity(sPoKeysDevice *device, uint8_t axis,
-                             float velocity) {
+    void PK_PEv2_SetVelocity(sPoKeysDevice *device, uint8_t axis, float velocity) {
         velocity_commands[axis] = velocity;
     }
 
@@ -744,18 +687,15 @@ class PoKeysLibMock {
         // Mock implementation
     }
 
-    void PK_PoNETGetModuleStatusRequest(sPoKeysDevice *device,
-                                        uint8_t module_id) {
+    void PK_PoNETGetModuleStatusRequest(sPoKeysDevice *device, uint8_t module_id) {
         // Mock implementation
     }
 
-    const char *PK_PoNETGetModuleStatus(sPoKeysDevice *device,
-                                        uint8_t module_id) {
+    const char *PK_PoNETGetModuleStatus(sPoKeysDevice *device, uint8_t module_id) {
         return "module_status";
     }
 
-    void PK_PoNETSetModuleStatus(sPoKeysDevice *device, uint8_t module_id,
-                                 const char *data) {
+    void PK_PoNETSetModuleStatus(sPoKeysDevice *device, uint8_t module_id, const char *data) {
         // Mock implementation
     }
 };

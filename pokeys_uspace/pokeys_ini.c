@@ -32,8 +32,7 @@ void get_pokeys_ini_path(int device_id, char *buffer, size_t size) {
 
 void set_pokeys_ini_path(const char *path) {
     strncpy(pokeys_ini_path, path, sizeof(pokeys_ini_path) - 1);
-    pokeys_ini_path[sizeof(pokeys_ini_path) - 1] =
-        '\0'; // Ensure null-termination
+    pokeys_ini_path[sizeof(pokeys_ini_path) - 1] = '\0'; // Ensure null-termination
 }
 
 // **2. INI-Datei nach Integer-Wert durchsuchen**
@@ -58,8 +57,7 @@ int ini_read_int(const char *section, const char *key, int default_value) {
 }
 
 // **3. INI-Datei nach Float-Wert durchsuchen**
-float ini_read_float(const char *section, const char *key,
-                     float default_value) {
+float ini_read_float(const char *section, const char *key, float default_value) {
     FILE *fp = fopen(pokeys_ini_path, "r");
     if (!fp)
         return default_value;
@@ -80,8 +78,7 @@ float ini_read_float(const char *section, const char *key,
 }
 
 // **4. INI-Datei nach String durchsuchen**
-void ini_read_string(const char *section, const char *key, char *buffer,
-                     size_t size, const char *default_value) {
+void ini_read_string(const char *section, const char *key, char *buffer, size_t size, const char *default_value) {
     FILE *fp = fopen(pokeys_ini_path, "r");
     if (!fp) {
         strncpy(buffer, default_value, size - 1);

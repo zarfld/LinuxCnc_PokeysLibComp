@@ -30,8 +30,7 @@ void InitializeNewDevice(sPoKeysDevice *device);
 void CleanDevice(sPoKeysDevice *device);
 void PK_DisconnectNetworkDevice(sPoKeysDevice *device);
 
-int32_t CreateRequest(uint8_t *request, uint8_t type, uint8_t param1,
-                      uint8_t param2, uint8_t param3, uint8_t param4);
+int32_t CreateRequest(uint8_t *request, uint8_t type, uint8_t param1, uint8_t param2, uint8_t param3, uint8_t param4);
 uint8_t getChecksum(uint8_t *data);
 int32_t SendRequest(sPoKeysDevice *device);
 int32_t SendRequest_multiPart(sPoKeysDevice *device);

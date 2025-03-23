@@ -19,36 +19,34 @@ static int comp_id;
 
 #ifdef MODULE_INFO
 MODULE_INFO(linuxcnc, "component:pokeys_homecomp:homing module template");
-MODULE_INFO(
-    linuxcnc,
-    "descr:\nExample of a homing module buildable with "
-    "halcompile.\nDemonstrates required code for #includes, function "
-    "definitions, etc.\n\nIf \\fBHOMING_BASE\\fR is #defined and points to a "
-    "valid homing.c file,\nan example of a customized homing module is built.  "
-    "This module\ncreates input hal pins joint.n.request-custom-homing that "
-    "enable an\nalternate joint homing state machine for requested joints.  A "
-    "hal output\npin joint.N.is_custom-homing verifies selection\"\n\nThe "
-    "customized homing module utilizes many of the base homing api\nroutines "
-    "from homing.c without modification but augments other base\nfunctions to "
-    "add support for custom hal pins and custom joint homing\nstate machines.  "
-    "A user-built module will likely replace additional\napi functions or "
-    "augment them with other customizations.\n\nIf \\fBHOMING_BASE\\fR Is not "
-    "#defined, an  actual homing scheme is\n\\fBnot\\fR implemented but all "
-    "necessary functions are included as\nskeleton code.   (All joints are "
-    "effectively homed at all times and\ncannot be unhomed).\n\nSee the source "
-    "code file: src/emc/motion/homing.c for the baseline\nimplementation that "
-    "includes all functions for the default \\fBhomemod\\fR\nmodule.\n\nTo "
-    "avoid updates that overwrite homecomp.comp, best practice is\nto rename "
-    "the file and its component name (example:\n\\fBuser_homecomp.comp, "
-    "user_homecomp\\fR).\n\nThe (renamed) component can be built and installed "
-    "with\nhalcompile and then substituted for the default homing "
-    "module\n(\\fBhomemod\\fR) using:\n\n  $ linuxcnc \\fB-m user_homecomp\\fR "
-    "someconfig.ini\n\nor by inifile setting: "
-    "\\fB[EMCMOT]HOMEMOD=user_homecomp\\fR\n\n\\fBNote:\\fRIf using a deb "
-    "install:\n\n1) halcompile is provided by the package linuxcnc-dev\n\n2) "
-    "This source file for BRANCHNAME (master,2.9,etc) is downloadable from "
-    "github:\n\nhttps://github.com/LinuxCNC/linuxcnc/blob/BRANCHNAME/src/hal/"
-    "components/homecomp.comp\n");
+MODULE_INFO(linuxcnc, "descr:\nExample of a homing module buildable with "
+                      "halcompile.\nDemonstrates required code for #includes, function "
+                      "definitions, etc.\n\nIf \\fBHOMING_BASE\\fR is #defined and points to a "
+                      "valid homing.c file,\nan example of a customized homing module is built.  "
+                      "This module\ncreates input hal pins joint.n.request-custom-homing that "
+                      "enable an\nalternate joint homing state machine for requested joints.  A "
+                      "hal output\npin joint.N.is_custom-homing verifies selection\"\n\nThe "
+                      "customized homing module utilizes many of the base homing api\nroutines "
+                      "from homing.c without modification but augments other base\nfunctions to "
+                      "add support for custom hal pins and custom joint homing\nstate machines.  "
+                      "A user-built module will likely replace additional\napi functions or "
+                      "augment them with other customizations.\n\nIf \\fBHOMING_BASE\\fR Is not "
+                      "#defined, an  actual homing scheme is\n\\fBnot\\fR implemented but all "
+                      "necessary functions are included as\nskeleton code.   (All joints are "
+                      "effectively homed at all times and\ncannot be unhomed).\n\nSee the source "
+                      "code file: src/emc/motion/homing.c for the baseline\nimplementation that "
+                      "includes all functions for the default \\fBhomemod\\fR\nmodule.\n\nTo "
+                      "avoid updates that overwrite homecomp.comp, best practice is\nto rename "
+                      "the file and its component name (example:\n\\fBuser_homecomp.comp, "
+                      "user_homecomp\\fR).\n\nThe (renamed) component can be built and installed "
+                      "with\nhalcompile and then substituted for the default homing "
+                      "module\n(\\fBhomemod\\fR) using:\n\n  $ linuxcnc \\fB-m user_homecomp\\fR "
+                      "someconfig.ini\n\nor by inifile setting: "
+                      "\\fB[EMCMOT]HOMEMOD=user_homecomp\\fR\n\n\\fBNote:\\fRIf using a deb "
+                      "install:\n\n1) halcompile is provided by the package linuxcnc-dev\n\n2) "
+                      "This source file for BRANCHNAME (master,2.9,etc) is downloadable from "
+                      "github:\n\nhttps://github.com/LinuxCNC/linuxcnc/blob/BRANCHNAME/src/hal/"
+                      "components/homecomp.comp\n");
 MODULE_INFO(linuxcnc, "pin:is_module:bit:0:out::1:None");
 MODULE_INFO(linuxcnc, "license:GPL");
 MODULE_INFO(linuxcnc, "author:Dewey Garrett");
@@ -62,8 +60,7 @@ struct __comp_state {
 struct __comp_state *__comp_first_inst = 0, *__comp_last_inst = 0;
 
 static int __comp_get_data_size(void);
-static int extra_setup(struct __comp_state *__comp_inst, char *prefix,
-                       long extra_arg);
+static int extra_setup(struct __comp_state *__comp_inst, char *prefix, long extra_arg);
 #undef TRUE
 #define TRUE (1)
 #undef FALSE
@@ -81,8 +78,7 @@ static int export(char *prefix, long extra_arg) {
     r = extra_setup(inst, prefix, extra_arg);
     if (r != 0)
         return r;
-    r = hal_pin_bit_newf(HAL_OUT, &(inst->is_module), comp_id, "%s.is-module",
-                         prefix);
+    r = hal_pin_bit_newf(HAL_OUT, &(inst->is_module), comp_id, "%s.is-module", prefix);
     if (r != 0)
         return r;
     *(inst->is_module) = 1;
@@ -112,12 +108,9 @@ void rtapi_app_exit(void) {
 }
 
 #undef FUNCTION
-#define FUNCTION(name)                                                         \
-    static void name(struct __comp_state *__comp_inst, long period)
+#define FUNCTION(name) static void name(struct __comp_state *__comp_inst, long period)
 #undef EXTRA_SETUP
-#define EXTRA_SETUP()                                                          \
-    static int extra_setup(struct __comp_state *__comp_inst, char *prefix,     \
-                           long extra_arg)
+#define EXTRA_SETUP() static int extra_setup(struct __comp_state *__comp_inst, char *prefix, long extra_arg)
 #undef EXTRA_CLEANUP
 #define EXTRA_CLEANUP() static void extra_cleanup(void)
 #undef fperiod
@@ -155,15 +148,13 @@ EXTRA_SETUP() {
     if (!home_parms) {
         home_parms = "no_home_parms";
     }
-    rtapi_print("@@@%s:%s: home_parms=%s\n", __FILE__, __FUNCTION__,
-                home_parms);
+    rtapi_print("@@@%s:%s: home_parms=%s\n", __FILE__, __FUNCTION__, home_parms);
 #ifndef HOMING_BASE
     rtapi_print("\n!!!%s: Skeleton Homing Module\n\n", __FILE__);
 #else
-    rtapi_print(
-        "\n!!!%s: HOMING_BASE=%s\n"
-        "!!!Customize using hal pin(s): joint.N.request-custom-homing\n",
-        __FILE__, XSTR(HOMING_BASE));
+    rtapi_print("\n!!!%s: HOMING_BASE=%s\n"
+                "!!!Customize using hal pin(s): joint.N.request-custom-homing\n",
+                __FILE__, XSTR(HOMING_BASE));
 #endif
 
     return 0;
@@ -181,14 +172,7 @@ static int current_sequence = 0;
     * @param joint_num
     * @return 1 if at least one joint is homing
     */
-typedef enum {
-    HOME_SEQUENCE_IDLE = 0,
-    HOME_SEQUENCE_START,
-    HOME_SEQUENCE_DO_ONE_JOINT,
-    HOME_SEQUENCE_DO_ONE_SEQUENCE,
-    HOME_SEQUENCE_START_JOINTS,
-    HOME_SEQUENCE_WAIT_JOINTS
-} home_sequence_state_t;
+typedef enum { HOME_SEQUENCE_IDLE = 0, HOME_SEQUENCE_START, HOME_SEQUENCE_DO_ONE_JOINT, HOME_SEQUENCE_DO_ONE_SEQUENCE, HOME_SEQUENCE_START_JOINTS, HOME_SEQUENCE_WAIT_JOINTS } home_sequence_state_t;
 static home_sequence_state_t sequence_state = HOME_SEQUENCE_IDLE;
 /**
  * @brief State of the pulse engine
@@ -200,26 +184,20 @@ typedef enum {
     PK_PEAxisState_axREADY = 1,   // Axis ready
     PK_PEAxisState_axRUNNING = 2, // Axis is running
 
-    PK_PEAxisState_axHOMING_RESETTING =
-        8, // Stopping the axis to reset the position counters
+    PK_PEAxisState_axHOMING_RESETTING = 8,   // Stopping the axis to reset the position counters
     PK_PEAxisState_axHOMING_BACKING_OFF = 9, // Backing off switch
     PK_PEAxisState_axHOME = 10,              // Axis is homed
-    PK_PEAxisState_axHOMINGSTART = 11, // Homing procedure is starting on axis
-    PK_PEAxisState_axHOMINGSEARCH =
-        12, // Homing procedure first step - going to home
-    PK_PEAxisState_axHOMINGBACK =
-        13, // Homing procedure second step - slow homing
+    PK_PEAxisState_axHOMINGSTART = 11,       // Homing procedure is starting on axis
+    PK_PEAxisState_axHOMINGSEARCH = 12,      // Homing procedure first step - going to home
+    PK_PEAxisState_axHOMINGBACK = 13,        // Homing procedure second step - slow homing
 
     PK_PEAxisState_axPROBED = 14,      // Probing completed for this axis
     PK_PEAxisState_axPROBESTART = 15,  // Probing procedure is starting on axis
     PK_PEAxisState_axPROBESEARCH = 16, // Probing procedure - probing
 
-    PK_PEAxisState_axHOMINGARMENCODER =
-        17, // (linuxcnc spec additional state) pokeys resets encoder position to zeros
-    PK_PEAxisState_axHOMINGWaitFINALMOVE =
-        18, // (linuxcnc spec additional state) Pokeys moves to homeposition
-    PK_PEAxisState_axHOMINGFINALMOVE =
-        19, // (linuxcnc spec additional state) Pokeys moves to homeposition
+    PK_PEAxisState_axHOMINGARMENCODER = 17,    // (linuxcnc spec additional state) pokeys resets encoder position to zeros
+    PK_PEAxisState_axHOMINGWaitFINALMOVE = 18, // (linuxcnc spec additional state) Pokeys moves to homeposition
+    PK_PEAxisState_axHOMINGFINALMOVE = 19,     // (linuxcnc spec additional state) Pokeys moves to homeposition
 
     PK_PEAxisState_axERROR = 20, // Axis error
     PK_PEAxisState_axLIMIT = 30  // Axis limit tripped
@@ -411,8 +389,7 @@ static int makepins(int id, int njoints) {
 
     joint_home_data = hal_malloc(sizeof(all_joints_home_data_t));
     if (joint_home_data == 0) {
-        rtapi_print_msg(RTAPI_MSG_DBG,
-                        "HOMING: all_joints_home_data_t malloc failed\n");
+        rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: all_joints_home_data_t malloc failed\n");
         return -1;
     }
 
@@ -420,22 +397,15 @@ static int makepins(int id, int njoints) {
     for (jno = 0; jno < njoints; jno++) {
         addr = &(joint_home_data->jhd[jno]);
 
-        retval += hal_pin_bit_newf(HAL_IN, &(addr->home_sw), id,
-                                   "joint.%d.home-sw-in", jno);
-        retval += hal_pin_bit_newf(HAL_OUT, &(addr->homing), id,
-                                   "joint.%d.homing", jno);
-        retval += hal_pin_bit_newf(HAL_OUT, &(addr->homed), id,
-                                   "joint.%d.homed", jno);
-        retval += hal_pin_s32_newf(HAL_OUT, &(addr->home_state), id,
-                                   "joint.%d.home-state", jno);
-        retval += hal_pin_bit_newf(HAL_IO, &(addr->index_enable), id,
-                                   "joint.%d.index-enable", jno);
+        retval += hal_pin_bit_newf(HAL_IN, &(addr->home_sw), id, "joint.%d.home-sw-in", jno);
+        retval += hal_pin_bit_newf(HAL_OUT, &(addr->homing), id, "joint.%d.homing", jno);
+        retval += hal_pin_bit_newf(HAL_OUT, &(addr->homed), id, "joint.%d.homed", jno);
+        retval += hal_pin_s32_newf(HAL_OUT, &(addr->home_state), id, "joint.%d.home-state", jno);
+        retval += hal_pin_bit_newf(HAL_IO, &(addr->index_enable), id, "joint.%d.index-enable", jno);
 
         // add custom hal pins here:
-        retval += hal_pin_u32_newf(HAL_IN, &(addr->PEv2_AxesState), id,
-                                   "joint.%d.PEv2.AxesState", jno);
-        retval += hal_pin_u32_newf(HAL_OUT, &(addr->PEv2_AxesCommand), id,
-                                   "joint.%d.PEv2.AxesCommand", jno);
+        retval += hal_pin_u32_newf(HAL_IN, &(addr->PEv2_AxesState), id, "joint.%d.PEv2.AxesState", jno);
+        retval += hal_pin_u32_newf(HAL_OUT, &(addr->PEv2_AxesCommand), id, "joint.%d.PEv2.AxesCommand", jno);
         /*retval += hal_pin_s32_newf(HAL_IO, &(addr->home_sequence), id,
                                       "joint.%d.home_sequence", jno);*/
     }
@@ -452,8 +422,7 @@ static int makepins(int id, int njoints) {
     * @param home_flags
     * @return 0 on success, -1 on failure
     */
-void homeMotFunctions(void (*pSetRotaryUnlock)(int, int),
-                      int (*pGetRotaryIsUnlocked)(int)) {
+void homeMotFunctions(void (*pSetRotaryUnlock)(int, int), int (*pGetRotaryIsUnlocked)(int)) {
     return;
 }
 /**
@@ -503,16 +472,12 @@ static void update_sequence_home_data(void) {
 
         for (int jno = 0; jno < all_joints; jno++) {
             if (abs(H[jno].home_sequence) == sno) {
-                sequence_home_data.shd[sno]
-                    .joint_ids[saddr.joints_in_sequence] = jno;
+                sequence_home_data.shd[sno].joint_ids[saddr.joints_in_sequence] = jno;
                 sequence_home_data.shd[sno].joints_in_sequence++;
             }
         }
 
-        rtapi_print_msg(
-            RTAPI_MSG_DBG,
-            "HOMING: update_sequence_home_data(%d) joints_in_sequence:%d\n",
-            sno, sequence_home_data.shd[sno].joints_in_sequence);
+        rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: update_sequence_home_data(%d) joints_in_sequence:%d\n", sno, sequence_home_data.shd[sno].joints_in_sequence);
     }
 }
 /**
@@ -525,8 +490,7 @@ static void update_sequence_home_data(void) {
     * @param pjoints
     * @return 0 on success, -1 on failure
     */
-int homing_init(int id, double servo_period, int n_joints, int n_extrajoints,
-                emcmot_joint_t *pjoints) {
+int homing_init(int id, double servo_period, int n_joints, int n_extrajoints, emcmot_joint_t *pjoints) {
     joints = pjoints;
     all_joints = n_joints;
     return makepins(id, n_joints);
@@ -577,8 +541,7 @@ bool get_sequence_homed(int seq) {
             return 0;
         }
     }
-    rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_sequence_homed(%d) TRUE\n",
-                    seq);
+    rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_sequence_homed(%d) TRUE\n", seq);
     return 1;
 }
 /**
@@ -642,30 +605,21 @@ int pokeys_1joint_state_machine(int joint_num) {
         switch (H[joint_num].PEv2_AxesState) {
             case PK_PEAxisState_axSTOPPED:
                 /* Axis is stopped */
-                rtapi_print_msg(
-                    RTAPI_MSG_DBG,
-                    "HOMING: pokeys_1joint_state_machine joint %d stopped\n",
-                    joint_num);
+                rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d stopped\n", joint_num);
                 H[joint_num].homing = 0;
                 H[joint_num].homed = 0;
                 H[joint_num].home_state = HOME_IDLE;
                 break;
 
             case PK_PEAxisState_axREADY:
-                rtapi_print_msg(
-                    RTAPI_MSG_DBG,
-                    "HOMING: pokeys_1joint_state_machine joint %d ready\n",
-                    joint_num);
+                rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d ready\n", joint_num);
                 /* Axis ready */
                 H[joint_num].homing = 0;
                 H[joint_num].home_state = HOME_IDLE;
                 break;
 
             case PK_PEAxisState_axRUNNING:
-                rtapi_print_msg(
-                    RTAPI_MSG_DBG,
-                    "HOMING: pokeys_1joint_state_machine joint %d running\n",
-                    joint_num);
+                rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d running\n", joint_num);
                 /* Axis is running */
                 H[joint_num].homing = 0;
                 H[joint_num].home_state = HOME_IDLE;
@@ -718,43 +672,37 @@ int pokeys_1joint_state_machine(int joint_num) {
                 ready_in_sequence = 0;
 
                 for (int jj = 0; jj < all_joints; jj++) {
-                    if (abs(H[jj].home_sequence) ==
-                        abs(H[joint_num].home_sequence)) {
+                    if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence)) {
                         joints_in_sequence++;
-                        if (H[jj].PEv2_AxesState ==
-                            PK_PEAxisState_axHOMINGWaitFINALMOVE) {
+                        if (H[jj].PEv2_AxesState == PK_PEAxisState_axHOMINGWaitFINALMOVE) {
                             ready_in_sequence++;
                         }
                     }
                 }
 
-                rtapi_print_msg(
-                    RTAPI_MSG_DBG,
-                    "HOMING:PK_PEAxisState_axHOME joint %d "
-                    "joints_in_sequence:%d  ready_in_sequence:%d \n",
-                    joint_num, joints_in_sequence, ready_in_sequence);
+                rtapi_print_msg(RTAPI_MSG_DBG,
+                                "HOMING:PK_PEAxisState_axHOME joint %d "
+                                "joints_in_sequence:%d  ready_in_sequence:%d \n",
+                                joint_num, joints_in_sequence, ready_in_sequence);
                 if (joints_in_sequence == ready_in_sequence) {
                     //if all Joints of the Sequence show Hommed
                     for (int jj = 0; jj < all_joints; jj++) {
 
-                        if (abs(H[jj].home_sequence) ==
-                            abs(H[joint_num].home_sequence)) {
-                            rtapi_print_msg(
-                                RTAPI_MSG_DBG,
-                                "HOMING:do_home_joint.PK_PEAxisState_axHOME "
-                                "joint %d homed (home_sequence %d)\n",
-                                jj, H[joint_num].home_sequence);
+                        if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence)) {
+                            rtapi_print_msg(RTAPI_MSG_DBG,
+                                            "HOMING:do_home_joint.PK_PEAxisState_axHOME "
+                                            "joint %d homed (home_sequence %d)\n",
+                                            jj, H[joint_num].home_sequence);
                             //H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                             H[jj].home_state = HOME_FINAL_MOVE_START;
                             H[jj].homing = 0;
                             H[jj].homed = 1;
                         }
                     }
-                    rtapi_print_msg(
-                        RTAPI_MSG_DBG,
-                        "HOMING:do_home_joint.PK_PEAxisState_axHOME joint %d "
-                        "homed (home_sequence %d)\n",
-                        joint_num, H[joint_num].home_sequence);
+                    rtapi_print_msg(RTAPI_MSG_DBG,
+                                    "HOMING:do_home_joint.PK_PEAxisState_axHOME joint %d "
+                                    "homed (home_sequence %d)\n",
+                                    joint_num, H[joint_num].home_sequence);
                     //H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                     H[joint_num].home_state = HOME_FINAL_MOVE_START;
                     H[joint_num].homing = 0;
@@ -774,17 +722,13 @@ int pokeys_1joint_state_machine(int joint_num) {
                 break;
 
             case PK_PEAxisState_axHOME:
-                rtapi_print_msg(
-                    RTAPI_MSG_DBG,
-                    "HOMING: pokeys_1joint_state_machine joint %d homed\n",
-                    joint_num);
+                rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d homed\n", joint_num);
                 /* Axis is homed */
                 joints_in_sequence = 0;
                 int homed_in_sequence = 0;
                 H[joint_num].index_enable = 0;
                 for (int jj = 0; jj < all_joints; jj++) {
-                    if (abs(H[jj].home_sequence) ==
-                        abs(H[joint_num].home_sequence)) {
+                    if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence)) {
                         joints_in_sequence++;
                         if (H[jj].PEv2_AxesState == PK_PEAxisState_axHOME) {
                             homed_in_sequence++;
@@ -792,33 +736,29 @@ int pokeys_1joint_state_machine(int joint_num) {
                     }
                 }
 
-                rtapi_print_msg(
-                    RTAPI_MSG_DBG,
-                    "HOMING:PK_PEAxisState_axHOME joint %d "
-                    "joints_in_sequence:%d  homed_in_sequence:%d \n",
-                    joint_num, joints_in_sequence, homed_in_sequence);
+                rtapi_print_msg(RTAPI_MSG_DBG,
+                                "HOMING:PK_PEAxisState_axHOME joint %d "
+                                "joints_in_sequence:%d  homed_in_sequence:%d \n",
+                                joint_num, joints_in_sequence, homed_in_sequence);
                 if (joints_in_sequence == homed_in_sequence) {
                     //if all Joints of the Sequence show Hommed
                     for (int jj = 0; jj < all_joints; jj++) {
 
-                        if (abs(H[jj].home_sequence) ==
-                            abs(H[joint_num].home_sequence)) {
-                            rtapi_print_msg(
-                                RTAPI_MSG_DBG,
-                                "HOMING:do_home_joint.PK_PEAxisState_axHOME "
-                                "joint %d homed (home_sequence %d)\n",
-                                jj, H[joint_num].home_sequence);
+                        if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence)) {
+                            rtapi_print_msg(RTAPI_MSG_DBG,
+                                            "HOMING:do_home_joint.PK_PEAxisState_axHOME "
+                                            "joint %d homed (home_sequence %d)\n",
+                                            jj, H[joint_num].home_sequence);
                             //H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                             H[jj].home_state = HOME_FINISHED;
                             H[jj].homing = 0;
                             H[jj].homed = 1;
                         }
                     }
-                    rtapi_print_msg(
-                        RTAPI_MSG_DBG,
-                        "HOMING:do_home_joint.PK_PEAxisState_axHOME joint %d "
-                        "homed (home_sequence %d)\n",
-                        joint_num, H[joint_num].home_sequence);
+                    rtapi_print_msg(RTAPI_MSG_DBG,
+                                    "HOMING:do_home_joint.PK_PEAxisState_axHOME joint %d "
+                                    "homed (home_sequence %d)\n",
+                                    joint_num, H[joint_num].home_sequence);
                     //H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                     H[joint_num].home_state = HOME_FINISHED;
                     H[joint_num].homing = 0;
@@ -861,10 +801,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 break;
 
             case PK_PEAxisState_axPROBED:
-                rtapi_print_msg(
-                    RTAPI_MSG_DBG,
-                    "HOMING: pokeys_1joint_state_machine joint %d probed\n",
-                    joint_num);
+                rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d probed\n", joint_num);
                 /* Probing completed for this axis */
                 H[joint_num].homing = 0;
                 H[joint_num].home_state = HOME_IDLE;
@@ -892,20 +829,14 @@ int pokeys_1joint_state_machine(int joint_num) {
                 break;
 
             case PK_PEAxisState_axERROR:
-                rtapi_print_msg(
-                    RTAPI_MSG_DBG,
-                    "HOMING: pokeys_1joint_state_machine joint %d error\n",
-                    joint_num);
+                rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d error\n", joint_num);
                 /* Axis error */
                 H[joint_num].homing = 0;
                 H[joint_num].home_state = HOME_IDLE;
                 break;
 
             case PK_PEAxisState_axLIMIT:
-                rtapi_print_msg(
-                    RTAPI_MSG_DBG,
-                    "HOMING: pokeys_1joint_state_machine joint %d limit\n",
-                    joint_num);
+                rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d limit\n", joint_num);
                 /* Axis limit tripped */
                 H[joint_num].homing = 0;
                 H[joint_num].home_state = HOME_IDLE;
@@ -951,24 +882,17 @@ void do_home_sequence(int seq) {
         int int_AxesState = H[jno].PEv2_AxesState;
         switch (int_AxesState) {
             case PK_PEAxisState_axSTOPPED:
-                rtapi_print_msg(RTAPI_MSG_DBG,
-                                "HOMING: do_home_sequence joint %d stopped\n",
-                                jno);
+                rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_home_sequence joint %d stopped\n", jno);
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                 break;
 
             case PK_PEAxisState_axREADY:
-                rtapi_print_msg(RTAPI_MSG_DBG,
-                                "HOMING: do_home_sequence joint %d ready\n",
-                                jno);
+                rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_home_sequence joint %d ready\n", jno);
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                 break;
 
             default:
-                rtapi_print_msg(
-                    RTAPI_MSG_DBG,
-                    "HOMING: do_home_sequence joint %d unknown state %d\n", jno,
-                    int_AxesState);
+                rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_home_sequence joint %d unknown state %d\n", jno, int_AxesState);
                 break;
         }
     }
@@ -989,25 +913,17 @@ void check_home_sequence(int seq) {
 
     if (addr.homed) {
         if (addr.is_last) {
-            rtapi_print_msg(
-                RTAPI_MSG_DBG,
-                "HOMING: check_home_sequence sequence %d homed - finished\n",
-                seq);
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: check_home_sequence sequence %d homed - finished\n", seq);
             sequence_state = HOME_SEQUENCE_IDLE;
         } else {
-            rtapi_print_msg(
-                RTAPI_MSG_DBG,
-                "HOMING: check_home_sequence sequence %d homed - next sequ.\n",
-                seq);
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: check_home_sequence sequence %d homed - next sequ.\n", seq);
             sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
             do_home_sequence(addr.next_sequence);
         }
         return;
     } else if (addr.homing) {
         if (get_sequence_homed(seq)) {
-            rtapi_print_msg(RTAPI_MSG_DBG,
-                            "HOMING: check_home_sequence sequence %d homed\n",
-                            seq);
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: check_home_sequence sequence %d homed\n", seq);
             //addr.homed = 1;
             //addr.homing = 0;
             addr.home_state = HOME_FINISHED;
@@ -1067,8 +983,7 @@ bool get_allhomed() {
  */
 bool get_homed(int jno) {
     if (H[jno].homed == 1) {
-        rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_homed homed %d\n",
-                        H[jno].homed);
+        rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_homed homed %d\n", H[jno].homed);
     }
     return H[jno].homed ? 1 : 0;
 }
@@ -1097,8 +1012,7 @@ bool get_homing_at_index_search_wait(int jno) {
 
 bool get_homing_is_active() {
     if (homing_active != homing_active_old) {
-        rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_homing_is_active ==  %d\n",
-                        homing_active);
+        rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_homing_is_active ==  %d\n", homing_active);
         homing_active_old = homing_active;
     }
     return homing_active;
@@ -1118,10 +1032,7 @@ void read_homing_in_pins(int njoints) {
         H[jno].PEv2_AxesState = *(addr->PEv2_AxesState); // IN
 
         if (H[jno].PEv2_AxesState != org_state) {
-            rtapi_print_msg(
-                RTAPI_MSG_DBG,
-                "HOMING: read_homing_in_pins joint %d state changed :%d\n", jno,
-                H[jno].PEv2_AxesState);
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: read_homing_in_pins joint %d state changed :%d\n", jno, H[jno].PEv2_AxesState);
         }
     }
     return;
@@ -1140,10 +1051,7 @@ void write_homing_out_pins(int njoints) {
         org_cmd = *(addr->PEv2_AxesCommand);
         *(addr->PEv2_AxesCommand) = H[jno].PEv2_AxesCommand; // OUT
         if (org_cmd != H[jno].PEv2_AxesCommand) {
-            rtapi_print_msg(
-                RTAPI_MSG_DBG,
-                "HOMING: write_homing_out_pins joint %d command changed :%d\n",
-                jno, H[jno].PEv2_AxesCommand);
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: write_homing_out_pins joint %d command changed :%d\n", jno, H[jno].PEv2_AxesCommand);
         }
     }
     //  rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: write_homing_out_pins\n");
@@ -1199,11 +1107,10 @@ void do_home_joint(int jno) {
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
                 break;
             case PK_PEAxisState_axHOME:
-                rtapi_print_msg(
-                    RTAPI_MSG_DBG,
-                    "HOMING:do_home_joint.PK_PEAxisState_axHOME do_home_joint "
-                    "joint %d homed (home_sequence %d)\n",
-                    jno, H[jno].home_sequence);
+                rtapi_print_msg(RTAPI_MSG_DBG,
+                                "HOMING:do_home_joint.PK_PEAxisState_axHOME do_home_joint "
+                                "joint %d homed (home_sequence %d)\n",
+                                jno, H[jno].home_sequence);
 
                 // check if all joints in sequence are homed
                 if (H[jno].home_sequence < 0) {
@@ -1212,8 +1119,7 @@ void do_home_joint(int jno) {
                     int homed_in_sequence = 0;
                     int jj;
                     for (jj = 0; jj < all_joints; jj++) {
-                        if (abs(H[jj].home_sequence) ==
-                            abs(H[jno].home_sequence)) {
+                        if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence)) {
                             joints_in_sequence++;
                             if (H[jj].PEv2_AxesState == PK_PEAxisState_axHOME) {
                                 homed_in_sequence++;
@@ -1221,61 +1127,51 @@ void do_home_joint(int jno) {
                         }
                     }
 
-                    rtapi_print_msg(
-                        RTAPI_MSG_DBG,
-                        "HOMING:PK_PEAxisState_axHOME joint %d "
-                        "joints_in_sequence:%d  homed_in_sequence:%d \n",
-                        jno, joints_in_sequence, homed_in_sequence);
+                    rtapi_print_msg(RTAPI_MSG_DBG,
+                                    "HOMING:PK_PEAxisState_axHOME joint %d "
+                                    "joints_in_sequence:%d  homed_in_sequence:%d \n",
+                                    jno, joints_in_sequence, homed_in_sequence);
                     if (joints_in_sequence == homed_in_sequence) {
                         //if all Joints of the Sequence show Hommed
                         for (jj = 0; jj < all_joints; jj++) {
 
-                            if (abs(H[jj].home_sequence) ==
-                                abs(H[jno].home_sequence)) {
+                            if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence)) {
                                 rtapi_print_msg(RTAPI_MSG_DBG,
                                                 "HOMING:do_home_joint.PK_"
                                                 "PEAxisState_axHOME joint %d "
                                                 "homed (home_sequence %d)\n",
                                                 jj, H[jno].home_sequence);
-                                H[jj].PEv2_AxesCommand =
-                                    PK_PEAxisCommand_axHOMINGFINALIZE;
+                                H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                             }
                         }
-                        rtapi_print_msg(
-                            RTAPI_MSG_DBG,
-                            "HOMING:do_home_joint.PK_PEAxisState_axHOME joint "
-                            "%d homed (home_sequence %d)\n",
-                            jno, H[jno].home_sequence);
-                        H[jno].PEv2_AxesCommand =
-                            PK_PEAxisCommand_axHOMINGFINALIZE;
+                        rtapi_print_msg(RTAPI_MSG_DBG,
+                                        "HOMING:do_home_joint.PK_PEAxisState_axHOME joint "
+                                        "%d homed (home_sequence %d)\n",
+                                        jno, H[jno].home_sequence);
+                        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                     }
                 } else {
-                    rtapi_print_msg(
-                        RTAPI_MSG_DBG,
-                        "HOMING:do_home_joint.PK_PEAxisState_axHOME joint %d "
-                        "homed (home_sequence %d)\n",
-                        jno, H[jno].home_sequence);
+                    rtapi_print_msg(RTAPI_MSG_DBG,
+                                    "HOMING:do_home_joint.PK_PEAxisState_axHOME joint %d "
+                                    "homed (home_sequence %d)\n",
+                                    jno, H[jno].home_sequence);
                     H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                 }
                 break;
             case PK_PEAxisState_axSTOPPED:
-                rtapi_print_msg(RTAPI_MSG_DBG,
-                                "HOMING: do_home_joint joint %d stopped\n",
-                                jno);
+                rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_home_joint joint %d stopped\n", jno);
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                 H[jno].home_state = HOME_START;
                 if (H[jno].home_sequence < 0) {
                     sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
                     int jj;
                     for (jj = 0; jj < all_joints; jj++) {
-                        if (abs(H[jj].home_sequence) ==
-                            abs(H[jno].home_sequence)) {
+                        if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence)) {
                             rtapi_print_msg(RTAPI_MSG_DBG,
                                             "HOMING: joint %d in sequence %d "
                                             "PK_PEAxisCommand_axHOMINGSTART\n",
                                             jj, H[jno].home_sequence);
-                            H[jj].PEv2_AxesCommand =
-                                PK_PEAxisCommand_axHOMINGSTART;
+                            H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                             H[jj].home_state = HOME_START;
                         }
                     }
@@ -1295,14 +1191,12 @@ void do_home_joint(int jno) {
                     sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
                     int jj;
                     for (jj = 0; jj < all_joints; jj++) {
-                        if (abs(H[jj].home_sequence) ==
-                            abs(H[jno].home_sequence)) {
+                        if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence)) {
                             rtapi_print_msg(RTAPI_MSG_DBG,
                                             "HOMING: joint %d in sequence %d "
                                             "PK_PEAxisCommand_axHOMINGSTART\n",
                                             jj, H[jj].home_sequence);
-                            H[jj].PEv2_AxesCommand =
-                                PK_PEAxisCommand_axHOMINGSTART;
+                            H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                             H[jj].home_state = HOME_START;
                         }
                     }
@@ -1316,9 +1210,7 @@ void do_home_joint(int jno) {
                 break;
         }
     } else {
-        rtapi_print_msg(RTAPI_MSG_DBG,
-                        "HOMING: do_home_joint joint number %d out of range\n",
-                        jno);
+        rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_home_joint joint number %d out of range\n", jno);
 
         // triger homing for first sequence (index 0)
 
@@ -1329,8 +1221,7 @@ void do_home_joint(int jno) {
         current_sequence = 0;
         int trigered = 0;
         for (jj = 0; jj < all_joints; jj++) {
-            if (abs(H[jj].home_sequence) ==
-                abs(sequence_home_data.min_sequence)) {
+            if (abs(H[jj].home_sequence) == abs(sequence_home_data.min_sequence)) {
                 rtapi_print_msg(RTAPI_MSG_DBG,
                                 "HOMING: joint %d in sequence %d "
                                 "PK_PEAxisCommand_axHOMINGSTART\n",
@@ -1339,16 +1230,12 @@ void do_home_joint(int jno) {
                 H[jno].home_state = HOME_START;
                 trigered++;
             } else {
-                rtapi_print_msg(RTAPI_MSG_DBG,
-                                "HOMING: joint %d not in sequence %d\n", jj,
-                                sequence_home_data.min_sequence);
+                rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: joint %d not in sequence %d\n", jj, sequence_home_data.min_sequence);
             }
         }
 
         if (trigered == 0) {
-            rtapi_print_msg(
-                RTAPI_MSG_WARN, "HOMING: no joints in sequence %d\n",
-                sequence_home_data.shd[current_sequence].home_sequence);
+            rtapi_print_msg(RTAPI_MSG_WARN, "HOMING: no joints in sequence %d\n", sequence_home_data.shd[current_sequence].home_sequence);
         }
     }
     return;
@@ -1363,31 +1250,23 @@ static void do_homing_sequence(void) {
     int seen;
     emcmot_joint_t *joint;
     int sequence_is_set = 0;
-    rtapi_print_msg(RTAPI_MSG_DBG,
-                    "HOMING:>do_homing_sequence(%d) sequence_state = %d\n",
-                    current_sequence, sequence_state);
-    if (current_sequence < sequence_home_data.min_sequence ||
-        current_sequence > sequence_home_data.max_sequence) {
+    rtapi_print_msg(RTAPI_MSG_DBG, "HOMING:>do_homing_sequence(%d) sequence_state = %d\n", current_sequence, sequence_state);
+    if (current_sequence < sequence_home_data.min_sequence || current_sequence > sequence_home_data.max_sequence) {
         // no sequence set, use the first one
         current_sequence = sequence_home_data.min_sequence;
     }
     one_sequence_home_data_t addr = (sequence_home_data.shd[current_sequence]);
     int joints_in_sequence = addr.joints_in_sequence;
-    rtapi_print_msg(RTAPI_MSG_DBG,
-                    "HOMING: do_homing_sequence(%d) joints_in_sequence = %d\n",
-                    current_sequence, joints_in_sequence);
+    rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing_sequence(%d) joints_in_sequence = %d\n", current_sequence, joints_in_sequence);
     switch (sequence_state) {
         case HOME_SEQUENCE_IDLE:
-            rtapi_print_msg(RTAPI_MSG_DBG,
-                            "HOMING: do_homing_sequence HOME_SEQUENCE_IDLE\n");
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing_sequence HOME_SEQUENCE_IDLE\n");
             current_sequence = sequence_home_data.min_sequence;
             /* nothing to do */
             break;
 
         case HOME_SEQUENCE_DO_ONE_JOINT:
-            rtapi_print_msg(
-                RTAPI_MSG_DBG,
-                "HOMING: do_homing_sequence HOME_SEQUENCE_DO_ONE_JOINT\n");
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing_sequence HOME_SEQUENCE_DO_ONE_JOINT\n");
             update_sequence_home_data();
             // Expect one joint with home_state==HOME_START
             int joints_in_sequence_DBG = 0;
@@ -1403,8 +1282,7 @@ static void do_homing_sequence(void) {
                     addr_dbg.joint_ids[joints_in_sequence_DBG] = i;
                     current_sequence = abs(H[i].home_sequence);
                     addr = (sequence_home_data.shd[current_sequence]);
-                    joints_in_sequence =
-                        addr.joints_in_sequence; //count of all joints in sequence
+                    joints_in_sequence = addr.joints_in_sequence; //count of all joints in sequence
                 } else {
                     H[i].joint_in_sequence = 0; // not in sequence
                 }
@@ -1420,21 +1298,18 @@ static void do_homing_sequence(void) {
         }*/
 
             if (joints_in_sequence == 0) {
-                rtapi_print_msg(
-                    RTAPI_MSG_DBG,
-                    "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_DO_ONE_JOINT "
-                    "joints_in_sequence = 0\n",
-                    current_sequence);
+                rtapi_print_msg(RTAPI_MSG_DBG,
+                                "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_DO_ONE_JOINT "
+                                "joints_in_sequence = 0\n",
+                                current_sequence);
                 update_sequence_home_data();
                 //sequence_state = HOME_SEQUENCE_IDLE;
                 addr = (sequence_home_data.shd[current_sequence]);
-                joints_in_sequence =
-                    addr.joints_in_sequence; //count of all joints in sequence
-                rtapi_print_msg(
-                    RTAPI_MSG_DBG,
-                    "HOMING: do_homing_sequence(%d) after update "
-                    "HOME_SEQUENCE_DO_ONE_JOINT joints_in_sequence = %d \n",
-                    current_sequence, joints_in_sequence);
+                joints_in_sequence = addr.joints_in_sequence; //count of all joints in sequence
+                rtapi_print_msg(RTAPI_MSG_DBG,
+                                "HOMING: do_homing_sequence(%d) after update "
+                                "HOME_SEQUENCE_DO_ONE_JOINT joints_in_sequence = %d \n",
+                                current_sequence, joints_in_sequence);
 
                 break;
             } else {
@@ -1449,11 +1324,10 @@ static void do_homing_sequence(void) {
             // specified by a negative sequence
             // Determine current_sequence and set H[i].joint_in_sequence
             // based on home_state[i] == HOME_START
-            rtapi_print_msg(
-                RTAPI_MSG_DBG,
-                "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_DO_ONE_SEQUENCE "
-                "joints_in_sequence = %d\n",
-                current_sequence, joints_in_sequence);
+            rtapi_print_msg(RTAPI_MSG_DBG,
+                            "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_DO_ONE_SEQUENCE "
+                            "joints_in_sequence = %d\n",
+                            current_sequence, joints_in_sequence);
 
             for (int jj = 0; jj < joints_in_sequence; jj++) {
                 int jno = addr.joint_ids[jj];
@@ -1472,10 +1346,7 @@ static void do_homing_sequence(void) {
             // Request to home all joints or a single sequence
             sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
             allhomed = 0;
-            rtapi_print_msg(
-                RTAPI_MSG_DBG,
-                "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_START\n",
-                current_sequence);
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_START\n", current_sequence);
             for (int jj = 0; jj < joints_in_sequence; jj++) {
                 int jno = addr.joint_ids[jj];
                 pokeys_1joint_state_machine(jno);
@@ -1487,8 +1358,7 @@ static void do_homing_sequence(void) {
                                         "HOME_SEQUENCE_START joint %d stopped "
                                         "PK_PEAxisCommand_axHOMINGSTART\n",
                                         current_sequence, jno);
-                        H[jno].PEv2_AxesCommand =
-                            PK_PEAxisCommand_axHOMINGSTART;
+                        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                         break;
 
                     case PK_PEAxisState_axREADY:
@@ -1497,8 +1367,7 @@ static void do_homing_sequence(void) {
                                         "HOME_SEQUENCE_START joint %d ready "
                                         "PK_PEAxisCommand_axHOMINGSTART\n",
                                         current_sequence, jno);
-                        H[jno].PEv2_AxesCommand =
-                            PK_PEAxisCommand_axHOMINGSTART;
+                        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                         break;
 
                     case PK_PEAxisState_axRUNNING:
@@ -1507,8 +1376,7 @@ static void do_homing_sequence(void) {
                                         "HOME_SEQUENCE_START joint %d running "
                                         "PK_PEAxisCommand_axHOMINGSTART\n",
                                         current_sequence, jno);
-                        H[jno].PEv2_AxesCommand =
-                            PK_PEAxisCommand_axHOMINGSTART;
+                        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                         break;
 
                     case PK_PEAxisState_axERROR:
@@ -1518,8 +1386,7 @@ static void do_homing_sequence(void) {
                                         "PK_PEAxisCommand_axHOMINGCANCEL\n",
                                         current_sequence, jno);
                         sequence_state = HOME_SEQUENCE_IDLE;
-                        H[jno].PEv2_AxesCommand =
-                            PK_PEAxisCommand_axHOMINGCANCEL;
+                        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGCANCEL;
                         return;
                         break;
 
@@ -1534,10 +1401,7 @@ static void do_homing_sequence(void) {
             // drop through----drop through----drop through----drop through
 
         case HOME_SEQUENCE_START_JOINTS:
-            rtapi_print_msg(
-                RTAPI_MSG_DBG,
-                "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_START_JOINTS\n",
-                current_sequence);
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_START_JOINTS\n", current_sequence);
             seen = 0;
             allhomed = 0;
             /* start all joints whose sequence number matches H[i].home_sequence */
@@ -1555,11 +1419,10 @@ static void do_homing_sequence(void) {
             if (seen || current_sequence == 0) {
                 sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
             } else {
-                rtapi_print_msg(
-                    RTAPI_MSG_DBG,
-                    "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_START_JOINTS "
-                    "no joints in sequence %d\n",
-                    current_sequence, current_sequence);
+                rtapi_print_msg(RTAPI_MSG_DBG,
+                                "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_START_JOINTS "
+                                "no joints in sequence %d\n",
+                                current_sequence, current_sequence);
                 /* no joints have this sequence number, we're done */
                 sequence_state = HOME_SEQUENCE_IDLE;
                 /* tell the world */
@@ -1585,8 +1448,7 @@ static void do_homing_sequence(void) {
                                         "HOME_SEQUENCE_WAIT_JOINTS joint %d "
                                         "PK_PEAxisState_axSTOPPED\n",
                                         current_sequence, jno);
-                        sequence_state =
-                            HOME_SEQUENCE_START_JOINTS; //back to start
+                        sequence_state = HOME_SEQUENCE_START_JOINTS; //back to start
                         break;
 
                     case PK_PEAxisState_axREADY:
@@ -1595,8 +1457,7 @@ static void do_homing_sequence(void) {
                                         "HOME_SEQUENCE_WAIT_JOINTS joint %d "
                                         "PK_PEAxisState_axREADY\n",
                                         current_sequence, jno);
-                        sequence_state =
-                            HOME_SEQUENCE_START_JOINTS; //back to start
+                        sequence_state = HOME_SEQUENCE_START_JOINTS; //back to start
                         break;
 
                     case PK_PEAxisState_axRUNNING:
@@ -1605,8 +1466,7 @@ static void do_homing_sequence(void) {
                                         "HOME_SEQUENCE_WAIT_JOINTS joint %d "
                                         "PK_PEAxisState_axRUNNING\n",
                                         current_sequence, jno);
-                        sequence_state =
-                            HOME_SEQUENCE_START_JOINTS; //back to start
+                        sequence_state = HOME_SEQUENCE_START_JOINTS; //back to start
                         break;
 
                     case PK_PEAxisState_axHOMING_RESETTING:
@@ -1634,12 +1494,11 @@ static void do_homing_sequence(void) {
                                         "PK_PEAxisState_axHOME\n",
                                         current_sequence, jno);
                         if (H[jno].homed == 1) {
-                            rtapi_print_msg(
-                                RTAPI_MSG_DBG,
-                                "HOMING:  do_homing_sequence(%d) "
-                                "HOME_SEQUENCE_WAIT_JOINTS joint %d "
-                                "PK_PEAxisState_axHOME flags set ok\n",
-                                current_sequence, jno);
+                            rtapi_print_msg(RTAPI_MSG_DBG,
+                                            "HOMING:  do_homing_sequence(%d) "
+                                            "HOME_SEQUENCE_WAIT_JOINTS joint %d "
+                                            "PK_PEAxisState_axHOME flags set ok\n",
+                                            current_sequence, jno);
                             //     homed_count++;
                         }
                         homed_count++;
@@ -1679,8 +1538,7 @@ static void do_homing_sequence(void) {
                                         "PK_PEAxisState_axERROR\n",
                                         current_sequence, jno);
                         sequence_state = HOME_SEQUENCE_IDLE;
-                        H[jno].PEv2_AxesCommand =
-                            PK_PEAxisCommand_axHOMINGCANCEL;
+                        H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGCANCEL;
                         break;
 
                     default:
@@ -1692,11 +1550,10 @@ static void do_homing_sequence(void) {
                         break;
                 }
             }
-            rtapi_print_msg(
-                RTAPI_MSG_DBG,
-                "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS "
-                "homed_count:%d joints_in_sequence:%d \n",
-                current_sequence, homed_count, joints_in_sequence);
+            rtapi_print_msg(RTAPI_MSG_DBG,
+                            "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS "
+                            "homed_count:%d joints_in_sequence:%d \n",
+                            current_sequence, homed_count, joints_in_sequence);
             if (homed_count == joints_in_sequence) {
                 if (addr.is_last) {
                     rtapi_print_msg(RTAPI_MSG_DBG,
@@ -1729,9 +1586,7 @@ static void do_homing_sequence(void) {
             homing_active = 0;
             break;
     }
-    rtapi_print_msg(RTAPI_MSG_DBG,
-                    "HOMING:<do_homing_sequence(%d) sequence_state %d\n",
-                    current_sequence, sequence_state);
+    rtapi_print_msg(RTAPI_MSG_DBG, "HOMING:<do_homing_sequence(%d) sequence_state %d\n", current_sequence, sequence_state);
     return;
 } // do_homing_sequence()
 
@@ -1760,31 +1615,20 @@ bool do_homing(void) {
     }
 
     /* loop thru joints, treat each one individually */
-    rtapi_print_msg(
-        RTAPI_MSG_DBG,
-        "HOMING: do_homing loop thru joints, treat each one individually\n");
+    rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing loop thru joints, treat each one individually\n");
     for (joint_num = 0; joint_num < all_joints; joint_num++) {
         if (!H[joint_num].joint_in_sequence) {
-            rtapi_print_msg(RTAPI_MSG_DBG,
-                            "HOMING: do_homing joint %d not in sequence\n",
-                            joint_num);
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing joint %d not in sequence\n", joint_num);
             continue;
         }
         if (!GET_JOINT_ACTIVE_FLAG(&joints[joint_num])) {
-            rtapi_print_msg(RTAPI_MSG_DBG,
-                            "HOMING: do_homing joint %d not active\n",
-                            joint_num);
+            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing joint %d not active\n", joint_num);
             continue;
         }
         active_joints++;
-        rtapi_print_msg(
-            RTAPI_MSG_DBG,
-            "HOMING: do_homing joint %d - pokeys_1joint_state_machine\n",
-            joint_num);
+        rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing joint %d - pokeys_1joint_state_machine\n", joint_num);
         homing_flag += pokeys_1joint_state_machine(joint_num);
-        rtapi_print_msg(RTAPI_MSG_DBG,
-                        "HOMING: do_homing joint: %d homing_flag: %d \n",
-                        joint_num, homing_flag);
+        rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing joint: %d homing_flag: %d \n", joint_num, homing_flag);
     }
     // return 1 if homing completed this period
 
@@ -1795,8 +1639,7 @@ bool do_homing(void) {
         sequence_state = HOME_SEQUENCE_IDLE;
         return true;
     } else {
-        rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing homing_flag %d\n",
-                        homing_flag);
+        rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing homing_flag %d\n", homing_flag);
     }
     rtapi_print_msg(RTAPI_MSG_DBG,
                     "HOMING: beginning_allhomed: %d / end_allhomed: %d  "
@@ -1817,16 +1660,12 @@ void do_cancel_homing(int jno) {
     return;
 }
 
-void set_joint_homing_params(int jno, double offset, double home,
-                             double home_final_vel, double home_search_vel,
-                             double home_latch_vel, int home_flags,
-                             int home_sequence, bool volatile_home) {
+void set_joint_homing_params(int jno, double offset, double home, double home_final_vel, double home_search_vel, double home_latch_vel, int home_flags, int home_sequence, bool volatile_home) {
     rtapi_print_msg(RTAPI_MSG_DBG,
                     "HOMING: set_joint_homing_params(%d) offset:%f home:%f "
                     "home_final_vel:%f home_search_vel:%f home_latch_vel:%f "
                     "home_flags:%d home_sequence:%d volatile_home:%d\n",
-                    jno, offset, home, home_final_vel, home_search_vel,
-                    home_latch_vel, home_flags, home_sequence, volatile_home);
+                    jno, offset, home, home_final_vel, home_search_vel, home_latch_vel, home_flags, home_sequence, volatile_home);
     H[jno].offset = offset;
     H[jno].home = home;
     H[jno].home_final_vel = home_final_vel;
@@ -1839,8 +1678,7 @@ void set_joint_homing_params(int jno, double offset, double home,
     update_sequence_home_data();
     return;
 }
-void update_joint_homing_params(int jno, double offset, double home,
-                                int home_sequence) {
+void update_joint_homing_params(int jno, double offset, double home, int home_sequence) {
     rtapi_print_msg(RTAPI_MSG_DBG,
                     "HOMING: update_joint_homing_params(%d) offset:%f home:%f "
                     "home_sequence:%d\n",
