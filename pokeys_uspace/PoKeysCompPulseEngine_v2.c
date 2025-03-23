@@ -2148,9 +2148,10 @@ void PKPEv2_WriteIniFile(sPoKeysDevice *dev) {
         // PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - PEv2_AxisEnableOutputPins_0
     }
 }
-
+#ifdef RTAPI
 EXPORT_SYMBOL(PKPEv2_Init);
 EXPORT_SYMBOL(PKPEv2_ReadIniFile);
 EXPORT_SYMBOL(PKPEv2_WriteIniFile);
 EXPORT_SYMBOL(PKPEv2_Setup);
 EXPORT_SYMBOL(PKPEv2_Update);
+#endif

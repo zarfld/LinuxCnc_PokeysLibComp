@@ -11,8 +11,14 @@
 #include "rtapi_app.h"
 #endif
 
+#if defined(ULAPI) && defined(RTAPI)
+#error "Both ULAPI and RTAPI defined. This should not happen."
+#endif
+
 #ifndef RTAPI
+#ifndef ULAPI
 #define ULAPI
+#endif
 #endif
 
 #include "rtapi_string.h"
@@ -2090,8 +2096,9 @@ EXTRA_CLEANUP() {
 static int __comp_get_data_size(void) {
     return 0;
 }
-
+#ifdef RTAPI
 EXPORT_SYMBOL(pokeys_read_ini);
 EXPORT_SYMBOL(pokeys_write_ini);
 EXPORT_SYMBOL(pokeys_update);
 EXPORT_SYMBOL(pokeys_setup);
+#endif

@@ -2864,7 +2864,7 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
     }
     return ret;
 }
-
+#ifdef RTAPI
 EXPORT_SYMBOL(PEv2_AxisConfigurationSet);
 EXPORT_SYMBOL(PKPEv2_export_pins);
 EXPORT_SYMBOL(PEv2_StatusGet);
@@ -2875,7 +2875,7 @@ EXPORT_SYMBOL(PEv2_AdditionalParametersGet);
 EXPORT_SYMBOL(PEv2_AdditionalParametersSet);
 EXPORT_SYMBOL(PEv2_AxisConfigurationGet);
 EXPORT_SYMBOL(PEv2_AxisConfigurationSet);
-
+#endif
 #ifdef MODULE_INFO
 MODULE_INFO(linuxcnc, "pin:PEv2.deb.out:s32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:PEv2.deb.estop:s32:0:out::None:None");
