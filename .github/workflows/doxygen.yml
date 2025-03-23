@@ -41,3 +41,33 @@ jobs:
         with:
           name: doxygen-html
           path: code_analysis/html/
+
+  deploy-docs:
+    runs-on: ubuntu-latest
+        
+    steps:
+      - name: reinit runner directory
+        run: |
+          sudo chown -R cnc:cnc /home/cnc/actions-runner
+          sudo chown -R cnc:cnc /home/cnc/actions-runner/_work
+          chmod -R u+rwx /home/cnc/actions-runner/_work
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Install Doxygen and Graphviz
+        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
+
+      - name: init submodule
+        run: sudo /bin/bash "./prerequisites.sh"
+
+      - name: Generate Doxygen documentation
+        run: doxygen code_analysis/Doxyfile
+        
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: code_analysis/html
+          publish_branch: gh-pages
+          force_orphan: true
