@@ -1148,7 +1148,7 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
     PEv2_deb_out = 1010;
     ret = PK_PEv2_StatusGet(dev);
     PEv2_deb_out = 1020;
-    
+
     if (ret == PK_OK) {
         rtapi_print_msg(RTAPI_MSG_DBG,
                         "PoKeys: %s:%s: PK_PEv2_StatusGet(dev) = PK_OK\n",
@@ -1314,7 +1314,7 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
                         "PoKeys: %s:%s: PK_PEv2_StatusGet(dev) != PK_OK (%i)\n",
                         __FILE__, __FUNCTION__, ret);
 
-                        PEv2_deb_out = 1025;
+        PEv2_deb_out = 1025;
     }
 #ifdef ULAPI
     usleep(sleepdur);
