@@ -327,7 +327,6 @@ typedef struct {
     bool joint_in_sequence;
 } home_local_data;
 
-
 static home_local_data H[EMCMOT_MAX_JOINTS];
 
 /**
@@ -1058,8 +1057,7 @@ bool get_allhomed() {
  * @param jno 
  * @return true 
  * @return false 
- */*/
-bool get_homed(int jno) {
+ */ * / bool get_homed(int jno) {
     if (H[jno].homed == 1) {
         rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_homed homed %d\n",
                         H[jno].homed);
