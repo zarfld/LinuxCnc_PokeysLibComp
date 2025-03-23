@@ -18,7 +18,9 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
 
       - name: Generate documentation
-        run: doxygen code_analysis/Doxyfile
+        run: |
+            cd code_analysis
+            doxygen Doxyfile
 
       - name: Upload generated docs as artifact
         uses: actions/upload-artifact@v4
