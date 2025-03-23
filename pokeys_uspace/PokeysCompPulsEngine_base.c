@@ -31,7 +31,7 @@ typedef enum {
     PK_Homing_axHOMINGSTART = 1,         // Start Homing procedure
     PK_Homing_axARMENCODER = 2,          // reset position to zeros
     PK_Homing_axHOMINGWaitFinalMove = 3, // move to homeposition
-    PK_Homing_axHOMINGFinalMove = 4,    // move to homeposition
+    PK_Homing_axHOMINGFinalMove = 4,     // move to homeposition
     PK_Homing_axHOMINGCancel = 5,        // Cancel Homing procedure
     PK_Homing_axHOMINGFinalize = 6,      // Finish Homing procedure
 } pokeys_home_status_t;
