@@ -635,7 +635,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
 
             Read_digin_LimitHome_Pins(dev, i);
 
-                PEv2_deb_axxisout(i) = 280;
+            PEv2_deb_axxisout(i) = 280;
 
             PEv2_digin_SoftLimit_in(i) = Get_BitOfByte(bm_SoftLimitStatus, i);
             PEv2_deb_axxisout(i) = 290 + i;
