@@ -7,7 +7,7 @@ project(pokeys_uspace C)
 find_program(MAKE_EXECUTABLE make REQUIRED)
 
 # Set Paths
-set(POKEYSLIB_DIR ./external/pokeyslib)
+set(POKEYSLIB_DIR ${CMAKE_SOURCE_DIR}/external/pokeyslib)
 set(POKEYSLIB_MAKEFILE ${POKEYSLIB_DIR}/Makefile.noqmake)
 set(SUBMAKEFILE_DIR ${CMAKE_SOURCE_DIR}/pokeys_uspace)
 set(SUBMAKEFILE ${SUBMAKEFILE_DIR}/Submakefile)
