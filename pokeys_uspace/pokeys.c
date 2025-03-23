@@ -1504,7 +1504,7 @@ void pokeys_update(sPoKeysDevice *dev) {
 }
 
 void pokeys_setup(sPoKeysDevice *dev) {
-    if (doSetup == 1) {
+  /*  if (doSetup == 1) {
         rtapi_print_msg(RTAPI_MSG_DBG,
                         "PoKeys: %s:%s: info_PulseEnginev2 = %d\n", __FILE__,
                         __FUNCTION__, info_PulseEnginev2);
@@ -1547,7 +1547,7 @@ void pokeys_setup(sPoKeysDevice *dev) {
         }
         next_setup = 1;
     }
-    doSetup = 0;
+    doSetup = 0;*/
 }
 /**
  * @brief user_mainloop
@@ -2038,7 +2038,51 @@ void user_mainloop(void) {
                         dev->info.iEasySensors; // Device supports EasySensors
                     deb_out = 311;
 
-                    pokeys_setup(dev);
+//                    pokeys_setup(dev);
+if (doSetup == 1) {
+    rtapi_print_msg(RTAPI_MSG_DBG,
+                    "PoKeys: %s:%s: info_PulseEnginev2 = %d\n", __FILE__,
+                    __FUNCTION__, info_PulseEnginev2);
+    if (info_PulseEnginev2 != 0) {
+        PKPEv2_Setup(dev);
+        deb_out = 313;
+    }
+    next_setup = 2;
+} else if (doSetup == 2) {
+    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PinCount = %d\n",
+                    __FILE__, __FUNCTION__, info_PinCount);
+    if (info_PinCount != 0) {
+        PKIO_Setup(dev);
+        deb_out = 312;
+    }
+    next_setup = 3;
+} else if (doSetup == 3) {
+    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PoExtBus = %d\n",
+                    __FILE__, __FUNCTION__, info_PoExtBus);
+    if (info_PoExtBus != 0) {
+        PKPoExtBus_Setup(dev);
+        deb_out = 314;
+    }
+    next_setup = 4;
+} else if (doSetup == 4) {
+    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PoNET = %d\n",
+                    __FILE__, __FUNCTION__, info_PoNET);
+    if (info_PoNET != 0) {
+        PKPoNet_Setup(dev);
+        deb_out = 315;
+    }
+    next_setup = 5;
+} else if (doSetup == 5) {
+    rtapi_print_msg(RTAPI_MSG_DBG,
+                    "PoKeys: %s:%s: info_EncodersCount = %d\n", __FILE__,
+                    __FUNCTION__, info_EncodersCount);
+    if (info_EncodersCount != 0) {
+        PKEncoder_Setup(dev);
+        deb_out = 316;
+    }
+    next_setup = 1;
+}
+doSetup = 0;
 
                 } else {
                     alive = 0;
