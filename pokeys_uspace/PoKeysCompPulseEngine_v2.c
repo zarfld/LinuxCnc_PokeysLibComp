@@ -306,12 +306,12 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             switch (intAxesState) {
                 case PK_PEAxisState_axSTOPPED: // Axis is stopped
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axSTOPPED\n", __FILE__, __FUNCTION__);
-                    if (IsHoming[i] == true) {
+                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axSTOPPED \n",
                                         __FILE__, __FUNCTION__, i);
-                        IsHoming[i] = false;
+                        *(PEv2_data->PEv2_deb_ishoming[i]) = false;
                         allhomed = false;
                     }
                     PEv2_deb_out = 310 + i;
@@ -321,14 +321,14 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
                 case PK_PEAxisState_axREADY: // Axis ready
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axREADY\n", __FILE__, __FUNCTION__);
-                    if (IsHoming[i] == true) {
+                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axREADY \n",
                                         __FILE__, __FUNCTION__, i);
                     }
                     allhomed = false;
-                    // IsHoming[i] = false;
+                    // *(PEv2_data->PEv2_deb_ishoming[i]) = false;
                     PEv2_deb_out = 320 + i;
                     // PEv2_digin_AxisEnabled_in(i) = true;
                     // PEv2_digin_LimitOverride_in(i) = false;
@@ -336,7 +336,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
                 case PK_PEAxisState_axRUNNING: // Axis is running
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axRUNNING\n", __FILE__, __FUNCTION__);
-                    if (IsHoming[i] == true) {
+                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axRUNNING \n",
@@ -355,19 +355,19 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                             "true\n",
                                             __FILE__, __FUNCTION__, i);
                             InPosition[i] = true;
-                            IsHoming[i] = false;
+                            *(PEv2_data->PEv2_deb_ishoming[i]) = false;
                             Homing_FinalMoveActive[i] = false;
                         }
                     } else if (Homing_FinalMoveDone[i] != false) {
                         //	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
                         intAxesState = PK_PEAxisState_axHOME;
                     }
-                    // IsHoming[i] = false;
+                    // *(PEv2_data->PEv2_deb_ishoming[i]) = false;
                     PEv2_deb_out = 330 + i;
                     break;
                 case PK_PEAxisState_axHOMING_RESETTING: // Stopping the axis to reset the position counters
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMING_RESETTING\n", __FILE__, __FUNCTION__);
-                    if (IsHoming[i] == true) {
+                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axHOMING_RESETTING \n",
@@ -376,19 +376,19 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     allhomed = false;
                     // PEv2_digin_LimitOverride_in(i) = true;
                     // PEv2_digin_AxisEnabled_in(i) = true;
-                    IsHoming[i] = true;
+                    *(PEv2_data->PEv2_deb_ishoming[i]) = true;
                     PEv2_deb_out = 340 + i;
                     break;
                 case PK_PEAxisState_axHOMING_BACKING_OFF: // Backing off switch
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMING_BACKING_OFF\n", __FILE__, __FUNCTION__);
-                    if (IsHoming[i] == true) {
+                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axHOMING_BACKING_OFF \n",
                                         __FILE__, __FUNCTION__, i);
                     }
                     allhomed = false;
-                    IsHoming[i] = true;
+                    *(PEv2_data->PEv2_deb_ishoming[i]) = true;
                     PEv2_deb_out = 340 + i;
 
                     // PEv2_digin_LimitOverride_in(i) = true;
@@ -447,18 +447,18 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                             "true\n",
                                             __FILE__, __FUNCTION__, i);
                             InPosition[i] = true;
-                            IsHoming[i] = false;
+                            *(PEv2_data->PEv2_deb_ishoming[i]) = false;
                             Homing_FinalMoveActive[i] = false;
                         }
                     } else {
-                        IsHoming[i] = false;
+                        *(PEv2_data->PEv2_deb_ishoming[i]) = false;
                     }
                     /*if(finalizingHoming[i] == true){
-					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOME - IsHoming[i] = false\n", __FILE__, __FUNCTION__, i);
-					IsHoming[i] = false;
+					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOME - *(PEv2_data->PEv2_deb_ishoming[i]) = false\n", __FILE__, __FUNCTION__, i);
+					*(PEv2_data->PEv2_deb_ishoming[i]) = false;
 					dev->PEv2.PositionSetup[i]=PEv2_data->PEv2_HomePosition[i];
 					bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);
-				} else if (IsHoming[i] == true) {
+				} else if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
 					rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOME - finalizingHoming[i] = true\n", __FILE__, __FUNCTION__, i);
 					finalizingHoming[i] = true;
 					*(PEv2_data->PEv2_joint_pos_fb[i]) = 0;
@@ -476,7 +476,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
                 case PK_PEAxisState_axHOMINGSTART: // Homing procedure is starting on axis
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMINGSTART\n", __FILE__, __FUNCTION__);
-                    if (IsHoming[i] == false) {
+                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == false) {
                         rtapi_print_msg(RTAPI_MSG_ERR,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axHOMINGSTART \n",
@@ -491,14 +491,14 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     Homing_FinalMoveActive[i] = false;
                     Homing_done[i] = false;
 
-                    IsHoming[i] = true;
+                    *(PEv2_data->PEv2_deb_ishoming[i]) = true;
                     *(PEv2_data->PEv2_joint_pos_fb[i]) = 0;
                     Homing_active = true;
                     PEv2_deb_out = 340 + i;
                     break;
                 case PK_PEAxisState_axHOMINGSEARCH: // Homing procedure first step - going to home
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMINGSEARCH\n", __FILE__, __FUNCTION__);
-                    if (IsHoming[i] == false) {
+                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == false) {
                         rtapi_print_msg(RTAPI_MSG_ERR,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axHOMINGSEARCH \n",
@@ -507,14 +507,14 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     // PEv2_digin_AxisEnabled_in(i) = true;
                     // PEv2_digin_LimitOverride_in(i) = true;
                     allhomed = false;
-                    IsHoming[i] = true;
+                    *(PEv2_data->PEv2_deb_ishoming[i]) = true;
 
                     Homing_active = true;
                     PEv2_deb_out = 340 + i;
                     break;
                 case PK_PEAxisState_axHOMINGBACK: // Homing procedure second step - slow homing
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMINGBACK\n", __FILE__, __FUNCTION__);
-                    if (IsHoming[i] == false) {
+                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == false) {
                         rtapi_print_msg(RTAPI_MSG_ERR,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axHOMINGBACK \n",
@@ -522,7 +522,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     }
                     // PEv2_digin_AxisEnabled_in(i) = true;
                     // PEv2_digin_LimitOverride_in(i) = true;
-                    IsHoming[i] = true;
+                    *(PEv2_data->PEv2_deb_ishoming[i]) = true;
 
                     allhomed = false;
                     Homing_active = true;
@@ -530,7 +530,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
                 case PK_PEAxisState_axPROBED: // Probing completed for this axis
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axPROBED\n", __FILE__, __FUNCTION__);
-                    if (IsHoming[i] == true) {
+                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axPROBED \n",
@@ -538,12 +538,12 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     }
                     // PEv2_digin_AxisEnabled_in(i) = true;
                     // PEv2_digin_LimitOverride_in(i) = false;
-                    // IsHoming[i] = false;
+                    // *(PEv2_data->PEv2_deb_ishoming[i]) = false;
                     PEv2_deb_out = 350 + i;
                     break;
                 case PK_PEAxisState_axPROBESTART: // Probing procedure is starting on axis
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axPROBESTART\n", __FILE__, __FUNCTION__);
-                    if (IsHoming[i] == true) {
+                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axPROBESTART \n",
@@ -551,12 +551,12 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     }
                     // PEv2_digin_AxisEnabled_in(i) = true;
                     // PEv2_digin_LimitOverride_in(i) = false;
-                    // IsHoming[i] = false;
+                    // *(PEv2_data->PEv2_deb_ishoming[i]) = false;
                     PEv2_deb_out = 350 + i;
                     break;
                 case PK_PEAxisState_axPROBESEARCH: // Probing procedure - probing
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axPROBESEARCH\n", __FILE__, __FUNCTION__);
-                    if (IsHoming[i] == true) {
+                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axPROBESEARCH \n",
@@ -564,12 +564,12 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     }
                     // PEv2_digin_AxisEnabled_in(i) = true;
                     // PEv2_digin_LimitOverride_in(i) = false;
-                    // IsHoming[i] = false;
+                    // *(PEv2_data->PEv2_deb_ishoming[i]) = false;
                     PEv2_deb_out = 350 + i;
                     break;
                 case PK_PEAxisState_axERROR: // Axis error
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axERROR\n", __FILE__, __FUNCTION__);
-                    if (IsHoming[i] == true) {
+                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
                         rtapi_print_msg(RTAPI_MSG_ERR,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axERROR \n",
@@ -577,13 +577,13 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     }
                     // PEv2_digin_AxisEnabled_in(i) = false;
                     // PEv2_digin_LimitOverride_in(i) = false;
-                    IsHoming[i] = false;
+                    *(PEv2_data->PEv2_deb_ishoming[i]) = false;
                     PEv2_deb_out = 360 + i;
 
                     break;
                 case PK_PEAxisState_axLIMIT: // Axis limit tripped
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axLIMIT\n", __FILE__, __FUNCTION__);
-                    if (IsHoming[i] == true) {
+                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axLIMIT \n",
@@ -591,7 +591,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     }
                     // PEv2_digin_AxisEnabled_in(i) = true;
                     // PEv2_digin_LimitOverride_in(i) = false;
-                    IsHoming[i] = false;
+                    *(PEv2_data->PEv2_deb_ishoming[i]) = false;
                     PEv2_deb_out = 370 + i;
                     break;
                 default:
@@ -603,7 +603,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             // placed here to as substates PK_PEAxisState_axHOME
             *PEv2_data->PEv2_AxesState[i] = intAxesState;
             // calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
-            if (IsHoming[i] == false && (*PEv2_data->PEv2_AxesState[i] != 17) && (*PEv2_data->PEv2_AxesState[i] != 18) && (*PEv2_data->PEv2_AxesState[i] != 19)) {
+            if (*(PEv2_data->PEv2_deb_ishoming[i]) == false && (*PEv2_data->PEv2_AxesState[i] != 17) && (*PEv2_data->PEv2_AxesState[i] != 18) && (*PEv2_data->PEv2_AxesState[i] != 19)) {
 
                 //PosFb[i] = (dev->PEv2.CurrentPosition[i] / PEv2_data->PEv2_PositionScale[i]) - PEv2_data->PEv2_PositionOffset[i];
 
@@ -742,13 +742,13 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             } else {
                 InPosition[i] = false;
             }
-            PEv2_deb_ishoming(i) = IsHoming[i];
+           // PEv2_deb_ishoming(i) = IsHoming[i];
             PEv2_deb_inposition(i) = InPosition[i];
 
             if (HAL_Machine_On != 0) {
                 PEv2_deb_out = 390 + i;
                 posMode[i] = false;
-                if (IsHoming[i]) {
+                if (*(PEv2_data->PEv2_deb_ishoming[i])) {
                     PEv2_deb_axxisout(i) = 2400 + i;
                     // dev->PEv2.ReferencePositionSpeed[i]=0;
                     switch (intAxesState) {
@@ -1093,7 +1093,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
         if (allhomed != false) {
 
             for (int i = 0; i < (*PEv2_data->PEv2_nrOfAxes); i++) {
-                //		IsHoming[i] = false;
+                //		*(PEv2_data->PEv2_deb_ishoming[i]) = false;
             }
         }
         if (tAxisEnabledMask != dev->PEv2.AxisEnabledMask) {
@@ -1179,7 +1179,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             if (PK_PEv2_PulseEngineMove(dev) != PK_OK) {
             }
         } else {
-            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_PulseEngineMove == PK_OK \n" __FILE__, __FUNCTION__);
+            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_PulseEngineMove == PK_OK \n", __FILE__, __FUNCTION__);
             PEv2_deb_out = 4500;
         }
 #ifdef ULAPI
