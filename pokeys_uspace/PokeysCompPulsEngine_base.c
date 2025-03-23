@@ -26,7 +26,6 @@ typedef enum {
     PK_PEv2Homing_OutHomeReducedSpeed = (1 << 4),     // Cancel Homing procedure
 } pokeys_homing_algorithm_t;
 
-
 typedef enum {
     PK_Homing_axIDLE = 0,                // Axis  in IDLE
     PK_Homing_axHOMINGSTART = 1,         // Start Homing procedure
@@ -340,10 +339,10 @@ int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id, PEv2_data_t *P
         if (r != 0)
             return r;
 
-            //*PEv2_HomingStatus
-            r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_HomingStatus[j]), comp_id, "%s.PEv2.%01d.HomingStatus", prefix, j);
-            if (r != 0)
-                return r;
+        //*PEv2_HomingStatus
+        r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_HomingStatus[j]), comp_id, "%s.PEv2.%01d.HomingStatus", prefix, j);
+        if (r != 0)
+            return r;
 
         r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_ProbeMaxPosition[j]), comp_id, "%s.PEv2.%01d.ProbeMaxPosition", prefix, j);
         if (r != 0)
@@ -893,49 +892,48 @@ uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value) {
 }
 
 void Read_digin_LimitHome_Pins(sPoKeysDevice *dev, int i) {
-           /*
+    /*
 			   param rw unsigned PEv2.#.digin.LimitN.Pin [8] "Limit- switch pin (0 for external dedicated input)";			// Limit- switch pin (0 for external dedicated input)
 			   param rw unsigned PEv2.#.digin.LimitN.Filter[8] "Digital filter for limit- switch";		// Digital filter for limit- switch
 			   param rw bit PEv2.#.digin.LimitN.invert[8] "Invert limit- (PK_ASO_SWITCH_INVERT_LIMIT_N)";
 			   param rw bit PEv2.#.digin.LimitN.Enabled[8] "Limit- is available (PK_ASO_SWITCH_LIMIT_N)";
 			*/
-            if (PEv2_data->PEv2_digin_LimitP_Pin[i] > 0) {
-                if (PEv2_data->PEv2_digin_LimitP_invert[i] != 0) {
-                    *(PEv2_data->PEv2_digin_LimitP_in[i]) = !Get_BitOfByte(bm_LimitStatusP, i);
-                    *(PEv2_data->PEv2_digin_LimitP_in_not[i]) = Get_BitOfByte(bm_LimitStatusP, i);
-                } else {
-                    *(PEv2_data->PEv2_digin_LimitP_in[i]) = !Get_BitOfByte(bm_LimitStatusP, i);
-                    *(PEv2_data->PEv2_digin_LimitP_in_not[i]) = Get_BitOfByte(bm_LimitStatusP, i);
-                }
-            } else if (PEv2_data->PEv2_digin_LimitP_Enabled[i] != 0) {
-                // will be written from dedicated input in PEv2_Status2Get()
-            }
+    if (PEv2_data->PEv2_digin_LimitP_Pin[i] > 0) {
+        if (PEv2_data->PEv2_digin_LimitP_invert[i] != 0) {
+            *(PEv2_data->PEv2_digin_LimitP_in[i]) = !Get_BitOfByte(bm_LimitStatusP, i);
+            *(PEv2_data->PEv2_digin_LimitP_in_not[i]) = Get_BitOfByte(bm_LimitStatusP, i);
+        } else {
+            *(PEv2_data->PEv2_digin_LimitP_in[i]) = !Get_BitOfByte(bm_LimitStatusP, i);
+            *(PEv2_data->PEv2_digin_LimitP_in_not[i]) = Get_BitOfByte(bm_LimitStatusP, i);
+        }
+    } else if (PEv2_data->PEv2_digin_LimitP_Enabled[i] != 0) {
+        // will be written from dedicated input in PEv2_Status2Get()
+    }
 
-            if (PEv2_data->PEv2_digin_LimitN_Pin[i] > 0) {
-                if (PEv2_data->PEv2_digin_LimitN_invert[i] != 0) {
-                    *(PEv2_data->PEv2_digin_LimitN_in[i]) = !Get_BitOfByte(bm_LimitStatusN, i);
-                    *(PEv2_data->PEv2_digin_LimitN_in_not[i]) = Get_BitOfByte(bm_LimitStatusN, i);
-                } else {
-                    *(PEv2_data->PEv2_digin_LimitN_in[i]) = !Get_BitOfByte(bm_LimitStatusN, i);
-                    *(PEv2_data->PEv2_digin_LimitN_in_not[i]) = Get_BitOfByte(bm_LimitStatusN, i);
-                }
-            } else if (PEv2_data->PEv2_digin_LimitN_Enabled[i] != 0) {
-                // will be written from dedicated input in PEv2_Status2Get()
-            }
+    if (PEv2_data->PEv2_digin_LimitN_Pin[i] > 0) {
+        if (PEv2_data->PEv2_digin_LimitN_invert[i] != 0) {
+            *(PEv2_data->PEv2_digin_LimitN_in[i]) = !Get_BitOfByte(bm_LimitStatusN, i);
+            *(PEv2_data->PEv2_digin_LimitN_in_not[i]) = Get_BitOfByte(bm_LimitStatusN, i);
+        } else {
+            *(PEv2_data->PEv2_digin_LimitN_in[i]) = !Get_BitOfByte(bm_LimitStatusN, i);
+            *(PEv2_data->PEv2_digin_LimitN_in_not[i]) = Get_BitOfByte(bm_LimitStatusN, i);
+        }
+    } else if (PEv2_data->PEv2_digin_LimitN_Enabled[i] != 0) {
+        // will be written from dedicated input in PEv2_Status2Get()
+    }
 
-            if (PEv2_data->PEv2_digin_Home_Pin[i] > 0) {
-                if (PEv2_data->PEv2_digin_Home_invert[i] != 0) {
-                    *(PEv2_data->PEv2_digin_Home_in[i]) = !Get_BitOfByte(bm_HomeStatus, i);
-                    *(PEv2_data->PEv2_digin_Home_in_not[i]) = Get_BitOfByte(bm_HomeStatus, i);
-                } else {
-                    *(PEv2_data->PEv2_digin_Home_in[i]) = Get_BitOfByte(bm_HomeStatus, i);
-                    *(PEv2_data->PEv2_digin_Home_in_not[i]) = !Get_BitOfByte(bm_HomeStatus, i);
-                }
-            } else if (PEv2_data->PEv2_digin_Home_Enabled[i] != 0) {
-                // will be written from dedicated input in PEv2_Status2Get()
-            }
+    if (PEv2_data->PEv2_digin_Home_Pin[i] > 0) {
+        if (PEv2_data->PEv2_digin_Home_invert[i] != 0) {
+            *(PEv2_data->PEv2_digin_Home_in[i]) = !Get_BitOfByte(bm_HomeStatus, i);
+            *(PEv2_data->PEv2_digin_Home_in_not[i]) = Get_BitOfByte(bm_HomeStatus, i);
+        } else {
+            *(PEv2_data->PEv2_digin_Home_in[i]) = Get_BitOfByte(bm_HomeStatus, i);
+            *(PEv2_data->PEv2_digin_Home_in_not[i]) = !Get_BitOfByte(bm_HomeStatus, i);
+        }
+    } else if (PEv2_data->PEv2_digin_Home_Enabled[i] != 0) {
+        // will be written from dedicated input in PEv2_Status2Get()
+    }
 }
-
 
 /**
  * @brief Get the status of the PoKeys device.
@@ -1467,16 +1465,15 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
     int joints_in_Sequence = 0;
     int sequence_joints_ready = 0;
     int HomingStartMaskSetup = 0;
-    int  bm_DoPositionSet = 0;
-    bool  = false;
+    int bm_DoPositionSet = 0;
+    bool = false;
 
     for (axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
         if (PEv2_data->PEv2_home_sequence[axis] == seq) {
             joints_in_Sequence++;
             if (PEv2_data->PEv2_HomeStatus[axis] == RequiredState) {
                 sequence_joints_ready++;
-            }
-            else{
+            } else {
                 return 1; // not all joints in sequence are ready
             }
         }
@@ -1484,10 +1481,10 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
 
     for (axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
         if (PEv2_data->PEv2_home_sequence[axis] == seq) {
-            switch(NextState) {
+            switch (NextState) {
                 case PK_Homing_axHOMINGSTART:
                     HomingStartMaskSetup = (1 << axis); // Home my axis only (bit MyHomeSequ)
-                    rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n",i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
+                    rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n", i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
                     PEv2_data->PEv2_HomeStatus[axis] = PK_PEState_peHOMING;
                     break;
                 case PK_Homing_axARMENCODER:
@@ -1496,14 +1493,14 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                     PEv2_data->PEv2_HomeStatus[axis] = PK_PEState_peARMENCODER;
                     break;
                 case PK_Homing_axHOMINGWaitFinalMove:
-                    PEv2_data->PEv2_HomeStatus[axis] =PK_Homing_axHOMINGWaitFinalMove;
+                    PEv2_data->PEv2_HomeStatus[axis] = PK_Homing_axHOMINGWaitFinalMove;
                     break;
                 case PK_Homing_axHOMINGFINALMOVE:
 
                     if ((dev->PEv2.CurrentPosition[axis] != (int32_t)PEv2_data->PEv2_HomePosition[axis])) {
                         bool POSITION_MODE_active[axis] = Get_BitOfByte(dev->PEv2.AxesConfig[axis], 3);
                         if ((POSITION_MODE_active[axis] == false)) {
-                            rtapi_print_msg(RTAPI_MSG_ERR,"PoKeys: %s:%s: PEv2_Axis[%d] requires switch to POSITION_MODE\n", __FILE__, __FUNCTION__, axis);
+                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] requires switch to POSITION_MODE\n", __FILE__, __FUNCTION__, axis);
                             dev->PEv2.AxesConfig[axis] = Set_BitOfByte(dev->PEv2.AxesConfig[axis], 3, true);
                             dev->PEv2.param1 = axis;
                             PK_PEv2_AxisConfigurationSet(dev);
@@ -1514,29 +1511,27 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         *(PEv2_data->PEv2_ReferencePositionSpeed[i]) = (int)PEv2_data->PEv2_HomePosition[i];
                         do_move = true;
                         PEv2_data->PEv2_HomeStatus[axis] = PK_PEState_peHOMINGFINALMOVE;
-                    }
-                    else{
-                        rtapi_print_msg(RTAPI_MSG_ERR,"PoKeys: %s:%s: PK_Homing_axHOMINGFINALMOVE PEv2_Axis[%d] already on HomePosition - skip Final move\n", __FILE__, __FUNCTION__, i);
+                    } else {
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFINALMOVE PEv2_Axis[%d] already on HomePosition - skip Final move\n", __FILE__, __FUNCTION__, i);
                         PEv2_data->PEv2_HomeStatus[axis] = PK_Homing_axIDLE;
                     }
                     break;
                 case PK_Homing_axHOMINGCancel:
-                    
+
                     break;
                 case PK_Homing_axHOMINGFinalize:
-                    if (RequiredState==PK_Homing_axHOMINGSTART && PEv2_data->PEv2_AxesState[axis] != PK_PEState_peHOME) {
+                    if (RequiredState == PK_Homing_axHOMINGSTART && PEv2_data->PEv2_AxesState[axis] != PK_PEState_peHOME) {
                         return 1; // not all joints in sequence are ready
                     }
                     HomingStartMaskSetup = (1 << axis); // Home my axis only (bit MyHomeSequ)
                     break;
                 default:
                     return 1; // invalid state
-
             }
         }
     }
 
-    switch(NextState) {
+    switch (NextState) {
         case PK_Homing_axHOMINGSTART:
             dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
             if (PK_PEv2_HomingStart(dev) != PK_OK) {
@@ -1554,10 +1549,10 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
             dev->PEv2.param2 = bm_DoPositionSet;
             if (PK_PEv2_PositionSet(dev) != PK_OK) {
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PositionSet!=PK_OK\n", __FILE__, __FUNCTION__);
-            } 
+            }
             break;
         case PK_Homing_axHOMINGWaitFinalMove:
-        break;
+            break;
         case PK_Homing_axHOMINGFINALMOVE:
             if (doMove == true) {
                 rtapi_print_msg(RTAPI_MSG_DBG, "PK_PEv2: PEv2_PulseEngineMove  \n");
@@ -1566,21 +1561,19 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                 } else {
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_PulseEngineMove == PK_OK \n" __FILE__, __FUNCTION__);
                 }
-        #ifdef ULAPI
+#ifdef ULAPI
                 usleep(sleepdur);
-        #endif
+#endif
             }
             break;
         case PK_Homing_axHOMINGCancel:
-        break;
+            break;
         case PK_Homing_axHOMINGFinalize:
             dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
             PK_PEv2_HomingFinish(dev);
             break;
     }
 }
-
-
 
 /**
  * @brief Get the axis configuration of the PoKeys device.
