@@ -1471,7 +1471,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
     for (int axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
         if (PEv2_data->PEv2_home_sequence[axis] == seq) {
             joints_in_Sequence++;
-            if (PEv2_data->PEv2_HomingStatus[axis] == RequiredState) {
+            if (*(PEv2_data->PEv2_HomingStatus[axis]) == RequiredState) {
                 sequence_joints_ready++;
             } else {
                 return 1; // not all joints in sequence are ready
@@ -1485,15 +1485,15 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                 case PK_Homing_axHOMINGSTART:
                     HomingStartMaskSetup = (1 << axis); // Home my axis only (bit MyHomeSequ)
                     rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n", axis, PEv2_data->PEv2_home_sequence[axis], HomingStartMaskSetup);
-                    PEv2_data->PEv2_HomingStatus[axis] = PK_Homing_axHOMINGSTART;
+                    *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGSTART;
                     break;
                 case PK_Homing_axARMENCODER:
                     dev->PEv2.PositionSetup[axis] = PEv2_data->PEv2_ZeroPosition[axis];
                     bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, axis, 1);
-                    PEv2_data->PEv2_HomingStatus[axis] = PK_Homing_axHOMINGWaitFinalMove;
+                    *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGWaitFinalMove;
                     break;
                 case PK_Homing_axHOMINGWaitFinalMove:
-                    PEv2_data->PEv2_HomingStatus[axis] = PK_Homing_axHOMINGWaitFinalMove;
+                    *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGWaitFinalMove;
                     break;
                 case PK_Homing_axHOMINGFinalMove:
 
@@ -1510,10 +1510,10 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         dev->PEv2.ReferencePositionSpeed[i] = (int32_t)PEv2_data->PEv2_HomePosition[i];
                         *(PEv2_data->PEv2_ReferencePositionSpeed[i]) = (int)PEv2_data->PEv2_HomePosition[i];
                         do_move = true;
-                        PEv2_data->PEv2_HomingStatus[axis] = PK_Homing_axHOMINGFinalMove;
+                        *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGFinalMove;
                     } else {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalMove PEv2_Axis[%d] already on HomePosition - skip Final move\n", __FILE__, __FUNCTION__, i);
-                        PEv2_data->PEv2_HomingStatus[axis] = PK_Homing_axIDLE;
+                        *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axIDLE;
                     }
                     break;
                 case PK_Homing_axHOMINGCancel:
