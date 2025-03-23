@@ -1178,8 +1178,9 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
         *(PEv2_data->PEv2_PulseEngineState) = dev->PEv2.PulseEngineState;
         *PEv2_data->PEv2_deb_out = 1127;
         //
-        *(PEv2_data->PEv2_PulseEngineStateSetup) =
-            *PEv2_data->PEv2_PulseEngineState;
+
+        *(PEv2_data->PEv2_PulseEngineStateSetup) = dev->PEv2.PulseEngineState;
+
         *PEv2_data->PEv2_deb_out = 1128;
         PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
         *PEv2_data->PEv2_deb_out = 1129;
