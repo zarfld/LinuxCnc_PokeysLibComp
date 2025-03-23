@@ -23,3 +23,7 @@ $(COMPONENTS): %: $(SOURCES)
 # Clean rule
 clean:
 	rm -f $(COMPONENTS) $(COMPONENTS:=.so) $(COMPONENTS:=.o)
+
+# Create build directory if it doesn't exist
+build:
+	mkdir -p build

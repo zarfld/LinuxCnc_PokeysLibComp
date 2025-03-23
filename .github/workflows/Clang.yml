@@ -18,7 +18,7 @@ on:
 
 jobs:
   format-fix:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
@@ -41,7 +41,7 @@ jobs:
           fi
 
   analyze:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
