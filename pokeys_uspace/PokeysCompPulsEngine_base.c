@@ -892,6 +892,14 @@ uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value) {
 }
 
 void Read_digin_LimitHome_Pins(sPoKeysDevice *dev, int i) {
+    uint8_t bm_LimitStatusP; // Limit+ status (bit-mapped)
+    uint8_t bm_LimitStatusN; // Limit- status (bit-mapped)
+    uint8_t bm_HomeStatus;   // Home status (bit-mapped)
+    uint8_t bm_ErrorStatus;
+    uint8_t bm_ProbeStatus = dev->PEv2.ProbeStatus; // will be update in "PK_PEv2_ProbingFinish" or "PK_PEv2_ProbingFinishSimple"
+    uint8_t bm_DedicatedLimitNInputs;
+    uint8_t bm_DedicatedLimitPInputs;
+    uint8_t bm_DedicatedHomeInputs;
     /*
 			   param rw unsigned PEv2.#.digin.LimitN.Pin [8] "Limit- switch pin (0 for external dedicated input)";			// Limit- switch pin (0 for external dedicated input)
 			   param rw unsigned PEv2.#.digin.LimitN.Filter[8] "Digital filter for limit- switch";		// Digital filter for limit- switch
