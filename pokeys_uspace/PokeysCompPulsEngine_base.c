@@ -1145,16 +1145,16 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
             .ProbeStatus; // will be update in "PK_PEv2_ProbingFinish" or "PK_PEv2_ProbingFinishSimple"
     int32_t ret = PK_OK;
 
-    PEv2_deb_out = 1010;
+    *PEv2_data->PEv2_deb_out = 1010;
     ret = PK_PEv2_StatusGet(dev);
-    PEv2_deb_out = 1020;
+    *PEv2_data->PEv2_deb_out = 1020;
 
     if (ret == PK_OK) {
         rtapi_print_msg(RTAPI_MSG_DBG,
                         "PoKeys: %s:%s: PK_PEv2_StatusGet(dev) = PK_OK\n",
                         __FILE__, __FUNCTION__);
         // Engine info
-        PEv2_deb_out = 1021;
+        *PEv2_data->PEv2_deb_out = 1021;
         (*PEv2_data->PEv2_nrOfAxes) = dev->PEv2.info.nrOfAxes;
         (*PEv2_data->PEv2_maxPulseFrequency) = dev->PEv2.info.maxPulseFrequency;
         (*PEv2_data->PEv2_bufferDepth) = dev->PEv2.info.bufferDepth;
@@ -1314,7 +1314,7 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
                         "PoKeys: %s:%s: PK_PEv2_StatusGet(dev) != PK_OK (%i)\n",
                         __FILE__, __FUNCTION__, ret);
 
-        PEv2_deb_out = 1025;
+        *PEv2_data->PEv2_deb_out = 1025;
     }
 #ifdef ULAPI
     usleep(sleepdur);
