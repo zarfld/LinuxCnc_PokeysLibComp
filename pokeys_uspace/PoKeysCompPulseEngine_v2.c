@@ -265,27 +265,27 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
         rtapi_print_msg(RTAPI_MSG_DBG,
                         "PoKeys: %s:%s: PEv2_StatusGet(dev) = PK_OK\n",
                         __FILE__, __FUNCTION__);
-                        PEv2_deb_out = 111;
+        PEv2_deb_out = 111;
     } else {
         rtapi_print_msg(RTAPI_MSG_ERR,
                         "PoKeys: %s:%s: PEv2_StatusGet(dev) != PK_OK\n",
                         __FILE__, __FUNCTION__);
-                        PEv2_deb_out = 115;
+        PEv2_deb_out = 115;
     }
 
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_Status2Get(dev)\n",
                     __FILE__, __FUNCTION__);
-                    PEv2_deb_out = 120;
+    PEv2_deb_out = 120;
     if (PEv2_Status2Get(dev) == PK_OK) {
         rtapi_print_msg(RTAPI_MSG_DBG,
                         "PoKeys: %s:%s: PEv2_Status2Get(dev) = PK_OK\n",
                         __FILE__, __FUNCTION__);
-                        PEv2_deb_out = 121;
+        PEv2_deb_out = 121;
     } else {
         rtapi_print_msg(RTAPI_MSG_ERR,
                         "PoKeys: %s:%s: PEv2_Status2Get(dev) != PK_OK\n",
                         __FILE__, __FUNCTION__);
-                        PEv2_deb_out = 125;
+        PEv2_deb_out = 125;
     }
 
     bool doPositionSet = false;
@@ -1051,7 +1051,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
 #ifdef ULAPI
                         usleep(sleepdur);
 #endif
-PEv2_deb_out = 210;
+                        PEv2_deb_out = 210;
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: 'Position Mode' "
                                         "Axis:%i InPosition[i] == false "
