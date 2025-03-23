@@ -7,7 +7,7 @@ project(pokeys_uspace C)
 find_program(MAKE_EXECUTABLE make REQUIRED)
 
 # Set Paths
-set(POKEYSLIB_DIR ${CMAKE_SOURCE_DIR}/external/pokeyslib)
+set(POKEYSLIB_DIR ./external/pokeyslib)
 set(POKEYSLIB_MAKEFILE ${POKEYSLIB_DIR}/Makefile.noqmake)
 set(SUBMAKEFILE_DIR ${CMAKE_SOURCE_DIR}/pokeys_uspace)
 set(SUBMAKEFILE ${SUBMAKEFILE_DIR}/Submakefile)
@@ -31,6 +31,9 @@ endif()
 if(NOT EXISTS ${SUBMAKEFILE})
     message(FATAL_ERROR "Submakefile not found in ${SUBMAKEFILE_DIR}")
 endif()
+
+# Create build directory if it doesn't exist
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 
 # Build pokeyslib using its Makefile
 add_custom_target(pokeyslib ALL
@@ -66,4 +69,3 @@ add_custom_target(pokeys_uspace ALL
 install(DIRECTORY ${SUBMAKEFILE_DIR}/ DESTINATION /usr/lib/linuxcnc/modules
     FILES_MATCHING PATTERN "*.so"
 )
-
