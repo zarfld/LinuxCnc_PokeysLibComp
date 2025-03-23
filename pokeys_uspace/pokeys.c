@@ -10,6 +10,11 @@
 #ifdef RTAPI
 #include "rtapi_app.h"
 #endif
+
+#ifndef RTAPI
+#define ULAPI
+#endif
+
 #include "rtapi_string.h"
 #include "rtapi_errno.h"
 #include "hal.h"
@@ -1468,6 +1473,8 @@ void pokeys_write_ini(sPoKeysDevice *dev) {
 }
 
 void pokeys_update(sPoKeysDevice *dev) {
+
+    deb_out = 219;
     // PulseEnginev2
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: info_PulseEnginev2 = %d\n",
                     __FILE__, __FUNCTION__, info_PulseEnginev2);
