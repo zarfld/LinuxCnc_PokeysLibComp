@@ -1484,7 +1484,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
             switch (NextState) {
                 case PK_Homing_axHOMINGSTART:
                     HomingStartMaskSetup = (1 << axis); // Home my axis only (bit MyHomeSequ)
-                    rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n", axis, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
+                    rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n", axis, PEv2_data->PEv2_home_sequence[axis], HomingStartMaskSetup);
                     PEv2_data->PEv2_HomingStatus[axis] = PK_Homing_axHOMINGSTART;
                     break;
                 case PK_Homing_axARMENCODER:
