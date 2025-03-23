@@ -583,10 +583,9 @@ char *names[16] = {
 
 /**
 * @function rtapi_app_main
- * @brief 
+ * @brief   Main function for the PoKeys component
  * 
  */
-
 int rtapi_app_main(void) {
     int r = 0;
     int i;
@@ -630,11 +629,19 @@ int rtapi_app_main(void) {
     return r;
 }
 
+/**
+ * @brief   Exit function for the PoKeys component
+    * 
+    */
 void rtapi_app_exit(void) {
     hal_exit(comp_id);
 }
 static void user_mainloop(void);
 
+/**
+ * @brief   Main loop for the PoKeys component
+    * 
+    */
 int __comp_parse_count(int *argc, char **argv) {
     int i;
     for (i = 0; i < *argc; i++) {
@@ -654,6 +661,13 @@ int __comp_parse_count(int *argc, char **argv) {
     return 0;
 }
 
+/**
+ * @brief  Parse the names from the command line arguments
+ * 
+ * @param argc  Pointer to the argument count
+ * @param argv  Pointer to the argument vector
+ * @return int  1 if names were found, 0 otherwise
+ */
 int __comp_parse_names(int *argc, char **argv) {
     int i;
     for (i = 0; i < *argc; i++) {
@@ -680,6 +694,13 @@ int __comp_parse_names(int *argc, char **argv) {
 
 int argc = 0;
 char **argv = 0;
+/**
+ * @brief  Main function for the PoKeys component
+ * 
+ * @param argc_  Argument count
+ * @param argv_  Argument vector
+ * @return int   0 on success, 1 on failure
+ */
 int main(int argc_, char **argv_) {
     argc = argc_;
     argv = argv_;
@@ -915,7 +936,10 @@ int i = 0;
 
 float temp_MaxAcceleration[8];
 float minAccel = 0.0001;
-
+/**
+ * @brief  Structure to hold the state of the component
+    * 
+    */
 typedef struct {
     uint8_t
         matrixKBconfiguration; // Matrix keyboard configuration (set to 1 to enable matrix keyboard support)
@@ -949,7 +973,10 @@ unsigned int sleepdur_S[10] = { 1000, 1000, 1000, 1000, 1000,
 bool DoEncoders = true;
 
 PK_MatrixKB_Parameters MatrixKB;
-
+/**
+ * @brief   Structure to hold the state of the component
+    * 
+    */
 uint8_t Merge_8BitsToByte(bool Bit_array[8]) {
     uint8_t sum = 0;
     for (int i = 0; i < 8; i++) {
@@ -965,6 +992,10 @@ uint8_t Merge_8BitsToByte(bool Bit_array[8]) {
     return sum;
 }
 
+/**
+ * @brief  Config_MatrixKB
+    * 
+    */
 int Config_MatrixKB() {
     if (PK_MatrixKBConfigurationGet(dev) == PK_OK) {
         MatrixKB.matrixKBconfiguration = dev->matrixKB.matrixKBconfiguration;
@@ -990,7 +1021,10 @@ int Config_MatrixKB() {
     // PK_MatrixKBConfigurationSet
     return 0;
 }
-
+/**
+ * @brief  Update_MatrixKB
+    * 
+    */
 int Update_MatrixKB() {
     if (PK_MatrixKBStatusGet(dev) == PK_OK) {
         for (i = 0; i < 128; i++) {
@@ -1013,6 +1047,10 @@ int Update_MatrixKB() {
     return 0;
 }
 
+/**
+ * @brief  
+    * 
+    */
 int Update_LCD() {
     if (PK_LCDUpdate(dev) == PK_OK) {
         usleep(sleepdur);
@@ -1023,6 +1061,10 @@ int Update_LCD() {
     return 0;
 }
 
+/**
+ * @brief  
+    * 
+    */
 int Config_PoStep() {
     if (PK_PoStep_ConfigurationGet(dev) == PK_OK) {
         usleep(sleepdur);
@@ -1036,7 +1078,10 @@ int Config_PoStep() {
     // PK_PoStep_DriverConfigurationSet(dev)
     return 0;
 }
-
+/**
+ * @brief  
+    * 
+    */
 int Update_PoStep() {
     if (PK_PoStep_StatusGet(dev) == PK_OK) {
         usleep(sleepdur);
@@ -1055,7 +1100,10 @@ static int timeout_ms = 2000;
 static int retry = 3;
 
 int instance_number = 0;
-
+/**
+ * @brief  
+    * 
+    */
 sPoKeysDevice *TryConnectToDevice(uint32_t intSerial) {
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: serial_number: %d\n", intSerial);
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: serial_number=%d\n",
@@ -1398,14 +1446,20 @@ bool initdone = 0;
 int doSetup = 0;
 
 int next_setup = 1;
-
+/**
+ * @brief 
+    * 
+    */
 void pokeys_read_ini(sPoKeysDevice *dev) {
 
     PKIO_ReadIniFile(dev);
     PKPEv2_ReadIniFile(dev);
     PKEncoder_ReadIniFile(dev);
 }
-
+/**
+ * @brief  
+ * 
+ */
 void pokeys_write_ini(sPoKeysDevice *dev) {
 
     PKIO_WriteIniFile(dev);
@@ -1413,6 +1467,10 @@ void pokeys_write_ini(sPoKeysDevice *dev) {
     PKEncoder_WriteIniFile(dev);
 }
 
+/**
+ * @brief user_mainloop
+    * 
+    */
 void user_mainloop(void) {
 
     rtapi_print("  \n");
@@ -1955,6 +2013,10 @@ void user_mainloop(void) {
     exit(0);
 };
 
+/**
+ * @brief  
+ * 
+ */
 EXTRA_SETUP() {
     int wait_ms = 5000;
     const char *ini_path = getenv("INI_FILE_NAME");
@@ -2002,12 +2064,20 @@ EXTRA_SETUP() {
     return 0;
 }
 
+/**
+ * @brief  
+ * 
+ */
 EXTRA_CLEANUP() {
     if (dev != NULL) {
         PK_DisconnectDevice(dev);
     }
 }
 
+/**
+ * @brief  
+ * 
+ */
 static int __comp_get_data_size(void) {
     return 0;
 }
