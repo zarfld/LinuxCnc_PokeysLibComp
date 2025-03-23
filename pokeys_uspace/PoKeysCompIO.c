@@ -10,7 +10,9 @@
 extern unsigned int sleepdur;
 #endif
 extern bool ApplyIniSettings;
-
+/**
+ * @brief Structure to hold the data for each analog output channel.
+ */
 typedef struct {
     hal_u32_t *deb_out;
     hal_u32_t *deb_setval;
@@ -23,14 +25,18 @@ typedef struct {
     hal_float_t max_v;
     hal_u32_t PinId;
 } one_adcout_data_t;
-
+/**
+ * @brief Structure to hold the data for each analog input channel.
+ */
 typedef struct {
     hal_float_t *value_raw;
     hal_float_t *value;
     hal_float_t scale;
     hal_float_t offset;
 } one_adcin_data_t;
-
+/**
+ * @brief Structure to hold the data for each digital input/output channel.
+ */
 typedef struct {
     hal_bit_t *digin_in;
     hal_bit_t *digin_in_not;
@@ -44,7 +50,9 @@ typedef struct {
 
     bool DigitalValueSet_ignore;
 } one_digiIO_data_t;
-
+/**
+ * @brief Structure to hold the data for all I/O channels.
+ */
 typedef struct {
     one_adcout_data_t adcout[6];
     hal_u32_t adcout_pwm_period;
@@ -58,7 +66,16 @@ typedef struct {
 } all_IO_data_t;
 
 static all_IO_data_t *IO_data = 0;
-
+/**
+ * @brief Function to export pins for the PoKeys device.
+    *
+    * @param prefix The prefix for the pin names.
+    * @param extra_arg Extra argument (not used).
+    * @param id The ID of the HAL component.
+    * @param Io_data Pointer to the I/O data structure.
+    * @param dev Pointer to the PoKeys device structure.
+    * @return 0 on success, -1 on failure.
+    */
 int PKIO_export_pins(char *prefix, long extra_arg, int id,
                      all_IO_data_t *Io_data, sPoKeysDevice *dev) {
     int r = 0;
@@ -362,7 +379,12 @@ int PKIO_export_pins(char *prefix, long extra_arg, int id,
     }
     return r;
 }
-
+/**
+ * @brief Function to update the PoKeys device data.
+    *
+    * @param dev Pointer to the PoKeys device structure.
+    * @return None.
+    */
 void PKIO_Update(sPoKeysDevice *dev) {
     bool PinConfigurationGet = false;
     bool DigitalIOGet = false;
@@ -829,7 +851,12 @@ void PKIO_Update(sPoKeysDevice *dev) {
         *(IO_data->deb_out) = 250;
     }
 }
-
+/**
+ * @brief Function to set up the PoKeys device.
+    *
+    * @param dev Pointer to the PoKeys device structure.
+    * @return None.
+    */
 void PKIO_Setup(sPoKeysDevice *dev) {
     bool PinConfigurationSet = false;
     //bool readonly = false;
@@ -1049,6 +1076,11 @@ void PKIO_Setup(sPoKeysDevice *dev) {
         }
     }
 }
+/**
+ * @brief Reads the INI file and sets the values for the PoKeys device.
+ * @param dev Pointer to the PoKeys device structure.
+ * @return void
+ */
 
 void PKIO_ReadIniFile(sPoKeysDevice *dev) {
 
@@ -1101,7 +1133,11 @@ void PKIO_ReadIniFile(sPoKeysDevice *dev) {
         IO_data->adcin[j].offset = ini_read_float("POKEYS", key, 0);
     }
 }
-
+/**
+ * @brief Reads the INI file and sets the values for the PoKeys device.
+    * @param dev Pointer to the PoKeys device structure.
+    * @return void
+    */
 void PKIO_WriteIniFile(sPoKeysDevice *dev) {
     char key[256]; // Puffer für den zusammengesetzten String
 
