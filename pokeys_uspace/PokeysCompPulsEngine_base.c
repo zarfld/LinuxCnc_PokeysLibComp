@@ -1156,22 +1156,33 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
         // Engine info
         *PEv2_data->PEv2_deb_out = 1021;
         (*PEv2_data->PEv2_nrOfAxes) = dev->PEv2.info.nrOfAxes;
+        *PEv2_data->PEv2_deb_out = 1120;
         (*PEv2_data->PEv2_maxPulseFrequency) = dev->PEv2.info.maxPulseFrequency;
+        *PEv2_data->PEv2_deb_out = 1121;
         (*PEv2_data->PEv2_bufferDepth) = dev->PEv2.info.bufferDepth;
+
+        *PEv2_data->PEv2_deb_out = 1122;
         (*PEv2_data->PEv2_slotTiming) = dev->PEv2.info.slotTiming;
+        *PEv2_data->PEv2_deb_out = 1123;
         *PEv2_data->PEv2_AxisEnabledStatesMask =
             dev->PEv2.AxisEnabledStatesMask;
         (*PEv2_data->PEv2_LimitOverride) = dev->PEv2.LimitOverride;
+        *PEv2_data->PEv2_deb_out = 1124;
 
         // Basic engine states
         PEv2_data->PEv2_PulseEngineEnabled = dev->PEv2.PulseEngineEnabled;
+        *PEv2_data->PEv2_deb_out = 1125;
         *PEv2_data->PEv2_PulseEngineActivated = dev->PEv2.PulseEngineActivated;
+        *PEv2_data->PEv2_deb_out = 1126;
 
         *(PEv2_data->PEv2_PulseEngineState) = dev->PEv2.PulseEngineState;
+        *PEv2_data->PEv2_deb_out = 1127;
         //
         *(PEv2_data->PEv2_PulseEngineStateSetup) =
             *(PEv2_data->PEv2_PulseEngineState);
+        *PEv2_data->PEv2_deb_out = 1128;
         PEv2_data->PEv2_ChargePumpEnabled = dev->PEv2.ChargePumpEnabled;
+        *PEv2_data->PEv2_deb_out = 1129;
         PEv2_data->PEv2_PulseGeneratorType = dev->PEv2.PulseGeneratorType;
 
         // Switch states
