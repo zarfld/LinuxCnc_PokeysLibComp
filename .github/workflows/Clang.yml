@@ -51,7 +51,7 @@ jobs:
         run: sudo apt-get install -y clang
 
       - name: init submodule
-        run: /bin/bash "${SCRIPT_DIR}/prerequisites.sh"
+        run: /bin/bash "./prerequisites.sh"
 
       - name: Run Clang Static Analyzer
         run: |
