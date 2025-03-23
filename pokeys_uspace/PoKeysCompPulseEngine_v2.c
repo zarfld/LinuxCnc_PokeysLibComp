@@ -182,6 +182,8 @@ typedef enum {
     PK_PEAxisCommand_axHOMINGFinalize = 6,      // Finish Homing procedure
 } pokeys_home_command_t;
 
+
+
 // pin io unsigned PEv2.PulseEngineStateSetup;		// Pulse engine new state configuration  - No Pin needed
 //uint8_t PEv2_PulseEngineStateSetup = 0;
 //uint8_t PulseEngineState = 0;
@@ -400,14 +402,17 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     if ((*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axARMENCODER && Homing_ArmEncodereDone[i] != true) || Homing_ArmEncodereDone[i] != true) {
                         //PK_PEAxisState_axHOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
                         intAxesState = 17;
-                        dev->PEv2.PositionSetup[i] = PEv2_data->PEv2_ZeroPosition[i];
-                        bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);
+                        PEv2_HomingStateSyncedTrigger(dev,PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGFinalize,PK_Homing_axARMENCODER);
+                        /*dev->PEv2.PositionSetup[i] = PEv2_data->PEv2_ZeroPosition[i];
+                        bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);*/
                     } else if ((*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axARMENCODER && Homing_ArmEncodereDone[i] == true) || (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGWaitFinalMove)) {
                         //PK_PEAxisState_axHOMINGWaitFINALMOVE = 18,          // (linuxcnc spec additional state) Pokeys moves to homeposition
                         intAxesState = 18;
 
                     } else if (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGFinalLMove && Homing_FinalMoveDone[i] != true) {
                         //	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
+                        PEv2_HomingStateSyncedTrigger(dev,PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGWaitFinalMove,PK_Homing_axHOMINGFINALMOVE);
+                       
                         intAxesState = 19;
                         Homing_FinalMoveDone[i] = true;
                         if (Homing_FinalMoveActive[i] == false) {
@@ -424,11 +429,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                             PK_PEv2_AxisConfigurationGet(dev);
                             POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
                             if ((POSITION_MODE_active[i] == false)) {
-                                rtapi_print_msg(RTAPI_MSG_ERR,
-                                                "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
-                                                "PK_PEAxisState_axHOME - "
-                                                "POSITION_MODE_active[i] = false\n",
-                                                __FILE__, __FUNCTION__, i);
+                                rtapi_print_msg(RTAPI_MSG_ERR,"PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOME - POSITION_MODE_active[i] = false\n", __FILE__, __FUNCTION__, i);
                                 dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
                                 dev->PEv2.param1 = i;
                                 PK_PEv2_AxisConfigurationSet(dev);
@@ -634,47 +635,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
 
             PEv2_digin_Probe_in(i) = Get_BitOfByte(bm_ProbeStatus, i);
 
-            /*
-			   param rw unsigned PEv2.#.digin.LimitN.Pin [8] "Limit- switch pin (0 for external dedicated input)";			// Limit- switch pin (0 for external dedicated input)
-			   param rw unsigned PEv2.#.digin.LimitN.Filter[8] "Digital filter for limit- switch";		// Digital filter for limit- switch
-			   param rw bit PEv2.#.digin.LimitN.invert[8] "Invert limit- (PK_ASO_SWITCH_INVERT_LIMIT_N)";
-			   param rw bit PEv2.#.digin.LimitN.Enabled[8] "Limit- is available (PK_ASO_SWITCH_LIMIT_N)";
-			*/
-            if (PEv2_data->PEv2_digin_LimitP_Pin[i] > 0) {
-                if (PEv2_data->PEv2_digin_LimitP_invert[i] != 0) {
-                    *(PEv2_data->PEv2_digin_LimitP_in[i]) = !Get_BitOfByte(bm_LimitStatusP, i);
-                    *(PEv2_data->PEv2_digin_LimitP_in_not[i]) = Get_BitOfByte(bm_LimitStatusP, i);
-                } else {
-                    *(PEv2_data->PEv2_digin_LimitP_in[i]) = !Get_BitOfByte(bm_LimitStatusP, i);
-                    *(PEv2_data->PEv2_digin_LimitP_in_not[i]) = Get_BitOfByte(bm_LimitStatusP, i);
-                }
-            } else if (PEv2_data->PEv2_digin_LimitP_Enabled[i] != 0) {
-                // will be written from dedicated input in PEv2_Status2Get()
-            }
-
-            if (PEv2_data->PEv2_digin_LimitN_Pin[i] > 0) {
-                if (PEv2_data->PEv2_digin_LimitN_invert[i] != 0) {
-                    *(PEv2_data->PEv2_digin_LimitN_in[i]) = !Get_BitOfByte(bm_LimitStatusN, i);
-                    *(PEv2_data->PEv2_digin_LimitN_in_not[i]) = Get_BitOfByte(bm_LimitStatusN, i);
-                } else {
-                    *(PEv2_data->PEv2_digin_LimitN_in[i]) = !Get_BitOfByte(bm_LimitStatusN, i);
-                    *(PEv2_data->PEv2_digin_LimitN_in_not[i]) = Get_BitOfByte(bm_LimitStatusN, i);
-                }
-            } else if (PEv2_data->PEv2_digin_LimitN_Enabled[i] != 0) {
-                // will be written from dedicated input in PEv2_Status2Get()
-            }
-
-            if (PEv2_data->PEv2_digin_Home_Pin[i] > 0) {
-                if (PEv2_data->PEv2_digin_Home_invert[i] != 0) {
-                    *(PEv2_data->PEv2_digin_Home_in[i]) = !Get_BitOfByte(bm_HomeStatus, i);
-                    *(PEv2_data->PEv2_digin_Home_in_not[i]) = Get_BitOfByte(bm_HomeStatus, i);
-                } else {
-                    *(PEv2_data->PEv2_digin_Home_in[i]) = Get_BitOfByte(bm_HomeStatus, i);
-                    *(PEv2_data->PEv2_digin_Home_in_not[i]) = !Get_BitOfByte(bm_HomeStatus, i);
-                }
-            } else if (PEv2_data->PEv2_digin_Home_Enabled[i] != 0) {
-                // will be written from dedicated input in PEv2_Status2Get()
-            }
+            Read_digin_LimitHome_Pins(dev,i)
 
             PEv2_deb_axxisout(i) = 280;
 
@@ -689,25 +650,19 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
 
             if ((intAxesState == PK_PEAxisState_axSTOPPED || intAxesState == PK_PEAxisState_axREADY || intAxesState == PK_PEAxisState_axHOME) && old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) && (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisState_axHOMINGSTART || *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGSTART)) {
                 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingStart\n", __FILE__, __FUNCTION__);
-
+                PEv2_HomingStateSyncedTrigger(dev,PEv2_data->PEv2_home_sequence[i], PK_Homing_axIDLE, PK_Homing_axHOMINGSTART);
                 int MyHomeSequ, seq;
-                MyHomeSequ = PEv2_home_sequence(i);
-                HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
-                rtapi_print_msg(RTAPI_MSG_DBG,
-                                "PK_HOMING: ensurinig that all axes (%d) with same "
-                                "Sequence(%d) startmask initialized (%d) \n",
-                                i, PEv2_home_sequence(i), HomingStartMaskSetup);
+                //MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
+                //HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
+                //rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n",  i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
 
                 // ensure that all axes with same Sequence start homing at the same time
-                rtapi_print_msg(RTAPI_MSG_DBG,
-                                "PoKeys: %s:%s: ensure that all axes with same "
-                                "Sequence start homing at the same time\n",
-                                __FILE__, __FUNCTION__);
-                int j_count = 0;
+                rtapi_print_msg(RTAPI_MSG_DBG,                                "PoKeys: %s:%s: ensure that all axes with same Sequence start homing at the same time\n",__FILE__, __FUNCTION__);
+               /* int j_count = 0;
                 for (seq = 0; seq < (*PEv2_data->PEv2_nrOfAxes); seq++) {
 
-                    if (PEv2_home_sequence(seq) == PEv2_home_sequence(i)) {
-                        //	rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensure that all axes (%d) with same Sequence(%d) start homing at the same time \n", seq, PEv2_home_sequence(i));
+                    if (PEv2_data->PEv2_home_sequence[seq] == PEv2_data->PEv2_home_sequence[i]) {
+                        //	rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensure that all axes (%d) with same Sequence(%d) start homing at the same time \n", seq, PEv2_data->PEv2_home_sequence[i]);
 
                         HomingStartMaskSetup |= (1 << seq); // Home axis seq only (bit seq)
                         j_count++;
@@ -720,21 +675,22 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     rtapi_print_msg(RTAPI_MSG_DBG,
                                     "PK_HOMING: no axes with same Sequence(%d) "
                                     "as joint(%d) found \n",
-                                    PEv2_home_sequence(i), i);
+                                    PEv2_data->PEv2_home_sequence[i], i);
                 } else {
                     rtapi_print_msg(RTAPI_MSG_DBG,
                                     "PK_HOMING: ensured that all axes (%d) with same "
                                     "Sequence(%d) startmask was set (%d) \n",
-                                    i, PEv2_home_sequence(i), HomingStartMaskSetup);
-                }
+                                    i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
+                }*/
             } else if (intAxesState == PK_PEAxisState_axHOME && *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGFinalize) {
                 int MyHomeSequ, seq;
-                MyHomeSequ = PEv2_home_sequence(i);
-                HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
+                MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
+                PEv2_HomingStateSyncedTrigger(dev,PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGSTART, PK_Homing_axHOMINGFinalize);
+                /*HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
                 rtapi_print_msg(RTAPI_MSG_DBG,
                                 "PK_HOMING: ensurinig that all axes (%d) with same "
                                 "Sequence(%d) startmask initialized (%d) \n",
-                                i, PEv2_home_sequence(i), HomingStartMaskSetup);
+                                i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
 
                 // ensure that all axes with same Sequence start homing at the same time
                 rtapi_print_msg(RTAPI_MSG_DBG,
@@ -745,8 +701,8 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 bool allhomed = true;
                 for (seq = 0; seq < (*PEv2_data->PEv2_nrOfAxes); seq++) {
 
-                    if (PEv2_home_sequence(seq) == PEv2_home_sequence(i)) {
-                        //	rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensure that all axes (%d) with same Sequence(%d) start homing at the same time \n", seq, PEv2_home_sequence(i));
+                    if (PEv2_data->PEv2_home_sequence[seq] == PEv2_data->PEv2_home_sequence[i]) {
+                        //	rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensure that all axes (%d) with same Sequence(%d) start homing at the same time \n", seq, PEv2_data->PEv2_home_sequence[i]);
 
                         HomingStartMaskSetup |= (1 << seq); // Home axis seq only (bit seq)
                         j_count++;
@@ -763,13 +719,13 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     rtapi_print_msg(RTAPI_MSG_DBG,
                                     "PK_HOMING: no axes with same Sequence(%d) "
                                     "as joint(%d) found \n",
-                                    PEv2_home_sequence(i), i);
+                                    PEv2_data->PEv2_home_sequence[i], i);
                 } else {
                     rtapi_print_msg(RTAPI_MSG_DBG,
                                     "PK_HOMING: ensured that all axes (%d) with same "
                                     "Sequence(%d) startmask was set (%d) \n",
-                                    i, PEv2_home_sequence(i), HomingStartMaskSetup);
-                }
+                                    i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
+                }*/
 
             } else if (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGCancel && old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) && (intAxesState == PK_PEAxisState_axHOMINGSTART || intAxesState == PK_PEAxisState_axHOMINGSEARCH || intAxesState == PK_PEAxisState_axHOMINGBACK)) {
                 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingCancel\n", __FILE__, __FUNCTION__);
@@ -1104,7 +1060,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             PEv2_deb_RefPosSpeed(i) = dev->PEv2.ReferencePositionSpeed[i];
         }
 
-        if (bm_DoPositionSet != 0) {
+       /*if (bm_DoPositionSet != 0) {
             PEv2_deb_out = 4000;
             dev->PEv2.param2 = bm_DoPositionSet;
             for (int i = 0; i < (*PEv2_data->PEv2_nrOfAxes); i++) {
@@ -1135,7 +1091,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
 #ifdef ULAPI
             usleep(sleepdur);
 #endif
-        }
+        }*/
         if (allhomed != false) {
 
             for (int i = 0; i < (*PEv2_data->PEv2_nrOfAxes); i++) {
@@ -1159,7 +1115,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
     }
 
     if (dev->PEv2.HomingStartMaskSetup != HomingStartMaskSetup && HomingStartMaskSetup != 0 && doHomingStart) {
-        rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: Startmask at trigger (%d) \n", HomingStartMaskSetup);
+       /* rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: Startmask at trigger (%d) \n", HomingStartMaskSetup);
 
         dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
         if (PK_PEv2_HomingStart(dev) != PK_OK) {
@@ -1174,12 +1130,12 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
         }
 
         dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
-        PK_PEv2_HomingStart(dev);
+        PK_PEv2_HomingStart(dev);*/
 #ifdef ULAPI
         usleep(sleepdur);
 #endif
     } else if (dev->PEv2.HomingStartMaskSetup != HomingStartMaskSetup && HomingStartMaskSetup != 0 && doHomingEnd) {
-        rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: Startmask at trigger (%d) \n", HomingStartMaskSetup);
+       /* rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: Startmask at trigger (%d) \n", HomingStartMaskSetup);
 
         dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
         //PK_PEv2_HomingStart(dev);
@@ -1187,7 +1143,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
         Homing_active = true;
 #ifdef ULAPI
         usleep(sleepdur);
-#endif
+#endif*/
     } else if (*(PEv2_data->PEv2_PulseEngineState) != *(PEv2_data->PEv2_PulseEngineStateSetup) && doHomingStart == 0) {
         rtapi_print_msg(RTAPI_MSG_DBG, "PK_PEv2: PEv2_PulseEngineStateSetup (%d) \n", *(PEv2_data->PEv2_PulseEngineStateSetup));
         dev->PEv2.PulseEngineStateSetup = *(PEv2_data->PEv2_PulseEngineStateSetup);
