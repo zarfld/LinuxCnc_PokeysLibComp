@@ -1,5 +1,5 @@
 # Eingabedateien
-INPUT = pokeys_rt pokeys_uspace external/pokeyslib
+INPUT = ../pokeys_rt ../pokeys_uspace ../external/pokeyslib
 FILE_PATTERNS          = *.c *.h
 
 # Dokumentationsformate
