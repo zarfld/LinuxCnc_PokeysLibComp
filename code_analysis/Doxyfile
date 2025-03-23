@@ -17,3 +17,4 @@ DOT_MULTI_TARGETS      = YES
 
 # optional für Funktionen ohne Doku
 EXTRACT_ALL            = YES
+EXTRACT_STATIC = YES
