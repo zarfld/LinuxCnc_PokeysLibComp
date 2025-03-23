@@ -1487,11 +1487,10 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
         }
     }
 
-    if(joints_in_Sequence == 0) {
+    if (joints_in_Sequence == 0) {
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: No axes in sequence %d\n", __FILE__, __FUNCTION__, seq);
         return 1; // no axes in sequence
-    }
-    else if (joints_in_Sequence != sequence_joints_ready) {
+    } else if (joints_in_Sequence != sequence_joints_ready) {
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Not all axes in sequence %d are ready\n", __FILE__, __FUNCTION__, seq);
         return 1; // not all joints in sequence are ready
     }

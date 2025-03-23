@@ -742,7 +742,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             } else {
                 InPosition[i] = false;
             }
-           // PEv2_deb_ishoming(i) = IsHoming[i];
+            // PEv2_deb_ishoming(i) = IsHoming[i];
             PEv2_deb_inposition(i) = InPosition[i];
 
             if (HAL_Machine_On != 0) {
