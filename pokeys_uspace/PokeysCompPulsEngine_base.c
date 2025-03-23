@@ -1495,7 +1495,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                 case PK_Homing_axHOMINGWaitFinalMove:
                     PEv2_data->PEv2_HomingStatus[axis] = PK_Homing_axHOMINGWaitFinalMove;
                     break;
-                case PK_Homing_axHOMINGFINALMOVE:
+                case PK_Homing_axHOMINGFinalMove:
 
                     if ((dev->PEv2.CurrentPosition[axis] != (int32_t)PEv2_data->PEv2_HomePosition[axis])) {
                         bool POSITION_MODE_active[axis] = Get_BitOfByte(dev->PEv2.AxesConfig[axis], 3);
@@ -1512,7 +1512,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         do_move = true;
                         PEv2_data->PEv2_HomingStatus[axis] = PK_Homing_axHOMINGFinalMove;
                     } else {
-                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFINALMOVE PEv2_Axis[%d] already on HomePosition - skip Final move\n", __FILE__, __FUNCTION__, i);
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalMove PEv2_Axis[%d] already on HomePosition - skip Final move\n", __FILE__, __FUNCTION__, i);
                         PEv2_data->PEv2_HomingStatus[axis] = PK_Homing_axIDLE;
                     }
                     break;
