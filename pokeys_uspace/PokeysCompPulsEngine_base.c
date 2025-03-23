@@ -1466,7 +1466,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
     int sequence_joints_ready = 0;
     int HomingStartMaskSetup = 0;
     int bm_DoPositionSet = 0;
-    bool do_move= false;
+    bool do_move = false;
 
     for (axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
         if (PEv2_data->PEv2_home_sequence[axis] == seq) {
