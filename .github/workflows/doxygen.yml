@@ -63,7 +63,10 @@ jobs:
 
       - name: Generate Doxygen documentation
         run: doxygen code_analysis/Doxyfile
-        
+
+      - name: Disable Jekyll
+        run: touch code_analysis/html/.nojekyll
+      
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
