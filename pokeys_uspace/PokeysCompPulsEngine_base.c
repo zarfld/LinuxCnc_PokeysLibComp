@@ -2876,8 +2876,6 @@ EXPORT_SYMBOL(PEv2_AdditionalParametersSet);
 EXPORT_SYMBOL(PEv2_AxisConfigurationGet);
 EXPORT_SYMBOL(PEv2_AxisConfigurationSet);
 
-
-
 #ifdef MODULE_INFO
 MODULE_INFO(linuxcnc, "pin:PEv2.deb.out:s32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:PEv2.deb.estop:s32:0:out::None:None");
