@@ -12,7 +12,7 @@ extern bool posMode[8];
 extern bool Pins_DigitalValueSet_ignore[55];
 
 /**
- * @brief
+ * @brief pokeys_homing_algorithm_t
  * 
  */
 typedef enum {
@@ -27,7 +27,7 @@ typedef enum {
 } pokeys_homing_algorithm_t;
 
 /**
- * @brief
+ * @brief PEv2_data_t
  * 
  */
 typedef struct {
@@ -200,7 +200,7 @@ typedef struct {
 extern PEv2_data_t *PEv2_data;
 
 /**
- * @brief
+ * @brief Export pins for the PoKeys device.
  * 
  */
 int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id,
@@ -1110,7 +1110,7 @@ int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id,
 }
 
 /**
- * @brief
+ * @brief extracts the bit from the byte
  * 
  */
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id) {
@@ -1118,7 +1118,7 @@ bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id) {
 }
 
 /**
- * @brief
+ * @brief sets the bit in the byte
  * 
  */
 uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value) {
@@ -1132,7 +1132,7 @@ uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value) {
 }
 
 /**
- * @brief
+ * @brief Get the status of the PoKeys device.
  * 
  */
 int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
@@ -1317,7 +1317,7 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
 }
 
 /**
- * @brief
+ * @brief Get the status of the PoKeys device.
  * 
  */
 int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
@@ -1406,7 +1406,7 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
 }
 
 /**
- * @brief
+ * @brief Sets the external outputs of the PoKeys device.
  * 
  */
 int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
@@ -1521,7 +1521,7 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
 }
 
 /**
- * @brief
+ * @brief Sets up the PoKeys device for the Pulse Engine.
  * 
  */
 int32_t PEv2_PulseEngineSetup(sPoKeysDevice *dev) {
@@ -1658,7 +1658,7 @@ int32_t PEv2_PulseEngineSetup(sPoKeysDevice *dev) {
 }
 
 /**
- * @brief
+ * @brief Get the additional parameters of the PoKeys device.
  * 
  */
 int32_t PEv2_AdditionalParametersGet(sPoKeysDevice *dev) {
@@ -1686,7 +1686,7 @@ int32_t PEv2_AdditionalParametersGet(sPoKeysDevice *dev) {
 }
 
 /**
- * @brief
+ * @brief Set the additional parameters of the PoKeys device.
  * 
  */
 int32_t PEv2_AdditionalParametersSet(sPoKeysDevice *dev) {
@@ -1792,7 +1792,7 @@ int32_t PEv2_AdditionalParametersSet(sPoKeysDevice *dev) {
 }
 
 /**
- * @brief
+ * @brief Get the axis configuration of the PoKeys device.
  * 
  */
 int32_t PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int AxisId) {
@@ -2054,7 +2054,7 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int AxisId) {
 }
 
 /**
- * @brief
+ * @brief Set the axis configuration of the PoKeys device.
  * 
  */
 int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {

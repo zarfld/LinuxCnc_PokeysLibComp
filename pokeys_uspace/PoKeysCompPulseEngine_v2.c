@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file PoKeysCompPulseEngine_v2.c
  * 
 */
 #include <stdlib.h>
@@ -185,6 +185,10 @@ extern all_IO_data_t *IO_data;
 #undef PEv2_HomingAlgorithm
 #define PEv2_HomingAlgorithm(i) (PEv2_data->PEv2_HomingAlgorithm[i])
 
+/**
+ * @brief Homing command for the axis
+ * 
+ */
 typedef enum {
     PK_PEAxisCommand_axIDLE = 0,                // Axis  in IDLE
     PK_PEAxisCommand_axHOMINGSTART = 1,         // Start Homing procedure
@@ -226,6 +230,12 @@ extern unsigned int sleepdur;
 extern bool ApplyIniSettings;
 
 // This function is called from the main thread
+/**
+ * @brief   Update the status of the PoKeys device.
+ * 
+ * @param dev 
+ * @param HAL_Machine_On 
+ */
 void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
     uint8_t bm_LimitStatusP; // Limit+ status (bit-mapped)
     uint8_t bm_LimitStatusN; // Limit- status (bit-mapped)
@@ -1497,6 +1507,11 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
 
 // This function is called to setup the PoKeys device
 // It ensures Pulse Engine is set up and configured
+/**
+ * @brief Setup the PEv2 of PoKeys device
+ * 
+ * @param dev 
+ */
 void PKPEv2_Setup(sPoKeysDevice *dev) {
     bool DoPeSetup = false;
     bool DoPeReboot = false;
@@ -1625,6 +1640,11 @@ void PKPEv2_Setup(sPoKeysDevice *dev) {
 }
 
 // This function reads the configuration from the INI file
+/**
+ * @brief Read the INI file for configuration settings
+ * 
+ * @param dev 
+ */
 void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
     char key[256]; // Puffer für den zusammengesetzten String
 
@@ -1902,6 +1922,11 @@ void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
     }
 }
 
+/**
+ * @brief Write the configuration settings to the INI file
+ * 
+ * @param dev 
+ */
 void PKPEv2_WriteIniFile(sPoKeysDevice *dev) {
     char key[256]; // Puffer für den zusammengesetzten String
 
