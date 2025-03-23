@@ -1207,7 +1207,7 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PulseEngineState = %d\n",
                         __FILE__, __FUNCTION__,
                         *(PEv2_data->PEv2_PulseEngineState));
-                        *PEv2_data->PEv2_deb_out = 1023;
+        *PEv2_data->PEv2_deb_out = 1023;
         switch (*(PEv2_data->PEv2_PulseEngineState)) {
             case PK_PEState_peSTOPPED: // Pulse engine is stopped
                 rtapi_print_msg(RTAPI_MSG_DBG,
