@@ -633,7 +633,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
 
             PEv2_digin_Probe_in(i) = Get_BitOfByte(bm_ProbeStatus, i);
 
-            Read_digin_LimitHome_Pins(dev, i)
+            Read_digin_LimitHome_Pins(dev, i);
 
                 PEv2_deb_axxisout(i) = 280;
 
