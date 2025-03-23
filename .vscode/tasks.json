@@ -83,14 +83,6 @@
       "detail": "Compile to Debug the Pokeys userspace component using DebugMakefile."
     },
     {
-      "name": "Attach to Pokeys Userspace Component",
-      "type": "cppdbg",
-      "request": "attach",
-      "program": "/usr/lib/linuxcnc/modules/pokeys",
-      "processId": "${command:pickProcess}",
-      "MIMode": "gdb"
-    },
-    {
       "label": "Clean Pokeys Userspace Component",
       "type": "shell",
       "command": "make",
@@ -187,8 +179,7 @@
         "Debug Build Pokeys Userspace Component",
         "Compile Pokeys Home Component",
         "Compile kbd48CNC",
-        "Compile start_delay_5000",
-        "Attach to Pokeys Userspace Component"
+        "Compile start_delay_5000"
       ],
       "problemMatcher": [],
       "detail": "Load the INI configuration for LinuxCNC."
