@@ -1,0 +1,47 @@
+name: Generate Flowcharts with Code2Flow
+
+on:
+    push:
+      branches:
+        - main
+        - feature/**
+        - bugfix/**
+        - improvement/**
+        - hotfix/**
+    pull_request:
+      branches:
+        - main
+        - feature/**
+        - bugfix/**
+        - improvement/**
+        - hotfix/**
+
+jobs:
+  generate-flowcharts:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install code2flow
+      run: pip install code2flow
+
+    - name: Create output directory
+      run: mkdir -p flowcharts
+
+    - name: Generate flowcharts
+      run: |
+        code2flow -i pokeys_rt/pokeys_homecomp.c -o code_analysis/flowcharts/pokeys_homecomp.svg
+        code2flow -i pokeys_uspace/pokeys.c -o code_analysis/flowcharts/pokeys.svg
+
+    - name: Upload diagrams
+      uses: actions/upload-artifact@v3
+      with:
+        name: pokeys-flowcharts
+        path: code_analysis/flowcharts/
