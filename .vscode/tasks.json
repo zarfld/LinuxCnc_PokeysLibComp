@@ -1,173 +1,197 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Compile HAL Component",
-            "type": "shell",
-            "command": "sudo halcompile --install ${file}",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": [],
-            "detail": "Compile and install the HAL component."
-        },
-        {
-            "label": "Preprocess HAL Component",
-            "type": "shell",
-            "command": "sudo halcompile --preprocess ${file}",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": [],
-            "detail": "Compile and install the HAL component."
-        },
-        {
-            "label": "Install PokeysLib",
-            "type": "shell",
-            "command": "chmod +x ./install_pokeyslib.sh && ./install_pokeyslib.sh",
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            },
-            "problemMatcher": [],
-            "detail": "Install the PokeysLib library."
-        },
-        {
-            "label": "Compile USpace/Pokeys Component",
-            "type": "shell",
-            "command": "sudo halcompile --install --extra-link-args=\"-lPoKeys\" --extra-compile-args=\"-v -I/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace/\" pokeys_uspace/pokeys.c",
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            },
-            "dependsOn": [
-                "Install PokeysLib",
-                "Copy PoKeysComp.h"
-            ],
-            "problemMatcher": [],
-            "detail": "Compile and install the Pokeys component."
-        },
-        {
-            "label": "Compile RT/Pokeys Component",
-            "type": "shell",
-            "command": "sudo halcompile --install --extra-link-args=\"-lPoKeys\" --extra-compile-args=\"-v -I/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_rt/\" pokeys_rt/pokeys.comp",
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            },
-            "dependsOn": [
-                "Install PokeysLib",
-                "Copy PoKeysComp.h"
-            ],
-            "problemMatcher": [],
-            "detail": "Compile and install the Pokeys component."
-        },
-        {
-            "label": "Build Pokeys Userspace Component",
-            "type": "shell",
-            "command": "make",
-            "args": [
-                "-f",
-                "pokeys_uspace/Submakefile",
-                "all"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": [],
-            "detail": "Compile and install the Pokeys userspace component using Submakefile."
-        },
-        {
-            "label": "Clean Pokeys Userspace Component",
-            "type": "shell",
-            "command": "make",
-            "args": [
-                "-f",
-                "pokeys_uspace/Submakefile",
-                "clean"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            },
-            "problemMatcher": [],
-            "detail": "Clean the build artifacts for Pokeys userspace component."
-        },        
-        {//copy header pokeys_uspace/PoKeysComp.h to /usr/include
-            "label": "Copy PoKeysComp.h",
-            "type": "shell",
-            "command": "sudo cp pokeys_uspace/PoKeysComp.h /usr/include/",
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            },
-            "problemMatcher": [],
-            "detail": "Copy PoKeysComp.h to /usr/include."
-
-        },
-        {
-            "label": "Compile Pokeys Home Component",
-            "type": "shell",
-            "command": "sudo halcompile --install pokeys_rt/pokeys_homecomp.c",
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            },
-            "problemMatcher": [],
-            "detail": "Compile and install the Pokeys Home component."
-        },
-        {
-            "label": "Compile kbd48CNC",
-            "type": "shell",
-            "command": "sudo halcompile --install kbd48CNC.comp",
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            },
-            "problemMatcher": [],
-            "detail": "Compile and install the kbd48CNC helper component."
-        },
-        {
-            "label": "Compile start_delay_5000",
-            "type": "shell",
-            "command": "sudo halcompile --install start_delay_5000.comp",
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            },
-            "problemMatcher": [],
-            "detail": "Compile and install the start_delay_5000 helper component."
-        },
-        {
-            "label": "Compile start_delay_3000",
-            "type": "shell",
-            "command": "sudo halcompile --install start_delay_3000.comp",
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            },
-            "problemMatcher": [],
-            "detail": "Compile and install the start_delay_3000 helper component."
-        },
-        {
-            "label": "Load INI Configuration USpace/Pokeys",
-            "type": "shell",
-            "command": "linuxcnc -v -d ${file}",
-            "group": {
-                "kind": "none",
-                "isDefault": false
-            },
-            "dependsOn": [
-                "Build Pokeys Userspace Component",
-                "Compile Pokeys Home Component",
-                "Compile kbd48CNC",
-                "Compile start_delay_5000"
-            ],
-            "problemMatcher": [],
-            "detail": "Load the INI configuration for LinuxCNC."
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Compile HAL Component",
+      "type": "shell",
+      "command": "sudo halcompile --install ${file}",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "detail": "Compile and install the HAL component."
+    },
+    {
+      "label": "Preprocess HAL Component",
+      "type": "shell",
+      "command": "sudo halcompile --preprocess ${file}",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "detail": "Compile and install the HAL component."
+    },
+    {
+      "label": "Install PokeysLib",
+      "type": "shell",
+      "command": "chmod +x ./install_pokeyslib.sh && ./install_pokeyslib.sh",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": [],
+      "detail": "Install the PokeysLib library."
+    },
+    {
+      "label": "Compile USpace/Pokeys Component",
+      "type": "shell",
+      "command": "sudo halcompile --install --extra-link-args=\"-lPoKeys\" --extra-compile-args=\"-v -I/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace/\" pokeys_uspace/pokeys.c",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "dependsOn": ["Install PokeysLib", "Copy PoKeysComp.h"],
+      "problemMatcher": [],
+      "detail": "Compile and install the Pokeys component."
+    },
+    {
+      "label": "Compile RT/Pokeys Component",
+      "type": "shell",
+      "command": "sudo halcompile --install --extra-link-args=\"-lPoKeys\" --extra-compile-args=\"-v -I/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_rt/\" pokeys_rt/pokeys.comp",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "dependsOn": ["Install PokeysLib", "Copy PoKeysComp.h"],
+      "problemMatcher": [],
+      "detail": "Compile and install the Pokeys component."
+    },
+    {
+      "label": "Build Pokeys Userspace Component",
+      "type": "shell",
+      "command": "make",
+      "args": ["-f", "pokeys_uspace/Submakefile", "all"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "detail": "Compile and install the Pokeys userspace component using Submakefile."
+    },
+    {
+      "label": "Debug Build Pokeys Userspace Component",
+      "type": "shell",
+      "command": "make",
+      "args": ["-f", "pokeys_uspace/DebugMakefile", "all"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "detail": "Compile to Debug the Pokeys userspace component using DebugMakefile."
+    },
+    {
+      "name": "Attach to Pokeys Userspace Component",
+      "type": "cppdbg",
+      "request": "attach",
+      "program": "/usr/lib/linuxcnc/modules/pokeys",
+      "processId": "${command:pickProcess}",
+      "MIMode": "gdb"
+    },
+    {
+      "label": "Clean Pokeys Userspace Component",
+      "type": "shell",
+      "command": "make",
+      "args": ["-f", "pokeys_uspace/Submakefile", "clean"],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": [],
+      "detail": "Clean the build artifacts for Pokeys userspace component."
+    },
+    {
+      //copy header pokeys_uspace/PoKeysComp.h to /usr/include
+      "label": "Copy PoKeysComp.h",
+      "type": "shell",
+      "command": "sudo cp pokeys_uspace/PoKeysComp.h /usr/include/",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": [],
+      "detail": "Copy PoKeysComp.h to /usr/include."
+    },
+    {
+      "label": "Compile Pokeys Home Component",
+      "type": "shell",
+      "command": "sudo halcompile --install pokeys_rt/pokeys_homecomp.c",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": [],
+      "detail": "Compile and install the Pokeys Home component."
+    },
+    {
+      "label": "Compile kbd48CNC",
+      "type": "shell",
+      "command": "sudo halcompile --install kbd48CNC.comp",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": [],
+      "detail": "Compile and install the kbd48CNC helper component."
+    },
+    {
+      "label": "Compile start_delay_5000",
+      "type": "shell",
+      "command": "sudo halcompile --install start_delay_5000.comp",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": [],
+      "detail": "Compile and install the start_delay_5000 helper component."
+    },
+    {
+      "label": "Compile start_delay_3000",
+      "type": "shell",
+      "command": "sudo halcompile --install start_delay_3000.comp",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": [],
+      "detail": "Compile and install the start_delay_3000 helper component."
+    },
+    {
+      "label": "Load INI Configuration USpace/Pokeys",
+      "type": "shell",
+      "command": "linuxcnc -v -d ${file}",
+      "group": {
+        "kind": "none",
+        "isDefault": false
+      },
+      "dependsOn": [
+        "Build Pokeys Userspace Component",
+        "Compile Pokeys Home Component",
+        "Compile kbd48CNC",
+        "Compile start_delay_5000"
+      ],
+      "problemMatcher": [],
+      "detail": "Load the INI configuration for LinuxCNC."
+    },
+    {
+      "label": "Load INI ConfigurationDebug USpace/Pokeys",
+      "type": "shell",
+      "command": "linuxcnc -v -d ${file}",
+      "group": {
+        "kind": "none",
+        "isDefault": false
+      },
+      "dependsOn": [
+        "Debug Build Pokeys Userspace Component",
+        "Compile Pokeys Home Component",
+        "Compile kbd48CNC",
+        "Compile start_delay_5000",
+        "Attach to Pokeys Userspace Component"
+      ],
+      "problemMatcher": [],
+      "detail": "Load the INI configuration for LinuxCNC."
+    }
+  ]
 }
