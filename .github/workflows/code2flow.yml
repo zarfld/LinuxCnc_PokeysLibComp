@@ -41,7 +41,7 @@ jobs:
         code2flow -i pokeys_uspace/pokeys.c -o code_analysis/flowcharts/pokeys.svg
 
     - name: Upload diagrams
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: pokeys-flowcharts
         path: code_analysis/flowcharts/
