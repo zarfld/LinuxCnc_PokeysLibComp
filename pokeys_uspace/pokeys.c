@@ -1467,6 +1467,86 @@ void pokeys_write_ini(sPoKeysDevice *dev) {
     PKEncoder_WriteIniFile(dev);
 }
 
+
+void pokeys_update(sPoKeysDevice *dev) {
+            // PulseEnginev2
+            rtapi_print_msg(RTAPI_MSG_DBG,
+                "PoKeys: %s:%s: info_PulseEnginev2 = %d\n",
+                __FILE__, __FUNCTION__, info_PulseEnginev2);
+PKPEv2_Update(dev, HAL_Machine_On);
+deb_out = 220;
+usleep(sleepdur);
+
+PKEncoder_Update(dev);
+deb_out = 220;
+usleep(sleepdur);
+
+PKIO_Update(dev);
+deb_out = 230;
+usleep(sleepdur);
+
+//rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: info_PoExtBus = %d\n", __FILE__, __FUNCTION__, info_PoExtBus);
+PKPoExtBus_Update(dev);
+deb_out = 238;
+usleep(sleepdur);
+
+//rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: info_PoNET = %d\n", __FILE__, __FUNCTION__, info_PoNET);
+PKPoNet_Update(dev);
+deb_out = 239;
+usleep(sleepdur);
+}
+
+void pokeys_setup(sPoKeysDevice *dev) {
+    if (doSetup == 1) {
+        rtapi_print_msg(
+            RTAPI_MSG_DBG,
+            "PoKeys: %s:%s: info_PulseEnginev2 = %d\n",
+            __FILE__, __FUNCTION__, info_PulseEnginev2);
+        if (info_PulseEnginev2 != 0) {
+            PKPEv2_Setup(dev);
+            deb_out = 313;
+        }
+        next_setup = 2;
+    } else if (doSetup == 2) {
+        rtapi_print_msg(RTAPI_MSG_DBG,
+                        "PoKeys: %s:%s: info_PinCount = %d\n",
+                        __FILE__, __FUNCTION__, info_PinCount);
+        if (info_PinCount != 0) {
+            PKIO_Setup(dev);
+            deb_out = 312;
+        }
+        next_setup = 3;
+    } else if (doSetup == 3) {
+        rtapi_print_msg(RTAPI_MSG_DBG,
+                        "PoKeys: %s:%s: info_PoExtBus = %d\n",
+                        __FILE__, __FUNCTION__, info_PoExtBus);
+        if (info_PoExtBus != 0) {
+            PKPoExtBus_Setup(dev);
+            deb_out = 314;
+        }
+        next_setup = 4;
+    } else if (doSetup == 4) {
+        rtapi_print_msg(RTAPI_MSG_DBG,
+                        "PoKeys: %s:%s: info_PoNET = %d\n",
+                        __FILE__, __FUNCTION__, info_PoNET);
+        if (info_PoNET != 0) {
+            PKPoNet_Setup(dev);
+            deb_out = 315;
+        }
+        next_setup = 5;
+    } else if (doSetup == 5) {
+        rtapi_print_msg(
+            RTAPI_MSG_DBG,
+            "PoKeys: %s:%s: info_EncodersCount = %d\n",
+            __FILE__, __FUNCTION__, info_EncodersCount);
+        if (info_EncodersCount != 0) {
+            PKEncoder_Setup(dev);
+            deb_out = 316;
+        }
+        next_setup = 1;
+    }
+    doSetup = 0;
+}
 /**
  * @brief user_mainloop
     * 
@@ -1808,31 +1888,8 @@ void user_mainloop(void) {
                 deb_out = 212;
             }
 
-            // PulseEnginev2
-            rtapi_print_msg(RTAPI_MSG_DBG,
-                            "PoKeys: %s:%s: info_PulseEnginev2 = %d\n",
-                            __FILE__, __FUNCTION__, info_PulseEnginev2);
-            PKPEv2_Update(dev, HAL_Machine_On);
-            deb_out = 220;
-            usleep(sleepdur);
+            pokeys_update(dev);
 
-            PKEncoder_Update(dev);
-            deb_out = 220;
-            usleep(sleepdur);
-
-            PKIO_Update(dev);
-            deb_out = 230;
-            usleep(sleepdur);
-
-            //rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: info_PoExtBus = %d\n", __FILE__, __FUNCTION__, info_PoExtBus);
-            PKPoExtBus_Update(dev);
-            deb_out = 238;
-            usleep(sleepdur);
-
-            //rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: info_PoNET = %d\n", __FILE__, __FUNCTION__, info_PoNET);
-            PKPoNet_Update(dev);
-            deb_out = 239;
-            usleep(sleepdur);
 
             if (doSetup > 0) {
                 //rtc_lastmin = rtc_min;
@@ -1953,55 +2010,8 @@ void user_mainloop(void) {
                         dev->info.iEasySensors; // Device supports EasySensors
                     deb_out = 311;
 
-                    if (doSetup == 1) {
-                        rtapi_print_msg(
-                            RTAPI_MSG_DBG,
-                            "PoKeys: %s:%s: info_PulseEnginev2 = %d\n",
-                            __FILE__, __FUNCTION__, info_PulseEnginev2);
-                        if (info_PulseEnginev2 != 0) {
-                            PKPEv2_Setup(dev);
-                            deb_out = 313;
-                        }
-                        next_setup = 2;
-                    } else if (doSetup == 2) {
-                        rtapi_print_msg(RTAPI_MSG_DBG,
-                                        "PoKeys: %s:%s: info_PinCount = %d\n",
-                                        __FILE__, __FUNCTION__, info_PinCount);
-                        if (info_PinCount != 0) {
-                            PKIO_Setup(dev);
-                            deb_out = 312;
-                        }
-                        next_setup = 3;
-                    } else if (doSetup == 3) {
-                        rtapi_print_msg(RTAPI_MSG_DBG,
-                                        "PoKeys: %s:%s: info_PoExtBus = %d\n",
-                                        __FILE__, __FUNCTION__, info_PoExtBus);
-                        if (info_PoExtBus != 0) {
-                            PKPoExtBus_Setup(dev);
-                            deb_out = 314;
-                        }
-                        next_setup = 4;
-                    } else if (doSetup == 4) {
-                        rtapi_print_msg(RTAPI_MSG_DBG,
-                                        "PoKeys: %s:%s: info_PoNET = %d\n",
-                                        __FILE__, __FUNCTION__, info_PoNET);
-                        if (info_PoNET != 0) {
-                            PKPoNet_Setup(dev);
-                            deb_out = 315;
-                        }
-                        next_setup = 5;
-                    } else if (doSetup == 5) {
-                        rtapi_print_msg(
-                            RTAPI_MSG_DBG,
-                            "PoKeys: %s:%s: info_EncodersCount = %d\n",
-                            __FILE__, __FUNCTION__, info_EncodersCount);
-                        if (info_EncodersCount != 0) {
-                            PKEncoder_Setup(dev);
-                            deb_out = 316;
-                        }
-                        next_setup = 1;
-                    }
-                    doSetup = 0;
+                    pokeys_setup(dev);
+
                 } else {
                     alive = 0;
                     usleep(sleepdur * 50);
@@ -2081,3 +2091,8 @@ EXTRA_CLEANUP() {
 static int __comp_get_data_size(void) {
     return 0;
 }
+
+EXPORT_SYMBOL(pokeys_read_ini);
+EXPORT_SYMBOL(pokeys_write_ini);
+EXPORT_SYMBOL(pokeys_update);
+EXPORT_SYMBOL(pokeys_setup);
