@@ -1515,8 +1515,8 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         }
 
                         //last move to home position
-                        dev->PEv2.ReferencePositionSpeed[i] = (int32_t)PEv2_data->PEv2_HomePosition[i];
-                        *(PEv2_data->PEv2_ReferencePositionSpeed[i]) = (int)PEv2_data->PEv2_HomePosition[i];
+                        dev->PEv2.ReferencePositionSpeed[axis] = (int32_t)PEv2_data->PEv2_HomePosition[axis];
+                        *(PEv2_data->PEv2_ReferencePositionSpeed[axis]) = (int)PEv2_data->PEv2_HomePosition[axis];
                         do_move = true;
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGFinalMove;
                     } else {
