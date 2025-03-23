@@ -37,8 +37,8 @@ jobs:
 
     - name: Generate flowcharts
       run: |
-        code2flow -i pokeys_rt/pokeys_homecomp.c -o code_analysis/flowcharts/pokeys_homecomp.svg
-        code2flow -i pokeys_uspace/pokeys.c -o code_analysis/flowcharts/pokeys.svg
+        code2flow pokeys_rt/pokeys_homecomp.c -o code_analysis/flowcharts/pokeys_homecomp.svg
+        code2flow pokeys_uspace/pokeys.c -o code_analysis/flowcharts/pokeys.svg
 
     - name: Upload diagrams
       uses: actions/upload-artifact@v4
