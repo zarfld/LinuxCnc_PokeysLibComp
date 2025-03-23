@@ -1520,7 +1520,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
 
                     break;
                 case PK_Homing_axHOMINGFinalize:
-                    if (RequiredState == PK_Homing_axHOMINGSTART && PEv2_data->PEv2_AxesState[axis] != PK_PEState_peHOME) {
+                    if (RequiredState == PK_Homing_axHOMINGSTART && *(PEv2_data->PEv2_AxesState[axis]) != PK_PEState_peHOME) {
                         return 1; // not all joints in sequence are ready
                     }
                     HomingStartMaskSetup = (1 << axis); // Home my axis only (bit MyHomeSequ)
