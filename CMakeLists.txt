@@ -32,6 +32,9 @@ if(NOT EXISTS ${SUBMAKEFILE})
     message(FATAL_ERROR "Submakefile not found in ${SUBMAKEFILE_DIR}")
 endif()
 
+# Create build directory if it doesn't exist
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/build)
+
 # Build pokeyslib using its Makefile
 add_custom_target(pokeyslib ALL
     COMMAND ${MAKE_EXECUTABLE} -f ${POKEYSLIB_MAKEFILE}
@@ -66,4 +69,3 @@ add_custom_target(pokeys_uspace ALL
 install(DIRECTORY ${SUBMAKEFILE_DIR}/ DESTINATION /usr/lib/linuxcnc/modules
     FILES_MATCHING PATTERN "*.so"
 )
-

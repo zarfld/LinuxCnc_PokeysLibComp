@@ -1,6 +1,20 @@
-name: Auto Clang-Format Fix
+name: Clang Static Analyzer
 
-on: [push, pull_request]  # Run on every push and pull request
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+      - bugfix/**
+      - improvement/**
+      - hotfix/**
+  pull_request:
+    branches:
+      - main
+      - feature/**
+      - bugfix/**
+      - improvement/**
+      - hotfix/**
 
 jobs:
   format-fix:
@@ -25,3 +39,37 @@ jobs:
             git commit -m "Auto-format code with clang-format"
             git push
           fi
+
+  analyze:
+    runs-on: self-hosted
+
+    steps:
+      - name: reinit runner directory
+        run: |
+          sudo chown -R cnc:cnc /home/cnc/actions-runner
+          sudo chown -R cnc:cnc /home/cnc/actions-runner/_work
+          chmod -R u+rwx /home/cnc/actions-runner/_work
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Clang
+        run: |
+          sudo apt-get install -y clang
+          sudo apt-get install -y clang-tools
+
+      - name: init submodule
+        run: sudo /bin/bash "./prerequisites.sh"
+
+      - name: Run Clang Static Analyzer
+        run: |
+          mkdir -p build
+          cd build
+          cmake ..
+          sudo scan-build make
+
+      - name: Upload Clang Static Analyzer Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: clang-analyzer-report
+          path: build/scan-build
