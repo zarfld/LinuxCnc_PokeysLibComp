@@ -6,7 +6,7 @@ UseTab: Never
 BreakBeforeBraces: Attach
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
-ColumnLimit: 80
+ColumnLimit: 360
 SpaceBeforeParens: ControlStatements
 PointerAlignment: Right
 AlignConsecutiveDeclarations: false
