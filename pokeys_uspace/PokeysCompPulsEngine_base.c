@@ -1,3 +1,7 @@
+/**
+ * @file
+ * 
+*/
 #ifdef ULAPI
 extern unsigned int sleepdur;
 #endif
@@ -7,6 +11,10 @@ extern bool Homing_active;
 extern bool posMode[8];
 extern bool Pins_DigitalValueSet_ignore[55];
 
+/**
+ * @brief
+ * 
+ */
 typedef enum {
     PK_PEv2Homing_OnHomeStop = (1 << 3),              // Axis  in IDLE
     PK_PEv2Homing_OnHomeArmEncoder = (1 << 2),        // Start Homing procedure
@@ -18,6 +26,10 @@ typedef enum {
     PK_PEv2Homing_OutHomeReducedSpeed = (1 << 4),     // Cancel Homing procedure
 } pokeys_homing_algorithm_t;
 
+/**
+ * @brief
+ * 
+ */
 typedef struct {
     hal_s32_t *PEv2_deb_out;
     hal_s32_t *PEv2_deb_estop;
@@ -187,6 +199,10 @@ typedef struct {
 
 extern PEv2_data_t *PEv2_data;
 
+/**
+ * @brief
+ * 
+ */
 int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id,
                        PEv2_data_t *Pev2_data, sPoKeysDevice *dev) {
 
@@ -1093,10 +1109,18 @@ int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id,
         return r;
 }
 
+/**
+ * @brief
+ * 
+ */
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id) {
     return (in_Byte >> Bit_Id) & 0x01;
 }
 
+/**
+ * @brief
+ * 
+ */
 uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value) {
 
     if (value == true) {
@@ -1107,6 +1131,10 @@ uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value) {
     return in_Byte;
 }
 
+/**
+ * @brief
+ * 
+ */
 int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
     uint8_t bm_LimitStatusP; // Limit+ status (bit-mapped)
     uint8_t bm_LimitStatusN; // Limit- status (bit-mapped)
@@ -1288,6 +1316,10 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
     return ret;
 }
 
+/**
+ * @brief
+ * 
+ */
 int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
     uint8_t bm_DedicatedLimitNInputs;
     uint8_t bm_DedicatedLimitPInputs;
@@ -1373,6 +1405,10 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
     return ret;
 }
 
+/**
+ * @brief
+ * 
+ */
 int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
     int32_t ret = PK_OK;
     if (PEv2_data->PEv2_PG_extended_io != 0) {
@@ -1484,6 +1520,10 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
     return ret;
 }
 
+/**
+ * @brief
+ * 
+ */
 int32_t PEv2_PulseEngineSetup(sPoKeysDevice *dev) {
     bool doSetup = false;
 
@@ -1617,6 +1657,10 @@ int32_t PEv2_PulseEngineSetup(sPoKeysDevice *dev) {
     }
 }
 
+/**
+ * @brief
+ * 
+ */
 int32_t PEv2_AdditionalParametersGet(sPoKeysDevice *dev) {
 
     if (PK_PEv2_AdditionalParametersGet(dev) == PK_OK) {
@@ -1641,6 +1685,10 @@ int32_t PEv2_AdditionalParametersGet(sPoKeysDevice *dev) {
 #endif
 }
 
+/**
+ * @brief
+ * 
+ */
 int32_t PEv2_AdditionalParametersSet(sPoKeysDevice *dev) {
     bool doSetup = false;
     int32_t ret = PK_PEv2_AdditionalParametersGet(dev);
@@ -1743,6 +1791,10 @@ int32_t PEv2_AdditionalParametersSet(sPoKeysDevice *dev) {
     return ret;
 }
 
+/**
+ * @brief
+ * 
+ */
 int32_t PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int AxisId) {
     dev->PEv2.param1 = AxisId;
     int32_t ret = PK_PEv2_AxisConfigurationGet(dev);
@@ -2001,6 +2053,10 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int AxisId) {
     return ret;
 }
 
+/**
+ * @brief
+ * 
+ */
 int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
     bool doSetup = false;
     uint8_t AxesConfig[8] = { 0 };

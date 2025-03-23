@@ -1,3 +1,8 @@
+/**
+ * @file
+ * 
+*/
+
 #include "PoKeysLib.h"
 #include "PoKeysComp.h"
 #include "rtapi.h"
@@ -11,6 +16,10 @@ extern unsigned int sleepdur;
 
 extern bool ApplyIniSettings;
 
+/**
+ * @brief
+ * 
+ */
 typedef struct {
     hal_bit_t *PoExtBus_digin_in[8];
 
@@ -25,6 +34,10 @@ typedef struct {
 
 } one_PoExtBus_data_t;
 
+/**
+ * @brief
+ * 
+ */
 typedef struct {
     one_PoExtBus_data_t PoExtBus[10];
     hal_s32_t *PoExtBus_deb_out; // pin out s32 deb.out;
@@ -32,7 +45,10 @@ typedef struct {
     hal_u32_t PoExtBus_count;
 } all_PoExtBus_data_t;
 static all_PoExtBus_data_t *PoExtBus_data = 0;
-
+/**
+ * @brief
+ * 
+ */
 int PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints,
                            all_PoExtBus_data_t *poExtBus_data) {
 
@@ -177,10 +193,18 @@ int PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints,
     }
 }
 
+/**
+ * @brief
+ * 
+ */
 bool PoExtBus_Get_BitOfByte(uint8_t in_Byte, int Bit_Id) {
     return (in_Byte >> Bit_Id) & 0x01;
 }
 
+/**
+ * @brief
+ * 
+ */
 uint8_t PoExtBus_Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value) {
 
     if (value == true) {
@@ -191,6 +215,10 @@ uint8_t PoExtBus_Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value) {
     return in_Byte;
 }
 
+/**
+ * @brief
+ * 
+ */
 void PKPoExtBus_Update(sPoKeysDevice *dev) {
     int i = 0;
     int j = 0;
@@ -300,6 +328,10 @@ void PKPoExtBus_Update(sPoKeysDevice *dev) {
     }
 }
 
+/**
+ * @brief
+ * 
+ */
 void PKPoExtBus_Setup(sPoKeysDevice *dev) {
 }
 

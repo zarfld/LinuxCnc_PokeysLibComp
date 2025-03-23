@@ -1,5 +1,8 @@
 
-
+/**
+ * @file
+ * 
+*/
 #include "PoKeysLib.h"
 #include "PoKeysComp.h"
 #include "rtapi.h"
@@ -32,7 +35,10 @@ param rw float encoder.#.scale[29]  "The scale factor used to convert counts to 
 //                       bit 7: mapped to macro for direction B
 // pin io unsigned Encoders.#.channelApin [26];         // Channel A encoder pin
 // pin io unsigned Encoders.#.channelBpin [26];         // Channel B encoder pin
-
+/**
+ * @brief
+ * 
+ */
 typedef struct {
     // canonicaldevice interface pins
     hal_s32_t *count;      // pointer for "pin out s32 encoder.#.count[29]"
@@ -62,7 +68,10 @@ typedef struct {
         channelBpin; // pointer for "pin io unsigned Encoders.#.channelBpin [26]"         // Channel B encoder pin"
 
 } one_encoder_data_t;
-
+/**
+ * @brief
+ * 
+ */
 typedef struct {
     one_encoder_data_t encoder[29];
     hal_s32_t *encoder_deb_out; // pin out s32 deb.out;
@@ -71,6 +80,10 @@ typedef struct {
 
 static all_encoder_data_t *encoder_data = 0;
 
+/**
+ * @brief
+ * 
+ */
 int PKEncoder_export_pins(char *prefix, long extra_arg, int id, int njoints,
                           all_encoder_data_t *Encoder_data) {
     int r = 0;
@@ -177,6 +190,10 @@ int PKEncoder_export_pins(char *prefix, long extra_arg, int id, int njoints,
     return r;
 }
 
+/**
+ * @brief
+ * 
+ */
 int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
     int r = 0;
     int j = 0;
@@ -261,7 +278,10 @@ bool EncoderValuesGet = false;
 // bool  use_sleepdur1 = true;
 // unsigned int  sleepdur1 = 1000;
 // unsigned int  sleepdur2 = 1000;
-
+/**
+ * @brief
+ * 
+ */
 void PKEncoder_Update(sPoKeysDevice *dev) {
 
     rtapi_print_msg(RTAPI_MSG_DBG,
@@ -395,17 +415,33 @@ void PKEncoder_Update(sPoKeysDevice *dev) {
     }
 }
 
+/**
+ * @brief
+ * 
+ */
 int PKEncoder_init(int id, sPoKeysDevice *dev) {
     // dev = device;
     //return makepins(id, 26);
 }
 
+/**
+ * @brief
+ * 
+ */
 void PKEncoder_Setup(sPoKeysDevice *dev) {
 }
 
+/**
+ * @brief
+ * 
+ */
 void PKEncoder_ReadIniFile(sPoKeysDevice *dev) {
 }
 
+/**
+ * @brief
+ * 
+ */
 void PKEncoder_WriteIniFile(sPoKeysDevice *dev) {
 }
 

@@ -2065,7 +2065,7 @@ EXTRA_SETUP() {
 }
 
 /**
- * @brief  
+ * @brief
  * 
  */
 EXTRA_CLEANUP() {

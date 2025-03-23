@@ -1,3 +1,7 @@
+/**
+ * @file
+ * 
+*/
 #include "PoKeysLib.h"
 #include "PoKeysComp.h"
 #include "rtapi.h"
@@ -10,6 +14,10 @@ extern unsigned int sleepdur;
 #endif
 extern bool ApplyIniSettings;
 
+/**
+ * @brief
+ * 
+ */
 typedef struct {
     hal_u32_t PoNET_moduleID;       // RO Parameter
     hal_u32_t PoNET_i2cAddress;     // RO Parameter
@@ -20,12 +28,20 @@ typedef struct {
     hal_u32_t *PoNET_statusOut[16]; // IN pin
 } one_PoNET_data_t;
 
+/**
+ * @brief
+ * 
+ */
 typedef struct {
     hal_bit_t *LED;
     hal_bit_t *Button;
 
 } one_kbd48CNCButton_data_t;
 
+/**
+ * @brief
+ * 
+ */
 typedef struct {
     one_PoNET_data_t PoNET[16];
     hal_u32_t *PoNET_PWMduty;
@@ -45,6 +61,10 @@ typedef struct {
 
 static all_PoNET_data_t *PoNet_data = 0;
 
+/**
+ * @brief
+ * 
+ */
 int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints,
                         all_PoNET_data_t *poNET_data, sPoKeysDevice *dev) {
     int PoNet_Count = 0;
@@ -400,6 +420,10 @@ int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints,
     return r;
 }
 
+/**
+ * @brief
+ * 
+ */
 void PKPoNet_Update(sPoKeysDevice *dev) {
 
     if (PoNet_data->kbd48CNC_available != 0) {
@@ -717,6 +741,10 @@ void PKPoNet_Update(sPoKeysDevice *dev) {
     }
 }
 
+/**
+ * @brief
+ * 
+ */
 void PKPoNet_Setup(sPoKeysDevice *dev) {
 }
 
