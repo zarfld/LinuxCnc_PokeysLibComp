@@ -745,7 +745,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 //rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n",  i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
 
                 // ensure that all axes with same Sequence start homing at the same time
-                
+
                 /* int j_count = 0;
                 for (seq = 0; seq < (*PEv2_data->PEv2_nrOfAxes); seq++) {
 
