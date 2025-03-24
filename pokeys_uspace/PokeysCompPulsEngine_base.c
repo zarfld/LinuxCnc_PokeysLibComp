@@ -44,8 +44,33 @@ extern bool Pins_DigitalValueSet_ignore[55];
 extern PEv2_data_t *PEv2_data;
 
 /**
- * @brief Export pins for the PoKeys device.
- * @memberof PoKeysHALComponent
+ * @brief Export HAL pins and parameters for the PoKeys Pulse Engine v2 (PEv2).
+ *
+ * This function creates and registers all necessary HAL pins and parameters
+ * for the PoKeys PEv2 device, based on the provided device configuration.
+ * It exposes runtime data and control paths for each axis (up to 8) and
+ * global system states. If `PEv2_data` is `NULL`, a new memory block is
+ * allocated via `hal_malloc`. If `dev` is `NULL`, an error is reported.
+ *
+ * The exported pins include:
+ * - Debugging outputs (`deb_out`, `deb_estop`, axis-specific diagnostics)
+ * - Motion control feedback and command pins (`joint-pos-cmd`, `joint-vel-cmd`, etc.)
+ * - Axis configuration and position parameters (limits, offsets, scaling, etc.)
+ * - Pulse engine state, mode, and configuration
+ * - Homing, probing, and limit switch digital input states
+ * - Emergency stop and external output controls
+ * - Encoder feedback and stepgen configuration values
+ * - MPG jogging and switch logic masks
+ *
+ * This function is typically called during component initialization to ensure
+ * all data structures are properly linked to LinuxCNC's HAL framework.
+ *
+ * @param prefix     The HAL instance name prefix (e.g., "pokeys").
+ * @param extra_arg  Unused (reserved for future use).
+ * @param comp_id    The HAL component ID.
+ * @param Pev2_data  Pointer to PEv2 data structure. If `NULL`, it is allocated.
+ * @param dev        Pointer to the PoKeys device descriptor.
+ * @return `0` on success, or negative error code if HAL pin/param creation fails.
  */
 int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id, PEv2_data_t *Pev2_data, sPoKeysDevice *dev) {
 
@@ -703,16 +728,38 @@ int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id, PEv2_data_t *P
 }
 
 /**
- * @brief extracts the bit from the byte
- * 
+ * @brief Retrieves the value of a specific bit in a byte.
+ *
+ * Extracts the value of the bit at the specified position from the input byte.
+ *
+ * @param in_Byte The input byte to read from.
+ * @param Bit_Id The bit position to read (0–7).
+ *
+ * @return `true` if the bit at position `Bit_Id` is set (1), `false` if it is clear (0).
+ *
+ * @note Bit positions outside the range 0–7 are not checked and may cause undefined behavior.
+ *
+ * @ingroup PoKeys_BitManipulation
  */
 bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id) {
     return (in_Byte >> Bit_Id) & 0x01;
 }
 
 /**
- * @brief sets the bit in the byte
- * 
+ * @brief Sets or clears a specific bit in a byte.
+ *
+ * Modifies the input byte by setting or clearing the bit at the specified position,
+ * depending on the value of the `value` parameter.
+ *
+ * @param in_Byte The original byte to be modified.
+ * @param Bit_Id The bit position to modify (0–7).
+ * @param value If `true`, the bit is set to 1; if `false`, the bit is cleared to 0.
+ *
+ * @return The modified byte with the specified bit updated.
+ *
+ * @note Bit positions outside the range 0–7 are not checked and may cause undefined behavior.
+ *
+ * @ingroup PoKeys_BitManipulation
  */
 uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value) {
 
@@ -777,8 +824,35 @@ void Read_digin_LimitHome_Pins(sPoKeysDevice *dev, int i) {
 }
 
 /**
- * @brief Get the status of the PoKeys device.
- * @memberof PoKeysHALComponent
+ * @brief Retrieves and processes the current status of the PoKeys Pulse Engine v2 (PEv2).
+ *
+ * This function calls `PK_PEv2_StatusGet()` to read current state and configuration
+ * values from the PoKeys Pulse Engine v2 and updates the corresponding HAL pins
+ * and internal variables accordingly.
+ *
+ * It processes:
+ * - General engine configuration (number of axes, max frequency, buffer depth, etc.)
+ * - Engine status flags (enabled, activated, charge pump, generator type)
+ * - Axis enable mask and limit override
+ * - Current engine state (running, stopped, homing, probing, etc.)
+ * - Emergency input polarity and status
+ *
+ * Depending on the machine power state (`HAL_Machine_On`), the function also sets
+ * `PEv2_PulseEngineStateSetup` accordingly.
+ *
+ * Special behavior:
+ * - If the state is `peHOME` and homing is active, `Homing_active` will be reset.
+ * - In case of `peSTOP_EMERGENCY`, emergency input pins are explicitly set.
+ *
+ * @param dev Pointer to the PoKeys device structure.
+ * @return `PK_OK` on success or the error code from `PK_PEv2_StatusGet()` on failure.
+ *
+ * @note Updates several HAL pins and internal flags like `Homing_active`.
+ * @note Applies sleep delay if `ULAPI` is defined.
+ *
+ * @see PK_PEv2_StatusGet
+ * @see PEv2_data
+ * @see ePoKeysPEState
  */
 int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
     uint8_t bm_LimitStatusP; // Limit+ status (bit-mapped)
@@ -933,8 +1007,29 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
 }
 
 /**
- * @brief Get the status of the PoKeys device.
- * @memberof PoKeysHALComponent
+ * @brief Reads and updates the state of dedicated limit and home inputs from the PoKeys Pulse Engine v2.
+ *
+ * This function queries the PoKeys device for the current status of the dedicated
+ * negative limit switches, positive limit switches, and home switches using
+ * `PK_PEv2_Status2Get()`.
+ *
+ * For each axis, it checks whether a dedicated pin is assigned for each type of input.
+ * If not, it uses software inversion settings and enable flags to update the
+ * appropriate HAL pins (input, inverted input, and dedicated input).
+ *
+ * This function supports both dedicated hardware lines and virtual assignments via HAL.
+ * Bitwise decoding is done using `Get_BitOfByte()` per axis and input type.
+ *
+ * @param dev Pointer to the PoKeys device structure.
+ * @return `PK_OK` on success, or error code from `PK_PEv2_Status2Get()` on failure.
+ *
+ * @note If `ULAPI` is defined, a `usleep()` delay is applied after reading the status.
+ *
+ * @see PK_PEv2_Status2Get
+ * @see Get_BitOfByte
+ * @see PEv2_data->PEv2_digin_LimitN_*
+ * @see PEv2_data->PEv2_digin_LimitP_*
+ * @see PEv2_data->PEv2_digin_Home_*
  */
 int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
     uint8_t bm_DedicatedLimitNInputs;
@@ -999,8 +1094,34 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
 }
 
 /**
- * @brief Sets the external outputs of the PoKeys device.
- * @memberof PoKeysHALComponent
+ * @brief Sets the state of external relay and open-collector outputs on the PoKeys device.
+ *
+ * This function configures the external relay and open-collector (OC) outputs
+ * available on Pulse Engine v2–capable PoKeys devices (if extended I/O is enabled).
+ *
+ * The function first reads the current output states from the device using
+ * `PK_PEv2_ExternalOutputsGet()` and stores them in the corresponding HAL pin values.
+ *
+ * Then, the desired output states are composed based on the values of HAL pins:
+ * - `PEv2_digout_ExternalRelay_out[]` for relay outputs
+ * - `PEv2_digout_ExternalOC_out[]` for OC outputs
+ *
+ * Bitwise packing of the 8-bit outputs is done using `Set_BitOfByte()`, following the
+ * hardware-specific wiring pattern described in the code comment.
+ *
+ * If the target states differ from the current values on the device, the new states are
+ * set using `PK_PEv2_ExternalOutputsSet()`. The operation is retried once in case of failure.
+ *
+ * @param dev Pointer to the PoKeys device structure.
+ * @return `PK_OK` on success or the error code returned by `PK_PEv2_ExternalOutputsGet()` or `PK_PEv2_ExternalOutputsSet()`.
+ *
+ * @note Requires `PEv2_PG_extended_io` to be enabled for output access.
+ * @note Uses `Set_BitOfByte()` to construct byte values from individual output bits.
+ * @note Applies delays using `usleep()` if compiled with `ULAPI`.
+ *
+ * @see PK_PEv2_ExternalOutputsGet
+ * @see PK_PEv2_ExternalOutputsSet
+ * @see Set_BitOfByte
  */
 int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
     int32_t ret = PK_OK;
@@ -1091,8 +1212,37 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
 }
 
 /**
- * @brief Sets up the PoKeys device for the Pulse Engine.
- * @memberof PoKeysHALComponent
+ * @brief Configures and applies Pulse Engine v2 settings to the PoKeys device.
+ *
+ * This function checks and sets multiple Pulse Engine configuration parameters
+ * based on both the current device state (`dev->PEv2`) and user-defined or 
+ * default settings stored in `PEv2_data`. These include:
+ * - Number of enabled axes
+ * - Charge pump enable state
+ * - Step/dir signal swap
+ * - Extended I/O usage
+ * - Emergency switch polarity
+ * - Axis enabled mask
+ *
+ * The function determines whether an update to the configuration is needed (`doSetup`),
+ * and if so, calls `PK_PEv2_PulseEngineSetup()` to apply it. Upon success, it persists
+ * the changes with `PK_SaveConfiguration()`.
+ *
+ * Additionally, the function sets some device-specific defaults for supported PoKeys
+ * device types, such as PoKeys57CNC and PoKeys57U.
+ *
+ * @param dev Pointer to the PoKeys device structure.
+ *
+ * @retval PK_OK on success (via `PK_PEv2_PulseEngineSetup` internally)
+ * @retval other error codes returned by `PK_PEv2_PulseEngineSetup()` or `PK_SaveConfiguration()` on failure
+ *
+ * @note Adds delays via `usleep()` when compiled in user-space (`ULAPI`) to ensure communication timing.
+ * @note Internally modifies `PEv2_data->PEv2_PulseGeneratorType` using `Set_BitOfByte()` helper for bit flags.
+ *
+ * @see PK_PEv2_PulseEngineSetup
+ * @see PK_SaveConfiguration
+ * @see PEv2_AdditionalParametersSet
+ * @see Set_BitOfByte
  */
 int32_t PEv2_PulseEngineSetup(sPoKeysDevice *dev) {
     bool doSetup = false;
@@ -1199,8 +1349,26 @@ int32_t PEv2_PulseEngineSetup(sPoKeysDevice *dev) {
 }
 
 /**
- * @brief Get the additional parameters of the PoKeys device.
- * @memberof PoKeysHALComponent
+ * @brief Reads additional Pulse Engine v2 parameters from the PoKeys device.
+ *
+ * This function retrieves the current additional configuration of the Pulse Engine v2,
+ * such as the emergency stop input pin, using `PK_PEv2_AdditionalParametersGet()`. 
+ * If the configuration is successfully read and either `ApplyIniSettings` is false 
+ * or no HAL configuration is specified for the emergency pin, the value is stored in
+ * `PEv2_data->PEv2_digin_Emergency_Pin` after adjusting the index.
+ *
+ * This allows later logic to determine whether the emergency input pin should be
+ * configured or left unchanged.
+ *
+ * @param dev Pointer to the PoKeys device structure.
+ *
+ * @retval PK_OK on success (currently not explicitly returned — consider adding `return PK_OK;`)
+ * @retval error code if `PK_PEv2_AdditionalParametersGet()` fails (also not currently returned)
+ *
+ * @note Includes a short delay via `usleep()` if `ULAPI` is defined to accommodate userspace execution timing.
+ *
+ * @see PK_PEv2_AdditionalParametersGet
+ * @see PEv2_AdditionalParametersSet
  */
 int32_t PEv2_AdditionalParametersGet(sPoKeysDevice *dev) {
 
@@ -1219,8 +1387,29 @@ int32_t PEv2_AdditionalParametersGet(sPoKeysDevice *dev) {
 }
 
 /**
- * @brief Set the additional parameters of the PoKeys device.
- * @memberof PoKeysHALComponent
+ * @brief Updates and sets additional Pulse Engine v2 parameters, such as the emergency input pin.
+ *
+ * This function checks whether Pulse Engine v2 additional parameters (e.g., the emergency stop input pin)
+ * need to be updated on the PoKeys device, and if so, applies the new configuration.
+ * It reads the current configuration using `PK_PEv2_AdditionalParametersGet()` and compares it with 
+ * the desired values defined in `PEv2_data`. If discrepancies are found and `ApplyIniSettings` is true,
+ * the values are updated on the device using `PK_PEv2_AdditionalParametersSet()` and saved via 
+ * `PK_SaveConfiguration()`.
+ *
+ * If the emergency input pin is mapped to a regular PoKeys pin (ID >= 9), it also ensures that the
+ * corresponding pin function is correctly set to `PK_PinCap_digitalInput`.
+ *
+ * @param dev Pointer to the PoKeys device structure.
+ * 
+ * @retval PK_OK on successful update or no change needed.
+ * @retval error code (e.g., PK_ERR_*) if a communication or configuration error occurred.
+ *
+ * @note The function includes retry logic and short delays (`usleep`) if `ULAPI` is defined, 
+ *       ensuring compatibility with non-realtime environments.
+ *
+ * @see PK_PEv2_AdditionalParametersGet
+ * @see PK_PEv2_AdditionalParametersSet
+ * @see PK_SaveConfiguration
  */
 int32_t PEv2_AdditionalParametersSet(sPoKeysDevice *dev) {
     bool doSetup = false;
