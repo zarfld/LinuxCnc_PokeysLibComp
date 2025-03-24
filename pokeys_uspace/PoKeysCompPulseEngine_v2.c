@@ -356,6 +356,43 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                 __FILE__, __FUNCTION__, intAxesState, i);
                 oldAxxiState[i] = intAxesState;
             }
+ /**
+ * @brief Synchronised homing state machine trigger for PoKeys axes
+ *
+ * This function checks if all axes in a homing sequence have reached a specific required state,
+ * and transitions them to the given next state synchronously. The transition is only performed
+ * if all axes in the sequence are ready.
+ *
+ * The homing state machine follows this logic:
+ * @dot
+ * digraph HomingState {
+ *   IDLE -> HOMINGSTART;
+ *   HOMINGSTART -> HOMINGFinalize;
+ *   HOMINGFinalize -> ARMENCODER;
+ *   ARMENCODER -> HOMINGWaitFinalMove;
+ *   HOMINGWaitFinalMove -> HOMINGFinalMove;
+ *   HOMINGFinalMove -> HOMINGFinalize;
+ *   HOMINGSTART -> HOMINGCancel;
+ *   HOMINGCancel -> IDLE;
+ *   HOMINGFinalMove -> IDLE [label="Already at position"];
+ * }
+ * @enddot
+ *
+ * Additional logic:
+ * - ARMENCODER uses `PK_PEv2_PositionSet()` to reset axis position.
+ * - HOMINGFinalMove triggers `PK_PEv2_PulseEngineMove()` only if not already at HomePosition.
+ * - `Homing_FinalMoveActive[i]` and `Homing_FinalMoveDone[i]` are used to track motion state and prevent repeated execution.
+ * - Final transition to IDLE sets `index_enable = false` and clears `deb_ishoming`.
+ *
+ * This logic ensures compatibility with LinuxCNC's homing expectations as described in:
+ * https://linuxcnc.org/docs/html/config/ini-homing.html
+ *
+ * @param dev The PoKeys device instance
+ * @param seq Homing sequence number (can be shared by multiple joints)
+ * @param RequiredState State that must be met before transition is triggered
+ * @param NextState Target state to apply if all involved axes are ready
+ * @return 0 if transition triggered, 1 if not all axes ready or already transitioned
+ */
             switch (intAxesState) {
                 case PK_PEAxisState_axSTOPPED: // Axis is stopped
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axSTOPPED\n", __FILE__, __FUNCTION__);
@@ -461,41 +498,33 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         /*dev->PEv2.PositionSetup[i] = PEv2_data->PEv2_ZeroPosition[i];
                         bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);*/
                     } else if ((*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axARMENCODER && Homing_ArmEncodereDone[i] == true) || (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGWaitFinalMove)) {
-                        //PK_PEAxisState_axHOMINGWaitFINALMOVE = 18,          // (linuxcnc spec additional state) Pokeys moves to homeposition
+                        
 
-                        if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_PEAxisCommand_axARMENCODER, PK_Homing_axHOMINGWaitFinalMove) == 0) {
-                            intAxesState = 18;
+                        if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axARMENCODER, PK_Homing_axHOMINGWaitFinalMove) == 0) {
+                            intAxesState = 18; //PK_PEAxisState_axHOMINGWaitFINALMOVE = 18,          // (linuxcnc spec additional state) Pokeys moves to homeposition
                             Homing_ArmEncodereDone[i] = true;
                         }
 
                     } else if (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGFinalLMove && Homing_FinalMoveDone[i] != true) {
-                        //	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
-                        ;
+                        
+                       
+                        if ( Homing_FinalMoveActive[i] != true){
                         if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGWaitFinalMove, PK_Homing_axHOMINGFinalMove) == 0) {
-                            intAxesState = 19;
-                            Homing_FinalMoveDone[i] = true;
-                        }
-
-                        if (Homing_FinalMoveActive[i] == false) {
+                            intAxesState = 19; //	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
                             Homing_FinalMoveActive[i] = true;
-
-                            InPosition[i] = false;
-
-                            dev->PEv2.ReferencePositionSpeed[i] = (int32_t)PEv2_data->PEv2_HomePosition[i];
-                            *(PEv2_data->PEv2_ReferencePositionSpeed[i]) = (int)PEv2_data->PEv2_HomePosition[i];
-                            posMode[i] = true;
-                            doMove = true;
-
-                            dev->PEv2.param1 = i;
-                            PK_PEv2_AxisConfigurationGet(dev);
-                            POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-                            if ((POSITION_MODE_active[i] == false)) {
-                                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOME - POSITION_MODE_active[i] = false\n", __FILE__, __FUNCTION__, i);
-                                dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, true);
-                                dev->PEv2.param1 = i;
-                                PK_PEv2_AxisConfigurationSet(dev);
-                            }
                         }
+                    }
+                    else if ((dev->PEv2.CurrentPosition[i] == (int32_t)PEv2_data->PEv2_HomePosition[i])) {
+                        
+
+                        if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGFinalMove, PK_Homing_axIDLE) == 0) {
+                            // intAxesState is already set from dev->PEv2.AxesState[i]
+                            Homing_FinalMoveActive[i] = false;
+                            Homing_FinalMoveDone[i] = true;
+                            InPosition[i] = true;
+                            *(PEv2_data->PEv2_deb_ishoming[i]) = false;
+                        }
+                    }
 
                     } else if (Homing_FinalMoveActive[i] != false) {
                         //	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition

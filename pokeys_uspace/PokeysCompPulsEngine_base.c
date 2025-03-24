@@ -202,6 +202,11 @@ int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id, PEv2_data_t *P
         if (r != 0)
             return r;
 
+        //PEv2_index_enable
+        r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_index_enable[j]), comp_id, "%s.PEv2.%01d.index-enable", prefix, j);
+        if (r != 0)
+            return r;
+
         r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_ProbeMaxPosition[j]), comp_id, "%s.PEv2.%01d.ProbeMaxPosition", prefix, j);
         if (r != 0)
             return r;
@@ -1484,32 +1489,64 @@ int32_t PEv2_AdditionalParametersSet(sPoKeysDevice *dev) {
 pokeys_home_status_t RequiredState_Memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 pokeys_home_status_t NextState_Memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 /**
- * @brief Triggers a synchronized homing state transition for all axes in a given homing sequence.
+ * @brief Executes a synchronized homing step for all axes within a given sequence.
  *
- * This function checks whether all axes assigned to a given homing sequence have reached a specific
- * required homing state. If all are ready, it transitions them to the specified next homing state
- * and optionally triggers PoKeys Pulse Engine homing actions (e.g., start, finalize, encoder arm, etc.).
+ * This function transitions all axes in the specified homing sequence from a required
+ * to a next homing state, synchronizing them in the process.
  *
- * The function supports transitions through key homing states like:
- * - `PK_Homing_axHOMINGSTART`: Initializes homing for the sequence and sets the start mask.
- * - `PK_Homing_axARMENCODER`: Sets the axis position to zero before the final move.
- * - `PK_Homing_axHOMINGFinalMove`: Triggers a position move to the final home position.
- * - `PK_Homing_axHOMINGFinalize`: Completes the homing procedure and ensures Pulse Engine state is correct.
+ * The internal homing state machine follows this pattern:
+ * - IDLE → HOMINGSTART
+ * - HOMINGSTART → HOMINGFinalize
+ * - HOMINGFinalize → ARMENCODER
+ * - ARMENCODER → HOMINGWaitFinalMove
+ * - HOMINGWaitFinalMove → HOMINGFinalMove
+ * - HOMINGFinalMove → HOMINGFinalize
+ * - HOMINGSTART → HOMINGCancel
+ * - HOMINGCancel → IDLE
+ * - HOMINGFinalMove → IDLE (if already at home position)
  *
- * If any axis is not ready (i.e., not in the required state), the function aborts early.
+ * The PoKeys-specific homing commands:
+ * - `PK_PEv2_HomingStart()` → starts internal homing
+ * - `PK_PEv2_HomingFinish()` → finalizes internal homing
+ * - `PK_PEv2_PositionSet()` → sets current position to zero
+ * - `PK_PEv2_PulseEngineMove()` → performs the final move to home position
  *
- * @param[in] dev              Pointer to the PoKeys device structure.
- * @param[in] seq              The homing sequence number to process.
- * @param[in] RequiredState    The required state that all joints in the sequence must currently be in.
- * @param[in] NextState        The homing state to transition to for all joints in the sequence.
+ * LinuxCNC relies on `index_enable` to determine when it is allowed to apply position commands.
+ * Therefore, `index_enable` should be disabled at the beginning of homing and re-enabled only
+ * in the final `IDLE` state to avoid unexpected `pos-cmd` interference.
  *
- * @return int32_t
- * - `0` if the transition was successfully triggered.
- * - `1` if any joint in the sequence is not in the required state or an error occurs.
+ * @param dev PoKeys device structure
+ * @param seq Homing sequence number (positive = group, negative = individual)
+ * @param RequiredState The state that all axes must be in to proceed
+ * @param NextState The target state to set for all axes in the sequence
+ * @return 0 on success, 1 if not all axes are ready or state is invalid
  *
- * @note The function sets internal flags and masks used by the Pulse Engine API.
- *       Certain transitions involve setting configuration bits or triggering motion commands.
-  * @memberof PoKeysHALComponent
+ * @ingroup PoKeys_HomingSetup
+ *
+ * @dot
+ * digraph PEv2_HomingStateMachine {
+ *     rankdir=LR;
+ *     node [shape=box, style=filled, color=lightgrey, fontname="Helvetica"];
+ *
+ *     IDLE               [label="IDLE", shape=ellipse, color=lightblue];
+ *     HOMINGSTART        [label="HOMINGSTART"];
+ *     HOMINGFinalize     [label="HOMINGFinalize"];
+ *     ARMENCODER         [label="ARMENCODER"];
+ *     HOMINGWaitFinalMove[label="HOMINGWaitFinalMove"];
+ *     HOMINGFinalMove    [label="HOMINGFinalMove", color=lightgreen];
+ *     HOMINGCancel       [label="HOMINGCancel", color=lightpink];
+ *
+ *     IDLE               -> HOMINGSTART       [label="start"];
+ *     HOMINGSTART        -> HOMINGFinalize    [label="PK_PEv2_HomingStart"];
+ *     HOMINGFinalize     -> ARMENCODER        [label="PK_PEv2_HomingFinish"];
+ *     ARMENCODER         -> HOMINGWaitFinalMove[label="PK_PEv2_PositionSet"];
+ *     HOMINGWaitFinalMove-> HOMINGFinalMove   [label="sync & move"];
+ *     HOMINGFinalMove    -> HOMINGFinalize    [label="move done"];
+ *     HOMINGFinalMove    -> IDLE              [label="already at position"];
+ *     HOMINGSTART        -> HOMINGCancel      [label="cancel"];
+ *     HOMINGCancel       -> IDLE              [label="abort"];
+ * }
+ * @enddot
  */
 int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_status_t RequiredState, pokeys_home_status_t NextState) {
 
@@ -1574,16 +1611,19 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         HomingStartMaskSetup |= (1 << axis); // Home my axis only (bit MyHomeSequ)
                         rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n", axis, PEv2_data->PEv2_home_sequence[axis], HomingStartMaskSetup);
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGSTART;
+                        *(PEv2_data->PEv2_index_enable[axis]) = false; // disable index
                         break;
                     case PK_Homing_axARMENCODER:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axARMENCODER\n", __FILE__, __FUNCTION__);
                         dev->PEv2.PositionSetup[axis] = PEv2_data->PEv2_ZeroPosition[axis];
                         bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, axis, 1);
-                        *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGWaitFinalMove;
+                        *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axARMENCODER;
+                        
                         break;
                     case PK_Homing_axHOMINGWaitFinalMove:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGWaitFinalMove\n", __FILE__, __FUNCTION__);
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGWaitFinalMove;
+
                         break;
                     case PK_Homing_axHOMINGFinalMove:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalMove\n", __FILE__, __FUNCTION__);
@@ -1605,10 +1645,12 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalMove PEv2_Axis[%d] already on HomePosition - skip Final move\n", __FILE__, __FUNCTION__, axis);
                             *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axIDLE;
                         }
+                        
                         break;
                     case PK_Homing_axHOMINGCancel:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGCancel\n", __FILE__, __FUNCTION__);
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axIDLE;
+                        
                         break;
                     case PK_Homing_axHOMINGFinalize:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalize\n", __FILE__, __FUNCTION__);
@@ -1620,6 +1662,12 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         HomingStartMaskSetup |= (1 << axis); // Home my axis only (bit MyHomeSequ)
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGFinalize;
                         break;
+
+                    case PK_Homing_axIDLE:
+                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axIDLE\n", __FILE__, __FUNCTION__);
+                            *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axIDLE;
+                            *(PEv2_data->PEv2_index_enable[axis]) = false; // re enable index
+                            break;
                     default:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Invalid state %d\n", __FILE__, __FUNCTION__, NextState);
                         return 1; // invalid state

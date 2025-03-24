@@ -12,8 +12,9 @@ HAVE_DOT               = YES
 DOT_IMAGE_FORMAT       = svg
 CALL_GRAPH             = YES
 CALLER_GRAPH           = YES
-CALL_GRAPH_DEPTH       = 5
+CALL_GRAPH_DEPTH       = 8
 CALLER_GRAPH_DEPTH     = 5
+DOT_GRAPH_MAX_NODES	 = 50
 DOT_MULTI_TARGETS      = YES
 
 # optional für Funktionen ohne Doku

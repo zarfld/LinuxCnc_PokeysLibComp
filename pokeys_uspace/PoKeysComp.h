@@ -778,6 +778,7 @@ typedef enum {
     PK_PEv2Homing_OutHomeReducedSpeed = (1 << 4),     // Cancel Homing procedure
 } pokeys_homing_algorithm_t;
 
+
 typedef enum {
     PK_Homing_axIDLE = 0,                // Axis  in IDLE
     PK_Homing_axHOMINGSTART = 1,         // Start Homing procedure
@@ -787,6 +788,70 @@ typedef enum {
     PK_Homing_axHOMINGCancel = 5,        // Cancel Homing procedure
     PK_Homing_axHOMINGFinalize = 6,      // Finish Homing procedure
 } pokeys_home_status_t;
+/**
+ * @brief State machine transitions for homing logic
+ *
+ * This diagram visualizes the internal transition states for
+ * pokeys_home_status_t and PEv2 AxesState (intAxesState).
+ *
+ * HomingStatus (`PK_Homing_ax...`) states manage synchronization
+ * with LinuxCNC, while PEv2_AxesState (`PK_PEAxisState_...`) tracks
+ * internal PulseEngine status.
+ *
+ * @dot
+ * digraph HomingCombinedStateMachine {
+ *   rankdir=LR;
+ *
+ *   // HomingStatus states
+ *   HS_IDLE               [label="HS: IDLE"];
+ *   HS_HOMINGSTART        [label="HS: HOMINGSTART"];
+ *   HS_HOMINGFinalize     [label="HS: HOMINGFinalize"];
+ *   HS_ARMENCODER         [label="HS: ARMENCODER"];
+ *   HS_HOMINGWaitFinalMove[label="HS: HOMINGWaitFinalMove"];
+ *   HS_HOMINGFinalMove    [label="HS: HOMINGFinalMove"];
+ *   HS_HOMINGCancel       [label="HS: HOMINGCancel"];
+ *
+ *   // PEv2 AxesState nodes
+ *   AS_HOMINGSTART     [label="AS: HOMINGSTART"];
+ *   AS_HOMINGSEARCH    [label="AS: HOMINGSEARCH"];
+ *   AS_HOMINGBACK      [label="AS: HOMINGBACK"];
+ *   AS_HOMING_RESETTING[label="AS: HOMING_RESETTING"];
+ *   AS_HOME            [label="AS: HOME"];
+ *   AS_RUNNING         [label="AS: RUNNING"];
+ *   AS_READY           [label="AS: READY"];
+ *   AS_STOPPED         [label="AS: STOPPED"];
+ *
+ *   // HomingStatus transitions
+ *   HS_IDLE               -> HS_HOMINGSTART;
+ *   HS_HOMINGSTART        -> HS_HOMINGFinalize;
+ *   HS_HOMINGFinalize     -> HS_ARMENCODER;
+ *   HS_ARMENCODER         -> HS_HOMINGWaitFinalMove;
+ *   HS_HOMINGWaitFinalMove-> HS_HOMINGFinalMove;
+ *   HS_HOMINGFinalMove    -> HS_HOMINGFinalize;
+ *   HS_HOMINGFinalMove    -> HS_IDLE [label="already at position"];
+ *   HS_HOMINGSTART        -> HS_HOMINGCancel;
+ *   HS_HOMINGCancel       -> HS_IDLE;
+
+ *   // PEv2 AxesState transitions (as observed in intAxesState)
+ *   AS_HOMINGSTART     -> AS_HOMINGSEARCH;
+ *   AS_HOMINGSEARCH    -> AS_HOMINGBACK;
+ *   AS_HOMINGBACK      -> AS_HOMING_RESETTING;
+ *   AS_HOMING_RESETTING-> AS_HOME;
+ *   AS_HOME            -> AS_RUNNING [label="Final move"];
+ *   AS_RUNNING         -> AS_HOME [label="Reached position"];
+ *   AS_HOME            -> AS_READY;
+ *   AS_READY           -> AS_STOPPED;
+
+ *   // Crosslinks between the two state machines
+ *   HS_HOMINGSTART        -> AS_HOMINGSTART     [style=dashed, label="PK_PEv2_HomingStart"];
+ *   HS_HOMINGFinalize     -> AS_HOME            [style=dashed, label="PK_PEv2_HomingFinish"];
+ *   HS_ARMENCODER         -> AS_HOME            [style=dashed, label="PK_PEv2_PositionSet"];
+ *   HS_HOMINGFinalMove    -> AS_RUNNING         [style=dashed, label="PK_PEv2_PulseEngineMove"];
+ *   HS_IDLE               -> AS_STOPPED         [style=dashed, label="index_enable"];
+ * }
+ * @enddot
+ */
+
 
 /**
 * @brief PEv2_data_t
@@ -827,6 +892,7 @@ typedef struct {
     hal_u32_t PEv2_SoftLimitMinimum[8];
     hal_u32_t PEv2_HomingSpeed[8];
     hal_u32_t *PEv2_HomingStatus[8];
+    hal_bit_t *PEv2_index_enable[8];
     hal_u32_t PEv2_HomingReturnSpeed[8];
     hal_u32_t PEv2_HomeOffsets[8];
     hal_u32_t *PEv2_ProbePosition[8];
