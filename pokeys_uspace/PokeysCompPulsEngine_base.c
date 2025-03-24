@@ -1481,10 +1481,8 @@ int32_t PEv2_AdditionalParametersSet(sPoKeysDevice *dev) {
     return ret;
 }
 
-
-
-pokeys_home_status_t RequiredState_Memory[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-pokeys_home_status_t NextState_Memory[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+pokeys_home_status_t RequiredState_Memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+pokeys_home_status_t NextState_Memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 /**
  * @brief Triggers a synchronized homing state transition for all axes in a given homing sequence.
  *
@@ -1531,43 +1529,40 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
             } else if (*(PEv2_data->PEv2_HomingStatus[axis]) == NextState) {
                 if (RequiredState_Memory[axis] != RequiredState && NextState_Memory[axis] != NextState) {
                     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] already in state %d (required state %d)\n", __FILE__, __FUNCTION__, axis, NextState, RequiredState);
-                
+
                     RequiredState_Memory[axis] = RequiredState;
                     NextState_Memory[axis] = NextState;
                     newmessage = true;
                 }
-                
-                
+
                 sequence_joints_done++;
             } else {
                 if (RequiredState_Memory[axis] != RequiredState && NextState_Memory[axis] != NextState) {
                     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] not in required state %d   (NextState %d) \n", __FILE__, __FUNCTION__, axis, RequiredState, NextState);
-           
+
                     RequiredState_Memory[axis] = RequiredState;
                     NextState_Memory[axis] = NextState;
                     newmessage = true;
                 }
-           }
+            }
         }
     }
 
     if (joints_in_Sequence == 0) {
-        if (newmessage == true){
+        if (newmessage == true) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: No axes in sequence %d\n", __FILE__, __FUNCTION__, seq);
-        
         }
         return 1; // no axes in sequence
     } else if (joints_in_Sequence == sequence_joints_done) {
-        if (newmessage == true){
+        if (newmessage == true) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: All axes in sequence %d have NextState %d already (required state %d)\n", __FILE__, __FUNCTION__, seq, NextState, RequiredState);
-        
         }
         return 0; // all joints have NextState already
     } else if (joints_in_Sequence != sequence_joints_ready) {
-        if (newmessage == true){
+        if (newmessage == true) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Not all axes in sequence %d are ready\n", __FILE__, __FUNCTION__, seq);
         }
-        
+
         return 1; // not all joints in sequence are ready
     } else {
 
