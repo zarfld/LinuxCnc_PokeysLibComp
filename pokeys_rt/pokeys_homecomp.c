@@ -1347,7 +1347,7 @@ bool get_homing_at_index_search_wait(int jno) {
  *
  * @ingroup PoKeys_HomingRuntime
  * @ingroup PoKeys_HomingStatusQuery
- *
+ */
 bool get_homing_is_active() {
     if (homing_active != homing_active_old) {
         rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_homing_is_active ==  %d\n", homing_active);
