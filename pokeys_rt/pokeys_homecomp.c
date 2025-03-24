@@ -216,7 +216,8 @@ static home_sequence_state_t sequence_state = HOME_SEQUENCE_IDLE;
  * @brief Enumeration of the homing state of pokeys component
 
 * @ingroup PoKeys_PEv2_AxisState */
-* / typedef enum {
+* / 
+typedef enum {
     PK_PEAxisState_axSTOPPED = 0, // Axis is stopped
     PK_PEAxisState_axREADY = 1,   // Axis ready
     PK_PEAxisState_axRUNNING = 2, // Axis is running
@@ -239,6 +240,7 @@ static home_sequence_state_t sequence_state = HOME_SEQUENCE_IDLE;
     PK_PEAxisState_axERROR = 20, // Axis error
     PK_PEAxisState_axLIMIT = 30  // Axis limit tripped
 } pokeys_home_state_t;
+
 /**
  * @brief Commands to the pulse engine
     * @param joint_num
@@ -324,40 +326,40 @@ typedef struct {
 
     // Custom Pins for comunication with PoKeys
     /** 
- * @brief Current state of the PulseEngine for this joint.
- *
- * Pointer to the HAL pin exported by the PulseEngine HAL component,
- * typically named like `pokeys.PEv2.axis.N.state`, where `N` is the joint number.
- * 
- * The value corresponds to an entry in the @ref ePoKeysPEState enum,
- * such as `PE_STATE_IDLE`, `PE_STATE_HOMING`, etc.
- *
- * Used by `pokeys_homecomp` to react to motion state changes during the homing sequence.
- *
- * @see ePoKeysPEState
- * @see PoKeysCompPulseEngine_v2
- */
+    * @brief Current state of the PulseEngine for this joint.
+    *
+    * Pointer to the HAL pin exported by the PulseEngine HAL component,
+    * typically named like `pokeys.PEv2.axis.N.state`, where `N` is the joint number.
+    * 
+    * The value corresponds to an entry in the @ref ePoKeysPEState enum,
+    * such as `PE_STATE_IDLE`, `PE_STATE_HOMING`, etc.
+    *
+    * Used by `pokeys_homecomp` to react to motion state changes during the homing sequence.
+    *
+    * @see ePoKeysPEState
+    * @see PoKeysCompPulseEngine_v2
+    */
     hal_u32_t *PEv2_AxesState; // State of pulse engine - see ePoKeysPEState
 
     /**
- * @brief Command output to the PulseEngine for this joint.
- *
- * Pointer to the HAL pin used to issue commands to the PulseEngine,
- * typically named `pokeys_homecomp.N.PEv2_AxesCommand` for joint N.
- *
- * The value corresponds to an entry in the @ref ePoKeysPECmd enum,
- * such as `PE_CMD_NONE`, `PE_CMD_HOME`, `PE_CMD_ENABLE`, etc.
- *
- * This value is evaluated by the PulseEngine logic (e.g., in `PoKeysCompPulseEngine_v2`)
- * and triggers state changes such as starting the homing sequence.
- *
- * @note Only written by `pokeys_homecomp`, and typically connected to
- * the corresponding `PEv2.axis.N.command` pin in the PulseEngine component.
- *
- * @see ePoKeysPECmd
- * @see PEv2_AxesState
- * @see PoKeysCompPulseEngine_v2
- */
+    * @brief Command output to the PulseEngine for this joint.
+    *
+    * Pointer to the HAL pin used to issue commands to the PulseEngine,
+    * typically named `pokeys_homecomp.N.PEv2_AxesCommand` for joint N.
+    *
+    * The value corresponds to an entry in the @ref ePoKeysPECmd enum,
+    * such as `PE_CMD_NONE`, `PE_CMD_HOME`, `PE_CMD_ENABLE`, etc.
+    *
+    * This value is evaluated by the PulseEngine logic (e.g., in `PoKeysCompPulseEngine_v2`)
+    * and triggers state changes such as starting the homing sequence.
+    *
+    * @note Only written by `pokeys_homecomp`, and typically connected to
+    * the corresponding `PEv2.axis.N.command` pin in the PulseEngine component.
+    *
+    * @see ePoKeysPECmd
+    * @see PEv2_AxesState
+    * @see PoKeysCompPulseEngine_v2
+    */
     hal_u32_t *PEv2_AxesCommand; // Commands to  pulse engine - see ePoKeysPECmd
 
 } one_joint_home_data_t;
@@ -381,34 +383,34 @@ typedef struct {
 
     // Custom Pins for comunication with PoKeys
     /**
- * @brief Local copy of the current PulseEngine state for this joint.
- *
- * This variable mirrors the value read from the HAL pin `PEv2_AxesState`
- * (e.g., `pokeys_homecomp.N.PEv2_AxesState`) and represents the current
- * state of the PulseEngine for this joint.
- *
- * It corresponds to the @ref ePoKeysPEState enumeration.
- *
- * Updated in @ref read_homing_in_pins and used for state machine transitions.
- *
- * @see one_joint_home_data_t::PEv2_AxesState
- * @see ePoKeysPEState
- */
+    * @brief Local copy of the current PulseEngine state for this joint.
+    *
+    * This variable mirrors the value read from the HAL pin `PEv2_AxesState`
+    * (e.g., `pokeys_homecomp.N.PEv2_AxesState`) and represents the current
+    * state of the PulseEngine for this joint.
+    *
+    * It corresponds to the @ref ePoKeysPEState enumeration.
+    *
+    * Updated in @ref read_homing_in_pins and used for state machine transitions.
+    *
+    * @see one_joint_home_data_t::PEv2_AxesState
+    * @see ePoKeysPEState
+    */
     pokeys_home_state_t PEv2_AxesState;
 
     /**
- * @brief Local command to the PulseEngine for this joint.
- *
- * This variable holds the next command to be issued to the PulseEngine
- * (e.g., `PE_CMD_HOME`, `PE_CMD_NONE`, etc.) and will be written to
- * the corresponding HAL pin `PEv2_AxesCommand` during
- * @ref write_homing_out_pins.
- *
- * It corresponds to the @ref ePoKeysPECmd enumeration.
- *
- * @see one_joint_home_data_t::PEv2_AxesCommand
- * @see ePoKeysPECmd
- */
+    * @brief Local command to the PulseEngine for this joint.
+    *
+    * This variable holds the next command to be issued to the PulseEngine
+    * (e.g., `PE_CMD_HOME`, `PE_CMD_NONE`, etc.) and will be written to
+    * the corresponding HAL pin `PEv2_AxesCommand` during
+    * @ref write_homing_out_pins.
+    *
+    * It corresponds to the @ref ePoKeysPECmd enumeration.
+    *
+    * @see one_joint_home_data_t::PEv2_AxesCommand
+    * @see ePoKeysPECmd
+    */
     pokeys_home_command_t PEv2_AxesCommand;
 
     // homeparams
@@ -425,6 +427,7 @@ typedef struct {
 
     bool joint_in_sequence;
 } home_local_data;
+
 
 static home_local_data H[EMCMOT_MAX_JOINTS];
 
