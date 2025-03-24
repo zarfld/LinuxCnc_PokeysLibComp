@@ -83,6 +83,18 @@
       "detail": "Compile to Debug the Pokeys userspace component using DebugMakefile."
     },
     {
+      "label": "DebugLog Build Pokeys Userspace Component",
+      "type": "shell",
+      "command": "make",
+      "args": ["-c", "make -f pokeys_uspace/DebugMakefile all | tee build.log"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "detail": "Compile to Debug the Pokeys userspace component using DebugMakefile."
+    },
+    {
       "label": "Clean Pokeys Userspace Component",
       "type": "shell",
       "command": "make",
