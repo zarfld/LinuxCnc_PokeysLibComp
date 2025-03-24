@@ -760,26 +760,48 @@ bool get_sequence_homing(int seq) {
 }
 
 /**
- * @brief Zustandsmaschine für eine einzelne Achse im Homing-Vorgang.
+ * @brief Processes the homing state machine for a single PoKeys axis.
  *
- * Diese Funktion bildet das Herzstück der Homing-Logik für eine Achse.
- * Sie liest den aktuellen `PEv2_AxesState` vom Gerät (über HAL) und setzt
- * entsprechend `home_state`, `homing`, `homed` und `PEv2_AxesCommand`.
+ * This function maps internal Pulse Engine v2 axis states (`PEv2_AxesState`)
+ * to LinuxCNC homing states (`home_state`) for a given joint. It ensures proper
+ * synchronization and transition management during the homing procedure,
+ * including encoder arming and final positioning steps.
  *
- * - Initialisiert interne Homing-Flags je nach externem PEv2-Zustand
- * - Koordiniert ggf. mehrere Achsen in einer Homing-Sequenz
- * - Unterstützt synchronisiertes Warten auf Zustände wie `axHOMINGWaitFINALMOVE`
+ * The function loops as long as `immediate_state` is set, allowing fast transitions
+ * through multiple states within a single servo cycle.
  *
- * Die Zustandsmaschine erlaubt, mehrere Übergänge innerhalb eines Servozyklus
- * auszuführen, indem `immediate_state` genutzt wird.
+ * @param joint_num Index of the joint to process.
+ * @return Returns 1 if the joint is in an active homing state, 0 otherwise.
  *
- * @param joint_num Index der zu bearbeitenden Achse
- * @return 1, wenn die Achse sich im Homing befindet, sonst 0
- *
- * @ingroup PoKeys_HomingFSM
- * @ingroup PoKeys_PEv2_AxisState
- * @ingroup PoKeys_PEv2_AxisCommand
- * @ingroup PoKeys_HomingSync
+ * @dot
+ * digraph PEv2_Homing {
+ *   rankdir=LR;
+ *   node [shape=ellipse, style=filled, fillcolor=lightgray];
+
+ *   STOPPED -> HOME_IDLE              [label="→ STOPPED"];
+ *   READY   -> HOME_IDLE              [label="→ READY"];
+ *   RUNNING -> HOME_IDLE              [label="→ RUNNING"];
+ *   HOMINGSTART -> HOME_START        [label="→ HOMINGSTART"];
+ *   HOMINGSEARCH -> HOME_INITIAL_SEARCH_WAIT [label="→ HOMINGSEARCH"];
+ *   HOMINGBACK -> HOME_FINAL_BACKOFF_START [label="→ HOMINGBACK"];
+ *   HOMING_RESETTING -> HOME_UNLOCK  [label="→ HOMING_RESETTING"];
+ *   HOMING_BACKING_OFF -> HOME_INITIAL_BACKOFF_WAIT [label="→ HOMING_BACKING_OFF"];
+ *   HOMINGARMENCODER -> HOME_SET_INDEX_POSITION [label="→ HOMINGARMENCODER"];
+ *   HOMINGWaitFINALMOVE -> HOME_FINAL_MOVE_START [label="→ if all ready"];
+ *   HOMINGFINALMOVE -> HOME_FINAL_MOVE_WAIT [label="→ HOMINGFINALMOVE"];
+ *   HOME -> HOME_FINISHED            [label="→ if all homed"];
+ *   PROBESTART -> HOME_IDLE;
+ *   PROBESEARCH -> HOME_IDLE;
+ *   PROBED -> HOME_IDLE;
+ *   ERROR -> HOME_IDLE;
+ *   LIMIT -> HOME_IDLE;
+
+ *   // Styling key transitions
+ *   HOMINGSTART [fillcolor=lightblue];
+ *   HOMINGFINALMOVE [fillcolor=lightblue];
+ *   HOME [fillcolor=lightgreen];
+ * }
+ * @enddot
  */
 int pokeys_1joint_state_machine(int joint_num) {
     emcmot_joint_t *joint;
@@ -1071,14 +1093,39 @@ int pokeys_1joint_state_machine(int joint_num) {
 } // pokeys_1joint_state_machine()
 
 /**
- * @brief Führt den Homing-Ablauf für eine Sequenz aus.
+ * @brief Starts the homing process for all joints in a homing sequence.
  *
- * Diese Funktion verwendet PEv2_AxesState, um den Zustand
- * der Achsen zu interpretieren und entsprechende Kommandos
- * zu setzen. Teil der Homing-Finite-State-Machine.
+ * This function iterates over all joints in the specified sequence `seq`, resets their homing flags,
+ * initializes them to `HOME_START`, and sends the `PK_PEAxisCommand_axHOMINGSTART` command to the PoKeys
+ * Pulse Engine if the current state allows it (i.e., STOPPED or READY). All joints in the sequence are marked
+ * as part of the active sequence via `joint_in_sequence = 1`.
  *
- * @ingroup PoKeys_HomingFSM
- * @ingroup PoKeys_PEv2_AxisState
+ * @param seq Index of the sequence to start.
+ *
+ * @dot
+ * digraph do_home_sequence {
+ *   rankdir=LR;
+ *   node [shape=ellipse, style=filled, fillcolor=lightgray];
+
+ *   START [label="HOME_SEQUENCE_DO_ONE_SEQUENCE", fillcolor=lightblue];
+ *   STOPPED -> HOMINGSTART [label="AxState=STOPPED"];
+ *   READY   -> HOMINGSTART [label="AxState=READY"];
+ *   UNKNOWN -> (no command) [style=dashed];
+
+ *   STOPPED [fillcolor=lightyellow];
+ *   READY   [fillcolor=lightyellow];
+ *   HOMINGSTART [fillcolor=lightgreen];
+
+ *   subgraph cluster_0 {
+ *     label = "Joints in Sequence";
+ *     style = dashed;
+ *     color = gray;
+ *     START -> STOPPED;
+ *     START -> READY;
+ *     START -> UNKNOWN;
+ *   }
+ * }
+ * @enddot
  */
 void do_home_sequence(int seq) {
     one_sequence_home_data_t addr = (sequence_home_data.shd[seq]);
@@ -1119,22 +1166,39 @@ void do_home_sequence(int seq) {
 }
 
 /**
- * @brief Überwacht den Fortschritt einer Homing-Sequenz.
+ * @brief Checks the homing state of a joint sequence and advances to the next if needed.
  *
- * Diese Funktion wird regelmäßig während des Homing-Prozesses aufgerufen,
- * um zu prüfen, ob alle Achsen einer Sequenz ihren Zielzustand erreicht haben.
+ * This function evaluates the status flags (`homed`, `homing`, `home_state`) for the current sequence.
+ * If the sequence is marked as completed (`homed`), and it is the last sequence, the homing process is finished.
+ * Otherwise, it continues with the next sequence via `do_home_sequence()`.
  *
- * - Wenn alle Achsen als „homed“ gelten, wird je nach `is_last` entweder
- *   die nächste Sequenz gestartet oder `sequence_state` auf `IDLE` gesetzt.
- * - Wenn die Sequenz sich noch im Homing befindet, wird mit `get_sequence_homed()`
- *   überprüft, ob sie nun abgeschlossen ist.
- * - Sie beeinflusst direkt den globalen `sequence_state` und ruft ggf. `do_home_sequence()` auf.
+ * If the sequence is in homing progress (`homing`) and all joints report as homed, the state is updated accordingly.
+ * It also resets the state if no joints report homing anymore.
  *
- * @param seq Sequenzindex, der überprüft werden soll
+ * @param seq The index of the homing sequence to check.
  *
- * @ingroup PoKeys_HomingSync
- * @ingroup PoKeys_HomingFSM
- * @ingroup PoKeys_PEv2_AxisState
+ * @dot
+ * digraph check_home_sequence {
+ *   rankdir=LR;
+ *   node [shape=ellipse, style=filled, fillcolor=lightgray];
+
+ *   IDLE        [label="HOME_SEQUENCE_IDLE", fillcolor=lightblue];
+ *   DO_SEQ      [label="HOME_SEQUENCE_DO_ONE_SEQUENCE", fillcolor=lightblue];
+ *   HOMING      [label="addr.homing", fillcolor=lightyellow];
+ *   HOMED       [label="addr.homed", fillcolor=lightgreen];
+ *   NEXT        [label="do_home_sequence(next)", fillcolor=lightgreen];
+ *   FINISHED    [label="Sequence Finished", fillcolor=lightgreen];
+ *   RESET       [label="addr.home_state = HOME_IDLE", fillcolor=lightgray];
+
+ *   DO_SEQ -> HOMED [label="addr.homed == 1"];
+ *   HOMED -> FINISHED [label="is_last == 1"];
+ *   HOMED -> NEXT     [label="is_last == 0"];
+ *   DO_SEQ -> HOMING [label="addr.homing == 1"];
+ *   HOMING -> HOMED [label="get_sequence_homed(seq)"];
+ *   HOMING -> HOMING [label="get_sequence_homing(seq)"];
+ *   HOMING -> RESET [label="no joints homing"];
+ * }
+ * @enddot
  */
 void check_home_sequence(int seq) {
     if (sequence_state != HOME_SEQUENCE_DO_ONE_SEQUENCE) {
@@ -1450,29 +1514,42 @@ void do_home_all(void) {
 } // do_home_all()
 
 /**
- * @brief Führt die Homing-Logik für eine einzelne Achse aus.
+ * @brief Initiates and manages the homing process for a given joint or sequence.
  *
- * Diese Funktion überprüft den aktuellen PEv2-Zustand (`PEv2_AxesState`) der angegebenen Achse
- * und setzt den entsprechenden `PEv2_AxesCommand`, um die Homing-Sequenz fortzusetzen.
+ * This function determines the current `AxesState` of the specified joint and issues appropriate commands
+ * (e.g. `HOMINGSTART`, `IDLE`, `HOMINGFINALIZE`) to the PoKeys Pulse Engine. If a sequence of joints is
+ * being homed together (`home_sequence < 0`), it checks if all involved joints are ready or finished before
+ * advancing the sequence.
  *
- * - Bei Sequenzbasiertem Homing (home_sequence < 0) wird zusätzlich der Homing-Vorgang
- *   für alle betroffenen Achsen koordiniert.
- * - Wenn der Zustand `axHOME` erreicht ist, prüft die Funktion, ob alle Achsen der Sequenz
- *   ebenfalls "gehomed" sind. Falls ja, wird `axHOMINGFINALIZE` an alle Achsen gesetzt.
- * - In Initialzuständen (`axREADY`, `axSTOPPED`) wird der Start des Homings durch
- *   `axHOMINGSTART` eingeleitet.
+ * If `jno` is negative, it attempts to start the homing sequence at index 0.
  *
- * Diese Funktion ist eine zentrale Verknüpfung zwischen:
- * - dem `pokeys_1joint_state_machine()`,
- * - dem Status-Rückkanal `PEv2_AxesState`, und
- * - dem Steuerungskanal `PEv2_AxesCommand`.
+ * @param jno Joint number to home; if negative, the first sequence is used.
  *
- * @param jno Achsnummer (joint number), für die der Homingprozess bearbeitet werden soll.
- *
- * @ingroup PoKeys_HomingControl
- * @ingroup PoKeys_PEv2_AxisState
- * @ingroup PoKeys_PEv2_AxisCommand
- * @ingroup PoKeys_HomingFSM
+ * @dot
+ * digraph do_home_joint {
+ *   rankdir=LR;
+ *   node [shape=box, style=filled, fillcolor=lightgray];
+
+ *   STOPPED     [label="axSTOPPED\nto HOMINGSTART", fillcolor=lightyellow];
+ *   READY       [label="axREADY\nto HOMINGSTART", fillcolor=lightyellow];
+ *   SEARCH      [label="axHOMINGSEARCH\n-> IDLE", fillcolor=orange];
+ *   START       [label="axHOMINGSTART\n-> IDLE", fillcolor=orange];
+ *   BACK        [label="axHOMINGBACK\n-> IDLE", fillcolor=orange];
+ *   BACKING_OFF [label="axHOMING_BACKING_OFF\n-> IDLE", fillcolor=orange];
+ *   RESETTING   [label="axHOMING_RESETTING\n-> IDLE", fillcolor=orange];
+ *   HOME        [label="axHOME\n-> HOMINGFINALIZE if all homed", fillcolor=lightgreen];
+ *   DEFAULT     [label="default / unknown", fillcolor=gray];
+
+ *   SEQ_START   [label="home_sequence < 0\nsequence_state = DO_ONE_SEQUENCE", shape=ellipse, fillcolor=lightblue];
+ *   SEQ_SINGLE  [label="home_sequence >= 0\nsequence_state = DO_ONE_JOINT", shape=ellipse, fillcolor=lightblue];
+
+ *   STOPPED     -> SEQ_START   [label="if part of sequence"];
+ *   READY       -> SEQ_START   [label="if part of sequence"];
+ *   STOPPED     -> SEQ_SINGLE  [label="otherwise"];
+ *   READY       -> SEQ_SINGLE  [label="otherwise"];
+ *   HOME        -> SEQ_START   [label="if all homed"];
+ * }
+ * @enddot
  */
 void do_home_joint(int jno) {
     if (jno >= 0) {
@@ -1651,32 +1728,47 @@ void do_home_joint(int jno) {
 }
 
 /**
- * @brief Führt eine vollständige Homing-Sequenz für mehrere Achsen aus.
+ * @brief Executes the main state machine for homing sequences.
  *
- * 'do_homing_sequence()' decides what, if anything, needs to be done related to multi-joint homing.
+ * This function processes and advances the current homing sequence by stepping through a well-defined
+ * state machine. It handles homing for single joints as well as synchronized sequences involving multiple joints.
  *
- * Diese Funktion wird periodisch aus `do_homing()` aufgerufen, solange der
- * `sequence_state` nicht `HOME_SEQUENCE_IDLE` ist. Sie implementiert eine
- * interne Zustandsmaschine, welche den aktuellen Zustand der Sequenz (`sequence_state`)
- * berücksichtigt und ggf. Befehle wie `PK_PEAxisCommand_axHOMINGSTART` oder
- * `PK_PEAxisCommand_axHOMINGCANCEL` an die Achsen sendet.
+ * The state machine includes:
+ * - Initialization of sequences (`HOME_SEQUENCE_DO_ONE_JOINT`, `HOME_SEQUENCE_DO_ONE_SEQUENCE`)
+ * - Starting homing motions (`HOME_SEQUENCE_START`, `HOME_SEQUENCE_START_JOINTS`)
+ * - Monitoring completion status (`HOME_SEQUENCE_WAIT_JOINTS`)
+ * - Transitioning between sequences or terminating when done.
  *
- * Dabei werden folgende Zustände verarbeitet:
- * - `HOME_SEQUENCE_DO_ONE_JOINT`: Nur eine Achse wird gehomed
- * - `HOME_SEQUENCE_DO_ONE_SEQUENCE`: Mehrere Achsen einer Sequenz werden vorbereitet
- * - `HOME_SEQUENCE_START`: Erste Zustandsprüfung der Achsen
- * - `HOME_SEQUENCE_WAIT_JOINTS`: Warte, bis alle Achsen den Zustand `axHOME` erreichen
- * - `HOME_SEQUENCE_IDLE`: beendet
+ * It interacts with joint states (`PEv2_AxesState`) and sets `PEv2_AxesCommand` accordingly. The homing process
+ * can be cancelled if an axis enters an `axERROR` state. On successful homing, the machine transitions to the
+ * next sequence or sets the `allhomed` flag.
  *
- * Der Ablauf basiert auf den Rückmeldungen der Achsen über
- * `PEv2_AxesState` und triggert neue Kommandos über `PEv2_AxesCommand`.
- *
- * @ingroup PoKeys_HomingControl
- * @ingroup PoKeys_HomingFSM
- * @ingroup PoKeys_PEv2_AxisState
- * @ingroup PoKeys_PEv2_AxisCommand
- * @see do_homing()
- * @see do_home_joint()
+ * @dot
+ * digraph homing_sequence_state_machine {
+ *   rankdir=LR;
+ *   node [shape=box, style=filled, fillcolor=lightgray];
+
+ *   IDLE            [label="HOME_SEQUENCE_IDLE", fillcolor=white];
+ *   DO_ONE_JOINT    [label="DO_ONE_JOINT\nset 1 joint", fillcolor=lightyellow];
+ *   DO_ONE_SEQ      [label="DO_ONE_SEQUENCE\nset all joints in seq", fillcolor=lightyellow];
+ *   START           [label="START\nsend HOMINGSTART", fillcolor=lightblue];
+ *   START_JOINTS    [label="START_JOINTS\nmatch seq IDs", fillcolor=lightblue];
+ *   WAIT_JOINTS     [label="WAIT_JOINTS\nmonitor PEv2_AxesState", fillcolor=lightgreen];
+ *   CANCEL          [label="PEv2_AxesState == ERROR\n-> HOMINGCANCEL", fillcolor=orangered];
+ *   NEXT_SEQ        [label="next_sequence", shape=ellipse, fillcolor=lightcyan];
+
+ *   IDLE          -> DO_ONE_JOINT   [label="if single home_state==START"];
+ *   DO_ONE_JOINT  -> START          [label="if joint count > 0"];
+ *   DO_ONE_SEQ    -> START          [label="multi-joint sequence"];
+ *   START         -> WAIT_JOINTS    [label="after HOMINGSTART"];
+ *   START_JOINTS  -> WAIT_JOINTS    [label="if any seen"];
+ *   WAIT_JOINTS   -> NEXT_SEQ       [label="if all homed && !is_last"];
+ *   WAIT_JOINTS   -> IDLE           [label="if all homed && is_last"];
+ *   WAIT_JOINTS   -> START_JOINTS   [label="if any joint READY/STOPPED"];
+ *   WAIT_JOINTS   -> CANCEL         [label="if any ERROR"];
+ *   CANCEL        -> IDLE;
+ * }
+ * @enddot
  */
 static void do_homing_sequence(void) {
     int i, ii;
@@ -2026,38 +2118,39 @@ static void do_homing_sequence(void) {
 /* 
 */
 /**
- * @brief Hauptschleife für den Homing-Prozess aller Achsen.
+ * @brief Main homing handler to be called periodically during motion.
  *
- * 'do_homing()' looks at the home_state field of each joint struct
- * to decide what, if anything, needs to be done related to homing
- * the joint.  Homing is implemented as a state machine, the exact
- * sequence of states depends on the machine configuration.  It
- * can be as simple as immediately setting the current position to
- * zero, or a it can be a multi-step process (find switch, set
- * approximate zero, back off switch, find index, set final zero,
- * rapid to home position), or anywhere in between.
- * Diese Funktion wird periodisch aufgerufen (z. B. aus einem Echtzeit-Thread)
- * und kümmert sich um:
+ * This function coordinates the full homing process by:
+ * - Executing the current homing sequence state machine via `do_homing_sequence()`
+ * - Calling `pokeys_1joint_state_machine()` for each active joint marked as part of the sequence
+ * - Monitoring homing progress via the `homing_flag`
+ * - Detecting when the homing process is complete by comparing the `get_allhomed()` state
  *
- * - Ausführung der sequenziellen Homing-FSM über `do_homing_sequence()`
- * - Iteration über alle aktiven Achsen und Abwicklung ihrer Einzel-FSM über
- *   `pokeys_1joint_state_machine(joint_num)`
- * - Prüfung, ob der Homing-Prozess abgeschlossen ist (alle Achsen homed, keine aktiv homenden mehr)
+ * The function returns `true` once all joints are homed and the `homing_flag` is zero.
+ * This typically triggers the final switch to operational mode (e.g. teleop).
  *
- * Die Rückmeldung erfolgt über einen `bool` Return:
- * - `true`: Homing abgeschlossen
- * - `false`: Homing läuft noch
+ * @returns `true` if homing has just completed in this cycle; otherwise `false`.
  *
- * @ingroup PoKeys_HomingControl
- * @ingroup PoKeys_HomingFSM
- * @ingroup PoKeys_PEv2_AxisState
- * @ingroup PoKeys_PEv2_AxisCommand
- *
- * @return true wenn alle Achsen erfolgreich homed sind
- * @return false wenn mindestens eine Achse noch in Bearbeitung ist
- *
- * @see do_homing_sequence()
- * @see pokeys_1joint_state_machine()
+ * @dot
+ * digraph do_homing_state_flow {
+ *   rankdir=LR;
+ *   node [shape=box, style=filled, fillcolor=lightgray];
+
+ *   start        [label="do_homing()", fillcolor=lightblue];
+ *   do_seq       [label="do_homing_sequence()", fillcolor=lightyellow];
+ *   loop_joints  [label="loop active joints\n(pokeys_1joint_state_machine)", fillcolor=lightgreen];
+ *   check_flags  [label="check: beginning_allhomed==0 && end_allhomed==1 && homing_flag==0", fillcolor=khaki];
+ *   return_true  [label="return true\n(homing completed)", shape=ellipse, fillcolor=palegreen];
+ *   return_false [label="return false\n(homing not finished)", shape=ellipse, fillcolor=lightcoral];
+
+ *   start        -> do_seq       [label="if sequence_state != IDLE"];
+ *   do_seq       -> loop_joints;
+ *   start        -> loop_joints  [label="else"];
+ *   loop_joints  -> check_flags;
+ *   check_flags  -> return_true  [label="if allhomed transition + flag==0"];
+ *   check_flags  -> return_false [label="otherwise"];
+ * }
+ * @enddot
  */
 bool do_homing(void) {
     int joint_num;
