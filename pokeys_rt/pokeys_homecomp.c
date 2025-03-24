@@ -216,8 +216,7 @@ static home_sequence_state_t sequence_state = HOME_SEQUENCE_IDLE;
  * @brief Enumeration of the homing state of pokeys component
 
 * @ingroup PoKeys_PEv2_AxisState */
-* / 
-typedef enum {
+* / typedef enum {
     PK_PEAxisState_axSTOPPED = 0, // Axis is stopped
     PK_PEAxisState_axREADY = 1,   // Axis ready
     PK_PEAxisState_axRUNNING = 2, // Axis is running
@@ -427,7 +426,6 @@ typedef struct {
 
     bool joint_in_sequence;
 } home_local_data;
-
 
 static home_local_data H[EMCMOT_MAX_JOINTS];
 
