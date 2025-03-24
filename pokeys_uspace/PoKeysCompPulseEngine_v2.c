@@ -798,9 +798,9 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
                 if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGSTART, PK_Homing_axHOMINGFinalize) == 0) {
                     rtapi_print_msg(RTAPI_MSG_DBG,
-                        "PoKeys: %s:%s: ensure that all axes with same "
-                        "Sequence start homing at the same time\n",
-                        __FILE__, __FUNCTION__);
+                                    "PoKeys: %s:%s: ensure that all axes with same "
+                                    "Sequence start homing at the same time\n",
+                                    __FILE__, __FUNCTION__);
                 }
                 /*HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
                 rtapi_print_msg(RTAPI_MSG_DBG,
