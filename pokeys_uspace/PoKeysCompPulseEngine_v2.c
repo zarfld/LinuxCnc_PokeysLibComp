@@ -368,6 +368,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         allhomed = false;
                     }
                     PEv2_deb_out = 310 + i;
+                    *(PEv2_data->PEv2_HomingStatus[axis]) = 0;
                     // PEv2_digin_AxisEnabled_in(i) = false;
                     // PEv2_digin_LimitOverride_in(i) = false;
 
