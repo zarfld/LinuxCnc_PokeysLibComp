@@ -662,6 +662,26 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
 			bm_ErrorStatus
 			*/
 
+            /**
+            * @brief Trigger synchronized homing start based on AxisCommand change.
+            *
+            * This logic checks whether the commanded state of an axis (`PEv2_AxesCommand[i]`)
+            * has changed to a homing start state (`PK_PEAxisCommand_axHOMINGSTART`) and if the axis
+            * is in a valid initial state (STOPPED, READY, or already in HOME).
+            *
+            * When this transition is detected, `PEv2_HomingStateSyncedTrigger()` is called to initiate
+            * homing for all axes that belong to the same homing sequence (`PEv2_home_sequence[i]`).
+            *
+            * This ensures that all axes in the same synchronized group start homing together.
+            *
+            * @note The full mask-based coordination across axes in the same sequence is currently commented out,
+            * but `PEv2_HomingStateSyncedTrigger()` still ensures the correct trigger propagation for synchronization.
+            *
+            * @see PEv2_HomingStateSyncedTrigger()
+            * @see PEv2_AxesCommand
+            * @see PEv2_home_sequence
+            */
+
             if ((intAxesState == PK_PEAxisState_axSTOPPED || intAxesState == PK_PEAxisState_axREADY || intAxesState == PK_PEAxisState_axHOME) && old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) && (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisState_axHOMINGSTART || *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGSTART)) {
                 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingStart\n", __FILE__, __FUNCTION__);
                 PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axIDLE, PK_Homing_axHOMINGSTART);
@@ -696,7 +716,29 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                     "Sequence(%d) startmask was set (%d) \n",
                                     i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
                 }*/
-            } else if (intAxesState == PK_PEAxisState_axHOME && *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGFinalize) {
+            } 
+            /**
+            * @brief Triggers homing finalization for all axes in the same synchronized homing sequence.
+            *
+            * If an axis is currently in the `axHOME` state and receives the `axHOMINGFinalize` command,
+            * this indicates that the homing process for that axis has completed, and it's time to
+            * finalize the homing sequence for all axes that share the same `PEv2_home_sequence`.
+            *
+            * The function `PEv2_HomingStateSyncedTrigger()` is used to propagate the `axHOMINGFinalize`
+            * trigger to all other axes within the same sequence, ensuring that all axes complete
+            * the homing procedure in a synchronized way.
+            *
+            * @note The actual condition that all axes have truly completed homing (`allhomed`) is
+            * commented out here, so finalization may currently rely only on the trigger signal
+            * without verifying the readiness of all involved axes.
+            *
+            * @see PEv2_HomingStateSyncedTrigger()
+            * @see PEv2_AxesCommand
+            * @see PEv2_home_sequence
+            * @see PK_PEAxisState_axHOME
+            * @see PK_PEAxisCommand_axHOMINGFinalize
+            */
+            else if (intAxesState == PK_PEAxisState_axHOME && *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGFinalize) {
                 int MyHomeSequ, seq;
                 MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
                 PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGSTART, PK_Homing_axHOMINGFinalize);

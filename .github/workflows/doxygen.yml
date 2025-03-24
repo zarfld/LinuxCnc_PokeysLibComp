@@ -62,7 +62,9 @@ jobs:
         run: sudo /bin/bash "./prerequisites.sh"
 
       - name: Generate Doxygen documentation
-        run: doxygen code_analysis/Doxyfile
+        run: |
+          cd code_analysis
+          doxygen Doxyfile
       
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
