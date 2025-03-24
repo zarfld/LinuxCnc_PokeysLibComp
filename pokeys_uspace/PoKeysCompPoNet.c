@@ -14,66 +14,6 @@ extern unsigned int sleepdur;
 #endif
 extern bool ApplyIniSettings;
 
-/**
- * @brief Structure holding HAL parameters and pin references for one PoNET device.
- *
- * This structure represents a single PoNET module connected to the PoKeys device,
- * including identification, addressing, and data exchange over the PoNET bus.
- *
- * It supports:
- * - Read-only identification and configuration parameters
- * - 16 status input pins (HAL_OUT)
- * - 16 status output pins (HAL_IN)
- */
-typedef struct {
-    hal_u32_t PoNET_moduleID;       // RO Parameter
-    hal_u32_t PoNET_i2cAddress;     // RO Parameter
-    hal_u32_t PoNET_moduleType;     // RO Parameter
-    hal_u32_t PoNET_moduleSize;     // RO Parameter
-    hal_u32_t PoNET_moduleOptions;  // RO Parameter
-    hal_u32_t *PoNET_statusIn[16];  // OUT pin
-    hal_u32_t *PoNET_statusOut[16]; // IN pin
-} one_PoNET_data_t;
-
-/**
- * @brief Represents a single button and LED pair on the kbd48CNC PoNET module.
- *
- * This structure holds HAL pointers to the button input and LED output for a single key
- * on a PoKeys kbd48CNC keyboard extension module.
- */
-typedef struct {
-    hal_bit_t *LED;
-    hal_bit_t *Button;
-
-} one_kbd48CNCButton_data_t;
-
-/**
- * @brief Contains all PoNET-related data for communication with PoKeys devices.
- *
- * This structure manages the state and HAL representation of all connected PoNET devices,
- * including:
- * - Up to 16 generic PoNET modules
- * - A kbd48CNC keyboard module with 48 keys (each with LED and Button)
- * - Status and control values like PWM and brightness
- */
-typedef struct {
-    one_PoNET_data_t PoNET[16];   /**< Data for up to 16 PoNET modules */
-    hal_u32_t *PoNET_PWMduty;     /**< HAL input pin for controlling the PoNET PWM duty cycle */
-    hal_u32_t *PoNET_lightValue;  /**< HAL input pin for the global PoNET light value */
-    hal_u32_t *PoNET_PoNETstatus; /**< HAL output pin for status reporting */
-    hal_u32_t PoNET_DevCount;     /**< Read-only parameter: Number of active PoNET devices */
-
-    hal_bit_t kbd48CNC_available;       /**< Flag indicating availability of the kbd48CNC module */
-    hal_u32_t kbd48CNC_PoNetID;         /**< PoNET ID of the kbd48CNC module */
-    hal_u32_t *kbd48CNC_KeyBrightness;  /**< HAL input pin for controlling key brightness */
-    hal_u32_t *kbd48CNC_prevBrightness; /**< HAL output pin for previous brightness state */
-    hal_u32_t *kbd48CNC_lightValue;     /**< HAL input pin for the kbd48CNC light value */
-
-    one_kbd48CNCButton_data_t *kbd48CNCio[48]; /**< Array of 48 key-button mappings for the kbd48CNC */
-    uint8_t kbd48CNC_Counter;                  /**< Internal counter used for kbd48CNC state updates */
-
-    hal_s32_t *deb_out; /**< Debug output pin for internal state information */
-} all_PoNET_data_t;
 
 /**
  * @brief Global pointer to the PoNET data structure used by the HAL component.
