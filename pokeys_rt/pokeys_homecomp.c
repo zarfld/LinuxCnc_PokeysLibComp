@@ -16,6 +16,66 @@
  * The component is designed for use with LinuxCNC and PoKeys57E devices, and provides
  * real-time feedback and control of the homing process using HAL-compatible pins.
  *
+ * \dot
+ * digraph AxisHoming {
+ *   rankdir=LR;
+ *   splines=polyline;
+ *   node [fontname="Helvetica"];
+ *
+ *   // Global Homing Sequence states (LinuxCNC side)
+ *   subgraph cluster_sequence {
+ *     label="Homing-Sequenz (global)";
+ *     style=rounded;
+ *     color=gray;
+ *     node [shape=box, style=rounded];
+ *     seq_idle  [label="HOME_SEQUENCE_IDLE"];
+ *     seq_start [label="HOME_SEQUENCE_START"];
+ *     seq_wait  [label="HOME_SEQUENCE_WAIT_JOINTS"];
+ *     // initial state indicator for sequence
+ *     startS [shape=point, label=""];
+ *     startS -> seq_idle;
+ *   }
+ *
+ *   // Axis states (PoKeys Pulse Engine side)
+ *   subgraph cluster_axis {
+ *     label="Achsen-Zustände (PoKeys PulseEngine)";
+ *     style=rounded;
+ *     color=gray;
+ *     node [shape=ellipse];
+ *     idle    [label="axREADY (Idle)"];
+ *     reset   [label="axHOMING_RESETTING"];
+ *     backoff [label="axHOMING_BACKING_OFF"];
+ *     search  [label="axHOMINGSEARCH"];
+ *     back    [label="axHOMINGBACK"];
+ *     homed   [label="axHOME (Homed)"];
+ *     // initial state indicator for axis
+ *     startA [shape=point, label=""];
+ *     startA -> idle;
+ *   }
+ *
+ *   // Homing sequence transitions
+ *   seq_idle  -> seq_start [label="Homing gestartet (Benutzer)"];
+ *   seq_start -> seq_wait  [label="Homing läuft (warte auf Abschluss)"];
+ *   seq_wait  -> seq_idle  [label="Alle Achsen referenziert"];
+ *
+ *   // Interaction between sequence and axis: start homing command
+ *   seq_start -> reset  [label="PK_PEAxisCommand_axHOMINGSTART\n(über PoKeysCompPulseEngine_v2)"];
+ *
+ *   // Axis homing state transitions (internal device progression)
+ *   reset  -> backoff [label="(Home-Schalter aktiv)", style=dashed];
+ *   reset  -> search  [label="(Home-Schalter nicht aktiv)"];
+ *   backoff -> search [label="Schalter freigegeben"];
+ *   search -> back    [label="Home-Schalter gefunden (Feinfahrt)"];
+ *   back   -> homed   [label="Referenzpunkt erreicht"];
+ *
+ *   // Interaction: homing complete – finalize (after all axes in sequence are done)
+ *   homed -> idle [label="PK_PEAxisCommand_axHOMINGFINALIZE\n(über PoKeysCompPulseEngine_v2, ausgelöst in PoKeysCompPulseEngine_base)"];
+ *
+ *   // Abort path: Homing cancel command (can be issued during search/back)
+ *   search -> idle [label="PK_PEAxisCommand_axHOMINGCANCEL\n(Abbruch)", style=dashed];
+ *   back   -> idle [label="PK_PEAxisCommand_axHOMINGCANCEL\n(Abbruch)", style=dashed];
+ * }
+ * \enddot
  * @author zarfld
  * @date 2025
  */
