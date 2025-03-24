@@ -1813,7 +1813,7 @@ static void do_homing_sequence(void) {
                         break;
 
                     case PK_PEAxisState_axERROR:
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(RTAPI_MSG_ERR,
                                         "HOMING: do_homing_sequence(%d) "
                                         "HOME_SEQUENCE_START joint %d error "
                                         "PK_PEAxisCommand_axHOMINGCANCEL\n",
@@ -1965,7 +1965,7 @@ static void do_homing_sequence(void) {
                         break;
 
                     case PK_PEAxisState_axERROR:
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(RTAPI_MSG_ERR,
                                         "HOMING:  do_homing_sequence(%d) joint "
                                         "%d HOME_SEQUENCE_WAIT_JOINTS "
                                         "PK_PEAxisState_axERROR\n",
@@ -2142,7 +2142,7 @@ void set_unhomed(int jno, motion_state_t motstate) {
  */
 void do_cancel_homing(int jno) {
     // one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
-    rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_cancel_homing(%d)\n", jno);
+    rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_cancel_homing(%d)\n", jno);
     H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGCANCEL;
     return;
 }
