@@ -627,21 +627,21 @@ void PKPoExtBus_Update(sPoKeysDevice *dev);
  *
  * @param[in] dev Pointer to the initialized PoKeys device structure
  */
-void PKPoExtBus_Setup(sPoKeysDevice *dev)
+void PKPoExtBus_Setup(sPoKeysDevice *dev);
 
     // ========================== PoNet Support =====================================
 
     /**
- * @brief Structure holding HAL parameters and pin references for one PoNET device.
- *
- * This structure represents a single PoNET module connected to the PoKeys device,
- * including identification, addressing, and data exchange over the PoNET bus.
- *
- * It supports:
- * - Read-only identification and configuration parameters
- * - 16 status input pins (HAL_OUT)
- * - 16 status output pins (HAL_IN)
- */
+  * @brief Structure holding HAL parameters and pin references for one PoNET device.
+  *
+  * This structure represents a single PoNET module connected to the PoKeys device,
+  * including identification, addressing, and data exchange over the PoNET bus.
+  *
+  * It supports:
+  * - Read-only identification and configuration parameters
+  * - 16 status input pins (HAL_OUT)
+  * - 16 status output pins (HAL_IN)
+  */
     typedef struct {
     hal_u32_t PoNET_moduleID;       // RO Parameter
     hal_u32_t PoNET_i2cAddress;     // RO Parameter
