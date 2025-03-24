@@ -758,7 +758,7 @@ void PKPoNet_Update(sPoKeysDevice *dev);
  * @note Intended to be called during component initialization or device setup.
  *       Can be expanded to handle default configurations, pre-allocations, or hardware checks.
  */
-void PKPoNet_Setup(sPoKeysDevice *dev)
+void PKPoNet_Setup(sPoKeysDevice *dev);
 
     // ========================== PulseEngine v2 ===================================
 
