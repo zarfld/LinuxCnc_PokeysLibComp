@@ -63,11 +63,11 @@ typedef struct {
  * @var one_adcin_data_t::offset
  * Offset applied after scaling the raw input value (float).
  */
- typedef struct {
-  hal_float_t *value_raw;
-  hal_float_t *value;
-  hal_float_t scale;
-  hal_float_t offset;
+typedef struct {
+    hal_float_t *value_raw;
+    hal_float_t *value;
+    hal_float_t scale;
+    hal_float_t offset;
 } one_adcin_data_t;
 
 /**
@@ -102,17 +102,17 @@ typedef struct {
 * Flag to indicate that output value should not be updated in this cycle (typically set during initial configuration).
 */
 typedef struct {
-  hal_bit_t *digin_in;
-  hal_bit_t *digin_in_not;
-  hal_bit_t *digout_out;
-  hal_bit_t digin_invert;
-  hal_bit_t digout_invert;
+    hal_bit_t *digin_in;
+    hal_bit_t *digin_in_not;
+    hal_bit_t *digout_out;
+    hal_bit_t digin_invert;
+    hal_bit_t digout_invert;
 
-  hal_u32_t *counter_value;
+    hal_u32_t *counter_value;
 
-  hal_u32_t PinFunction;
+    hal_u32_t PinFunction;
 
-  bool DigitalValueSet_ignore;
+    bool DigitalValueSet_ignore;
 } one_digiIO_data_t;
 
 /**
@@ -143,15 +143,15 @@ typedef struct {
 * Optional debug pointer for tracking output state of digital pins or other debugging information.
 */
 typedef struct {
-  one_adcout_data_t adcout[6];
-  hal_u32_t adcout_pwm_period;
-  hal_u32_t *adcout_deb_outv;
+    one_adcout_data_t adcout[6];
+    hal_u32_t adcout_pwm_period;
+    hal_u32_t *adcout_deb_outv;
 
-  one_adcin_data_t adcin[7];
+    one_adcin_data_t adcin[7];
 
-  one_digiIO_data_t Pin[55];
+    one_digiIO_data_t Pin[55];
 
-  hal_u32_t *deb_out;
+    hal_u32_t *deb_out;
 } all_IO_data_t;
 
 /**

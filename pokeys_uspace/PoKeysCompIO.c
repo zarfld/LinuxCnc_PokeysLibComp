@@ -95,8 +95,6 @@ typedef struct {
     hal_u32_t PinId;
 } one_adcout_data_t;
 
-
-
 /**
  * @brief Pointer to the global I/O data structure used by the HAL component.
  *
