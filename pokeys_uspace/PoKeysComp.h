@@ -485,7 +485,7 @@ typedef struct {
  * @see all_encoder_data_t
  */
 
-int PKEncoder_export_pins(char *prefix, long extra_arg, int id, int njoints, all_encoder_data_t *Encoder_data)
+int PKEncoder_export_pins(char *prefix, long extra_arg, int id, int njoints, all_encoder_data_t *Encoder_data);
     /**
  * @brief Exports HAL parameters related to encoder configuration.
  *
