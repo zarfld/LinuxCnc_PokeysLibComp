@@ -999,7 +999,7 @@ typedef struct {
  * @return `0` on success, or negative error code if HAL pin/param creation fails.
  */
 
- int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id, PEv2_data_t *Pev2_data, sPoKeysDevice *dev);
+int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id, PEv2_data_t *Pev2_data, sPoKeysDevice *dev);
 /**
  * @brief Retrieves the value of a specific bit in a byte.
  *
@@ -1014,8 +1014,7 @@ typedef struct {
  *
  * @ingroup PoKeys_BitManipulation
  */
- bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id);
-
+bool Get_BitOfByte(uint8_t in_Byte, int Bit_Id);
 
 /**
  * @brief Sets or clears a specific bit in a byte.
@@ -1033,8 +1032,7 @@ typedef struct {
  *
  * @ingroup PoKeys_BitManipulation
  */
- uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value);
-
+uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value);
 
 /**
  * @brief Reads and updates the HAL pin states for limit and home switches for a specific axis.
@@ -1061,8 +1059,7 @@ typedef struct {
  * @see PK_PEv2_StatusGet()
  * @ingroup PoKeys_PEv2_IO
  */
- void Read_digin_LimitHome_Pins(sPoKeysDevice *dev, int i);
-
+void Read_digin_LimitHome_Pins(sPoKeysDevice *dev, int i);
 
 /**
  * @brief Retrieves and processes the current status of the PoKeys Pulse Engine v2 (PEv2).
@@ -1095,8 +1092,7 @@ typedef struct {
  * @see PEv2_data
  * @see ePoKeysPEState
  */
- int32_t PEv2_StatusGet(sPoKeysDevice *dev);
-
+int32_t PEv2_StatusGet(sPoKeysDevice *dev);
 
 /**
  * @brief Reads and updates the state of dedicated limit and home inputs from the PoKeys Pulse Engine v2.
@@ -1123,7 +1119,7 @@ typedef struct {
  * @see PEv2_data->PEv2_digin_LimitP_*
  * @see PEv2_data->PEv2_digin_Home_*
  */
- int32_t PEv2_Status2Get(sPoKeysDevice *dev);
+int32_t PEv2_Status2Get(sPoKeysDevice *dev);
 
 /**
  * @brief Sets the state of external relay and open-collector outputs on the PoKeys device.
@@ -1155,7 +1151,7 @@ typedef struct {
  * @see PK_PEv2_ExternalOutputsSet
  * @see Set_BitOfByte
  */
- int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev);
+int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev);
 
 /**
  * @brief Configures and applies Pulse Engine v2 settings to the PoKeys device.
@@ -1190,7 +1186,7 @@ typedef struct {
  * @see PEv2_AdditionalParametersSet
  * @see Set_BitOfByte
  */
- int32_t PEv2_PulseEngineSetup(sPoKeysDevice *dev);
+int32_t PEv2_PulseEngineSetup(sPoKeysDevice *dev);
 
 /**
  * @brief Reads additional Pulse Engine v2 parameters from the PoKeys device.
@@ -1214,7 +1210,7 @@ typedef struct {
  * @see PK_PEv2_AdditionalParametersGet
  * @see PEv2_AdditionalParametersSet
  */
- int32_t PEv2_AdditionalParametersGet(sPoKeysDevice *dev);
+int32_t PEv2_AdditionalParametersGet(sPoKeysDevice *dev);
 /**
  * @brief Updates and sets additional Pulse Engine v2 parameters, such as the emergency input pin.
  *
@@ -1240,7 +1236,7 @@ typedef struct {
  * @see PK_PEv2_AdditionalParametersSet
  * @see PK_SaveConfiguration
  */
- int32_t PEv2_AdditionalParametersSet(sPoKeysDevice *dev);
+int32_t PEv2_AdditionalParametersSet(sPoKeysDevice *dev);
 
 /**
  * @brief Triggers a synchronized homing state transition for all axes in a given homing sequence.
@@ -1270,7 +1266,7 @@ typedef struct {
  *       Certain transitions involve setting configuration bits or triggering motion commands.
   * @memberof PoKeysHALComponent
  */
- int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_status_t RequiredState, pokeys_home_status_t NextState);
+int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_status_t RequiredState, pokeys_home_status_t NextState);
 
 /**
  * @brief Retrieves and parses the axis configuration from the PoKeys Pulse Engine v2.
@@ -1296,15 +1292,15 @@ typedef struct {
  * @ingroup PoKeys_Axis
   * @memberof PoKeysHALComponent
  */
- int32_t PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int AxisId) ;
+int32_t PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int AxisId);
 
 /**
  * @brief Set the axis configuration of the PoKeys device.
  * @memberof PoKeysHALComponent
  */
- int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId);
+int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId);
 
- /**
+/**
   * @brief Configures the PulseEngine v2 using current settings.
   * @memberof PoKeysHALComponent
   */
