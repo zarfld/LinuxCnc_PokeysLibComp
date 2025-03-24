@@ -41,8 +41,6 @@ extern bool Homing_active;
 extern bool posMode[8];
 extern bool Pins_DigitalValueSet_ignore[55];
 
-
-
 extern PEv2_data_t *PEv2_data;
 
 /**
