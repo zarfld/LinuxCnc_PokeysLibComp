@@ -14,7 +14,6 @@ extern unsigned int sleepdur;
 #endif
 extern bool ApplyIniSettings;
 
-
 /**
  * @brief Global pointer to the PoNET data structure used by the HAL component.
  *
