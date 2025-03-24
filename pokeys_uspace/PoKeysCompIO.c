@@ -1,7 +1,32 @@
 /**
- * @file
- * 
-*/
+ * @file PoKeysCompIO.c
+ * @brief HAL interface for PoKeys digital and analog I/O handling.
+ *
+ * This file implements the creation, reading, and writing of HAL pins
+ * associated with PoKeys device I/O (Input/Output), such as digital inputs,
+ * digital outputs, analog inputs, analog outputs, and counters.
+ *
+ * It contains all HAL-related functions required to interface these I/O
+ * types with LinuxCNC. These functions populate HAL pins and parameters
+ * with values retrieved from or written to the PoKeys device through
+ * the PoKeysLib API.
+ *
+ * Functions include:
+ * - Creation of HAL pins for each supported I/O type
+ * - Reading values from the device and updating HAL pins accordingly
+ * - Writing values from HAL pins to the device
+ *
+ * This code is part of the HAL component layer and works with the
+ * `sPoKeysDevice` structure, which is defined and maintained in the
+ * `pokeyslib` library.
+ *
+ * @author zarfld
+ * @date 2023
+ * @copyright MIT License
+ *
+ * @ingroup PoKeysHALComponent
+ */
+
 #include "PoKeysLib.h"
 #include "rtapi.h"
 // #include "rtapi_app.h"
@@ -14,9 +39,49 @@
 extern unsigned int sleepdur;
 #endif
 extern bool ApplyIniSettings;
+
 /**
- * @brief Structure to hold the data for each analog output channel.
+ * @typedef one_adcout_data_t
+ * @brief Structure holding data for one analog output channel in the PoKeys HAL component.
+ *
+ * This structure is used by the HAL component to manage one analog output
+ * signal. It contains pointers to HAL pins and local configuration data.
+ *
+ * The values are updated in real-time to reflect the current analog output
+ * state and allow HAL users to control output voltage or current levels
+ * within defined bounds.
+ *
+ * @var one_adcout_data_t::deb_out
+ * Pointer to the HAL pin for the debounced output value (u32).
+
+ * @var one_adcout_data_t::deb_setval
+ * Pointer to the HAL pin used to set the debounced output value (u32).
+
+ * @var one_adcout_data_t::value
+ * Pointer to the HAL pin holding the final analog output value (float).
+
+ * @var one_adcout_data_t::enable
+ * Pointer to the HAL pin enabling or disabling the output channel (bit).
+
+ * @var one_adcout_data_t::offset
+ * Software offset added to the analog output value (float).
+
+ * @var one_adcout_data_t::scale
+ * Scaling factor applied to the analog output value (float).
+
+ * @var one_adcout_data_t::high_limit
+ * Upper limit for the analog output value (float).
+
+ * @var one_adcout_data_t::low_limit
+ * Lower limit for the analog output value (float).
+
+ * @var one_adcout_data_t::max_v
+ * Maximum physical output value supported by the hardware (float).
+
+ * @var one_adcout_data_t::PinId
+ * Identifier of the physical PoKeys pin associated with this analog output (u32).
  */
+
 typedef struct {
     hal_u32_t *deb_out;
     hal_u32_t *deb_setval;
@@ -29,8 +94,26 @@ typedef struct {
     hal_float_t max_v;
     hal_u32_t PinId;
 } one_adcout_data_t;
+
 /**
- * @brief Structure to hold the data for each analog input channel.
+ * @typedef one_adcin_data_t
+ * @brief Structure holding data for one analog input channel in the PoKeys HAL component.
+ *
+ * This structure contains the HAL pin references and conversion parameters
+ * for processing an analog input signal. The raw input is scaled and offset
+ * to produce the final processed value exposed to HAL.
+ *
+ * @var one_adcin_data_t::value_raw
+ * Pointer to the HAL pin for the raw analog input value (float), as read from the PoKeys device.
+
+ * @var one_adcin_data_t::value
+ * Pointer to the HAL pin for the processed analog input value (float), after applying scale and offset.
+
+ * @var one_adcin_data_t::scale
+ * Scaling factor applied to the raw input value (float). Useful for converting ADC values to physical units.
+
+ * @var one_adcin_data_t::offset
+ * Offset applied after scaling the raw input value (float).
  */
 typedef struct {
     hal_float_t *value_raw;
@@ -38,8 +121,37 @@ typedef struct {
     hal_float_t scale;
     hal_float_t offset;
 } one_adcin_data_t;
+
 /**
- * @brief Structure to hold the data for each digital input/output channel.
+ * @typedef one_digiIO_data_t
+ * @brief Structure representing a single digital I/O pin in the PoKeys HAL component.
+ *
+ * This structure holds the configuration and HAL pin references for a digital input or output pin.
+ * It supports inverted logic and can also act as a simple counter input if needed.
+ *
+ * @var one_digiIO_data_t::digin_in
+ * Pointer to the HAL pin representing the current digital input signal (non-inverted).
+
+ * @var one_digiIO_data_t::digin_in_not
+ * Pointer to the HAL pin representing the inverted digital input signal.
+
+ * @var one_digiIO_data_t::digout_out
+ * Pointer to the HAL pin representing the output signal sent to the digital output pin.
+
+ * @var one_digiIO_data_t::digin_invert
+ * Inversion flag for the input signal. If true, the input logic is interpreted as inverted.
+
+ * @var one_digiIO_data_t::digout_invert
+ * Inversion flag for the output signal. If true, the output logic is inverted before being sent to hardware.
+
+ * @var one_digiIO_data_t::counter_value
+ * Pointer to the HAL pin representing a simple counter value, incremented on rising edges.
+
+ * @var one_digiIO_data_t::PinFunction
+ * The current function assigned to the pin, e.g., digital input, output, or other capabilities (matches PoKeys API definitions).
+
+ * @var one_digiIO_data_t::DigitalValueSet_ignore
+ * Flag to indicate that output value should not be updated in this cycle (typically set during initial configuration).
  */
 typedef struct {
     hal_bit_t *digin_in;
@@ -54,8 +166,33 @@ typedef struct {
 
     bool DigitalValueSet_ignore;
 } one_digiIO_data_t;
+
 /**
- * @brief Structure to hold the data for all I/O channels.
+ * @typedef all_IO_data_t
+ * @brief Aggregated structure for managing all analog and digital I/O HAL connections for a PoKeys device.
+ *
+ * This structure encapsulates all HAL-related I/O data, including analog outputs (DAC/PWM), 
+ * analog inputs (ADC), and digital I/O pins. It serves as the main container for mapping HAL 
+ * pins to the PoKeys hardware configuration in the LinuxCNC HAL component.
+ *
+ * @var all_IO_data_t::adcout
+ * Array of analog output channel data structures (DAC or PWM outputs), indexed from 0 to 5.
+
+ * @var all_IO_data_t::adcout_pwm_period
+ * PWM period in microseconds for analog output channels operating in PWM mode.
+
+ * @var all_IO_data_t::adcout_deb_outv
+ * Pointer to a HAL u32 pin that exposes the current analog output debug value (optional).
+
+ * @var all_IO_data_t::adcin
+ * Array of analog input channel data structures, indexed from 0 to 6.
+
+ * @var all_IO_data_t::Pin
+ * Array of digital input/output channel data structures, indexed from 0 to 54. 
+ * Each entry corresponds to a physical I/O pin on the PoKeys device.
+
+ * @var all_IO_data_t::deb_out
+ * Optional debug pointer for tracking output state of digital pins or other debugging information.
  */
 typedef struct {
     one_adcout_data_t adcout[6];
@@ -69,17 +206,44 @@ typedef struct {
     hal_u32_t *deb_out;
 } all_IO_data_t;
 
-static all_IO_data_t *IO_data = 0;
 /**
- * @brief Function to export pins for the PoKeys device.
-    *
-    * @param prefix The prefix for the pin names.
-    * @param extra_arg Extra argument (not used).
-    * @param id The ID of the HAL component.
-    * @param Io_data Pointer to the I/O data structure.
-    * @param dev Pointer to the PoKeys device structure.
-    * @return 0 on success, -1 on failure.
-    */
+ * @brief Pointer to the global I/O data structure used by the HAL component.
+ *
+ * This static pointer references the main `all_IO_data_t` structure instance,
+ * which holds all analog input/output and digital I/O data mapped to HAL pins.
+ * It is initialized during component setup and used throughout the component
+ * lifecycle to access I/O-related values and settings.
+ *
+ * @note This pointer is shared across all I/O-related helper functions and should
+ * not be reallocated or reassigned after initialization.
+ */
+static all_IO_data_t *IO_data = 0;
+
+/**
+ * @brief Export HAL pins and parameters for PoKeys analog and digital I/O.
+ *
+ * This function creates and registers HAL pins and parameters for all supported
+ * analog outputs, analog inputs, digital I/O, and counters based on the device
+ * capabilities and configuration. It binds the relevant fields in the provided
+ * `all_IO_data_t` structure to HAL pins using the specified `prefix`.
+ *
+ * @param prefix      The prefix string for naming HAL pins (typically the HAL component name).
+ * @param extra_arg   Unused extra argument (reserved for future use or callback compatibility).
+ * @param id          The HAL component ID.
+ * @param Io_data     Pointer to the I/O data structure containing HAL pin references.
+ *                    If NULL, a new structure is allocated via `hal_malloc`.
+ * @param dev         Pointer to the PoKeys device structure with hardware capabilities.
+ *
+ * @return Zero on success, or a negative error code if HAL pin/parameter creation fails.
+ *
+ * @note If `Io_data` is NULL, this function allocates and initializes a new I/O data block
+ *       and assigns it to the static global pointer `IO_data`.
+ *
+ * @see all_IO_data_t
+ * @see one_adcout_data_t
+ * @see one_adcin_data_t
+ * @see one_digiIO_data_t
+ */
 int PKIO_export_pins(char *prefix, long extra_arg, int id, all_IO_data_t *Io_data, sPoKeysDevice *dev) {
     int r = 0;
     int j = 0;
@@ -278,12 +442,36 @@ int PKIO_export_pins(char *prefix, long extra_arg, int id, all_IO_data_t *Io_dat
     }
     return r;
 }
+
 /**
- * @brief Function to update the PoKeys device data.
-    *
-    * @param dev Pointer to the PoKeys device structure.
-    * @return None.
-    */
+ * @brief Updates PoKeys I/O states from and to hardware.
+ *
+ * This function performs periodic synchronization between the PoKeys hardware device
+ * and the corresponding LinuxCNC HAL pins. It:
+ * - Retrieves current pin configuration, digital I/O states, analog input values,
+ *   digital counters, and PWM settings from the device.
+ * - Updates internal HAL structures (`IO_data`) with the retrieved values.
+ * - Writes analog and digital output values from HAL back to the device if enabled.
+ * - Handles logic such as scaling, clamping, and PWM duty calculation.
+ * - Optionally reconfigures PWM period or enables/disables channels when values change.
+ *
+ * @param dev Pointer to the sPoKeysDevice structure representing the connected PoKeys device.
+ *
+ * @note The static pointer `IO_data` must be initialized with valid memory prior to calling this function.
+ * @note The function uses `sleepdur` (if compiled with `ULAPI`) to avoid overrunning communication.
+ *
+ * @details
+ * This function combines the following device interactions:
+ * - `PK_PinConfigurationGet()`
+ * - `PK_DigitalIOGet()` / `PK_DigitalIOSet()`
+ * - `PK_AnalogIOGet()`
+ * - `PK_DigitalCounterGet()`
+ * - `PK_PWMConfigurationGet()` / `PK_PWMConfigurationSet()` / `PK_PWMUpdate()`
+ *
+ * @see PKIO_export_pins()
+ * @see sPoKeysDevice
+ * @see all_IO_data_t
+ */
 void PKIO_Update(sPoKeysDevice *dev) {
     bool PinConfigurationGet = false;
     bool DigitalIOGet = false;
@@ -652,12 +840,38 @@ void PKIO_Update(sPoKeysDevice *dev) {
         *(IO_data->deb_out) = 250;
     }
 }
+
 /**
- * @brief Function to set up the PoKeys device.
-    *
-    * @param dev Pointer to the PoKeys device structure.
-    * @return None.
-    */
+ * @brief Initializes the PoKeys digital and analog I/O configuration.
+ *
+ * This function configures the I/O pins and PWM settings of the PoKeys device
+ * based on either previously applied settings or the current device state.
+ * 
+ * It performs the following actions:
+ * - Reads the current pin configuration from the device via `PK_PinConfigurationGet()`.
+ * - For each pin:
+ *   - Sets the pin function and inversion flags (input/output polarity) based on `ApplyIniSettings`.
+ *   - Compares and updates the pin configuration if changes are detected.
+ * - Applies updated pin configuration to the device via `PK_PinConfigurationSet()` if needed.
+ * - For devices with PWM outputs:
+ *   - Retrieves PWM configuration using `PK_PWMConfigurationGet()`.
+ *   - Applies period, channel enablement, and value settings (scale, offset, limits).
+ *   - Calls `PK_PWMConfigurationSet()` if PWM configuration changes were detected.
+ *
+ * @param dev Pointer to the PoKeys device structure (`sPoKeysDevice`).
+ *
+ * @note The global `IO_data` structure must be initialized before calling this function.
+ * @note PWM scaling and voltage limits are normalized and defaulted if not set.
+ * @note The last PWM period is forcibly set to 2500 if not specified.
+ * @note This function is typically called during HAL component initialization.
+ *
+ * @see ApplyIniSettings
+ * @see PK_PinConfigurationGet()
+ * @see PK_PinConfigurationSet()
+ * @see PK_PWMConfigurationGet()
+ * @see PK_PWMConfigurationSet()
+ * @see all_IO_data_t
+ */
 void PKIO_Setup(sPoKeysDevice *dev) {
     bool PinConfigurationSet = false;
     //bool readonly = false;
@@ -848,12 +1062,38 @@ void PKIO_Setup(sPoKeysDevice *dev) {
         }
     }
 }
-/**
- * @brief Reads the INI file and sets the values for the PoKeys device.
- * @param dev Pointer to the PoKeys device structure.
- * @return void
- */
 
+/**
+ * @brief Reads and applies I/O configuration values for the PoKeys device from the INI file.
+ *
+ * This function loads pin functions, input/output inversion flags, analog input/output
+ * scale and offset values, voltage limits, and PWM period from the [POKEYS] section
+ * of the HAL component's INI configuration.
+ *
+ * It covers:
+ * - Digital pin function and inversion flags:
+ *   - `Pin_<n>_Function`
+ *   - `DigIn_<n>_invert`
+ *   - `DigOut_<n>_invert`
+ * - Analog output (PWM) settings:
+ *   - `AdcOut_<n>_offset`, `AdcOut_<n>_scale`
+ *   - `AdcOut_<n>_high_limit`, `AdcOut_<n>_low_limit`, `AdcOut_<n>_max_v`
+ *   - `AdcOut_<n>_enable`
+ * - Global PWM period setting:
+ *   - `AdcOut_PWM_Period`
+ * - Analog input scale and offset values:
+ *   - `AdcIn_<n>_scale`, `AdcIn_<n>_offset`
+ *
+ * @param dev Pointer to the PoKeys device structure (`sPoKeysDevice`) used to determine the number of digital and analog pins.
+ *
+ * @note The global `IO_data` pointer must point to a valid `all_IO_data_t` structure before calling this function.
+ * @note Defaults are applied if keys are missing: digital pins get 0, analog input scale defaults to 1, offset to 0.
+ * @note The function assumes the corresponding HAL pins and parameters were already created.
+ *
+ * @see all_IO_data_t
+ * @see ini_read_int()
+ * @see ini_read_float()
+ */
 void PKIO_ReadIniFile(sPoKeysDevice *dev) {
 
     char key[256]; // Puffer für den zusammengesetzten String
@@ -905,11 +1145,36 @@ void PKIO_ReadIniFile(sPoKeysDevice *dev) {
         IO_data->adcin[j].offset = ini_read_float("POKEYS", key, 0);
     }
 }
+
 /**
- * @brief Reads the INI file and sets the values for the PoKeys device.
-    * @param dev Pointer to the PoKeys device structure.
-    * @return void
-    */
+ * @brief Writes the current PoKeys I/O configuration to the INI file.
+ *
+ * This function saves all relevant I/O parameters from the current HAL state
+ * (`IO_data`) into the [POKEYS] section of the INI file for later reuse.
+ * This includes:
+ * - Digital pin configuration:
+ *   - `Pin_<n>_Function`
+ *   - `DigIn_<n>_invert`
+ *   - `DigOut_<n>_invert`
+ * - Analog output (PWM) configuration:
+ *   - `AdcOut_<n>_offset`, `AdcOut_<n>_scale`
+ *   - `AdcOut_<n>_high_limit`, `AdcOut_<n>_low_limit`, `AdcOut_<n>_max_v`
+ *   - `AdcOut_<n>_enable`
+ * - Global PWM period:
+ *   - `AdcOut_PWM_Period`
+ * - Analog input scale and offset:
+ *   - `AdcIn_<n>_scale`, `AdcIn_<n>_offset`
+ *
+ * @param dev Pointer to the PoKeys device structure (`sPoKeysDevice`), used to determine pin and channel counts.
+ *
+ * @note The global `IO_data` pointer must point to a valid `all_IO_data_t` structure before calling this function.
+ * @note This function is the counterpart to `PKIO_ReadIniFile()`, and is used for persisting configuration across restarts.
+ *
+ * @see all_IO_data_t
+ * @see PKIO_ReadIniFile()
+ * @see ini_write_int()
+ * @see ini_write_float()
+ */
 void PKIO_WriteIniFile(sPoKeysDevice *dev) {
     char key[256]; // Puffer für den zusammengesetzten String
 

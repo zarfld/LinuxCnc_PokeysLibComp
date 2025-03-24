@@ -1,7 +1,38 @@
 /**
- * @file
- * 
-*/
+ * @file PokeysCompPulsEngine_base.c
+ * @brief Base routines for setting up HAL pins and parameters for PoKeys Pulse Engine v2.
+ *
+ * This file contains the foundational helper functions used during HAL component initialization.
+ * It provides functions to create HAL pins and parameters that reflect the internal state and
+ * control options of the PoKeys Pulse Engine v2 (PEv2), including:
+ *
+ * - Input and output signals for probing, limit switches, home switches, and emergency stop.
+ * - Motion parameters such as speed, acceleration, and homing behavior.
+ * - Soft limits and axis enable controls.
+ *
+ * These routines are shared by both userspace and realtime components and are called from the
+ * respective component setup logic to populate the HAL interface with the required signal endpoints.
+ *
+ * @author zarfld
+ * @date First added: 2024
+ * @copyright MIT License
+ *
+ * @see PoKeysLib.h
+ * @see pokeys.c
+ * @see PoKeysCompPulseEngine_v2.c
+ * @see pokeys_homecomp.c
+ */
+/**
+ * @defgroup pulse_engine_base Pulse Engine Base Functions
+ * @brief Common utilities and helpers used by PulseEngine v2 and other modules.
+ *
+ * Provides low-level pin creation, parameter setup, and general utility functions
+ * shared across HAL components involving the PulseEngine.
+ */
+
+
+/** @defgroup PEv2_Configuration Axis Configuration from PoKeys PEv2 */
+/** @defgroup PoKeys_Axis Axis-level state, config, and homing integration */
 #ifdef ULAPI
 extern unsigned int sleepdur;
 #endif
@@ -13,7 +44,7 @@ extern bool Pins_DigitalValueSet_ignore[55];
 
 /**
  * @brief pokeys_homing_algorithm_t
- * 
+ * @memberof PoKeysHALComponent
  */
 typedef enum {
     PK_PEv2Homing_OnHomeStop = (1 << 3),              // Axis  in IDLE
@@ -38,7 +69,7 @@ typedef enum {
 
 /**
  * @brief PEv2_data_t
- * 
+ * @memberof PoKeysHALComponent
  */
 typedef struct {
     hal_s32_t *PEv2_deb_out;
@@ -212,7 +243,7 @@ extern PEv2_data_t *PEv2_data;
 
 /**
  * @brief Export pins for the PoKeys device.
- * 
+ * @memberof PoKeysHALComponent
  */
 int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id, PEv2_data_t *Pev2_data, sPoKeysDevice *dev) {
 
@@ -945,7 +976,7 @@ void Read_digin_LimitHome_Pins(sPoKeysDevice *dev, int i) {
 
 /**
  * @brief Get the status of the PoKeys device.
- * 
+ * @memberof PoKeysHALComponent
  */
 int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
     uint8_t bm_LimitStatusP; // Limit+ status (bit-mapped)
@@ -1101,7 +1132,7 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
 
 /**
  * @brief Get the status of the PoKeys device.
- * 
+ * @memberof PoKeysHALComponent
  */
 int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
     uint8_t bm_DedicatedLimitNInputs;
@@ -1167,7 +1198,7 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
 
 /**
  * @brief Sets the external outputs of the PoKeys device.
- * 
+ * @memberof PoKeysHALComponent
  */
 int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
     int32_t ret = PK_OK;
@@ -1259,7 +1290,7 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
 
 /**
  * @brief Sets up the PoKeys device for the Pulse Engine.
- * 
+ * @memberof PoKeysHALComponent
  */
 int32_t PEv2_PulseEngineSetup(sPoKeysDevice *dev) {
     bool doSetup = false;
@@ -1367,7 +1398,7 @@ int32_t PEv2_PulseEngineSetup(sPoKeysDevice *dev) {
 
 /**
  * @brief Get the additional parameters of the PoKeys device.
- * 
+ * @memberof PoKeysHALComponent
  */
 int32_t PEv2_AdditionalParametersGet(sPoKeysDevice *dev) {
 
@@ -1387,7 +1418,7 @@ int32_t PEv2_AdditionalParametersGet(sPoKeysDevice *dev) {
 
 /**
  * @brief Set the additional parameters of the PoKeys device.
- * 
+ * @memberof PoKeysHALComponent
  */
 int32_t PEv2_AdditionalParametersSet(sPoKeysDevice *dev) {
     bool doSetup = false;
@@ -1485,6 +1516,7 @@ int32_t PEv2_AdditionalParametersSet(sPoKeysDevice *dev) {
  *
  * @note The function sets internal flags and masks used by the Pulse Engine API.
  *       Certain transitions involve setting configuration bits or triggering motion commands.
+  * @memberof PoKeysHALComponent
  */
 int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_status_t RequiredState, pokeys_home_status_t NextState) {
 
@@ -1632,6 +1664,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
  * @see PK_PEv2_AxisConfigurationGet
  * @ingroup PEv2_Configuration
  * @ingroup PoKeys_Axis
+  * @memberof PoKeysHALComponent
  */
 int32_t PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int AxisId) {
     dev->PEv2.param1 = AxisId;
@@ -1818,7 +1851,7 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int AxisId) {
 
 /**
  * @brief Set the axis configuration of the PoKeys device.
- * 
+ * @memberof PoKeysHALComponent
  */
 int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
     bool doSetup = false;

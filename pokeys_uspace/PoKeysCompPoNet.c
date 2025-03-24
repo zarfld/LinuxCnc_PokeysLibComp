@@ -288,7 +288,7 @@ int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_P
 
 /**
  * @brief
- * 
+ * @memberof PoKeysHALComponent
  */
 void PKPoNet_Update(sPoKeysDevice *dev) {
 

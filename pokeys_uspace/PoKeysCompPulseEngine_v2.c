@@ -1,7 +1,42 @@
 /**
  * @file PoKeysCompPulseEngine_v2.c
- * 
-*/
+ * @brief HAL component implementation for PoKeys Pulse Engine v2 (PEv2) in LinuxCNC.
+ *
+ * This file provides the userspace implementation of the HAL integration for the PoKeys Pulse Engine v2.
+ * It defines the behavior and synchronization logic for motion control, homing, limit switch handling,
+ * and real-time parameter exchange between LinuxCNC and PoKeys57E devices.
+ *
+ * Key functionalities include:
+ * - Setting up and updating HAL pins and parameters for each axis.
+ * - Managing homing states and synchronized homing sequences.
+ * - Reading and writing axis state, command, and configuration data.
+ * - Handling emergency stop and probe inputs.
+ * - Coordinating PEv2 setup and real-time synchronization via the PoKeysLib.
+ *
+ * The file interacts directly with:
+ * - `PoKeysLib` for hardware communication
+ * - `PokeysCompPulsEngine_base.c` for HAL pin creation
+ * - `pokeys_homecomp.c` for advanced homing state machines
+ *
+ * This component runs in userspace and is designed to be modular and extendable for future PEv2 features.
+ *
+ * @author zarfld
+ * @date First added: 2024
+ * @copyright MIT License
+ *
+ * @see PoKeysLib.h
+ * @see pokeys_homecomp.c
+ * @see PokeysCompPulsEngine_base.c
+ * @see pokeys.comp
+ */
+/**
+ * @defgroup pulse_engine_v2 Pulse Engine v2 Configuration
+ * @brief Functions related to configuring and controlling PulseEngine v2.
+ *
+ * Handles PEv2 setup, axis configuration, state updates, probing, and synchronized homing.
+ * Relies on the base module (`pulse_engine_base`) for low-level HAL integration.
+ */
+
 #include <stdlib.h>
 #include "PokeysCompPulsEngine_base.c"
 
@@ -170,7 +205,7 @@ extern all_IO_data_t *IO_data;
 
 /**
  * @brief Homing command for the axis
- * 
+ * @memberof PoKeysHALComponent
  */
 typedef enum {
     PK_PEAxisCommand_axIDLE = 0,                // Axis  in IDLE
@@ -229,6 +264,8 @@ extern bool ApplyIniSettings;
  *
  * @param dev Pointer to the PoKeys device structure.
  * @param HAL_Machine_On Flag indicating if the HAL machine is enabled (i.e., in operation).
+  * @memberof PoKeysHALComponent
+  
  */
 void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
     uint8_t bm_LimitStatusP; // Limit+ status (bit-mapped)
@@ -680,6 +717,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             * @see PEv2_HomingStateSyncedTrigger()
             * @see PEv2_AxesCommand
             * @see PEv2_home_sequence
+             * @memberof PoKeysHALComponent
             */
 
             if ((intAxesState == PK_PEAxisState_axSTOPPED || intAxesState == PK_PEAxisState_axREADY || intAxesState == PK_PEAxisState_axHOME) && old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) && (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisState_axHOMINGSTART || *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGSTART)) {
@@ -737,6 +775,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             * @see PEv2_home_sequence
             * @see PK_PEAxisState_axHOME
             * @see PK_PEAxisCommand_axHOMINGFinalize
+             * @memberof PoKeysHALComponent
             */
             else if (intAxesState == PK_PEAxisState_axHOME && *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGFinalize) {
                 int MyHomeSequ, seq;
@@ -1304,6 +1343,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
  *
  * @note This function should be called after reading the INI file and before enabling motion control.
  * It ensures the hardware is properly configured to match the desired logical setup.
+  * @memberof PoKeysHALComponent
  */
 void PKPEv2_Setup(sPoKeysDevice *dev) {
     bool DoPeSetup = false;
@@ -1420,6 +1460,7 @@ void PKPEv2_Setup(sPoKeysDevice *dev) {
  * - Axis-specific: PEv2_AxisEnabled_#, PEv2_AxesConfig_#, PEv2_MaxSpeed_#, PEv2_HomingSpeed_#, PEv2_AxesSwitchConfig_#, etc.
  * - Digital input/output pin assignments and inversion flags
  * - Homing logic and movement constraints
+  * @memberof PoKeysHALComponent
  */
 void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
     char key[256]; // Puffer für den zusammengesetzten String
@@ -1650,6 +1691,7 @@ void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
  * @brief Write the configuration settings to the INI file
  * 
  * @param dev 
+  * @memberof PoKeysHALComponent
  */
 void PKPEv2_WriteIniFile(sPoKeysDevice *dev) {
     char key[256]; // Puffer für den zusammengesetzten String

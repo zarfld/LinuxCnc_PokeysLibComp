@@ -1,11 +1,42 @@
 /**
  * @file pokeys.c
-    * @brief PoKeys uSpace driver
-    * @author Dominik Zarfl
-    * @date 2023-10-01
-    * @version 0.1
-    * 
-*/
+ * @brief HAL component for integrating PoKeys57 devices with LinuxCNC.
+ *
+ * This file defines the main HAL component `pokeys` for userspace operation. It provides the entry point
+ * for initializing, updating, and cleaning up the PoKeys HAL module. The component manages digital and analog I/O,
+ * encoder and counter inputs, analog outputs, watchdog handling, and generic communication with PoKeys devices
+ * over Ethernet or USB.
+ *
+ * Key functionalities include:
+ * - Detection and initialization of connected PoKeys devices.
+ * - Real-time synchronization and state updates via `update()` and `read_data()`.
+ * - HAL pin and parameter creation via helper functions in `PokeysCompPulsEngine_base.c`.
+ * - Integration of Pulse Engine v2 features, if enabled.
+ * - Handling of HAL real-time lifecycle: `init`, `exit`, `ready`, `update`.
+ *
+ * This file is typically compiled as the main HAL component (via `comp --userspace pokeys.comp`).
+ * It relies on PoKeysLib and its submodules to communicate with hardware.
+ *
+ * @note This component supports multiple devices and dynamically allocates data structures.
+ *       It also checks device capabilities and adapts HAL pin creation accordingly.
+ *
+ * @author zarfld
+ * @date 2024
+ * @copyright MIT License
+ *
+ * @see PoKeysLib.h
+ * @see pokeys.c
+ * @see PokeysCompPulsEngine_base.c
+ * @see PoKeysCompPulseEngine_v2.c
+ */
+/**
+ * @defgroup hal_component_pokeys HAL Component: pokeys
+ * @brief Main HAL component that integrates PoKeys devices into LinuxCNC.
+ *
+ * Handles HAL lifecycle, device discovery, data polling, and pin creation.
+ * Supports digital/analog I/O, encoders, counters, analog outputs, and watchdog logic.
+ */
+
 #include "rtapi.h"
 #ifdef RTAPI
 #include "rtapi_app.h"

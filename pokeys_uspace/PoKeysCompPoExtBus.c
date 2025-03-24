@@ -17,8 +17,16 @@ extern unsigned int sleepdur;
 extern bool ApplyIniSettings;
 
 /**
- * @brief
- * 
+ * @brief Structure holding HAL pin references and configuration for one PoExtBus bank.
+ *
+ * Each PoExtBus bank contains 8 digital input and 8 digital output lines.
+ * This structure manages the HAL connections for a single PoExtBus module.
+ *
+ * It supports:
+ * - Input pins (active high and active low)
+ * - Output pins
+ * - Output inversion flags
+ * - Byte-wise representation of input and output states
  */
 typedef struct {
     hal_bit_t *PoExtBus_digin_in[8];
@@ -35,8 +43,16 @@ typedef struct {
 } one_PoExtBus_data_t;
 
 /**
- * @brief
- * 
+ * @brief Structure holding HAL-related data for all PoExtBus banks.
+ *
+ * This struct contains the configuration and runtime data for up to 10 PoExtBus banks
+ * (external digital I/O expanders) used in conjunction with PoKeys devices.
+ * Each bank provides 8 digital inputs and 8 digital outputs.
+ *
+ * The structure includes:
+ * - An array of 10 `one_PoExtBus_data_t` entries, each describing one bus.
+ * - A HAL output pin for debugging (`PoExtBus.deb.out`)
+ * - A count parameter indicating how many PoExtBus banks are active.
  */
 typedef struct {
     one_PoExtBus_data_t PoExtBus[10];
@@ -44,10 +60,40 @@ typedef struct {
 
     hal_u32_t PoExtBus_count;
 } all_PoExtBus_data_t;
-static all_PoExtBus_data_t *PoExtBus_data = 0;
+
 /**
- * @brief
- * 
+ * @brief Pointer to the global PoExtBus data structure.
+ *
+ * This pointer is initialized either via HAL component initialization or
+ * dynamically via `hal_malloc()` in `PKPoExtBus_export_pins()`.
+ */
+static all_PoExtBus_data_t *PoExtBus_data = 0;
+
+/**
+ * @brief Export HAL pins for PoKeys PoExtBus (external digital I/O bus).
+ *
+ * This function creates all necessary HAL pins and parameters to expose
+ * the PoExtBus functionality (8 digital inputs and outputs per bus, up to 10 buses)
+ * to the LinuxCNC HAL system.
+ *
+ * It performs the following steps:
+ * - Allocates memory for the PoExtBus data structure if not already provided
+ * - Creates a debug output pin (`PoExtBus.deb.out`)
+ * - Creates a parameter for the number of active PoExtBus entries (`PoExtBus.count`)
+ * - For each configured PoExtBus:
+ *   - Creates 8 digital input pins: `PoExtBus.<id>.digin.<pin>.in`
+ *   - Creates 8 inverted input pins: `PoExtBus.<id>.digin.<pin>.in_not`
+ *   - Creates 8 digital output pins: `PoExtBus.<id>.digout.<pin>.out`
+ *   - Creates 8 parameters to optionally invert digital outputs: `PoExtBus.<id>.digout.<pin>.invert`
+ *   - Adds a parameter to reflect the full byte read from the device (`digin.byte`)
+ *   - Adds a parameter representing the desired output byte (`digout.byte`)
+ *
+ * @param[in] prefix        Prefix for HAL pin names (e.g. "pokeys")
+ * @param[in] extra_arg     Reserved (currently unused)
+ * @param[in] id            Unique HAL component ID
+ * @param[in] njoints       Number of PoExtBus banks (max 10 supported)
+ * @param[in] poExtBus_data Pointer to a PoExtBus data structure. If NULL, memory is allocated.
+ * @return 0 on success, or a negative HAL error code on failure
  */
 int PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoExtBus_data_t *poExtBus_data) {
 
@@ -164,8 +210,22 @@ uint8_t PoExtBus_Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value) {
 }
 
 /**
- * @brief
+ * @brief Updates the PoExtBus data from and to the PoKeys device.
+ *
+ * This function synchronizes the state of the PoExtBus (PoKeys Extension Bus), which supports
+ * digital input and output via external shift registers or I/O expanders.
  * 
+ * It performs the following steps:
+ * - Reads the current state from the PoKeys device using `PK_PoExtBusGet()`
+ * - Updates the `PoExtBus_digin_in` and `PoExtBus_digin_in_not` HAL pins for all bus channels
+ * - Reads desired digital output values from `PoExtBus_digout_out` HAL pins
+ * - Applies optional inversion logic for outputs
+ * - Compares desired vs actual state (`PoExtBus_DataSet` vs `PoExtBus_DataGet`)
+ * - If there are changes, updates the PoKeys device using `PK_PoExtBusSet()`
+ * 
+ * Debug values are stored in `PoExtBus_deb_out` for diagnostics.
+ *
+ * @param[in,out] dev Pointer to the initialized PoKeys device structure
  */
 void PKPoExtBus_Update(sPoKeysDevice *dev) {
     int i = 0;
@@ -254,8 +314,19 @@ void PKPoExtBus_Update(sPoKeysDevice *dev) {
 }
 
 /**
- * @brief
- * 
+ * @brief Initializes or configures the PoExtBus interface on the PoKeys device.
+ *
+ * This function is intended to set up the PoExtBus (PoKeys Extension Bus), which allows
+ * communication with external modules such as I/O expanders or shift registers.
+ *
+ * Currently, this function is a placeholder and does not perform any operation.
+ *
+ * You may extend it to:
+ * - Configure the PoExtBus timing or mode
+ * - Initialize attached modules (e.g., HCT595 shift registers, PoExtBusOC16)
+ * - Load module-specific configuration from the INI file
+ *
+ * @param[in] dev Pointer to the initialized PoKeys device structure
  */
 void PKPoExtBus_Setup(sPoKeysDevice *dev) {
 }

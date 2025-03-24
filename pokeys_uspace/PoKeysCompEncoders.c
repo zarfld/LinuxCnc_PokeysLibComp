@@ -35,9 +35,42 @@ param rw float encoder.#.scale[29]  "The scale factor used to convert counts to 
 //                       bit 7: mapped to macro for direction B
 // pin io unsigned Encoders.#.channelApin [26];         // Channel A encoder pin
 // pin io unsigned Encoders.#.channelBpin [26];         // Channel B encoder pin
+
+
 /**
- * @brief
- * 
+ * @brief Structure representing a single encoder channel with HAL and PoKeys configuration.
+ *
+ * This structure encapsulates both standard LinuxCNC HAL encoder interface elements
+ * and additional parameters required for configuring and communicating with a PoKeys device.
+ *
+ * The structure is typically used in arrays, where each element corresponds to one encoder instance.
+ *
+ * Canonical HAL pins:
+ * - `count` (s32 out): Current encoder count.
+ * - `position` (float out): Scaled encoder position.
+ * - `velocity` (float out): Measured velocity (if available or computed).
+ * - `reset` (bit in): Resets encoder count to zero when set.
+ * - `index_enable` (bit in): Enables index pulse detection.
+
+ * HAL parameter:
+ * - `scale` (float rw): Scale factor for converting encoder counts to position units.
+ *   Units: counts per position unit.
+
+ * PoKeys-specific configuration:
+ * - `encoderOptions` (u32 io): Bitmask for encoder options:
+ *   - Bit 0: Enable encoder
+ *   - Bit 1: 4x sampling
+ *   - Bit 2: 2x sampling
+ *   - Bit 3: Reserved
+ *   - Bit 4: Direct key mapping for direction A
+ *   - Bit 5: Mapped to macro for direction A
+ *   - Bit 6: Direct key mapping for direction B
+ *   - Bit 7: Mapped to macro for direction B
+ * - `channelApin` (u32 io): PoKeys pin number used for encoder channel A.
+ * - `channelBpin` (u32 io): PoKeys pin number used for encoder channel B.
+ *
+ * @see PKENC_export_encoders
+ * @see PKENC_Update
  */
 typedef struct {
     // canonicaldevice interface pins
@@ -63,9 +96,24 @@ typedef struct {
     hal_u32_t channelBpin; // pointer for "pin io unsigned Encoders.#.channelBpin [26]"         // Channel B encoder pin"
 
 } one_encoder_data_t;
+
 /**
- * @brief
- * 
+ * @brief Structure representing all encoder channels and debug output for the PoKeys HAL component.
+ *
+ * This structure aggregates all encoder-related data in the system, including an array
+ * of individual encoder configurations and a debug output pin.
+ *
+ * - `encoder[29]`: Array of encoder channel structures (`one_encoder_data_t`), each representing
+ *   a separate encoder interface (up to 29 channels supported).
+ *
+ * - `encoder_deb_out` (s32 out): Debug output pin used for internal state tracking or error codes.
+ *
+ * This structure is typically allocated once per device and passed to encoder-related
+ * setup and update routines.
+ *
+ * @see one_encoder_data_t
+ * @see PKENC_export_encoders
+ * @see PKENC_Update
  */
 typedef struct {
     one_encoder_data_t encoder[29];
@@ -73,12 +121,55 @@ typedef struct {
 
 } all_encoder_data_t;
 
+/**
+ * @brief Pointer to the global encoder data structure.
+ *
+ * This static pointer is initialized during setup and used by all encoder-related
+ * functions to access HAL pins and parameters for all 29 encoder channels.
+ *
+ * The structure it points to contains:
+ * - Canonical encoder interface pins (count, position, velocity, reset, index-enable)
+ * - PoKeys-specific configuration options (pin mapping, sampling mode, etc.)
+ * - A debug output pin for diagnostics
+ *
+ * @see all_encoder_data_t
+ * @see PKENC_export_encoders()
+ * @see PKENC_Update()
+ */
 static all_encoder_data_t *encoder_data = 0;
 
 /**
- * @brief
- * 
+ * @brief Exports HAL encoder pins for the PoKeys device.
+ *
+ * This function creates and registers all necessary HAL pins for a specified number of encoders 
+ * based on the given joint count. It assigns pointers to the internal `encoder_data` structure 
+ * for later use during runtime updates.
+ *
+ * The following HAL pins are exported per encoder channel:
+ * - `encoder.N.count` (s32, output): Current encoder count
+ * - `encoder.N.position` (float, output): Calculated position
+ * - `encoder.N.velocity` (float, output): Calculated velocity
+ * - `encoder.N.reset` (bit, input): Resets encoder count
+ * - `encoder.N.index-enable` (bit, input): Enables index pulse processing
+ *
+ * Additionally, the following debug pin is exported:
+ * - `encoder.deb.out` (s32, output): Debug value for diagnostics
+ *
+ * If `Encoder_data` is `NULL`, memory is allocated via `hal_malloc`.
+ *
+ * @param[in] prefix       HAL prefix string used for naming the exported pins
+ * @param[in] extra_arg    Reserved, not used
+ * @param[in] id           HAL component ID
+ * @param[in] njoints      Number of encoders (typically equal to number of joints)
+ * @param[in] Encoder_data Pointer to encoder data structure (can be NULL to auto-allocate)
+ * @return 0 on success, or negative HAL error code on failure
+ *
+ * @note This function must be called during HAL component initialization.
+ * @see PKENC_Update()
+ * @see one_encoder_data_t
+ * @see all_encoder_data_t
  */
+
 int PKEncoder_export_pins(char *prefix, long extra_arg, int id, int njoints, all_encoder_data_t *Encoder_data) {
     int r = 0;
     int j = 0;
@@ -152,8 +243,29 @@ int PKEncoder_export_pins(char *prefix, long extra_arg, int id, int njoints, all
 }
 
 /**
- * @brief
- * 
+ * @brief Exports HAL parameters related to encoder configuration.
+ *
+ * This function registers additional HAL parameters for each encoder channel,
+ * such as scale factor and PoKeys-specific encoder settings like pin assignments
+ * and options. These parameters allow runtime configuration and status feedback.
+ *
+ * For each encoder (up to `njoints`), the following HAL parameters are created:
+ * - `encoder.N.scale` (float, rw): Scale factor used to convert counts to position units
+ * - `Encoders.N.encoderOptions` (u32, rw): Bitmask defining encoder behavior
+ * - `Encoders.N.channelApin` (u32, rw): Assigned PoKeys pin for channel A
+ * - `Encoders.N.channelBpin` (u32, rw): Assigned PoKeys pin for channel B
+ *
+ * @param[in] prefix   HAL prefix string used for naming the exported parameters
+ * @param[in] extra_arg Reserved, not used
+ * @param[in] id       HAL component ID
+ * @param[in] njoints  Number of encoders (typically equal to number of joints)
+ * @return 0 on success, or a negative HAL error code on failure
+ *
+ * @note This function should be called during component initialization, after memory allocation
+ *       for `encoder_data` has been completed.
+ *
+ * @see PKEncoder_export_pins()
+ * @see one_encoder_data_t
  */
 int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
     int r = 0;
@@ -208,14 +320,32 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
 bool initEncodersDone = 0;
 bool EncoderValuesGet = false;
 
-// bool DoEncoders = true;
-// unsigned int  sleepdur = 1000;
-// bool  use_sleepdur1 = true;
-// unsigned int  sleepdur1 = 1000;
-// unsigned int  sleepdur2 = 1000;
 /**
- * @brief
- * 
+ * @brief Updates encoder data from the PoKeys device and writes values to HAL pins.
+ *
+ * This function retrieves encoder values (basic and ultra-fast) from the PoKeys device
+ * and updates the corresponding HAL pins for count and position. It also checks if the 
+ * encoder should be reset (based on HAL reset pin or during initialization).
+ * If reset is requested, it sets the encoder value on the device to zero.
+ *
+ * The following values are updated for each encoder:
+ * - `encoder.#.count`         – the raw encoder count value
+ * - `encoder.#.position`      – the scaled position based on count and scale parameter
+ * - `encoder.#.velocity`      – currently not set (placeholder)
+ *
+ * If `reset` pin is high or this is the first update (`initEncodersDone == false`), 
+ * the encoder is reset on the device using `PK_EncoderValuesSet()`.
+ *
+ * Debug values are written to `encoder_data->encoder_deb_out` to help trace progress or hangs.
+ *
+ * @param[in,out] dev Pointer to the initialized PoKeys device structure
+ *
+ * @note The function supports both basic and ultra-fast encoders.
+ *       Fast encoders are not handled in the current implementation (commented out).
+ *
+ * @see PK_EncoderValuesGet()
+ * @see PK_EncoderValuesSet()
+ * @see one_encoder_data_t
  */
 void PKEncoder_Update(sPoKeysDevice *dev) {
 
@@ -323,22 +453,56 @@ int PKEncoder_init(int id, sPoKeysDevice *dev) {
 }
 
 /**
- * @brief
- * 
+ * @brief Placeholder function to perform encoder-specific setup actions.
+ *
+ * This function is intended to configure encoder-related parameters or device settings 
+ * before starting regular encoder operation. Currently, it is not implemented.
+ *
+ * You may extend this function to:
+ * - Configure encoder sampling modes (1x, 2x, 4x)
+ * - Assign pins for channel A/B
+ * - Set scaling or filtering options
+ * - Apply configuration stored from INI
+ *
+ * @param[in,out] dev Pointer to the initialized PoKeys device structure
  */
 void PKEncoder_Setup(sPoKeysDevice *dev) {
 }
 
 /**
- * @brief
- * 
+ * @brief Reads encoder-related settings from the INI configuration file.
+ *
+ * This function is intended to load encoder configuration values (e.g., scale, pin assignments,
+ * inversion flags, or other options) from an INI file section, typically used for persisting
+ * user-defined settings between sessions.
+ *
+ * Currently, this function is a placeholder and does not perform any operation.
+ *
+ * You may extend it to:
+ * - Load encoder scale factors
+ * - Load encoder pin mappings (channel A/B)
+ * - Load encoder mode or options
+ *
+ * @param[in,out] dev Pointer to the initialized PoKeys device structure
  */
 void PKEncoder_ReadIniFile(sPoKeysDevice *dev) {
 }
 
 /**
- * @brief
- * 
+ * @brief Writes encoder-related configuration to the INI file.
+ *
+ * This function is intended to save current encoder configuration values (e.g., scale, pin assignments,
+ * inversion flags, or other options) into an INI file section. This enables restoring consistent
+ * settings across restarts or deployments.
+ *
+ * Currently, this function is a placeholder and does not perform any operation.
+ *
+ * You may extend it to:
+ * - Write encoder scale factors
+ * - Write encoder pin mappings (channel A/B)
+ * - Write encoder options or flags
+ *
+ * @param[in] dev Pointer to the initialized PoKeys device structure
  */
 void PKEncoder_WriteIniFile(sPoKeysDevice *dev) {
 }
