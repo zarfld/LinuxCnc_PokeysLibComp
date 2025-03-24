@@ -755,7 +755,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
              * @memberof PoKeysHALComponent
             */
 
-            if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i])){
+            if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i])) {
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: new *(PEv2_data->PEv2_AxesCommand[%d]) = %d\n", __FILE__, __FUNCTION__, i, *(PEv2_data->PEv2_AxesCommand[i]));
             }
             if ((intAxesState == PK_PEAxisState_axSTOPPED || intAxesState == PK_PEAxisState_axREADY || intAxesState == PK_PEAxisState_axHOME) && old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) && (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisState_axHOMINGSTART || *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGSTART)) {
