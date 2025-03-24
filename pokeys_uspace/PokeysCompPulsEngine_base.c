@@ -1586,7 +1586,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGWaitFinalMove;
                         break;
                     case PK_Homing_axHOMINGFinalMove:
-                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalMove\n", __FILE__, __FUNCTION__);
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalMove\n", __FILE__, __FUNCTION__);
                         if ((dev->PEv2.CurrentPosition[axis] != (int32_t)PEv2_data->PEv2_HomePosition[axis])) {
                             bool POSITION_MODE_active = Get_BitOfByte(dev->PEv2.AxesConfig[axis], 3);
                             if ((POSITION_MODE_active == false)) {
@@ -1612,7 +1612,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         break;
                     case PK_Homing_axHOMINGFinalize:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalize\n", __FILE__, __FUNCTION__);
-        
+
                         // for RequiredState == PK_Homing_axHOMINGSTART also ansure that PEv2_data->PEv2_AxesState[axis] is on PK_PEState_peHOME
                         if (RequiredState == PK_Homing_axHOMINGSTART && *(PEv2_data->PEv2_AxesState[axis]) != PK_PEState_peHOME) {
                             return 1; // not all joints in sequence are ready
