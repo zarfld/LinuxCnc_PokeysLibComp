@@ -760,13 +760,13 @@ void PKPoNet_Update(sPoKeysDevice *dev);
  */
 void PKPoNet_Setup(sPoKeysDevice *dev);
 
-    // ========================== PulseEngine v2 ===================================
+// ========================== PulseEngine v2 ===================================
 
-    /**
+/**
   * @brief Configures the PulseEngine v2 using current settings.
   * @memberof PoKeysHALComponent
   */
-    int PEv2_PulseEngineSetup(sPoKeysDevice *dev);
+int PEv2_PulseEngineSetup(sPoKeysDevice *dev);
 
 /**
   * @brief Applies INI-based configuration to PulseEngine and IO.
