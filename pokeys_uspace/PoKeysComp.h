@@ -125,36 +125,36 @@ typedef struct {
 } one_adcin_data_t;
 
 /**
-* @typedef one_digiIO_data_t
-* @brief Structure representing a single digital I/O pin in the PoKeys HAL component.
-*
-* This structure holds the configuration and HAL pin references for a digital input or output pin.
-* It supports inverted logic and can also act as a simple counter input if needed.
-*
-* @var one_digiIO_data_t::digin_in
-* Pointer to the HAL pin representing the current digital input signal (non-inverted).
+  * @typedef one_digiIO_data_t
+  * @brief Structure representing a single digital I/O pin in the PoKeys HAL component.
+  *
+  * This structure holds the configuration and HAL pin references for a digital input or output pin.
+  * It supports inverted logic and can also act as a simple counter input if needed.
+  *
+  * @var one_digiIO_data_t::digin_in
+  * Pointer to the HAL pin representing the current digital input signal (non-inverted).
 
-* @var one_digiIO_data_t::digin_in_not
-* Pointer to the HAL pin representing the inverted digital input signal.
+  * @var one_digiIO_data_t::digin_in_not
+  * Pointer to the HAL pin representing the inverted digital input signal.
 
-* @var one_digiIO_data_t::digout_out
-* Pointer to the HAL pin representing the output signal sent to the digital output pin.
+  * @var one_digiIO_data_t::digout_out
+  * Pointer to the HAL pin representing the output signal sent to the digital output pin.
 
-* @var one_digiIO_data_t::digin_invert
-* Inversion flag for the input signal. If true, the input logic is interpreted as inverted.
+  * @var one_digiIO_data_t::digin_invert
+  * Inversion flag for the input signal. If true, the input logic is interpreted as inverted.
 
-* @var one_digiIO_data_t::digout_invert
-* Inversion flag for the output signal. If true, the output logic is inverted before being sent to hardware.
+  * @var one_digiIO_data_t::digout_invert
+  * Inversion flag for the output signal. If true, the output logic is inverted before being sent to hardware.
 
-* @var one_digiIO_data_t::counter_value
-* Pointer to the HAL pin representing a simple counter value, incremented on rising edges.
+  * @var one_digiIO_data_t::counter_value
+  * Pointer to the HAL pin representing a simple counter value, incremented on rising edges.
 
-* @var one_digiIO_data_t::PinFunction
-* The current function assigned to the pin, e.g., digital input, output, or other capabilities (matches PoKeys API definitions).
+  * @var one_digiIO_data_t::PinFunction
+  * The current function assigned to the pin, e.g., digital input, output, or other capabilities (matches PoKeys API definitions).
 
-* @var one_digiIO_data_t::DigitalValueSet_ignore
-* Flag to indicate that output value should not be updated in this cycle (typically set during initial configuration).
-*/
+  * @var one_digiIO_data_t::DigitalValueSet_ignore
+  * Flag to indicate that output value should not be updated in this cycle (typically set during initial configuration).
+  */
 typedef struct {
     hal_bit_t *digin_in;
     hal_bit_t *digin_in_not;
@@ -170,32 +170,32 @@ typedef struct {
 } one_digiIO_data_t;
 
 /**
-* @typedef all_IO_data_t
-* @brief Aggregated structure for managing all analog and digital I/O HAL connections for a PoKeys device.
-*
-* This structure encapsulates all HAL-related I/O data, including analog outputs (DAC/PWM), 
-* analog inputs (ADC), and digital I/O pins. It serves as the main container for mapping HAL 
-* pins to the PoKeys hardware configuration in the LinuxCNC HAL component.
-*
-* @var all_IO_data_t::adcout
-* Array of analog output channel data structures (DAC or PWM outputs), indexed from 0 to 5.
+  * @typedef all_IO_data_t
+  * @brief Aggregated structure for managing all analog and digital I/O HAL connections for a PoKeys device.
+  *
+  * This structure encapsulates all HAL-related I/O data, including analog outputs (DAC/PWM), 
+  * analog inputs (ADC), and digital I/O pins. It serves as the main container for mapping HAL 
+  * pins to the PoKeys hardware configuration in the LinuxCNC HAL component.
+  *
+  * @var all_IO_data_t::adcout
+  * Array of analog output channel data structures (DAC or PWM outputs), indexed from 0 to 5.
 
-* @var all_IO_data_t::adcout_pwm_period
-* PWM period in microseconds for analog output channels operating in PWM mode.
+  * @var all_IO_data_t::adcout_pwm_period
+  * PWM period in microseconds for analog output channels operating in PWM mode.
 
-* @var all_IO_data_t::adcout_deb_outv
-* Pointer to a HAL u32 pin that exposes the current analog output debug value (optional).
+  * @var all_IO_data_t::adcout_deb_outv
+  * Pointer to a HAL u32 pin that exposes the current analog output debug value (optional).
 
-* @var all_IO_data_t::adcin
-* Array of analog input channel data structures, indexed from 0 to 6.
+  * @var all_IO_data_t::adcin
+  * Array of analog input channel data structures, indexed from 0 to 6.
 
-* @var all_IO_data_t::Pin
-* Array of digital input/output channel data structures, indexed from 0 to 54. 
-* Each entry corresponds to a physical I/O pin on the PoKeys device.
+  * @var all_IO_data_t::Pin
+  * Array of digital input/output channel data structures, indexed from 0 to 54. 
+  * Each entry corresponds to a physical I/O pin on the PoKeys device.
 
-* @var all_IO_data_t::deb_out
-* Optional debug pointer for tracking output state of digital pins or other debugging information.
-*/
+  * @var all_IO_data_t::deb_out
+  * Optional debug pointer for tracking output state of digital pins or other debugging information.
+  */
 typedef struct {
     one_adcout_data_t adcout[6];
     hal_u32_t adcout_pwm_period;
@@ -430,23 +430,23 @@ typedef struct {
 } one_encoder_data_t;
 
 /**
-* @brief Structure representing all encoder channels and debug output for the PoKeys HAL component.
-*
-* This structure aggregates all encoder-related data in the system, including an array
-* of individual encoder configurations and a debug output pin.
-*
-* - `encoder[29]`: Array of encoder channel structures (`one_encoder_data_t`), each representing
-*   a separate encoder interface (up to 29 channels supported).
-*
-* - `encoder_deb_out` (s32 out): Debug output pin used for internal state tracking or error codes.
-*
-* This structure is typically allocated once per device and passed to encoder-related
-* setup and update routines.
-*
-* @see one_encoder_data_t
-* @see PKENC_export_encoders
-* @see PKENC_Update
-*/
+  * @brief Structure representing all encoder channels and debug output for the PoKeys HAL component.
+  *
+  * This structure aggregates all encoder-related data in the system, including an array
+  * of individual encoder configurations and a debug output pin.
+  *
+  * - `encoder[29]`: Array of encoder channel structures (`one_encoder_data_t`), each representing
+  *   a separate encoder interface (up to 29 channels supported).
+  *
+  * - `encoder_deb_out` (s32 out): Debug output pin used for internal state tracking or error codes.
+  *
+  * This structure is typically allocated once per device and passed to encoder-related
+  * setup and update routines.
+  *
+  * @see one_encoder_data_t
+  * @see PKENC_export_encoders
+  * @see PKENC_Update
+  */
 typedef struct {
     one_encoder_data_t encoder[29];
     hal_s32_t *encoder_deb_out; // pin out s32 deb.out;
@@ -512,33 +512,34 @@ int PKEncoder_export_pins(char *prefix, long extra_arg, int id, int njoints, all
  * @see one_encoder_data_t
  */
 int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints);
+
 /**
  * @brief Updates encoder data from the PoKeys device and writes values to HAL pins.
- *
- * This function retrieves encoder values (basic and ultra-fast) from the PoKeys device
- * and updates the corresponding HAL pins for count and position. It also checks if the 
- * encoder should be reset (based on HAL reset pin or during initialization).
- * If reset is requested, it sets the encoder value on the device to zero.
- *
- * The following values are updated for each encoder:
- * - `encoder.#.count`         – the raw encoder count value
- * - `encoder.#.position`      – the scaled position based on count and scale parameter
- * - `encoder.#.velocity`      – currently not set (placeholder)
- *
- * If `reset` pin is high or this is the first update (`initEncodersDone == false`), 
- * the encoder is reset on the device using `PK_EncoderValuesSet()`.
- *
- * Debug values are written to `encoder_data->encoder_deb_out` to help trace progress or hangs.
- *
- * @param[in,out] dev Pointer to the initialized PoKeys device structure
- *
- * @note The function supports both basic and ultra-fast encoders.
- *       Fast encoders are not handled in the current implementation (commented out).
- *
- * @see PK_EncoderValuesGet()
- * @see PK_EncoderValuesSet()
- * @see one_encoder_data_t
- */
+  *
+  * This function retrieves encoder values (basic and ultra-fast) from the PoKeys device
+  * and updates the corresponding HAL pins for count and position. It also checks if the 
+  * encoder should be reset (based on HAL reset pin or during initialization).
+  * If reset is requested, it sets the encoder value on the device to zero.
+  *
+  * The following values are updated for each encoder:
+  * - `encoder.#.count`         – the raw encoder count value
+  * - `encoder.#.position`      – the scaled position based on count and scale parameter
+  * - `encoder.#.velocity`      – currently not set (placeholder)
+  *
+  * If `reset` pin is high or this is the first update (`initEncodersDone == false`), 
+  * the encoder is reset on the device using `PK_EncoderValuesSet()`.
+  *
+  * Debug values are written to `encoder_data->encoder_deb_out` to help trace progress or hangs.
+  *
+  * @param[in,out] dev Pointer to the initialized PoKeys device structure
+  *
+  * @note The function supports both basic and ultra-fast encoders.
+  *       Fast encoders are not handled in the current implementation (commented out).
+  *
+  * @see PK_EncoderValuesGet()
+  * @see PK_EncoderValuesSet()
+  * @see one_encoder_data_t
+  */
 void PKEncoder_Update(sPoKeysDevice *dev);
 /**
  * @brief Placeholder function to perform encoder-specific setup actions.
@@ -665,15 +666,16 @@ typedef struct {
 } one_kbd48CNCButton_data_t;
 
 /**
-* @brief Contains all PoNET-related data for communication with PoKeys devices.
-*
-* This structure manages the state and HAL representation of all connected PoNET devices,
-* including:
-* - Up to 16 generic PoNET modules
-* - A kbd48CNC keyboard module with 48 keys (each with LED and Button)
-* - Status and control values like PWM and brightness
-*/
-typedef struct {
+  * @brief Contains all PoNET-related data for communication with PoKeys devices.
+  *
+  * This structure manages the state and HAL representation of all connected PoNET devices,
+  * including:
+  * - Up to 16 generic PoNET modules
+  * - A kbd48CNC keyboard module with 48 keys (each with LED and Button)
+  * - Status and control values like PWM and brightness
+  */
+
+  typedef struct {
     one_PoNET_data_t PoNET[16];   /**< Data for up to 16 PoNET modules */
     hal_u32_t *PoNET_PWMduty;     /**< HAL input pin for controlling the PoNET PWM duty cycle */
     hal_u32_t *PoNET_lightValue;  /**< HAL input pin for the global PoNET light value */
@@ -690,7 +692,7 @@ typedef struct {
     uint8_t kbd48CNC_Counter;                  /**< Internal counter used for kbd48CNC state updates */
 
     hal_s32_t *deb_out; /**< Debug output pin for internal state information */
-} all_PoNET_data_t;
+  } all_PoNET_data_t;
 
 /**
     * @brief Exports HAL pins and parameters for PoNET modules and optionally kbd48CNC devices.
@@ -761,6 +763,211 @@ void PKPoNet_Update(sPoKeysDevice *dev);
 void PKPoNet_Setup(sPoKeysDevice *dev);
 
 // ========================== PulseEngine v2 ===================================
+/**
+ * @brief pokeys_homing_algorithm_t
+ * @memberof PoKeysHALComponent
+ */
+ typedef enum {
+  PK_PEv2Homing_OnHomeStop = (1 << 3),              // Axis  in IDLE
+  PK_PEv2Homing_OnHomeArmEncoder = (1 << 2),        // Start Homing procedure
+  PK_PEv2Homing_OnHomeReverseDirection = (1 << 1),  // Cancel Homing procedure
+  PK_PEv2Homing_OnHomeReducedSpeed = (1 << 0),      // Cancel Homing procedure
+  PK_PEv2Homing_OutHomeStop = (1 << 7),             // Axis  in IDLE
+  PK_PEv2Homing_OutHomeArmEncoder = (1 << 6),       // Start Homing procedure
+  PK_PEv2Homing_OutHomeReverseDirection = (1 << 5), // Cancel Homing procedure
+  PK_PEv2Homing_OutHomeReducedSpeed = (1 << 4),     // Cancel Homing procedure
+} pokeys_homing_algorithm_t;
+
+typedef enum {
+  PK_Homing_axIDLE = 0,                // Axis  in IDLE
+  PK_Homing_axHOMINGSTART = 1,         // Start Homing procedure
+  PK_Homing_axARMENCODER = 2,          // reset position to zeros
+  PK_Homing_axHOMINGWaitFinalMove = 3, // move to homeposition
+  PK_Homing_axHOMINGFinalMove = 4,     // move to homeposition
+  PK_Homing_axHOMINGCancel = 5,        // Cancel Homing procedure
+  PK_Homing_axHOMINGFinalize = 6,      // Finish Homing procedure
+} pokeys_home_status_t;
+
+/**
+* @brief PEv2_data_t
+* @memberof PoKeysHALComponent
+*/
+typedef struct {
+  hal_s32_t *PEv2_deb_out;
+  hal_s32_t *PEv2_deb_estop;
+  hal_s32_t *PEv2_deb_axxisout[8];
+  hal_bit_t *PEv2_deb_ishoming[8];
+  hal_bit_t *PEv2_deb_inposition[8];
+  hal_bit_t *PEv2_deb_PosMode[8];
+  hal_bit_t *PEv2_deb_PosModeAct[8];
+  hal_s32_t *PEv2_deb_velmode_count[8];
+  hal_s32_t *PEv2_deb_posmode_count[8];
+  hal_bit_t *PEv2_deb_doMove[8];
+  hal_float_t *PEv2_deb_RefSpeed[8];
+  hal_float_t *PEv2_deb_RefPos[8];
+  hal_float_t *PEv2_deb_RefPosSpeed[8];
+  hal_u32_t *PEv2_nrOfAxes;
+  hal_u32_t *PEv2_maxPulseFrequency;
+  hal_u32_t *PEv2_bufferDepth;
+  hal_u32_t *PEv2_slotTiming;
+  hal_bit_t *PEv2_params_ApplyIniSettings;
+  /**
+* @var PEv2_AxesState
+* @brief HAL pin array representing the current state of each axis in PulseEngine v2.
+*
+* These pins are referenced in the homing component via `H[joint_num].PEv2_AxesState`.
+*
+* @see H
+* @see pokeys_homecomp.c
+*/
+  hal_u32_t *PEv2_AxesState[8];
+  hal_u32_t *PEv2_AxesCommand[8];
+  hal_u32_t PEv2_AxesConfig[8];
+  hal_u32_t PEv2_SoftLimitMaximum[8];
+  hal_u32_t PEv2_SoftLimitMinimum[8];
+  hal_u32_t PEv2_HomingSpeed[8];
+  hal_u32_t *PEv2_HomingStatus[8];
+  hal_u32_t PEv2_HomingReturnSpeed[8];
+  hal_u32_t PEv2_HomeOffsets[8];
+  hal_u32_t *PEv2_ProbePosition[8];
+  hal_u32_t *PEv2_ProbeMaxPosition[8];
+  hal_s32_t *PEv2_CurrentPosition[8];
+  hal_s32_t *PEv2_PositionSetup[8];
+  hal_u32_t *PEv2_ReferencePositionSpeed[8];
+  hal_u32_t *PEv2_ReferencePosition[8];
+  hal_u32_t *PEv2_ReferenceSpeed[8];
+  hal_float_t PEv2_MaxSpeed[8];
+  hal_float_t PEv2_MaxAcceleration[8];
+  hal_float_t PEv2_MaxDecceleration[8];
+  hal_float_t *PEv2_params_Feedback_Encoder_Id[8];
+  hal_s32_t PEv2_ZeroPosition[8];
+  hal_s32_t PEv2_ArmPosition[8];
+  hal_s32_t PEv2_HomePosition[8];
+
+  hal_s32_t PEv2_PositionScale[8];
+  hal_s32_t PEv2_PositionOffset[8];
+
+  hal_float_t *PEv2_joint_vel_cmd[8];
+  hal_float_t *PEv2_joint_pos_cmd[8];
+  hal_float_t *PEv2_joint_pos_fb[8];
+  hal_bit_t *PEv2_joint_out_home[8];
+  hal_bit_t *PEv2_joint_in_position[8];
+  hal_bit_t *PEv2_joint_kb_jog_active[8];
+  hal_bit_t *PEv2_joint_wheel_jog_active[8];
+  hal_s32_t *PEv2_stepgen_TYPE[8];
+  hal_float_t PEv2_stepgen_HOME[8];
+  hal_float_t PEv2_stepgen_STEPGEN_MAXVEL[8];
+  hal_float_t PEv2_stepgen_STEPGEN_MAXACCEL[8];
+
+  hal_float_t *PEv2_stepgen_DEADBAND[8];
+  hal_float_t *PEv2_stepgen_MAX_OUTPUT[8];
+  hal_float_t *PEv2_stepgen_ENCODER_SCALE[8];
+  hal_float_t PEv2_stepgen_STEP_SCALE[8];
+  hal_float_t PEv2_stepgen_MIN_LIMIT[8];
+  hal_float_t PEv2_stepgen_MAX_LIMIT[8];
+
+  hal_float_t PEv2_stepgen_HOME_OFFSET[8];
+  hal_float_t PEv2_stepgen_HOME_SEARCH_VEL[8];
+  hal_float_t PEv2_stepgen_HOME_LATCH_VEL[8];
+  hal_float_t *PEv2_stepgen_HOME_FINAL_VEL[8];
+  hal_s32_t *PEv2_stepgen_HOME_IGNORE_LIMITS[8];
+  hal_u32_t PEv2_MPGjogMultiplier[8];
+  hal_u32_t PEv2_MPGjogEncoder[8];
+  hal_u32_t PEv2_MPGjogDivider[8];
+  hal_u32_t PEv2_HomeBackOffDistance[8];
+  hal_bit_t *PEv2_digin_Error_in[8];
+  hal_bit_t *PEv2_digin_Error_in_not[8];
+  hal_u32_t *PEv2_MiscInputStatus;
+  hal_u32_t *PEv2_BacklashWidth[8];
+  hal_u32_t *PEv2_BacklashRegister[8];
+  hal_u32_t *PEv2_BacklashAcceleration[8];
+  hal_s32_t PEv2_home_sequence[8];
+  hal_s32_t PEv2_AxisEnabled[8];
+  hal_s32_t PEv2_AxisInverted[8];
+  hal_s32_t PEv2_AxisInternalPlanner[8];
+  hal_s32_t PEv2_AxisPositionMode[8];
+  hal_s32_t PEv2_AxisInvertedHome[8];
+  hal_s32_t PEv2_AxisSoftLimitEnabled[8];
+  hal_s32_t PEv2_AxisEnabledMasked[8];
+  hal_u32_t PEv2_AxesSwitchConfig[8];
+  hal_u32_t PEv2_HomingAlgorithm[8];
+  hal_bit_t PEv2_HomeAlg_OnHome_Stop[8];
+  hal_bit_t PEv2_HomeAlg_OnHome_ArmEncoder[8];
+  hal_bit_t PEv2_HomeAlg_OnHome_RevDirection[8];
+  hal_bit_t PEv2_HomeAlg_OnHome_ReducedSpeed[8];
+  hal_bit_t PEv2_HomeAlg_OutHome_Stop[8];
+  hal_bit_t PEv2_HomeAlg_OutHome_ArmEncoder[8];
+  hal_bit_t PEv2_HomeAlg_OutHome_RevDirection[8];
+  hal_bit_t PEv2_HomeAlg_OutHome_ReducedSpeed[8];
+  hal_u32_t PEv2_digin_Home_Offset[8];
+  hal_u32_t PEv2_digin_SoftLimit_PosMin[8];
+  hal_u32_t PEv2_digin_SoftLimit_PosMax[8];
+  hal_bit_t PEv2_digin_LimitN_Enabled[8];
+  hal_bit_t PEv2_digin_LimitP_Enabled[8];
+  hal_bit_t PEv2_digin_Home_Enabled[8];
+  hal_bit_t PEv2_digin_Home_OnLimitN[8];
+  hal_bit_t PEv2_digin_Home_OnLimitP[8];
+  hal_bit_t PEv2_digin_LimitN_invert[8];
+  hal_bit_t PEv2_digin_LimitP_invert[8];
+  hal_bit_t PEv2_digin_Home_invert[8];
+  hal_u32_t PEv2_digin_LimitN_Pin[8];
+  hal_u32_t PEv2_digin_LimitN_Filter[8];
+  hal_u32_t PEv2_digin_LimitP_Pin[8];
+  hal_u32_t PEv2_digin_LimitP_Filter[8];
+  hal_u32_t PEv2_digin_Home_Pin[8];
+  hal_u32_t PEv2_digin_Home_Filter[8];
+  hal_u32_t PEv2_digout_AxisEnable_Pin[8];
+  hal_bit_t PEv2_digout_AxisEnable_invert[8];
+  hal_bit_t *PEv2_digin_Misc_in[8];
+  hal_bit_t *PEv2_digin_Misc_in_not[8];
+  hal_bit_t *PEv2_digin_Probe_in[8];
+  hal_bit_t *PEv2_digin_Probe_in_not[8];
+  hal_u32_t PEv2_digin_Probe_Filter[8];
+  hal_u32_t *PEv2_digin_SoftLimit_in[8];
+  hal_bit_t *PEv2_digout_AxisEnabled_out[8];
+  hal_bit_t *PEv2_digin_AxisEnabled_in[8];
+  hal_bit_t *PEv2_digout_LimitOverride_out[8];
+  hal_bit_t *PEv2_digin_LimitN_in[8];
+  hal_bit_t *PEv2_digin_LimitN_in_not[8];
+  hal_bit_t *PEv2_digin_LimitN_DedicatedInput[8];
+  hal_bit_t *PEv2_digin_LimitP_in[8];
+  hal_bit_t *PEv2_digin_LimitP_in_not[8];
+  hal_bit_t *PEv2_digin_LimitP_DedicatedInput[8];
+  hal_bit_t *PEv2_digin_Home_in[8];
+  hal_bit_t *PEv2_digin_Home_in_not[8];
+  hal_bit_t *PEv2_digin_Home_DedicatedInput[8];
+  hal_bit_t *PEv2_digout_AxisEnable_out[8];
+  hal_u32_t PEv2_PulseEngineEnabled;
+  hal_u32_t PEv2_PulseGeneratorType;
+  hal_bit_t PEv2_PG_swap_stepdir;
+  hal_bit_t PEv2_PG_extended_io;
+  hal_u32_t PEv2_ChargePumpEnabled;
+  hal_u32_t *PEv2_PulseEngineActivated;
+  hal_u32_t *PEv2_PulseEngineState;
+  hal_u32_t *PEv2_PulseEngineStateSetup;
+  hal_u32_t *PEv2_LimitOverride;
+  hal_u32_t *PEv2_LimitOverrideSetup;
+  hal_bit_t *PEv2_digin_Probed_in;
+  hal_bit_t *PEv2_digin_Emergency_in;
+  hal_bit_t *PEv2_digin_Emergency_in_not;
+  hal_bit_t *PEv2_digout_Emergency_out;
+  hal_bit_t *PEv2_digout_ExternalRelay_out[8];
+  hal_bit_t *PEv2_digout_ExternalOC_out[8];
+  hal_u32_t PEv2_digin_Emergency_Pin;
+  hal_u32_t PEv2_digin_Emergency_invert;
+  hal_u32_t PEv2_digout_Emergency_Pin;
+  hal_u32_t PEv2_digin_Probe_Pin;
+  hal_u32_t PEv2_digin_Probe_invert;
+  hal_u32_t *PEv2_AxisEnabledMask;
+  hal_u32_t *PEv2_AxisEnabledStatesMask;
+  hal_u32_t *PEv2_ExternalRelayOutputs;
+  hal_u32_t *PEv2_ExternalOCOutputs;
+  hal_u32_t *PEv2_HomingStartMaskSetup;
+  hal_u32_t *PEv2_ProbeStartMaskSetup;
+  hal_u32_t *PEv2_ProbeStatus;
+  hal_float_t *PEv2_ProbeSpeed;
+  hal_u32_t *PEv2_BacklashCompensationEnabled;
+} PEv2_data_t;
 
 /**
   * @brief Configures the PulseEngine v2 using current settings.
