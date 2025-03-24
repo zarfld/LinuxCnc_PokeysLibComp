@@ -36,7 +36,6 @@ param rw float encoder.#.scale[29]  "The scale factor used to convert counts to 
 // pin io unsigned Encoders.#.channelApin [26];         // Channel A encoder pin
 // pin io unsigned Encoders.#.channelBpin [26];         // Channel B encoder pin
 
-
 /**
  * @brief Pointer to the global encoder data structure.
  *
