@@ -18,7 +18,7 @@ all: $(COMPONENTS)
 $(COMPONENTS): %: $(SOURCES)
 	sudo halcompile --userspace --extra-compile-args="$(EXTRA_COMPILE_ARGS)" \
 	           --extra-link-args="$(EXTRA_LINK_ARGS)" \
-	           --install $^
+	           --install $^ 2>&1 | tee build.log
 
 # Clean rule
 clean:
