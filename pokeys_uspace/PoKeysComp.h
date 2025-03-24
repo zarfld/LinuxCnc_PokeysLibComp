@@ -486,7 +486,7 @@ typedef struct {
  */
 
 int PKEncoder_export_pins(char *prefix, long extra_arg, int id, int njoints, all_encoder_data_t *Encoder_data);
-    /**
+/**
  * @brief Exports HAL parameters related to encoder configuration.
  *
  * This function registers additional HAL parameters for each encoder channel,
@@ -511,7 +511,7 @@ int PKEncoder_export_pins(char *prefix, long extra_arg, int id, int njoints, all
  * @see PKEncoder_export_pins()
  * @see one_encoder_data_t
  */
-    int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints);
+int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints);
 /**
  * @brief Updates encoder data from the PoKeys device and writes values to HAL pins.
  *
