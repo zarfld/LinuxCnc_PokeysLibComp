@@ -89,6 +89,15 @@ typedef struct {
     hal_u32_t *PEv2_bufferDepth;
     hal_u32_t *PEv2_slotTiming;
     hal_bit_t *PEv2_params_ApplyIniSettings;
+    /**
+ * @var PEv2_AxesState
+ * @brief HAL pin array representing the current state of each axis in PulseEngine v2.
+ *
+ * These pins are referenced in the homing component via `H[joint_num].PEv2_AxesState`.
+ *
+ * @see H
+ * @see pokeys_homecomp.c
+ */
     hal_u32_t *PEv2_AxesState[8];
     hal_u32_t *PEv2_AxesCommand[8];
     hal_u32_t PEv2_AxesConfig[8];

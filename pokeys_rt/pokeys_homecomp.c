@@ -1,10 +1,25 @@
 /**
  * @file pokeys_homecomp.c
- * @brief HAL-Komponente für Homing-StateMachine.
+  * @ingroup pokeys_homecomp
+ * @brief HAL component for managing homing sequence and state logic using PoKeys PulseEngine v2.
  *
- * Diese Datei enthält die Implementierung der homecomp-Komponente,
- * die über ein Command/Status-Modell mit einer Subkomponente kommuniziert.
+ * This component implements a state machine to control synchronized homing of multiple joints
+ * based on PoKeys Pulse Engine v2 capabilities. It interacts with other components by exchanging
+ * `command` and `status` signals and monitors joint-specific flags such as `is_homed`.
+ *
+ * Features:
+ * - Homing coordination across multiple axes
+ * - HAL pin exports for command and status per joint
+ * - Integration with the PoKeys PulseEngine hardware abstraction
+ * - Debug and tracing via HAL pins or internal flags
+ *
+ * The component is designed for use with LinuxCNC and PoKeys57E devices, and provides
+ * real-time feedback and control of the homing process using HAL-compatible pins.
+ *
+ * @author zarfld
+ * @date 2025
  */
+
 
 #include "rtapi.h"
 #ifdef RTAPI
@@ -52,6 +67,29 @@ MODULE_INFO(linuxcnc, "license:GPL");
 MODULE_INFO(linuxcnc, "author:Dewey Garrett");
 MODULE_LICENSE("GPL");
 #endif // MODULE_INFO
+
+/** 
+ * @defgroup pokeys_homecomp PoKeys Homing Component
+ * @ingroup pokeys_components
+ * @brief LinuxCNC HAL component for managing homing sequences via PoKeys PulseEngine v2.
+ *
+ * This module implements a finite state machine for handling homing commands and statuses
+ * for each axis controlled by a PoKeys device. It communicates via HAL pins and interacts
+ * with PulseEngine v2 state and command structures.
+ *
+ * The component is suitable for synchronized multi-axis homing and integrates tightly
+ * with other components like `pokeys.comp`.
+ *
+ * @{
+ */
+
+ /**
+ * @class home_state_t
+ * @brief Internal state representation for the homing state machine of one joint.
+ *
+ * Holds flags and counters required to manage the homing process for an individual axis.
+ * Used internally by the `pokeys_homecomp` HAL component.
+ */
 
 struct __comp_state {
     struct __comp_state *_next;
@@ -252,11 +290,29 @@ typedef enum {
 } local_home_state_t;
 
 /**
- * @brief Enthält HAL-Pointer auf Pins eines einzelnen Joints für die Homing-Steuerung.
+ * @struct one_joint_home_data_t
+ * @brief HAL pin structure for managing homing state per joint.
  *
- * Diese Struktur wird vom HAL zur Anbindung der Homing-Komponente genutzt.
- * Alle Mitglieder sind HAL-Pointer auf Eingabe-/Ausgabesignale und Statuswerte.
- * 
+ * This structure holds pointers to all relevant HAL pins that control and monitor
+ * the homing process of a single joint.
+ *
+ * It includes:
+ * - Standard HAL homing pins like home switch, homing status, and homed status
+ * - Index handling support via `index_enable`
+ * - Internal state tracking via `home_state`
+ * - Communication pins with the PoKeys PulseEngine v2 for real-time motion control
+ *
+ * @note The members `PEv2_AxesState` and `PEv2_AxesCommand` are mapped directly
+ *       to the HAL pins exported in the PulseEngine HAL component 
+ *       (see @ref PoKeysCompPulseEngine_v2).
+ *
+ * These allow `pokeys_homecomp` to read axis state (e.g., position reached, done) 
+ * and write commands (e.g., start homing) to the PulseEngine.
+ *
+ * @see ePoKeysPEState
+ * @see ePoKeysPECmd
+ * @see pokeys_homecomp
+ * @see PoKeysCompPulseEngine_v2
  * @ingroup PoKeys_HomingState
  */
 typedef struct {
@@ -268,7 +324,41 @@ typedef struct {
     hal_s32_t *home_state;   // homing state machine state
 
     // Custom Pins for comunication with PoKeys
+    /** 
+ * @brief Current state of the PulseEngine for this joint.
+ *
+ * Pointer to the HAL pin exported by the PulseEngine HAL component,
+ * typically named like `pokeys.PEv2.axis.N.state`, where `N` is the joint number.
+ * 
+ * The value corresponds to an entry in the @ref ePoKeysPEState enum,
+ * such as `PE_STATE_IDLE`, `PE_STATE_HOMING`, etc.
+ *
+ * Used by `pokeys_homecomp` to react to motion state changes during the homing sequence.
+ *
+ * @see ePoKeysPEState
+ * @see PoKeysCompPulseEngine_v2
+ */
     hal_u32_t *PEv2_AxesState;   // State of pulse engine - see ePoKeysPEState
+
+    /**
+ * @brief Command output to the PulseEngine for this joint.
+ *
+ * Pointer to the HAL pin used to issue commands to the PulseEngine,
+ * typically named `pokeys_homecomp.N.PEv2_AxesCommand` for joint N.
+ *
+ * The value corresponds to an entry in the @ref ePoKeysPECmd enum,
+ * such as `PE_CMD_NONE`, `PE_CMD_HOME`, `PE_CMD_ENABLE`, etc.
+ *
+ * This value is evaluated by the PulseEngine logic (e.g., in `PoKeysCompPulseEngine_v2`)
+ * and triggers state changes such as starting the homing sequence.
+ *
+ * @note Only written by `pokeys_homecomp`, and typically connected to
+ * the corresponding `PEv2.axis.N.command` pin in the PulseEngine component.
+ *
+ * @see ePoKeysPECmd
+ * @see PEv2_AxesState
+ * @see PoKeysCompPulseEngine_v2
+ */
     hal_u32_t *PEv2_AxesCommand; // Commands to  pulse engine - see ePoKeysPECmd
 
 } one_joint_home_data_t;
@@ -291,7 +381,35 @@ typedef struct {
     local_home_state_t home_state;
 
     // Custom Pins for comunication with PoKeys
+    /**
+ * @brief Local copy of the current PulseEngine state for this joint.
+ *
+ * This variable mirrors the value read from the HAL pin `PEv2_AxesState`
+ * (e.g., `pokeys_homecomp.N.PEv2_AxesState`) and represents the current
+ * state of the PulseEngine for this joint.
+ *
+ * It corresponds to the @ref ePoKeysPEState enumeration.
+ *
+ * Updated in @ref read_homing_in_pins and used for state machine transitions.
+ *
+ * @see one_joint_home_data_t::PEv2_AxesState
+ * @see ePoKeysPEState
+ */
     pokeys_home_state_t PEv2_AxesState;
+
+    /**
+ * @brief Local command to the PulseEngine for this joint.
+ *
+ * This variable holds the next command to be issued to the PulseEngine
+ * (e.g., `PE_CMD_HOME`, `PE_CMD_NONE`, etc.) and will be written to
+ * the corresponding HAL pin `PEv2_AxesCommand` during
+ * @ref write_homing_out_pins.
+ *
+ * It corresponds to the @ref ePoKeysPECmd enumeration.
+ *
+ * @see one_joint_home_data_t::PEv2_AxesCommand
+ * @see ePoKeysPECmd
+ */
     pokeys_home_command_t PEv2_AxesCommand;
 
     // homeparams
@@ -2122,7 +2240,7 @@ EXPORT_SYMBOL(set_unhomed);
 EXPORT_SYMBOL(set_joint_homing_params);
 EXPORT_SYMBOL(update_joint_homing_params);
 EXPORT_SYMBOL(write_homing_out_pins);
-
+/** @} */ // end of defgroup pokeys_homecomp
 #undef XSTR
 #undef STR
 #undef HOMING_BASE
