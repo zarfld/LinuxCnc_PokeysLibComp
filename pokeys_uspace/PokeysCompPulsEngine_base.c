@@ -1524,7 +1524,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
             if (*(PEv2_data->PEv2_HomingStatus[axis]) == RequiredState) {
                 sequence_joints_ready++;
             } else if (*(PEv2_data->PEv2_HomingStatus[axis]) == NextState) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] already in state %d\n", __FILE__, __FUNCTION__, axis, NextState);
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] already in state %d (required state %d)\n", __FILE__, __FUNCTION__, axis, NextState, RequiredState);
                 sequence_joints_done++;
             } else {
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] not in required state %d\n", __FILE__, __FUNCTION__, axis, RequiredState);
