@@ -85,9 +85,9 @@
     {
       "label": "DebugLog Build Pokeys Userspace Component",
       "type": "shell",
-      "command": "sudo",
+      "command": "sh",
       "args": [
-        "sh",
+        "sudo",
         "-c",
         "halcompile --userspace --extra-compile-args='-I/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace' --extra-link-args='-lPoKeys -llinuxcncini' --install pokeys_uspace/pokeys.c 2>&1 | tee build.log"
       ],
