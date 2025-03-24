@@ -179,8 +179,7 @@ static home_sequence_state_t sequence_state = HOME_SEQUENCE_IDLE;
  * @brief Enumeration of the homing state of pokeys component
 
 * @ingroup PoKeys_PEv2_AxisState */
-    */
-typedef enum {
+* / typedef enum {
     PK_PEAxisState_axSTOPPED = 0, // Axis is stopped
     PK_PEAxisState_axREADY = 1,   // Axis ready
     PK_PEAxisState_axRUNNING = 2, // Axis is running
@@ -613,7 +612,6 @@ bool get_sequence_homed(int seq) {
     rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_sequence_homed(%d) TRUE\n", seq);
     return 1;
 }
-
 
 /**
  * @brief Prüft, ob in einer Homing-Sequenz derzeit noch mindestens eine Achse homed.
@@ -1532,7 +1530,6 @@ void do_home_joint(int jno) {
     }
     return;
 }
-
 
 /**
  * @brief Führt eine vollständige Homing-Sequenz für mehrere Achsen aus.
