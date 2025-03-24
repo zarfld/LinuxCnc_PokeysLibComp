@@ -1460,13 +1460,31 @@ int32_t PEv2_AdditionalParametersSet(sPoKeysDevice *dev) {
 }
 
 /**
- * @brief Trigger the homing state synced trigger.
+ * @brief Triggers a synchronized homing state transition for all axes in a given homing sequence.
  *
-    * @param dev Pointer to the PoKeys device structure.
-    * @param seq Sequence number for the trigger.
-    * @param RequiredState The required state for the trigger.
-    * @param NextState The next state to transition to.
-    * @return int32_t Returns 0 on success, or an error code on failure. 
+ * This function checks whether all axes assigned to a given homing sequence have reached a specific
+ * required homing state. If all are ready, it transitions them to the specified next homing state
+ * and optionally triggers PoKeys Pulse Engine homing actions (e.g., start, finalize, encoder arm, etc.).
+ *
+ * The function supports transitions through key homing states like:
+ * - `PK_Homing_axHOMINGSTART`: Initializes homing for the sequence and sets the start mask.
+ * - `PK_Homing_axARMENCODER`: Sets the axis position to zero before the final move.
+ * - `PK_Homing_axHOMINGFinalMove`: Triggers a position move to the final home position.
+ * - `PK_Homing_axHOMINGFinalize`: Completes the homing procedure and ensures Pulse Engine state is correct.
+ *
+ * If any axis is not ready (i.e., not in the required state), the function aborts early.
+ *
+ * @param[in] dev              Pointer to the PoKeys device structure.
+ * @param[in] seq              The homing sequence number to process.
+ * @param[in] RequiredState    The required state that all joints in the sequence must currently be in.
+ * @param[in] NextState        The homing state to transition to for all joints in the sequence.
+ *
+ * @return int32_t
+ * - `0` if the transition was successfully triggered.
+ * - `1` if any joint in the sequence is not in the required state or an error occurs.
+ *
+ * @note The function sets internal flags and masks used by the Pulse Engine API.
+ *       Certain transitions involve setting configuration bits or triggering motion commands.
  */
 int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_status_t RequiredState, pokeys_home_status_t NextState) {
 
@@ -1593,8 +1611,27 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
 }
 
 /**
- * @brief Get the axis configuration of the PoKeys device.
+ * @brief Retrieves and parses the axis configuration from the PoKeys Pulse Engine v2.
+ *
+ * This function calls `PK_PEv2_AxisConfigurationGet()` to read the configuration for the specified axis
+ * and updates the corresponding `PEv2_data` fields based on the retrieved information. It interprets
+ * the bitmask flags for axis behavior and switch configuration, and conditionally applies values from
+ * the device into `PEv2_data`, unless `ApplyIniSettings` is true (in which case values are preserved).
+ *
+ * Additionally, this function populates numerous auxiliary parameters such as speeds, filters,
+ * soft limits, stepgen scaling, homing algorithm configuration, MPG settings, and enable outputs.
+ *
+ * @param dev Pointer to the PoKeys device structure.
+ * @param AxisId The index of the axis to retrieve configuration for.
  * 
+ * @return PK_OK (0) on success, or an error code if `PK_PEv2_AxisConfigurationGet()` fails.
+ *
+ * @note Only fields that are unset (i.e., zero or false) in `PEv2_data` will be overwritten,
+ *       unless `ApplyIniSettings == false`, in which case full sync from device is performed.
+ *
+ * @see PK_PEv2_AxisConfigurationGet
+ * @ingroup PEv2_Configuration
+ * @ingroup PoKeys_Axis
  */
 int32_t PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int AxisId) {
     dev->PEv2.param1 = AxisId;

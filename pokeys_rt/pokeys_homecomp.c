@@ -174,10 +174,11 @@ static int current_sequence = 0;
     */
 typedef enum { HOME_SEQUENCE_IDLE = 0, HOME_SEQUENCE_START, HOME_SEQUENCE_DO_ONE_JOINT, HOME_SEQUENCE_DO_ONE_SEQUENCE, HOME_SEQUENCE_START_JOINTS, HOME_SEQUENCE_WAIT_JOINTS } home_sequence_state_t;
 static home_sequence_state_t sequence_state = HOME_SEQUENCE_IDLE;
+
 /**
- * @brief State of the pulse engine
-    * @param joint_num
-    * @return 1 if at least one joint is homing
+ * @brief Enumeration of the homing state of pokeys component
+
+* @ingroup PoKeys_PEv2_AxisState */
     */
 typedef enum {
     PK_PEAxisState_axSTOPPED = 0, // Axis is stopped
@@ -252,15 +253,13 @@ typedef enum {
 } local_home_state_t;
 
 /**
- * @brief Data structure for one joint
-    * @param home_sw
-    * @param homing
-    * @param homed
-    * @param index_enable
-    * @param home_state
-    * @param PEv2_AxesState
-    * @param PEv2_AxesCommand
-    */
+ * @brief Enthält HAL-Pointer auf Pins eines einzelnen Joints für die Homing-Steuerung.
+ *
+ * Diese Struktur wird vom HAL zur Anbindung der Homing-Komponente genutzt.
+ * Alle Mitglieder sind HAL-Pointer auf Eingabe-/Ausgabesignale und Statuswerte.
+ * 
+ * @ingroup PoKeys_HomingState
+ */
 typedef struct {
     hal_bit_t *home_sw;      // home switch input
     hal_bit_t *homing;       // joint is homing
@@ -276,15 +275,14 @@ typedef struct {
 } one_joint_home_data_t;
 
 /**
- * @brief Data structure for one joint
-    * @param home_sw
-    * @param homing
-    * @param homed
-    * @param index_enable
-    * @param home_state
-    * @param PEv2_AxesState
-    * @param PEv2_AxesCommand
-    */
+ * @brief Lokale Datenstruktur für einen Joint zur Homing-Verwaltung.
+ *
+ * Diese Struktur enthält die aktuellen lokalen Kopien der wichtigsten HAL-Pinwerte
+ * sowie zusätzliche Parameter und Steuerinformationen. Sie wird intern vom 
+ * Homing-Framework (`pokeys_homecomp`) verwendet.
+ *
+ * @ingroup PoKeys_HomingState
+ */
 typedef struct {
     // pin data for all joints
     bool home_sw;
@@ -315,31 +313,32 @@ typedef struct {
 static home_local_data H[EMCMOT_MAX_JOINTS];
 
 /**
- * @brief Data structure for one joint
-    * @param home_sw
-    * @param homing
-    * @param homed
-    * @param index_enable
-    * @param home_state
-    * @param PEv2_AxesState
-    * @param PEv2_AxesCommand
-    */
+ * @brief Containerstruktur für alle HAL-Pin-Sätze pro Joint.
+ *
+ * Wird bei der Initialisierung von HAL-Pins mit `hal_pin_*_newf()` verwendet.
+ *
+ * @ingroup PoKeys_HomingState
+ */
 typedef struct {
     one_joint_home_data_t jhd[EMCMOT_MAX_JOINTS];
 
 } all_joints_home_data_t;
 
 static all_joints_home_data_t *joint_home_data = 0;
+
 /**
- * @brief Data structure for one sequence
-    * @param home_sequence
-    * @param homing
-    * @param homed
-    * @param joints_in_sequence
-    * @param joint_ids
-    * @param is_last
-    * @param next_sequence
-    */
+ * @brief Repräsentiert eine einzelne Homing-Sequenz mit einer Gruppe von Achsen (Joints).
+ *
+ * Diese Struktur definiert die Metadaten und den Zustand einer Homing-Sequenz.
+ * Eine Sequenz kann mehrere Joints beinhalten, die gemeinsam oder in Abhängigkeit
+ * voneinander ge-homed werden sollen. Sie wird von der `pokeys_homecomp` verwendet,
+ * um die Abfolge der Homing-Schritte zu verwalten.
+ *
+ * Die Sequenzen sind durchnummeriert (über `home_sequence`), und es kann angegeben werden,
+ * ob eine Sequenz die letzte in der Kette ist (`is_last`) und welche Sequenz als nächstes folgt (`next_sequence`).
+ *
+ * @ingroup PoKeys_HomingState
+ */
 typedef struct {
     int home_sequence; // my sequence ID
     bool homing;
@@ -356,13 +355,20 @@ typedef struct {
 } one_sequence_home_data_t;
 
 /**
- * @brief Data structure for all sequences
-    * @param shd
-    * @param sequence_count
-    * @param min_sequence
-    * @param max_sequence
-    * @param current_sequence
-    */
+ * @brief Struktur zur Verwaltung aller Homing-Sequenzen.
+ *
+ * Diese Struktur dient der Organisation und Kontrolle von Homing-Sequenzen in einem
+ * System mit mehreren Achsen. Jeder Eintrag im `shd`-Array repräsentiert eine Sequenz,
+ * die mehrere Joints beinhalten kann, welche gleichzeitig oder nacheinander homed werden.
+ *
+ * Die Felder `min_sequence`, `max_sequence` und `sequence_count` definieren die
+ * gültigen Sequenzbereiche und ermöglichen eine automatische Abarbeitung in logischer
+ * Reihenfolge. `current_sequence` gibt an, welche Sequenz aktuell aktiv ist.
+ *
+ * Wird vor allem in der Homing-Logik der `pokeys_homecomp` verwendet.
+ *
+ * @ingroup PoKeys_HomingState
+ */
 typedef struct {
     one_sequence_home_data_t shd[EMCMOT_MAX_JOINTS];
     int sequence_count;
@@ -374,14 +380,36 @@ typedef struct {
 
 } all_sequences_home_data_t;
 
+/**
+ * @brief Globale Instanz zur Verwaltung aller Homing-Sequenzen.
+ *
+ * Diese Variable hält die aktuellen Zustände und Konfigurationen aller
+ * Homing-Sequenzen im System. Sie wird in Funktionen wie
+ * `update_sequence_home_data()`, `do_home_sequence()` und `check_home_sequence()`
+ * aktiv verwendet und verändert.
+ *
+ * @ingroup PoKeys_HomingState
+ */
 static all_sequences_home_data_t sequence_home_data;
 static bool allhomed = 0;
 /**
- * @brief Create hal pins for all joints
-    * @param id
-    * @param njoints
-    * @return 0 on success, -1 on failure
-    */
+ * @brief Erstellt HAL-Pins für Homing-Logik aller Joints.
+ *
+ * Diese Funktion reserviert und erstellt die notwendigen HAL-Pins pro Joint
+ * für die Homing-State-Machine der pokeys_homecomp-Komponente.
+ *
+ * Die erzeugten Pins beinhalten Standard-Homing-Signale wie
+ * `home-sw-in`, `homing`, `homed`, `home-state`, `index-enable` sowie
+ * PoKeys-spezifische Signale `PEv2.AxesState` (Statusrückmeldung vom Controller)
+ * und `PEv2.AxesCommand` (Kommando zum Homing-Steuergerät).
+ *
+ * @param id Die HAL-Komponenten-ID.
+ * @param njoints Anzahl der zu konfigurierenden Joints.
+ *
+ * @retval 0 bei Erfolg, andernfalls negative Zahl.
+ *
+ * @ingroup PoKeys_HomingInit
+ */
 static int makepins(int id, int njoints) {
     // home_pins needed to work with configs expecting them:
     int jno, retval;
@@ -411,25 +439,44 @@ static int makepins(int id, int njoints) {
     }
     return retval;
 }
+
 /**
- * @brief Set the home parameters for a joint
-    * @param joint_num
-    * @param offset
-    * @param home
-    * @param home_final_vel
-    * @param home_search_vel
-    * @param home_latch_vel
-    * @param home_flags
-    * @return 0 on success, -1 on failure
-    */
+ * @brief Initialisiert Funktionen für das Homing von rotatorischen Achsen.
+ *
+ * Diese Funktion dient als Schnittstelle zur Übergabe von Funktionen für das
+ * Entsperren und Abfragen von Rotary-Achsen (z. B. Drehachsen mit mechanischer Verriegelung).
+ * Derzeit ist sie als Platzhalter implementiert und enthält keine Logik.
+ *
+ * @param pSetRotaryUnlock Funktionszeiger, der eine Achse und einen Status übergibt,
+ *                         um die Achse zu entsperren.
+ *                         Signature: `void func(int joint, int unlock)`
+ * @param pGetRotaryIsUnlocked Funktionszeiger zur Abfrage, ob eine Achse entsperrt ist.
+ *                             Signature: `int func(int joint)` (Rückgabewert: 1 = entsperrt)
+ *
+ * @ingroup PoKeys_HomingRotary
+ */
 void homeMotFunctions(void (*pSetRotaryUnlock)(int, int), int (*pGetRotaryIsUnlocked)(int)) {
     return;
 }
+
 /**
- * @brief Update the home data for all joints
-    * @param joint_num
-    * @return 0 on success, -1 on failure
-    */
+ * @brief Aktualisiert die Metadaten zu allen Homing-Sequenzen.
+ *
+ * Diese Funktion ermittelt die kleinste und größte verwendete `home_sequence`
+ * aller Achsen und berechnet daraus `min_sequence`, `max_sequence` und `sequence_count`.
+ * Anschließend wird für jede Sequenz die Liste der beteiligten Joints gefüllt.
+ *
+ * Außerdem wird gesetzt:
+ * - `is_last`: Markierung für das Ende der Sequenzkette.
+ * - `next_sequence`: Nächste Sequenz in der Kette.
+ * - `home_state`: Auf `HOME_IDLE` initialisiert.
+ *
+ * Hinweis: Diese Funktion *überschreibt nicht* aktiv laufende `homing`- oder `homed`-Flags,
+ * um laufende Homing-Prozesse nicht zu unterbrechen.
+ *
+ * @ingroup PoKeys_HomingSequence
+ * @ingroup PoKeys_HomingInit
+ */
 static void update_sequence_home_data(void) {
     int min_sequence = abs(H[0].home_sequence);
     int max_sequence = abs(H[0].home_sequence);
@@ -480,16 +527,28 @@ static void update_sequence_home_data(void) {
         rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: update_sequence_home_data(%d) joints_in_sequence:%d\n", sno, sequence_home_data.shd[sno].joints_in_sequence);
     }
 }
+
 /**
- * @brief Initialize the homing module
-    *
-    * @param id
-    * @param servo_period
-    * @param n_joints
-    * @param n_extrajoints
-    * @param pjoints
-    * @return 0 on success, -1 on failure
-    */
+ * @brief Initialisiert die Homing-Datenstrukturen für alle Achsen.
+ *
+ * Diese Funktion wird beim Start des Homing-Subsystems aufgerufen und setzt
+ * alle Zustände und Parameter der Homing-Finite-State-Machine auf definierte Anfangswerte.
+ *
+ * Dabei wird auch der Ausgangszustand der PEv2-Achsenkommunikation gesetzt:
+ * - PEv2_AxesState = `PK_PEAxisState_axSTOPPED`
+ * - PEv2_AxesCommand = `PK_PEAxisCommand_axIDLE`
+ *
+ * @param id HAL-Komponenten-ID
+ * @param servo_period Servoperiode in Sekunden
+ * @param n_joints Anzahl der konfigurierten Achsen
+ * @param n_extrajoints Zusätzliche Achsen (z. B. Spindel)
+ * @param pjoints Pointer auf die `emcmot_joint_t`-Struktur aller Achsen
+ * @return 0 bei Erfolg, sonst Fehlercode von `makepins()`
+ *
+ * @ingroup PoKeys_HomingFSM
+ * @ingroup PoKeys_PEv2_AxisState
+ * @ingroup PoKeys_PEv2_AxisCommand
+ */
 int homing_init(int id, double servo_period, int n_joints, int n_extrajoints, emcmot_joint_t *pjoints) {
     joints = pjoints;
     all_joints = n_joints;
@@ -513,6 +572,7 @@ int homing_init(int id, double servo_period, int n_joints, int n_extrajoints, em
         H[jno].homed = 0;
         H[jno].home_state = HOME_IDLE;
         H[jno].index_enable = 0;
+
         H[jno].PEv2_AxesState = PK_PEAxisState_axSTOPPED;
         H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
 
@@ -526,11 +586,20 @@ int homing_init(int id, double servo_period, int n_joints, int n_extrajoints, em
         saddr.home_state = HOME_IDLE;
     }
 }
+
 /**
- * @brief Check if all joints in the sequence are homed
-* @param seq
-* @return 1 if all joints are homed
-*/
+ * @brief Prüft, ob alle Achsen einer Homing-Sequenz erfolgreich ge-homed wurden.
+ *
+ * Diese Funktion iteriert über alle Achsen der gegebenen Sequenz und überprüft das `homed`-Flag.
+ * Nur wenn *alle* Achsen in der Sequenz als homed markiert sind, wird `true` zurückgegeben.
+ * Andernfalls erfolgt ein vorzeitiger Abbruch mit `false`.
+ *
+ * @param seq Die Indexnummer der Homing-Sequenz.
+ * @return `true` (1), wenn alle Achsen der Sequenz ge-homed sind, sonst `false` (0).
+ *
+ * @ingroup PoKeys_HomingStatus
+ * @ingroup PoKeys_HomingSequence
+ */
 bool get_sequence_homed(int seq) {
     one_sequence_home_data_t addr = (sequence_home_data.shd[seq]);
     int joints_in_sequence = addr.joints_in_sequence;
@@ -544,11 +613,21 @@ bool get_sequence_homed(int seq) {
     rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_sequence_homed(%d) TRUE\n", seq);
     return 1;
 }
+
+
 /**
- * @brief Check if at least one joint in the sequence is homing
-    * @param seq
-    * @return 1 if at least one joint is homing
-    */
+ * @brief Prüft, ob in einer Homing-Sequenz derzeit noch mindestens eine Achse homed.
+ *
+ * Diese Funktion durchläuft alle Achsen in der angegebenen Sequenz und prüft,
+ * ob für mindestens eine Achse das Flag `homing` aktiv ist. Sie wird z. B. in
+ * der Zustandsmaschine verwendet, um festzustellen, ob eine Sequenz noch läuft
+ * oder abgeschlossen ist.
+ *
+ * @param seq Die Indexnummer der Homing-Sequenz.
+ * @return `true` (1), wenn mindestens eine Achse in der Sequenz noch homed, sonst `false` (0).
+ *
+ * @ingroup PoKeys_HomingStatus
+ */
 bool get_sequence_homing(int seq) {
     one_sequence_home_data_t addr = (sequence_home_data.shd[seq]);
     int joints_in_sequence = addr.joints_in_sequence;
@@ -562,12 +641,29 @@ bool get_sequence_homing(int seq) {
 
     return 0;
 }
+
 /**
- * @brief Homing state machine for one joint
-*
-* @param joint_num
-* @return 1 if at least one joint is homing
-*/
+ * @brief Zustandsmaschine für eine einzelne Achse im Homing-Vorgang.
+ *
+ * Diese Funktion bildet das Herzstück der Homing-Logik für eine Achse.
+ * Sie liest den aktuellen `PEv2_AxesState` vom Gerät (über HAL) und setzt
+ * entsprechend `home_state`, `homing`, `homed` und `PEv2_AxesCommand`.
+ *
+ * - Initialisiert interne Homing-Flags je nach externem PEv2-Zustand
+ * - Koordiniert ggf. mehrere Achsen in einer Homing-Sequenz
+ * - Unterstützt synchronisiertes Warten auf Zustände wie `axHOMINGWaitFINALMOVE`
+ *
+ * Die Zustandsmaschine erlaubt, mehrere Übergänge innerhalb eines Servozyklus
+ * auszuführen, indem `immediate_state` genutzt wird.
+ *
+ * @param joint_num Index der zu bearbeitenden Achse
+ * @return 1, wenn die Achse sich im Homing befindet, sonst 0
+ *
+ * @ingroup PoKeys_HomingFSM
+ * @ingroup PoKeys_PEv2_AxisState
+ * @ingroup PoKeys_PEv2_AxisCommand
+ * @ingroup PoKeys_HomingSync
+ */
 int pokeys_1joint_state_machine(int joint_num) {
     emcmot_joint_t *joint;
     double offset, tmp;
@@ -856,10 +952,16 @@ int pokeys_1joint_state_machine(int joint_num) {
 
     return homing_flag;
 } // pokeys_1joint_state_machine()
+
 /**
- * @brief Do home sequence
+ * @brief Führt den Homing-Ablauf für eine Sequenz aus.
  *
- * @param seq
+ * Diese Funktion verwendet PEv2_AxesState, um den Zustand
+ * der Achsen zu interpretieren und entsprechende Kommandos
+ * zu setzen. Teil der Homing-Finite-State-Machine.
+ *
+ * @ingroup PoKeys_HomingFSM
+ * @ingroup PoKeys_PEv2_AxisState
  */
 void do_home_sequence(int seq) {
     one_sequence_home_data_t addr = (sequence_home_data.shd[seq]);
@@ -898,10 +1000,24 @@ void do_home_sequence(int seq) {
     }
     return;
 }
+
 /**
- * @brief Check the home sequence
+ * @brief Überwacht den Fortschritt einer Homing-Sequenz.
  *
- * @param seq
+ * Diese Funktion wird regelmäßig während des Homing-Prozesses aufgerufen,
+ * um zu prüfen, ob alle Achsen einer Sequenz ihren Zielzustand erreicht haben.
+ *
+ * - Wenn alle Achsen als „homed“ gelten, wird je nach `is_last` entweder
+ *   die nächste Sequenz gestartet oder `sequence_state` auf `IDLE` gesetzt.
+ * - Wenn die Sequenz sich noch im Homing befindet, wird mit `get_sequence_homed()`
+ *   überprüft, ob sie nun abgeschlossen ist.
+ * - Sie beeinflusst direkt den globalen `sequence_state` und ruft ggf. `do_home_sequence()` auf.
+ *
+ * @param seq Sequenzindex, der überprüft werden soll
+ *
+ * @ingroup PoKeys_HomingSync
+ * @ingroup PoKeys_HomingFSM
+ * @ingroup PoKeys_PEv2_AxisState
  */
 void check_home_sequence(int seq) {
     if (sequence_state != HOME_SEQUENCE_DO_ONE_SEQUENCE) {
@@ -948,11 +1064,21 @@ void check_home_sequence(int seq) {
         }
     }
 }
+
 /**
- * @brief Get the homed object
+ * @brief Gibt an, ob alle Achsen erfolgreich ge-homed wurden.
  *
- * @return true
- * @return false
+ * Diese Funktion gibt den globalen Zustand `allhomed` zurück,
+ * der in der Homing-Logik aktualisiert wird, sobald alle Achsen
+ * ihre Homing-Sequenz erfolgreich abgeschlossen haben.
+ *
+ * Hinweis: Der ursprünglich implementierte Prüfdurchlauf über alle
+ * Achsen ist derzeit auskommentiert, die Funktion verlässt sich
+ * auf den zentral verwalteten Zustand `allhomed`.
+ *
+ * @return `true` (1), wenn alle Achsen ge-homed sind, sonst `false` (0).
+ *
+ * @ingroup PoKeys_HomingStatus
  */
 bool get_allhomed() {
     /* int ret = 1;
@@ -975,11 +1101,16 @@ bool get_allhomed() {
 }
 
 /**
- * @brief Get the homed object  
- * 
- * @param jno 
- * @return true 
- * @return false 
+ * @brief Prüft, ob eine Achse erfolgreich ge-homed wurde.
+ *
+ * Gibt `true` zurück, wenn der Homing-Vorgang für die angegebene Achse
+ * abgeschlossen wurde und die Achse als "ge-homed" markiert ist.
+ * Optional wird eine Debug-Ausgabe generiert.
+ *
+ * @param jno Die Joint-Nummer (Achse), die geprüft werden soll.
+ * @return `true` (1), wenn die Achse ge-homed ist, sonst `false` (0).
+ *
+ * @ingroup PoKeys_HomingStatus
  */
 bool get_homed(int jno) {
     if (H[jno].homed == 1) {
@@ -987,29 +1118,119 @@ bool get_homed(int jno) {
     }
     return H[jno].homed ? 1 : 0;
 }
+
+/**
+ * @brief Prüft, ob der Home-State einer Achse auf IDLE steht.
+ *
+ * Diese Funktion gibt zurück, ob sich die angegebene Achse aktuell
+ * im Zustand `HOME_IDLE` befindet, also kein aktiver Homing-Vorgang läuft.
+ *
+ * @param jno Die Joint-Nummer (Achse), die geprüft werden soll.
+ * @return `true` (1), wenn sich die Achse im Zustand `HOME_IDLE` befindet, sonst `false` (0).
+ *
+ * @ingroup PoKeys_HomingStatus
+ */
 bool get_home_is_idle(int jno) {
     return H[jno].home_state == HOME_IDLE ? 1 : 0;
 }
+
+/**
+ * @brief Prüft, ob die Achse synchronisiert homed wurde.
+ *
+ * Diese Funktion gibt zurück, ob der Homing-Vorgang für die angegebene Achse
+ * im Rahmen einer synchronisierten Sequenz erfolgte.
+ *
+ * @param jno Die Joint-Nummer (Achse), für die der Synchronisationsstatus
+ * abgefragt werden soll.
+ * @return `true` (1), wenn die Achse synchronisiert homed wurde, sonst `false` (0).
+ *
+ * @ingroup PoKeys_HomingStatus
+ */
 bool get_home_is_synchronized(int jno) {
     return H[jno].home_is_synchronized ? 1 : 0;
 }
+
+/**
+ * @brief Prüft, ob die Achse vor dem Homing entsperrt werden muss.
+ *
+ * Diese Funktion überprüft, ob das `HOME_UNLOCK_FIRST`-Flag im
+ * `home_flags`-Feld der angegebenen Achse gesetzt ist.
+ * Falls ja, muss die Achse vor dem Start des Homing-Vorgangs entriegelt oder
+ * bewegt werden (z. B. um einen Endschalter zu verlassen).
+ *
+ * @param jno Die Joint-Nummer (Achse), für die geprüft werden soll.
+ * @return `true` (1), wenn die Achse zuerst "unlocked" werden muss, sonst `false` (0).
+ *
+ * @ingroup PoKeys_HomingFlags
+ */
 bool get_home_needs_unlock_first(int jno) {
     return (H[jno].home_flags & HOME_UNLOCK_FIRST) ? 1 : 0;
 }
+
+/**
+ * @brief Gibt die Homing-Sequenznummer der angegebenen Achse zurück.
+ *
+ * Diese Funktion liefert den aktuellen Wert der `home_sequence`-Eigenschaft
+ * der Achse mit der angegebenen Joint-Nummer. Die Homing-Sequenz definiert,
+ * ob eine Achse einzeln oder gemeinsam mit anderen Achsen referenziert wird.
+ *
+ * @param jno Die Joint-Nummer (Achse), deren Homing-Sequenz abgefragt werden soll.
+ * @return Die Homing-Sequenznummer dieser Achse (negativ = gruppiert, positiv = einzeln).
+ *
+ * @ingroup PoKeys_HomingStatusQuery
+ */
 int get_home_sequence(int jno) {
     return H[jno].home_sequence;
 }
+
+/**
+ * @brief Gibt zurück, ob eine Achse aktuell im Homing-Vorgang ist.
+ *
+ * Diese Funktion liest das `homing`-Flag aus der `joint_home_data`
+ * Struktur für die angegebene Achse und gibt zurück, ob Homing aktiv ist.
+ *
+ * @param jno Die Joint-Nummer (Achse), deren Homing-Status abgefragt werden soll.
+ * @return true, wenn sich die Achse im Homing-Prozess befindet, sonst false.
+ *
+ * @ingroup PoKeys_HomingStatusQuery
+ */
 bool get_homing(int jno) {
     one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
 
     return *addr->homing ? 1 : 0;
 }
 
+/**
+ * @brief Prüft, ob der Index-Suchmodus beim Homing aktiv ist.
+ *
+ * Diese Funktion gibt zurück, ob für die angegebene Achse (`jno`)
+ * das Flag `index_enable` gesetzt ist. Dies weist typischerweise
+ * darauf hin, dass sich die Achse im Homing-Abschnitt zur
+ * Index-Suche befindet.
+ *
+ * @param jno Die Joint-Nummer (Achse), deren Status abgefragt werden soll.
+ * @return true, wenn `index_enable` gesetzt ist, sonst false.
+ *
+ * @ingroup PoKeys_HomingRuntime
+ * @ingroup PoKeys_HomingStatusQuery
+ */
 bool get_homing_at_index_search_wait(int jno) {
     // return 0;
     return H[jno].index_enable ? 1 : 0;
 }
 
+/**
+ * @brief Gibt zurück, ob der Homing-Vorgang aktuell aktiv ist.
+ *
+ * Diese Funktion liefert den Status des `homing_active`-Flags. Zusätzlich
+ * gibt sie eine Debug-Nachricht aus, wenn sich der Status seit dem letzten
+ * Aufruf geändert hat.
+ *
+ * @return true, wenn das System gerade eine Homing-Sequenz ausführt, sonst false.
+ *
+ * @ingroup PoKeys_HomingRuntime
+ * @ingroup PoKeys_HomingStatusQuery
+ *
 bool get_homing_is_active() {
     if (homing_active != homing_active_old) {
         rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_homing_is_active ==  %d\n", homing_active);
@@ -1017,9 +1238,42 @@ bool get_homing_is_active() {
     }
     return homing_active;
 }
+
+/**
+ * @brief Gibt zurück, ob der Index-Enable-Status für eine Achse gesetzt ist.
+ *
+ * Diese Funktion prüft, ob das Indexsignal für die angegebene Achse (Joint)
+ * aktuell aktiviert ist. Dies kann im Homing-Prozess verwendet werden, um zu
+ * erkennen, ob die Achse auf ein Index-Event wartet oder dieses verwendet.
+ *
+ * @param jno Joint-Nummer der Achse.
+ * @return true, wenn Index aktiviert ist, sonst false.
+ *
+ * @ingroup PoKeys_HomingRuntime
+ */
 bool get_index_enable(int jno) {
     return H[jno].index_enable ? 1 : 0;
 }
+
+/**
+ * @brief Liest aktuelle Homing-relevante Zustände von den HAL-Input-Pins ein.
+ *
+ * Diese Funktion aktualisiert die internen Homing-Datenstrukturen (`H[jno]`) mit Werten,
+ * die über die HAL-Eingabepins zur Verfügung gestellt werden. Typischerweise geschieht dies
+ * einmal pro Servo-Zyklus.
+ *
+ * Sie liest folgende Werte ein:
+ * - `home_sw` (Home-Schalter-Zustand)
+ * - `index_enable` (Aktivierung des Indexsignals)
+ * - `PEv2_AxesState` (aktueller Achsstatus der PulseEngine v2)
+ *
+ * Es wird ein Logeintrag erzeugt, wenn sich der Achsstatus im Vergleich zum letzten
+ * bekannten Zustand verändert hat.
+ *
+ * @param njoints Anzahl der konfigurierten Achsen (Joints).
+ *
+ * @ingroup PoKeys_HomingRuntime
+ */
 void read_homing_in_pins(int njoints) {
     int jno;
     int org_state;
@@ -1038,6 +1292,19 @@ void read_homing_in_pins(int njoints) {
     return;
 }
 
+/**
+ * @brief Schreibt aktuelle Homing-Zustände in die verbundenen HAL-Output-Pins.
+ *
+ * Diese Funktion überträgt den internen Zustand (`H[jno]`) jeder Achse auf die zugehörigen
+ * HAL-Ausgabepins, die in `joint_home_data->jhd[jno]` gespeichert sind.
+ * Sie wird typischerweise einmal pro Servo-Zyklus aufgerufen.
+ *
+ * Zusätzlich wird ein Logeintrag geschrieben, wenn sich der `PEv2_AxesCommand` für eine Achse ändert.
+ *
+ * @param njoints Anzahl der konfigurierten Achsen (Joints).
+ *
+ * @ingroup PoKeys_HomingRuntime
+ */
 void write_homing_out_pins(int njoints) {
     int jno;
     one_joint_home_data_t *addr;
@@ -1065,6 +1332,31 @@ void do_home_all(void) {
     return;
 } // do_home_all()
 
+/**
+ * @brief Führt die Homing-Logik für eine einzelne Achse aus.
+ *
+ * Diese Funktion überprüft den aktuellen PEv2-Zustand (`PEv2_AxesState`) der angegebenen Achse
+ * und setzt den entsprechenden `PEv2_AxesCommand`, um die Homing-Sequenz fortzusetzen.
+ *
+ * - Bei Sequenzbasiertem Homing (home_sequence < 0) wird zusätzlich der Homing-Vorgang
+ *   für alle betroffenen Achsen koordiniert.
+ * - Wenn der Zustand `axHOME` erreicht ist, prüft die Funktion, ob alle Achsen der Sequenz
+ *   ebenfalls "gehomed" sind. Falls ja, wird `axHOMINGFINALIZE` an alle Achsen gesetzt.
+ * - In Initialzuständen (`axREADY`, `axSTOPPED`) wird der Start des Homings durch
+ *   `axHOMINGSTART` eingeleitet.
+ *
+ * Diese Funktion ist eine zentrale Verknüpfung zwischen:
+ * - dem `pokeys_1joint_state_machine()`,
+ * - dem Status-Rückkanal `PEv2_AxesState`, und
+ * - dem Steuerungskanal `PEv2_AxesCommand`.
+ *
+ * @param jno Achsnummer (joint number), für die der Homingprozess bearbeitet werden soll.
+ *
+ * @ingroup PoKeys_HomingControl
+ * @ingroup PoKeys_PEv2_AxisState
+ * @ingroup PoKeys_PEv2_AxisCommand
+ * @ingroup PoKeys_HomingFSM
+ */
 void do_home_joint(int jno) {
     if (jno >= 0) {
         // one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
@@ -1241,10 +1533,35 @@ void do_home_joint(int jno) {
     return;
 }
 
-/* 'do_homing_sequence()' decides what, if anything, needs to be done
-    related to multi-joint homing.
 
-*/
+/**
+ * @brief Führt eine vollständige Homing-Sequenz für mehrere Achsen aus.
+ *
+ * 'do_homing_sequence()' decides what, if anything, needs to be done related to multi-joint homing.
+ *
+ * Diese Funktion wird periodisch aus `do_homing()` aufgerufen, solange der
+ * `sequence_state` nicht `HOME_SEQUENCE_IDLE` ist. Sie implementiert eine
+ * interne Zustandsmaschine, welche den aktuellen Zustand der Sequenz (`sequence_state`)
+ * berücksichtigt und ggf. Befehle wie `PK_PEAxisCommand_axHOMINGSTART` oder
+ * `PK_PEAxisCommand_axHOMINGCANCEL` an die Achsen sendet.
+ *
+ * Dabei werden folgende Zustände verarbeitet:
+ * - `HOME_SEQUENCE_DO_ONE_JOINT`: Nur eine Achse wird gehomed
+ * - `HOME_SEQUENCE_DO_ONE_SEQUENCE`: Mehrere Achsen einer Sequenz werden vorbereitet
+ * - `HOME_SEQUENCE_START`: Erste Zustandsprüfung der Achsen
+ * - `HOME_SEQUENCE_WAIT_JOINTS`: Warte, bis alle Achsen den Zustand `axHOME` erreichen
+ * - `HOME_SEQUENCE_IDLE`: beendet
+ *
+ * Der Ablauf basiert auf den Rückmeldungen der Achsen über
+ * `PEv2_AxesState` und triggert neue Kommandos über `PEv2_AxesCommand`.
+ *
+ * @ingroup PoKeys_HomingControl
+ * @ingroup PoKeys_HomingFSM
+ * @ingroup PoKeys_PEv2_AxisState
+ * @ingroup PoKeys_PEv2_AxisCommand
+ * @see do_homing()
+ * @see do_home_joint()
+ */
 static void do_homing_sequence(void) {
     int i, ii;
     int seen;
@@ -1590,15 +1907,42 @@ static void do_homing_sequence(void) {
     return;
 } // do_homing_sequence()
 
-/* 'do_homing()' looks at the home_state field of each joint struct
-    to decide what, if anything, needs to be done related to homing
-    the joint.  Homing is implemented as a state machine, the exact
-    sequence of states depends on the machine configuration.  It
-    can be as simple as immediately setting the current position to
-    zero, or a it can be a multi-step process (find switch, set
-    approximate zero, back off switch, find index, set final zero,
-    rapid to home position), or anywhere in between.
+/* 
 */
+/**
+ * @brief Hauptschleife für den Homing-Prozess aller Achsen.
+ *
+ * 'do_homing()' looks at the home_state field of each joint struct
+ * to decide what, if anything, needs to be done related to homing
+ * the joint.  Homing is implemented as a state machine, the exact
+ * sequence of states depends on the machine configuration.  It
+ * can be as simple as immediately setting the current position to
+ * zero, or a it can be a multi-step process (find switch, set
+ * approximate zero, back off switch, find index, set final zero,
+ * rapid to home position), or anywhere in between.
+ * Diese Funktion wird periodisch aufgerufen (z. B. aus einem Echtzeit-Thread)
+ * und kümmert sich um:
+ *
+ * - Ausführung der sequenziellen Homing-FSM über `do_homing_sequence()`
+ * - Iteration über alle aktiven Achsen und Abwicklung ihrer Einzel-FSM über
+ *   `pokeys_1joint_state_machine(joint_num)`
+ * - Prüfung, ob der Homing-Prozess abgeschlossen ist (alle Achsen homed, keine aktiv homenden mehr)
+ *
+ * Die Rückmeldung erfolgt über einen `bool` Return:
+ * - `true`: Homing abgeschlossen
+ * - `false`: Homing läuft noch
+ *
+ * @ingroup PoKeys_HomingControl
+ * @ingroup PoKeys_HomingFSM
+ * @ingroup PoKeys_PEv2_AxisState
+ * @ingroup PoKeys_PEv2_AxisCommand
+ *
+ * @return true wenn alle Achsen erfolgreich homed sind
+ * @return false wenn mindestens eine Achse noch in Bearbeitung ist
+ *
+ * @see do_homing_sequence()
+ * @see pokeys_1joint_state_machine()
+ */
 bool do_homing(void) {
     int joint_num;
     int homing_flag = 0;
@@ -1648,11 +1992,38 @@ bool do_homing(void) {
     return false;
 }
 
+/**
+ * @brief Setzt den Homing-Status einer Achse zurück.
+ *
+ * Diese Funktion markiert die angegebene Achse (`jno`) als "nicht gehome'd"
+ * durch Setzen von `H[jno].homed = 0`. Sie wird typischerweise aufgerufen,
+ * wenn sich der Maschinenzustand ändert oder wenn Homing erneut erforderlich ist.
+ *
+ * @param jno Die Joint-Nummer (Achse), deren Homing-Status zurückgesetzt werden soll.
+ * @param motstate Der aktuelle Maschinenstatus (wird derzeit nicht verwendet).
+ *
+ * @ingroup PoKeys_HomingControl
+ */
 void set_unhomed(int jno, motion_state_t motstate) {
     // one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
     H[jno].homed = 0;
     return;
 }
+
+/**
+ * @brief Bricht den Homing-Vorgang für eine einzelne Achse ab.
+ *
+ * Diese Funktion sendet den Befehl `PK_PEAxisCommand_axHOMINGCANCEL` an die
+ * spezifizierte Achse (`jno`) über das gemeinsame Steuerarray `H[]`.
+ *
+ * Wird typischerweise verwendet, wenn ein Fehler auftritt oder der Homing
+ * manuell abgebrochen werden soll.
+ *
+ * @param jno Die Joint-Nummer (Achse), für die das Homing abgebrochen werden soll
+ *
+ * @ingroup PoKeys_HomingControl
+ * @ingroup PoKeys_PEv2_AxisCommand
+ */
 void do_cancel_homing(int jno) {
     // one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
     rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_cancel_homing(%d)\n", jno);
@@ -1660,6 +2031,29 @@ void do_cancel_homing(int jno) {
     return;
 }
 
+/**
+ * @brief Setzt die Homing-Parameter für eine bestimmte Achse.
+ *
+ * Diese Funktion initialisiert oder aktualisiert alle relevanten Homing-Parameter
+ * für die angegebene Achse `jno`. Dazu zählen Geschwindigkeiten für verschiedene
+ * Phasen des Homings, der Offset, die Zielposition, die Flags zur Steuerung des
+ * Homing-Verhaltens sowie die Sequenzzugehörigkeit.
+ *
+ * Zusätzlich wird die gesamte Sequenzstruktur mit
+ * `update_sequence_home_data()` aktualisiert.
+ *
+ * @param jno Joint-Nummer der zu konfigurierenden Achse.
+ * @param offset Der Offset, der nach dem Homing angewendet wird.
+ * @param home Zielposition nach dem Homing (z. B. 0.0).
+ * @param home_final_vel Geschwindigkeit beim finalen Anfahren der Home-Position.
+ * @param home_search_vel Geschwindigkeit beim ersten Suchen des Referenzpunktes.
+ * @param home_latch_vel Geschwindigkeit beim Latch-Vorgang (z. B. bei Indexpulse).
+ * @param home_flags Steuerflags (z. B. Verhalten bei Limit-Schaltern).
+ * @param home_sequence Sequenznummer (negativ = Gruppensequenz, positiv = Einzelsequenz).
+ * @param volatile_home Gibt an, ob das Homing flüchtig ist (z. B. bei Soft-Homing).
+ *
+ * @ingroup PoKeys_HomingSetup
+ */
 void set_joint_homing_params(int jno, double offset, double home, double home_final_vel, double home_search_vel, double home_latch_vel, int home_flags, int home_sequence, bool volatile_home) {
     rtapi_print_msg(RTAPI_MSG_DBG,
                     "HOMING: set_joint_homing_params(%d) offset:%f home:%f "
@@ -1678,6 +2072,22 @@ void set_joint_homing_params(int jno, double offset, double home, double home_fi
     update_sequence_home_data();
     return;
 }
+
+/**
+ * @brief Aktualisiert ausgewählte Homing-Parameter einer Achse.
+ *
+ * Diese Funktion erlaubt es, einzelne wesentliche Homing-Parameter
+ * (Offset, Zielposition und Sequenznummer) zur Laufzeit anzupassen,
+ * ohne die restlichen Homing-Parameter zu verändern.
+ * Anschließend wird die Sequenzstruktur mit `update_sequence_home_data()` aktualisiert.
+ *
+ * @param jno Joint-Nummer der zu aktualisierenden Achse.
+ * @param offset Neuer Offset nach Homing.
+ * @param home Neue Zielposition nach Homing.
+ * @param home_sequence Zugehörige Homing-Sequenz (negativ = Gruppe, positiv = Einzelsequenz).
+ *
+ * @ingroup PoKeys_HomingSetup
+ */
 void update_joint_homing_params(int jno, double offset, double home, int home_sequence) {
     rtapi_print_msg(RTAPI_MSG_DBG,
                     "HOMING: update_joint_homing_params(%d) offset:%f home:%f "

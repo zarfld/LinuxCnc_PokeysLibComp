@@ -207,12 +207,28 @@ int oldAxxiState[8] = { 0 };
 extern unsigned int sleepdur;
 extern bool ApplyIniSettings;
 
-// This function is called from the main thread
 /**
- * @brief   Update the status of the PoKeys device.
- * 
- * @param dev 
- * @param HAL_Machine_On 
+ * @brief Main update routine for the PoKeys Pulse Engine v2.
+ *
+ * This function handles the real-time synchronization between the HAL component
+ * and the PoKeys device by reading the current state of each axis, evaluating homing,
+ * probing, motion commands, and updating control and feedback variables.
+ *
+ * It performs the following key tasks:
+ * - Applies INI-based initialization settings if enabled
+ * - Reads status and diagnostics from the Pulse Engine
+ * - Handles homing sequences, including sub-states and transitions
+ * - Computes and sets reference positions and speeds based on command inputs
+ * - Switches between velocity and position control modes depending on motion state
+ * - Sends motion and state commands to the Pulse Engine
+ * - Updates feedback pins (e.g., position, limit switches, emergency stop)
+ *
+ * The function evaluates each axis state in a loop and decides the proper action
+ * such as triggering homing sequences or changing the control mode. It also reacts
+ * to emergency stop states and ensures correct feedback even during homing.
+ *
+ * @param dev Pointer to the PoKeys device structure.
+ * @param HAL_Machine_On Flag indicating if the HAL machine is enabled (i.e., in operation).
  */
 void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
     uint8_t bm_LimitStatusP; // Limit+ status (bit-mapped)
@@ -1220,12 +1236,32 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
     }
 }
 
-// This function is called to setup the PoKeys device
-// It ensures Pulse Engine is set up and configured
 /**
- * @brief Setup the PEv2 of PoKeys device
- * 
- * @param dev 
+ * @brief Applies configuration to the PoKeys Pulse Engine v2 during initialization.
+ *
+ * This function sets up the Pulse Engine v2 (PEv2) based on either the INI file settings or the current
+ * runtime state of the PoKeys device. It handles the initialization and configuration of:
+ * - Pulse Engine core settings (enabled state, charge pump, generator type)
+ * - Digital I/O pin configuration (probe and emergency output)
+ * - Axis-specific settings (enabled flags, motion planner modes, limits, homing behavior)
+ * - Additional parameters such as emergency polarity and runtime-reported status
+ *
+ * If `ApplyIniSettings` is true, the function applies the values from the PEv2_data structure
+ * (populated by `PKPEv2_ReadIniFile`) to the device using `PEv2_PulseEngineSetup()` and related calls.
+ * Otherwise, it reads the current device configuration back into `PEv2_data` using `PK_PEv2_StatusGet()`,
+ * `PK_PEv2_Status2Get()`, and `PEv2_AdditionalParametersGet()`.
+ *
+ * The probe pin is configured as a digital input if specified. The emergency output pin is also set
+ * as a digital output and added to the ignore list for value setting, as it is not directly configured
+ * by the PoKeys firmware.
+ *
+ * Finally, for each axis, either `PEv2_AxisConfigurationSet()` or `PEv2_AxisConfigurationGet()` is called,
+ * depending on whether settings are to be applied or queried.
+ *
+ * @param dev Pointer to the PoKeys device structure. This must be initialized and connected.
+ *
+ * @note This function should be called after reading the INI file and before enabling motion control.
+ * It ensures the hardware is properly configured to match the desired logical setup.
  */
 void PKPEv2_Setup(sPoKeysDevice *dev) {
     bool DoPeSetup = false;
@@ -1323,11 +1359,25 @@ void PKPEv2_Setup(sPoKeysDevice *dev) {
 #endif
 }
 
-// This function reads the configuration from the INI file
 /**
- * @brief Read the INI file for configuration settings
- * 
- * @param dev 
+ * @brief Reads configuration parameters for the PoKeys Pulse Engine v2 from the INI file.
+ *
+ * This function loads all Pulse Engine v2 settings from the [POKEYS] section of the HAL INI file.
+ * It initializes general settings like probe, emergency input/output pins, and the state of the
+ * pulse engine and charge pump. For each available axis, it loads axis configuration, switch assignments,
+ * soft limits, speed parameters, homing algorithms, filter settings, and MPG (manual pulse generator) jogging options.
+ *
+ * The values are stored into the shared PEv2_data structure, which is later used during runtime for control and motion logic.
+ *
+ * @param dev Pointer to the PoKeys device structure. This provides the number of available axes via `dev->PEv2.info.nrOfAxes`.
+ *
+ * @note This function should be called once during initialization to prepare the component for correct operation.
+ *
+ * INI parameters read include (per axis or globally):
+ * - PEv2_ProbeInput, PEv2_EmergencyInputPin, PEv2_ChargePumpEnabled, etc.
+ * - Axis-specific: PEv2_AxisEnabled_#, PEv2_AxesConfig_#, PEv2_MaxSpeed_#, PEv2_HomingSpeed_#, PEv2_AxesSwitchConfig_#, etc.
+ * - Digital input/output pin assignments and inversion flags
+ * - Homing logic and movement constraints
  */
 void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
     char key[256]; // Puffer für den zusammengesetzten String
