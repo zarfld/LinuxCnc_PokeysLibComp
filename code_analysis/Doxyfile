@@ -1,6 +1,7 @@
 # Eingabedateien
 INPUT = ../pokeys_rt ../pokeys_uspace ../external/pokeyslib ../README.md
 FILE_PATTERNS          = *.c *.h
+PROJECT_NAME = "PoKeys HAL Component"
 
 # Dokumentationsformate
 GENERATE_HTML          = YES
