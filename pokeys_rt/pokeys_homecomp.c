@@ -20,7 +20,6 @@
  * @date 2025
  */
 
-
 #include "rtapi.h"
 #ifdef RTAPI
 #include "rtapi_app.h"
@@ -83,7 +82,7 @@ MODULE_LICENSE("GPL");
  * @{
  */
 
- /**
+/**
  * @class home_state_t
  * @brief Internal state representation for the homing state machine of one joint.
  *
@@ -338,7 +337,7 @@ typedef struct {
  * @see ePoKeysPEState
  * @see PoKeysCompPulseEngine_v2
  */
-    hal_u32_t *PEv2_AxesState;   // State of pulse engine - see ePoKeysPEState
+    hal_u32_t *PEv2_AxesState; // State of pulse engine - see ePoKeysPEState
 
     /**
  * @brief Command output to the PulseEngine for this joint.
