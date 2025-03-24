@@ -381,9 +381,71 @@ void PKPoExtBus_Update(sPoKeysDevice *dev);
  */
 void PKPoExtBus_Setup(sPoKeysDevice *dev)
     // ========================== PoNet Support =====================================
-    int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoNET_data_t *poNET_data, sPoKeysDevice *dev);
-void PKPoNet_Setup(sPoKeysDevice *dev);
+/**
+ * @brief Exports HAL pins and parameters for PoNET modules and optionally kbd48CNC devices.
+ *
+ * This function initializes and exports all relevant HAL pins and parameters for PoNET modules
+ * connected to a PoKeys device. It dynamically allocates memory for internal state (if needed)
+ * and assigns module metadata (ID, type, size, options) and I/O channels as HAL pins.
+ *
+ * Additionally, if a `kbd48CNC` module is detected, it exports button and LED pins
+ * for up to 48 keys and sets up backlight brightness and control pins.
+ *
+ * The function supports up to 16 PoNET modules with up to 16 I/O channels each.
+ *
+ * @param prefix         The string prefix for the HAL pin and parameter names (e.g. "pokeys").
+ * @param extra_arg      Reserved extra argument, unused.
+ * @param id             Unique HAL component ID used for pin/parameter creation.
+ * @param njoints        Number of PoNET modules expected or to be scanned.
+ * @param poNET_data     Pointer to an existing `all_PoNET_data_t` structure or NULL to auto-allocate.
+ * @param dev            Pointer to the PoKeys device structure. Must not be NULL.
+ *
+ * @return 0 on success, negative value on failure (e.g. malloc failure, pin export error).
+ *
+ * @note This function uses `PK_PoNETGetModuleSettings()` to query each module slot (0–15)
+ *       and only exports pins for detected and valid modules.
+ * @note Memory allocation for `PoNet_data->kbd48CNCio[]` elements is done on demand.
+ * @note Requires `dev->info.iPoNET` > 0 (i.e., PoNET support available on the device).
+ */
+ int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoNET_data_t *poNET_data, sPoKeysDevice *dev);
+    /**
+ * @brief Updates the state of the connected PoNET modules, specifically kbd48CNC.
+ *
+ * This function performs a full update cycle for the `kbd48CNC` device connected via PoNET,
+ * including:
+ * - Fetching module settings and light (backlight) values
+ * - Reading key/button states from the device
+ * - Reflecting input state into HAL pins
+ * - Updating LED states based on HAL input
+ * - Writing updated status information back to the module
+ *
+ * The function contains debug outputs and a `deb_out` pin to trace execution and states.
+ * It supports fault handling and retries for communication with the device.
+ *
+ * @param dev Pointer to the sPoKeysDevice structure, representing the connected PoKeys device.
+ *
+ * @note This function only performs actions if `kbd48CNC_available` is non-zero,
+ *       indicating that a kbd48CNC PoNET module has been detected.
+ *
+ * @note The `kbd48CNC` buttons are processed in a remapped ID order using a 4-group offset scheme,
+ *       to match hardware layout with software index logic.
+ *
+ * @warning This function assumes that `PoNet_data` has already been initialized and populated
+ *          by `PKPoNet_export_pins()`. If not, behavior is undefined.
+ */
 void PKPoNet_Update(sPoKeysDevice *dev);
+/**
+ * @brief Initializes or configures PoNET-related settings for the given device.
+ *
+ * This function is a placeholder for any future setup logic required for PoNET modules.
+ * Currently, it does not perform any operations.
+ *
+ * @param dev Pointer to the sPoKeysDevice structure representing the connected PoKeys device.
+ *
+ * @note Intended to be called during component initialization or device setup.
+ *       Can be expanded to handle default configurations, pre-allocations, or hardware checks.
+ */
+ void PKPoNet_Setup(sPoKeysDevice *dev)
 
 // ========================== PulseEngine v2 ===================================
 
