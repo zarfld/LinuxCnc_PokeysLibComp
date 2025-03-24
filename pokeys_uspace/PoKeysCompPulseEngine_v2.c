@@ -732,7 +732,12 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
 
             if ((intAxesState == PK_PEAxisState_axSTOPPED || intAxesState == PK_PEAxisState_axREADY || intAxesState == PK_PEAxisState_axHOME) && old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) && (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisState_axHOMINGSTART || *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGSTART)) {
                 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingStart\n", __FILE__, __FUNCTION__);
-                PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axIDLE, PK_Homing_axHOMINGSTART);
+                if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axIDLE, PK_Homing_axHOMINGSTART) == 0) {
+                    doHomingStart = true;
+                    IsHoming[i] = true;
+                    //HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
+                    //rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n",  i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
+                }
                 int MyHomeSequ, seq;
                 //MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
                 //HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
@@ -790,7 +795,9 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             else if (intAxesState == PK_PEAxisState_axHOME && *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGFinalize) {
                 int MyHomeSequ, seq;
                 MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
-                PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGSTART, PK_Homing_axHOMINGFinalize);
+                if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGSTART, PK_Homing_axHOMINGFinalize)==0){
+                    
+                }
                 /*HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
                 rtapi_print_msg(RTAPI_MSG_DBG,
                                 "PK_HOMING: ensurinig that all axes (%d) with same "
@@ -1220,35 +1227,9 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
     }
 
     if (dev->PEv2.HomingStartMaskSetup != HomingStartMaskSetup && HomingStartMaskSetup != 0 && doHomingStart) {
-        /* rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: Startmask at trigger (%d) \n", HomingStartMaskSetup);
 
-        dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
-        if (PK_PEv2_HomingStart(dev) != PK_OK) {
-            rtapi_print_msg(RTAPI_MSG_ERR,
-                            "PoKeys: %s:%s: PK_PEv2_HomingStart!=PK_OK   "
-                            "HomingStartMaskSetup = %d\n",
-                            __FILE__, __FUNCTION__, HomingStartMaskSetup);
-
-        } else {
-            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_HomingStart=PK_OK\n", __FILE__, __FUNCTION__);
-            Homing_active = true;
-        }
-
-        dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
-        PK_PEv2_HomingStart(dev);*/
-#ifdef ULAPI
-        usleep(sleepdur);
-#endif
     } else if (dev->PEv2.HomingStartMaskSetup != HomingStartMaskSetup && HomingStartMaskSetup != 0 && doHomingEnd) {
-        /* rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: Startmask at trigger (%d) \n", HomingStartMaskSetup);
 
-        dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
-        //PK_PEv2_HomingStart(dev);
-        PK_PEv2_HomingFinish(dev);
-        Homing_active = true;
-#ifdef ULAPI
-        usleep(sleepdur);
-#endif*/
     } else if (*(PEv2_data->PEv2_PulseEngineState) != *(PEv2_data->PEv2_PulseEngineStateSetup) && doHomingStart == 0) {
         rtapi_print_msg(RTAPI_MSG_DBG, "PK_PEv2: PEv2_PulseEngineStateSetup (%d) \n", *(PEv2_data->PEv2_PulseEngineStateSetup));
         dev->PEv2.PulseEngineStateSetup = *(PEv2_data->PEv2_PulseEngineStateSetup);

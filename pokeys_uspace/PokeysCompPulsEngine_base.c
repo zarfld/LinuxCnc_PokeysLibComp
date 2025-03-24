@@ -1519,7 +1519,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
     bool do_move = false;
 
     for (int axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
-        if (PEv2_data->PEv2_home_sequence[axis] == seq) {
+        if (abs(PEv2_data->PEv2_home_sequence[axis]) == abs(seq)) {
             joints_in_Sequence++;
             if (*(PEv2_data->PEv2_HomingStatus[axis]) == RequiredState) {
                 sequence_joints_ready++;
@@ -1542,8 +1542,12 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Not all axes in sequence %d are ready\n", __FILE__, __FUNCTION__, seq);
         return 1; // not all joints in sequence are ready
     }
+    else{
+
+   
+
     for (int axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
-        if (PEv2_data->PEv2_home_sequence[axis] == seq) {
+        if (abs(PEv2_data->PEv2_home_sequence[axis]) == abs(seq)) {
             switch (NextState) {
                 case PK_Homing_axHOMINGSTART:
                     HomingStartMaskSetup = (1 << axis); // Home my axis only (bit MyHomeSequ)
@@ -1638,6 +1642,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
             break;
     }
     return 0;
+}
 }
 
 /**
