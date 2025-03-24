@@ -10,16 +10,16 @@
  * @ingroup hal_component_pokeys
  */
 
- #ifndef _POKEYS_COMP_H_
- #define _POKEYS_COMP_H_
- 
- #ifdef __cplusplus
- extern "C" {
- #endif
- 
- #include <stdint.h>
- 
- /**
+#ifndef _POKEYS_COMP_H_
+#define _POKEYS_COMP_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <stdint.h>
+
+/**
   * @defgroup hal_component_pokeys PoKeys HAL Component
   * @brief HAL interface for PoKeys devices and PulseEngine integration.
   *
@@ -27,8 +27,8 @@
   * the PoKeys HAL component for LinuxCNC.
   * @{
   */
- 
- /**
+
+/**
   * @class PoKeysHALComponent
   * @brief Represents a single PoKeys device and its runtime state.
   *
@@ -36,14 +36,14 @@
   * PulseEngine data for a single PoKeys device. All functions operating
   * on this structure are considered class methods.
   */
- typedef struct {
-     int device_number;
-     // other configuration and runtime fields...
- } PoKeysHALComponent;
- 
- // ========================== General Setup & I/O ===============================
+typedef struct {
+    int device_number;
+    // other configuration and runtime fields...
+} PoKeysHALComponent;
 
- /**
+// ========================== General Setup & I/O ===============================
+
+/**
   * @brief Export HAL pins and parameters for PoKeys analog and digital I/O.
   *
   * This function creates and registers HAL pins and parameters for all supported
@@ -69,9 +69,9 @@
   * @see one_digiIO_data_t
    * @memberof PoKeysHALComponent
   */
- int PKIO_export_pins(char *prefix, long extra_arg, int id, all_IO_data_t *Io_data, sPoKeysDevice *dev);
- 
- /**
+int PKIO_export_pins(char *prefix, long extra_arg, int id, all_IO_data_t *Io_data, sPoKeysDevice *dev);
+
+/**
   * @brief Updates PoKeys I/O states from and to hardware.
   *
   * This function performs periodic synchronization between the PoKeys hardware device
@@ -101,9 +101,9 @@
   * @see all_IO_data_t
    * @memberof PoKeysHALComponent
   */
- void PKIO_Update(sPoKeysDevice *dev);
- 
- /**
+void PKIO_Update(sPoKeysDevice *dev);
+
+/**
   * @brief Initializes the PoKeys digital and analog I/O configuration.
   *
   * This function configures the I/O pins and PWM settings of the PoKeys device
@@ -135,9 +135,9 @@
   * @see all_IO_data_t
    * @memberof PoKeysHALComponent
   */
- void PKIO_Setup(sPoKeysDevice *dev);
- 
- /**
+void PKIO_Setup(sPoKeysDevice *dev);
+
+/**
   * @brief Reads and applies I/O configuration values for the PoKeys device from the INI file.
   *
   * This function loads pin functions, input/output inversion flags, analog input/output
@@ -169,9 +169,9 @@
   * @see ini_read_float()
    * @memberof PoKeysHALComponent
   */
- void PKIO_ReadIniFile(sPoKeysDevice *dev);
- 
- /**
+void PKIO_ReadIniFile(sPoKeysDevice *dev);
+
+/**
   * @brief Writes the current PoKeys I/O configuration to the INI file.
   *
   * This function saves all relevant I/O parameters from the current HAL state
@@ -201,11 +201,11 @@
   * @see ini_write_float()
    * @memberof PoKeysHALComponent
   */
- void PKIO_WriteIniFile(sPoKeysDevice *dev);
- 
- // ========================== Encoder Support ===================================
+void PKIO_WriteIniFile(sPoKeysDevice *dev);
 
- /**
+// ========================== Encoder Support ===================================
+
+/**
  * @brief Exports HAL encoder pins for the PoKeys device.
  *
  * This function creates and registers all necessary HAL pins for a specified number of encoders 
@@ -238,7 +238,7 @@
  */
 
 int PKEncoder_export_pins(char *prefix, long extra_arg, int id, int njoints, all_encoder_data_t *Encoder_data)
- /**
+    /**
  * @brief Exports HAL parameters related to encoder configuration.
  *
  * This function registers additional HAL parameters for each encoder channel,
@@ -263,8 +263,8 @@ int PKEncoder_export_pins(char *prefix, long extra_arg, int id, int njoints, all
  * @see PKEncoder_export_pins()
  * @see one_encoder_data_t
  */
-int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints);
- /**
+    int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints);
+/**
  * @brief Updates encoder data from the PoKeys device and writes values to HAL pins.
  *
  * This function retrieves encoder values (basic and ultra-fast) from the PoKeys device
@@ -306,7 +306,7 @@ void PKEncoder_Update(sPoKeysDevice *dev);
  *
  * @param[in,out] dev Pointer to the initialized PoKeys device structure
  */
- void PKEncoder_Setup(sPoKeysDevice *dev);
+void PKEncoder_Setup(sPoKeysDevice *dev);
 /**
  * @brief Reads encoder-related settings from the INI configuration file.
  *
@@ -323,8 +323,8 @@ void PKEncoder_Update(sPoKeysDevice *dev);
  *
  * @param[in,out] dev Pointer to the initialized PoKeys device structure
  */
- void PKEncoder_ReadIniFile(sPoKeysDevice *dev);
- /**
+void PKEncoder_ReadIniFile(sPoKeysDevice *dev);
+/**
  * @brief Writes encoder-related configuration to the INI file.
  *
  * This function is intended to save current encoder configuration values (e.g., scale, pin assignments,
@@ -341,11 +341,10 @@ void PKEncoder_Update(sPoKeysDevice *dev);
  * @param[in] dev Pointer to the initialized PoKeys device structure
  */
 void PKEncoder_WriteIniFile(sPoKeysDevice *dev);
- 
- // ========================== PoExtBus (e.g., HCT595) ===========================
- 
 
- /**
+// ========================== PoExtBus (e.g., HCT595) ===========================
+
+/**
  * @brief Updates the PoExtBus data from and to the PoKeys device.
  *
  * This function synchronizes the state of the PoExtBus (PoKeys Extension Bus), which supports
@@ -380,54 +379,54 @@ void PKPoExtBus_Update(sPoKeysDevice *dev);
  *
  * @param[in] dev Pointer to the initialized PoKeys device structure
  */
- void PKPoExtBus_Setup(sPoKeysDevice *dev)
- // ========================== PoNet Support =====================================
- int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoNET_data_t *poNET_data, sPoKeysDevice *dev);
- void PKPoNet_Setup(sPoKeysDevice *dev);
- void PKPoNet_Update(sPoKeysDevice *dev);
- 
- // ========================== PulseEngine v2 ===================================
- 
- /**
+void PKPoExtBus_Setup(sPoKeysDevice *dev)
+    // ========================== PoNet Support =====================================
+    int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoNET_data_t *poNET_data, sPoKeysDevice *dev);
+void PKPoNet_Setup(sPoKeysDevice *dev);
+void PKPoNet_Update(sPoKeysDevice *dev);
+
+// ========================== PulseEngine v2 ===================================
+
+/**
   * @brief Configures the PulseEngine v2 using current settings.
   * @memberof PoKeysHALComponent
   */
- int PEv2_PulseEngineSetup(sPoKeysDevice *dev);
- 
- /**
+int PEv2_PulseEngineSetup(sPoKeysDevice *dev);
+
+/**
   * @brief Applies INI-based configuration to PulseEngine and IO.
   * @memberof PoKeysHALComponent
   */
- void PKPEv2_Setup(sPoKeysDevice *dev);
- 
- /**
+void PKPEv2_Setup(sPoKeysDevice *dev);
+
+/**
   * @brief Updates PulseEngine feedback and status.
   * @memberof PoKeysHALComponent
   */
- void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On);
- 
- /**
+void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On);
+
+/**
   * @brief Triggers a synchronized homing event.
   * @memberof PoKeysHALComponent
   */
- void PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int home_seq, int old_state, int new_state);
- 
- /**
+void PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int home_seq, int old_state, int new_state);
+
+/**
   * @brief Reads axis configuration from the device.
   * @memberof PoKeysHALComponent
   */
- void PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int axis);
- 
- /**
+void PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int axis);
+
+/**
   * @brief Writes axis configuration to the device.
   * @memberof PoKeysHALComponent
   */
- void PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int axis);
- 
- /** @} */ // end of hal_component_pokeys
- 
- #ifdef __cplusplus
- }
- #endif
- 
- #endif // _POKEYS_COMP_H_
+void PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int axis);
+
+/** @} */ // end of hal_component_pokeys
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif // _POKEYS_COMP_H_

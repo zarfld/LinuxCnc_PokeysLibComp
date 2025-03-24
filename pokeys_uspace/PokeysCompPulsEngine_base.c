@@ -30,7 +30,6 @@
  * shared across HAL components involving the PulseEngine.
  */
 
-
 /** @defgroup PEv2_Configuration Axis Configuration from PoKeys PEv2 */
 /** @defgroup PoKeys_Axis Axis-level state, config, and homing integration */
 #ifdef ULAPI
