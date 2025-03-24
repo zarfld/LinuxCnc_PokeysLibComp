@@ -778,7 +778,6 @@ typedef enum {
     PK_PEv2Homing_OutHomeReducedSpeed = (1 << 4),     // Cancel Homing procedure
 } pokeys_homing_algorithm_t;
 
-
 /**
  * @enum pokeys_axis_state_ext_t
  * @brief Extended PoKeys Pulse Engine axis states used for homing synchronization.
@@ -791,25 +790,24 @@ typedef enum {
  *
  * @note These states are assigned IDs that continue beyond the original PoKeysLib enum values.
  */
- typedef enum {
-  /**
+typedef enum {
+    /**
    * Axis is preparing to reset encoder position to zero.
    * Sent after PoKeys internal homing is done, just before `PK_PEAxisCommand_axARMENCODER`.
    */
-  PEAxisStateEx_HOMINGARMENCODER = 17,
+    PEAxisStateEx_HOMINGARMENCODER = 17,
 
-  /**
+    /**
    * Axis is waiting for all other joints in the sequence to be ready
    * before executing the final move to the home position.
    */
-  PEAxisStateEx_HOMINGWaitFINALMOVE = 18,
+    PEAxisStateEx_HOMINGWaitFINALMOVE = 18,
 
-  /**
+    /**
    * Axis is currently performing the final coordinated move to its home position.
    */
-  PEAxisStateEx_HOMINGFINALMOVE = 19,
+    PEAxisStateEx_HOMINGFINALMOVE = 19,
 } pokeys_axis_state_ext_t;
-
 
 /**
  * @enum pokeys_home_status_t
@@ -821,47 +819,47 @@ typedef enum {
  * via `PEv2_HomingStateSyncedTrigger()`. They do **not** reflect the PoKeysLib
  * `AxesState`, but a separate synchronization FSM maintained inside the HAL component.
  */
- typedef enum {
-  /**
+typedef enum {
+    /**
    * Axis is idle and not part of a current homing sequence.
    */
-  PK_Homing_axIDLE = 0,
+    PK_Homing_axIDLE = 0,
 
-  /**
+    /**
    * Homing procedure has been initiated (e.g., via `PK_PEAxisCommand_axHOMINGSTART`).
    * PoKeys internal homing starts here.
    */
-  PK_Homing_axHOMINGSTART = 1,
+    PK_Homing_axHOMINGSTART = 1,
 
-  /**
+    /**
    * Encoder arming phase: Axis resets its position to the configured zero point.
    * This usually happens after the PoKeys homing sequence has completed.
    */
-  PK_Homing_axARMENCODER = 2,
+    PK_Homing_axARMENCODER = 2,
 
-  /**
+    /**
    * Axis waits for all other joints in the same sequence to reach this state
    * before it triggers a synchronized final move to the home position.
    */
-  PK_Homing_axHOMINGWaitFinalMove = 3,
+    PK_Homing_axHOMINGWaitFinalMove = 3,
 
-  /**
+    /**
    * Axis executes the final coordinated move to its home position (absolute).
    */
-  PK_Homing_axHOMINGFinalMove = 4,
+    PK_Homing_axHOMINGFinalMove = 4,
 
-  /**
+    /**
    * Homing procedure has been aborted.
    */
-  PK_Homing_axHOMINGCancel = 5,
+    PK_Homing_axHOMINGCancel = 5,
 
-  /**
+    /**
    * Internal PoKeys homing procedure has completed.
    * This is typically the last state *before* encoder arming or final move is triggered.
    * 
    * @note Despite the name, this is **not** the final state of the entire LinuxCNC homing sequence.
    */
-  PK_Homing_axHOMINGFinalize = 6
+    PK_Homing_axHOMINGFinalize = 6
 } pokeys_home_status_t;
 
 /**
