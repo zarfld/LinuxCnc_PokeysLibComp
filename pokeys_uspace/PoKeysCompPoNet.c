@@ -56,23 +56,23 @@ typedef struct {
  * - A kbd48CNC keyboard module with 48 keys (each with LED and Button)
  * - Status and control values like PWM and brightness
  */
- typedef struct {
-    one_PoNET_data_t PoNET[16];          /**< Data for up to 16 PoNET modules */
-    hal_u32_t *PoNET_PWMduty;            /**< HAL input pin for controlling the PoNET PWM duty cycle */
-    hal_u32_t *PoNET_lightValue;         /**< HAL input pin for the global PoNET light value */
-    hal_u32_t *PoNET_PoNETstatus;        /**< HAL output pin for status reporting */
-    hal_u32_t PoNET_DevCount;            /**< Read-only parameter: Number of active PoNET devices */
+typedef struct {
+    one_PoNET_data_t PoNET[16];   /**< Data for up to 16 PoNET modules */
+    hal_u32_t *PoNET_PWMduty;     /**< HAL input pin for controlling the PoNET PWM duty cycle */
+    hal_u32_t *PoNET_lightValue;  /**< HAL input pin for the global PoNET light value */
+    hal_u32_t *PoNET_PoNETstatus; /**< HAL output pin for status reporting */
+    hal_u32_t PoNET_DevCount;     /**< Read-only parameter: Number of active PoNET devices */
 
-    hal_bit_t kbd48CNC_available;        /**< Flag indicating availability of the kbd48CNC module */
-    hal_u32_t kbd48CNC_PoNetID;          /**< PoNET ID of the kbd48CNC module */
-    hal_u32_t *kbd48CNC_KeyBrightness;   /**< HAL input pin for controlling key brightness */
-    hal_u32_t *kbd48CNC_prevBrightness;  /**< HAL output pin for previous brightness state */
-    hal_u32_t *kbd48CNC_lightValue;      /**< HAL input pin for the kbd48CNC light value */
+    hal_bit_t kbd48CNC_available;       /**< Flag indicating availability of the kbd48CNC module */
+    hal_u32_t kbd48CNC_PoNetID;         /**< PoNET ID of the kbd48CNC module */
+    hal_u32_t *kbd48CNC_KeyBrightness;  /**< HAL input pin for controlling key brightness */
+    hal_u32_t *kbd48CNC_prevBrightness; /**< HAL output pin for previous brightness state */
+    hal_u32_t *kbd48CNC_lightValue;     /**< HAL input pin for the kbd48CNC light value */
 
     one_kbd48CNCButton_data_t *kbd48CNCio[48]; /**< Array of 48 key-button mappings for the kbd48CNC */
-    uint8_t kbd48CNC_Counter;            /**< Internal counter used for kbd48CNC state updates */
+    uint8_t kbd48CNC_Counter;                  /**< Internal counter used for kbd48CNC state updates */
 
-    hal_s32_t *deb_out;                  /**< Debug output pin for internal state information */
+    hal_s32_t *deb_out; /**< Debug output pin for internal state information */
 } all_PoNET_data_t;
 
 /**

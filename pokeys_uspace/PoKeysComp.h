@@ -381,7 +381,7 @@ void PKPoExtBus_Update(sPoKeysDevice *dev);
  */
 void PKPoExtBus_Setup(sPoKeysDevice *dev)
     // ========================== PoNet Support =====================================
-/**
+    /**
  * @brief Exports HAL pins and parameters for PoNET modules and optionally kbd48CNC devices.
  *
  * This function initializes and exports all relevant HAL pins and parameters for PoNET modules
@@ -407,8 +407,8 @@ void PKPoExtBus_Setup(sPoKeysDevice *dev)
  * @note Memory allocation for `PoNet_data->kbd48CNCio[]` elements is done on demand.
  * @note Requires `dev->info.iPoNET` > 0 (i.e., PoNET support available on the device).
  */
- int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoNET_data_t *poNET_data, sPoKeysDevice *dev);
-    /**
+    int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoNET_data_t *poNET_data, sPoKeysDevice *dev);
+/**
  * @brief Updates the state of the connected PoNET modules, specifically kbd48CNC.
  *
  * This function performs a full update cycle for the `kbd48CNC` device connected via PoNET,
@@ -445,15 +445,15 @@ void PKPoNet_Update(sPoKeysDevice *dev);
  * @note Intended to be called during component initialization or device setup.
  *       Can be expanded to handle default configurations, pre-allocations, or hardware checks.
  */
- void PKPoNet_Setup(sPoKeysDevice *dev)
+void PKPoNet_Setup(sPoKeysDevice *dev)
 
-// ========================== PulseEngine v2 ===================================
+    // ========================== PulseEngine v2 ===================================
 
-/**
+    /**
   * @brief Configures the PulseEngine v2 using current settings.
   * @memberof PoKeysHALComponent
   */
-int PEv2_PulseEngineSetup(sPoKeysDevice *dev);
+    int PEv2_PulseEngineSetup(sPoKeysDevice *dev);
 
 /**
   * @brief Applies INI-based configuration to PulseEngine and IO.
