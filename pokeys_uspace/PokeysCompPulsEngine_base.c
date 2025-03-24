@@ -1571,7 +1571,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                 switch (NextState) {
                     case PK_Homing_axHOMINGSTART:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGSTART\n", __FILE__, __FUNCTION__);
-                        HomingStartMaskSetup = (1 << axis); // Home my axis only (bit MyHomeSequ)
+                        HomingStartMaskSetup |= (1 << axis); // Home my axis only (bit MyHomeSequ)
                         rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n", axis, PEv2_data->PEv2_home_sequence[axis], HomingStartMaskSetup);
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGSTART;
                         break;
@@ -1617,7 +1617,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         if (RequiredState == PK_Homing_axHOMINGSTART && *(PEv2_data->PEv2_AxesState[axis]) != PK_PEState_peHOME) {
                             return 1; // not all joints in sequence are ready
                         }
-                        HomingStartMaskSetup = (1 << axis); // Home my axis only (bit MyHomeSequ)
+                        HomingStartMaskSetup |= (1 << axis); // Home my axis only (bit MyHomeSequ)
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGFinalize;
                         break;
                     default:
