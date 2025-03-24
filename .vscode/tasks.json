@@ -87,9 +87,8 @@
       "type": "shell",
       "command": "sh",
       "args": [
-        "sudo",
         "-c",
-        "halcompile --userspace --extra-compile-args='-I/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace' --extra-link-args='-lPoKeys -llinuxcncini' --install pokeys_uspace/pokeys.c 2>&1 | tee build.log"
+        "sudo halcompile --userspace --extra-compile-args='-I/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace' --extra-link-args='-lPoKeys -llinuxcncini' --install pokeys_uspace/pokeys.c 2>&1 | sudo tee build.log"
       ],
       "group": {
         "kind": "build",
