@@ -795,8 +795,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             else if (intAxesState == PK_PEAxisState_axHOME && *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGFinalize) {
                 int MyHomeSequ, seq;
                 MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
-                if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGSTART, PK_Homing_axHOMINGFinalize)==0){
-                    
+                if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGSTART, PK_Homing_axHOMINGFinalize) == 0) {
                 }
                 /*HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
                 rtapi_print_msg(RTAPI_MSG_DBG,
