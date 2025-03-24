@@ -716,7 +716,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                     "Sequence(%d) startmask was set (%d) \n",
                                     i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
                 }*/
-            } 
+            }
             /**
             * @brief Triggers homing finalization for all axes in the same synchronized homing sequence.
             *
