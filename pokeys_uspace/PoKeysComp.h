@@ -43,6 +43,61 @@ typedef struct {
 
 // ========================== General Setup & I/O ===============================
 
+
+/**
+ * @typedef one_adcout_data_t
+ * @brief Structure holding data for one analog output channel in the PoKeys HAL component.
+ *
+ * This structure is used by the HAL component to manage one analog output
+ * signal. It contains pointers to HAL pins and local configuration data.
+ *
+ * The values are updated in real-time to reflect the current analog output
+ * state and allow HAL users to control output voltage or current levels
+ * within defined bounds.
+ *
+ * @var one_adcout_data_t::deb_out
+ * Pointer to the HAL pin for the debounced output value (u32).
+
+ * @var one_adcout_data_t::deb_setval
+ * Pointer to the HAL pin used to set the debounced output value (u32).
+
+ * @var one_adcout_data_t::value
+ * Pointer to the HAL pin holding the final analog output value (float).
+
+ * @var one_adcout_data_t::enable
+ * Pointer to the HAL pin enabling or disabling the output channel (bit).
+
+ * @var one_adcout_data_t::offset
+ * Software offset added to the analog output value (float).
+
+ * @var one_adcout_data_t::scale
+ * Scaling factor applied to the analog output value (float).
+
+ * @var one_adcout_data_t::high_limit
+ * Upper limit for the analog output value (float).
+
+ * @var one_adcout_data_t::low_limit
+ * Lower limit for the analog output value (float).
+
+ * @var one_adcout_data_t::max_v
+ * Maximum physical output value supported by the hardware (float).
+
+ * @var one_adcout_data_t::PinId
+ * Identifier of the physical PoKeys pin associated with this analog output (u32).
+ */
+ typedef struct {
+  hal_u32_t *deb_out;
+  hal_u32_t *deb_setval;
+  hal_float_t *value;
+  hal_bit_t *enable;
+  hal_float_t offset;
+  hal_float_t scale;
+  hal_float_t high_limit;
+  hal_float_t low_limit;
+  hal_float_t max_v;
+  hal_u32_t PinId;
+} one_adcout_data_t;
+
 /**
  * @typedef one_adcin_data_t
  * @brief Structure holding data for one analog input channel in the PoKeys HAL component.
