@@ -44,6 +44,117 @@ typedef struct {
 // ========================== General Setup & I/O ===============================
 
 /**
+ * @typedef one_adcin_data_t
+ * @brief Structure holding data for one analog input channel in the PoKeys HAL component.
+ *
+ * This structure contains the HAL pin references and conversion parameters
+ * for processing an analog input signal. The raw input is scaled and offset
+ * to produce the final processed value exposed to HAL.
+ *
+ * @var one_adcin_data_t::value_raw
+ * Pointer to the HAL pin for the raw analog input value (float), as read from the PoKeys device.
+
+ * @var one_adcin_data_t::value
+ * Pointer to the HAL pin for the processed analog input value (float), after applying scale and offset.
+
+ * @var one_adcin_data_t::scale
+ * Scaling factor applied to the raw input value (float). Useful for converting ADC values to physical units.
+
+ * @var one_adcin_data_t::offset
+ * Offset applied after scaling the raw input value (float).
+ */
+ typedef struct {
+  hal_float_t *value_raw;
+  hal_float_t *value;
+  hal_float_t scale;
+  hal_float_t offset;
+} one_adcin_data_t;
+
+/**
+* @typedef one_digiIO_data_t
+* @brief Structure representing a single digital I/O pin in the PoKeys HAL component.
+*
+* This structure holds the configuration and HAL pin references for a digital input or output pin.
+* It supports inverted logic and can also act as a simple counter input if needed.
+*
+* @var one_digiIO_data_t::digin_in
+* Pointer to the HAL pin representing the current digital input signal (non-inverted).
+
+* @var one_digiIO_data_t::digin_in_not
+* Pointer to the HAL pin representing the inverted digital input signal.
+
+* @var one_digiIO_data_t::digout_out
+* Pointer to the HAL pin representing the output signal sent to the digital output pin.
+
+* @var one_digiIO_data_t::digin_invert
+* Inversion flag for the input signal. If true, the input logic is interpreted as inverted.
+
+* @var one_digiIO_data_t::digout_invert
+* Inversion flag for the output signal. If true, the output logic is inverted before being sent to hardware.
+
+* @var one_digiIO_data_t::counter_value
+* Pointer to the HAL pin representing a simple counter value, incremented on rising edges.
+
+* @var one_digiIO_data_t::PinFunction
+* The current function assigned to the pin, e.g., digital input, output, or other capabilities (matches PoKeys API definitions).
+
+* @var one_digiIO_data_t::DigitalValueSet_ignore
+* Flag to indicate that output value should not be updated in this cycle (typically set during initial configuration).
+*/
+typedef struct {
+  hal_bit_t *digin_in;
+  hal_bit_t *digin_in_not;
+  hal_bit_t *digout_out;
+  hal_bit_t digin_invert;
+  hal_bit_t digout_invert;
+
+  hal_u32_t *counter_value;
+
+  hal_u32_t PinFunction;
+
+  bool DigitalValueSet_ignore;
+} one_digiIO_data_t;
+
+/**
+* @typedef all_IO_data_t
+* @brief Aggregated structure for managing all analog and digital I/O HAL connections for a PoKeys device.
+*
+* This structure encapsulates all HAL-related I/O data, including analog outputs (DAC/PWM), 
+* analog inputs (ADC), and digital I/O pins. It serves as the main container for mapping HAL 
+* pins to the PoKeys hardware configuration in the LinuxCNC HAL component.
+*
+* @var all_IO_data_t::adcout
+* Array of analog output channel data structures (DAC or PWM outputs), indexed from 0 to 5.
+
+* @var all_IO_data_t::adcout_pwm_period
+* PWM period in microseconds for analog output channels operating in PWM mode.
+
+* @var all_IO_data_t::adcout_deb_outv
+* Pointer to a HAL u32 pin that exposes the current analog output debug value (optional).
+
+* @var all_IO_data_t::adcin
+* Array of analog input channel data structures, indexed from 0 to 6.
+
+* @var all_IO_data_t::Pin
+* Array of digital input/output channel data structures, indexed from 0 to 54. 
+* Each entry corresponds to a physical I/O pin on the PoKeys device.
+
+* @var all_IO_data_t::deb_out
+* Optional debug pointer for tracking output state of digital pins or other debugging information.
+*/
+typedef struct {
+  one_adcout_data_t adcout[6];
+  hal_u32_t adcout_pwm_period;
+  hal_u32_t *adcout_deb_outv;
+
+  one_adcin_data_t adcin[7];
+
+  one_digiIO_data_t Pin[55];
+
+  hal_u32_t *deb_out;
+} all_IO_data_t;
+
+/**
   * @brief Export HAL pins and parameters for PoKeys analog and digital I/O.
   *
   * This function creates and registers HAL pins and parameters for all supported
