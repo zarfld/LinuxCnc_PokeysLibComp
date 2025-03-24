@@ -43,7 +43,6 @@ typedef struct {
 
 // ========================== General Setup & I/O ===============================
 
-
 /**
  * @typedef one_adcout_data_t
  * @brief Structure holding data for one analog output channel in the PoKeys HAL component.
@@ -85,17 +84,17 @@ typedef struct {
  * @var one_adcout_data_t::PinId
  * Identifier of the physical PoKeys pin associated with this analog output (u32).
  */
- typedef struct {
-  hal_u32_t *deb_out;
-  hal_u32_t *deb_setval;
-  hal_float_t *value;
-  hal_bit_t *enable;
-  hal_float_t offset;
-  hal_float_t scale;
-  hal_float_t high_limit;
-  hal_float_t low_limit;
-  hal_float_t max_v;
-  hal_u32_t PinId;
+typedef struct {
+    hal_u32_t *deb_out;
+    hal_u32_t *deb_setval;
+    hal_float_t *value;
+    hal_bit_t *enable;
+    hal_float_t offset;
+    hal_float_t scale;
+    hal_float_t high_limit;
+    hal_float_t low_limit;
+    hal_float_t max_v;
+    hal_u32_t PinId;
 } one_adcout_data_t;
 
 /**

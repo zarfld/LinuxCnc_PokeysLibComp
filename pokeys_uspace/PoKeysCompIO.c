@@ -40,7 +40,6 @@ extern unsigned int sleepdur;
 #endif
 extern bool ApplyIniSettings;
 
-
 /**
  * @brief Pointer to the global I/O data structure used by the HAL component.
  *
