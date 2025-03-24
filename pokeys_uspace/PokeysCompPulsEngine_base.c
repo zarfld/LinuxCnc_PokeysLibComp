@@ -1618,7 +1618,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         dev->PEv2.PositionSetup[axis] = PEv2_data->PEv2_ZeroPosition[axis];
                         bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, axis, 1);
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axARMENCODER;
-                        
+
                         break;
                     case PK_Homing_axHOMINGWaitFinalMove:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGWaitFinalMove\n", __FILE__, __FUNCTION__);
@@ -1645,12 +1645,12 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalMove PEv2_Axis[%d] already on HomePosition - skip Final move\n", __FILE__, __FUNCTION__, axis);
                             *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axIDLE;
                         }
-                        
+
                         break;
                     case PK_Homing_axHOMINGCancel:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGCancel\n", __FILE__, __FUNCTION__);
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axIDLE;
-                        
+
                         break;
                     case PK_Homing_axHOMINGFinalize:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalize\n", __FILE__, __FUNCTION__);
@@ -1664,10 +1664,10 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         break;
 
                     case PK_Homing_axIDLE:
-                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axIDLE\n", __FILE__, __FUNCTION__);
-                            *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axIDLE;
-                            *(PEv2_data->PEv2_index_enable[axis]) = false; // re enable index
-                            break;
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axIDLE\n", __FILE__, __FUNCTION__);
+                        *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axIDLE;
+                        *(PEv2_data->PEv2_index_enable[axis]) = false; // re enable index
+                        break;
                     default:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Invalid state %d\n", __FILE__, __FUNCTION__, NextState);
                         return 1; // invalid state

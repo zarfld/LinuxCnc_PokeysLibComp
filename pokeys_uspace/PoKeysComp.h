@@ -778,7 +778,6 @@ typedef enum {
     PK_PEv2Homing_OutHomeReducedSpeed = (1 << 4),     // Cancel Homing procedure
 } pokeys_homing_algorithm_t;
 
-
 typedef enum {
     PK_Homing_axIDLE = 0,                // Axis  in IDLE
     PK_Homing_axHOMINGSTART = 1,         // Start Homing procedure
@@ -851,7 +850,6 @@ typedef enum {
  * }
  * @enddot
  */
-
 
 /**
 * @brief PEv2_data_t

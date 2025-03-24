@@ -356,7 +356,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                 __FILE__, __FUNCTION__, intAxesState, i);
                 oldAxxiState[i] = intAxesState;
             }
- /**
+            /**
  * @brief Synchronised homing state machine trigger for PoKeys axes
  *
  * This function checks if all axes in a homing sequence have reached a specific required state,
@@ -498,7 +498,6 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         /*dev->PEv2.PositionSetup[i] = PEv2_data->PEv2_ZeroPosition[i];
                         bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);*/
                     } else if ((*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axARMENCODER && Homing_ArmEncodereDone[i] == true) || (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGWaitFinalMove)) {
-                        
 
                         if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axARMENCODER, PK_Homing_axHOMINGWaitFinalMove) == 0) {
                             intAxesState = 18; //PK_PEAxisState_axHOMINGWaitFINALMOVE = 18,          // (linuxcnc spec additional state) Pokeys moves to homeposition
@@ -506,25 +505,22 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         }
 
                     } else if (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGFinalLMove && Homing_FinalMoveDone[i] != true) {
-                        
-                       
-                        if ( Homing_FinalMoveActive[i] != true){
-                        if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGWaitFinalMove, PK_Homing_axHOMINGFinalMove) == 0) {
-                            intAxesState = 19; //	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
-                            Homing_FinalMoveActive[i] = true;
-                        }
-                    }
-                    else if ((dev->PEv2.CurrentPosition[i] == (int32_t)PEv2_data->PEv2_HomePosition[i])) {
-                        
 
-                        if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGFinalMove, PK_Homing_axIDLE) == 0) {
-                            // intAxesState is already set from dev->PEv2.AxesState[i]
-                            Homing_FinalMoveActive[i] = false;
-                            Homing_FinalMoveDone[i] = true;
-                            InPosition[i] = true;
-                            *(PEv2_data->PEv2_deb_ishoming[i]) = false;
+                        if (Homing_FinalMoveActive[i] != true) {
+                            if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGWaitFinalMove, PK_Homing_axHOMINGFinalMove) == 0) {
+                                intAxesState = 19; //	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
+                                Homing_FinalMoveActive[i] = true;
+                            }
+                        } else if ((dev->PEv2.CurrentPosition[i] == (int32_t)PEv2_data->PEv2_HomePosition[i])) {
+
+                            if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGFinalMove, PK_Homing_axIDLE) == 0) {
+                                // intAxesState is already set from dev->PEv2.AxesState[i]
+                                Homing_FinalMoveActive[i] = false;
+                                Homing_FinalMoveDone[i] = true;
+                                InPosition[i] = true;
+                                *(PEv2_data->PEv2_deb_ishoming[i]) = false;
+                            }
                         }
-                    }
 
                     } else if (Homing_FinalMoveActive[i] != false) {
                         //	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
