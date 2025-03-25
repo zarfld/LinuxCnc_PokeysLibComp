@@ -782,7 +782,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
     
 
-                        else if (Homing_PkHomeFinalizeeDone[i] != true) {
+                        if (Homing_PkHomeFinalizeeDone[i] != true) {
                             //PK_PEAxisState_axHOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
     
                             if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGSTART, PK_Homing_axHOMINGFinalize) == 0) {
