@@ -1050,7 +1050,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                             H[jj].homed = 1;
                         }
                     }
-                    rtapi_print_msg(RTAPI_MSG_DBG,
+                    rtapi_print_msg(RTAPI_MSG_ERR,
                                     "HOMING:do_home_joint.PK_PEAxisState_axHOME joint %d "
                                     "homed (home_sequence %d)\n",
                                     joint_num, H[joint_num].home_sequence);
@@ -1713,19 +1713,19 @@ void do_home_joint(int jno) {
                                 rtapi_print_msg(RTAPI_MSG_DBG,
                                                 "HOMING:do_home_joint.PK_"
                                                 "PEAxisState_axHOME joint %d "
-                                                "homed (home_sequence %d)\n",
+                                                "homed (home_sequence %d) PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE\n",
                                                 jj, H[jno].home_sequence);
                                 H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                             }
                         }
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(RTAPI_MSG_ERR,
                                         "HOMING:do_home_joint.PK_PEAxisState_axHOME joint "
-                                        "%d homed (home_sequence %d)\n",
+                                        "%d homed (home_sequence %d) PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE\n",
                                         jno, H[jno].home_sequence);
                         H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                     }
                 } else {
-                    rtapi_print_msg(RTAPI_MSG_DBG,
+                    rtapi_print_msg(RTAPI_MSG_ERR,
                                     "HOMING:do_home_joint.PK_PEAxisState_axHOME joint %d "
                                     "homed (home_sequence %d)\n",
                                     jno, H[jno].home_sequence);
@@ -2110,7 +2110,7 @@ static void do_homing_sequence(void) {
                         break;
 
                     case PK_PEAxisState_axHOME:
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(RTAPI_MSG_ERR,
                                         "HOMING:  do_homing_sequence(%d) "
                                         "HOME_SEQUENCE_WAIT_JOINTS joint %d "
                                         "PK_PEAxisState_axHOME\n",
@@ -2155,7 +2155,7 @@ static void do_homing_sequence(void) {
                         break;
 
                     default:
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(RTAPI_MSG_ERR,
                                         "HOMING: do_homing_sequence(%d) "
                                         "HOME_SEQUENCE_WAIT_JOINTS joint %d "
                                         "unknown state '%d'\n",
