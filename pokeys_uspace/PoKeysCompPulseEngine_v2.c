@@ -700,14 +700,14 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i])) {
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: new *(PEv2_data->PEv2_AxesCommand[%d]) = %d\n", __FILE__, __FUNCTION__, i, *(PEv2_data->PEv2_AxesCommand[i]));
             }
-            switch(*(PEv2_data->PEv2_AxesCommand[i])){
-                    case PK_PEAxisCommand_axIDLE:
-                        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axIDLE\n", __FILE__, __FUNCTION__);
-                        break;
-                    case PK_PEAxisCommand_axHOMINGSTART:
-                        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGSTART\n", __FILE__, __FUNCTION__);
+            switch (*(PEv2_data->PEv2_AxesCommand[i])) {
+                case PK_PEAxisCommand_axIDLE:
+                    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axIDLE\n", __FILE__, __FUNCTION__);
+                    break;
+                case PK_PEAxisCommand_axHOMINGSTART:
+                    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGSTART\n", __FILE__, __FUNCTION__);
 
-/**
+                    /**
             * @brief Trigger synchronized homing start based on AxisCommand change.
             *
             * This logic checks whether the commanded state of an axis (`PEv2_AxesCommand[i]`)
@@ -727,23 +727,23 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             * @see PEv2_home_sequence
              * @memberof PoKeysHALComponent
             */
-                        if ((intAxesState == PK_PEAxisState_axSTOPPED || intAxesState == PK_PEAxisState_axREADY || intAxesState == PK_PEAxisState_axHOME) && old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) && (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisState_axHOMINGSTART || *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGSTART)) {
-                            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingStart\n", __FILE__, __FUNCTION__);
-                            if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axIDLE, PK_Homing_axHOMINGSTART) == 0) {
-                                rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: ensure that all axes with same Sequence start homing at the same time\n", __FILE__, __FUNCTION__);
-                                doHomingStart = true;
-                                IsHoming[i] = true;
-                                //HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
-                                //rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n",  i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
-                            }
-                            int MyHomeSequ, seq;
-                            //MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
+                    if ((intAxesState == PK_PEAxisState_axSTOPPED || intAxesState == PK_PEAxisState_axREADY || intAxesState == PK_PEAxisState_axHOME) && old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) && (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisState_axHOMINGSTART || *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGSTART)) {
+                        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingStart\n", __FILE__, __FUNCTION__);
+                        if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axIDLE, PK_Homing_axHOMINGSTART) == 0) {
+                            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: ensure that all axes with same Sequence start homing at the same time\n", __FILE__, __FUNCTION__);
+                            doHomingStart = true;
+                            IsHoming[i] = true;
                             //HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
                             //rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n",  i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
-            
-                            // ensure that all axes with same Sequence start homing at the same time
-            
-                            /* int j_count = 0;
+                        }
+                        int MyHomeSequ, seq;
+                        //MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
+                        //HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
+                        //rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n",  i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
+
+                        // ensure that all axes with same Sequence start homing at the same time
+
+                        /* int j_count = 0;
                             for (seq = 0; seq < (*PEv2_data->PEv2_nrOfAxes); seq++) {
             
                                 if (PEv2_data->PEv2_home_sequence[seq] == PEv2_data->PEv2_home_sequence[i]) {
@@ -767,27 +767,27 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                                 "Sequence(%d) startmask was set (%d) \n",
                                                 i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
                             }*/
-                        }
-                        break;
-                    case PK_PEAxisCommand_axARMENCODER:
-                        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGFinalLMove\n", __FILE__, __FUNCTION__);
-                        break;
-                    case PK_PEAxisCommand_axHOMINGWaitFinalMove:
-                        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGWaitFinalMove\n", __FILE__, __FUNCTION__);
-                        break;
-                    case PK_PEAxisCommand_axHOMINGFinalLMove:
-                        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axARMENCODER\n", __FILE__, __FUNCTION__);
-                        break;
-                    case PK_PEAxisCommand_axHOMINGCancel:
-                        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGCancel\n", __FILE__, __FUNCTION__);
-                        if (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGCancel && old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) && (intAxesState == PK_PEAxisState_axHOMINGSTART || intAxesState == PK_PEAxisState_axHOMINGSEARCH || intAxesState == PK_PEAxisState_axHOMINGBACK)) {
-                            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingCancel\n", __FILE__, __FUNCTION__);
-                            //	dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
-                        }
-                        break;
-                    case PK_PEAxisCommand_axHOMINGFinalize:
+                    }
+                    break;
+                case PK_PEAxisCommand_axARMENCODER:
+                    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGFinalLMove\n", __FILE__, __FUNCTION__);
+                    break;
+                case PK_PEAxisCommand_axHOMINGWaitFinalMove:
+                    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGWaitFinalMove\n", __FILE__, __FUNCTION__);
+                    break;
+                case PK_PEAxisCommand_axHOMINGFinalLMove:
+                    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axARMENCODER\n", __FILE__, __FUNCTION__);
+                    break;
+                case PK_PEAxisCommand_axHOMINGCancel:
+                    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGCancel\n", __FILE__, __FUNCTION__);
+                    if (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGCancel && old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) && (intAxesState == PK_PEAxisState_axHOMINGSTART || intAxesState == PK_PEAxisState_axHOMINGSEARCH || intAxesState == PK_PEAxisState_axHOMINGBACK)) {
+                        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingCancel\n", __FILE__, __FUNCTION__);
+                        //	dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+                    }
+                    break;
+                case PK_PEAxisCommand_axHOMINGFinalize:
 
-                                /**
+                    /**
             * @brief Triggers homing finalization for all axes in the same synchronized homing sequence.
             *
             * If an axis is currently in the `axHOME` state and receives the `axHOMINGFinalize` command,
@@ -809,17 +809,17 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             * @see PK_PEAxisCommand_axHOMINGFinalize
              * @memberof PoKeysHALComponent
             */
-                        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGFinalize\n", __FILE__, __FUNCTION__);
-                        if (intAxesState == PK_PEAxisState_axHOME && *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGFinalize) {
-                            int MyHomeSequ, seq;
-                            MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
-                            if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGSTART, PK_Homing_axHOMINGFinalize) == 0) {
-                                rtapi_print_msg(RTAPI_MSG_DBG,
-                                                "PoKeys: %s:%s: ensure that all axes with same "
-                                                "Sequence start homing at the same time\n",
-                                                __FILE__, __FUNCTION__);
-                            }
-                            /*HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
+                    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGFinalize\n", __FILE__, __FUNCTION__);
+                    if (intAxesState == PK_PEAxisState_axHOME && *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGFinalize) {
+                        int MyHomeSequ, seq;
+                        MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
+                        if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGSTART, PK_Homing_axHOMINGFinalize) == 0) {
+                            rtapi_print_msg(RTAPI_MSG_DBG,
+                                            "PoKeys: %s:%s: ensure that all axes with same "
+                                            "Sequence start homing at the same time\n",
+                                            __FILE__, __FUNCTION__);
+                        }
+                        /*HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
                             rtapi_print_msg(RTAPI_MSG_DBG,
                                             "PK_HOMING: ensurinig that all axes (%d) with same "
                                             "Sequence(%d) startmask initialized (%d) \n",
@@ -859,13 +859,11 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                                 "Sequence(%d) startmask was set (%d) \n",
                                                 i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
                             }*/
-            
-                        }
-                        break;
-                    default:
-                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s:unknown status\n", __FILE__, __FUNCTION__);
-                        break;
-                
+                    }
+                    break;
+                default:
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s:unknown status\n", __FILE__, __FUNCTION__);
+                    break;
             }
             old_PEv2_AxesCommand[i] = *(PEv2_data->PEv2_AxesCommand[i]);
             // placed here to as substates PK_PEAxisState_axHOME
@@ -913,14 +911,6 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
 
 			bm_ErrorStatus
 			*/
-
-            
-
-            
-            
-
-            
-            
 
             tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask, i, PEv2_digout_AxisEnabled_out(i));
             PEv2_LimitOverrideSetup = Set_BitOfByte(PEv2_LimitOverrideSetup, i, PEv2_digout_LimitOverride_out(i));
