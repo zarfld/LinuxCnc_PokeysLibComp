@@ -18,5 +18,4 @@ Cpp11BracedListStyle: false
 ReflowComments: true
 AllowShortFunctionsOnASingleLine: None
 FixNamespaceComments: true
-AlignComments: true
 IndentWrappedFunctionNames: true
