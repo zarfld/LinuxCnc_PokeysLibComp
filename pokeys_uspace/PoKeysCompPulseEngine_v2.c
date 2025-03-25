@@ -663,11 +663,9 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         // ready to Finalize homing
                         if (oldAxxiState[i] != intAxesState) {
                             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisState_axHOME - ready to Finalize homing\n", i, __FILE__, __FUNCTION__);
-                            
                         }
                         intAxesState = PEAxisStateEx_axReadyToFinalizeHoming;
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingStart\n", __FILE__, __FUNCTION__);
-
                     }
                     break;
                 case PK_PEAxisCommand_axARMENCODER:
@@ -798,7 +796,6 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                                 "PK_PEAxisState_axHOME - Homing_PkHomeFinalizeeDone[i] = false\n",
                                                 __FILE__, __FUNCTION__, i);
                             }
-                            
                         }
                     }
                     break;
