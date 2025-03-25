@@ -1670,9 +1670,9 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         // for RequiredState == PK_Homing_axHOMINGSTART also ansure that PEv2_data->PEv2_AxesState[axis] is on PK_PEState_peHOME
                         if (RequiredState == PK_Homing_axHOMINGSTART && *(PEv2_data->PEv2_AxesState[axis]) != PK_PEAxisState_axHOME) {
                             if (ActState_step2_Memory[axis] != *(PEv2_data->PEv2_AxesState[axis])) {
-                                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] not in required state %d (ActualState %d NextState %d) \n", __FILE__, __FUNCTION__, axis, RequiredState, *(PEv2_data->PEv2_AxesState[axis]), NextState);
+                                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] not in required AxesState %d (AxesState %d NextState %d) \n", __FILE__, __FUNCTION__, axis, PK_PEAxisState_axHOME, *(PEv2_data->PEv2_AxesState[axis])), NextState);
                                 ActState_step2_Memory[axis] = *(PEv2_data->PEv2_AxesState[axis]);
-                                newmessage = true;
+                               // newmessage = true;
                             }
                             return 1; // not all joints in sequence are ready
                         }
