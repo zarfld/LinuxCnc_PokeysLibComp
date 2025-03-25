@@ -380,7 +380,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             switch (intAxesState) {
                 case PK_PEAxisState_axSTOPPED: // Axis is stopped
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axSTOPPED\n", __FILE__, __FUNCTION__);
-                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
+                    if (oldAxxiState[i] != intAxesState) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axSTOPPED \n",
@@ -396,7 +396,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
                 case PK_PEAxisState_axREADY: // Axis ready
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axREADY\n", __FILE__, __FUNCTION__);
-                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
+                    if (oldAxxiState[i] != intAxesState) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axREADY \n",
@@ -411,7 +411,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
                 case PK_PEAxisState_axRUNNING: // Axis is running
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axRUNNING\n", __FILE__, __FUNCTION__);
-                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
+                    if (oldAxxiState[i] != intAxesState) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axRUNNING \n",
@@ -442,7 +442,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
                 case PK_PEAxisState_axHOMING_RESETTING: // Stopping the axis to reset the position counters
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMING_RESETTING\n", __FILE__, __FUNCTION__);
-                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
+                    if (oldAxxiState[i] != intAxesState) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axHOMING_RESETTING \n",
@@ -456,7 +456,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
                 case PK_PEAxisState_axHOMING_BACKING_OFF: // Backing off switch
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMING_BACKING_OFF\n", __FILE__, __FUNCTION__);
-                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
+                    if (oldAxxiState[i] != intAxesState) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOMING_BACKING_OFF \n", __FILE__, __FUNCTION__, i);
                     }
                     allhomed = false;
@@ -467,9 +467,14 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     // PEv2_digin_AxisEnabled_in(i) = true;
                     break;
                 case PK_PEAxisState_axHOME: // Axis is homed
-                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOME\n", __FILE__, __FUNCTION__, i);
+                    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOME\n", __FILE__, __FUNCTION__, i);
                     // Homing_PkHomeFinalizeeDone[8]
-
+                    if (oldAxxiState[i] != intAxesState) {
+                        rtapi_print_msg(RTAPI_MSG_ERR,
+                                        "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
+                                        "PK_PEAxisState_axHOME \n",
+                                        __FILE__, __FUNCTION__, i);
+                    }
                     PEv2_deb_out = 340 + i;
 
                     // PEv2_digin_AxisEnabled_in(i) = true;
