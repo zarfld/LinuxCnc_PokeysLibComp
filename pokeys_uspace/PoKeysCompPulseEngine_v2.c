@@ -203,11 +203,9 @@ extern all_IO_data_t *IO_data;
 #undef PEv2_HomingAlgorithm
 #define PEv2_HomingAlgorithm(i) (PEv2_data->PEv2_HomingAlgorithm[i])
 
-
-
 // pin io unsigned PEv2.PulseEngineStateSetup;		// Pulse engine new state configuration  - No Pin needed
-//uint8_t PEv2_PulseEngineStateSetup = 0;
-//uint8_t PulseEngineState = 0;
+// uint8_t PEv2_PulseEngineStateSetup = 0;
+// uint8_t PulseEngineState = 0;
 
 bool posMode[8];
 uint8_t posCount[8];
@@ -254,7 +252,7 @@ extern bool ApplyIniSettings;
  * @param dev Pointer to the PoKeys device structure.
  * @param HAL_Machine_On Flag indicating if the HAL machine is enabled (i.e., in operation).
   * @memberof PoKeysHALComponent
-  
+
  */
 void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
     uint8_t bm_LimitStatusP; // Limit+ status (bit-mapped)
@@ -332,7 +330,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             StepScale[i] = PEv2_data->PEv2_stepgen_STEP_SCALE[i];
             PEv2_deb_axxisout(i) = 210 + i;
             *(PEv2_data->PEv2_CurrentPosition[i]) = dev->PEv2.CurrentPosition[i];
-            //intCurrentPosition[i] = dev->PEv2.CurrentPosition[i];
+            // intCurrentPosition[i] = dev->PEv2.CurrentPosition[i];
             //*(PEv2_data->PEv2_CurrentPosition[i]) = dev->PEv2.CurrentPosition[i]
             PEv2_deb_axxisout(i) = 220 + i;
             PEv2_digin_Error_in(i) = Get_BitOfByte(bm_ErrorStatus, i);
@@ -343,42 +341,42 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 oldAxxiState[i] = intAxesState;
             }
             /**
- * @brief Synchronised homing state machine trigger for PoKeys axes
- *
- * This function checks if all axes in a homing sequence have reached a specific required state,
- * and transitions them to the given next state synchronously. The transition is only performed
- * if all axes in the sequence are ready.
- *
- * The homing state machine follows this logic:
- * @dot
- * digraph HomingState {
- *   IDLE -> HOMINGSTART;
- *   HOMINGSTART -> HOMINGFinalize;
- *   HOMINGFinalize -> ARMENCODER;
- *   ARMENCODER -> HOMINGWaitFinalMove;
- *   HOMINGWaitFinalMove -> HOMINGFinalMove;
- *   HOMINGFinalMove -> HOMINGFinalize;
- *   HOMINGSTART -> HOMINGCancel;
- *   HOMINGCancel -> IDLE;
- *   HOMINGFinalMove -> IDLE [label="Already at position"];
- * }
- * @enddot
- *
- * Additional logic:
- * - ARMENCODER uses `PK_PEv2_PositionSet()` to reset axis position.
- * - HOMINGFinalMove triggers `PK_PEv2_PulseEngineMove()` only if not already at HomePosition.
- * - `Homing_FinalMoveActive[i]` and `Homing_FinalMoveDone[i]` are used to track motion state and prevent repeated execution.
- * - Final transition to IDLE sets `index_enable = false` and clears `deb_ishoming`.
- *
- * This logic ensures compatibility with LinuxCNC's homing expectations as described in:
- * https://linuxcnc.org/docs/html/config/ini-homing.html
- *
- * @param dev The PoKeys device instance
- * @param seq Homing sequence number (can be shared by multiple joints)
- * @param RequiredState State that must be met before transition is triggered
- * @param NextState Target state to apply if all involved axes are ready
- * @return 0 if transition triggered, 1 if not all axes ready or already transitioned
- */
+             * @brief Synchronised homing state machine trigger for PoKeys axes
+             *
+             * This function checks if all axes in a homing sequence have reached a specific required state,
+             * and transitions them to the given next state synchronously. The transition is only performed
+             * if all axes in the sequence are ready.
+             *
+             * The homing state machine follows this logic:
+             * @dot
+             * digraph HomingState {
+             *   IDLE -> HOMINGSTART;
+             *   HOMINGSTART -> HOMINGFinalize;
+             *   HOMINGFinalize -> ARMENCODER;
+             *   ARMENCODER -> HOMINGWaitFinalMove;
+             *   HOMINGWaitFinalMove -> HOMINGFinalMove;
+             *   HOMINGFinalMove -> HOMINGFinalize;
+             *   HOMINGSTART -> HOMINGCancel;
+             *   HOMINGCancel -> IDLE;
+             *   HOMINGFinalMove -> IDLE [label="Already at position"];
+             * }
+             * @enddot
+             *
+             * Additional logic:
+             * - ARMENCODER uses `PK_PEv2_PositionSet()` to reset axis position.
+             * - HOMINGFinalMove triggers `PK_PEv2_PulseEngineMove()` only if not already at HomePosition.
+             * - `Homing_FinalMoveActive[i]` and `Homing_FinalMoveDone[i]` are used to track motion state and prevent repeated execution.
+             * - Final transition to IDLE sets `index_enable = false` and clears `deb_ishoming`.
+             *
+             * This logic ensures compatibility with LinuxCNC's homing expectations as described in:
+             * https://linuxcnc.org/docs/html/config/ini-homing.html
+             *
+             * @param dev The PoKeys device instance
+             * @param seq Homing sequence number (can be shared by multiple joints)
+             * @param RequiredState State that must be met before transition is triggered
+             * @param NextState Target state to apply if all involved axes are ready
+             * @return 0 if transition triggered, 1 if not all axes ready or already transitioned
+             */
             switch (intAxesState) {
                 case PK_PEAxisState_axSTOPPED: // Axis is stopped
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axSTOPPED\n", __FILE__, __FUNCTION__);
@@ -404,8 +402,8 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                         "PK_PEAxisState_axREADY \n",
                                         __FILE__, __FUNCTION__, i);
                     }
-                    //allhomed = false;
-                    // *(PEv2_data->PEv2_deb_ishoming[i]) = false;
+                    // allhomed = false;
+                    //  *(PEv2_data->PEv2_deb_ishoming[i]) = false;
                     PEv2_deb_out = 320 + i;
                     // PEv2_digin_AxisEnabled_in(i) = true;
                     // PEv2_digin_LimitOverride_in(i) = false;
@@ -470,9 +468,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
                 case PK_PEAxisState_axHOME: // Axis is homed
                     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOME\n", __FILE__, __FUNCTION__, i);
-                    //Homing_PkHomeFinalizeeDone[8]
-                    
-                  
+                    // Homing_PkHomeFinalizeeDone[8]
 
                     PEv2_deb_out = 340 + i;
 
@@ -491,8 +487,6 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     // PEv2_digin_AxisEnabled_in(i) = true;
                     // PEv2_digin_LimitOverride_in(i) = true;
                     allhomed = false;
-
-                    
 
                     *(PEv2_data->PEv2_deb_ishoming[i]) = true;
                     *(PEv2_data->PEv2_joint_pos_fb[i]) = 0;
@@ -617,25 +611,25 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGSTART\n", __FILE__, __FUNCTION__);
 
                     /**
-            * @brief Trigger synchronized homing start based on AxisCommand change.
-            *
-            * This logic checks whether the commanded state of an axis (`PEv2_AxesCommand[i]`)
-            * has changed to a homing start state (`PK_PEAxisCommand_axHOMINGSTART`) and if the axis
-            * is in a valid initial state (STOPPED, READY, or already in HOME).
-            *
-            * When this transition is detected, `PEv2_HomingStateSyncedTrigger()` is called to initiate
-            * homing for all axes that belong to the same homing sequence (`PEv2_home_sequence[i]`).
-            *
-            * This ensures that all axes in the same synchronized group start homing together.
-            *
-            * @note The full mask-based coordination across axes in the same sequence is currently commented out,
-            * but `PEv2_HomingStateSyncedTrigger()` still ensures the correct trigger propagation for synchronization.
-            *
-            * @see PEv2_HomingStateSyncedTrigger()
-            * @see PEv2_AxesCommand
-            * @see PEv2_home_sequence
-             * @memberof PoKeysHALComponent
-            */
+                     * @brief Trigger synchronized homing start based on AxisCommand change.
+                     *
+                     * This logic checks whether the commanded state of an axis (`PEv2_AxesCommand[i]`)
+                     * has changed to a homing start state (`PK_PEAxisCommand_axHOMINGSTART`) and if the axis
+                     * is in a valid initial state (STOPPED, READY, or already in HOME).
+                     *
+                     * When this transition is detected, `PEv2_HomingStateSyncedTrigger()` is called to initiate
+                     * homing for all axes that belong to the same homing sequence (`PEv2_home_sequence[i]`).
+                     *
+                     * This ensures that all axes in the same synchronized group start homing together.
+                     *
+                     * @note The full mask-based coordination across axes in the same sequence is currently commented out,
+                     * but `PEv2_HomingStateSyncedTrigger()` still ensures the correct trigger propagation for synchronization.
+                     *
+                     * @see PEv2_HomingStateSyncedTrigger()
+                     * @see PEv2_AxesCommand
+                     * @see PEv2_home_sequence
+                     * @memberof PoKeysHALComponent
+                     */
                     if ((intAxesState == PK_PEAxisState_axSTOPPED || intAxesState == PK_PEAxisState_axREADY || intAxesState == PK_PEAxisState_axHOME) && old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) && (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisState_axHOMINGSTART || *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGSTART)) {
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingStart\n", __FILE__, __FUNCTION__);
                         if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axIDLE, PK_Homing_axHOMINGSTART) == 0) {
@@ -646,29 +640,29 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                             Homing_FinalMoveDone[i] = false;
                             Homing_FinalMoveActive[i] = false;
                             Homing_done[i] = false;
-                            //HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
-                            //rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n",  i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
+                            // HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
+                            // rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n",  i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
                         }
                         int MyHomeSequ, seq;
-                        //MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
-                        //HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
-                        //rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n",  i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
+                        // MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
+                        // HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
+                        // rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n",  i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
 
                         // ensure that all axes with same Sequence start homing at the same time
 
                         /* int j_count = 0;
                             for (seq = 0; seq < (*PEv2_data->PEv2_nrOfAxes); seq++) {
-            
+
                                 if (PEv2_data->PEv2_home_sequence[seq] == PEv2_data->PEv2_home_sequence[i]) {
                                     //	rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensure that all axes (%d) with same Sequence(%d) start homing at the same time \n", seq, PEv2_data->PEv2_home_sequence[i]);
-            
+
                                     HomingStartMaskSetup |= (1 << seq); // Home axis seq only (bit seq)
                                     j_count++;
                                     doHomingStart = true;
                                     IsHoming[seq] = true;
                                 }
                             }
-            
+
                             if (j_count == 0) {
                                 rtapi_print_msg(RTAPI_MSG_DBG,
                                                 "PK_HOMING: no axes with same Sequence(%d) "
@@ -684,8 +678,8 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
                 case PK_PEAxisCommand_axARMENCODER:
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGFinalMove\n", __FILE__, __FUNCTION__);
-                    if ((Homing_PkHomeFinalizeeDone[i] == true && Homing_ArmEncodereDone[i] != true) ) {
-                        //PK_PEAxisState_axHOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
+                    if ((Homing_PkHomeFinalizeeDone[i] == true && Homing_ArmEncodereDone[i] != true)) {
+                        // PK_PEAxisState_axHOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
 
                         if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGFinalize, PK_Homing_axARMENCODER) == 0) {
                             intAxesState = PEAxisStateEx_HOMINGARMENCODER;
@@ -700,10 +694,9 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     if ((*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axARMENCODER && Homing_ArmEncodereDone[i] == true) || (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGWaitFinalMove)) {
 
                         if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axARMENCODER, PK_Homing_axHOMINGWaitFinalMove) == 0) {
-                            intAxesState = PEAxisStateEx_HOMINGWaitFINALMOVE; //PK_PEAxisState_axHOMINGWaitFINALMOVE = 18,          // (linuxcnc spec additional state) Pokeys moves to homeposition
+                            intAxesState = PEAxisStateEx_HOMINGWaitFINALMOVE; // PK_PEAxisState_axHOMINGWaitFINALMOVE = 18,          // (linuxcnc spec additional state) Pokeys moves to homeposition
                             Homing_ArmEncodereDone[i] = true;
                         }
-
                     }
                     break;
                 case PK_PEAxisCommand_axHOMINGFinalMove:
@@ -726,8 +719,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                             }
                         }
 
-                    }
-                    else if (Homing_FinalMoveActive[i] != false) {
+                    } else if (Homing_FinalMoveActive[i] != false) {
                         //	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
                         intAxesState = 19;
                         if ((dev->PEv2.CurrentPosition[i] != (int32_t)PEv2_data->PEv2_HomePosition[i])) {
@@ -755,40 +747,39 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 case PK_PEAxisCommand_axHOMINGFinalize:
 
                     /**
-            * @brief Triggers homing finalization for all axes in the same synchronized homing sequence.
-            *
-            * If an axis is currently in the `axHOME` state and receives the `axHOMINGFinalize` command,
-            * this indicates that the homing process for that axis has completed, and it's time to
-            * finalize the homing sequence for all axes that share the same `PEv2_home_sequence`.
-            *
-            * The function `PEv2_HomingStateSyncedTrigger()` is used to propagate the `axHOMINGFinalize`
-            * trigger to all other axes within the same sequence, ensuring that all axes complete
-            * the homing procedure in a synchronized way.
-            *
-            * @note The actual condition that all axes have truly completed homing (`allhomed`) is
-            * commented out here, so finalization may currently rely only on the trigger signal
-            * without verifying the readiness of all involved axes.
-            *
-            * @see PEv2_HomingStateSyncedTrigger()
-            * @see PEv2_AxesCommand
-            * @see PEv2_home_sequence
-            * @see PK_PEAxisState_axHOME
-            * @see PK_PEAxisCommand_axHOMINGFinalize
-             * @memberof PoKeysHALComponent
-            */
+                     * @brief Triggers homing finalization for all axes in the same synchronized homing sequence.
+                     *
+                     * If an axis is currently in the `axHOME` state and receives the `axHOMINGFinalize` command,
+                     * this indicates that the homing process for that axis has completed, and it's time to
+                     * finalize the homing sequence for all axes that share the same `PEv2_home_sequence`.
+                     *
+                     * The function `PEv2_HomingStateSyncedTrigger()` is used to propagate the `axHOMINGFinalize`
+                     * trigger to all other axes within the same sequence, ensuring that all axes complete
+                     * the homing procedure in a synchronized way.
+                     *
+                     * @note The actual condition that all axes have truly completed homing (`allhomed`) is
+                     * commented out here, so finalization may currently rely only on the trigger signal
+                     * without verifying the readiness of all involved axes.
+                     *
+                     * @see PEv2_HomingStateSyncedTrigger()
+                     * @see PEv2_AxesCommand
+                     * @see PEv2_home_sequence
+                     * @see PK_PEAxisState_axHOME
+                     * @see PK_PEAxisCommand_axHOMINGFinalize
+                     * @memberof PoKeysHALComponent
+                     */
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGFinalize\n", __FILE__, __FUNCTION__);
                     if (intAxesState == PK_PEAxisState_axHOME && *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGFinalize) {
                         int MyHomeSequ, seq;
                         MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
-    
 
                         if (Homing_PkHomeFinalizeeDone[i] != true) {
-                            //PK_PEAxisState_axHOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
-    
+                            // PK_PEAxisState_axHOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
+
                             if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGSTART, PK_Homing_axHOMINGFinalize) == 0) {
-    
+
                                 Homing_PkHomeFinalizeeDone[i] = true;
-    
+
                             } else {
                                 rtapi_print_msg(RTAPI_MSG_ERR,
                                                 "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
@@ -802,7 +793,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                             "PK_HOMING: ensurinig that all axes (%d) with same "
                                             "Sequence(%d) startmask initialized (%d) \n",
                                             i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
-            
+
                             // ensure that all axes with same Sequence start homing at the same time
                             rtapi_print_msg(RTAPI_MSG_DBG,
                                             "PoKeys: %s:%s: ensure that all axes with same "
@@ -811,10 +802,10 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                             int j_count = 0;
                             bool allhomed = true;
                             for (seq = 0; seq < (*PEv2_data->PEv2_nrOfAxes); seq++) {
-            
+
                                 if (PEv2_data->PEv2_home_sequence[seq] == PEv2_data->PEv2_home_sequence[i]) {
                                     //	rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensure that all axes (%d) with same Sequence(%d) start homing at the same time \n", seq, PEv2_data->PEv2_home_sequence[i]);
-            
+
                                     HomingStartMaskSetup |= (1 << seq); // Home axis seq only (bit seq)
                                     j_count++;
                                     IsHoming[seq] = true;
@@ -847,11 +838,10 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             // placed here to as substates PK_PEAxisState_axHOME
             *PEv2_data->PEv2_AxesState[i] = intAxesState;
 
-
             // calculate actual velocity by position difference (time estimated by actual rtc_loop_frequ [Hz] / [1/sec] )
             if (*(PEv2_data->PEv2_deb_ishoming[i]) == false && (*PEv2_data->PEv2_AxesState[i] != 17) && (*PEv2_data->PEv2_AxesState[i] != 18) && (*PEv2_data->PEv2_AxesState[i] != 19)) {
 
-                //PosFb[i] = (dev->PEv2.CurrentPosition[i] / PEv2_data->PEv2_PositionScale[i]) - PEv2_data->PEv2_PositionOffset[i];
+                // PosFb[i] = (dev->PEv2.CurrentPosition[i] / PEv2_data->PEv2_PositionScale[i]) - PEv2_data->PEv2_PositionOffset[i];
 
                 *(PEv2_data->PEv2_joint_pos_fb[i]) = ((float)*(PEv2_data->PEv2_CurrentPosition[i]) / PEv2_data->PEv2_PositionScale[i]) - PEv2_data->PEv2_PositionOffset[i];
 
@@ -860,17 +850,17 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 // during homing the position is being reset to 0, so the feedback would be 0
                 // which causes FERROR
                 *(PEv2_data->PEv2_joint_pos_fb[i]) = PEv2_joint_pos_cmd(i);
-                //PosFb[i] = 0;
+                // PosFb[i] = 0;
                 //*(PEv2_data->PEv2_joint_pos_fb[i]) = ((float)intCurrentPosition[i] / PEv2_data->PEv2_PositionScale[i]) - PEv2_data->PEv2_PositionOffset[i];
 
                 /*if (StepScale[i] != 0) {
-					PEv2_deb_axxisout(i) = 230 + i;
-					PosFb[i] = ( intCurrentPosition[i]- PEv2_data->PEv2_HomeOffsets[i]) / StepScale[i];
-				}
-				else {
-					PEv2_deb_axxisout(i) = 240 + i;
-					PosFb[i] =  intCurrentPosition[i] - PEv2_data->PEv2_HomeOffsets[i];
-				}*/
+                                        PEv2_deb_axxisout(i) = 230 + i;
+                                        PosFb[i] = ( intCurrentPosition[i]- PEv2_data->PEv2_HomeOffsets[i]) / StepScale[i];
+                                }
+                                else {
+                                        PEv2_deb_axxisout(i) = 240 + i;
+                                        PosFb[i] =  intCurrentPosition[i] - PEv2_data->PEv2_HomeOffsets[i];
+                                }*/
             }
 
             PEv2_deb_axxisout(i) = 250 + i;
@@ -887,10 +877,10 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             PEv2_deb_axxisout(i) = 290 + i;
 
             /*
-			PEv2.#.digin.Error.in[8]
+                        PEv2.#.digin.Error.in[8]
 
-			bm_ErrorStatus
-			*/
+                        bm_ErrorStatus
+                        */
 
             tAxisEnabledMask = Set_BitOfByte(tAxisEnabledMask, i, PEv2_digout_AxisEnabled_out(i));
             PEv2_LimitOverrideSetup = Set_BitOfByte(PEv2_LimitOverrideSetup, i, PEv2_digout_LimitOverride_out(i));
@@ -981,8 +971,8 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     }
 
                     /*
-					for the last short move before in-position is reached switch to positionmode for more precise positioning
-					*/
+                                        for the last short move before in-position is reached switch to positionmode for more precise positioning
+                                        */
                     if (InPosition[i] && (dev->PEv2.CurrentPosition[i] != (int32_t) * (PEv2_data->PEv2_ReferencePosition[i]))) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: Axis:%i InPosition[i] && "
@@ -1021,7 +1011,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                 if (dev->PEv2.ReferencePositionSpeed[i] != 0) {
                                     dev->PEv2.ReferencePositionSpeed[i] = 0;
                                     PK_PEv2_PulseEngineMove(dev);
-                                    //usleep(sleepdur);
+                                    // usleep(sleepdur);
                                 }
 
                                 // then switch to Position Mode
@@ -1094,10 +1084,10 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
 #ifdef ULAPI
                     usleep(sleepdur);
 #endif
-                    //dev->PEv2.param1 = i;			// redundant ??!
-                    //PK_PEv2_AxisConfigurationGet(dev);
-                    //POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
-                    //usleep(sleepdur);
+                    // dev->PEv2.param1 = i;			// redundant ??!
+                    // PK_PEv2_AxisConfigurationGet(dev);
+                    // POSITION_MODE_active[i] = Get_BitOfByte(dev->PEv2.AxesConfig[i], 3);
+                    // usleep(sleepdur);
 
                     PEv2_deb_posmode_count(i) = posCount[i];
                     PEv2_deb_velmode_count(i) = velCount[i];
@@ -1162,15 +1152,15 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                 doMove = true;
                                 //}
                                 /*else
-								{
-									dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
-									dev->PEv2.param1 = i;
-									PK_PEv2_AxisConfigurationSet(dev);
-									dev->PEv2.ReferencePositionSpeed[i] = 0;
-									*(PEv2_data->PEv2_ReferencePositionSpeed[i]) = 0;
-									last_joint_vel_cmd[i] = 0;
-									doMove = true;
-								}*/
+                                                                {
+                                                                        dev->PEv2.AxesConfig[i] = Set_BitOfByte(dev->PEv2.AxesConfig[i], 3, false);
+                                                                        dev->PEv2.param1 = i;
+                                                                        PK_PEv2_AxisConfigurationSet(dev);
+                                                                        dev->PEv2.ReferencePositionSpeed[i] = 0;
+                                                                        *(PEv2_data->PEv2_ReferencePositionSpeed[i]) = 0;
+                                                                        last_joint_vel_cmd[i] = 0;
+                                                                        doMove = true;
+                                                                }*/
                             }
                         }
                     } else {
@@ -1381,7 +1371,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
  *
  * @note This function should be called after reading the INI file and before enabling motion control.
  * It ensures the hardware is properly configured to match the desired logical setup.
-  * @memberof PoKeysHALComponent
+ * @memberof PoKeysHALComponent
  */
 void PKPEv2_Setup(sPoKeysDevice *dev) {
     bool DoPeSetup = false;
@@ -1498,7 +1488,7 @@ void PKPEv2_Setup(sPoKeysDevice *dev) {
  * - Axis-specific: PEv2_AxisEnabled_#, PEv2_AxesConfig_#, PEv2_MaxSpeed_#, PEv2_HomingSpeed_#, PEv2_AxesSwitchConfig_#, etc.
  * - Digital input/output pin assignments and inversion flags
  * - Homing logic and movement constraints
-  * @memberof PoKeysHALComponent
+ * @memberof PoKeysHALComponent
  */
 void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
     char key[256]; // Puffer für den zusammengesetzten String
@@ -1510,25 +1500,25 @@ void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
 
     PEv2_data->PEv2_digout_Emergency_Pin = ini_read_int("POKEYS", "PEv2_EmergencyOutputPin", 0);
 
-    //PEv2_PulseEngineSetup settings
+    // PEv2_PulseEngineSetup settings
     PEv2_data->PEv2_PulseEngineEnabled = ini_read_int("POKEYS", "PEv2_PulseEngineEnabled", 0);
     PEv2_data->PEv2_ChargePumpEnabled = ini_read_int("POKEYS", "PEv2_ChargePumpEnabled", 0);
     PEv2_data->PEv2_PulseGeneratorType = ini_read_int("POKEYS", "PEv2_PulseGeneratorType", 0);
     PEv2_data->PEv2_digin_Emergency_invert = ini_read_int("POKEYS", "PEv2_EmergencyInputPolarity", 0);
     // not in use	*PEv2_data->PEv2_AxisEnabledStatesMask = ini_read_int("POKEYS", "PEv2_EmergencyOutputPolarity", 0);
     for (int AxisId = 0; AxisId < dev->PEv2.info.nrOfAxes; AxisId++) {
-        //PEv2_AxisConfigurationGet settings
+        // PEv2_AxisConfigurationGet settings
 
         /* Section: Axis configuration
-			PEv2_AxesConfig
-				PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled
-				PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
-				PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
-				PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
-				PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
-				PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
-				PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
-			*/
+                        PEv2_AxesConfig
+                                PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled
+                                PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
+                                PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
+                                PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
+                                PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
+                                PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
+                                PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
+                        */
         snprintf(key, sizeof(key), "PEv2_AxesConfig_%i", AxisId);
         PEv2_data->PEv2_AxesConfig[AxisId] = ini_read_int("POKEYS", key, 0);
 
@@ -1555,16 +1545,16 @@ void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
         // not in use		PEv2_data->PEv2_AxisSignalOptions[AxisId] = ini_read_int("POKEYS", "PEv2_AxisSignalOptions", 0);
 
         /* Section: Axis switch configuration
-		PEv2_AxesSwitchConfig
-			PK_ASO_SWITCH_LIMIT_N        = (1 << 0),   // 1 Limit- switch
-			PK_ASO_SWITCH_LIMIT_P        = (1 << 1),   // 2 Limit+ switch
-			PK_ASO_SWITCH_HOME           = (1 << 2),   // 4 Home switch
-			PK_ASO_SWITCH_COMBINED_LN_H  = (1 << 3),   // 8 Home switch is shared with Limit- switch
-			PK_ASO_SWITCH_COMBINED_LP_H  = (1 << 4),   // 16 Home switch is shared with Limit+ switch
-			PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
-			PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
-			PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
-		*/
+                PEv2_AxesSwitchConfig
+                        PK_ASO_SWITCH_LIMIT_N        = (1 << 0),   // 1 Limit- switch
+                        PK_ASO_SWITCH_LIMIT_P        = (1 << 1),   // 2 Limit+ switch
+                        PK_ASO_SWITCH_HOME           = (1 << 2),   // 4 Home switch
+                        PK_ASO_SWITCH_COMBINED_LN_H  = (1 << 3),   // 8 Home switch is shared with Limit- switch
+                        PK_ASO_SWITCH_COMBINED_LP_H  = (1 << 4),   // 16 Home switch is shared with Limit+ switch
+                        PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
+                        PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
+                        PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
+                */
         // PEv2_data->PEv2_AxesSwitchConfig[AxisId] - PEv2_AxesSwitchConfig_0
         snprintf(key, sizeof(key), "PEv2_AxesSwitchConfig_%i", AxisId);
         PEv2_data->PEv2_AxesSwitchConfig[AxisId] = ini_read_int("POKEYS", key, 0);
@@ -1602,7 +1592,7 @@ void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
         PEv2_data->PEv2_digin_Home_invert[AxisId] = ini_read_int("POKEYS", key, 0);
 
         /* Section: Pin configuration
-		*/
+         */
         // PEv2_data->PEv2_digin_LimitN_Pin[AxisId] - PEv2_PinLimitMSwitch_0
         snprintf(key, sizeof(key), "PEv2_PinLimitMSwitch_%i", AxisId);
         PEv2_data->PEv2_digin_LimitN_Pin[AxisId] = ini_read_int("POKEYS", key, 0);
@@ -1727,9 +1717,9 @@ void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
 
 /**
  * @brief Write the configuration settings to the INI file
- * 
- * @param dev 
-  * @memberof PoKeysHALComponent
+ *
+ * @param dev
+ * @memberof PoKeysHALComponent
  */
 void PKPEv2_WriteIniFile(sPoKeysDevice *dev) {
     char key[256]; // Puffer für den zusammengesetzten String
@@ -1739,25 +1729,25 @@ void PKPEv2_WriteIniFile(sPoKeysDevice *dev) {
     ini_write_int("ESTOP", "PEv2_EmergencyInputPin", PEv2_data->PEv2_digin_Emergency_Pin);
     ini_write_int("ESTOP", "PEv2_EmergencyInputPolarity", PEv2_data->PEv2_digin_Emergency_invert);
     ini_write_int("ESTOP", "PEv2_EmergencyOutputPin", PEv2_data->PEv2_digout_Emergency_Pin);
-    //PEv2_PulseEngineSetup settings
+    // PEv2_PulseEngineSetup settings
     ini_write_int("PEv2", "PEv2_PulseEngineEnabled", PEv2_data->PEv2_PulseEngineEnabled);
     ini_write_int("PEv2", "PEv2_ChargePumpEnabled", PEv2_data->PEv2_ChargePumpEnabled);
     ini_write_int("PEv2", "PEv2_PulseGeneratorType", PEv2_data->PEv2_PulseGeneratorType);
 
     // not in use	*PEv2_data->PEv2_AxisEnabledStatesMask = ini_read_int("POKEYS", "PEv2_EmergencyOutputPolarity", 0);
     for (int AxisId = 0; AxisId < dev->PEv2.info.nrOfAxes; AxisId++) {
-        //PEv2_AxisConfigurationGet settings
+        // PEv2_AxisConfigurationGet settings
 
         /* Section: Axis configuration
-			PEv2_AxesConfig
-				PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled
-				PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
-				PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
-				PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
-				PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
-				PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
-				PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
-			*/
+                        PEv2_AxesConfig
+                                PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled
+                                PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
+                                PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
+                                PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
+                                PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
+                                PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
+                                PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
+                        */
         snprintf(key, sizeof(key), "PEv2_AxesConfig_%i", AxisId);
         ini_write_int("POKEYS", key, PEv2_data->PEv2_AxesConfig[AxisId]);
 
@@ -1781,16 +1771,16 @@ void PKPEv2_WriteIniFile(sPoKeysDevice *dev) {
         ini_write_int("POKEYS", key, PEv2_data->PEv2_AxisEnabledMasked[AxisId]);
         // not in use		PEv2_data->PEv2_AxisSignalOptions[AxisId] = ini_read_int("POKEYS", "PEv2_AxisSignalOptions", 0);
         /* Section: Axis switch configuration
-		PEv2_AxesSwitchConfig
-			PK_ASO_SWITCH_LIMIT_N        = (1 << 0),   // 1 Limit- switch
-			PK_ASO_SWITCH_LIMIT_P        = (1 << 1),   // 2 Limit+ switch
-			PK_ASO_SWITCH_HOME           = (1 << 2),   // 4 Home switch
-			PK_ASO_SWITCH_COMBINED_LN_H  = (1 << 3),   // 8 Home switch is shared with Limit- switch
-			PK_ASO_SWITCH_COMBINED_LP_H  = (1 << 4),   // 16 Home switch is shared with Limit+ switch
-			PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
-			PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
-			PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
-		*/
+                PEv2_AxesSwitchConfig
+                        PK_ASO_SWITCH_LIMIT_N        = (1 << 0),   // 1 Limit- switch
+                        PK_ASO_SWITCH_LIMIT_P        = (1 << 1),   // 2 Limit+ switch
+                        PK_ASO_SWITCH_HOME           = (1 << 2),   // 4 Home switch
+                        PK_ASO_SWITCH_COMBINED_LN_H  = (1 << 3),   // 8 Home switch is shared with Limit- switch
+                        PK_ASO_SWITCH_COMBINED_LP_H  = (1 << 4),   // 16 Home switch is shared with Limit+ switch
+                        PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
+                        PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
+                        PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
+                */
         // PEv2_data->PEv2_AxesSwitchConfig[AxisId] - PEv2_AxesSwitchConfig_0
         snprintf(key, sizeof(key), "PEv2_AxesSwitchConfig_%i", AxisId);
         ini_write_int("POKEYS", key, PEv2_data->PEv2_AxesSwitchConfig[AxisId]);
@@ -1820,7 +1810,7 @@ void PKPEv2_WriteIniFile(sPoKeysDevice *dev) {
         snprintf(key, sizeof(key), "PEv2_InvertHome_%i", AxisId);
         ini_write_int("POKEYS", key, PEv2_data->PEv2_digin_Home_invert[AxisId]);
         /* Section: Pin configuration
-		*/
+         */
         // PEv2_data->PEv2_digin_LimitN_Pin[AxisId] - PEv2_PinLimitMSwitch_0
         snprintf(key, sizeof(key), "PEv2_PinLimitMSwitch_%i", AxisId);
         ini_write_int("POKEYS", key, PEv2_data->PEv2_digin_LimitN_Pin[AxisId]);

@@ -211,7 +211,7 @@ int PKIO_export_pins(char *prefix, long extra_arg, int id, all_IO_data_t *Io_dat
     int digitalCount = dev->info.iPinCount;
     for (j = 0; j < (digitalCount); j++) {
 
-        //PinFunction
+        // PinFunction
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.Pins.%01d.PinFunction\n", __FILE__, __FUNCTION__, prefix, j);
         r = hal_param_u32_newf(HAL_RW, &(IO_data->Pin[j].PinFunction), id, "%s.pins.%01d.PinFunction", prefix, j);
         if (r != 0) {
@@ -395,7 +395,7 @@ void PKIO_Update(sPoKeysDevice *dev) {
         if (PK_PWMConfigurationGet(dev) == PK_OK) {
             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PWMConfigurationGet(dev) OK\n", __FILE__, __FUNCTION__);
             PWMperiod = IO_data->adcout_pwm_period;
-//PWMperiod = adcout_pwm_period;
+// PWMperiod = adcout_pwm_period;
 #ifdef ULAPI
             usleep(sleepdur);
 #endif
@@ -421,13 +421,13 @@ void PKIO_Update(sPoKeysDevice *dev) {
             for (int i = 0; i < 6; i++) {
                 int PwmId = 5 - i;
                 *(IO_data->adcout[PwmId]).deb_setval = 100;
-                //adcout_deb_out(PwmId) = 100;
+                // adcout_deb_out(PwmId) = 100;
 
                 PWMduty[i] = dev->PWM.PWMduty[i];                         // PWM duty cycles (range between 0 and PWM period)
                 PWMenabledChannels[i] = *(IO_data->adcout[PwmId]).enable; // List of enabled PWM channels
                 PWMpinIDs[i] = dev->PWM.PWMpinIDs[i];
                 IO_data->adcout[PwmId].PinId = PWMpinIDs[i];
-                //adcout_PinId(PwmId) = PWMpinIDs[i];
+                // adcout_PinId(PwmId) = PWMpinIDs[i];
                 PWM_SCale[i] = 1;
 
                 PWM_value[i] = *(IO_data->adcout[PwmId]).value;
@@ -680,7 +680,7 @@ void PKIO_Update(sPoKeysDevice *dev) {
  *
  * This function configures the I/O pins and PWM settings of the PoKeys device
  * based on either previously applied settings or the current device state.
- * 
+ *
  * It performs the following actions:
  * - Reads the current pin configuration from the device via `PK_PinConfigurationGet()`.
  * - For each pin:
@@ -708,12 +708,12 @@ void PKIO_Update(sPoKeysDevice *dev) {
  */
 void PKIO_Setup(sPoKeysDevice *dev) {
     bool PinConfigurationSet = false;
-    //bool readonly = false;
+    // bool readonly = false;
 
     // Setting PinFunction
     if (PK_PinConfigurationGet(dev) == PK_OK) {
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PinConfigurationGet(dev) OK\n", __FILE__, __FUNCTION__);
-        //readonly = true;
+        // readonly = true;
 
         for (int i = 0; i < dev->info.iPinCount - 1; i++) {
 
@@ -827,13 +827,13 @@ void PKIO_Setup(sPoKeysDevice *dev) {
             for (int i = 0; i < 6; i++) {
                 int PwmId = 5 - i;
                 *(IO_data->adcout[PwmId]).deb_setval = 100;
-                //adcout_deb_out(PwmId) = 100;
+                // adcout_deb_out(PwmId) = 100;
 
                 PWMduty[i] = dev->PWM.PWMduty[i];                         // PWM duty cycles (range between 0 and PWM period)
                 PWMenabledChannels[i] = *(IO_data->adcout[PwmId]).enable; // List of enabled PWM channels
                 PWMpinIDs[i] = dev->PWM.PWMpinIDs[i];
                 IO_data->adcout[PwmId].PinId = PWMpinIDs[i];
-                //adcout_PinId(PwmId) = PWMpinIDs[i];
+                // adcout_PinId(PwmId) = PWMpinIDs[i];
                 PWM_SCale[i] = 1;
 
                 PWM_value[i] = *(IO_data->adcout[PwmId]).value;

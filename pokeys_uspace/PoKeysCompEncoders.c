@@ -1,8 +1,8 @@
 
 /**
  * @file
- * 
-*/
+ *
+ */
 #include "PoKeysLib.h"
 #include "PoKeysComp.h"
 #include "rtapi.h"
@@ -56,8 +56,8 @@ static all_encoder_data_t *encoder_data = 0;
 /**
  * @brief Exports HAL encoder pins for the PoKeys device.
  *
- * This function creates and registers all necessary HAL pins for a specified number of encoders 
- * based on the given joint count. It assigns pointers to the internal `encoder_data` structure 
+ * This function creates and registers all necessary HAL pins for a specified number of encoders
+ * based on the given joint count. It assigns pointers to the internal `encoder_data` structure
  * for later use during runtime updates.
  *
  * The following HAL pins are exported per encoder channel:
@@ -103,11 +103,11 @@ int PKEncoder_export_pins(char *prefix, long extra_arg, int id, int njoints, all
         encoder_data = Encoder_data;
     }
     /*
-	if (encoder_data == 0)
-	{
-		rtapi_print_msg(RTAPI_MSG_ERR, "PK_Encoders: all_encoder_data_t malloc failed\n");
-		return -1;
-	}*/
+        if (encoder_data == 0)
+        {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PK_Encoders: all_encoder_data_t malloc failed\n");
+                return -1;
+        }*/
 
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.deb.out\n", __FILE__, __FUNCTION__, prefix);
     r = hal_pin_s32_newf(HAL_OUT, &(encoder_data->encoder_deb_out), id, "%s.encoder.deb.out", prefix);
@@ -191,11 +191,11 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: njoints: %d\n", __FILE__, __FUNCTION__, njoints);
 
     /*
-	if (encoder_data == 0)
-	{
-		rtapi_print_msg(RTAPI_MSG_ERR, "PK_Encoders: all_encoder_data_t malloc failed\n");
-		return -1;
-	}*/
+        if (encoder_data == 0)
+        {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PK_Encoders: all_encoder_data_t malloc failed\n");
+                return -1;
+        }*/
 
     for (j = 0; j < (njoints); j++) {
         addr = &(encoder_data->encoder[j]);
@@ -239,7 +239,7 @@ bool EncoderValuesGet = false;
  * @brief Updates encoder data from the PoKeys device and writes values to HAL pins.
  *
  * This function retrieves encoder values (basic and ultra-fast) from the PoKeys device
- * and updates the corresponding HAL pins for count and position. It also checks if the 
+ * and updates the corresponding HAL pins for count and position. It also checks if the
  * encoder should be reset (based on HAL reset pin or during initialization).
  * If reset is requested, it sets the encoder value on the device to zero.
  *
@@ -248,7 +248,7 @@ bool EncoderValuesGet = false;
  * - `encoder.#.position`      – the scaled position based on count and scale parameter
  * - `encoder.#.velocity`      – currently not set (placeholder)
  *
- * If `reset` pin is high or this is the first update (`initEncodersDone == false`), 
+ * If `reset` pin is high or this is the first update (`initEncodersDone == false`),
  * the encoder is reset on the device using `PK_EncoderValuesSet()`.
  *
  * Debug values are written to `encoder_data->encoder_deb_out` to help trace progress or hangs.
@@ -308,7 +308,7 @@ void PKEncoder_Update(sPoKeysDevice *dev) {
             }
 
             /*
-			known issue: since update to Bullseye & Lcnc 2.9 it hangs here*/
+                        known issue: since update to Bullseye & Lcnc 2.9 it hangs here*/
             *(encoder_data->encoder_deb_out) = 219;
             if (dev->info.iUltraFastEncoders) {
                 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: read UltraFastEncoders\n", __FILE__, __FUNCTION__);
@@ -332,13 +332,13 @@ void PKEncoder_Update(sPoKeysDevice *dev) {
                 }
             }
             /*
-			if (dev->info.iFastEncoders)
-			{
-				for (i = dev->info.iBasicEncoderCount+ dev->info.iUltraFastEncoders; i < (dev->info.iBasicEncoderCount + dev->info.iUltraFastEncoders + dev->info.iFastEncoders ); i++)
-				{
-					encoder_count(i) = dev->Encoders[i].encoderValue;
-				}
-			}*/
+                        if (dev->info.iFastEncoders)
+                        {
+                                for (i = dev->info.iBasicEncoderCount+ dev->info.iUltraFastEncoders; i < (dev->info.iBasicEncoderCount + dev->info.iUltraFastEncoders + dev->info.iFastEncoders ); i++)
+                                {
+                                        encoder_count(i) = dev->Encoders[i].encoderValue;
+                                }
+                        }*/
             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: resetEncoders = %d\n", __FILE__, __FUNCTION__, resetEncoders);
             if (resetEncoders == true) {
                 *(encoder_data->encoder_deb_out) = 140;
@@ -360,17 +360,17 @@ void PKEncoder_Update(sPoKeysDevice *dev) {
 
 /**
  * @brief
- * 
+ *
  */
 int PKEncoder_init(int id, sPoKeysDevice *dev) {
     // dev = device;
-    //return makepins(id, 26);
+    // return makepins(id, 26);
 }
 
 /**
  * @brief Placeholder function to perform encoder-specific setup actions.
  *
- * This function is intended to configure encoder-related parameters or device settings 
+ * This function is intended to configure encoder-related parameters or device settings
  * before starting regular encoder operation. Currently, it is not implemented.
  *
  * You may extend this function to:

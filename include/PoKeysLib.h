@@ -49,9 +49,9 @@ typedef unsigned long long uint64_t;
 #define POKEYSDECL
 #endif
 
-//#define USE_ALIGN_TEST
+// #define USE_ALIGN_TEST
 
-//#define POKEYSLIB_USE_LIBUSB
+// #define POKEYSLIB_USE_LIBUSB
 #ifdef POKEYSLIB_USE_LIBUSB
 #include "libusb-1.0/libusb.h"
 #endif

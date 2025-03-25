@@ -133,7 +133,7 @@ MODULE_INFO(linuxcnc, "pin:info.PulseEngine:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:info.PulseEnginev2:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:info.EasySensors:u32:0:out::None:None");
 
-//rtc pins
+// rtc pins
 MODULE_INFO(linuxcnc, "pin:rtc.sec:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:rtc.min:u32:0:out::None:None");
 MODULE_INFO(linuxcnc, "pin:rtc.hour:u32:0:out::None:None");
@@ -157,7 +157,7 @@ MODULE_LICENSE("GPL");
 #endif // MODULE_INFO
 /**
  * @brief     PoKeys component state
- * 
+ *
  */
 struct __comp_state {
 
@@ -176,7 +176,7 @@ struct __comp_state {
     hal_bit_t *alive;
     hal_bit_t *machine_is_on;
 
-    //info pins
+    // info pins
     hal_u32_t *info_PinCount;
     hal_u32_t *info_PWMCount;
     hal_u32_t *info_BasicEncoderCount;
@@ -260,9 +260,9 @@ bool ApplyIniSettings;
 #define false (0)
 /**
  * @brief     Get the size of the component state
-    *
-    * @return    size of the component state
-    */
+ *
+ * @return    size of the component state
+ */
 
 static int export(char *prefix, long extra_arg) {
     int r = 0;
@@ -276,7 +276,7 @@ static int export(char *prefix, long extra_arg) {
 
     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: export %s\n", __FILE__, __FUNCTION__, prefix);
 
-    //PoExtBus Pins
+    // PoExtBus Pins
     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PoExtBus pins\n");
     r = PKPoExtBus_export_pins(prefix, extra_arg, comp_id, 10, inst->PoExtBus_data);
     if (r != 0) {
@@ -303,7 +303,7 @@ static int export(char *prefix, long extra_arg) {
     }
     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: Encoder params done \n");
 
-    //int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoNET_data_t *poNET_data, sPoKeysDevice *dev)
+    // int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoNET_data_t *poNET_data, sPoKeysDevice *dev)
     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: PoNET pins\n");
     r = PKPoNet_export_pins(prefix, extra_arg, comp_id, 16, inst->poNET_data, dev);
     if (r != 0) {
@@ -545,9 +545,9 @@ char *names[16] = {
 };
 
 /**
-* @function rtapi_app_main
+ * @function rtapi_app_main
  * @brief   Main function for the PoKeys component
- * 
+ *
  */
 int rtapi_app_main(void) {
     int r = 0;
@@ -592,8 +592,8 @@ int rtapi_app_main(void) {
 
 /**
  * @brief   Exit function for the PoKeys component
-    * 
-    */
+ *
+ */
 void rtapi_app_exit(void) {
     hal_exit(comp_id);
 }
@@ -601,8 +601,8 @@ static void user_mainloop(void);
 
 /**
  * @brief   Main loop for the PoKeys component
-    * 
-    */
+ *
+ */
 int __comp_parse_count(int *argc, char **argv) {
     int i;
     for (i = 0; i < *argc; i++) {
@@ -624,7 +624,7 @@ int __comp_parse_count(int *argc, char **argv) {
 
 /**
  * @brief  Parse the names from the command line arguments
- * 
+ *
  * @param argc  Pointer to the argument count
  * @param argv  Pointer to the argument vector
  * @return int  1 if names were found, 0 otherwise
@@ -657,7 +657,7 @@ int argc = 0;
 char **argv = 0;
 /**
  * @brief  Main function for the PoKeys component
- * 
+ *
  * @param argc_  Argument count
  * @param argv_  Argument vector
  * @return int   0 on success, 1 on failure
@@ -849,8 +849,8 @@ int main(int argc_, char **argv_) {
 #define adcin_offset(i) (__comp_inst->adcin_offset[i])
 #undef digout_invert
 #define digout_invert(i) (__comp_inst->digout_invert[i])
-//#undef encoder_scale
-//#define encoder_scale(i) (__comp_inst->encoder_scale[i])
+// #undef encoder_scale
+// #define encoder_scale(i) (__comp_inst->encoder_scale[i])
 #undef adcout_offset
 #define adcout_offset(i) (__comp_inst->adcout_offset[i])
 #undef adcout_scale
@@ -866,21 +866,21 @@ int main(int argc_, char **argv_) {
 #undef adcout_pwm_period
 #define adcout_pwm_period (__comp_inst->adcout_pwm_period)
 #undef FOR_ALL_INSTS
-#define FOR_ALL_INSTS()                                                                                                                                                                                                                                                                                                                                                \
-    struct __comp_state *__comp_inst;                                                                                                                                                                                                                                                                                                                                  \
+#define FOR_ALL_INSTS()                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        \
+    struct __comp_state *__comp_inst;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          \
     for (__comp_inst = __comp_first_inst; __comp_inst; __comp_inst = __comp_inst->_next)
 
-//#line 863 "/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace/pokeys.c"
+// #line 863 "/home/zarfld/Documents/LinuxCnc_PokeysLibComp/pokeys_uspace/pokeys.c"
 
 static int comp_id; /* component ID */
-//bool initEncodersDone = 0;
+// bool initEncodersDone = 0;
 
 bool setPkConfig = false;
 bool setPinConfig = false;
 bool I2C_isscanning = false;
 bool secBlink = false;
 unsigned Loop_Frequ = 0;
-//uint8_t kbd48CNC_Counter[48];
+// uint8_t kbd48CNC_Counter[48];
 
 uint8_t rtc_latencycheck_set = 0;
 int rtc_latencyCounter = 0;
@@ -891,8 +891,8 @@ float temp_MaxAcceleration[8];
 float minAccel = 0.0001;
 /**
  * @brief  Structure to hold the state of the component
-    * 
-    */
+ *
+ */
 typedef struct {
     uint8_t matrixKBconfiguration;    // Matrix keyboard configuration (set to 1 to enable matrix keyboard support)
     uint8_t matrixKBwidth;            // Matrix keyboard width (number of columns)
@@ -918,14 +918,14 @@ unsigned int sleepdur2 = 1000;
 
 unsigned int sleepdur_S[10] = { 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000 };
 
-//bool DoPWM = false;
+// bool DoPWM = false;
 bool DoEncoders = true;
 
 PK_MatrixKB_Parameters MatrixKB;
 /**
  * @brief   Structure to hold the state of the component
-    * 
-    */
+ *
+ */
 uint8_t Merge_8BitsToByte(bool Bit_array[8]) {
     uint8_t sum = 0;
     for (int i = 0; i < 8; i++) {
@@ -943,8 +943,8 @@ uint8_t Merge_8BitsToByte(bool Bit_array[8]) {
 
 /**
  * @brief  Config_MatrixKB
-    * 
-    */
+ *
+ */
 int Config_MatrixKB() {
     if (PK_MatrixKBConfigurationGet(dev) == PK_OK) {
         MatrixKB.matrixKBconfiguration = dev->matrixKB.matrixKBconfiguration;
@@ -969,8 +969,8 @@ int Config_MatrixKB() {
 }
 /**
  * @brief  Update_MatrixKB
-    * 
-    */
+ *
+ */
 int Update_MatrixKB() {
     if (PK_MatrixKBStatusGet(dev) == PK_OK) {
         for (i = 0; i < 128; i++) {
@@ -994,9 +994,9 @@ int Update_MatrixKB() {
 }
 
 /**
- * @brief  
-    * 
-    */
+ * @brief
+ *
+ */
 int Update_LCD() {
     if (PK_LCDUpdate(dev) == PK_OK) {
         usleep(sleepdur);
@@ -1008,9 +1008,9 @@ int Update_LCD() {
 }
 
 /**
- * @brief  
-    * 
-    */
+ * @brief
+ *
+ */
 int Config_PoStep() {
     if (PK_PoStep_ConfigurationGet(dev) == PK_OK) {
         usleep(sleepdur);
@@ -1025,9 +1025,9 @@ int Config_PoStep() {
     return 0;
 }
 /**
- * @brief  
-    * 
-    */
+ * @brief
+ *
+ */
 int Update_PoStep() {
     if (PK_PoStep_StatusGet(dev) == PK_OK) {
         usleep(sleepdur);
@@ -1047,9 +1047,9 @@ static int retry = 3;
 
 int instance_number = 0;
 /**
- * @brief  
-    * 
-    */
+ * @brief
+ *
+ */
 sPoKeysDevice *TryConnectToDevice(uint32_t intSerial) {
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: serial_number: %d\n", intSerial);
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: serial_number=%d\n", __FILE__, __FUNCTION__, intSerial);
@@ -1071,7 +1071,7 @@ sPoKeysDevice *TryConnectToDevice(uint32_t intSerial) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_EnumerateUSBDevices\n", __FILE__, __FUNCTION__);
             enm_usb_dev = PK_EnumerateUSBDevices();
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: enm_usb_dev :%d\n", __FILE__, __FUNCTION__, enm_usb_dev);
-            //enm_fusb_dev = PK_EnumerateFastUSBDevices();
+            // enm_fusb_dev = PK_EnumerateFastUSBDevices();
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: enm_fusb_dev :%d\n", __FILE__, __FUNCTION__, enm_fusb_dev);
             if (enm_usb_dev != 0 || enm_fusb_dev != 0) {
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_ConnectToDeviceWSerial(%d, %d)\n", __FILE__, __FUNCTION__, intSerial, i_Timeout);
@@ -1206,7 +1206,7 @@ sPoKeysDevice *TryConnectToDevice(uint32_t intSerial) {
 
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_EnumerateFastUSBDevices()\n", __FILE__, __FUNCTION__);
         // enm_fusb_dev = PK_EnumerateFastUSBDevices();
-        //rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_EnumerateFastUSBDevices()=%d\n", __FILE__, __FUNCTION__, enm_fusb_dev);
+        // rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_EnumerateFastUSBDevices()=%d\n", __FILE__, __FUNCTION__, enm_fusb_dev);
 
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_EnumerateNetworkDevices(udp_devices, %d)\n", __FILE__, __FUNCTION__, i_Timeout);
         int32_t nDevs = PK_EnumerateNetworkDevices(udp_devices, i_Timeout); // does not work - it hangs here
@@ -1288,9 +1288,9 @@ int doSetup = 0;
 
 int next_setup = 1;
 /**
- * @brief 
-    * 
-    */
+ * @brief
+ *
+ */
 void pokeys_read_ini(sPoKeysDevice *dev) {
 
     PKIO_ReadIniFile(dev);
@@ -1298,8 +1298,8 @@ void pokeys_read_ini(sPoKeysDevice *dev) {
     PKEncoder_ReadIniFile(dev);
 }
 /**
- * @brief  
- * 
+ * @brief
+ *
  */
 void pokeys_write_ini(sPoKeysDevice *dev) {
 
@@ -1322,12 +1322,12 @@ void pokeys_update(sPoKeysDevice *dev) {
 
     usleep(sleepdur);
 
-    //rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: info_PoExtBus = %d\n", __FILE__, __FUNCTION__, info_PoExtBus);
+    // rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: info_PoExtBus = %d\n", __FILE__, __FUNCTION__, info_PoExtBus);
     PKPoExtBus_Update(dev);
 
     usleep(sleepdur);
 
-    //rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: info_PoNET = %d\n", __FILE__, __FUNCTION__, info_PoNET);
+    // rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: info_PoNET = %d\n", __FILE__, __FUNCTION__, info_PoNET);
     PKPoNet_Update(dev);
 
     usleep(sleepdur);
@@ -1381,8 +1381,8 @@ void pokeys_setup(sPoKeysDevice *dev) {
 }
 /**
  * @brief user_mainloop
-    * 
-    */
+ *
+ */
 void user_mainloop(void) {
 
     rtapi_print("  \n");
@@ -1439,7 +1439,7 @@ void user_mainloop(void) {
                             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: NetworkDevice\n", __FILE__, __FUNCTION__);
 
                             /*  PK_ConnectionParam_TCP = 0,
-							PK_ConnectionParam_UDP = 1*/
+                                                        PK_ConnectionParam_UDP = 1*/
                             if (dev->connectionParam == 0) {
                                 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: TCP\n", __FILE__, __FUNCTION__);
                                 connected_usb = 0;
@@ -1605,7 +1605,7 @@ void user_mainloop(void) {
                 deb_out = 212;
             }
 
-            //pokeys_update(dev);
+            // pokeys_update(dev);
 
             deb_out = 219;
             // PulseEnginev2
@@ -1622,18 +1622,18 @@ void user_mainloop(void) {
             deb_out = 230;
             usleep(sleepdur);
 
-            //rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: info_PoExtBus = %d\n", __FILE__, __FUNCTION__, info_PoExtBus);
+            // rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: info_PoExtBus = %d\n", __FILE__, __FUNCTION__, info_PoExtBus);
             PKPoExtBus_Update(dev);
             deb_out = 238;
             usleep(sleepdur);
 
-            //rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: info_PoNET = %d\n", __FILE__, __FUNCTION__, info_PoNET);
+            // rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: info_PoNET = %d\n", __FILE__, __FUNCTION__, info_PoNET);
             PKPoNet_Update(dev);
             deb_out = 239;
             usleep(sleepdur);
 
             if (doSetup > 0) {
-                //rtc_lastmin = rtc_min;
+                // rtc_lastmin = rtc_min;
                 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: rtc_lastmin = %d\n", __FILE__, __FUNCTION__, rtc_lastmin);
 
                 if (HAL_Machine_On == false) {
@@ -1731,8 +1731,8 @@ void user_mainloop(void) {
 };
 
 /**
- * @brief  
- * 
+ * @brief
+ *
  */
 EXTRA_SETUP() {
     int wait_ms = 5000;
@@ -1742,7 +1742,7 @@ EXTRA_SETUP() {
         iniFindInt(fp, "DEVICE_ID", "POKEYS", &device_id);
         iniFindInt(fp, "COMM_TIMEOUT", "POKEYS", &timeout_ms);
 
-        //ApplyIniSettings
+        // ApplyIniSettings
         int tmpIniSettings = 0;
         iniFindInt(fp, "ApplyIniSettings", "POKEYS", &tmpIniSettings);
 
@@ -1776,7 +1776,7 @@ EXTRA_SETUP() {
 
 /**
  * @brief
- * 
+ *
  */
 EXTRA_CLEANUP() {
     if (dev != NULL) {
@@ -1785,8 +1785,8 @@ EXTRA_CLEANUP() {
 }
 
 /**
- * @brief  
- * 
+ * @brief
+ *
  */
 static int __comp_get_data_size(void) {
     return 0;

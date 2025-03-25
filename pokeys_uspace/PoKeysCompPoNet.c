@@ -1,7 +1,7 @@
 /**
  * @file
- * 
-*/
+ *
+ */
 #include "PoKeysLib.h"
 #include "PoKeysComp.h"
 #include "rtapi.h"
@@ -75,15 +75,15 @@ int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_P
         PoNet_data = poNET_data;
     }
     /*
-	if (poNET_data == 0)
-	{
-		rtapi_print_msg(RTAPI_MSG_ERR, "PK_PoNET: all_PoNET_data_t malloc failed\n");
-		return -1;
-	}*/
+        if (poNET_data == 0)
+        {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PK_PoNET: all_PoNET_data_t malloc failed\n");
+                return -1;
+        }*/
 
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.PoNET.PoNETstatus\n", __FILE__, __FUNCTION__, prefix);
     /*r = hal_param_u32_newf(HAL_RW, &(PoNet_data->PoNET_PoNETstatus), id,
-						   "%s.PoNET.PoNETstatus", prefix);*/
+                                                   "%s.PoNET.PoNETstatus", prefix);*/
     r = hal_pin_u32_newf(HAL_OUT, &(PoNet_data->PoNET_PoNETstatus), id, "%s.PoNET.PoNETstatus", prefix);
     if (r != 0) {
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.PoNET.PoNETstatus failed\n", __FILE__, __FUNCTION__, prefix);
@@ -244,7 +244,7 @@ int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_P
                     return -1;
                 }
             }
-            //one_kbd48CNCButton_data_t *addr = *(PoNet_data->kbd48CNCio)[j];
+            // one_kbd48CNCButton_data_t *addr = *(PoNet_data->kbd48CNCio)[j];
             if (PoNet_data->kbd48CNCio[j] != NULL) {
                 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.kbd48CNC.%01d.LED \n", __FILE__, __FUNCTION__, prefix, j);
                 r = hal_pin_bit_newf(HAL_IN, &(PoNet_data->kbd48CNCio[j]->LED), id, "%s.kbd48CNC.%01d.LED", prefix, j);
@@ -456,10 +456,10 @@ void PKPoNet_Update(sPoKeysDevice *dev) {
             }
 
             /*while (kbd48CNC_Button(i)!=instate)
-			{
-				kbd48CNC_Button(i)=instate;
-				//usleep(sleepdur/10);
-			}*/
+                        {
+                                kbd48CNC_Button(i)=instate;
+                                //usleep(sleepdur/10);
+                        }*/
 
             *(addr->Button) = instate;
             int tmp = dev->PoNETmodule.statusOut[ID / 8];
@@ -475,10 +475,10 @@ void PKPoNet_Update(sPoKeysDevice *dev) {
             dev->PoNETmodule.statusOut[ID / 8] = tmp;
             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: kbd48CNC statusOut[%d] = %d\n", __FILE__, __FUNCTION__, ID / 8, dev->PoNETmodule.statusOut[ID / 8]);
             /*while (dev->PoNETmodule.statusOut[ID/8] != tmp)
-			{
-				dev->PoNETmodule.statusOut[ID/8] = tmp;
-				//usleep(sleepdur/10);
-			}*/
+                        {
+                                dev->PoNETmodule.statusOut[ID/8] = tmp;
+                                //usleep(sleepdur/10);
+                        }*/
         }
 
         dev->PoNETmodule.moduleID = PoNet_data->kbd48CNC_PoNetID;

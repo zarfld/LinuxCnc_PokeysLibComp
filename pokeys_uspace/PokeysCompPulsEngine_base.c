@@ -202,7 +202,7 @@ int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id, PEv2_data_t *P
         if (r != 0)
             return r;
 
-        //PEv2_index_enable
+        // PEv2_index_enable
         r = hal_pin_bit_newf(HAL_IO, &(PEv2_data->PEv2_index_enable[j]), comp_id, "%s.PEv2.%01d.index-enable", prefix, j);
         if (r != 0)
             return r;
@@ -243,17 +243,17 @@ int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id, PEv2_data_t *P
         if (r != 0)
             return r;
 
-        //PEv2_HomePosition
+        // PEv2_HomePosition
         r = hal_param_s32_newf(HAL_RW, &(PEv2_data->PEv2_HomePosition[j]), comp_id, "%s.PEv2.%01d.HomePosition", prefix, j);
         if (r != 0)
             return r;
 
-        //PEv2_ArmPosition
+        // PEv2_ArmPosition
         r = hal_param_s32_newf(HAL_RW, &(PEv2_data->PEv2_ArmPosition[j]), comp_id, "%s.PEv2.%01d.ArmPosition", prefix, j);
         if (r != 0)
             return r;
 
-        //PEv2_ZeroPosition
+        // PEv2_ZeroPosition
         r = hal_param_s32_newf(HAL_RW, &(PEv2_data->PEv2_ZeroPosition[j]), comp_id, "%s.PEv2.%01d.ZeroPosition", prefix, j);
         if (r != 0)
             return r;
@@ -416,10 +416,10 @@ int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id, PEv2_data_t *P
     }
 
     /*
-	r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_PulseEngineEnabled), comp_id,
-		"%s.PEv2.PulseEngineEnabled", prefix);
-	if (r != 0)
-		return r;*/
+        r = hal_pin_u32_newf(HAL_IO, &(PEv2_data->PEv2_PulseEngineEnabled), comp_id,
+                "%s.PEv2.PulseEngineEnabled", prefix);
+        if (r != 0)
+                return r;*/
 
     r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_PulseEngineEnabled), comp_id, "%s.PEv2.PulseEngineEnabled", prefix);
     if (r != 0)
@@ -690,7 +690,7 @@ int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id, PEv2_data_t *P
         if (r != 0)
             return r;
 
-        //PEv2_digin_Probe_Filter
+        // PEv2_digin_Probe_Filter
         r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_digin_Probe_Filter[j]), comp_id, "%s.PEv2.%01d.digin.Probe.Filter", prefix, j);
         if (r != 0)
             return r;
@@ -732,9 +732,7 @@ int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id, PEv2_data_t *P
         return r;
 }
 
-static const char *const PK_HomingStatus_names[] = {
-    [PK_Homing_axIDLE] = "IDLE", [PK_Homing_axHOMINGSTART] = "HOMINGSTART", [PK_Homing_axARMENCODER] = "ARMENCODER", [PK_Homing_axHOMINGWaitFinalMove] = "HOMINGWaitFinalMove", [PK_Homing_axHOMINGFinalMove] = "HOMINGFinalMove", [PK_Homing_axHOMINGCancel] = "HOMINGCancel", [PK_Homing_axHOMINGFinalize] = "HOMINGFinalize"
-};
+static const char *const PK_HomingStatus_names[] = { [PK_Homing_axIDLE] = "IDLE", [PK_Homing_axHOMINGSTART] = "HOMINGSTART", [PK_Homing_axARMENCODER] = "ARMENCODER", [PK_Homing_axHOMINGWaitFinalMove] = "HOMINGWaitFinalMove", [PK_Homing_axHOMINGFinalMove] = "HOMINGFinalMove", [PK_Homing_axHOMINGCancel] = "HOMINGCancel", [PK_Homing_axHOMINGFinalize] = "HOMINGFinalize" };
 
 static const char *const PK_PEState_names[] = { [PK_PEState_peSTOPPED] = "STOPPED",
                                                 [PK_PEState_peINTERNAL] = "INTERNAL",
@@ -833,11 +831,11 @@ void Read_digin_LimitHome_Pins(sPoKeysDevice *dev, int i) {
     uint8_t bm_DedicatedLimitPInputs;
     uint8_t bm_DedicatedHomeInputs;
     /*
-			   param rw unsigned PEv2.#.digin.LimitN.Pin [8] "Limit- switch pin (0 for external dedicated input)";			// Limit- switch pin (0 for external dedicated input)
-			   param rw unsigned PEv2.#.digin.LimitN.Filter[8] "Digital filter for limit- switch";		// Digital filter for limit- switch
-			   param rw bit PEv2.#.digin.LimitN.invert[8] "Invert limit- (PK_ASO_SWITCH_INVERT_LIMIT_N)";
-			   param rw bit PEv2.#.digin.LimitN.Enabled[8] "Limit- is available (PK_ASO_SWITCH_LIMIT_N)";
-			*/
+                           param rw unsigned PEv2.#.digin.LimitN.Pin [8] "Limit- switch pin (0 for external dedicated input)";			// Limit- switch pin (0 for external dedicated input)
+                           param rw unsigned PEv2.#.digin.LimitN.Filter[8] "Digital filter for limit- switch";		// Digital filter for limit- switch
+                           param rw bit PEv2.#.digin.LimitN.invert[8] "Invert limit- (PK_ASO_SWITCH_INVERT_LIMIT_N)";
+                           param rw bit PEv2.#.digin.LimitN.Enabled[8] "Limit- is available (PK_ASO_SWITCH_LIMIT_N)";
+                        */
     if (PEv2_data->PEv2_digin_LimitP_Pin[i] > 0) {
         if (PEv2_data->PEv2_digin_LimitP_invert[i] != 0) {
             *(PEv2_data->PEv2_digin_LimitP_in[i]) = !Get_BitOfByte(bm_LimitStatusP, i);
@@ -1195,35 +1193,35 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
 
         bool DoExternalOutputsSet = false;
         /*strange behaviour: it seems that values on "" do the following:
-		- bit 1 / int 1 -> switches ext_Relays1
-		- bit 2 / int 2 -> switches ext_Relays3
-		- bit 3 / int 4 -> switches ext_Relays2
-		- bit 4 / int 8 -> switches ext_OC-Output1
-		- bit 5 / int 16 -> switches ext_OC-Output2
-		- bit 6 / int 32 -> switches ext_OC-Output3
-		- bit 7 / int 64 -> switches ext_OC-Output4
-		- bit 8 / int 128 -> switches switches ext_Relays0
+                - bit 1 / int 1 -> switches ext_Relays1
+                - bit 2 / int 2 -> switches ext_Relays3
+                - bit 3 / int 4 -> switches ext_Relays2
+                - bit 4 / int 8 -> switches ext_OC-Output1
+                - bit 5 / int 16 -> switches ext_OC-Output2
+                - bit 6 / int 32 -> switches ext_OC-Output3
+                - bit 7 / int 64 -> switches ext_OC-Output4
+                - bit 8 / int 128 -> switches switches ext_Relays0
 
-		*/
+                */
         /*
-			ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 0, PEv2_digout_ExternalRelay_out(0));
-			ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 1, PEv2_digout_ExternalRelay_out(1));
-			ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 2, PEv2_digout_ExternalRelay_out(2));
-			ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 3, PEv2_digout_ExternalRelay_out(3));
-			ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 4, PEv2_digout_ExternalRelay_out(4));
-			ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 5, PEv2_digout_ExternalRelay_out(5));
-			ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 6, PEv2_digout_ExternalRelay_out(6));
-			ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 7, PEv2_digout_ExternalRelay_out(7));
+                        ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 0, PEv2_digout_ExternalRelay_out(0));
+                        ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 1, PEv2_digout_ExternalRelay_out(1));
+                        ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 2, PEv2_digout_ExternalRelay_out(2));
+                        ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 3, PEv2_digout_ExternalRelay_out(3));
+                        ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 4, PEv2_digout_ExternalRelay_out(4));
+                        ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 5, PEv2_digout_ExternalRelay_out(5));
+                        ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 6, PEv2_digout_ExternalRelay_out(6));
+                        ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 7, PEv2_digout_ExternalRelay_out(7));
 
-			ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, PEv2_digout_ExternalOC_out(0));
-			ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, PEv2_digout_ExternalOC_out(1));
-			ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, PEv2_digout_ExternalOC_out(2));
-			ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, PEv2_digout_ExternalOC_out(3));
-			ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 4, PEv2_digout_ExternalOC_out(4));
-			ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, PEv2_digout_ExternalOC_out(5));
-			ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6, PEv2_digout_ExternalOC_out(6));
-			ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7, PEv2_digout_ExternalOC_out(7));
-		*/
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, PEv2_digout_ExternalOC_out(0));
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, PEv2_digout_ExternalOC_out(1));
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, PEv2_digout_ExternalOC_out(2));
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, PEv2_digout_ExternalOC_out(3));
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 4, PEv2_digout_ExternalOC_out(4));
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, PEv2_digout_ExternalOC_out(5));
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6, PEv2_digout_ExternalOC_out(6));
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7, PEv2_digout_ExternalOC_out(7));
+                */
 
         ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, *(PEv2_data->PEv2_digout_ExternalRelay_out[1]));
         ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, *(PEv2_data->PEv2_digout_ExternalRelay_out[3]));
@@ -1267,7 +1265,7 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
  * @brief Configures and applies Pulse Engine v2 settings to the PoKeys device.
  *
  * This function checks and sets multiple Pulse Engine configuration parameters
- * based on both the current device state (`dev->PEv2`) and user-defined or 
+ * based on both the current device state (`dev->PEv2`) and user-defined or
  * default settings stored in `PEv2_data`. These include:
  * - Number of enabled axes
  * - Charge pump enable state
@@ -1325,17 +1323,17 @@ int32_t PEv2_PulseEngineSetup(sPoKeysDevice *dev) {
         doSetup = true;
     }
 
-    //dev->PEv2.PulseEngineEnabled = PEv2_data->PEv2_PulseEngineEnabled;
+    // dev->PEv2.PulseEngineEnabled = PEv2_data->PEv2_PulseEngineEnabled;
     if (dev->PEv2.PulseEngineEnabled != PEv2_data->PEv2_PulseEngineEnabled) {
         dev->PEv2.PulseEngineEnabled = PEv2_data->PEv2_PulseEngineEnabled;
         doSetup = true;
     }
-    //dev->PEv2.ChargePumpEnabled = PEv2_data->PEv2_ChargePumpEnabled;
+    // dev->PEv2.ChargePumpEnabled = PEv2_data->PEv2_ChargePumpEnabled;
     if (dev->PEv2.ChargePumpEnabled != PEv2_data->PEv2_ChargePumpEnabled) {
         dev->PEv2.ChargePumpEnabled = PEv2_data->PEv2_ChargePumpEnabled;
         doSetup = true;
     }
-    //dev->PEv2.PulseGeneratorType = PEv2_data->PEv2_PulseGeneratorType;
+    // dev->PEv2.PulseGeneratorType = PEv2_data->PEv2_PulseGeneratorType;
 
     if (PEv2_data->PEv2_PG_swap_stepdir != false) {
         PEv2_data->PEv2_PulseGeneratorType = Set_BitOfByte(PEv2_data->PEv2_PulseGeneratorType, 6,
@@ -1355,12 +1353,12 @@ int32_t PEv2_PulseEngineSetup(sPoKeysDevice *dev) {
         dev->PEv2.PulseGeneratorType = PEv2_data->PEv2_PulseGeneratorType;
         doSetup = true;
     }
-    //dev->PEv2.EmergencySwitchPolarity = PEv2_data->PEv2_digin_Emergency_invert;
+    // dev->PEv2.EmergencySwitchPolarity = PEv2_data->PEv2_digin_Emergency_invert;
     if (dev->PEv2.EmergencySwitchPolarity != PEv2_data->PEv2_digin_Emergency_invert) {
         dev->PEv2.EmergencySwitchPolarity = PEv2_data->PEv2_digin_Emergency_invert;
         doSetup = true;
     }
-    //dev->PEv2.AxisEnabledStatesMask = PEv2_data->PEv2_AxisEnabledStatesMask;
+    // dev->PEv2.AxisEnabledStatesMask = PEv2_data->PEv2_AxisEnabledStatesMask;
     if (dev->PEv2.AxisEnabledStatesMask != *PEv2_data->PEv2_AxisEnabledStatesMask) {
         dev->PEv2.AxisEnabledStatesMask = *PEv2_data->PEv2_AxisEnabledStatesMask;
         doSetup = true;
@@ -1404,8 +1402,8 @@ int32_t PEv2_PulseEngineSetup(sPoKeysDevice *dev) {
  * @brief Reads additional Pulse Engine v2 parameters from the PoKeys device.
  *
  * This function retrieves the current additional configuration of the Pulse Engine v2,
- * such as the emergency stop input pin, using `PK_PEv2_AdditionalParametersGet()`. 
- * If the configuration is successfully read and either `ApplyIniSettings` is false 
+ * such as the emergency stop input pin, using `PK_PEv2_AdditionalParametersGet()`.
+ * If the configuration is successfully read and either `ApplyIniSettings` is false
  * or no HAL configuration is specified for the emergency pin, the value is stored in
  * `PEv2_data->PEv2_digin_Emergency_Pin` after adjusting the index.
  *
@@ -1443,20 +1441,20 @@ int32_t PEv2_AdditionalParametersGet(sPoKeysDevice *dev) {
  *
  * This function checks whether Pulse Engine v2 additional parameters (e.g., the emergency stop input pin)
  * need to be updated on the PoKeys device, and if so, applies the new configuration.
- * It reads the current configuration using `PK_PEv2_AdditionalParametersGet()` and compares it with 
+ * It reads the current configuration using `PK_PEv2_AdditionalParametersGet()` and compares it with
  * the desired values defined in `PEv2_data`. If discrepancies are found and `ApplyIniSettings` is true,
- * the values are updated on the device using `PK_PEv2_AdditionalParametersSet()` and saved via 
+ * the values are updated on the device using `PK_PEv2_AdditionalParametersSet()` and saved via
  * `PK_SaveConfiguration()`.
  *
  * If the emergency input pin is mapped to a regular PoKeys pin (ID >= 9), it also ensures that the
  * corresponding pin function is correctly set to `PK_PinCap_digitalInput`.
  *
  * @param dev Pointer to the PoKeys device structure.
- * 
+ *
  * @retval PK_OK on successful update or no change needed.
  * @retval error code (e.g., PK_ERR_*) if a communication or configuration error occurred.
  *
- * @note The function includes retry logic and short delays (`usleep`) if `ULAPI` is defined, 
+ * @note The function includes retry logic and short delays (`usleep`) if `ULAPI` is defined,
  *       ensuring compatibility with non-realtime environments.
  *
  * @see PK_PEv2_AdditionalParametersGet
@@ -1521,7 +1519,7 @@ int32_t PEv2_AdditionalParametersSet(sPoKeysDevice *dev) {
                 usleep(sleepdur);
 #endif
                 //	PK_PEv2_PulseEngineReboot(dev);
-                //usleep(1000000);
+                // usleep(1000000);
             } else {
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_SaveConfiguration() != PK_OK\n", __FILE__, __FUNCTION__);
             }
@@ -1695,7 +1693,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                                 PK_PEv2_AxisConfigurationSet(dev);
                             }
 
-                            //last move to home position
+                            // last move to home position
                             dev->PEv2.ReferencePositionSpeed[axis] = (int32_t)PEv2_data->PEv2_HomePosition[axis];
                             *(PEv2_data->PEv2_ReferencePositionSpeed[axis]) = (int)PEv2_data->PEv2_HomePosition[axis];
                             do_move = true;
@@ -1801,7 +1799,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
  *
  * @param dev Pointer to the PoKeys device structure.
  * @param AxisId The index of the axis to retrieve configuration for.
- * 
+ *
  * @return PK_OK (0) on success, or an error code if `PK_PEv2_AxisConfigurationGet()` fails.
  *
  * @note Only fields that are unset (i.e., zero or false) in `PEv2_data` will be overwritten,
@@ -1810,7 +1808,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
  * @see PK_PEv2_AxisConfigurationGet
  * @ingroup PEv2_Configuration
  * @ingroup PoKeys_Axis
-  * @memberof PoKeysHALComponent
+ * @memberof PoKeysHALComponent
  */
 int32_t PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int AxisId) {
     dev->PEv2.param1 = AxisId;
@@ -1823,31 +1821,31 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int AxisId) {
 
         if (ApplyIniSettings == false) {
             /* read parameters for Axis configuration - see ePK_PEv2_AxisConfig
-			PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled
-			PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
-			PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
-			PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
-			PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
-			PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
-			PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
+                        PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled
+                        PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
+                        PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
+                        PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
+                        PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
+                        PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
+                        PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
 
-			pin out unsigned PEv2.#.AxesConfig[8];				// Axis configuration - see ePK_PEv2_AxisConfig
-			param rw s32 PEv2.#.AxisEnabled[8] "Axis enabled";
-			param rw s32 PEv2.#.AxisInverted[8] "Axis inverted";
-			param rw s32 PEv2.#.AxisInternalPlanner[8] "Axis uses internal motion planner";
-			param rw s32 PEv2.#.AxisPositionMode[8] "Internal motion planner for this axis is in position mode";
-			param rw s32 PEv2.#.AxisInvertedHome[8] "Axis homing direction is inverted";
-			param rw s32 PEv2.#.AxisSoftLimitEnabled[8] "Use soft-limits for this axis";
-			param rw s32 PEv2.#.AxisEnabledMasked[8] "Use output enable pin masking";
+                        pin out unsigned PEv2.#.AxesConfig[8];				// Axis configuration - see ePK_PEv2_AxisConfig
+                        param rw s32 PEv2.#.AxisEnabled[8] "Axis enabled";
+                        param rw s32 PEv2.#.AxisInverted[8] "Axis inverted";
+                        param rw s32 PEv2.#.AxisInternalPlanner[8] "Axis uses internal motion planner";
+                        param rw s32 PEv2.#.AxisPositionMode[8] "Internal motion planner for this axis is in position mode";
+                        param rw s32 PEv2.#.AxisInvertedHome[8] "Axis homing direction is inverted";
+                        param rw s32 PEv2.#.AxisSoftLimitEnabled[8] "Use soft-limits for this axis";
+                        param rw s32 PEv2.#.AxisEnabledMasked[8] "Use output enable pin masking";
 
-			PEv2_data->PEv2_AxisEnabled[AxisId]
-			PEv2_data->PEv2_AxisInverted[AxisId]
-			PEv2_data->PEv2_AxisInternalPlanner[AxisId]
-			PEv2_data->PEv2_AxisPositionMode[AxisId]
-			PEv2_data->PEv2_AxisInvertedHome[AxisId]
-			PEv2_data->PEv2_AxisSoftLimitEnabled[AxisId]
-			PEv2_data->PEv2_AxisEnabledMasked[AxisId]
-			 */
+                        PEv2_data->PEv2_AxisEnabled[AxisId]
+                        PEv2_data->PEv2_AxisInverted[AxisId]
+                        PEv2_data->PEv2_AxisInternalPlanner[AxisId]
+                        PEv2_data->PEv2_AxisPositionMode[AxisId]
+                        PEv2_data->PEv2_AxisInvertedHome[AxisId]
+                        PEv2_data->PEv2_AxisSoftLimitEnabled[AxisId]
+                        PEv2_data->PEv2_AxisEnabledMasked[AxisId]
+                         */
             PEv2_data->PEv2_AxesConfig[AxisId] = dev->PEv2.AxesConfig[AxisId];
             uint8_t axisConfig = dev->PEv2.AxesConfig[AxisId];
 
@@ -1860,25 +1858,25 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int AxisId) {
             PEv2_data->PEv2_AxisEnabledMasked[AxisId] = (int)((axisConfig & PK_AC_ENABLED_MASKED) != 0);
 
             /* PEv2_AxesSwitchConfig
-			PK_ASO_SWITCH_LIMIT_N: 1 << 0 = 1
-			PK_ASO_SWITCH_LIMIT_P : 1 << 1 = 2
-			PK_ASO_SWITCH_HOME : 1 << 2 = 4
-			PK_ASO_SWITCH_COMBINED_LN_H : 1 << 3 = 8
-			PK_ASO_SWITCH_COMBINED_LP_H : 1 << 4 = 16
-			PK_ASO_SWITCH_INVERT_LIMIT_N : 1 << 5 = 32
-			PK_ASO_SWITCH_INVERT_LIMIT_P : 1 << 6 = 64
-			PK_ASO_SWITCH_INVERT_HOME : 1 << 7 = 128
+                        PK_ASO_SWITCH_LIMIT_N: 1 << 0 = 1
+                        PK_ASO_SWITCH_LIMIT_P : 1 << 1 = 2
+                        PK_ASO_SWITCH_HOME : 1 << 2 = 4
+                        PK_ASO_SWITCH_COMBINED_LN_H : 1 << 3 = 8
+                        PK_ASO_SWITCH_COMBINED_LP_H : 1 << 4 = 16
+                        PK_ASO_SWITCH_INVERT_LIMIT_N : 1 << 5 = 32
+                        PK_ASO_SWITCH_INVERT_LIMIT_P : 1 << 6 = 64
+                        PK_ASO_SWITCH_INVERT_HOME : 1 << 7 = 128
 
-			param rw unsigned PEv2.#.AxesSwitchConfig[8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
-			param rw bit PEv2.#.digin.LimitN.Enabled[8] "Limit- is available (PK_ASO_SWITCH_LIMIT_N)";
-			param rw bit PEv2.#.digin.LimitP.Enabled[8] "Limit+ is available (PK_ASO_SWITCH_LIMIT_P)";
-			param rw bit PEv2.#.digin.Home.Enabled[8] "Invert home-switch (PK_ASO_SWITCH_HOME)";
-			param rw bit PEv2.#.digin.Home.OnLimitN[8] "Shared with Limit- (PK_ASO_SWITCH_COMBINED_LN_H)";
-			param rw bit PEv2.#.digin.Home.OnLimitP[8] "Shared with Limit+ (PK_ASO_SWITCH_COMBINED_LP_H)";
-			param rw bit PEv2.#.digin.LimitN.invert[8] "Invert limit- (PK_ASO_SWITCH_INVERT_LIMIT_N)";
-			param rw bit PEv2.#.digin.LimitP.invert[8] "Invert limit+ (PK_ASO_SWITCH_INVERT_LIMIT_P)";
-			param rw bit PEv2.#.digin.Home.invert[8] "Invert home-switch (PK_ASO_SWITCH_INVERT_HOME)";
-			*/
+                        param rw unsigned PEv2.#.AxesSwitchConfig[8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
+                        param rw bit PEv2.#.digin.LimitN.Enabled[8] "Limit- is available (PK_ASO_SWITCH_LIMIT_N)";
+                        param rw bit PEv2.#.digin.LimitP.Enabled[8] "Limit+ is available (PK_ASO_SWITCH_LIMIT_P)";
+                        param rw bit PEv2.#.digin.Home.Enabled[8] "Invert home-switch (PK_ASO_SWITCH_HOME)";
+                        param rw bit PEv2.#.digin.Home.OnLimitN[8] "Shared with Limit- (PK_ASO_SWITCH_COMBINED_LN_H)";
+                        param rw bit PEv2.#.digin.Home.OnLimitP[8] "Shared with Limit+ (PK_ASO_SWITCH_COMBINED_LP_H)";
+                        param rw bit PEv2.#.digin.LimitN.invert[8] "Invert limit- (PK_ASO_SWITCH_INVERT_LIMIT_N)";
+                        param rw bit PEv2.#.digin.LimitP.invert[8] "Invert limit+ (PK_ASO_SWITCH_INVERT_LIMIT_P)";
+                        param rw bit PEv2.#.digin.Home.invert[8] "Invert home-switch (PK_ASO_SWITCH_INVERT_HOME)";
+                        */
 
             PEv2_data->PEv2_AxesSwitchConfig[AxisId] = dev->PEv2.AxesSwitchConfig[AxisId];
 
@@ -1926,7 +1924,7 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int AxisId) {
         if (ApplyIniSettings == false || PEv2_data->PEv2_SoftLimitMaximum[AxisId] == 0) {
             PEv2_data->PEv2_SoftLimitMaximum[AxisId] = dev->PEv2.SoftLimitMaximum[AxisId];
         }
-        //PEv2_data->PEv2_HomePosition[j]
+        // PEv2_data->PEv2_HomePosition[j]
 
         if (ApplyIniSettings == false || PEv2_data->PEv2_MPGjogEncoder[AxisId] == 0) {
             PEv2_data->PEv2_MPGjogEncoder[AxisId] = dev->PEv2.MPGjogEncoder[AxisId];
@@ -1983,8 +1981,8 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int AxisId) {
             PEv2_data->PEv2_MPGjogDivider[AxisId] = dev->PEv2.MPGjogDivider[AxisId];
         }
         /*if(ApplyIniSettings==false || PEv2_data->PEv2_AxisSignalOptions[AxisId]==0){
-			PEv2_data->PEv2_AxisSignalOptions[AxisId] = dev->PEv2.AxisSignalOptions[AxisId];
-		}*/
+                        PEv2_data->PEv2_AxisSignalOptions[AxisId] = dev->PEv2.AxisSignalOptions[AxisId];
+                }*/
         if (ApplyIniSettings == false || PEv2_data->PEv2_digin_Probe_Filter[AxisId] == 0) {
             PEv2_data->PEv2_digin_Probe_Filter[AxisId] = dev->PEv2.FilterProbeInput;
         }
@@ -2011,15 +2009,15 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
 
             // Read the structure and set the bits accordingly
             /* Section: Axis configuration
-			PEv2_AxesConfig
-				PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled
-				PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
-				PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
-				PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
-				PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
-				PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
-				PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
-			*/
+                        PEv2_AxesConfig
+                                PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled
+                                PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
+                                PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
+                                PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
+                                PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
+                                PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
+                                PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
+                        */
             AxesConfig[AxisId] = 0;
             if (PEv2_data->PEv2_AxisEnabled[AxisId] != 0) {
                 AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 0,
@@ -2080,17 +2078,17 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
             }
 
             /*
-			Section: Axis switch configuration
-			PEv2_AxesSwitchConfig
-				PK_ASO_SWITCH_LIMIT_N        = (1 << 0),   // 1 Limit- switch
-				PK_ASO_SWITCH_LIMIT_P        = (1 << 1),   // 2 Limit+ switch
-				PK_ASO_SWITCH_HOME           = (1 << 2),   // 4 Home switch
-				PK_ASO_SWITCH_COMBINED_LN_H  = (1 << 3),   // 8 Home switch is shared with Limit- switch
-				PK_ASO_SWITCH_COMBINED_LP_H  = (1 << 4),   // 16 Home switch is shared with Limit+ switch
-				PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
-				PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
-				PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
-			*/
+                        Section: Axis switch configuration
+                        PEv2_AxesSwitchConfig
+                                PK_ASO_SWITCH_LIMIT_N        = (1 << 0),   // 1 Limit- switch
+                                PK_ASO_SWITCH_LIMIT_P        = (1 << 1),   // 2 Limit+ switch
+                                PK_ASO_SWITCH_HOME           = (1 << 2),   // 4 Home switch
+                                PK_ASO_SWITCH_COMBINED_LN_H  = (1 << 3),   // 8 Home switch is shared with Limit- switch
+                                PK_ASO_SWITCH_COMBINED_LP_H  = (1 << 4),   // 16 Home switch is shared with Limit+ switch
+                                PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
+                                PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
+                                PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
+                        */
             AxesSwitchConfig[AxisId] = PEv2_data->PEv2_AxesSwitchConfig[AxisId]; // initial value from ini file
             if (PEv2_data->PEv2_digin_Home_Pin[AxisId] != 0) {
                 // path if pin (not dedicated) is used for home switch
@@ -2110,7 +2108,7 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
                     }
                 } else if (Home == LimP) {
                     // dev->PEv2.PinHomeSwitch[AxisId]=0;
-                    //AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4, true); // 16 Home switch is shared with Limit+ switch
+                    // AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4, true); // 16 Home switch is shared with Limit+ switch
                     if (dev->PEv2.PinHomeSwitch[AxisId] != 0) {
                         dev->PEv2.PinHomeSwitch[AxisId] = 0;
                         doSetup = true;
@@ -2120,7 +2118,7 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
                     PEv2_data->PEv2_digin_Home_Enabled[AxisId] = 0;
                 } else if (Home == LimM) {
                     // dev->PEv2.PinHomeSwitch(i)=0;
-                    //AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, true); // 8 Home switch is shared with Limit- switch
+                    // AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, true); // 8 Home switch is shared with Limit- switch
                     if (dev->PEv2.PinHomeSwitch[AxisId] != 0) {
                         dev->PEv2.PinHomeSwitch[AxisId] = 0;
                         doSetup = true;
@@ -2235,7 +2233,7 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
             }
 
             /* Section: Pin configuration
-			*/
+             */
             if (dev->PEv2.PinHomeSwitch[AxisId] != PEv2_data->PEv2_digin_Home_Pin[AxisId]) {
                 dev->PEv2.PinHomeSwitch[AxisId] = PEv2_data->PEv2_digin_Home_Pin[AxisId];
                 doSetup = true;
@@ -2268,9 +2266,9 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
             }
 
             /*
-				Section Speed and Acceleration settings
+                                Section Speed and Acceleration settings
 
-			*/
+                        */
 
             if (PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] != 0) {
                 // need to ensure positve values for the following calculations otherwise machine will not move
@@ -2280,7 +2278,7 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
 
                 PEv2_data->PEv2_MaxDecceleration[AxisId] = 1.5 * abs(PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[AxisId] * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId]); // Maximum axis deceleration convert (mm/s²) to (in pulses/s²)
 
-                //PEv2_data->PEv2_HomePosition[AxisId]
+                // PEv2_data->PEv2_HomePosition[AxisId]
             }
             if (PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] > 0 && PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] > 0 && PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] > PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]) {
                 PEv2_data->PEv2_HomingSpeed[AxisId] = abs(PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] * 100 / PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId]);       // Homing speed per axis (in %)
@@ -2328,9 +2326,9 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
             }
 
             /*
-			Section: Soft limits
-			*/
-            //float LimitOffset = 0.0;
+                        Section: Soft limits
+                        */
+            // float LimitOffset = 0.0;
             if (PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId] > PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId]) {
 
                 if (PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] != abs(PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId])) {
@@ -2429,8 +2427,8 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
             }
 
             /*
-			Section: HomingAlgorithm
-			*/
+                        Section: HomingAlgorithm
+                        */
             int HomingAlgorithm = 0;
             if (PEv2_data->PEv2_HomeAlg_OnHome_Stop[AxisId] != 0) {
                 HomingAlgorithm |= PK_PEv2Homing_OnHomeStop;
@@ -2474,8 +2472,8 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
                 doSetup = true;
             }
             /*
-			 Section: MPG jog settings
-			*/
+                         Section: MPG jog settings
+                        */
             if (dev->PEv2.MPGjogEncoder[AxisId] != PEv2_data->PEv2_MPGjogEncoder[AxisId]) {
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: MPGjogEncoder[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_MPGjogEncoder[AxisId]);
                 dev->PEv2.MPGjogEncoder[AxisId] = PEv2_data->PEv2_MPGjogEncoder[AxisId];
@@ -2493,9 +2491,9 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
                 doSetup = true;
             }
             /*if(dev->PEv2.AxisSignalOptions[AxisId] != PEv2_data->PEv2_AxisSignalOptions[AxisId]){
-				PEv2_data->PEv2_AxisSignalOptions[AxisId] = dev->PEv2.AxisSignalOptions[AxisId];
-				doSetup = true;
-			}*/
+                                PEv2_data->PEv2_AxisSignalOptions[AxisId] = dev->PEv2.AxisSignalOptions[AxisId];
+                                doSetup = true;
+                        }*/
             if (dev->PEv2.FilterProbeInput != PEv2_data->PEv2_digin_Probe_Filter[AxisId]) {
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: FilterProbeInput[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_digin_Probe_Filter[AxisId]);
                 dev->PEv2.FilterProbeInput = PEv2_data->PEv2_digin_Probe_Filter[AxisId];

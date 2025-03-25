@@ -1,7 +1,7 @@
 /**
  * @file
- * 
-*/
+ *
+ */
 
 #include "PoKeysLib.h"
 #include "PoKeysComp.h"
@@ -114,11 +114,11 @@ int PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints, al
         PoExtBus_data = poExtBus_data;
     }
     /*
-	if (poExtBus_data == 0)
-	{
-		rtapi_print_msg(RTAPI_MSG_ERR, "PK_PoExtBus: all_PoExtBus_data_t malloc failed\n");
-		return -1;
-	}*/
+        if (poExtBus_data == 0)
+        {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PK_PoExtBus: all_PoExtBus_data_t malloc failed\n");
+                return -1;
+        }*/
 
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.PoExtBus.deb.out\n", __FILE__, __FUNCTION__, prefix);
     r = hal_pin_s32_newf(HAL_OUT, &(PoExtBus_data->PoExtBus_deb_out), id, "%s.PoExtBus.deb.out", prefix);
@@ -189,7 +189,7 @@ int PKPoExtBus_export_pins(char *prefix, long extra_arg, int id, int njoints, al
 
 /**
  * @brief
- * 
+ *
  */
 bool PoExtBus_Get_BitOfByte(uint8_t in_Byte, int Bit_Id) {
     return (in_Byte >> Bit_Id) & 0x01;
@@ -197,7 +197,7 @@ bool PoExtBus_Get_BitOfByte(uint8_t in_Byte, int Bit_Id) {
 
 /**
  * @brief
- * 
+ *
  */
 uint8_t PoExtBus_Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value) {
 
@@ -214,7 +214,7 @@ uint8_t PoExtBus_Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value) {
  *
  * This function synchronizes the state of the PoExtBus (PoKeys Extension Bus), which supports
  * digital input and output via external shift registers or I/O expanders.
- * 
+ *
  * It performs the following steps:
  * - Reads the current state from the PoKeys device using `PK_PoExtBusGet()`
  * - Updates the `PoExtBus_digin_in` and `PoExtBus_digin_in_not` HAL pins for all bus channels
@@ -222,7 +222,7 @@ uint8_t PoExtBus_Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value) {
  * - Applies optional inversion logic for outputs
  * - Compares desired vs actual state (`PoExtBus_DataSet` vs `PoExtBus_DataGet`)
  * - If there are changes, updates the PoKeys device using `PK_PoExtBusSet()`
- * 
+ *
  * Debug values are stored in `PoExtBus_deb_out` for diagnostics.
  *
  * @param[in,out] dev Pointer to the initialized PoKeys device structure
@@ -251,8 +251,8 @@ void PKPoExtBus_Update(sPoKeysDevice *dev) {
             *(PoExtBus_data->PoExtBus_deb_out) = 130 + i;
             // PoExtBus_DataGet[i] = dev->PoExtBusData[i];
             addr = &(PoExtBus_data->PoExtBus[i]);
-            (addr->PoExtBus_DataGet) = dev->PoExtBusData[i]; //uint8_t*                  PoExtBusData;                  // PoExtBus outputs buffer
-            (addr->PoExtBus_DataGet) = dev->PoExtBusData[i]; //uint8_t*                  PoExtBusData;                  // PoExtBus outputs buffer
+            (addr->PoExtBus_DataGet) = dev->PoExtBusData[i]; // uint8_t*                  PoExtBusData;                  // PoExtBus outputs buffer
+            (addr->PoExtBus_DataGet) = dev->PoExtBusData[i]; // uint8_t*                  PoExtBusData;                  // PoExtBus outputs buffer
             *(PoExtBus_data->PoExtBus_deb_out) = 140 + i;
             dev->PoExtBusData[i] = 0;
             for (j = 0; j < 8; j++) {
@@ -295,9 +295,9 @@ void PKPoExtBus_Update(sPoKeysDevice *dev) {
         }
         if (PoExtBus_DoSet) {
             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: 7 PK_PoExtBusSet(dev)\n", __FILE__, __FUNCTION__);
-            //PK_PoExtBusSet(dev);
-            //PK_PoExtBusSet(dev);
-            //PK_PoExtBusSet(dev);
+            // PK_PoExtBusSet(dev);
+            // PK_PoExtBusSet(dev);
+            // PK_PoExtBusSet(dev);
             if (PK_PoExtBusSet(dev) != PK_OK) {
                 *(PoExtBus_data->PoExtBus_deb_out) = 200;
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: 8 PK_PoExtBusSet(dev) failed\n", __FILE__, __FUNCTION__);
@@ -356,7 +356,7 @@ MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.4.out:bit:10:in::None:None");
 MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.5.out:bit:10:in::None:None");
 MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.6.out:bit:10:in::None:None");
 MODULE_INFO(linuxcnc, "pin:PoExtBus.#.digout.7.out:bit:10:in::None:None");
-//MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.0.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
+// MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.0.invert:bit:10:rw:If TRUE, out is inverted before writing to the hardware.:None:None");
 MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.1.invert:bit:10:rw:If TRUE, out "
                       "is inverted before writing to the hardware.:None:None");
 MODULE_INFO(linuxcnc, "param:PoExtBus.#.digout.2.invert:bit:10:rw:If TRUE, out "

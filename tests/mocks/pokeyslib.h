@@ -107,40 +107,9 @@ enum ePK_DeviceConnectionType { PK_DeviceType_USBDevice = 0, PK_DeviceType_Netwo
 
 enum ePK_DeviceConnectionParam { PK_ConnectionParam_TCP = 0, PK_ConnectionParam_UDP = 1 };
 
-enum ePK_PEState {
-    PK_PEState_peSTOPPED = 0,
-    PK_PEState_peINTERNAL = 1,
-    PK_PEState_peBUFFER = 2,
-    PK_PEState_peRUNNING = 3,
-    PK_PEState_peJOGGING = 10,
-    PK_PEState_peSTOPPING = 11,
-    PK_PEState_peHOME = 20,
-    PK_PEState_peHOMING = 21,
-    PK_PEState_pePROBECOMPLETE = 30,
-    PK_PEState_pePROBE = 31,
-    PK_PEState_pePROBEERROR = 32,
-    PK_PEState_peHYBRIDPROBE_STOPPING = 40,
-    PK_PEState_peHYBRIDPROBE_COMPLETE = 41,
-    PK_PEState_peSTOP_LIMIT = 100,
-    PK_PEState_peSTOP_EMERGENCY = 101
-};
+enum ePK_PEState { PK_PEState_peSTOPPED = 0, PK_PEState_peINTERNAL = 1, PK_PEState_peBUFFER = 2, PK_PEState_peRUNNING = 3, PK_PEState_peJOGGING = 10, PK_PEState_peSTOPPING = 11, PK_PEState_peHOME = 20, PK_PEState_peHOMING = 21, PK_PEState_pePROBECOMPLETE = 30, PK_PEState_pePROBE = 31, PK_PEState_pePROBEERROR = 32, PK_PEState_peHYBRIDPROBE_STOPPING = 40, PK_PEState_peHYBRIDPROBE_COMPLETE = 41, PK_PEState_peSTOP_LIMIT = 100, PK_PEState_peSTOP_EMERGENCY = 101 };
 
-enum ePK_PEAxisState {
-    PK_PEAxisState_axSTOPPED = 0,
-    PK_PEAxisState_axREADY = 1,
-    PK_PEAxisState_axRUNNING = 2,
-    PK_PEAxisState_axHOMING_RESETTING = 8,
-    PK_PEAxisState_axHOMING_BACKING_OFF = 9,
-    PK_PEAxisState_axHOME = 10,
-    PK_PEAxisState_axHOMINGSTART = 11,
-    PK_PEAxisState_axHOMINGSEARCH = 12,
-    PK_PEAxisState_axHOMINGBACK = 13,
-    PK_PEAxisState_axPROBED = 14,
-    PK_PEAxisState_axPROBESTART = 15,
-    PK_PEAxisState_axPROBESEARCH = 16,
-    PK_PEAxisState_axERROR = 20,
-    PK_PEAxisState_axLIMIT = 30
-};
+enum ePK_PEAxisState { PK_PEAxisState_axSTOPPED = 0, PK_PEAxisState_axREADY = 1, PK_PEAxisState_axRUNNING = 2, PK_PEAxisState_axHOMING_RESETTING = 8, PK_PEAxisState_axHOMING_BACKING_OFF = 9, PK_PEAxisState_axHOME = 10, PK_PEAxisState_axHOMINGSTART = 11, PK_PEAxisState_axHOMINGSEARCH = 12, PK_PEAxisState_axHOMINGBACK = 13, PK_PEAxisState_axPROBED = 14, PK_PEAxisState_axPROBESTART = 15, PK_PEAxisState_axPROBESEARCH = 16, PK_PEAxisState_axERROR = 20, PK_PEAxisState_axLIMIT = 30 };
 
 enum ePK_PEv2_AxisConfig { PK_AC_ENABLED = (1 << 0), PK_AC_INVERTED = (1 << 1), PK_AC_INTERNAL_PLANNER = (1 << 2), PK_AC_POSITION_MODE = (1 << 3), PK_AC_INVERTED_HOME = (1 << 4), PK_AC_SOFT_LIMIT_ENABLED = (1 << 5), PK_AC_ENABLED_MASKED = (1 << 7) };
 

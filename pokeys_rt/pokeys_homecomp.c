@@ -1,6 +1,6 @@
 /**
  * @file pokeys_homecomp.c
-  * @ingroup pokeys_homecomp
+ * @ingroup pokeys_homecomp
  * @brief HAL component for managing homing sequence and state logic using PoKeys PulseEngine v2.
  *
  * This component implements a state machine to control synchronized homing of multiple joints
@@ -127,7 +127,7 @@ MODULE_INFO(linuxcnc, "author:Dewey Garrett");
 MODULE_LICENSE("GPL");
 #endif // MODULE_INFO
 
-/** 
+/**
  * @defgroup pokeys_homecomp PoKeys Homing Component
  * @ingroup pokeys_components
  * @brief LinuxCNC HAL component for managing homing sequences via PoKeys PulseEngine v2.
@@ -215,7 +215,7 @@ void rtapi_app_exit(void) {
 #undef is_module
 #define is_module (*__comp_inst->is_module)
 
-//#line 51 "pokeys_homecomp.comp"
+// #line 51 "pokeys_homecomp.comp"
 
 /* To incorporate default homing.c file from a local git src tree:
 ** enable #define HOMING_BASE set to the path to the current homing.c file.
@@ -238,9 +238,9 @@ RTAPI_MP_STRING(home_parms, "Example home parms");
 // EXTRA_SETUP is executed before rtapi_app_main()
 /**
  * @brief Extra setup function
-    * @param home_parms
-    * @return 0 on success, -1 on failure
-    */
+ * @param home_parms
+ * @return 0 on success, -1 on failure
+ */
 EXTRA_SETUP() {
     if (!home_parms) {
         home_parms = "no_home_parms";
@@ -266,9 +266,9 @@ static int all_joints = 0;
 static int current_sequence = 0;
 /**
  * @brief State of the homing sequence
-    * @param joint_num
-    * @return 1 if at least one joint is homing
-    */
+ * @param joint_num
+ * @return 1 if at least one joint is homing
+ */
 typedef enum { HOME_SEQUENCE_IDLE = 0, HOME_SEQUENCE_START, HOME_SEQUENCE_DO_ONE_JOINT, HOME_SEQUENCE_DO_ONE_SEQUENCE, HOME_SEQUENCE_START_JOINTS, HOME_SEQUENCE_WAIT_JOINTS } home_sequence_state_t;
 static home_sequence_state_t sequence_state = HOME_SEQUENCE_IDLE;
 
@@ -303,9 +303,9 @@ typedef enum {
 
 /**
  * @brief Commands to the pulse engine
-    * @param joint_num
-    * @return 1 if at least one joint is homing
-    */
+ * @param joint_num
+ * @return 1 if at least one joint is homing
+ */
 typedef enum {
     PK_PEAxisCommand_axIDLE = 0,                // Axis  in IDLE
     PK_PEAxisCommand_axHOMINGSTART = 1,         // Start Homing procedure
@@ -318,9 +318,9 @@ typedef enum {
 
 /**
  * @brief State machine for the homing process
-    * @param joint_num
-    * @return 1 if at least one joint is homing
-    */
+ * @param joint_num
+ * @return 1 if at least one joint is homing
+ */
 typedef enum {
     HOME_IDLE = 0,
     HOME_START,                 // 1
@@ -364,10 +364,10 @@ typedef enum {
  * - Communication pins with the PoKeys PulseEngine v2 for real-time motion control
  *
  * @note The members `PEv2_AxesState` and `PEv2_AxesCommand` are mapped directly
- *       to the HAL pins exported in the PulseEngine HAL component 
+ *       to the HAL pins exported in the PulseEngine HAL component
  *       (see @ref PoKeysCompPulseEngine_v2).
  *
- * These allow `pokeys_homecomp` to read axis state (e.g., position reached, done) 
+ * These allow `pokeys_homecomp` to read axis state (e.g., position reached, done)
  * and write commands (e.g., start homing) to the PulseEngine.
  *
  * @see ePoKeysPEState
@@ -385,41 +385,41 @@ typedef struct {
     hal_s32_t *home_state;   // homing state machine state
 
     // Custom Pins for comunication with PoKeys
-    /** 
-    * @brief Current state of the PulseEngine for this joint.
-    *
-    * Pointer to the HAL pin exported by the PulseEngine HAL component,
-    * typically named like `pokeys.PEv2.axis.N.state`, where `N` is the joint number.
-    * 
-    * The value corresponds to an entry in the @ref ePoKeysPEState enum,
-    * such as `PE_STATE_IDLE`, `PE_STATE_HOMING`, etc.
-    *
-    * Used by `pokeys_homecomp` to react to motion state changes during the homing sequence.
-    *
-    * @see ePoKeysPEState
-    * @see PoKeysCompPulseEngine_v2
-    */
+    /**
+     * @brief Current state of the PulseEngine for this joint.
+     *
+     * Pointer to the HAL pin exported by the PulseEngine HAL component,
+     * typically named like `pokeys.PEv2.axis.N.state`, where `N` is the joint number.
+     *
+     * The value corresponds to an entry in the @ref ePoKeysPEState enum,
+     * such as `PE_STATE_IDLE`, `PE_STATE_HOMING`, etc.
+     *
+     * Used by `pokeys_homecomp` to react to motion state changes during the homing sequence.
+     *
+     * @see ePoKeysPEState
+     * @see PoKeysCompPulseEngine_v2
+     */
     hal_u32_t *PEv2_AxesState; // State of pulse engine - see ePoKeysPEState
 
     /**
-    * @brief Command output to the PulseEngine for this joint.
-    *
-    * Pointer to the HAL pin used to issue commands to the PulseEngine,
-    * typically named `pokeys_homecomp.N.PEv2_AxesCommand` for joint N.
-    *
-    * The value corresponds to an entry in the @ref ePoKeysPECmd enum,
-    * such as `PE_CMD_NONE`, `PE_CMD_HOME`, `PE_CMD_ENABLE`, etc.
-    *
-    * This value is evaluated by the PulseEngine logic (e.g., in `PoKeysCompPulseEngine_v2`)
-    * and triggers state changes such as starting the homing sequence.
-    *
-    * @note Only written by `pokeys_homecomp`, and typically connected to
-    * the corresponding `PEv2.axis.N.command` pin in the PulseEngine component.
-    *
-    * @see ePoKeysPECmd
-    * @see PEv2_AxesState
-    * @see PoKeysCompPulseEngine_v2
-    */
+     * @brief Command output to the PulseEngine for this joint.
+     *
+     * Pointer to the HAL pin used to issue commands to the PulseEngine,
+     * typically named `pokeys_homecomp.N.PEv2_AxesCommand` for joint N.
+     *
+     * The value corresponds to an entry in the @ref ePoKeysPECmd enum,
+     * such as `PE_CMD_NONE`, `PE_CMD_HOME`, `PE_CMD_ENABLE`, etc.
+     *
+     * This value is evaluated by the PulseEngine logic (e.g., in `PoKeysCompPulseEngine_v2`)
+     * and triggers state changes such as starting the homing sequence.
+     *
+     * @note Only written by `pokeys_homecomp`, and typically connected to
+     * the corresponding `PEv2.axis.N.command` pin in the PulseEngine component.
+     *
+     * @see ePoKeysPECmd
+     * @see PEv2_AxesState
+     * @see PoKeysCompPulseEngine_v2
+     */
     hal_u32_t *PEv2_AxesCommand; // Commands to  pulse engine - see ePoKeysPECmd
 
 } one_joint_home_data_t;
@@ -428,7 +428,7 @@ typedef struct {
  * @brief Lokale Datenstruktur für einen Joint zur Homing-Verwaltung.
  *
  * Diese Struktur enthält die aktuellen lokalen Kopien der wichtigsten HAL-Pinwerte
- * sowie zusätzliche Parameter und Steuerinformationen. Sie wird intern vom 
+ * sowie zusätzliche Parameter und Steuerinformationen. Sie wird intern vom
  * Homing-Framework (`pokeys_homecomp`) verwendet.
  *
  * @ingroup PoKeys_HomingState
@@ -443,34 +443,34 @@ typedef struct {
 
     // Custom Pins for comunication with PoKeys
     /**
-    * @brief Local copy of the current PulseEngine state for this joint.
-    *
-    * This variable mirrors the value read from the HAL pin `PEv2_AxesState`
-    * (e.g., `pokeys_homecomp.N.PEv2_AxesState`) and represents the current
-    * state of the PulseEngine for this joint.
-    *
-    * It corresponds to the @ref ePoKeysPEState enumeration.
-    *
-    * Updated in @ref read_homing_in_pins and used for state machine transitions.
-    *
-    * @see one_joint_home_data_t::PEv2_AxesState
-    * @see ePoKeysPEState
-    */
+     * @brief Local copy of the current PulseEngine state for this joint.
+     *
+     * This variable mirrors the value read from the HAL pin `PEv2_AxesState`
+     * (e.g., `pokeys_homecomp.N.PEv2_AxesState`) and represents the current
+     * state of the PulseEngine for this joint.
+     *
+     * It corresponds to the @ref ePoKeysPEState enumeration.
+     *
+     * Updated in @ref read_homing_in_pins and used for state machine transitions.
+     *
+     * @see one_joint_home_data_t::PEv2_AxesState
+     * @see ePoKeysPEState
+     */
     pokeys_home_state_t PEv2_AxesState;
 
     /**
-    * @brief Local command to the PulseEngine for this joint.
-    *
-    * This variable holds the next command to be issued to the PulseEngine
-    * (e.g., `PE_CMD_HOME`, `PE_CMD_NONE`, etc.) and will be written to
-    * the corresponding HAL pin `PEv2_AxesCommand` during
-    * @ref write_homing_out_pins.
-    *
-    * It corresponds to the @ref ePoKeysPECmd enumeration.
-    *
-    * @see one_joint_home_data_t::PEv2_AxesCommand
-    * @see ePoKeysPECmd
-    */
+     * @brief Local command to the PulseEngine for this joint.
+     *
+     * This variable holds the next command to be issued to the PulseEngine
+     * (e.g., `PE_CMD_HOME`, `PE_CMD_NONE`, etc.) and will be written to
+     * the corresponding HAL pin `PEv2_AxesCommand` during
+     * @ref write_homing_out_pins.
+     *
+     * It corresponds to the @ref ePoKeysPECmd enumeration.
+     *
+     * @see one_joint_home_data_t::PEv2_AxesCommand
+     * @see ePoKeysPECmd
+     */
     pokeys_home_command_t PEv2_AxesCommand;
 
     // homeparams
@@ -682,8 +682,8 @@ static void update_sequence_home_data(void) {
     for (int sno = min_sequence; sno <= max_sequence; sno++) {
         one_sequence_home_data_t saddr = (sequence_home_data.shd[sno]);
         sequence_home_data.shd[sno].home_sequence = sno;
-        //saddr.homing = 0; should not interrupt homing
-        //saddr.homed = 0;
+        // saddr.homing = 0; should not interrupt homing
+        // saddr.homed = 0;
         sequence_home_data.shd[sno].joints_in_sequence = 0;
         if (sno == max_sequence) {
             sequence_home_data.shd[sno].is_last = 1;
@@ -874,7 +874,7 @@ int pokeys_1joint_state_machine(int joint_num) {
     home_sw_active = H[joint_num].home_sw;
     /*if (H[joint_num].home_state != HOME_IDLE)
     {
-        homing_flag = 1; // at least one joint is homing 
+        homing_flag = 1; // at least one joint is homing
     }*/
 
     /* when a joint is homing, 'check_for_faults()' ignores its limit
@@ -980,7 +980,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                 "joints_in_sequence:%d  ready_in_sequence:%d \n",
                                 joint_num, joints_in_sequence, ready_in_sequence);
                 if (joints_in_sequence == ready_in_sequence) {
-                    //if all Joints of the Sequence show Hommed
+                    // if all Joints of the Sequence show Hommed
                     for (int jj = 0; jj < all_joints; jj++) {
 
                         if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence)) {
@@ -988,7 +988,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                             "HOMING:do_home_joint.PK_PEAxisState_axHOME "
                                             "joint %d homed (home_sequence %d)\n",
                                             jj, H[joint_num].home_sequence);
-                            //H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
+                            // H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                             H[jj].home_state = HOME_FINAL_MOVE_START;
                             H[jj].homing = 0;
                             H[jj].homed = 1;
@@ -998,7 +998,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                     "HOMING:do_home_joint.PK_PEAxisState_axHOME joint %d "
                                     "homed (home_sequence %d)\n",
                                     joint_num, H[joint_num].home_sequence);
-                    //H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
+                    // H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                     H[joint_num].home_state = HOME_FINAL_MOVE_START;
                     H[joint_num].homing = 0;
                     H[joint_num].homed = 1;
@@ -1036,7 +1036,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                 "joints_in_sequence:%d  homed_in_sequence:%d \n",
                                 joint_num, joints_in_sequence, homed_in_sequence);
                 if (joints_in_sequence == homed_in_sequence) {
-                    //if all Joints of the Sequence show Hommed
+                    // if all Joints of the Sequence show Hommed
                     for (int jj = 0; jj < all_joints; jj++) {
 
                         if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence)) {
@@ -1044,7 +1044,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                             "HOMING:do_home_joint.PK_PEAxisState_axHOME "
                                             "joint %d homed (home_sequence %d)\n",
                                             jj, H[joint_num].home_sequence);
-                            //H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
+                            // H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                             H[jj].home_state = HOME_FINISHED;
                             H[jj].homing = 0;
                             H[jj].homed = 1;
@@ -1054,7 +1054,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                     "HOMING:do_home_joint.PK_PEAxisState_axHOME joint %d "
                                     "homed (home_sequence %d)\n",
                                     joint_num, H[joint_num].home_sequence);
-                    //H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
+                    // H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                     H[joint_num].home_state = HOME_FINISHED;
                     H[joint_num].homing = 0;
                     H[joint_num].homed = 1;
@@ -1281,8 +1281,8 @@ void check_home_sequence(int seq) {
     } else if (addr.homing) {
         if (get_sequence_homed(seq)) {
             rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: check_home_sequence sequence %d homed\n", seq);
-            //addr.homed = 1;
-            //addr.homing = 0;
+            // addr.homed = 1;
+            // addr.homing = 0;
             addr.home_state = HOME_FINISHED;
             if (addr.is_last) {
                 rtapi_print_msg(RTAPI_MSG_DBG,
@@ -1325,7 +1325,7 @@ bool get_allhomed() {
     /* int ret = 1;
     for (int jno = 0; jno < EMCMOT_MAX_JOINTS; jno++)
     {
-        
+
         one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
         if (!*addr->homed)
         {
@@ -1338,7 +1338,7 @@ bool get_allhomed() {
         rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_allhomed homed %d\n", ret);
     }*/
     return allhomed;
-    //return ret ? 1 : 0;
+    // return ret ? 1 : 0;
 }
 
 /**
@@ -1706,7 +1706,7 @@ void do_home_joint(int jno) {
                                     "joints_in_sequence:%d  homed_in_sequence:%d \n",
                                     jno, joints_in_sequence, homed_in_sequence);
                     if (joints_in_sequence == homed_in_sequence) {
-                        //if all Joints of the Sequence show Hommed
+                        // if all Joints of the Sequence show Hommed
                         for (jj = 0; jj < all_joints; jj++) {
 
                             if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence)) {
@@ -1788,7 +1788,7 @@ void do_home_joint(int jno) {
 
         // triger homing for first sequence (index 0)
 
-        //do_home_sequence(0);
+        // do_home_sequence(0);
         update_sequence_home_data();
         sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
         int jj;
@@ -1885,7 +1885,7 @@ static void do_homing_sequence(void) {
             int joints_in_sequence_DBG = 0;
             one_sequence_home_data_t addr_dbg;
             for (i = 0; i < all_joints; i++) {
-                //pokeys_1joint_state_machine(i);
+                // pokeys_1joint_state_machine(i);
                 if (H[i].home_state == HOME_START) {
                     H[i].joint_in_sequence = 1; // in sequence
                     H[i].homed = 0;
@@ -1895,13 +1895,13 @@ static void do_homing_sequence(void) {
                     addr_dbg.joint_ids[joints_in_sequence_DBG] = i;
                     current_sequence = abs(H[i].home_sequence);
                     addr = (sequence_home_data.shd[current_sequence]);
-                    joints_in_sequence = addr.joints_in_sequence; //count of all joints in sequence
+                    joints_in_sequence = addr.joints_in_sequence; // count of all joints in sequence
                 } else {
                     H[i].joint_in_sequence = 0; // not in sequence
                 }
             }
             sequence_is_set = 1;
-            /*if (current_sequence ==0) 
+            /*if (current_sequence ==0)
         {
             rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_DO_ONE_JOINT current_sequence = 0\n",current_sequence);
             current_sequence=sequence_home_data.min_sequence;
@@ -1916,9 +1916,9 @@ static void do_homing_sequence(void) {
                                 "joints_in_sequence = 0\n",
                                 current_sequence);
                 update_sequence_home_data();
-                //sequence_state = HOME_SEQUENCE_IDLE;
+                // sequence_state = HOME_SEQUENCE_IDLE;
                 addr = (sequence_home_data.shd[current_sequence]);
-                joints_in_sequence = addr.joints_in_sequence; //count of all joints in sequence
+                joints_in_sequence = addr.joints_in_sequence; // count of all joints in sequence
                 rtapi_print_msg(RTAPI_MSG_DBG,
                                 "HOMING: do_homing_sequence(%d) after update "
                                 "HOME_SEQUENCE_DO_ONE_JOINT joints_in_sequence = %d \n",
@@ -2051,7 +2051,7 @@ static void do_homing_sequence(void) {
 
             for (int jj = 0; jj < joints_in_sequence; jj++) {
                 int jno = addr.joint_ids[jj];
-                //pokeys_1joint_state_machine(jno);
+                // pokeys_1joint_state_machine(jno);
                 int int_AxesState = H[jno].PEv2_AxesState;
                 // rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS joint %d AxesState %d\n",current_sequence, jno, int_AxesState);
                 switch (int_AxesState) {
@@ -2061,7 +2061,7 @@ static void do_homing_sequence(void) {
                                         "HOME_SEQUENCE_WAIT_JOINTS joint %d "
                                         "PK_PEAxisState_axSTOPPED\n",
                                         current_sequence, jno);
-                        sequence_state = HOME_SEQUENCE_START_JOINTS; //back to start
+                        sequence_state = HOME_SEQUENCE_START_JOINTS; // back to start
                         break;
 
                     case PK_PEAxisState_axREADY:
@@ -2070,7 +2070,7 @@ static void do_homing_sequence(void) {
                                         "HOME_SEQUENCE_WAIT_JOINTS joint %d "
                                         "PK_PEAxisState_axREADY\n",
                                         current_sequence, jno);
-                        sequence_state = HOME_SEQUENCE_START_JOINTS; //back to start
+                        sequence_state = HOME_SEQUENCE_START_JOINTS; // back to start
                         break;
 
                     case PK_PEAxisState_axRUNNING:
@@ -2079,7 +2079,7 @@ static void do_homing_sequence(void) {
                                         "HOME_SEQUENCE_WAIT_JOINTS joint %d "
                                         "PK_PEAxisState_axRUNNING\n",
                                         current_sequence, jno);
-                        sequence_state = HOME_SEQUENCE_START_JOINTS; //back to start
+                        sequence_state = HOME_SEQUENCE_START_JOINTS; // back to start
                         break;
 
                     case PK_PEAxisState_axHOMINGSTART:
@@ -2174,7 +2174,7 @@ static void do_homing_sequence(void) {
                                     "HOME_SEQUENCE_WAIT_JOINTS last finished\n",
                                     current_sequence);
                     // is set  in bool do_homing(void) based on pokeys_1joint_state_machine(joint_num)
-                    //sequence_state = HOME_SEQUENCE_IDLE;
+                    // sequence_state = HOME_SEQUENCE_IDLE;
                     // homing_active = 0; is set  in bool do_homing(void)
                     allhomed = 1;
                 } else {
@@ -2203,8 +2203,8 @@ static void do_homing_sequence(void) {
     return;
 } // do_homing_sequence()
 
-/* 
-*/
+/*
+ */
 /**
  * @brief Main homing handler to be called periodically during motion.
  *

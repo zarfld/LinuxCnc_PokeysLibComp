@@ -20,22 +20,22 @@ extern "C" {
 #include <stdint.h>
 
 /**
-  * @defgroup hal_component_pokeys PoKeys HAL Component
-  * @brief HAL interface for PoKeys devices and PulseEngine integration.
-  *
-  * This group contains all functions, structures, and definitions related to
-  * the PoKeys HAL component for LinuxCNC.
-  * @{
-  */
+ * @defgroup hal_component_pokeys PoKeys HAL Component
+ * @brief HAL interface for PoKeys devices and PulseEngine integration.
+ *
+ * This group contains all functions, structures, and definitions related to
+ * the PoKeys HAL component for LinuxCNC.
+ * @{
+ */
 
 /**
-  * @class PoKeysHALComponent
-  * @brief Represents a single PoKeys device and its runtime state.
-  *
-  * This class-like structure holds configuration, IO mappings, and
-  * PulseEngine data for a single PoKeys device. All functions operating
-  * on this structure are considered class methods.
-  */
+ * @class PoKeysHALComponent
+ * @brief Represents a single PoKeys device and its runtime state.
+ *
+ * This class-like structure holds configuration, IO mappings, and
+ * PulseEngine data for a single PoKeys device. All functions operating
+ * on this structure are considered class methods.
+ */
 typedef struct {
     int device_number;
     // other configuration and runtime fields...
@@ -173,8 +173,8 @@ typedef struct {
   * @typedef all_IO_data_t
   * @brief Aggregated structure for managing all analog and digital I/O HAL connections for a PoKeys device.
   *
-  * This structure encapsulates all HAL-related I/O data, including analog outputs (DAC/PWM), 
-  * analog inputs (ADC), and digital I/O pins. It serves as the main container for mapping HAL 
+  * This structure encapsulates all HAL-related I/O data, including analog outputs (DAC/PWM),
+  * analog inputs (ADC), and digital I/O pins. It serves as the main container for mapping HAL
   * pins to the PoKeys hardware configuration in the LinuxCNC HAL component.
   *
   * @var all_IO_data_t::adcout
@@ -190,7 +190,7 @@ typedef struct {
   * Array of analog input channel data structures, indexed from 0 to 6.
 
   * @var all_IO_data_t::Pin
-  * Array of digital input/output channel data structures, indexed from 0 to 54. 
+  * Array of digital input/output channel data structures, indexed from 0 to 54.
   * Each entry corresponds to a physical I/O pin on the PoKeys device.
 
   * @var all_IO_data_t::deb_out
@@ -209,163 +209,163 @@ typedef struct {
 } all_IO_data_t;
 
 /**
-  * @brief Export HAL pins and parameters for PoKeys analog and digital I/O.
-  *
-  * This function creates and registers HAL pins and parameters for all supported
-  * analog outputs, analog inputs, digital I/O, and counters based on the device
-  * capabilities and configuration. It binds the relevant fields in the provided
-  * `all_IO_data_t` structure to HAL pins using the specified `prefix`.
-  *
-  * @param prefix      The prefix string for naming HAL pins (typically the HAL component name).
-  * @param extra_arg   Unused extra argument (reserved for future use or callback compatibility).
-  * @param id          The HAL component ID.
-  * @param Io_data     Pointer to the I/O data structure containing HAL pin references.
-  *                    If NULL, a new structure is allocated via `hal_malloc`.
-  * @param dev         Pointer to the PoKeys device structure with hardware capabilities.
-  *
-  * @return Zero on success, or a negative error code if HAL pin/parameter creation fails.
-  *
-  * @note If `Io_data` is NULL, this function allocates and initializes a new I/O data block
-  *       and assigns it to the static global pointer `IO_data`.
-  *
-  * @see all_IO_data_t
-  * @see one_adcout_data_t
-  * @see one_adcin_data_t
-  * @see one_digiIO_data_t
-   * @memberof PoKeysHALComponent
-  */
+ * @brief Export HAL pins and parameters for PoKeys analog and digital I/O.
+ *
+ * This function creates and registers HAL pins and parameters for all supported
+ * analog outputs, analog inputs, digital I/O, and counters based on the device
+ * capabilities and configuration. It binds the relevant fields in the provided
+ * `all_IO_data_t` structure to HAL pins using the specified `prefix`.
+ *
+ * @param prefix      The prefix string for naming HAL pins (typically the HAL component name).
+ * @param extra_arg   Unused extra argument (reserved for future use or callback compatibility).
+ * @param id          The HAL component ID.
+ * @param Io_data     Pointer to the I/O data structure containing HAL pin references.
+ *                    If NULL, a new structure is allocated via `hal_malloc`.
+ * @param dev         Pointer to the PoKeys device structure with hardware capabilities.
+ *
+ * @return Zero on success, or a negative error code if HAL pin/parameter creation fails.
+ *
+ * @note If `Io_data` is NULL, this function allocates and initializes a new I/O data block
+ *       and assigns it to the static global pointer `IO_data`.
+ *
+ * @see all_IO_data_t
+ * @see one_adcout_data_t
+ * @see one_adcin_data_t
+ * @see one_digiIO_data_t
+ * @memberof PoKeysHALComponent
+ */
 int PKIO_export_pins(char *prefix, long extra_arg, int id, all_IO_data_t *Io_data, sPoKeysDevice *dev);
 
 /**
-  * @brief Updates PoKeys I/O states from and to hardware.
-  *
-  * This function performs periodic synchronization between the PoKeys hardware device
-  * and the corresponding LinuxCNC HAL pins. It:
-  * - Retrieves current pin configuration, digital I/O states, analog input values,
-  *   digital counters, and PWM settings from the device.
-  * - Updates internal HAL structures (`IO_data`) with the retrieved values.
-  * - Writes analog and digital output values from HAL back to the device if enabled.
-  * - Handles logic such as scaling, clamping, and PWM duty calculation.
-  * - Optionally reconfigures PWM period or enables/disables channels when values change.
-  *
-  * @param dev Pointer to the sPoKeysDevice structure representing the connected PoKeys device.
-  *
-  * @note The static pointer `IO_data` must be initialized with valid memory prior to calling this function.
-  * @note The function uses `sleepdur` (if compiled with `ULAPI`) to avoid overrunning communication.
-  *
-  * @details
-  * This function combines the following device interactions:
-  * - `PK_PinConfigurationGet()`
-  * - `PK_DigitalIOGet()` / `PK_DigitalIOSet()`
-  * - `PK_AnalogIOGet()`
-  * - `PK_DigitalCounterGet()`
-  * - `PK_PWMConfigurationGet()` / `PK_PWMConfigurationSet()` / `PK_PWMUpdate()`
-  *
-  * @see PKIO_export_pins()
-  * @see sPoKeysDevice
-  * @see all_IO_data_t
-   * @memberof PoKeysHALComponent
-  */
+ * @brief Updates PoKeys I/O states from and to hardware.
+ *
+ * This function performs periodic synchronization between the PoKeys hardware device
+ * and the corresponding LinuxCNC HAL pins. It:
+ * - Retrieves current pin configuration, digital I/O states, analog input values,
+ *   digital counters, and PWM settings from the device.
+ * - Updates internal HAL structures (`IO_data`) with the retrieved values.
+ * - Writes analog and digital output values from HAL back to the device if enabled.
+ * - Handles logic such as scaling, clamping, and PWM duty calculation.
+ * - Optionally reconfigures PWM period or enables/disables channels when values change.
+ *
+ * @param dev Pointer to the sPoKeysDevice structure representing the connected PoKeys device.
+ *
+ * @note The static pointer `IO_data` must be initialized with valid memory prior to calling this function.
+ * @note The function uses `sleepdur` (if compiled with `ULAPI`) to avoid overrunning communication.
+ *
+ * @details
+ * This function combines the following device interactions:
+ * - `PK_PinConfigurationGet()`
+ * - `PK_DigitalIOGet()` / `PK_DigitalIOSet()`
+ * - `PK_AnalogIOGet()`
+ * - `PK_DigitalCounterGet()`
+ * - `PK_PWMConfigurationGet()` / `PK_PWMConfigurationSet()` / `PK_PWMUpdate()`
+ *
+ * @see PKIO_export_pins()
+ * @see sPoKeysDevice
+ * @see all_IO_data_t
+ * @memberof PoKeysHALComponent
+ */
 void PKIO_Update(sPoKeysDevice *dev);
 
 /**
-  * @brief Initializes the PoKeys digital and analog I/O configuration.
-  *
-  * This function configures the I/O pins and PWM settings of the PoKeys device
-  * based on either previously applied settings or the current device state.
-  * 
-  * It performs the following actions:
-  * - Reads the current pin configuration from the device via `PK_PinConfigurationGet()`.
-  * - For each pin:
-  *   - Sets the pin function and inversion flags (input/output polarity) based on `ApplyIniSettings`.
-  *   - Compares and updates the pin configuration if changes are detected.
-  * - Applies updated pin configuration to the device via `PK_PinConfigurationSet()` if needed.
-  * - For devices with PWM outputs:
-  *   - Retrieves PWM configuration using `PK_PWMConfigurationGet()`.
-  *   - Applies period, channel enablement, and value settings (scale, offset, limits).
-  *   - Calls `PK_PWMConfigurationSet()` if PWM configuration changes were detected.
-  *
-  * @param dev Pointer to the PoKeys device structure (`sPoKeysDevice`).
-  *
-  * @note The global `IO_data` structure must be initialized before calling this function.
-  * @note PWM scaling and voltage limits are normalized and defaulted if not set.
-  * @note The last PWM period is forcibly set to 2500 if not specified.
-  * @note This function is typically called during HAL component initialization.
-  *
-  * @see ApplyIniSettings
-  * @see PK_PinConfigurationGet()
-  * @see PK_PinConfigurationSet()
-  * @see PK_PWMConfigurationGet()
-  * @see PK_PWMConfigurationSet()
-  * @see all_IO_data_t
-   * @memberof PoKeysHALComponent
-  */
+ * @brief Initializes the PoKeys digital and analog I/O configuration.
+ *
+ * This function configures the I/O pins and PWM settings of the PoKeys device
+ * based on either previously applied settings or the current device state.
+ *
+ * It performs the following actions:
+ * - Reads the current pin configuration from the device via `PK_PinConfigurationGet()`.
+ * - For each pin:
+ *   - Sets the pin function and inversion flags (input/output polarity) based on `ApplyIniSettings`.
+ *   - Compares and updates the pin configuration if changes are detected.
+ * - Applies updated pin configuration to the device via `PK_PinConfigurationSet()` if needed.
+ * - For devices with PWM outputs:
+ *   - Retrieves PWM configuration using `PK_PWMConfigurationGet()`.
+ *   - Applies period, channel enablement, and value settings (scale, offset, limits).
+ *   - Calls `PK_PWMConfigurationSet()` if PWM configuration changes were detected.
+ *
+ * @param dev Pointer to the PoKeys device structure (`sPoKeysDevice`).
+ *
+ * @note The global `IO_data` structure must be initialized before calling this function.
+ * @note PWM scaling and voltage limits are normalized and defaulted if not set.
+ * @note The last PWM period is forcibly set to 2500 if not specified.
+ * @note This function is typically called during HAL component initialization.
+ *
+ * @see ApplyIniSettings
+ * @see PK_PinConfigurationGet()
+ * @see PK_PinConfigurationSet()
+ * @see PK_PWMConfigurationGet()
+ * @see PK_PWMConfigurationSet()
+ * @see all_IO_data_t
+ * @memberof PoKeysHALComponent
+ */
 void PKIO_Setup(sPoKeysDevice *dev);
 
 /**
-  * @brief Reads and applies I/O configuration values for the PoKeys device from the INI file.
-  *
-  * This function loads pin functions, input/output inversion flags, analog input/output
-  * scale and offset values, voltage limits, and PWM period from the [POKEYS] section
-  * of the HAL component's INI configuration.
-  *
-  * It covers:
-  * - Digital pin function and inversion flags:
-  *   - `Pin_<n>_Function`
-  *   - `DigIn_<n>_invert`
-  *   - `DigOut_<n>_invert`
-  * - Analog output (PWM) settings:
-  *   - `AdcOut_<n>_offset`, `AdcOut_<n>_scale`
-  *   - `AdcOut_<n>_high_limit`, `AdcOut_<n>_low_limit`, `AdcOut_<n>_max_v`
-  *   - `AdcOut_<n>_enable`
-  * - Global PWM period setting:
-  *   - `AdcOut_PWM_Period`
-  * - Analog input scale and offset values:
-  *   - `AdcIn_<n>_scale`, `AdcIn_<n>_offset`
-  *
-  * @param dev Pointer to the PoKeys device structure (`sPoKeysDevice`) used to determine the number of digital and analog pins.
-  *
-  * @note The global `IO_data` pointer must point to a valid `all_IO_data_t` structure before calling this function.
-  * @note Defaults are applied if keys are missing: digital pins get 0, analog input scale defaults to 1, offset to 0.
-  * @note The function assumes the corresponding HAL pins and parameters were already created.
-  *
-  * @see all_IO_data_t
-  * @see ini_read_int()
-  * @see ini_read_float()
-   * @memberof PoKeysHALComponent
-  */
+ * @brief Reads and applies I/O configuration values for the PoKeys device from the INI file.
+ *
+ * This function loads pin functions, input/output inversion flags, analog input/output
+ * scale and offset values, voltage limits, and PWM period from the [POKEYS] section
+ * of the HAL component's INI configuration.
+ *
+ * It covers:
+ * - Digital pin function and inversion flags:
+ *   - `Pin_<n>_Function`
+ *   - `DigIn_<n>_invert`
+ *   - `DigOut_<n>_invert`
+ * - Analog output (PWM) settings:
+ *   - `AdcOut_<n>_offset`, `AdcOut_<n>_scale`
+ *   - `AdcOut_<n>_high_limit`, `AdcOut_<n>_low_limit`, `AdcOut_<n>_max_v`
+ *   - `AdcOut_<n>_enable`
+ * - Global PWM period setting:
+ *   - `AdcOut_PWM_Period`
+ * - Analog input scale and offset values:
+ *   - `AdcIn_<n>_scale`, `AdcIn_<n>_offset`
+ *
+ * @param dev Pointer to the PoKeys device structure (`sPoKeysDevice`) used to determine the number of digital and analog pins.
+ *
+ * @note The global `IO_data` pointer must point to a valid `all_IO_data_t` structure before calling this function.
+ * @note Defaults are applied if keys are missing: digital pins get 0, analog input scale defaults to 1, offset to 0.
+ * @note The function assumes the corresponding HAL pins and parameters were already created.
+ *
+ * @see all_IO_data_t
+ * @see ini_read_int()
+ * @see ini_read_float()
+ * @memberof PoKeysHALComponent
+ */
 void PKIO_ReadIniFile(sPoKeysDevice *dev);
 
 /**
-  * @brief Writes the current PoKeys I/O configuration to the INI file.
-  *
-  * This function saves all relevant I/O parameters from the current HAL state
-  * (`IO_data`) into the [POKEYS] section of the INI file for later reuse.
-  * This includes:
-  * - Digital pin configuration:
-  *   - `Pin_<n>_Function`
-  *   - `DigIn_<n>_invert`
-  *   - `DigOut_<n>_invert`
-  * - Analog output (PWM) configuration:
-  *   - `AdcOut_<n>_offset`, `AdcOut_<n>_scale`
-  *   - `AdcOut_<n>_high_limit`, `AdcOut_<n>_low_limit`, `AdcOut_<n>_max_v`
-  *   - `AdcOut_<n>_enable`
-  * - Global PWM period:
-  *   - `AdcOut_PWM_Period`
-  * - Analog input scale and offset:
-  *   - `AdcIn_<n>_scale`, `AdcIn_<n>_offset`
-  *
-  * @param dev Pointer to the PoKeys device structure (`sPoKeysDevice`), used to determine pin and channel counts.
-  *
-  * @note The global `IO_data` pointer must point to a valid `all_IO_data_t` structure before calling this function.
-  * @note This function is the counterpart to `PKIO_ReadIniFile()`, and is used for persisting configuration across restarts.
-  *
-  * @see all_IO_data_t
-  * @see PKIO_ReadIniFile()
-  * @see ini_write_int()
-  * @see ini_write_float()
-   * @memberof PoKeysHALComponent
-  */
+ * @brief Writes the current PoKeys I/O configuration to the INI file.
+ *
+ * This function saves all relevant I/O parameters from the current HAL state
+ * (`IO_data`) into the [POKEYS] section of the INI file for later reuse.
+ * This includes:
+ * - Digital pin configuration:
+ *   - `Pin_<n>_Function`
+ *   - `DigIn_<n>_invert`
+ *   - `DigOut_<n>_invert`
+ * - Analog output (PWM) configuration:
+ *   - `AdcOut_<n>_offset`, `AdcOut_<n>_scale`
+ *   - `AdcOut_<n>_high_limit`, `AdcOut_<n>_low_limit`, `AdcOut_<n>_max_v`
+ *   - `AdcOut_<n>_enable`
+ * - Global PWM period:
+ *   - `AdcOut_PWM_Period`
+ * - Analog input scale and offset:
+ *   - `AdcIn_<n>_scale`, `AdcIn_<n>_offset`
+ *
+ * @param dev Pointer to the PoKeys device structure (`sPoKeysDevice`), used to determine pin and channel counts.
+ *
+ * @note The global `IO_data` pointer must point to a valid `all_IO_data_t` structure before calling this function.
+ * @note This function is the counterpart to `PKIO_ReadIniFile()`, and is used for persisting configuration across restarts.
+ *
+ * @see all_IO_data_t
+ * @see PKIO_ReadIniFile()
+ * @see ini_write_int()
+ * @see ini_write_float()
+ * @memberof PoKeysHALComponent
+ */
 void PKIO_WriteIniFile(sPoKeysDevice *dev);
 
 // ========================== Encoder Support ===================================
@@ -430,23 +430,23 @@ typedef struct {
 } one_encoder_data_t;
 
 /**
-  * @brief Structure representing all encoder channels and debug output for the PoKeys HAL component.
-  *
-  * This structure aggregates all encoder-related data in the system, including an array
-  * of individual encoder configurations and a debug output pin.
-  *
-  * - `encoder[29]`: Array of encoder channel structures (`one_encoder_data_t`), each representing
-  *   a separate encoder interface (up to 29 channels supported).
-  *
-  * - `encoder_deb_out` (s32 out): Debug output pin used for internal state tracking or error codes.
-  *
-  * This structure is typically allocated once per device and passed to encoder-related
-  * setup and update routines.
-  *
-  * @see one_encoder_data_t
-  * @see PKENC_export_encoders
-  * @see PKENC_Update
-  */
+ * @brief Structure representing all encoder channels and debug output for the PoKeys HAL component.
+ *
+ * This structure aggregates all encoder-related data in the system, including an array
+ * of individual encoder configurations and a debug output pin.
+ *
+ * - `encoder[29]`: Array of encoder channel structures (`one_encoder_data_t`), each representing
+ *   a separate encoder interface (up to 29 channels supported).
+ *
+ * - `encoder_deb_out` (s32 out): Debug output pin used for internal state tracking or error codes.
+ *
+ * This structure is typically allocated once per device and passed to encoder-related
+ * setup and update routines.
+ *
+ * @see one_encoder_data_t
+ * @see PKENC_export_encoders
+ * @see PKENC_Update
+ */
 typedef struct {
     one_encoder_data_t encoder[29];
     hal_s32_t *encoder_deb_out; // pin out s32 deb.out;
@@ -456,8 +456,8 @@ typedef struct {
 /**
  * @brief Exports HAL encoder pins for the PoKeys device.
  *
- * This function creates and registers all necessary HAL pins for a specified number of encoders 
- * based on the given joint count. It assigns pointers to the internal `encoder_data` structure 
+ * This function creates and registers all necessary HAL pins for a specified number of encoders
+ * based on the given joint count. It assigns pointers to the internal `encoder_data` structure
  * for later use during runtime updates.
  *
  * The following HAL pins are exported per encoder channel:
@@ -515,36 +515,36 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints);
 
 /**
  * @brief Updates encoder data from the PoKeys device and writes values to HAL pins.
-  *
-  * This function retrieves encoder values (basic and ultra-fast) from the PoKeys device
-  * and updates the corresponding HAL pins for count and position. It also checks if the 
-  * encoder should be reset (based on HAL reset pin or during initialization).
-  * If reset is requested, it sets the encoder value on the device to zero.
-  *
-  * The following values are updated for each encoder:
-  * - `encoder.#.count`         – the raw encoder count value
-  * - `encoder.#.position`      – the scaled position based on count and scale parameter
-  * - `encoder.#.velocity`      – currently not set (placeholder)
-  *
-  * If `reset` pin is high or this is the first update (`initEncodersDone == false`), 
-  * the encoder is reset on the device using `PK_EncoderValuesSet()`.
-  *
-  * Debug values are written to `encoder_data->encoder_deb_out` to help trace progress or hangs.
-  *
-  * @param[in,out] dev Pointer to the initialized PoKeys device structure
-  *
-  * @note The function supports both basic and ultra-fast encoders.
-  *       Fast encoders are not handled in the current implementation (commented out).
-  *
-  * @see PK_EncoderValuesGet()
-  * @see PK_EncoderValuesSet()
-  * @see one_encoder_data_t
-  */
+ *
+ * This function retrieves encoder values (basic and ultra-fast) from the PoKeys device
+ * and updates the corresponding HAL pins for count and position. It also checks if the
+ * encoder should be reset (based on HAL reset pin or during initialization).
+ * If reset is requested, it sets the encoder value on the device to zero.
+ *
+ * The following values are updated for each encoder:
+ * - `encoder.#.count`         – the raw encoder count value
+ * - `encoder.#.position`      – the scaled position based on count and scale parameter
+ * - `encoder.#.velocity`      – currently not set (placeholder)
+ *
+ * If `reset` pin is high or this is the first update (`initEncodersDone == false`),
+ * the encoder is reset on the device using `PK_EncoderValuesSet()`.
+ *
+ * Debug values are written to `encoder_data->encoder_deb_out` to help trace progress or hangs.
+ *
+ * @param[in,out] dev Pointer to the initialized PoKeys device structure
+ *
+ * @note The function supports both basic and ultra-fast encoders.
+ *       Fast encoders are not handled in the current implementation (commented out).
+ *
+ * @see PK_EncoderValuesGet()
+ * @see PK_EncoderValuesSet()
+ * @see one_encoder_data_t
+ */
 void PKEncoder_Update(sPoKeysDevice *dev);
 /**
  * @brief Placeholder function to perform encoder-specific setup actions.
  *
- * This function is intended to configure encoder-related parameters or device settings 
+ * This function is intended to configure encoder-related parameters or device settings
  * before starting regular encoder operation. Currently, it is not implemented.
  *
  * You may extend this function to:
@@ -598,7 +598,7 @@ void PKEncoder_WriteIniFile(sPoKeysDevice *dev);
  *
  * This function synchronizes the state of the PoExtBus (PoKeys Extension Bus), which supports
  * digital input and output via external shift registers or I/O expanders.
- * 
+ *
  * It performs the following steps:
  * - Reads the current state from the PoKeys device using `PK_PoExtBusGet()`
  * - Updates the `PoExtBus_digin_in` and `PoExtBus_digin_in_not` HAL pins for all bus channels
@@ -606,7 +606,7 @@ void PKEncoder_WriteIniFile(sPoKeysDevice *dev);
  * - Applies optional inversion logic for outputs
  * - Compares desired vs actual state (`PoExtBus_DataSet` vs `PoExtBus_DataGet`)
  * - If there are changes, updates the PoKeys device using `PK_PoExtBusSet()`
- * 
+ *
  * Debug values are stored in `PoExtBus_deb_out` for diagnostics.
  *
  * @param[in,out] dev Pointer to the initialized PoKeys device structure
@@ -633,16 +633,16 @@ void PKPoExtBus_Setup(sPoKeysDevice *dev);
 // ========================== PoNet Support =====================================
 
 /**
-  * @brief Structure holding HAL parameters and pin references for one PoNET device.
-  *
-  * This structure represents a single PoNET module connected to the PoKeys device,
-  * including identification, addressing, and data exchange over the PoNET bus.
-  *
-  * It supports:
-  * - Read-only identification and configuration parameters
-  * - 16 status input pins (HAL_OUT)
-  * - 16 status output pins (HAL_IN)
-  */
+ * @brief Structure holding HAL parameters and pin references for one PoNET device.
+ *
+ * This structure represents a single PoNET module connected to the PoKeys device,
+ * including identification, addressing, and data exchange over the PoNET bus.
+ *
+ * It supports:
+ * - Read-only identification and configuration parameters
+ * - 16 status input pins (HAL_OUT)
+ * - 16 status output pins (HAL_IN)
+ */
 typedef struct {
     hal_u32_t PoNET_moduleID;       // RO Parameter
     hal_u32_t PoNET_i2cAddress;     // RO Parameter
@@ -654,11 +654,11 @@ typedef struct {
 } one_PoNET_data_t;
 
 /**
-* @brief Represents a single button and LED pair on the kbd48CNC PoNET module.
-*
-* This structure holds HAL pointers to the button input and LED output for a single key
-* on a PoKeys kbd48CNC keyboard extension module.
-*/
+ * @brief Represents a single button and LED pair on the kbd48CNC PoNET module.
+ *
+ * This structure holds HAL pointers to the button input and LED output for a single key
+ * on a PoKeys kbd48CNC keyboard extension module.
+ */
 typedef struct {
     hal_bit_t *LED;
     hal_bit_t *Button;
@@ -666,14 +666,14 @@ typedef struct {
 } one_kbd48CNCButton_data_t;
 
 /**
-  * @brief Contains all PoNET-related data for communication with PoKeys devices.
-  *
-  * This structure manages the state and HAL representation of all connected PoNET devices,
-  * including:
-  * - Up to 16 generic PoNET modules
-  * - A kbd48CNC keyboard module with 48 keys (each with LED and Button)
-  * - Status and control values like PWM and brightness
-  */
+ * @brief Contains all PoNET-related data for communication with PoKeys devices.
+ *
+ * This structure manages the state and HAL representation of all connected PoNET devices,
+ * including:
+ * - Up to 16 generic PoNET modules
+ * - A kbd48CNC keyboard module with 48 keys (each with LED and Button)
+ * - Status and control values like PWM and brightness
+ */
 
 typedef struct {
     one_PoNET_data_t PoNET[16];   /**< Data for up to 16 PoNET modules */
@@ -695,58 +695,58 @@ typedef struct {
 } all_PoNET_data_t;
 
 /**
-    * @brief Exports HAL pins and parameters for PoNET modules and optionally kbd48CNC devices.
-    *
-    * This function initializes and exports all relevant HAL pins and parameters for PoNET modules
-    * connected to a PoKeys device. It dynamically allocates memory for internal state (if needed)
-    * and assigns module metadata (ID, type, size, options) and I/O channels as HAL pins.
-    *
-    * Additionally, if a `kbd48CNC` module is detected, it exports button and LED pins
-    * for up to 48 keys and sets up backlight brightness and control pins.
-    *
-    * The function supports up to 16 PoNET modules with up to 16 I/O channels each.
-    *
-    * @param prefix         The string prefix for the HAL pin and parameter names (e.g. "pokeys").
-    * @param extra_arg      Reserved extra argument, unused.
-    * @param id             Unique HAL component ID used for pin/parameter creation.
-    * @param njoints        Number of PoNET modules expected or to be scanned.
-    * @param poNET_data     Pointer to an existing `all_PoNET_data_t` structure or NULL to auto-allocate.
-    * @param dev            Pointer to the PoKeys device structure. Must not be NULL.
-    *
-    * @return 0 on success, negative value on failure (e.g. malloc failure, pin export error).
-    *
-    * @note This function uses `PK_PoNETGetModuleSettings()` to query each module slot (0–15)
-    *       and only exports pins for detected and valid modules.
-    * @note Memory allocation for `PoNet_data->kbd48CNCio[]` elements is done on demand.
-    * @note Requires `dev->info.iPoNET` > 0 (i.e., PoNET support available on the device).
-    */
+ * @brief Exports HAL pins and parameters for PoNET modules and optionally kbd48CNC devices.
+ *
+ * This function initializes and exports all relevant HAL pins and parameters for PoNET modules
+ * connected to a PoKeys device. It dynamically allocates memory for internal state (if needed)
+ * and assigns module metadata (ID, type, size, options) and I/O channels as HAL pins.
+ *
+ * Additionally, if a `kbd48CNC` module is detected, it exports button and LED pins
+ * for up to 48 keys and sets up backlight brightness and control pins.
+ *
+ * The function supports up to 16 PoNET modules with up to 16 I/O channels each.
+ *
+ * @param prefix         The string prefix for the HAL pin and parameter names (e.g. "pokeys").
+ * @param extra_arg      Reserved extra argument, unused.
+ * @param id             Unique HAL component ID used for pin/parameter creation.
+ * @param njoints        Number of PoNET modules expected or to be scanned.
+ * @param poNET_data     Pointer to an existing `all_PoNET_data_t` structure or NULL to auto-allocate.
+ * @param dev            Pointer to the PoKeys device structure. Must not be NULL.
+ *
+ * @return 0 on success, negative value on failure (e.g. malloc failure, pin export error).
+ *
+ * @note This function uses `PK_PoNETGetModuleSettings()` to query each module slot (0–15)
+ *       and only exports pins for detected and valid modules.
+ * @note Memory allocation for `PoNet_data->kbd48CNCio[]` elements is done on demand.
+ * @note Requires `dev->info.iPoNET` > 0 (i.e., PoNET support available on the device).
+ */
 int PKPoNet_export_pins(char *prefix, long extra_arg, int id, int njoints, all_PoNET_data_t *poNET_data, sPoKeysDevice *dev);
 
 /**
-    * @brief Updates the state of the connected PoNET modules, specifically kbd48CNC.
-    *
-    * This function performs a full update cycle for the `kbd48CNC` device connected via PoNET,
-    * including:
-    * - Fetching module settings and light (backlight) values
-    * - Reading key/button states from the device
-    * - Reflecting input state into HAL pins
-    * - Updating LED states based on HAL input
-    * - Writing updated status information back to the module
-    *
-    * The function contains debug outputs and a `deb_out` pin to trace execution and states.
-    * It supports fault handling and retries for communication with the device.
-    *
-    * @param dev Pointer to the sPoKeysDevice structure, representing the connected PoKeys device.
-    *
-    * @note This function only performs actions if `kbd48CNC_available` is non-zero,
-    *       indicating that a kbd48CNC PoNET module has been detected.
-    *
-    * @note The `kbd48CNC` buttons are processed in a remapped ID order using a 4-group offset scheme,
-    *       to match hardware layout with software index logic.
-    *
-    * @warning This function assumes that `PoNet_data` has already been initialized and populated
-    *          by `PKPoNet_export_pins()`. If not, behavior is undefined.
-    */
+ * @brief Updates the state of the connected PoNET modules, specifically kbd48CNC.
+ *
+ * This function performs a full update cycle for the `kbd48CNC` device connected via PoNET,
+ * including:
+ * - Fetching module settings and light (backlight) values
+ * - Reading key/button states from the device
+ * - Reflecting input state into HAL pins
+ * - Updating LED states based on HAL input
+ * - Writing updated status information back to the module
+ *
+ * The function contains debug outputs and a `deb_out` pin to trace execution and states.
+ * It supports fault handling and retries for communication with the device.
+ *
+ * @param dev Pointer to the sPoKeysDevice structure, representing the connected PoKeys device.
+ *
+ * @note This function only performs actions if `kbd48CNC_available` is non-zero,
+ *       indicating that a kbd48CNC PoNET module has been detected.
+ *
+ * @note The `kbd48CNC` buttons are processed in a remapped ID order using a 4-group offset scheme,
+ *       to match hardware layout with software index logic.
+ *
+ * @warning This function assumes that `PoNet_data` has already been initialized and populated
+ *          by `PKPoNet_export_pins()`. If not, behavior is undefined.
+ */
 void PKPoNet_Update(sPoKeysDevice *dev);
 
 /**
@@ -792,20 +792,20 @@ typedef enum {
  */
 typedef enum {
     /**
-   * Axis is preparing to reset encoder position to zero.
-   * Sent after PoKeys internal homing is done, just before `PK_PEAxisCommand_axARMENCODER`.
-   */
+     * Axis is preparing to reset encoder position to zero.
+     * Sent after PoKeys internal homing is done, just before `PK_PEAxisCommand_axARMENCODER`.
+     */
     PEAxisStateEx_HOMINGARMENCODER = 17,
 
     /**
-   * Axis is waiting for all other joints in the sequence to be ready
-   * before executing the final move to the home position.
-   */
+     * Axis is waiting for all other joints in the sequence to be ready
+     * before executing the final move to the home position.
+     */
     PEAxisStateEx_HOMINGWaitFINALMOVE = 18,
 
     /**
-   * Axis is currently performing the final coordinated move to its home position.
-   */
+     * Axis is currently performing the final coordinated move to its home position.
+     */
     PEAxisStateEx_HOMINGFINALMOVE = 19,
 } pokeys_axis_state_ext_t;
 
@@ -821,44 +821,44 @@ typedef enum {
  */
 typedef enum {
     /**
-   * Axis is idle and not part of a current homing sequence.
-   */
+     * Axis is idle and not part of a current homing sequence.
+     */
     PK_Homing_axIDLE = 0,
 
     /**
-   * Homing procedure has been initiated (e.g., via `PK_PEAxisCommand_axHOMINGSTART`).
-   * PoKeys internal homing starts here.
-   */
+     * Homing procedure has been initiated (e.g., via `PK_PEAxisCommand_axHOMINGSTART`).
+     * PoKeys internal homing starts here.
+     */
     PK_Homing_axHOMINGSTART = 1,
 
     /**
-   * Encoder arming phase: Axis resets its position to the configured zero point.
-   * This usually happens after the PoKeys homing sequence has completed.
-   */
+     * Encoder arming phase: Axis resets its position to the configured zero point.
+     * This usually happens after the PoKeys homing sequence has completed.
+     */
     PK_Homing_axARMENCODER = 2,
 
     /**
-   * Axis waits for all other joints in the same sequence to reach this state
-   * before it triggers a synchronized final move to the home position.
-   */
+     * Axis waits for all other joints in the same sequence to reach this state
+     * before it triggers a synchronized final move to the home position.
+     */
     PK_Homing_axHOMINGWaitFinalMove = 3,
 
     /**
-   * Axis executes the final coordinated move to its home position (absolute).
-   */
+     * Axis executes the final coordinated move to its home position (absolute).
+     */
     PK_Homing_axHOMINGFinalMove = 4,
 
     /**
-   * Homing procedure has been aborted.
-   */
+     * Homing procedure has been aborted.
+     */
     PK_Homing_axHOMINGCancel = 5,
 
     /**
-   * Internal PoKeys homing procedure has completed.
-   * This is typically the last state *before* encoder arming or final move is triggered.
-   * 
-   * @note Despite the name, this is **not** the final state of the entire LinuxCNC homing sequence.
-   */
+     * Internal PoKeys homing procedure has completed.
+     * This is typically the last state *before* encoder arming or final move is triggered.
+     *
+     * @note Despite the name, this is **not** the final state of the entire LinuxCNC homing sequence.
+     */
     PK_Homing_axHOMINGFinalize = 6
 } pokeys_home_status_t;
 
@@ -866,14 +866,14 @@ typedef enum {
  * @brief Homing command for the axis
  * @memberof PoKeysHALComponent
  */
- typedef enum {
-  PK_PEAxisCommand_axIDLE = 0,                // Axis  in IDLE
-  PK_PEAxisCommand_axHOMINGSTART = 1,         // Start Homing procedure
-  PK_PEAxisCommand_axARMENCODER = 2,          // reset position to zeros
-  PK_PEAxisCommand_axHOMINGWaitFinalMove = 3, // move to homeposition
-  PK_PEAxisCommand_axHOMINGFinalMove = 4,    // move to homeposition
-  PK_PEAxisCommand_axHOMINGCancel = 5,        // Cancel Homing procedure
-  PK_PEAxisCommand_axHOMINGFinalize = 6,      // Finish Homing procedure
+typedef enum {
+    PK_PEAxisCommand_axIDLE = 0,                // Axis  in IDLE
+    PK_PEAxisCommand_axHOMINGSTART = 1,         // Start Homing procedure
+    PK_PEAxisCommand_axARMENCODER = 2,          // reset position to zeros
+    PK_PEAxisCommand_axHOMINGWaitFinalMove = 3, // move to homeposition
+    PK_PEAxisCommand_axHOMINGFinalMove = 4,     // move to homeposition
+    PK_PEAxisCommand_axHOMINGCancel = 5,        // Cancel Homing procedure
+    PK_PEAxisCommand_axHOMINGFinalize = 6,      // Finish Homing procedure
 } pokeys_home_command_t;
 
 /**
@@ -941,9 +941,9 @@ typedef enum {
  */
 
 /**
-* @brief PEv2_data_t
-* @memberof PoKeysHALComponent
-*/
+ * @brief PEv2_data_t
+ * @memberof PoKeysHALComponent
+ */
 typedef struct {
     hal_s32_t *PEv2_deb_out;
     hal_s32_t *PEv2_deb_estop;
@@ -964,14 +964,14 @@ typedef struct {
     hal_u32_t *PEv2_slotTiming;
     hal_bit_t *PEv2_params_ApplyIniSettings;
     /**
-* @var PEv2_AxesState
-* @brief HAL pin array representing the current state of each axis in PulseEngine v2.
-*
-* These pins are referenced in the homing component via `H[joint_num].PEv2_AxesState`.
-*
-* @see H
-* @see pokeys_homecomp.c
-*/
+     * @var PEv2_AxesState
+     * @brief HAL pin array representing the current state of each axis in PulseEngine v2.
+     *
+     * These pins are referenced in the homing component via `H[joint_num].PEv2_AxesState`.
+     *
+     * @see H
+     * @see pokeys_homecomp.c
+     */
     hal_u32_t *PEv2_AxesState[8];
     hal_u32_t *PEv2_AxesCommand[8];
     hal_u32_t PEv2_AxesConfig[8];
@@ -1310,7 +1310,7 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev);
  * @brief Configures and applies Pulse Engine v2 settings to the PoKeys device.
  *
  * This function checks and sets multiple Pulse Engine configuration parameters
- * based on both the current device state (`dev->PEv2`) and user-defined or 
+ * based on both the current device state (`dev->PEv2`) and user-defined or
  * default settings stored in `PEv2_data`. These include:
  * - Number of enabled axes
  * - Charge pump enable state
@@ -1345,8 +1345,8 @@ int32_t PEv2_PulseEngineSetup(sPoKeysDevice *dev);
  * @brief Reads additional Pulse Engine v2 parameters from the PoKeys device.
  *
  * This function retrieves the current additional configuration of the Pulse Engine v2,
- * such as the emergency stop input pin, using `PK_PEv2_AdditionalParametersGet()`. 
- * If the configuration is successfully read and either `ApplyIniSettings` is false 
+ * such as the emergency stop input pin, using `PK_PEv2_AdditionalParametersGet()`.
+ * If the configuration is successfully read and either `ApplyIniSettings` is false
  * or no HAL configuration is specified for the emergency pin, the value is stored in
  * `PEv2_data->PEv2_digin_Emergency_Pin` after adjusting the index.
  *
@@ -1369,20 +1369,20 @@ int32_t PEv2_AdditionalParametersGet(sPoKeysDevice *dev);
  *
  * This function checks whether Pulse Engine v2 additional parameters (e.g., the emergency stop input pin)
  * need to be updated on the PoKeys device, and if so, applies the new configuration.
- * It reads the current configuration using `PK_PEv2_AdditionalParametersGet()` and compares it with 
+ * It reads the current configuration using `PK_PEv2_AdditionalParametersGet()` and compares it with
  * the desired values defined in `PEv2_data`. If discrepancies are found and `ApplyIniSettings` is true,
- * the values are updated on the device using `PK_PEv2_AdditionalParametersSet()` and saved via 
+ * the values are updated on the device using `PK_PEv2_AdditionalParametersSet()` and saved via
  * `PK_SaveConfiguration()`.
  *
  * If the emergency input pin is mapped to a regular PoKeys pin (ID >= 9), it also ensures that the
  * corresponding pin function is correctly set to `PK_PinCap_digitalInput`.
  *
  * @param dev Pointer to the PoKeys device structure.
- * 
+ *
  * @retval PK_OK on successful update or no change needed.
  * @retval error code (e.g., PK_ERR_*) if a communication or configuration error occurred.
  *
- * @note The function includes retry logic and short delays (`usleep`) if `ULAPI` is defined, 
+ * @note The function includes retry logic and short delays (`usleep`) if `ULAPI` is defined,
  *       ensuring compatibility with non-realtime environments.
  *
  * @see PK_PEv2_AdditionalParametersGet
@@ -1417,7 +1417,7 @@ int32_t PEv2_AdditionalParametersSet(sPoKeysDevice *dev);
  *
  * @note The function sets internal flags and masks used by the Pulse Engine API.
  *       Certain transitions involve setting configuration bits or triggering motion commands.
-  * @memberof PoKeysHALComponent
+ * @memberof PoKeysHALComponent
  */
 int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_status_t RequiredState, pokeys_home_status_t NextState);
 
@@ -1434,7 +1434,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
  *
  * @param dev Pointer to the PoKeys device structure.
  * @param AxisId The index of the axis to retrieve configuration for.
- * 
+ *
  * @return PK_OK (0) on success, or an error code if `PK_PEv2_AxisConfigurationGet()` fails.
  *
  * @note Only fields that are unset (i.e., zero or false) in `PEv2_data` will be overwritten,
@@ -1443,7 +1443,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
  * @see PK_PEv2_AxisConfigurationGet
  * @ingroup PEv2_Configuration
  * @ingroup PoKeys_Axis
-  * @memberof PoKeysHALComponent
+ * @memberof PoKeysHALComponent
  */
 int32_t PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int AxisId);
 
@@ -1454,21 +1454,21 @@ int32_t PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int AxisId);
 int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId);
 
 /**
-  * @brief Configures the PulseEngine v2 using current settings.
-  * @memberof PoKeysHALComponent
-  */
+ * @brief Configures the PulseEngine v2 using current settings.
+ * @memberof PoKeysHALComponent
+ */
 int PEv2_PulseEngineSetup(sPoKeysDevice *dev);
 
 /**
-  * @brief Applies INI-based configuration to PulseEngine and IO.
-  * @memberof PoKeysHALComponent
-  */
+ * @brief Applies INI-based configuration to PulseEngine and IO.
+ * @memberof PoKeysHALComponent
+ */
 void PKPEv2_Setup(sPoKeysDevice *dev);
 
 /**
-  * @brief Updates PulseEngine feedback and status.
-  * @memberof PoKeysHALComponent
-  */
+ * @brief Updates PulseEngine feedback and status.
+ * @memberof PoKeysHALComponent
+ */
 void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On);
 /** @} */ // end of hal_component_pokeys
 
