@@ -1667,7 +1667,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                     case PK_Homing_axHOMINGFinalize:
 
                         // for RequiredState == PK_Homing_axHOMINGSTART also ansure that PEv2_data->PEv2_AxesState[axis] is on PK_PEState_peHOME
-                        if (RequiredState == PK_Homing_axHOMINGSTART && *(PEv2_data->PEv2_AxesState[axis]) != PK_PEAxisState_axHOME) {
+                        if (RequiredState == PK_Homing_axHOMINGSTART && dev->PEv2.AxesState[i] != PK_PEAxisState_axHOME) {
 
                             if (ActState_step2_Memory[axis] != dev->PEv2.AxesState[i]) {
                                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] not in required AxesState %d (AxesState %d NextState %d) \n", __FILE__, __FUNCTION__, axis, PK_PEAxisState_axHOME, dev->PEv2.AxesState[i], NextState);
