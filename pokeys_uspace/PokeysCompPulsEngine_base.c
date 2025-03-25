@@ -759,29 +759,26 @@ static const char *const PK_PEState_names[] = { [PK_PEState_peSTOPPED] = "STOPPE
                                                 [PK_PEState_peSTOP_LIMIT] = "STOP_LIMIT",
                                                 [PK_PEState_peSTOP_EMERGENCY] = "STOP_EMERGENCY" };
 
-                                                static const char *const PK_PEAxisState_names[] = {
-                                                    [PK_PEAxisState_axSTOPPED]             = "STOPPED",
-                                                    [PK_PEAxisState_axREADY]               = "READY",
-                                                    [PK_PEAxisState_axRUNNING]             = "RUNNING",
-                                                    [PK_PEAxisState_axHOMING_RESETTING]    = "HOMING_RESETTING",
-                                                    [PK_PEAxisState_axHOMING_BACKING_OFF]  = "HOMING_BACKING_OFF",
-                                                    [PK_PEAxisState_axHOME]                = "HOME",
-                                                    [PK_PEAxisState_axHOMINGSTART]         = "HOMINGSTART",
-                                                    [PK_PEAxisState_axHOMINGSEARCH]        = "HOMINGSEARCH",
-                                                    [PK_PEAxisState_axHOMINGBACK]          = "HOMINGBACK",
-                                                    [PK_PEAxisState_axPROBED]              = "PROBED",
-                                                    [PK_PEAxisState_axPROBESTART]          = "PROBESTART",
-                                                    [PK_PEAxisState_axPROBESEARCH]         = "PROBESEARCH",
-                                                    [PK_PEAxisState_axERROR]               = "ERROR",
-                                                    [PK_PEAxisState_axLIMIT]               = "LIMIT",
-                                                
+static const char *const PK_PEAxisState_names[] = { [PK_PEAxisState_axSTOPPED] = "STOPPED",
+                                                    [PK_PEAxisState_axREADY] = "READY",
+                                                    [PK_PEAxisState_axRUNNING] = "RUNNING",
+                                                    [PK_PEAxisState_axHOMING_RESETTING] = "HOMING_RESETTING",
+                                                    [PK_PEAxisState_axHOMING_BACKING_OFF] = "HOMING_BACKING_OFF",
+                                                    [PK_PEAxisState_axHOME] = "HOME",
+                                                    [PK_PEAxisState_axHOMINGSTART] = "HOMINGSTART",
+                                                    [PK_PEAxisState_axHOMINGSEARCH] = "HOMINGSEARCH",
+                                                    [PK_PEAxisState_axHOMINGBACK] = "HOMINGBACK",
+                                                    [PK_PEAxisState_axPROBED] = "PROBED",
+                                                    [PK_PEAxisState_axPROBESTART] = "PROBESTART",
+                                                    [PK_PEAxisState_axPROBESEARCH] = "PROBESEARCH",
+                                                    [PK_PEAxisState_axERROR] = "ERROR",
+                                                    [PK_PEAxisState_axLIMIT] = "LIMIT",
+
                                                     [PEAxisStateEx_axReadyToFinalizeHoming] = "READY_TO_FINALIZE_HOMING",
-                                                    [PEAxisStateEx_axReadyToArmEncoder]     = "READY_TO_ARM_ENCODER",
-                                                    [PEAxisStateEx_HOMINGARMENCODER]        = "HOMING_ARM_ENCODER",
-                                                    [PEAxisStateEx_HOMINGWaitFINALMOVE]     = "HOMING_WAIT_FINAL_MOVE",
-                                                    [PEAxisStateEx_HOMINGFINALMOVE]         = "HOMING_FINAL_MOVE"
-                                                };
-                                                
+                                                    [PEAxisStateEx_axReadyToArmEncoder] = "READY_TO_ARM_ENCODER",
+                                                    [PEAxisStateEx_HOMINGARMENCODER] = "HOMING_ARM_ENCODER",
+                                                    [PEAxisStateEx_HOMINGWaitFINALMOVE] = "HOMING_WAIT_FINAL_MOVE",
+                                                    [PEAxisStateEx_HOMINGFINALMOVE] = "HOMING_FINAL_MOVE" };
 
 /**
  * @brief Retrieves the value of a specific bit in a byte.
