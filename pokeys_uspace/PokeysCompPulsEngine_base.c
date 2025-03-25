@@ -734,6 +734,16 @@ int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id, PEv2_data_t *P
 
 static const char *const PK_HomingStatus_names[] = { [PK_Homing_axIDLE] = "IDLE", [PK_Homing_axHOMINGSTART] = "HOMINGSTART", [PK_Homing_axARMENCODER] = "ARMENCODER", [PK_Homing_axHOMINGWaitFinalMove] = "HOMINGWaitFinalMove", [PK_Homing_axHOMINGFinalMove] = "HOMINGFinalMove", [PK_Homing_axHOMINGCancel] = "HOMINGCancel", [PK_Homing_axHOMINGFinalize] = "HOMINGFinalize" };
 
+const char* const PEv2_AxisCommand_Names[] = {
+    [PK_PEAxisCommand_axIDLE] = "PK_PEAxisCommand_axIDLE",
+    [PK_PEAxisCommand_axHOMINGSTART] ="PK_PEAxisCommand_axHOMINGSTART",
+    [PK_PEAxisCommand_axARMENCODER] = "PK_PEAxisCommand_axARMENCODER",
+    [PK_PEAxisCommand_axHOMINGWaitFinalMove] = "PK_PEAxisCommand_axHOMINGWaitFinalMove",
+    [PK_PEAxisCommand_axHOMINGFinalMove] = "PK_PEAxisCommand_axHOMINGFinalMove",
+    [PK_PEAxisCommand_axHOMINGCancel] = "PK_PEAxisCommand_axHOMINGCancel",
+    [PK_PEAxisCommand_axHOMINGFinalize] = "PK_PEAxisCommand_axHOMINGFinalize"
+};
+
 static const char *const PK_PEState_names[] = { [PK_PEState_peSTOPPED] = "STOPPED",
                                                 [PK_PEState_peINTERNAL] = "INTERNAL",
                                                 [PK_PEState_peBUFFER] = "BUFFER",
@@ -776,6 +786,8 @@ static const char *const PK_PEAxisState_names[] = { [PK_PEAxisState_axSTOPPED] =
 
                                                     [PK_PEAxisState_axERROR] = "ERROR",
                                                     [PK_PEAxisState_axLIMIT] = "LIMIT" };
+
+
 
 /**
  * @brief Retrieves the value of a specific bit in a byte.
