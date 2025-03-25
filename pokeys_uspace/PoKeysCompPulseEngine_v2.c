@@ -352,9 +352,8 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: intAxesState = %d\n", __FILE__, __FUNCTION__, intAxesState);
             if (intAxesState != oldAxxiState[i]) {
                 rtapi_print_msg(RTAPI_MSG_ERR,
-                                "PoKeys: %s:%s: Status Changed: %d "
-                                "-intAxesState != oldAxxiState[%d] \n",
-                                __FILE__, __FUNCTION__, intAxesState, i);
+                                "PoKeys: %s:%s: PEv2_Axis[%d]: Status Changed to: %s (%d) \n",
+                                __FILE__, __FUNCTION__, i, PK_PEAxisState_names(intAxesState), intAxesState);
                 oldAxxiState[i] = intAxesState;
             }
             /**

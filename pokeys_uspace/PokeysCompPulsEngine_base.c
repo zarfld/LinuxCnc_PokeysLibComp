@@ -732,6 +732,66 @@ int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id, PEv2_data_t *P
         return r;
 }
 
+static const char* const PK_HomingStatus_names[] = {
+    [PK_Homing_axIDLE]               = "IDLE",
+    [PK_Homing_axHOMINGSTART]        = "HOMINGSTART",
+    [PK_Homing_axARMENCODER]         = "ARMENCODER",
+    [PK_Homing_axHOMINGWaitFinalMove]= "HOMINGWaitFinalMove",
+    [PK_Homing_axHOMINGFinalMove]    = "HOMINGFinalMove",
+    [PK_Homing_axHOMINGCancel]       = "HOMINGCancel",
+    [PK_Homing_axHOMINGFinalize]     = "HOMINGFinalize"
+};
+
+
+static const char* const PK_PEState_names[] = {
+    [PK_PEState_peSTOPPED]               = "STOPPED",
+    [PK_PEState_peINTERNAL]              = "INTERNAL",
+    [PK_PEState_peBUFFER]                = "BUFFER",
+    [PK_PEState_peRUNNING]               = "RUNNING",
+
+    [PK_PEState_peJOGGING]               = "JOGGING",
+    [PK_PEState_peSTOPPING]              = "STOPPING",
+
+    [PK_PEState_peHOME]                  = "HOME",
+    [PK_PEState_peHOMING]                = "HOMING",
+
+    [PK_PEState_pePROBECOMPLETE]         = "PROBECOMPLETE",
+    [PK_PEState_pePROBE]                 = "PROBE",
+    [PK_PEState_pePROBEERROR]            = "PROBEERROR",
+
+    [PK_PEState_peHYBRIDPROBE_STOPPING]  = "HYBRIDPROBE_STOPPING",
+    [PK_PEState_peHYBRIDPROBE_COMPLETE]  = "HYBRIDPROBE_COMPLETE",
+
+    [PK_PEState_peSTOP_LIMIT]            = "STOP_LIMIT",
+    [PK_PEState_peSTOP_EMERGENCY]        = "STOP_EMERGENCY"
+};
+
+
+static const char* const PK_PEAxisState_names[] = {
+    [PK_PEAxisState_axSTOPPED]          = "STOPPED" ,
+    [PK_PEAxisState_axREADY]            = "READY",
+    [PK_PEAxisState_axRUNNING]          = "RUNNING",
+
+    [PK_PEAxisState_axHOMING_RESETTING] = "HOMING_RESETTING",
+    [PK_PEAxisState_axHOMING_BACKING_OFF] = "HOMING_BACKING_OFF",
+    [PK_PEAxisState_axHOME]             = "HOME",
+    [PK_PEAxisState_axHOMINGSTART]      = "HOMINGSTART",
+    [PK_PEAxisState_axHOMINGSEARCH]     = "HOMINGSEARCH",
+    [PK_PEAxisState_axHOMINGBACK]       = "HOMINGBACK",
+
+    [PEAxisStateEx_HOMINGARMENCODER]       = "HOMINGARMENCODER",
+    [PEAxisStateEx_HOMINGWaitFINALMOVE]    = "HOMINGWaitFINALMOVE",
+    [PEAxisStateEx_HOMINGFINALMOVE]        = "HOMINGFINALMOVE",
+
+    [PK_PEAxisState_axPROBED]           = "PROBED",
+    [PK_PEAxisState_axPROBESTART]       = "PROBESTART",
+    [PK_PEAxisState_axPROBESEARCH]      = "PROBESEARCH",
+
+    [PK_PEAxisState_axERROR]            = "ERROR",
+    [PK_PEAxisState_axLIMIT]            = "LIMIT"
+};
+
+
 /**
  * @brief Retrieves the value of a specific bit in a byte.
  *
