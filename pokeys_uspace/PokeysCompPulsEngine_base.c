@@ -779,7 +779,36 @@ static const char *const PK_PEAxisState_names[] = { [PK_PEAxisState_axSTOPPED] =
                                                     [PK_PEAxisState_axPROBESEARCH] = "PROBESEARCH",
 
                                                     [PK_PEAxisState_axERROR] = "ERROR",
-                                                    [PK_PEAxisState_axLIMIT] = "LIMIT" };
+                                                    [PK_PEAxisState_axLIMIT] = "LIMIT" 
+                                                
+                                                    /**
+     * Axis has finished (pokeys)homing sequence.
+     */
+    [PEAxisStateEx_axReadyToFinalizeHoming] = "Ready_To_FinalizeHoming", // (linuxcnc spec additional state) pokeys ready to finalize PKhoming
+
+    /**
+     * Axis is ready to arm the encoder after PoKeys internal homing is complete.
+     * This state is used to synchronize with other axes in the same homing sequence.
+     */
+    [PEAxisStateEx_axReadyToArmEncoder] = "Ready_To_arm_encoder", // (linuxcnc spec additional state) pokeys ready to finalize PKhoming
+    /**
+     * Axis is preparing to reset encoder position to zero.
+     * Sent after PoKeys internal homing is done, just before `PK_PEAxisCommand_axARMENCODER`.
+     */
+    [PEAxisStateEx_HOMINGARMENCODER] = "HOMINGARMENCODER",
+
+    /**
+     * Axis is waiting for all other joints in the sequence to be ready
+     * before executing the final move to the home position.
+     */
+    [PEAxisStateEx_HOMINGWaitFINALMOVE] = "HOMINGWaitFINALMOVE",
+
+    /**
+     * Axis is currently performing the final coordinated move to its home position.
+     */
+    [PEAxisStateEx_HOMINGFINALMOVE] = "HOMINGFINALMOVE",
+                                                
+                                                };
 
 /**
  * @brief Retrieves the value of a specific bit in a byte.

@@ -791,6 +791,17 @@ typedef enum {
  * @note These states are assigned IDs that continue beyond the original PoKeysLib enum values.
  */
 typedef enum {
+
+    /**
+     * Axis has finished (pokeys)homing sequence.
+     */
+    PEAxisStateEx_axReadyToFinalizeHoming = 3, // (linuxcnc spec additional state) pokeys ready to finalize PKhoming
+
+    /**
+     * Axis is ready to arm the encoder after PoKeys internal homing is complete.
+     * This state is used to synchronize with other axes in the same homing sequence.
+     */
+    PEAxisStateEx_axReadyToArmEncoder = 4, // (linuxcnc spec additional state) pokeys ready to finalize PKhoming
     /**
      * Axis is preparing to reset encoder position to zero.
      * Sent after PoKeys internal homing is done, just before `PK_PEAxisCommand_axARMENCODER`.

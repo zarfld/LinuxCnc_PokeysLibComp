@@ -663,13 +663,11 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         // ready to Finalize homing
                         if (oldAxxiState[i] != intAxesState) {
                             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisState_axHOME - ready to Finalize homing\n", i, __FILE__, __FUNCTION__);
-                            intAxesState = PK_PEAxisState_axHOMINGFinalize;
+                            
                         }
+                        intAxesState = PEAxisStateEx_axReadyToFinalizeHoming;
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingStart\n", __FILE__, __FUNCTION__);
-                        if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGSTART, PK_Homing_axHOMINGFinalize) == 0) {
-                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: ensure that all axes with same Sequence start homing at the same time\n", __FILE__, __FUNCTION__);
-                            Homing_PkHomeFinalizeeDone[i] = true;
-                        }
+
                     }
                     break;
                 case PK_PEAxisCommand_axARMENCODER:
@@ -783,7 +781,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                      * @memberof PoKeysHALComponent
                      */
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGFinalize\n", __FILE__, __FUNCTION__);
-                    if (intAxesState == PK_PEAxisState_axHOME && *(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGFinalize) {
+                    if (intAxesState == PK_PEAxisState_axHOME || intAxesState == PEAxisStateEx_axReadyToFinalizeHoming) {
                         int MyHomeSequ, seq;
                         MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
 
@@ -793,14 +791,14 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                             if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGSTART, PK_Homing_axHOMINGFinalize) == 0) {
 
                                 Homing_PkHomeFinalizeeDone[i] = true;
-
+                                intAxesState = PEAxisStateEx_axReadyToArmEncoder; // keep previous state
                             } else {
                                 rtapi_print_msg(RTAPI_MSG_ERR,
                                                 "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                                 "PK_PEAxisState_axHOME - Homing_PkHomeFinalizeeDone[i] = false\n",
                                                 __FILE__, __FUNCTION__, i);
                             }
-                            intAxesState = PK_PEAxisState_axHOMING_BACKING_OFF; // keep previous state
+                            
                         }
                     }
                     break;
@@ -810,7 +808,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             }
 
             if (intAxesState != oldAxxiState[i]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d]: Status Changed to: %s (%d) \n", __FILE__, __FUNCTION__, i, PK_PEAxisState_names[intAxesState], intAxesState);
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d]: reported Status Changed to: %s (%d) \n", __FILE__, __FUNCTION__, i, PK_PEAxisState_names[intAxesState], intAxesState);
                 oldAxxiState[i] = intAxesState;
             }
             old_PEv2_AxesCommand[i] = *(PEv2_data->PEv2_AxesCommand[i]);

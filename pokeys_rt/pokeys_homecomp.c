@@ -282,6 +282,9 @@ typedef enum {
     PK_PEAxisState_axREADY = 1,   // Axis ready
     PK_PEAxisState_axRUNNING = 2, // Axis is running
 
+    PK_PEAxisState_axReadyToFinalizeHoming = 3, // (linuxcnc spec additional state) pokeys ready to finalize PKhoming
+    PK_PEAxisState_axReadyToArmEncoder = 4, // (linuxcnc spec additional state) pokeys ready to finalize PKhoming
+
     PK_PEAxisState_axHOMING_RESETTING = 8,   // Stopping the axis to reset the position counters
     PK_PEAxisState_axHOMING_BACKING_OFF = 9, // Backing off switch
     PK_PEAxisState_axHOME = 10,              // Axis is homed
