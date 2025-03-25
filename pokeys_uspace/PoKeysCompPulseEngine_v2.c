@@ -351,7 +351,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             PEv2_digin_Error_in_not(i) = !Get_BitOfByte(bm_ErrorStatus, i);
             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: intAxesState = %d\n", __FILE__, __FUNCTION__, intAxesState);
             if (intAxesState != oldAxxiState[i]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d]: Status Changed to: %s (%d) \n", __FILE__, __FUNCTION__, i, PK_PEAxisState_names(intAxesState), intAxesState);
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d]: Status Changed to: %s (%d) \n", __FILE__, __FUNCTION__, i, PK_PEAxisState_names[intAxesState], intAxesState);
                 oldAxxiState[i] = intAxesState;
             }
             /**
@@ -416,7 +416,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                         "PK_PEAxisState_axREADY \n",
                                         __FILE__, __FUNCTION__, i);
                     }
-                    allhomed = false;
+                    //allhomed = false;
                     // *(PEv2_data->PEv2_deb_ishoming[i]) = false;
                     PEv2_deb_out = 320 + i;
                     // PEv2_digin_AxisEnabled_in(i) = true;
