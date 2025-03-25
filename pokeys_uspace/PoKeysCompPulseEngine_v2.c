@@ -421,7 +421,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         //	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
                         intAxesState = 19;
                         if ((dev->PEv2.CurrentPosition[i] != (int32_t)PEv2_data->PEv2_HomePosition[i])) {
-                            intAxesState = 19;
+                            intAxesState = PEAxisStateEx_HOMINGFINALMOVE;
                             InPosition[i] = false;
                         } else {
                             rtapi_print_msg(RTAPI_MSG_ERR,
@@ -434,7 +434,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                             Homing_FinalMoveActive[i] = false;
                         }
                     } else if (Homing_FinalMoveDone[i] != false) {
-                        //	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
+                        //	PEAxisStateEx_HOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
                         intAxesState = PK_PEAxisState_axHOME;
                     }
                     // *(PEv2_data->PEv2_deb_ishoming[i]) = false;
@@ -650,30 +650,6 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
 
                         // ensure that all axes with same Sequence start homing at the same time
 
-                        /* int j_count = 0;
-                            for (seq = 0; seq < (*PEv2_data->PEv2_nrOfAxes); seq++) {
-
-                                if (PEv2_data->PEv2_home_sequence[seq] == PEv2_data->PEv2_home_sequence[i]) {
-                                    //	rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensure that all axes (%d) with same Sequence(%d) start homing at the same time \n", seq, PEv2_data->PEv2_home_sequence[i]);
-
-                                    HomingStartMaskSetup |= (1 << seq); // Home axis seq only (bit seq)
-                                    j_count++;
-                                    doHomingStart = true;
-                                    IsHoming[seq] = true;
-                                }
-                            }
-
-                            if (j_count == 0) {
-                                rtapi_print_msg(RTAPI_MSG_DBG,
-                                                "PK_HOMING: no axes with same Sequence(%d) "
-                                                "as joint(%d) found \n",
-                                                PEv2_data->PEv2_home_sequence[i], i);
-                            } else {
-                                rtapi_print_msg(RTAPI_MSG_DBG,
-                                                "PK_HOMING: ensured that all axes (%d) with same "
-                                                "Sequence(%d) startmask was set (%d) \n",
-                                                i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
-                            }*/
                     }
                     break;
                 case PK_PEAxisCommand_axARMENCODER:
@@ -720,10 +696,10 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         }
 
                     } else if (Homing_FinalMoveActive[i] != false) {
-                        //	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
-                        intAxesState = 19;
+                        //	PEAxisStateEx_HOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
+                        intAxesState = PEAxisStateEx_HOMINGFINALMOVE;
                         if ((dev->PEv2.CurrentPosition[i] != (int32_t)PEv2_data->PEv2_HomePosition[i])) {
-                            intAxesState = 19;
+                            intAxesState = PEAxisStateEx_HOMINGFINALMOVE;
                             InPosition[i] = false;
                         } else {
                             rtapi_print_msg(RTAPI_MSG_ERR,
@@ -788,46 +764,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                             }
                             intAxesState = PK_PEAxisState_axHOMING_BACKING_OFF; // keep previous state
                         }
-                        /*HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
-                            rtapi_print_msg(RTAPI_MSG_DBG,
-                                            "PK_HOMING: ensurinig that all axes (%d) with same "
-                                            "Sequence(%d) startmask initialized (%d) \n",
-                                            i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
-
-                            // ensure that all axes with same Sequence start homing at the same time
-                            rtapi_print_msg(RTAPI_MSG_DBG,
-                                            "PoKeys: %s:%s: ensure that all axes with same "
-                                            "Sequence start homing at the same time\n",
-                                            __FILE__, __FUNCTION__);
-                            int j_count = 0;
-                            bool allhomed = true;
-                            for (seq = 0; seq < (*PEv2_data->PEv2_nrOfAxes); seq++) {
-
-                                if (PEv2_data->PEv2_home_sequence[seq] == PEv2_data->PEv2_home_sequence[i]) {
-                                    //	rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensure that all axes (%d) with same Sequence(%d) start homing at the same time \n", seq, PEv2_data->PEv2_home_sequence[i]);
-
-                                    HomingStartMaskSetup |= (1 << seq); // Home axis seq only (bit seq)
-                                    j_count++;
-                                    IsHoming[seq] = true;
-                                    if (*PEv2_data->PEv2_AxesState[i] != PK_PEAxisState_axHOME) {
-                                        allhomed = false;
-                                    }
-                                }
-                            }
-                            if (allhomed == true) {
-                                doHomingEnd = true;
-                            }
-                            if (j_count == 0) {
-                                rtapi_print_msg(RTAPI_MSG_DBG,
-                                                "PK_HOMING: no axes with same Sequence(%d) "
-                                                "as joint(%d) found \n",
-                                                PEv2_data->PEv2_home_sequence[i], i);
-                            } else {
-                                rtapi_print_msg(RTAPI_MSG_DBG,
-                                                "PK_HOMING: ensured that all axes (%d) with same "
-                                                "Sequence(%d) startmask was set (%d) \n",
-                                                i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
-                            }*/
+                        
                     }
                     break;
                 default:
@@ -853,14 +790,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 // PosFb[i] = 0;
                 //*(PEv2_data->PEv2_joint_pos_fb[i]) = ((float)intCurrentPosition[i] / PEv2_data->PEv2_PositionScale[i]) - PEv2_data->PEv2_PositionOffset[i];
 
-                /*if (StepScale[i] != 0) {
-                                        PEv2_deb_axxisout(i) = 230 + i;
-                                        PosFb[i] = ( intCurrentPosition[i]- PEv2_data->PEv2_HomeOffsets[i]) / StepScale[i];
-                                }
-                                else {
-                                        PEv2_deb_axxisout(i) = 240 + i;
-                                        PosFb[i] =  intCurrentPosition[i] - PEv2_data->PEv2_HomeOffsets[i];
-                                }*/
+
             }
 
             PEv2_deb_axxisout(i) = 250 + i;
