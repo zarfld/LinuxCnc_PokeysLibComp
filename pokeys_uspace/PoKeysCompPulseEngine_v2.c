@@ -649,7 +649,6 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         // rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n",  i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
 
                         // ensure that all axes with same Sequence start homing at the same time
-
                     }
                     break;
                 case PK_PEAxisCommand_axARMENCODER:
@@ -764,7 +763,6 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                             }
                             intAxesState = PK_PEAxisState_axHOMING_BACKING_OFF; // keep previous state
                         }
-                        
                     }
                     break;
                 default:
@@ -789,8 +787,6 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 *(PEv2_data->PEv2_joint_pos_fb[i]) = PEv2_joint_pos_cmd(i);
                 // PosFb[i] = 0;
                 //*(PEv2_data->PEv2_joint_pos_fb[i]) = ((float)intCurrentPosition[i] / PEv2_data->PEv2_PositionScale[i]) - PEv2_data->PEv2_PositionOffset[i];
-
-
             }
 
             PEv2_deb_axxisout(i) = 250 + i;
