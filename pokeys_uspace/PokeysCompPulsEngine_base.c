@@ -1489,6 +1489,7 @@ int32_t PEv2_AdditionalParametersSet(sPoKeysDevice *dev) {
 pokeys_home_status_t RequiredState_Memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 pokeys_home_status_t NextState_Memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 pokeys_home_status_t ActState_Memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+pokeys_home_status_t ActState_step2_Memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 /**
  * @brief Executes a synchronized homing step for all axes within a given sequence.
  *
@@ -1613,6 +1614,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
         return 1; // not all joints in sequence are ready
     } else {
 
+        newmessage = false;
         for (int axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
             if (abs(PEv2_data->PEv2_home_sequence[axis]) == abs(seq)) {
                 switch (NextState) {
@@ -1666,7 +1668,12 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalize\n", __FILE__, __FUNCTION__);
 
                         // for RequiredState == PK_Homing_axHOMINGSTART also ansure that PEv2_data->PEv2_AxesState[axis] is on PK_PEState_peHOME
-                        if (RequiredState == PK_Homing_axHOMINGSTART && *(PEv2_data->PEv2_AxesState[axis]) != PK_PEState_peHOME) {
+                        if (RequiredState == PK_Homing_axHOMINGSTART && *(PEv2_data->PEv2_AxesState[axis]) != PK_PEAxisState_axHOME) {
+                            if(ActState_step2_Memory[axis] != *(PEv2_data->PEv2_AxesState[axis])) {
+                                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] not in required state %d (ActualState %d NextState %d) \n", __FILE__, __FUNCTION__, axis, RequiredState, *(PEv2_data->PEv2_AxesState[axis]), NextState);
+                                ActState_step2_Memory[axis] = *(PEv2_data->PEv2_AxesState[axis]);
+                                newmessage = true;
+                            }
                             return 1; // not all joints in sequence are ready
                         }
                         HomingStartMaskSetup |= (1 << axis); // Home my axis only (bit MyHomeSequ)
