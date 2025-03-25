@@ -863,6 +863,20 @@ typedef enum {
 } pokeys_home_status_t;
 
 /**
+ * @brief Homing command for the axis
+ * @memberof PoKeysHALComponent
+ */
+ typedef enum {
+  PK_PEAxisCommand_axIDLE = 0,                // Axis  in IDLE
+  PK_PEAxisCommand_axHOMINGSTART = 1,         // Start Homing procedure
+  PK_PEAxisCommand_axARMENCODER = 2,          // reset position to zeros
+  PK_PEAxisCommand_axHOMINGWaitFinalMove = 3, // move to homeposition
+  PK_PEAxisCommand_axHOMINGFinalMove = 4,    // move to homeposition
+  PK_PEAxisCommand_axHOMINGCancel = 5,        // Cancel Homing procedure
+  PK_PEAxisCommand_axHOMINGFinalize = 6,      // Finish Homing procedure
+} pokeys_home_command_t;
+
+/**
  * @brief State machine transitions for homing logic
  *
  * This diagram visualizes the internal transition states for

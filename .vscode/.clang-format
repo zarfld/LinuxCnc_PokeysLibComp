@@ -6,7 +6,7 @@ UseTab: Never
 BreakBeforeBraces: Attach
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
-ColumnLimit: 360
+ColumnLimit: 512
 SpaceBeforeParens: ControlStatements
 PointerAlignment: Right
 AlignConsecutiveDeclarations: false
@@ -15,6 +15,8 @@ IndentCaseLabels: true
 SortIncludes: false
 SpacesInParentheses: false
 Cpp11BracedListStyle: false
-ReflowComments: false
+ReflowComments: true
 AllowShortFunctionsOnASingleLine: None
 FixNamespaceComments: true
+AlignComments: true
+IndentWrappedFunctionNames: true
