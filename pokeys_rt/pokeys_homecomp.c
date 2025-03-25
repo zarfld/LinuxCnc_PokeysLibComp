@@ -1616,7 +1616,7 @@ void do_home_joint(int jno) {
         // one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
         pokeys_1joint_state_machine(jno);
         int int_AxesState = H[jno].PEv2_AxesState;
-            switch (int_AxesState) {
+        switch (int_AxesState) {
             case PK_PEAxisState_axHOMINGSTART:
                 rtapi_print_msg(RTAPI_MSG_DBG,
                                 "HOMING: do_home_joint joint %d homing start - "
@@ -1656,11 +1656,11 @@ void do_home_joint(int jno) {
                 break;
 
             case PK_PEAxisState_axHOMINGARMENCODER:
-                if(H[jno].PEv2_AxesCommand != PK_PEAxisCommand_axHOMINGWAITFINALMOVE){
-                        rtapi_print_msg(RTAPI_MSG_DBG,
-                            "HOMING: do_home_joint joint %d homing state:PK_PEAxisState_axHOMINGARMENCODER "
-                            "command:PK_PEAxisCommand_axHOMINGWAITFINALMOVE\n",
-                            jno);
+                if (H[jno].PEv2_AxesCommand != PK_PEAxisCommand_axHOMINGWAITFINALMOVE) {
+                    rtapi_print_msg(RTAPI_MSG_DBG,
+                                    "HOMING: do_home_joint joint %d homing state:PK_PEAxisState_axHOMINGARMENCODER "
+                                    "command:PK_PEAxisCommand_axHOMINGWAITFINALMOVE\n",
+                                    jno);
                 }
 
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGWAITFINALMOVE;
@@ -2125,8 +2125,6 @@ static void do_homing_sequence(void) {
                         }
                         homed_count++;
                         break;
-
-
 
                     case PK_PEAxisState_axHOMINGSEARCH:
                         rtapi_print_msg(RTAPI_MSG_DBG,

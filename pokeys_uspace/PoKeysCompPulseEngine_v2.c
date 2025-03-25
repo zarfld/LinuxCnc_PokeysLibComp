@@ -474,9 +474,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 case PK_PEAxisState_axHOMING_BACKING_OFF: // Backing off switch
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMING_BACKING_OFF\n", __FILE__, __FUNCTION__);
                     if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
-                        rtapi_print_msg(RTAPI_MSG_ERR,
-                                        "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOMING_BACKING_OFF \n",
-                                        __FILE__, __FUNCTION__, i);
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOMING_BACKING_OFF \n", __FILE__, __FUNCTION__, i);
                     }
                     allhomed = false;
                     *(PEv2_data->PEv2_deb_ishoming[i]) = true;
@@ -492,16 +490,14 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         //PK_PEAxisState_axHOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
 
                         if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGSTART, PK_Homing_axHOMINGFinalize) == 0) {
-                            
+
                             Homing_PkHomeFinalizeeDone[i] = true;
-                            
-                        }
-                        else{
+
+                        } else {
                             rtapi_print_msg(RTAPI_MSG_ERR,
                                             "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                             "PK_PEAxisState_axHOME - Homing_PkHomeFinalizeeDone[i] = false\n",
                                             __FILE__, __FUNCTION__, i);
-                            
                         }
                         intAxesState = PK_PEAxisState_axHOMING_BACKING_OFF; // keep previous state
                     } else if ((*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axARMENCODER && Homing_ArmEncodereDone[i] != true) || Homing_ArmEncodereDone[i] != true) {
