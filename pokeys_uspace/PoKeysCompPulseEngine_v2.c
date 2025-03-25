@@ -229,6 +229,7 @@ float last_joint_vel_cmd[8];
 
 bool Homing_active = false;
 bool Homing_done[8] = { false, false, false, false, false, false, false, false };
+bool Homing_PkHomeFinalizeeDone[8] = { false, false, false, false, false, false, false, false };
 bool Homing_ArmEncodereDone[8] = { false, false, false, false, false, false, false, false };
 bool Homing_FinalMoveActive[8] = { false, false, false, false, false, false, false, false };
 bool Homing_FinalMoveDone[8] = { false, false, false, false, false, false, false, false };
@@ -473,9 +474,8 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 case PK_PEAxisState_axHOMING_BACKING_OFF: // Backing off switch
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMING_BACKING_OFF\n", __FILE__, __FUNCTION__);
                     if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
-                        rtapi_print_msg(RTAPI_MSG_DBG,
-                                        "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
-                                        "PK_PEAxisState_axHOMING_BACKING_OFF \n",
+                        rtapi_print_msg(RTAPI_MSG_ERR,
+                                        "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOMING_BACKING_OFF \n",
                                         __FILE__, __FUNCTION__, i);
                     }
                     allhomed = false;
@@ -486,13 +486,29 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     // PEv2_digin_AxisEnabled_in(i) = true;
                     break;
                 case PK_PEAxisState_axHOME: // Axis is homed
-                    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOME\n", __FILE__, __FUNCTION__);
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = PK_PEAxisState_axHOME\n", __FILE__, __FUNCTION__, i);
+                    //Homing_PkHomeFinalizeeDone[8]
+                    if (Homing_PkHomeFinalizeeDone[i] != true) {
+                        //PK_PEAxisState_axHOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
 
-                    if ((*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axARMENCODER && Homing_ArmEncodereDone[i] != true) || Homing_ArmEncodereDone[i] != true) {
+                        if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGSTART, PK_Homing_axHOMINGFinalize) == 0) {
+                            
+                            Homing_PkHomeFinalizeeDone[i] = true;
+                            
+                        }
+                        else{
+                            rtapi_print_msg(RTAPI_MSG_ERR,
+                                            "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
+                                            "PK_PEAxisState_axHOME - Homing_PkHomeFinalizeeDone[i] = false\n",
+                                            __FILE__, __FUNCTION__, i);
+                            
+                        }
+                        intAxesState = PK_PEAxisState_axHOMING_BACKING_OFF; // keep previous state
+                    } else if ((*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axARMENCODER && Homing_ArmEncodereDone[i] != true) || Homing_ArmEncodereDone[i] != true) {
                         //PK_PEAxisState_axHOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
 
                         if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGFinalize, PK_Homing_axARMENCODER) == 0) {
-                            intAxesState = 17;
+                            intAxesState = PEAxisStateEx_HOMINGARMENCODER;
                             Homing_ArmEncodereDone[i] = true;
                         }
                         /*dev->PEv2.PositionSetup[i] = PEv2_data->PEv2_ZeroPosition[i];
@@ -500,7 +516,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     } else if ((*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axARMENCODER && Homing_ArmEncodereDone[i] == true) || (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGWaitFinalMove)) {
 
                         if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axARMENCODER, PK_Homing_axHOMINGWaitFinalMove) == 0) {
-                            intAxesState = 18; //PK_PEAxisState_axHOMINGWaitFINALMOVE = 18,          // (linuxcnc spec additional state) Pokeys moves to homeposition
+                            intAxesState = PEAxisStateEx_HOMINGWaitFINALMOVE; //PK_PEAxisState_axHOMINGWaitFINALMOVE = 18,          // (linuxcnc spec additional state) Pokeys moves to homeposition
                             Homing_ArmEncodereDone[i] = true;
                         }
 
@@ -508,7 +524,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
 
                         if (Homing_FinalMoveActive[i] != true) {
                             if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGWaitFinalMove, PK_Homing_axHOMINGFinalMove) == 0) {
-                                intAxesState = 19; //	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
+                                intAxesState = PEAxisStateEx_HOMINGWaitFINALMOVE; //	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
                                 Homing_FinalMoveActive[i] = true;
                             }
                         } else if ((dev->PEv2.CurrentPosition[i] == (int32_t)PEv2_data->PEv2_HomePosition[i])) {

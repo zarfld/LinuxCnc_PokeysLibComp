@@ -1616,21 +1616,7 @@ void do_home_joint(int jno) {
         // one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
         pokeys_1joint_state_machine(jno);
         int int_AxesState = H[jno].PEv2_AxesState;
-        switch (int_AxesState) {
-            case PK_PEAxisState_axHOMING_RESETTING:
-                rtapi_print_msg(RTAPI_MSG_DBG,
-                                "HOMING: do_home_joint joint %d homing "
-                                "resetting PK_PEAxisCommand_axIDLE\n",
-                                jno);
-                H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
-                break;
-            case PK_PEAxisState_axHOMING_BACKING_OFF:
-                rtapi_print_msg(RTAPI_MSG_DBG,
-                                "HOMING: do_home_joint joint %d homing backing "
-                                "off PK_PEAxisCommand_axIDLE\n",
-                                jno);
-                H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
-                break;
+            switch (int_AxesState) {
             case PK_PEAxisState_axHOMINGSTART:
                 rtapi_print_msg(RTAPI_MSG_DBG,
                                 "HOMING: do_home_joint joint %d homing start - "
@@ -1638,6 +1624,7 @@ void do_home_joint(int jno) {
                                 jno);
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
                 break;
+
             case PK_PEAxisState_axHOMINGSEARCH:
                 rtapi_print_msg(RTAPI_MSG_DBG,
                                 "HOMING: do_home_joint joint %d homing search "
@@ -1648,6 +1635,47 @@ void do_home_joint(int jno) {
             case PK_PEAxisState_axHOMINGBACK:
                 rtapi_print_msg(RTAPI_MSG_DBG,
                                 "HOMING: do_home_joint joint %d homing back - "
+                                "PK_PEAxisCommand_axIDLE\n",
+                                jno);
+                H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+                break;
+            case PK_PEAxisState_axHOMING_RESETTING:
+                rtapi_print_msg(RTAPI_MSG_DBG,
+                                "HOMING: do_home_joint joint %d homing "
+                                "resetting PK_PEAxisCommand_axIDLE\n",
+                                jno);
+                H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+                break;
+
+            case PK_PEAxisState_axHOMING_BACKING_OFF:
+                rtapi_print_msg(RTAPI_MSG_DBG,
+                                "HOMING: do_home_joint joint %d homing state:PK_PEAxisState_axHOMING_BACKING_OFF "
+                                "command:PK_PEAxisCommand_axARMENCODER\n",
+                                jno);
+                H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axARMENCODER;
+                break;
+
+            case PK_PEAxisState_axHOMINGARMENCODER:
+                if(H[jno].PEv2_AxesCommand != PK_PEAxisCommand_axHOMINGWAITFINALMOVE){
+                        rtapi_print_msg(RTAPI_MSG_DBG,
+                            "HOMING: do_home_joint joint %d homing state:PK_PEAxisState_axHOMINGARMENCODER "
+                            "command:PK_PEAxisCommand_axHOMINGWAITFINALMOVE\n",
+                            jno);
+                }
+
+                H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGWAITFINALMOVE;
+                break;
+
+            case PK_PEAxisState_axHOMINGWaitFINALMOVE:
+                rtapi_print_msg(RTAPI_MSG_DBG,
+                                "HOMING: do_home_joint joint %d homing finalize "
+                                "PK_PEAxisCommand_axIDLE\n",
+                                jno);
+                H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALMOVE;
+                break;
+            case PK_PEAxisState_axHOMINGFINALMOVE:
+                rtapi_print_msg(RTAPI_MSG_DBG,
+                                "HOMING: do_home_joint joint %d homing finalize "
                                 "PK_PEAxisCommand_axIDLE\n",
                                 jno);
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
@@ -2054,6 +2082,15 @@ static void do_homing_sequence(void) {
                         sequence_state = HOME_SEQUENCE_START_JOINTS; //back to start
                         break;
 
+                    case PK_PEAxisState_axHOMINGSTART:
+                        rtapi_print_msg(RTAPI_MSG_DBG,
+                                        "HOMING:  do_homing_sequence(%d) "
+                                        "HOME_SEQUENCE_WAIT_JOINTS joint %d "
+                                        "PK_PEAxisState_axHOMINGSTART\n",
+                                        current_sequence, jno);
+                        sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
+                        break;
+
                     case PK_PEAxisState_axHOMING_RESETTING:
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "HOMING:  do_homing_sequence(%d) "
@@ -2089,14 +2126,7 @@ static void do_homing_sequence(void) {
                         homed_count++;
                         break;
 
-                    case PK_PEAxisState_axHOMINGSTART:
-                        rtapi_print_msg(RTAPI_MSG_DBG,
-                                        "HOMING:  do_homing_sequence(%d) "
-                                        "HOME_SEQUENCE_WAIT_JOINTS joint %d "
-                                        "PK_PEAxisState_axHOMINGSTART\n",
-                                        current_sequence, jno);
-                        sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
-                        break;
+
 
                     case PK_PEAxisState_axHOMINGSEARCH:
                         rtapi_print_msg(RTAPI_MSG_DBG,
