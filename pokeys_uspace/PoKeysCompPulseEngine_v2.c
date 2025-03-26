@@ -621,8 +621,8 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                      * @memberof PoKeysHALComponent
                      */
 
-                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART - before (intAxesState:%d IsHoming:%d Homing_PkHomeFinalizeeDone:%d)\n", __FILE__, __FUNCTION__, i, intAxesState, IsHoming[i], Homing_PkHomeFinalizeeDone[i]);
-                    if ((intAxesState == PK_PEAxisState_axSTOPPED || intAxesState == PK_PEAxisState_axREADY || intAxesState == PK_PEAxisState_axHOME) && IsHoming[i] != true) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART - before (intAxesState:%d IsHoming:%d Homing_PkHomeFinalizeeDone:%d)\n", __FILE__, __FUNCTION__, i, dev->PEv2.AxesState, IsHoming[i], Homing_PkHomeFinalizeeDone[i]);
+                    if ((dev->PEv2.AxesState == PK_PEAxisState_axSTOPPED || dev->PEv2.AxesState == PK_PEAxisState_axREADY || dev->PEv2.AxesState == PK_PEAxisState_axHOME) && IsHoming[i] != true) {
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingStart\n", __FILE__, __FUNCTION__);
                         if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axIDLE, PK_Homing_axHOMINGSTART) == 0) {
                             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: ensure that all axes with same Sequence start homing at the same time\n", __FILE__, __FUNCTION__);
@@ -639,7 +639,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART - PEv2_HomingStateSyncedTrigger not ready (intAxesState:%d IsHoming:%d Homing_PkHomeFinalizeeDone:%d)\n", __FILE__, __FUNCTION__, i, intAxesState, IsHoming[i], Homing_PkHomeFinalizeeDone[i]);
                         }
 
-                    } else if (intAxesState == PK_PEAxisState_axHOME && Homing_PkHomeFinalizeeDone[i] == 0) {
+                    } else if (dev->PEv2.AxesState == PK_PEAxisState_axHOME && Homing_PkHomeFinalizeeDone[i] == 0) {
                         // ready to Finalize homing
 
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisState_axHOME - ready to Finalize homing (%d)\n", i, __FILE__, __FUNCTION__, intAxesState);
