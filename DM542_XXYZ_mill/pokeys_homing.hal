@@ -107,17 +107,19 @@ net y-home-state <= joint.2.home-state
 net z-home-state <= joint.3.home-state
 #net z-home-state => pokeys.0.PEv2.2.home-state
 
+#   34  bit   I/O         FALSE  pokeys.0.PEv2.0.index-enable
+#    34  bit   I/O         FALSE  pokeys.0.PEv2.0.index-enable
 net x-index-enable <= joint.0.index-enable
-#net x-index-enable => pokeys.0.PEv2.0.index-enable
+net x-index-enable => pokeys.0.PEv2.0.index-enable
 
 net x2-index-enable <= joint.1.index-enable
-#net x2-index-enable => pokeys.0.PEv2.6.index-enable
+net x2-index-enable => pokeys.0.PEv2.6.index-enable
 
 net y-index-enable <= joint.2.index-enable
-#net y-index-enable => pokeys.0.PEv2.1.index-enable
+net y-index-enable => pokeys.0.PEv2.1.index-enable
 
 net z-index-enable <= joint.3.index-enable
-#net z-index-enable => pokeys.0.PEv2.2.index-enable
+net z-index-enable => pokeys.0.PEv2.2.index-enable
 
 
 # thats a param rw unsigned PEv2.#.AxesSwitchConfig[8];	
