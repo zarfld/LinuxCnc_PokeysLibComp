@@ -1478,7 +1478,7 @@ bool get_homing(int jno) {
 bool get_homing_at_index_search_wait(int jno) {
     // return 0;
     return H[jno].home_state == HOME_INDEX_SEARCH_WAIT ? 1 : 0;
-   // return H[jno].index_enable ? 1 : 0;
+    // return H[jno].index_enable ? 1 : 0;
 }
 
 /**
@@ -1543,7 +1543,7 @@ void read_homing_in_pins(int njoints) {
     one_joint_home_data_t *addr;
     for (jno = 0; jno < njoints; jno++) {
         addr = &(joint_home_data->jhd[jno]);
-        H[jno].home_sw = *(addr->home_sw);           // IN
+        H[jno].home_sw = *(addr->home_sw); // IN
         org_index_enable = H[jno].index_enable;
         H[jno].index_enable = *(addr->index_enable); // IN
         org_state = H[jno].PEv2_AxesState;
@@ -1579,9 +1579,9 @@ void write_homing_out_pins(int njoints) {
     int org_index_enable;
     for (jno = 0; jno < njoints; jno++) {
         addr = &(joint_home_data->jhd[jno]);
-        *(addr->homing) = H[jno].homing;             // OUT
-        *(addr->homed) = H[jno].homed;               // OUT
-        *(addr->home_state) = H[jno].home_state;     // OUT
+        *(addr->homing) = H[jno].homing;         // OUT
+        *(addr->homed) = H[jno].homed;           // OUT
+        *(addr->home_state) = H[jno].home_state; // OUT
         org_index_enable = *(addr->index_enable);
         *(addr->index_enable) = H[jno].index_enable; // OUT
         org_cmd = *(addr->PEv2_AxesCommand);
