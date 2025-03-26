@@ -639,12 +639,12 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART - PEv2_HomingStateSyncedTrigger not ready (intAxesState:%d IsHoming:%d Homing_PkHomeFinalizeeDone:%d)\n", __FILE__, __FUNCTION__, i, intAxesState, IsHoming[i], Homing_PkHomeFinalizeeDone[i]);
                         }
                     }
-                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART - inbetween (intAxesState:%d IsHoming:%d Homing_PkHomeFinalizeeDone:%d)\n", __FILE__, __FUNCTION__, i, intAxesState , IsHoming[i], Homing_PkHomeFinalizeeDone[i]);
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART - inbetween (intAxesState:%d IsHoming:%d Homing_PkHomeFinalizeeDone:%d)\n", __FILE__, __FUNCTION__, i, intAxesState, IsHoming[i], Homing_PkHomeFinalizeeDone[i]);
 
-                    if (intAxesState  == 10 && !Homing_PkHomeFinalizeeDone[i] && IsHoming[i]) {
+                    if (intAxesState == 10 && !Homing_PkHomeFinalizeeDone[i] && IsHoming[i]) {
                         // ready to Finalize homing
 
-                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisState_axHOME - ready to Finalize homing (%d)\n",  __FILE__, __FUNCTION__, i, intAxesState);
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisState_axHOME - ready to Finalize homing (%d)\n", __FILE__, __FUNCTION__, i, intAxesState);
 
                         intAxesState = PEAxisStateEx_axReadyToFinalizeHoming;
 
