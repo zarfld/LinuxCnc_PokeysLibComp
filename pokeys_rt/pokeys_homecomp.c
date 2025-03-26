@@ -1477,7 +1477,8 @@ bool get_homing(int jno) {
  */
 bool get_homing_at_index_search_wait(int jno) {
     // return 0;
-    return H[jno].index_enable ? 1 : 0;
+    return H[jno].home_state == HOME_INDEX_SEARCH_WAIT ? 1 : 0;
+   // return H[jno].index_enable ? 1 : 0;
 }
 
 /**
@@ -1538,16 +1539,21 @@ bool get_index_enable(int jno) {
 void read_homing_in_pins(int njoints) {
     int jno;
     int org_state;
+    int org_index_enable;
     one_joint_home_data_t *addr;
     for (jno = 0; jno < njoints; jno++) {
         addr = &(joint_home_data->jhd[jno]);
         H[jno].home_sw = *(addr->home_sw);           // IN
+        org_index_enable = H[jno].index_enable;
         H[jno].index_enable = *(addr->index_enable); // IN
         org_state = H[jno].PEv2_AxesState;
         H[jno].PEv2_AxesState = *(addr->PEv2_AxesState); // IN
 
         if (H[jno].PEv2_AxesState != org_state) {
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: read_homing_in_pins joint %d state changed :%d\n", jno, H[jno].PEv2_AxesState);
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: read_homing_in_pins joint %d state changed :%d\n", jno, H[jno].PEv2_AxesState);
+        }
+        if (H[jno].index_enable != org_index_enable) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: read_homing_in_pins joint %d index_enable changed :%d\n", jno, H[jno].index_enable);
         }
     }
     return;
@@ -1570,16 +1576,21 @@ void write_homing_out_pins(int njoints) {
     int jno;
     one_joint_home_data_t *addr;
     int org_cmd;
+    int org_index_enable;
     for (jno = 0; jno < njoints; jno++) {
         addr = &(joint_home_data->jhd[jno]);
         *(addr->homing) = H[jno].homing;             // OUT
         *(addr->homed) = H[jno].homed;               // OUT
         *(addr->home_state) = H[jno].home_state;     // OUT
+        org_index_enable = *(addr->index_enable);
         *(addr->index_enable) = H[jno].index_enable; // OUT
         org_cmd = *(addr->PEv2_AxesCommand);
         *(addr->PEv2_AxesCommand) = H[jno].PEv2_AxesCommand; // OUT
         if (org_cmd != H[jno].PEv2_AxesCommand) {
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: write_homing_out_pins joint %d command changed :%d\n", jno, H[jno].PEv2_AxesCommand);
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: write_homing_out_pins joint %d command changed :%d\n", jno, H[jno].PEv2_AxesCommand);
+        }
+        if (org_index_enable != H[jno].index_enable) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: write_homing_out_pins joint %d index_enable changed :%d\n", jno, H[jno].index_enable);
         }
     }
     //  rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: write_homing_out_pins\n");
