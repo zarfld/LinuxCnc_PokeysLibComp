@@ -653,18 +653,16 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                             // HomingStartMaskSetup = (1 << i); // Home my axis only (bit MyHomeSequ)
                             // rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n",  i, PEv2_data->PEv2_home_sequence[i], HomingStartMaskSetup);
                         }
-                        
 
                     } else if (intAxesState == PK_PEAxisState_axHOME && Homing_PkHomeFinalizeeDone[i] != true) {
                         // ready to Finalize homing
                         intAxesState = PEAxisStateEx_axReadyToFinalizeHoming;
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: ensure that all axes with same Sequence start homing at the same time\n", __FILE__, __FUNCTION__);
-                            
+
                         if (oldAxxiState[i] != intAxesState) {
                             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisState_axHOME - ready to Finalize homing\n", i, __FILE__, __FUNCTION__);
                         }
-                    }
-                    else{
+                    } else {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART - else\n", __FILE__, __FUNCTION__, i);
                     }
                     break;
