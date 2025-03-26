@@ -1671,7 +1671,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         HomingStartMaskSetup |= (1 << axis); // Home my axis only (bit MyHomeSequ)
                         rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n", axis, PEv2_data->PEv2_home_sequence[axis], HomingStartMaskSetup);
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGSTART;
-                   //     *(PEv2_data->PEv2_index_enable[axis]) = false; // disable index
+                        //     *(PEv2_data->PEv2_index_enable[axis]) = false; // disable index
                         break;
                     case PK_Homing_axARMENCODER:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axARMENCODER\n", __FILE__, __FUNCTION__);
@@ -1734,7 +1734,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                     case PK_Homing_axIDLE:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axIDLE\n", __FILE__, __FUNCTION__);
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axIDLE;
-                        
+
                         break;
                     default:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Invalid state %d\n", __FILE__, __FUNCTION__, NextState);
@@ -1761,984 +1761,983 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                 dev->PEv2.param2 = bm_DoPositionSet;
                 if (PK_PEv2_PositionSet(dev) != PK_OK) {
                     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PositionSet!=PK_OK\n", __FILE__, __FUNCTION__);
-                }
-                else {
+                } else {
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_PositionSet=PK_OK\n", __FILE__, __FUNCTION__);
                     for (int axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
                         if (abs(PEv2_data->PEv2_home_sequence[axis]) == abs(seq)) {
                             *(PEv2_data->PEv2_index_enable[axis]) = false; // re enable index
                         }
-                }
-                break;
-            case PK_Homing_axHOMINGWaitFinalMove:
-                break;
-            case PK_Homing_axHOMINGFinalMove:
-                if (do_move == true) {
-                    rtapi_print_msg(RTAPI_MSG_DBG, "PK_PEv2: PEv2_PulseEngineMove  \n");
-                    if (PK_PEv2_PulseEngineMove(dev) != PK_OK) {
-                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PulseEngineMove!=PK_OK\n", __FILE__, __FUNCTION__);
-                    } else {
-                        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_PulseEngineMove == PK_OK \n" __FILE__, __FUNCTION__);
                     }
+                    break;
+                    case PK_Homing_axHOMINGWaitFinalMove:
+                        break;
+                    case PK_Homing_axHOMINGFinalMove:
+                        if (do_move == true) {
+                            rtapi_print_msg(RTAPI_MSG_DBG, "PK_PEv2: PEv2_PulseEngineMove  \n");
+                            if (PK_PEv2_PulseEngineMove(dev) != PK_OK) {
+                                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PulseEngineMove!=PK_OK\n", __FILE__, __FUNCTION__);
+                            } else {
+                                rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_PulseEngineMove == PK_OK \n" __FILE__, __FUNCTION__);
+                            }
 #ifdef ULAPI
-                    usleep(sleepdur);
+                            usleep(sleepdur);
 #endif
+                        }
+                        break;
+                    case PK_Homing_axHOMINGCancel:
+                        break;
+                    case PK_Homing_axHOMINGFinalize:
+                        dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
+                        PK_PEv2_HomingFinish(dev);
+                        break;
                 }
-                break;
-            case PK_Homing_axHOMINGCancel:
-                break;
-            case PK_Homing_axHOMINGFinalize:
-                dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
-                PK_PEv2_HomingFinish(dev);
-                break;
+                return 0;
         }
-        return 0;
     }
-}
 
-/**
- * @brief Retrieves and parses the axis configuration from the PoKeys Pulse Engine v2.
- *
- * This function calls `PK_PEv2_AxisConfigurationGet()` to read the configuration for the specified axis
- * and updates the corresponding `PEv2_data` fields based on the retrieved information. It interprets
- * the bitmask flags for axis behavior and switch configuration, and conditionally applies values from
- * the device into `PEv2_data`, unless `ApplyIniSettings` is true (in which case values are preserved).
- *
- * Additionally, this function populates numerous auxiliary parameters such as speeds, filters,
- * soft limits, stepgen scaling, homing algorithm configuration, MPG settings, and enable outputs.
- *
- * @param dev Pointer to the PoKeys device structure.
- * @param AxisId The index of the axis to retrieve configuration for.
- *
- * @return PK_OK (0) on success, or an error code if `PK_PEv2_AxisConfigurationGet()` fails.
- *
- * @note Only fields that are unset (i.e., zero or false) in `PEv2_data` will be overwritten,
- *       unless `ApplyIniSettings == false`, in which case full sync from device is performed.
- *
- * @see PK_PEv2_AxisConfigurationGet
- * @ingroup PEv2_Configuration
- * @ingroup PoKeys_Axis
- * @memberof PoKeysHALComponent
- */
-int32_t PEv2_AxisConfigurationGet(sPoKeysDevice *dev, int AxisId) {
-    dev->PEv2.param1 = AxisId;
-    int32_t ret = PK_PEv2_AxisConfigurationGet(dev);
-    uint8_t AxesConfig[8] = { 0 };
-    uint8_t AxesSwitchConfig[8] = { 0 };
+    /**
+     * @brief Retrieves and parses the axis configuration from the PoKeys Pulse Engine v2.
+     *
+     * This function calls `PK_PEv2_AxisConfigurationGet()` to read the configuration for the specified axis
+     * and updates the corresponding `PEv2_data` fields based on the retrieved information. It interprets
+     * the bitmask flags for axis behavior and switch configuration, and conditionally applies values from
+     * the device into `PEv2_data`, unless `ApplyIniSettings` is true (in which case values are preserved).
+     *
+     * Additionally, this function populates numerous auxiliary parameters such as speeds, filters,
+     * soft limits, stepgen scaling, homing algorithm configuration, MPG settings, and enable outputs.
+     *
+     * @param dev Pointer to the PoKeys device structure.
+     * @param AxisId The index of the axis to retrieve configuration for.
+     *
+     * @return PK_OK (0) on success, or an error code if `PK_PEv2_AxisConfigurationGet()` fails.
+     *
+     * @note Only fields that are unset (i.e., zero or false) in `PEv2_data` will be overwritten,
+     *       unless `ApplyIniSettings == false`, in which case full sync from device is performed.
+     *
+     * @see PK_PEv2_AxisConfigurationGet
+     * @ingroup PEv2_Configuration
+     * @ingroup PoKeys_Axis
+     * @memberof PoKeysHALComponent
+     */
+    int32_t PEv2_AxisConfigurationGet(sPoKeysDevice * dev, int AxisId) {
+        dev->PEv2.param1 = AxisId;
+        int32_t ret = PK_PEv2_AxisConfigurationGet(dev);
+        uint8_t AxesConfig[8] = { 0 };
+        uint8_t AxesSwitchConfig[8] = { 0 };
 
-    if (ret == PK_OK) {
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationGet(%d) == PK_OK\n", __FILE__, __FUNCTION__, AxisId);
-
-        if (ApplyIniSettings == false) {
-            /* read parameters for Axis configuration - see ePK_PEv2_AxisConfig
-                        PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled
-                        PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
-                        PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
-                        PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
-                        PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
-                        PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
-                        PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
-
-                        pin out unsigned PEv2.#.AxesConfig[8];				// Axis configuration - see ePK_PEv2_AxisConfig
-                        param rw s32 PEv2.#.AxisEnabled[8] "Axis enabled";
-                        param rw s32 PEv2.#.AxisInverted[8] "Axis inverted";
-                        param rw s32 PEv2.#.AxisInternalPlanner[8] "Axis uses internal motion planner";
-                        param rw s32 PEv2.#.AxisPositionMode[8] "Internal motion planner for this axis is in position mode";
-                        param rw s32 PEv2.#.AxisInvertedHome[8] "Axis homing direction is inverted";
-                        param rw s32 PEv2.#.AxisSoftLimitEnabled[8] "Use soft-limits for this axis";
-                        param rw s32 PEv2.#.AxisEnabledMasked[8] "Use output enable pin masking";
-
-                        PEv2_data->PEv2_AxisEnabled[AxisId]
-                        PEv2_data->PEv2_AxisInverted[AxisId]
-                        PEv2_data->PEv2_AxisInternalPlanner[AxisId]
-                        PEv2_data->PEv2_AxisPositionMode[AxisId]
-                        PEv2_data->PEv2_AxisInvertedHome[AxisId]
-                        PEv2_data->PEv2_AxisSoftLimitEnabled[AxisId]
-                        PEv2_data->PEv2_AxisEnabledMasked[AxisId]
-                         */
-            PEv2_data->PEv2_AxesConfig[AxisId] = dev->PEv2.AxesConfig[AxisId];
-            uint8_t axisConfig = dev->PEv2.AxesConfig[AxisId];
-
-            PEv2_data->PEv2_AxisEnabled[AxisId] = (int)((axisConfig & PK_AC_ENABLED) != 0);
-            PEv2_data->PEv2_AxisInverted[AxisId] = (int)((axisConfig & PK_AC_INVERTED) != 0);
-            PEv2_data->PEv2_AxisInternalPlanner[AxisId] = (int)((axisConfig & PK_AC_INTERNAL_PLANNER) != 0);
-            PEv2_data->PEv2_AxisPositionMode[AxisId] = (int)((axisConfig & PK_AC_POSITION_MODE) != 0);
-            PEv2_data->PEv2_AxisInvertedHome[AxisId] = (int)((axisConfig & PK_AC_INVERTED_HOME) != 0);
-            PEv2_data->PEv2_AxisSoftLimitEnabled[AxisId] = (int)((axisConfig & PK_AC_SOFT_LIMIT_ENABLED) != 0);
-            PEv2_data->PEv2_AxisEnabledMasked[AxisId] = (int)((axisConfig & PK_AC_ENABLED_MASKED) != 0);
-
-            /* PEv2_AxesSwitchConfig
-                        PK_ASO_SWITCH_LIMIT_N: 1 << 0 = 1
-                        PK_ASO_SWITCH_LIMIT_P : 1 << 1 = 2
-                        PK_ASO_SWITCH_HOME : 1 << 2 = 4
-                        PK_ASO_SWITCH_COMBINED_LN_H : 1 << 3 = 8
-                        PK_ASO_SWITCH_COMBINED_LP_H : 1 << 4 = 16
-                        PK_ASO_SWITCH_INVERT_LIMIT_N : 1 << 5 = 32
-                        PK_ASO_SWITCH_INVERT_LIMIT_P : 1 << 6 = 64
-                        PK_ASO_SWITCH_INVERT_HOME : 1 << 7 = 128
-
-                        param rw unsigned PEv2.#.AxesSwitchConfig[8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
-                        param rw bit PEv2.#.digin.LimitN.Enabled[8] "Limit- is available (PK_ASO_SWITCH_LIMIT_N)";
-                        param rw bit PEv2.#.digin.LimitP.Enabled[8] "Limit+ is available (PK_ASO_SWITCH_LIMIT_P)";
-                        param rw bit PEv2.#.digin.Home.Enabled[8] "Invert home-switch (PK_ASO_SWITCH_HOME)";
-                        param rw bit PEv2.#.digin.Home.OnLimitN[8] "Shared with Limit- (PK_ASO_SWITCH_COMBINED_LN_H)";
-                        param rw bit PEv2.#.digin.Home.OnLimitP[8] "Shared with Limit+ (PK_ASO_SWITCH_COMBINED_LP_H)";
-                        param rw bit PEv2.#.digin.LimitN.invert[8] "Invert limit- (PK_ASO_SWITCH_INVERT_LIMIT_N)";
-                        param rw bit PEv2.#.digin.LimitP.invert[8] "Invert limit+ (PK_ASO_SWITCH_INVERT_LIMIT_P)";
-                        param rw bit PEv2.#.digin.Home.invert[8] "Invert home-switch (PK_ASO_SWITCH_INVERT_HOME)";
-                        */
-
-            PEv2_data->PEv2_AxesSwitchConfig[AxisId] = dev->PEv2.AxesSwitchConfig[AxisId];
-
-            uint8_t axisSwitchConfig = dev->PEv2.AxesSwitchConfig[AxisId];
-            PEv2_data->PEv2_digin_LimitN_Enabled[AxisId] = (int)((axisSwitchConfig & PK_ASO_SWITCH_LIMIT_N) != 0);
-            PEv2_data->PEv2_digin_LimitP_Enabled[AxisId] = (int)((axisSwitchConfig & PK_ASO_SWITCH_LIMIT_P) != 0);
-            PEv2_data->PEv2_digin_Home_Enabled[AxisId] = (int)((axisSwitchConfig & PK_ASO_SWITCH_HOME) != 0);
-            PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] = (int)((axisSwitchConfig & PK_ASO_SWITCH_COMBINED_LN_H) != 0);
-            PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] = (int)((axisSwitchConfig & PK_ASO_SWITCH_COMBINED_LP_H) != 0);
-            PEv2_data->PEv2_digin_LimitN_invert[AxisId] = (int)((axisSwitchConfig & PK_ASO_SWITCH_INVERT_LIMIT_N) != 0);
-            PEv2_data->PEv2_digin_LimitP_invert[AxisId] = (int)((axisSwitchConfig & PK_ASO_SWITCH_INVERT_LIMIT_P) != 0);
-            PEv2_data->PEv2_digin_Home_invert[AxisId] = (int)((axisSwitchConfig & PK_ASO_SWITCH_INVERT_HOME) != 0);
-        }
-        if (ApplyIniSettings == false) {
-            PEv2_data->PEv2_digin_Home_Pin[AxisId] = dev->PEv2.PinHomeSwitch[AxisId];
-        }
-        if (ApplyIniSettings == false) {
-            PEv2_data->PEv2_digin_LimitN_Pin[AxisId] = dev->PEv2.PinLimitMSwitch[AxisId];
-        }
-        if (ApplyIniSettings == false) {
-            PEv2_data->PEv2_digin_LimitP_Pin[AxisId] = dev->PEv2.PinLimitPSwitch[AxisId];
-        }
-        if (ApplyIniSettings == false || PEv2_data->PEv2_HomingSpeed[AxisId] == 0) {
-            PEv2_data->PEv2_HomingSpeed[AxisId] = dev->PEv2.HomingSpeed[AxisId];
-        }
-        if (ApplyIniSettings == false || PEv2_data->PEv2_HomingReturnSpeed[AxisId] == 0) {
-            PEv2_data->PEv2_HomingReturnSpeed[AxisId] = dev->PEv2.HomingReturnSpeed[AxisId];
-        }
-
-        if (ApplyIniSettings == false || PEv2_data->PEv2_MPGjogEncoder[AxisId] == 0) {
-            PEv2_data->PEv2_MPGjogEncoder[AxisId] = dev->PEv2.MPGjogEncoder[AxisId];
-        }
-        if (ApplyIniSettings == false || PEv2_data->PEv2_MaxSpeed[AxisId] == 0) {
-            PEv2_data->PEv2_MaxSpeed[AxisId] = dev->PEv2.MaxSpeed[AxisId] * 1000;
-        }
-        if (ApplyIniSettings == false || PEv2_data->PEv2_MaxAcceleration[AxisId] == 0) {
-            PEv2_data->PEv2_MaxAcceleration[AxisId] = dev->PEv2.MaxAcceleration[AxisId] * 1000000;
-        }
-        if (ApplyIniSettings == false || PEv2_data->PEv2_MaxDecceleration[AxisId] == 0) {
-            PEv2_data->PEv2_MaxDecceleration[AxisId] = dev->PEv2.MaxDecceleration[AxisId] * 1000000;
-        }
-        if (ApplyIniSettings == false || PEv2_data->PEv2_SoftLimitMinimum[AxisId] == 0) {
-            PEv2_data->PEv2_SoftLimitMinimum[AxisId] = dev->PEv2.SoftLimitMinimum[AxisId];
-        }
-        if (ApplyIniSettings == false || PEv2_data->PEv2_SoftLimitMaximum[AxisId] == 0) {
-            PEv2_data->PEv2_SoftLimitMaximum[AxisId] = dev->PEv2.SoftLimitMaximum[AxisId];
-        }
-        // PEv2_data->PEv2_HomePosition[j]
-
-        if (ApplyIniSettings == false || PEv2_data->PEv2_MPGjogEncoder[AxisId] == 0) {
-            PEv2_data->PEv2_MPGjogEncoder[AxisId] = dev->PEv2.MPGjogEncoder[AxisId];
-        }
-
-        if (PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] != 0) {
-
-            if (ApplyIniSettings == false || PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] == 0) {
-                PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] = PEv2_data->PEv2_MaxSpeed[AxisId] / PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId];
-            }
-
-            if (ApplyIniSettings == false || PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[AxisId] == 0) {
-                PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[AxisId] = PEv2_data->PEv2_MaxAcceleration[AxisId] / PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId];
-            }
-
-            if (ApplyIniSettings == false || PEv2_data->PEv2_stepgen_HOME_OFFSET[AxisId] == 0) {
-                PEv2_data->PEv2_stepgen_HOME_OFFSET[AxisId] = PEv2_data->PEv2_digin_Home_Offset[AxisId] / PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId];
-            }
+        if (ret == PK_OK) {
+            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationGet(%d) == PK_OK\n", __FILE__, __FUNCTION__, AxisId);
 
             if (ApplyIniSettings == false) {
-                PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] = PEv2_data->PEv2_HomingSpeed[AxisId] * PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] / 100;
-            }
+                /* read parameters for Axis configuration - see ePK_PEv2_AxisConfig
+                            PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled
+                            PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
+                            PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
+                            PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
+                            PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
+                            PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
+                            PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
 
+                            pin out unsigned PEv2.#.AxesConfig[8];				// Axis configuration - see ePK_PEv2_AxisConfig
+                            param rw s32 PEv2.#.AxisEnabled[8] "Axis enabled";
+                            param rw s32 PEv2.#.AxisInverted[8] "Axis inverted";
+                            param rw s32 PEv2.#.AxisInternalPlanner[8] "Axis uses internal motion planner";
+                            param rw s32 PEv2.#.AxisPositionMode[8] "Internal motion planner for this axis is in position mode";
+                            param rw s32 PEv2.#.AxisInvertedHome[8] "Axis homing direction is inverted";
+                            param rw s32 PEv2.#.AxisSoftLimitEnabled[8] "Use soft-limits for this axis";
+                            param rw s32 PEv2.#.AxisEnabledMasked[8] "Use output enable pin masking";
+
+                            PEv2_data->PEv2_AxisEnabled[AxisId]
+                            PEv2_data->PEv2_AxisInverted[AxisId]
+                            PEv2_data->PEv2_AxisInternalPlanner[AxisId]
+                            PEv2_data->PEv2_AxisPositionMode[AxisId]
+                            PEv2_data->PEv2_AxisInvertedHome[AxisId]
+                            PEv2_data->PEv2_AxisSoftLimitEnabled[AxisId]
+                            PEv2_data->PEv2_AxisEnabledMasked[AxisId]
+                             */
+                PEv2_data->PEv2_AxesConfig[AxisId] = dev->PEv2.AxesConfig[AxisId];
+                uint8_t axisConfig = dev->PEv2.AxesConfig[AxisId];
+
+                PEv2_data->PEv2_AxisEnabled[AxisId] = (int)((axisConfig & PK_AC_ENABLED) != 0);
+                PEv2_data->PEv2_AxisInverted[AxisId] = (int)((axisConfig & PK_AC_INVERTED) != 0);
+                PEv2_data->PEv2_AxisInternalPlanner[AxisId] = (int)((axisConfig & PK_AC_INTERNAL_PLANNER) != 0);
+                PEv2_data->PEv2_AxisPositionMode[AxisId] = (int)((axisConfig & PK_AC_POSITION_MODE) != 0);
+                PEv2_data->PEv2_AxisInvertedHome[AxisId] = (int)((axisConfig & PK_AC_INVERTED_HOME) != 0);
+                PEv2_data->PEv2_AxisSoftLimitEnabled[AxisId] = (int)((axisConfig & PK_AC_SOFT_LIMIT_ENABLED) != 0);
+                PEv2_data->PEv2_AxisEnabledMasked[AxisId] = (int)((axisConfig & PK_AC_ENABLED_MASKED) != 0);
+
+                /* PEv2_AxesSwitchConfig
+                            PK_ASO_SWITCH_LIMIT_N: 1 << 0 = 1
+                            PK_ASO_SWITCH_LIMIT_P : 1 << 1 = 2
+                            PK_ASO_SWITCH_HOME : 1 << 2 = 4
+                            PK_ASO_SWITCH_COMBINED_LN_H : 1 << 3 = 8
+                            PK_ASO_SWITCH_COMBINED_LP_H : 1 << 4 = 16
+                            PK_ASO_SWITCH_INVERT_LIMIT_N : 1 << 5 = 32
+                            PK_ASO_SWITCH_INVERT_LIMIT_P : 1 << 6 = 64
+                            PK_ASO_SWITCH_INVERT_HOME : 1 << 7 = 128
+
+                            param rw unsigned PEv2.#.AxesSwitchConfig[8];		// Axis switch configuration - see ePK_PulseEngineV2_AxisSwitchOptions
+                            param rw bit PEv2.#.digin.LimitN.Enabled[8] "Limit- is available (PK_ASO_SWITCH_LIMIT_N)";
+                            param rw bit PEv2.#.digin.LimitP.Enabled[8] "Limit+ is available (PK_ASO_SWITCH_LIMIT_P)";
+                            param rw bit PEv2.#.digin.Home.Enabled[8] "Invert home-switch (PK_ASO_SWITCH_HOME)";
+                            param rw bit PEv2.#.digin.Home.OnLimitN[8] "Shared with Limit- (PK_ASO_SWITCH_COMBINED_LN_H)";
+                            param rw bit PEv2.#.digin.Home.OnLimitP[8] "Shared with Limit+ (PK_ASO_SWITCH_COMBINED_LP_H)";
+                            param rw bit PEv2.#.digin.LimitN.invert[8] "Invert limit- (PK_ASO_SWITCH_INVERT_LIMIT_N)";
+                            param rw bit PEv2.#.digin.LimitP.invert[8] "Invert limit+ (PK_ASO_SWITCH_INVERT_LIMIT_P)";
+                            param rw bit PEv2.#.digin.Home.invert[8] "Invert home-switch (PK_ASO_SWITCH_INVERT_HOME)";
+                            */
+
+                PEv2_data->PEv2_AxesSwitchConfig[AxisId] = dev->PEv2.AxesSwitchConfig[AxisId];
+
+                uint8_t axisSwitchConfig = dev->PEv2.AxesSwitchConfig[AxisId];
+                PEv2_data->PEv2_digin_LimitN_Enabled[AxisId] = (int)((axisSwitchConfig & PK_ASO_SWITCH_LIMIT_N) != 0);
+                PEv2_data->PEv2_digin_LimitP_Enabled[AxisId] = (int)((axisSwitchConfig & PK_ASO_SWITCH_LIMIT_P) != 0);
+                PEv2_data->PEv2_digin_Home_Enabled[AxisId] = (int)((axisSwitchConfig & PK_ASO_SWITCH_HOME) != 0);
+                PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] = (int)((axisSwitchConfig & PK_ASO_SWITCH_COMBINED_LN_H) != 0);
+                PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] = (int)((axisSwitchConfig & PK_ASO_SWITCH_COMBINED_LP_H) != 0);
+                PEv2_data->PEv2_digin_LimitN_invert[AxisId] = (int)((axisSwitchConfig & PK_ASO_SWITCH_INVERT_LIMIT_N) != 0);
+                PEv2_data->PEv2_digin_LimitP_invert[AxisId] = (int)((axisSwitchConfig & PK_ASO_SWITCH_INVERT_LIMIT_P) != 0);
+                PEv2_data->PEv2_digin_Home_invert[AxisId] = (int)((axisSwitchConfig & PK_ASO_SWITCH_INVERT_HOME) != 0);
+            }
             if (ApplyIniSettings == false) {
-                PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[AxisId] = PEv2_data->PEv2_HomingReturnSpeed[AxisId] * PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] / 100;
+                PEv2_data->PEv2_digin_Home_Pin[AxisId] = dev->PEv2.PinHomeSwitch[AxisId];
             }
-        }
+            if (ApplyIniSettings == false) {
+                PEv2_data->PEv2_digin_LimitN_Pin[AxisId] = dev->PEv2.PinLimitMSwitch[AxisId];
+            }
+            if (ApplyIniSettings == false) {
+                PEv2_data->PEv2_digin_LimitP_Pin[AxisId] = dev->PEv2.PinLimitPSwitch[AxisId];
+            }
+            if (ApplyIniSettings == false || PEv2_data->PEv2_HomingSpeed[AxisId] == 0) {
+                PEv2_data->PEv2_HomingSpeed[AxisId] = dev->PEv2.HomingSpeed[AxisId];
+            }
+            if (ApplyIniSettings == false || PEv2_data->PEv2_HomingReturnSpeed[AxisId] == 0) {
+                PEv2_data->PEv2_HomingReturnSpeed[AxisId] = dev->PEv2.HomingReturnSpeed[AxisId];
+            }
 
-        if (ApplyIniSettings == false || PEv2_data->PEv2_MPGjogMultiplier[AxisId] == 0) {
-            PEv2_data->PEv2_MPGjogMultiplier[AxisId] = dev->PEv2.MPGjogMultiplier[AxisId];
-        }
-        if (ApplyIniSettings == false || PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] == 0) {
-            PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] = dev->PEv2.AxisEnableOutputPins[AxisId];
-        }
-        if (ApplyIniSettings == false || PEv2_data->PEv2_digout_AxisEnable_invert[AxisId] == 0) {
-            PEv2_data->PEv2_digout_AxisEnable_invert[AxisId] = dev->PEv2.InvertAxisEnable[AxisId];
-        }
-        if (ApplyIniSettings == false || PEv2_data->PEv2_digin_LimitN_Filter[AxisId] == 0) {
-            PEv2_data->PEv2_digin_LimitN_Filter[AxisId] = dev->PEv2.FilterLimitMSwitch[AxisId];
-        }
-        if (ApplyIniSettings == false || PEv2_data->PEv2_digin_LimitP_Filter[AxisId] == 0) {
-            PEv2_data->PEv2_digin_LimitP_Filter[AxisId] = dev->PEv2.FilterLimitPSwitch[AxisId];
-        }
-        if (ApplyIniSettings == false || PEv2_data->PEv2_digin_Home_Filter[AxisId] == 0) {
-            PEv2_data->PEv2_digin_Home_Filter[AxisId] = dev->PEv2.FilterHomeSwitch[AxisId];
-        }
-        if (ApplyIniSettings == false || PEv2_data->PEv2_HomingAlgorithm[AxisId] == 0) {
-            PEv2_data->PEv2_HomingAlgorithm[AxisId] = dev->PEv2.HomingAlgorithm[AxisId];
-        }
-        if (ApplyIniSettings == false || PEv2_data->PEv2_HomeBackOffDistance[AxisId] == 0) {
-            PEv2_data->PEv2_HomeBackOffDistance[AxisId] = dev->PEv2.HomeBackOffDistance[AxisId];
-        }
-        if (ApplyIniSettings == false || PEv2_data->PEv2_MPGjogDivider[AxisId] == 0) {
-            PEv2_data->PEv2_MPGjogDivider[AxisId] = dev->PEv2.MPGjogDivider[AxisId];
-        }
-        /*if(ApplyIniSettings==false || PEv2_data->PEv2_AxisSignalOptions[AxisId]==0){
-                        PEv2_data->PEv2_AxisSignalOptions[AxisId] = dev->PEv2.AxisSignalOptions[AxisId];
-                }*/
-        if (ApplyIniSettings == false || PEv2_data->PEv2_digin_Probe_Filter[AxisId] == 0) {
-            PEv2_data->PEv2_digin_Probe_Filter[AxisId] = dev->PEv2.FilterProbeInput;
-        }
+            if (ApplyIniSettings == false || PEv2_data->PEv2_MPGjogEncoder[AxisId] == 0) {
+                PEv2_data->PEv2_MPGjogEncoder[AxisId] = dev->PEv2.MPGjogEncoder[AxisId];
+            }
+            if (ApplyIniSettings == false || PEv2_data->PEv2_MaxSpeed[AxisId] == 0) {
+                PEv2_data->PEv2_MaxSpeed[AxisId] = dev->PEv2.MaxSpeed[AxisId] * 1000;
+            }
+            if (ApplyIniSettings == false || PEv2_data->PEv2_MaxAcceleration[AxisId] == 0) {
+                PEv2_data->PEv2_MaxAcceleration[AxisId] = dev->PEv2.MaxAcceleration[AxisId] * 1000000;
+            }
+            if (ApplyIniSettings == false || PEv2_data->PEv2_MaxDecceleration[AxisId] == 0) {
+                PEv2_data->PEv2_MaxDecceleration[AxisId] = dev->PEv2.MaxDecceleration[AxisId] * 1000000;
+            }
+            if (ApplyIniSettings == false || PEv2_data->PEv2_SoftLimitMinimum[AxisId] == 0) {
+                PEv2_data->PEv2_SoftLimitMinimum[AxisId] = dev->PEv2.SoftLimitMinimum[AxisId];
+            }
+            if (ApplyIniSettings == false || PEv2_data->PEv2_SoftLimitMaximum[AxisId] == 0) {
+                PEv2_data->PEv2_SoftLimitMaximum[AxisId] = dev->PEv2.SoftLimitMaximum[AxisId];
+            }
+            // PEv2_data->PEv2_HomePosition[j]
 
-    } else {
-        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationGet(%d) != PK_OK\n", __FILE__, __FUNCTION__, AxisId);
+            if (ApplyIniSettings == false || PEv2_data->PEv2_MPGjogEncoder[AxisId] == 0) {
+                PEv2_data->PEv2_MPGjogEncoder[AxisId] = dev->PEv2.MPGjogEncoder[AxisId];
+            }
+
+            if (PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] != 0) {
+
+                if (ApplyIniSettings == false || PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] == 0) {
+                    PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] = PEv2_data->PEv2_MaxSpeed[AxisId] / PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId];
+                }
+
+                if (ApplyIniSettings == false || PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[AxisId] == 0) {
+                    PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[AxisId] = PEv2_data->PEv2_MaxAcceleration[AxisId] / PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId];
+                }
+
+                if (ApplyIniSettings == false || PEv2_data->PEv2_stepgen_HOME_OFFSET[AxisId] == 0) {
+                    PEv2_data->PEv2_stepgen_HOME_OFFSET[AxisId] = PEv2_data->PEv2_digin_Home_Offset[AxisId] / PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId];
+                }
+
+                if (ApplyIniSettings == false) {
+                    PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] = PEv2_data->PEv2_HomingSpeed[AxisId] * PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] / 100;
+                }
+
+                if (ApplyIniSettings == false) {
+                    PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[AxisId] = PEv2_data->PEv2_HomingReturnSpeed[AxisId] * PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] / 100;
+                }
+            }
+
+            if (ApplyIniSettings == false || PEv2_data->PEv2_MPGjogMultiplier[AxisId] == 0) {
+                PEv2_data->PEv2_MPGjogMultiplier[AxisId] = dev->PEv2.MPGjogMultiplier[AxisId];
+            }
+            if (ApplyIniSettings == false || PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] == 0) {
+                PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] = dev->PEv2.AxisEnableOutputPins[AxisId];
+            }
+            if (ApplyIniSettings == false || PEv2_data->PEv2_digout_AxisEnable_invert[AxisId] == 0) {
+                PEv2_data->PEv2_digout_AxisEnable_invert[AxisId] = dev->PEv2.InvertAxisEnable[AxisId];
+            }
+            if (ApplyIniSettings == false || PEv2_data->PEv2_digin_LimitN_Filter[AxisId] == 0) {
+                PEv2_data->PEv2_digin_LimitN_Filter[AxisId] = dev->PEv2.FilterLimitMSwitch[AxisId];
+            }
+            if (ApplyIniSettings == false || PEv2_data->PEv2_digin_LimitP_Filter[AxisId] == 0) {
+                PEv2_data->PEv2_digin_LimitP_Filter[AxisId] = dev->PEv2.FilterLimitPSwitch[AxisId];
+            }
+            if (ApplyIniSettings == false || PEv2_data->PEv2_digin_Home_Filter[AxisId] == 0) {
+                PEv2_data->PEv2_digin_Home_Filter[AxisId] = dev->PEv2.FilterHomeSwitch[AxisId];
+            }
+            if (ApplyIniSettings == false || PEv2_data->PEv2_HomingAlgorithm[AxisId] == 0) {
+                PEv2_data->PEv2_HomingAlgorithm[AxisId] = dev->PEv2.HomingAlgorithm[AxisId];
+            }
+            if (ApplyIniSettings == false || PEv2_data->PEv2_HomeBackOffDistance[AxisId] == 0) {
+                PEv2_data->PEv2_HomeBackOffDistance[AxisId] = dev->PEv2.HomeBackOffDistance[AxisId];
+            }
+            if (ApplyIniSettings == false || PEv2_data->PEv2_MPGjogDivider[AxisId] == 0) {
+                PEv2_data->PEv2_MPGjogDivider[AxisId] = dev->PEv2.MPGjogDivider[AxisId];
+            }
+            /*if(ApplyIniSettings==false || PEv2_data->PEv2_AxisSignalOptions[AxisId]==0){
+                            PEv2_data->PEv2_AxisSignalOptions[AxisId] = dev->PEv2.AxisSignalOptions[AxisId];
+                    }*/
+            if (ApplyIniSettings == false || PEv2_data->PEv2_digin_Probe_Filter[AxisId] == 0) {
+                PEv2_data->PEv2_digin_Probe_Filter[AxisId] = dev->PEv2.FilterProbeInput;
+            }
+
+        } else {
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_AxisConfigurationGet(%d) != PK_OK\n", __FILE__, __FUNCTION__, AxisId);
+        }
+        return ret;
     }
-    return ret;
-}
 
-/**
- * @brief Set the axis configuration of the PoKeys device.
- * @memberof PoKeysHALComponent
- */
-int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
-    bool doSetup = false;
-    uint8_t AxesConfig[8] = { 0 };
-    uint8_t AxesSwitchConfig[8] = { 0 };
-    int32_t ret = PEv2_AxisConfigurationGet(dev, AxisId);
-    if (ret == PK_OK) {
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_AxisConfigurationSet(%d) == PK_OK\n", __FILE__, __FUNCTION__, AxisId);
+    /**
+     * @brief Set the axis configuration of the PoKeys device.
+     * @memberof PoKeysHALComponent
+     */
+    int32_t PEv2_AxisConfigurationSet(sPoKeysDevice * dev, int AxisId) {
+        bool doSetup = false;
+        uint8_t AxesConfig[8] = { 0 };
+        uint8_t AxesSwitchConfig[8] = { 0 };
+        int32_t ret = PEv2_AxisConfigurationGet(dev, AxisId);
+        if (ret == PK_OK) {
+            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_AxisConfigurationSet(%d) == PK_OK\n", __FILE__, __FUNCTION__, AxisId);
 
-        if (ApplyIniSettings == true) {
+            if (ApplyIniSettings == true) {
 
-            // Read the structure and set the bits accordingly
-            /* Section: Axis configuration
-                        PEv2_AxesConfig
-                                PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled
-                                PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
-                                PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
-                                PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
-                                PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
-                                PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
-                                PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
-                        */
-            AxesConfig[AxisId] = 0;
-            if (PEv2_data->PEv2_AxisEnabled[AxisId] != 0) {
-                AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 0,
-                                                   true); // PK_AC_ENABLED ;
-            } else {
-                AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 0,
-                                                   false); // PK_AC_ENABLED ;
-            }
-            if (PEv2_data->PEv2_AxisInverted[AxisId] != 0) {
-                AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 1,
-                                                   true); // PK_AC_INVERTED ;
-            } else {
-                AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 1,
-                                                   false); // PK_AC_INVERTED ;
-            }
-            if (PEv2_data->PEv2_AxisInternalPlanner[AxisId] != 0) {
-                AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 2, true); // PK_AC_INTERNAL_PLANNER ;
-            } else {
-                AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 2, false); // PK_AC_INTERNAL_PLANNER ;
-            }
-            if (PEv2_data->PEv2_AxisPositionMode[AxisId] != 0) {
-                AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 3, true); // PK_AC_POSITION_MODE ;
-            } else {
-                AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 3, false); // PK_AC_POSITION_MODE ;
-            }
-            if (PEv2_data->PEv2_AxisInvertedHome[AxisId] != 0) {
-                AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 4, true); // PK_AC_INVERTED_HOME ;
-            } else {
-                AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 4, false); // PK_AC_INVERTED_HOME ;
-            }
-            if (PEv2_data->PEv2_AxisSoftLimitEnabled[AxisId] != 0) {
-                AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 5, true); // PK_AC_SOFT_LIMIT_ENABLED ;
-            } else {
-                AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 5, false); // PK_AC_SOFT_LIMIT_ENABLED ;
-            }
-            if (PEv2_data->PEv2_AxisEnabledMasked[AxisId] != 0) {
-                AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 7, true); // PK_AC_ENABLED_MASKED ;
-            } else {
-                AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 7, false); // PK_AC_ENABLED_MASKED ;
-            }
-            // PEv2_stepgen_AxesConfig(i) = PK_AC_ENABLED_MASKED;
-            if (PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] != 0) {
-                AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 0,
-                                                   true);                        // PK_AC_ENABLED ;
-                AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 2, true); // PK_AC_INTERNAL_PLANNER;
-            }
+                // Read the structure and set the bits accordingly
+                /* Section: Axis configuration
+                            PEv2_AxesConfig
+                                    PK_AC_ENABLED            = (1 << 0),       // 1 Axis enabled
+                                    PK_AC_INVERTED           = (1 << 1),       // 2 Axis inverted
+                                    PK_AC_INTERNAL_PLANNER   = (1 << 2),       // 4 Axis uses internal motion planner
+                                    PK_AC_POSITION_MODE      = (1 << 3),       // 8 Internal motion planner for this axis is in position mode
+                                    PK_AC_INVERTED_HOME      = (1 << 4),       // 16 Axis homing direction is inverted
+                                    PK_AC_SOFT_LIMIT_ENABLED = (1 << 5),       // 32 Use soft-limits for this axis
+                                    PK_AC_ENABLED_MASKED     = (1 << 7)        // 128 Use output enable pin masking
+                            */
+                AxesConfig[AxisId] = 0;
+                if (PEv2_data->PEv2_AxisEnabled[AxisId] != 0) {
+                    AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 0,
+                                                       true); // PK_AC_ENABLED ;
+                } else {
+                    AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 0,
+                                                       false); // PK_AC_ENABLED ;
+                }
+                if (PEv2_data->PEv2_AxisInverted[AxisId] != 0) {
+                    AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 1,
+                                                       true); // PK_AC_INVERTED ;
+                } else {
+                    AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 1,
+                                                       false); // PK_AC_INVERTED ;
+                }
+                if (PEv2_data->PEv2_AxisInternalPlanner[AxisId] != 0) {
+                    AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 2, true); // PK_AC_INTERNAL_PLANNER ;
+                } else {
+                    AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 2, false); // PK_AC_INTERNAL_PLANNER ;
+                }
+                if (PEv2_data->PEv2_AxisPositionMode[AxisId] != 0) {
+                    AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 3, true); // PK_AC_POSITION_MODE ;
+                } else {
+                    AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 3, false); // PK_AC_POSITION_MODE ;
+                }
+                if (PEv2_data->PEv2_AxisInvertedHome[AxisId] != 0) {
+                    AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 4, true); // PK_AC_INVERTED_HOME ;
+                } else {
+                    AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 4, false); // PK_AC_INVERTED_HOME ;
+                }
+                if (PEv2_data->PEv2_AxisSoftLimitEnabled[AxisId] != 0) {
+                    AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 5, true); // PK_AC_SOFT_LIMIT_ENABLED ;
+                } else {
+                    AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 5, false); // PK_AC_SOFT_LIMIT_ENABLED ;
+                }
+                if (PEv2_data->PEv2_AxisEnabledMasked[AxisId] != 0) {
+                    AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 7, true); // PK_AC_ENABLED_MASKED ;
+                } else {
+                    AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 7, false); // PK_AC_ENABLED_MASKED ;
+                }
+                // PEv2_stepgen_AxesConfig(i) = PK_AC_ENABLED_MASKED;
+                if (PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] != 0) {
+                    AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 0,
+                                                       true);                        // PK_AC_ENABLED ;
+                    AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 2, true); // PK_AC_INTERNAL_PLANNER;
+                }
 
-            if (posMode[AxisId] == true) {
-                AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 3, true); // PK_AC_POSITION_MODE;
-                                                                                 // posMode[AxisId] = true;
-            }
-            if (PEv2_data->PEv2_AxesConfig[AxisId] != AxesConfig[AxisId]) {
-                PEv2_data->PEv2_AxesConfig[AxisId] = AxesConfig[AxisId];
-            }
-            if (dev->PEv2.AxesConfig[AxisId] != PEv2_data->PEv2_AxesConfig[AxisId]) {
-                dev->PEv2.AxesConfig[AxisId] = PEv2_data->PEv2_AxesConfig[AxisId];
-                doSetup = true;
-            }
-
-            /*
-                        Section: Axis switch configuration
-                        PEv2_AxesSwitchConfig
-                                PK_ASO_SWITCH_LIMIT_N        = (1 << 0),   // 1 Limit- switch
-                                PK_ASO_SWITCH_LIMIT_P        = (1 << 1),   // 2 Limit+ switch
-                                PK_ASO_SWITCH_HOME           = (1 << 2),   // 4 Home switch
-                                PK_ASO_SWITCH_COMBINED_LN_H  = (1 << 3),   // 8 Home switch is shared with Limit- switch
-                                PK_ASO_SWITCH_COMBINED_LP_H  = (1 << 4),   // 16 Home switch is shared with Limit+ switch
-                                PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
-                                PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
-                                PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
-                        */
-            AxesSwitchConfig[AxisId] = PEv2_data->PEv2_AxesSwitchConfig[AxisId]; // initial value from ini file
-            if (PEv2_data->PEv2_digin_Home_Pin[AxisId] != 0) {
-                // path if pin (not dedicated) is used for home switch
-                // check if pin is parametrized in HAL
-                int Home = PEv2_data->PEv2_digin_Home_Pin[AxisId];
-                int LimP = PEv2_data->PEv2_digin_LimitP_Pin[AxisId];
-                int LimM = PEv2_data->PEv2_digin_LimitN_Pin[AxisId];
-
-                if (dev->PEv2.PinHomeSwitch[AxisId] != Home) {
-                    dev->PEv2.PinHomeSwitch[AxisId] = Home;
+                if (posMode[AxisId] == true) {
+                    AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 3, true); // PK_AC_POSITION_MODE;
+                                                                                     // posMode[AxisId] = true;
+                }
+                if (PEv2_data->PEv2_AxesConfig[AxisId] != AxesConfig[AxisId]) {
+                    PEv2_data->PEv2_AxesConfig[AxisId] = AxesConfig[AxisId];
+                }
+                if (dev->PEv2.AxesConfig[AxisId] != PEv2_data->PEv2_AxesConfig[AxisId]) {
+                    dev->PEv2.AxesConfig[AxisId] = PEv2_data->PEv2_AxesConfig[AxisId];
                     doSetup = true;
                 }
-                if (Home != LimM && Home != LimP) {
 
-                    if (IO_data->Pin[Home - 1].PinFunction != PK_PinCap_digitalInput) {
-                        IO_data->Pin[Home - 1].PinFunction = PK_PinCap_digitalInput;
-                    }
-                } else if (Home == LimP) {
-                    // dev->PEv2.PinHomeSwitch[AxisId]=0;
-                    // AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4, true); // 16 Home switch is shared with Limit+ switch
-                    if (dev->PEv2.PinHomeSwitch[AxisId] != 0) {
-                        dev->PEv2.PinHomeSwitch[AxisId] = 0;
+                /*
+                            Section: Axis switch configuration
+                            PEv2_AxesSwitchConfig
+                                    PK_ASO_SWITCH_LIMIT_N        = (1 << 0),   // 1 Limit- switch
+                                    PK_ASO_SWITCH_LIMIT_P        = (1 << 1),   // 2 Limit+ switch
+                                    PK_ASO_SWITCH_HOME           = (1 << 2),   // 4 Home switch
+                                    PK_ASO_SWITCH_COMBINED_LN_H  = (1 << 3),   // 8 Home switch is shared with Limit- switch
+                                    PK_ASO_SWITCH_COMBINED_LP_H  = (1 << 4),   // 16 Home switch is shared with Limit+ switch
+                                    PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
+                                    PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
+                                    PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
+                            */
+                AxesSwitchConfig[AxisId] = PEv2_data->PEv2_AxesSwitchConfig[AxisId]; // initial value from ini file
+                if (PEv2_data->PEv2_digin_Home_Pin[AxisId] != 0) {
+                    // path if pin (not dedicated) is used for home switch
+                    // check if pin is parametrized in HAL
+                    int Home = PEv2_data->PEv2_digin_Home_Pin[AxisId];
+                    int LimP = PEv2_data->PEv2_digin_LimitP_Pin[AxisId];
+                    int LimM = PEv2_data->PEv2_digin_LimitN_Pin[AxisId];
+
+                    if (dev->PEv2.PinHomeSwitch[AxisId] != Home) {
+                        dev->PEv2.PinHomeSwitch[AxisId] = Home;
                         doSetup = true;
                     }
+                    if (Home != LimM && Home != LimP) {
 
-                    PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] = 1;
-                    PEv2_data->PEv2_digin_Home_Enabled[AxisId] = 0;
-                } else if (Home == LimM) {
-                    // dev->PEv2.PinHomeSwitch(i)=0;
-                    // AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, true); // 8 Home switch is shared with Limit- switch
-                    if (dev->PEv2.PinHomeSwitch[AxisId] != 0) {
-                        dev->PEv2.PinHomeSwitch[AxisId] = 0;
-                        doSetup = true;
+                        if (IO_data->Pin[Home - 1].PinFunction != PK_PinCap_digitalInput) {
+                            IO_data->Pin[Home - 1].PinFunction = PK_PinCap_digitalInput;
+                        }
+                    } else if (Home == LimP) {
+                        // dev->PEv2.PinHomeSwitch[AxisId]=0;
+                        // AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4, true); // 16 Home switch is shared with Limit+ switch
+                        if (dev->PEv2.PinHomeSwitch[AxisId] != 0) {
+                            dev->PEv2.PinHomeSwitch[AxisId] = 0;
+                            doSetup = true;
+                        }
+
+                        PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] = 1;
+                        PEv2_data->PEv2_digin_Home_Enabled[AxisId] = 0;
+                    } else if (Home == LimM) {
+                        // dev->PEv2.PinHomeSwitch(i)=0;
+                        // AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3, true); // 8 Home switch is shared with Limit- switch
+                        if (dev->PEv2.PinHomeSwitch[AxisId] != 0) {
+                            dev->PEv2.PinHomeSwitch[AxisId] = 0;
+                            doSetup = true;
+                        }
+                        PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] = 1;
+                        PEv2_data->PEv2_digin_Home_Enabled[AxisId] = 0;
                     }
-                    PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] = 1;
-                    PEv2_data->PEv2_digin_Home_Enabled[AxisId] = 0;
-                }
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 2, true); // | PK_ASO_SWITCH_HOME;
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 2, true); // | PK_ASO_SWITCH_HOME;
 
-            } else {
-                dev->PEv2.PinHomeSwitch[AxisId] = 0;
-            }
-            if (PEv2_data->PEv2_digin_LimitN_Enabled[AxisId] != 0) {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 0,
-                                                         true); // PK_ASO_SWITCH_LIMIT_N ;
-            } else {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 0,
-                                                         false); // PK_ASO_SWITCH_LIMIT_N ;
-            }
-            if (PEv2_data->PEv2_digin_LimitP_Enabled[AxisId] != 0) {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 1,
-                                                         true); // PK_ASO_SWITCH_LIMIT_P ;
-            } else {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 1,
-                                                         false); // PK_ASO_SWITCH_LIMIT_P ;
-            }
-            if (PEv2_data->PEv2_digin_Home_Enabled[AxisId] != 0) {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 2, true); // PK_ASO_SWITCH_HOME ;
-            } else {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 2, false); // PK_ASO_SWITCH_HOME ;
-            }
-
-            if (PEv2_data->PEv2_digin_LimitN_invert[AxisId] != 0) {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5,
-                                                         true); // PK_ASO_SWITCH_INVERT_LIMIT_N ;
-            } else {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5,
-                                                         false); // PK_ASO_SWITCH_INVERT_LIMIT_N ;
-            }
-            if (PEv2_data->PEv2_digin_LimitP_invert[AxisId] != 0) {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 6,
-                                                         true); // PK_ASO_SWITCH_INVERT_LIMIT_P ;
-            } else {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 6,
-                                                         false); // PK_ASO_SWITCH_INVERT_LIMIT_P ;
-            }
-            if (PEv2_data->PEv2_digin_Home_invert[AxisId] != 0) {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7,
-                                                         true); // PK_ASO_SWITCH_INVERT_HOME ;
-            } else {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7,
-                                                         false); // PK_ASO_SWITCH_INVERT_HOME ;
-            }
-
-            if (PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] != 0) {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3,
-                                                         true); // PK_ASO_SWITCH_COMBINED_LN_H ;
-            } else {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3,
-                                                         false); // PK_ASO_SWITCH_COMBINED_LN_H ;
-            }
-            if (PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] != 0) {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4,
-                                                         true); // PK_ASO_SWITCH_COMBINED_LP_H ;
-            } else {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4,
-                                                         false); // PK_ASO_SWITCH_COMBINED_LP_H ;
-            }
-
-            if (PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] != 0) {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3,
-                                                         true); // PK_ASO_SWITCH_COMBINED_LN_H = (1 << 3),   // 8 Home switch is shared with Limit- switch
-            } else {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3,
-                                                         false); // PK_ASO_SWITCH_COMBINED_LN_H = (1 << 3),   // 8 Home switch is shared with Limit- switch
-            }
-            if (PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] != 0) {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4,
-                                                         true); // PK_ASO_SWITCH_COMBINED_LP_H = (1 << 4),   // 16 Home switch is shared with Limit+ switch
-            } else {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4,
-                                                         false); // PK_ASO_SWITCH_COMBINED_LP_H = (1 << 4),   // 16 Home switch is shared with Limit+ switch
-            }
-            if (PEv2_data->PEv2_digin_Home_invert[AxisId] != 0) {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7,
-                                                         true); // PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
-            } else {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7,
-                                                         false); // PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
-            }
-            if (PEv2_data->PEv2_digin_LimitN_invert[AxisId] != 0) {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5,
-                                                         true); // PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
-            } else {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5,
-                                                         false); // PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
-            }
-            if (PEv2_data->PEv2_digin_LimitP_invert[AxisId] != 0) {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 6,
-                                                         true); // PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
-            } else {
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 6,
-                                                         false); // PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
-            }
-            if (PEv2_data->PEv2_AxesSwitchConfig[AxisId] != AxesSwitchConfig[AxisId]) {
-                PEv2_data->PEv2_AxesSwitchConfig[AxisId] = AxesSwitchConfig[AxisId];
-            }
-
-            if (dev->PEv2.AxesSwitchConfig[AxisId] != PEv2_data->PEv2_AxesSwitchConfig[AxisId]) {
-                dev->PEv2.AxesSwitchConfig[AxisId] = PEv2_data->PEv2_AxesSwitchConfig[AxisId];
-                doSetup = true;
-            }
-
-            /* Section: Pin configuration
-             */
-            if (dev->PEv2.PinHomeSwitch[AxisId] != PEv2_data->PEv2_digin_Home_Pin[AxisId]) {
-                dev->PEv2.PinHomeSwitch[AxisId] = PEv2_data->PEv2_digin_Home_Pin[AxisId];
-                doSetup = true;
-            }
-
-            if (dev->PEv2.PinLimitMSwitch[AxisId] != PEv2_data->PEv2_digin_LimitN_Pin[AxisId]) {
-                dev->PEv2.PinLimitMSwitch[AxisId] = PEv2_data->PEv2_digin_LimitN_Pin[AxisId];
-                doSetup = true;
-            }
-            if (PEv2_data->PEv2_digin_LimitN_Pin[AxisId] != 0) { // check if pin is parametrized in HAL
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 0,
-                                                         true); // | PK_ASO_SWITCH_LIMIT_N;
-
-                if (IO_data->Pin[PEv2_data->PEv2_digin_LimitN_Pin[AxisId] - 1].PinFunction != PK_PinCap_digitalInput) {
-                    IO_data->Pin[PEv2_data->PEv2_digin_LimitN_Pin[AxisId] - 1].PinFunction = PK_PinCap_digitalInput;
-                }
-            }
-
-            if (dev->PEv2.PinLimitPSwitch[AxisId] != PEv2_data->PEv2_digin_LimitP_Pin[AxisId]) {
-                dev->PEv2.PinLimitPSwitch[AxisId] = PEv2_data->PEv2_digin_LimitP_Pin[AxisId];
-                doSetup = true;
-            }
-            if (PEv2_data->PEv2_digin_LimitP_Pin[AxisId] != 0) { // check if pin is parametrized in HAL
-                AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 1,
-                                                         true); // | PK_ASO_SWITCH_LIMIT_P;
-
-                if (IO_data->Pin[PEv2_data->PEv2_digin_LimitP_Pin[AxisId] - 1].PinFunction != PK_PinCap_digitalInput) {
-                    IO_data->Pin[PEv2_data->PEv2_digin_LimitP_Pin[AxisId] - 1].PinFunction = PK_PinCap_digitalInput;
-                }
-            }
-
-            /*
-                                Section Speed and Acceleration settings
-
-                        */
-
-            if (PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] != 0) {
-                // need to ensure positve values for the following calculations otherwise machine will not move
-                PEv2_data->PEv2_MaxSpeed[AxisId] = abs(PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId]); // Maximum axis speed convert (mm/s) to (pulses / s)
-
-                PEv2_data->PEv2_MaxAcceleration[AxisId] = abs(PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[AxisId] * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId]); // Maximum axis deceleration convert (mm/s²) to (in pulses/s²)
-
-                PEv2_data->PEv2_MaxDecceleration[AxisId] = 1.5 * abs(PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[AxisId] * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId]); // Maximum axis deceleration convert (mm/s²) to (in pulses/s²)
-
-                // PEv2_data->PEv2_HomePosition[AxisId]
-            }
-            if (PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] > 0 && PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] > 0 && PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] > PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]) {
-                PEv2_data->PEv2_HomingSpeed[AxisId] = abs(PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] * 100 / PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId]);       // Homing speed per axis (in %)
-                PEv2_data->PEv2_HomingReturnSpeed[AxisId] = abs(PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[AxisId] * 100 / PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]); // Homing return speed per axis (in % of the homing speed)
-            } else {
-                PEv2_data->PEv2_HomingSpeed[AxisId] = 30;
-                PEv2_data->PEv2_HomingReturnSpeed[AxisId] = 50;
-            }
-
-            if (dev->PEv2.HomingSpeed[AxisId] != PEv2_data->PEv2_HomingSpeed[AxisId]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: HomingSpeed[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_HomingSpeed[AxisId]);
-                dev->PEv2.HomingSpeed[AxisId] = PEv2_data->PEv2_HomingSpeed[AxisId];
-                doSetup = true;
-            }
-            if (dev->PEv2.HomingReturnSpeed[AxisId] != PEv2_data->PEv2_HomingReturnSpeed[AxisId]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: HomingReturnSpeed[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_HomingReturnSpeed[AxisId]);
-                dev->PEv2.HomingReturnSpeed[AxisId] = PEv2_data->PEv2_HomingReturnSpeed[AxisId];
-                doSetup = true;
-            }
-
-            if (dev->PEv2.MaxSpeed[AxisId] != PEv2_data->PEv2_MaxSpeed[AxisId] / 1000 && PEv2_data->PEv2_MaxSpeed[AxisId] > 0) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: MaxSpeed[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_MaxSpeed[AxisId]);
-                dev->PEv2.MaxSpeed[AxisId] = PEv2_data->PEv2_MaxSpeed[AxisId] / 1000;
-                doSetup = true;
-            } else if (PEv2_data->PEv2_MaxSpeed[AxisId] == 0 && dev->PEv2.MaxSpeed[AxisId] == 0) {
-                PEv2_data->PEv2_MaxSpeed[AxisId] = 1;
-                dev->PEv2.MaxSpeed[AxisId] = 1000;
-                doSetup = true;
-            }
-            int relevantdigitsfactor = 1000;
-            int unitconversionfactor = 1000000;
-            if ((int)(dev->PEv2.MaxAcceleration[AxisId] * unitconversionfactor * relevantdigitsfactor) != (int)(PEv2_data->PEv2_MaxAcceleration[AxisId] * relevantdigitsfactor)) {
-                rtapi_print_msg(RTAPI_MSG_ERR,
-                                "PoKeys: %s:%s: MaxAcceleration[%d] = %d ; "
-                                "dev->PEv2.MaxAcceleration = %d \n",
-                                __FILE__, __FUNCTION__, AxisId, (int)(PEv2_data->PEv2_MaxAcceleration[AxisId] * 1000), (int)(dev->PEv2.MaxAcceleration[AxisId] * 1000000 * 1000));
-                dev->PEv2.MaxAcceleration[AxisId] = PEv2_data->PEv2_MaxAcceleration[AxisId] / unitconversionfactor;
-                doSetup = true;
-            }
-
-            if ((int)(dev->PEv2.MaxDecceleration[AxisId] * unitconversionfactor * relevantdigitsfactor) != (int)(PEv2_data->PEv2_MaxDecceleration[AxisId] * relevantdigitsfactor)) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: MaxDecceleration[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_MaxDecceleration[AxisId]);
-                dev->PEv2.MaxDecceleration[AxisId] = PEv2_data->PEv2_MaxDecceleration[AxisId] / unitconversionfactor;
-                doSetup = true;
-            }
-
-            /*
-                        Section: Soft limits
-                        */
-            // float LimitOffset = 0.0;
-            if (PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId] > PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId]) {
-
-                if (PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] != abs(PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId])) {
-                    // in pokeys only positive values are allowed - Shift reference to 0 and make sure it is positive
-                    PEv2_data->PEv2_PositionOffset[AxisId] = PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId] - PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId]; // shift reference to 0 and make sure it is positive
                 } else {
-                    // PEv2_stepgen_HOME[AxisId]
-                    PEv2_data->PEv2_PositionOffset[AxisId] = 0;
+                    dev->PEv2.PinHomeSwitch[AxisId] = 0;
                 }
-
-                if (PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] == 0) {
-                    PEv2_data->PEv2_PositionScale[AxisId] = 1;
+                if (PEv2_data->PEv2_digin_LimitN_Enabled[AxisId] != 0) {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 0,
+                                                             true); // PK_ASO_SWITCH_LIMIT_N ;
                 } else {
-                    PEv2_data->PEv2_PositionScale[AxisId] = PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId];
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 0,
+                                                             false); // PK_ASO_SWITCH_LIMIT_N ;
                 }
-
-                PEv2_data->PEv2_HomePosition[AxisId] = (PEv2_data->PEv2_PositionOffset[AxisId] + PEv2_data->PEv2_stepgen_HOME[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId];
-                PEv2_data->PEv2_digin_SoftLimit_PosMax[AxisId] = (PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId] + PEv2_data->PEv2_PositionOffset[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId]; // Soft limit maximum position
-                PEv2_data->PEv2_digin_SoftLimit_PosMin[AxisId] = (PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] + PEv2_data->PEv2_PositionOffset[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId]; // Soft limit minimum position
-
-                PEv2_data->PEv2_ZeroPosition[AxisId] = PEv2_data->PEv2_PositionOffset[AxisId] * PEv2_data->PEv2_PositionScale[AxisId];
-                PEv2_data->PEv2_ArmPosition[AxisId] = (PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] + PEv2_data->PEv2_PositionOffset[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId];
-
-            } else {
-                // for pokeys MaxLimits must be higher than MinLimits otherwise machine will not move
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: MaxLimit[%d] = %d ; MinLimit[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId], AxisId, PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId]);
-
-                if (PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId] != abs(PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId])) {
-                    // in pokeys only positive values are allowed - Shift reference to 0 and make sure it is positive
-                    PEv2_data->PEv2_PositionOffset[AxisId] = PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] - PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId]; // shift reference to 0 and make sure it is positive
+                if (PEv2_data->PEv2_digin_LimitP_Enabled[AxisId] != 0) {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 1,
+                                                             true); // PK_ASO_SWITCH_LIMIT_P ;
                 } else {
-                    // PEv2_stepgen_HOME[AxisId]
-                    PEv2_data->PEv2_PositionOffset[AxisId] = 0;
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 1,
+                                                             false); // PK_ASO_SWITCH_LIMIT_P ;
                 }
-
-                if (PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] == 0) {
-                    PEv2_data->PEv2_PositionScale[AxisId] = 0 - 1;
+                if (PEv2_data->PEv2_digin_Home_Enabled[AxisId] != 0) {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 2, true); // PK_ASO_SWITCH_HOME ;
                 } else {
-                    PEv2_data->PEv2_PositionScale[AxisId] = PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] * (0 - 1);
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 2, false); // PK_ASO_SWITCH_HOME ;
                 }
 
-                PEv2_data->PEv2_digin_SoftLimit_PosMax[AxisId] = (PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] + PEv2_data->PEv2_PositionOffset[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId]; // Soft limit maximum position
-                PEv2_data->PEv2_digin_SoftLimit_PosMin[AxisId] = (PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId] + PEv2_data->PEv2_PositionOffset[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId]; // Soft limit minimum position
-
-                PEv2_data->PEv2_HomePosition[AxisId] = (PEv2_data->PEv2_PositionOffset[AxisId] + PEv2_data->PEv2_stepgen_HOME[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId];
-                PEv2_data->PEv2_digin_SoftLimit_PosMax[AxisId] = (PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId] + PEv2_data->PEv2_PositionOffset[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId]; // Soft limit maximum position
-                PEv2_data->PEv2_digin_SoftLimit_PosMin[AxisId] = (PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] + PEv2_data->PEv2_PositionOffset[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId]; // Soft limit minimum position
-
-                PEv2_data->PEv2_ZeroPosition[AxisId] = PEv2_data->PEv2_PositionOffset[AxisId] * PEv2_data->PEv2_PositionScale[AxisId];
-                PEv2_data->PEv2_ArmPosition[AxisId] = (PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] + PEv2_data->PEv2_PositionOffset[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId];
-
-                // AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 1, true);  // PK_AC_INVERTED ;
-                // AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 5, true);  // PK_AC_SOFT_LIMIT_ENABLED ;
-            }
-            if (dev->PEv2.SoftLimitMinimum[AxisId] != PEv2_data->PEv2_SoftLimitMinimum[AxisId]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: SoftLimitMinimum[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_SoftLimitMinimum[AxisId]);
-                dev->PEv2.SoftLimitMinimum[AxisId] = PEv2_data->PEv2_SoftLimitMinimum[AxisId];
-                doSetup = true;
-            }
-            if (dev->PEv2.SoftLimitMaximum[AxisId] != PEv2_data->PEv2_SoftLimitMaximum[AxisId]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: SoftLimitMaximum[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_SoftLimitMaximum[AxisId]);
-                dev->PEv2.SoftLimitMaximum[AxisId] = PEv2_data->PEv2_SoftLimitMaximum[AxisId];
-                doSetup = true;
-            }
-
-            if (dev->PEv2.AxisEnableOutputPins[AxisId] != PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: AxisEnableOutputPins[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId]);
-                dev->PEv2.AxisEnableOutputPins[AxisId] = PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId];
-                doSetup = true;
-            }
-            if (PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] != 0) { // check if pin is parametrized in HAL
-                if (IO_data->Pin[PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - 1].PinFunction != PK_PinCap_digitalOutput) {
-                    IO_data->Pin[PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - 1].PinFunction = PK_PinCap_digitalOutput;
+                if (PEv2_data->PEv2_digin_LimitN_invert[AxisId] != 0) {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5,
+                                                             true); // PK_ASO_SWITCH_INVERT_LIMIT_N ;
+                } else {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5,
+                                                             false); // PK_ASO_SWITCH_INVERT_LIMIT_N ;
                 }
-                Pins_DigitalValueSet_ignore[PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - 1] = true;
-            }
-            if (dev->PEv2.InvertAxisEnable[AxisId] != PEv2_data->PEv2_digout_AxisEnable_invert[AxisId]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: InvertAxisEnable[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_digout_AxisEnable_invert[AxisId]);
-                dev->PEv2.InvertAxisEnable[AxisId] = PEv2_data->PEv2_digout_AxisEnable_invert[AxisId];
-                doSetup = true;
-            }
-            if (dev->PEv2.FilterLimitMSwitch[AxisId] != PEv2_data->PEv2_digin_LimitN_Filter[AxisId]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: FilterLimitMSwitch[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_digin_LimitN_Filter[AxisId]);
-                dev->PEv2.FilterLimitMSwitch[AxisId] = PEv2_data->PEv2_digin_LimitN_Filter[AxisId];
-                doSetup = true;
-            }
-            if (dev->PEv2.FilterLimitPSwitch[AxisId] != PEv2_data->PEv2_digin_LimitP_Filter[AxisId]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: FilterLimitPSwitch[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_digin_LimitP_Filter[AxisId]);
-                dev->PEv2.FilterLimitPSwitch[AxisId] = PEv2_data->PEv2_digin_LimitP_Filter[AxisId];
-                doSetup = true;
-            }
-            if (dev->PEv2.FilterHomeSwitch[AxisId] != PEv2_data->PEv2_digin_Home_Filter[AxisId]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: FilterHomeSwitch[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_digin_Home_Filter[AxisId]);
-                dev->PEv2.FilterHomeSwitch[AxisId] = PEv2_data->PEv2_digin_Home_Filter[AxisId];
-                doSetup = true;
-            }
+                if (PEv2_data->PEv2_digin_LimitP_invert[AxisId] != 0) {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 6,
+                                                             true); // PK_ASO_SWITCH_INVERT_LIMIT_P ;
+                } else {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 6,
+                                                             false); // PK_ASO_SWITCH_INVERT_LIMIT_P ;
+                }
+                if (PEv2_data->PEv2_digin_Home_invert[AxisId] != 0) {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7,
+                                                             true); // PK_ASO_SWITCH_INVERT_HOME ;
+                } else {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7,
+                                                             false); // PK_ASO_SWITCH_INVERT_HOME ;
+                }
 
-            /*
-                        Section: HomingAlgorithm
-                        */
-            int HomingAlgorithm = 0;
-            if (PEv2_data->PEv2_HomeAlg_OnHome_Stop[AxisId] != 0) {
-                HomingAlgorithm |= PK_PEv2Homing_OnHomeStop;
-            }
-            if (PEv2_data->PEv2_HomeAlg_OnHome_ArmEncoder[AxisId] != 0) {
-                HomingAlgorithm |= PK_PEv2Homing_OnHomeArmEncoder;
-            }
-            if (PEv2_data->PEv2_HomeAlg_OnHome_RevDirection[AxisId] != 0) {
-                HomingAlgorithm |= PK_PEv2Homing_OnHomeReverseDirection;
-            }
-            if (PEv2_data->PEv2_HomeAlg_OnHome_ReducedSpeed[AxisId] != 0) {
-                HomingAlgorithm |= PK_PEv2Homing_OnHomeReducedSpeed;
-            }
-            if (PEv2_data->PEv2_HomeAlg_OutHome_Stop[AxisId] != 0) {
-                HomingAlgorithm |= PK_PEv2Homing_OutHomeStop;
-            }
-            if (PEv2_data->PEv2_HomeAlg_OutHome_ArmEncoder[AxisId] != 0) {
-                HomingAlgorithm |= PK_PEv2Homing_OutHomeArmEncoder;
-            }
-            if (PEv2_data->PEv2_HomeAlg_OutHome_RevDirection[AxisId] != 0) {
-                HomingAlgorithm |= PK_PEv2Homing_OutHomeReverseDirection;
-            }
-            if (PEv2_data->PEv2_HomeAlg_OutHome_ReducedSpeed[AxisId] != 0) {
-                HomingAlgorithm |= PK_PEv2Homing_OutHomeReducedSpeed;
-            }
-            if (PEv2_data->PEv2_HomingAlgorithm[AxisId] != HomingAlgorithm) {
-                PEv2_data->PEv2_HomingAlgorithm[AxisId] = HomingAlgorithm;
-            }
-            if (dev->PEv2.HomingAlgorithm[AxisId] != PEv2_data->PEv2_HomingAlgorithm[AxisId]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: HomingAlgorithm[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_HomingAlgorithm[AxisId]);
-                dev->PEv2.HomingAlgorithm[AxisId] = PEv2_data->PEv2_HomingAlgorithm[AxisId];
-                doSetup = true;
-            }
+                if (PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] != 0) {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3,
+                                                             true); // PK_ASO_SWITCH_COMBINED_LN_H ;
+                } else {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3,
+                                                             false); // PK_ASO_SWITCH_COMBINED_LN_H ;
+                }
+                if (PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] != 0) {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4,
+                                                             true); // PK_ASO_SWITCH_COMBINED_LP_H ;
+                } else {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4,
+                                                             false); // PK_ASO_SWITCH_COMBINED_LP_H ;
+                }
 
-            if (PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] != 0) {
-                PEv2_data->PEv2_HomeBackOffDistance[AxisId] = PEv2_data->PEv2_stepgen_HOME_OFFSET[AxisId] * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId]; // Home position offset
-            }
-            if (dev->PEv2.HomeBackOffDistance[AxisId] != PEv2_data->PEv2_HomeBackOffDistance[AxisId]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: HomeBackOffDistance[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_HomeBackOffDistance[AxisId]);
-                dev->PEv2.HomeBackOffDistance[AxisId] = PEv2_data->PEv2_HomeBackOffDistance[AxisId];
-                doSetup = true;
-            }
-            /*
-                         Section: MPG jog settings
-                        */
-            if (dev->PEv2.MPGjogEncoder[AxisId] != PEv2_data->PEv2_MPGjogEncoder[AxisId]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: MPGjogEncoder[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_MPGjogEncoder[AxisId]);
-                dev->PEv2.MPGjogEncoder[AxisId] = PEv2_data->PEv2_MPGjogEncoder[AxisId];
+                if (PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] != 0) {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3,
+                                                             true); // PK_ASO_SWITCH_COMBINED_LN_H = (1 << 3),   // 8 Home switch is shared with Limit- switch
+                } else {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3,
+                                                             false); // PK_ASO_SWITCH_COMBINED_LN_H = (1 << 3),   // 8 Home switch is shared with Limit- switch
+                }
+                if (PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] != 0) {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4,
+                                                             true); // PK_ASO_SWITCH_COMBINED_LP_H = (1 << 4),   // 16 Home switch is shared with Limit+ switch
+                } else {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4,
+                                                             false); // PK_ASO_SWITCH_COMBINED_LP_H = (1 << 4),   // 16 Home switch is shared with Limit+ switch
+                }
+                if (PEv2_data->PEv2_digin_Home_invert[AxisId] != 0) {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7,
+                                                             true); // PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
+                } else {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7,
+                                                             false); // PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
+                }
+                if (PEv2_data->PEv2_digin_LimitN_invert[AxisId] != 0) {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5,
+                                                             true); // PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
+                } else {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5,
+                                                             false); // PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
+                }
+                if (PEv2_data->PEv2_digin_LimitP_invert[AxisId] != 0) {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 6,
+                                                             true); // PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
+                } else {
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 6,
+                                                             false); // PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
+                }
+                if (PEv2_data->PEv2_AxesSwitchConfig[AxisId] != AxesSwitchConfig[AxisId]) {
+                    PEv2_data->PEv2_AxesSwitchConfig[AxisId] = AxesSwitchConfig[AxisId];
+                }
 
-                doSetup = true;
-            }
-            if (dev->PEv2.MPGjogDivider[AxisId] != PEv2_data->PEv2_MPGjogDivider[AxisId]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: MPGjogDivider[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_MPGjogDivider[AxisId]);
-                dev->PEv2.MPGjogDivider[AxisId] = PEv2_data->PEv2_MPGjogDivider[AxisId];
-                doSetup = true;
-            }
-            if (dev->PEv2.MPGjogMultiplier[AxisId] != PEv2_data->PEv2_MPGjogMultiplier[AxisId]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: MPGjogMultiplier[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_MPGjogMultiplier[AxisId]);
-                dev->PEv2.MPGjogMultiplier[AxisId] = PEv2_data->PEv2_MPGjogMultiplier[AxisId];
-                doSetup = true;
-            }
-            /*if(dev->PEv2.AxisSignalOptions[AxisId] != PEv2_data->PEv2_AxisSignalOptions[AxisId]){
-                                PEv2_data->PEv2_AxisSignalOptions[AxisId] = dev->PEv2.AxisSignalOptions[AxisId];
-                                doSetup = true;
-                        }*/
-            if (dev->PEv2.FilterProbeInput != PEv2_data->PEv2_digin_Probe_Filter[AxisId]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: FilterProbeInput[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_digin_Probe_Filter[AxisId]);
-                dev->PEv2.FilterProbeInput = PEv2_data->PEv2_digin_Probe_Filter[AxisId];
-                doSetup = true;
-            }
+                if (dev->PEv2.AxesSwitchConfig[AxisId] != PEv2_data->PEv2_AxesSwitchConfig[AxisId]) {
+                    dev->PEv2.AxesSwitchConfig[AxisId] = PEv2_data->PEv2_AxesSwitchConfig[AxisId];
+                    doSetup = true;
+                }
 
-            if (doSetup == true) {
-                if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK) {
+                /* Section: Pin configuration
+                 */
+                if (dev->PEv2.PinHomeSwitch[AxisId] != PEv2_data->PEv2_digin_Home_Pin[AxisId]) {
+                    dev->PEv2.PinHomeSwitch[AxisId] = PEv2_data->PEv2_digin_Home_Pin[AxisId];
+                    doSetup = true;
+                }
+
+                if (dev->PEv2.PinLimitMSwitch[AxisId] != PEv2_data->PEv2_digin_LimitN_Pin[AxisId]) {
+                    dev->PEv2.PinLimitMSwitch[AxisId] = PEv2_data->PEv2_digin_LimitN_Pin[AxisId];
+                    doSetup = true;
+                }
+                if (PEv2_data->PEv2_digin_LimitN_Pin[AxisId] != 0) { // check if pin is parametrized in HAL
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 0,
+                                                             true); // | PK_ASO_SWITCH_LIMIT_N;
+
+                    if (IO_data->Pin[PEv2_data->PEv2_digin_LimitN_Pin[AxisId] - 1].PinFunction != PK_PinCap_digitalInput) {
+                        IO_data->Pin[PEv2_data->PEv2_digin_LimitN_Pin[AxisId] - 1].PinFunction = PK_PinCap_digitalInput;
+                    }
+                }
+
+                if (dev->PEv2.PinLimitPSwitch[AxisId] != PEv2_data->PEv2_digin_LimitP_Pin[AxisId]) {
+                    dev->PEv2.PinLimitPSwitch[AxisId] = PEv2_data->PEv2_digin_LimitP_Pin[AxisId];
+                    doSetup = true;
+                }
+                if (PEv2_data->PEv2_digin_LimitP_Pin[AxisId] != 0) { // check if pin is parametrized in HAL
+                    AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 1,
+                                                             true); // | PK_ASO_SWITCH_LIMIT_P;
+
+                    if (IO_data->Pin[PEv2_data->PEv2_digin_LimitP_Pin[AxisId] - 1].PinFunction != PK_PinCap_digitalInput) {
+                        IO_data->Pin[PEv2_data->PEv2_digin_LimitP_Pin[AxisId] - 1].PinFunction = PK_PinCap_digitalInput;
+                    }
+                }
+
+                /*
+                                    Section Speed and Acceleration settings
+
+                            */
+
+                if (PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] != 0) {
+                    // need to ensure positve values for the following calculations otherwise machine will not move
+                    PEv2_data->PEv2_MaxSpeed[AxisId] = abs(PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId]); // Maximum axis speed convert (mm/s) to (pulses / s)
+
+                    PEv2_data->PEv2_MaxAcceleration[AxisId] = abs(PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[AxisId] * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId]); // Maximum axis deceleration convert (mm/s²) to (in pulses/s²)
+
+                    PEv2_data->PEv2_MaxDecceleration[AxisId] = 1.5 * abs(PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[AxisId] * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId]); // Maximum axis deceleration convert (mm/s²) to (in pulses/s²)
+
+                    // PEv2_data->PEv2_HomePosition[AxisId]
+                }
+                if (PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] > 0 && PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] > 0 && PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId] > PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]) {
+                    PEv2_data->PEv2_HomingSpeed[AxisId] = abs(PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId] * 100 / PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId]);       // Homing speed per axis (in %)
+                    PEv2_data->PEv2_HomingReturnSpeed[AxisId] = abs(PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[AxisId] * 100 / PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]); // Homing return speed per axis (in % of the homing speed)
+                } else {
+                    PEv2_data->PEv2_HomingSpeed[AxisId] = 30;
+                    PEv2_data->PEv2_HomingReturnSpeed[AxisId] = 50;
+                }
+
+                if (dev->PEv2.HomingSpeed[AxisId] != PEv2_data->PEv2_HomingSpeed[AxisId]) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: HomingSpeed[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_HomingSpeed[AxisId]);
+                    dev->PEv2.HomingSpeed[AxisId] = PEv2_data->PEv2_HomingSpeed[AxisId];
+                    doSetup = true;
+                }
+                if (dev->PEv2.HomingReturnSpeed[AxisId] != PEv2_data->PEv2_HomingReturnSpeed[AxisId]) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: HomingReturnSpeed[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_HomingReturnSpeed[AxisId]);
+                    dev->PEv2.HomingReturnSpeed[AxisId] = PEv2_data->PEv2_HomingReturnSpeed[AxisId];
+                    doSetup = true;
+                }
+
+                if (dev->PEv2.MaxSpeed[AxisId] != PEv2_data->PEv2_MaxSpeed[AxisId] / 1000 && PEv2_data->PEv2_MaxSpeed[AxisId] > 0) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: MaxSpeed[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_MaxSpeed[AxisId]);
+                    dev->PEv2.MaxSpeed[AxisId] = PEv2_data->PEv2_MaxSpeed[AxisId] / 1000;
+                    doSetup = true;
+                } else if (PEv2_data->PEv2_MaxSpeed[AxisId] == 0 && dev->PEv2.MaxSpeed[AxisId] == 0) {
+                    PEv2_data->PEv2_MaxSpeed[AxisId] = 1;
+                    dev->PEv2.MaxSpeed[AxisId] = 1000;
+                    doSetup = true;
+                }
+                int relevantdigitsfactor = 1000;
+                int unitconversionfactor = 1000000;
+                if ((int)(dev->PEv2.MaxAcceleration[AxisId] * unitconversionfactor * relevantdigitsfactor) != (int)(PEv2_data->PEv2_MaxAcceleration[AxisId] * relevantdigitsfactor)) {
                     rtapi_print_msg(RTAPI_MSG_ERR,
-                                    "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet(%d) != "
-                                    "PK_OK\n",
-                                    __FILE__, __FUNCTION__, AxisId);
+                                    "PoKeys: %s:%s: MaxAcceleration[%d] = %d ; "
+                                    "dev->PEv2.MaxAcceleration = %d \n",
+                                    __FILE__, __FUNCTION__, AxisId, (int)(PEv2_data->PEv2_MaxAcceleration[AxisId] * 1000), (int)(dev->PEv2.MaxAcceleration[AxisId] * 1000000 * 1000));
+                    dev->PEv2.MaxAcceleration[AxisId] = PEv2_data->PEv2_MaxAcceleration[AxisId] / unitconversionfactor;
+                    doSetup = true;
+                }
+
+                if ((int)(dev->PEv2.MaxDecceleration[AxisId] * unitconversionfactor * relevantdigitsfactor) != (int)(PEv2_data->PEv2_MaxDecceleration[AxisId] * relevantdigitsfactor)) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: MaxDecceleration[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_MaxDecceleration[AxisId]);
+                    dev->PEv2.MaxDecceleration[AxisId] = PEv2_data->PEv2_MaxDecceleration[AxisId] / unitconversionfactor;
+                    doSetup = true;
+                }
+
+                /*
+                            Section: Soft limits
+                            */
+                // float LimitOffset = 0.0;
+                if (PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId] > PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId]) {
+
+                    if (PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] != abs(PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId])) {
+                        // in pokeys only positive values are allowed - Shift reference to 0 and make sure it is positive
+                        PEv2_data->PEv2_PositionOffset[AxisId] = PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId] - PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId]; // shift reference to 0 and make sure it is positive
+                    } else {
+                        // PEv2_stepgen_HOME[AxisId]
+                        PEv2_data->PEv2_PositionOffset[AxisId] = 0;
+                    }
+
+                    if (PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] == 0) {
+                        PEv2_data->PEv2_PositionScale[AxisId] = 1;
+                    } else {
+                        PEv2_data->PEv2_PositionScale[AxisId] = PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId];
+                    }
+
+                    PEv2_data->PEv2_HomePosition[AxisId] = (PEv2_data->PEv2_PositionOffset[AxisId] + PEv2_data->PEv2_stepgen_HOME[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId];
+                    PEv2_data->PEv2_digin_SoftLimit_PosMax[AxisId] = (PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId] + PEv2_data->PEv2_PositionOffset[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId]; // Soft limit maximum position
+                    PEv2_data->PEv2_digin_SoftLimit_PosMin[AxisId] = (PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] + PEv2_data->PEv2_PositionOffset[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId]; // Soft limit minimum position
+
+                    PEv2_data->PEv2_ZeroPosition[AxisId] = PEv2_data->PEv2_PositionOffset[AxisId] * PEv2_data->PEv2_PositionScale[AxisId];
+                    PEv2_data->PEv2_ArmPosition[AxisId] = (PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] + PEv2_data->PEv2_PositionOffset[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId];
+
+                } else {
+                    // for pokeys MaxLimits must be higher than MinLimits otherwise machine will not move
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: MaxLimit[%d] = %d ; MinLimit[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId], AxisId, PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId]);
+
+                    if (PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId] != abs(PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId])) {
+                        // in pokeys only positive values are allowed - Shift reference to 0 and make sure it is positive
+                        PEv2_data->PEv2_PositionOffset[AxisId] = PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] - PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId]; // shift reference to 0 and make sure it is positive
+                    } else {
+                        // PEv2_stepgen_HOME[AxisId]
+                        PEv2_data->PEv2_PositionOffset[AxisId] = 0;
+                    }
+
+                    if (PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] == 0) {
+                        PEv2_data->PEv2_PositionScale[AxisId] = 0 - 1;
+                    } else {
+                        PEv2_data->PEv2_PositionScale[AxisId] = PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] * (0 - 1);
+                    }
+
+                    PEv2_data->PEv2_digin_SoftLimit_PosMax[AxisId] = (PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] + PEv2_data->PEv2_PositionOffset[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId]; // Soft limit maximum position
+                    PEv2_data->PEv2_digin_SoftLimit_PosMin[AxisId] = (PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId] + PEv2_data->PEv2_PositionOffset[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId]; // Soft limit minimum position
+
+                    PEv2_data->PEv2_HomePosition[AxisId] = (PEv2_data->PEv2_PositionOffset[AxisId] + PEv2_data->PEv2_stepgen_HOME[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId];
+                    PEv2_data->PEv2_digin_SoftLimit_PosMax[AxisId] = (PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId] + PEv2_data->PEv2_PositionOffset[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId]; // Soft limit maximum position
+                    PEv2_data->PEv2_digin_SoftLimit_PosMin[AxisId] = (PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] + PEv2_data->PEv2_PositionOffset[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId]; // Soft limit minimum position
+
+                    PEv2_data->PEv2_ZeroPosition[AxisId] = PEv2_data->PEv2_PositionOffset[AxisId] * PEv2_data->PEv2_PositionScale[AxisId];
+                    PEv2_data->PEv2_ArmPosition[AxisId] = (PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId] + PEv2_data->PEv2_PositionOffset[AxisId]) * PEv2_data->PEv2_PositionScale[AxisId];
+
+                    // AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 1, true);  // PK_AC_INVERTED ;
+                    // AxesConfig[AxisId] = Set_BitOfByte(AxesConfig[AxisId], 5, true);  // PK_AC_SOFT_LIMIT_ENABLED ;
+                }
+                if (dev->PEv2.SoftLimitMinimum[AxisId] != PEv2_data->PEv2_SoftLimitMinimum[AxisId]) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: SoftLimitMinimum[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_SoftLimitMinimum[AxisId]);
+                    dev->PEv2.SoftLimitMinimum[AxisId] = PEv2_data->PEv2_SoftLimitMinimum[AxisId];
+                    doSetup = true;
+                }
+                if (dev->PEv2.SoftLimitMaximum[AxisId] != PEv2_data->PEv2_SoftLimitMaximum[AxisId]) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: SoftLimitMaximum[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_SoftLimitMaximum[AxisId]);
+                    dev->PEv2.SoftLimitMaximum[AxisId] = PEv2_data->PEv2_SoftLimitMaximum[AxisId];
+                    doSetup = true;
+                }
+
+                if (dev->PEv2.AxisEnableOutputPins[AxisId] != PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId]) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: AxisEnableOutputPins[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId]);
+                    dev->PEv2.AxisEnableOutputPins[AxisId] = PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId];
+                    doSetup = true;
+                }
+                if (PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] != 0) { // check if pin is parametrized in HAL
+                    if (IO_data->Pin[PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - 1].PinFunction != PK_PinCap_digitalOutput) {
+                        IO_data->Pin[PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - 1].PinFunction = PK_PinCap_digitalOutput;
+                    }
+                    Pins_DigitalValueSet_ignore[PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - 1] = true;
+                }
+                if (dev->PEv2.InvertAxisEnable[AxisId] != PEv2_data->PEv2_digout_AxisEnable_invert[AxisId]) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: InvertAxisEnable[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_digout_AxisEnable_invert[AxisId]);
+                    dev->PEv2.InvertAxisEnable[AxisId] = PEv2_data->PEv2_digout_AxisEnable_invert[AxisId];
+                    doSetup = true;
+                }
+                if (dev->PEv2.FilterLimitMSwitch[AxisId] != PEv2_data->PEv2_digin_LimitN_Filter[AxisId]) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: FilterLimitMSwitch[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_digin_LimitN_Filter[AxisId]);
+                    dev->PEv2.FilterLimitMSwitch[AxisId] = PEv2_data->PEv2_digin_LimitN_Filter[AxisId];
+                    doSetup = true;
+                }
+                if (dev->PEv2.FilterLimitPSwitch[AxisId] != PEv2_data->PEv2_digin_LimitP_Filter[AxisId]) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: FilterLimitPSwitch[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_digin_LimitP_Filter[AxisId]);
+                    dev->PEv2.FilterLimitPSwitch[AxisId] = PEv2_data->PEv2_digin_LimitP_Filter[AxisId];
+                    doSetup = true;
+                }
+                if (dev->PEv2.FilterHomeSwitch[AxisId] != PEv2_data->PEv2_digin_Home_Filter[AxisId]) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: FilterHomeSwitch[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_digin_Home_Filter[AxisId]);
+                    dev->PEv2.FilterHomeSwitch[AxisId] = PEv2_data->PEv2_digin_Home_Filter[AxisId];
+                    doSetup = true;
+                }
+
+                /*
+                            Section: HomingAlgorithm
+                            */
+                int HomingAlgorithm = 0;
+                if (PEv2_data->PEv2_HomeAlg_OnHome_Stop[AxisId] != 0) {
+                    HomingAlgorithm |= PK_PEv2Homing_OnHomeStop;
+                }
+                if (PEv2_data->PEv2_HomeAlg_OnHome_ArmEncoder[AxisId] != 0) {
+                    HomingAlgorithm |= PK_PEv2Homing_OnHomeArmEncoder;
+                }
+                if (PEv2_data->PEv2_HomeAlg_OnHome_RevDirection[AxisId] != 0) {
+                    HomingAlgorithm |= PK_PEv2Homing_OnHomeReverseDirection;
+                }
+                if (PEv2_data->PEv2_HomeAlg_OnHome_ReducedSpeed[AxisId] != 0) {
+                    HomingAlgorithm |= PK_PEv2Homing_OnHomeReducedSpeed;
+                }
+                if (PEv2_data->PEv2_HomeAlg_OutHome_Stop[AxisId] != 0) {
+                    HomingAlgorithm |= PK_PEv2Homing_OutHomeStop;
+                }
+                if (PEv2_data->PEv2_HomeAlg_OutHome_ArmEncoder[AxisId] != 0) {
+                    HomingAlgorithm |= PK_PEv2Homing_OutHomeArmEncoder;
+                }
+                if (PEv2_data->PEv2_HomeAlg_OutHome_RevDirection[AxisId] != 0) {
+                    HomingAlgorithm |= PK_PEv2Homing_OutHomeReverseDirection;
+                }
+                if (PEv2_data->PEv2_HomeAlg_OutHome_ReducedSpeed[AxisId] != 0) {
+                    HomingAlgorithm |= PK_PEv2Homing_OutHomeReducedSpeed;
+                }
+                if (PEv2_data->PEv2_HomingAlgorithm[AxisId] != HomingAlgorithm) {
+                    PEv2_data->PEv2_HomingAlgorithm[AxisId] = HomingAlgorithm;
+                }
+                if (dev->PEv2.HomingAlgorithm[AxisId] != PEv2_data->PEv2_HomingAlgorithm[AxisId]) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: HomingAlgorithm[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_HomingAlgorithm[AxisId]);
+                    dev->PEv2.HomingAlgorithm[AxisId] = PEv2_data->PEv2_HomingAlgorithm[AxisId];
+                    doSetup = true;
+                }
+
+                if (PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId] != 0) {
+                    PEv2_data->PEv2_HomeBackOffDistance[AxisId] = PEv2_data->PEv2_stepgen_HOME_OFFSET[AxisId] * PEv2_data->PEv2_stepgen_STEP_SCALE[AxisId]; // Home position offset
+                }
+                if (dev->PEv2.HomeBackOffDistance[AxisId] != PEv2_data->PEv2_HomeBackOffDistance[AxisId]) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: HomeBackOffDistance[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_HomeBackOffDistance[AxisId]);
+                    dev->PEv2.HomeBackOffDistance[AxisId] = PEv2_data->PEv2_HomeBackOffDistance[AxisId];
+                    doSetup = true;
+                }
+                /*
+                             Section: MPG jog settings
+                            */
+                if (dev->PEv2.MPGjogEncoder[AxisId] != PEv2_data->PEv2_MPGjogEncoder[AxisId]) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: MPGjogEncoder[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_MPGjogEncoder[AxisId]);
+                    dev->PEv2.MPGjogEncoder[AxisId] = PEv2_data->PEv2_MPGjogEncoder[AxisId];
+
+                    doSetup = true;
+                }
+                if (dev->PEv2.MPGjogDivider[AxisId] != PEv2_data->PEv2_MPGjogDivider[AxisId]) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: MPGjogDivider[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_MPGjogDivider[AxisId]);
+                    dev->PEv2.MPGjogDivider[AxisId] = PEv2_data->PEv2_MPGjogDivider[AxisId];
+                    doSetup = true;
+                }
+                if (dev->PEv2.MPGjogMultiplier[AxisId] != PEv2_data->PEv2_MPGjogMultiplier[AxisId]) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: MPGjogMultiplier[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_MPGjogMultiplier[AxisId]);
+                    dev->PEv2.MPGjogMultiplier[AxisId] = PEv2_data->PEv2_MPGjogMultiplier[AxisId];
+                    doSetup = true;
+                }
+                /*if(dev->PEv2.AxisSignalOptions[AxisId] != PEv2_data->PEv2_AxisSignalOptions[AxisId]){
+                                    PEv2_data->PEv2_AxisSignalOptions[AxisId] = dev->PEv2.AxisSignalOptions[AxisId];
+                                    doSetup = true;
+                            }*/
+                if (dev->PEv2.FilterProbeInput != PEv2_data->PEv2_digin_Probe_Filter[AxisId]) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: FilterProbeInput[%d] = %d\n", __FILE__, __FUNCTION__, AxisId, PEv2_data->PEv2_digin_Probe_Filter[AxisId]);
+                    dev->PEv2.FilterProbeInput = PEv2_data->PEv2_digin_Probe_Filter[AxisId];
+                    doSetup = true;
+                }
+
+                if (doSetup == true) {
                     if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK) {
                         rtapi_print_msg(RTAPI_MSG_ERR,
-                                        "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet(%d) "
-                                        "!= PK_OK\n",
+                                        "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet(%d) != "
+                                        "PK_OK\n",
                                         __FILE__, __FUNCTION__, AxisId);
-                    }
-                } else {
-                    rtapi_print_msg(RTAPI_MSG_DBG,
-                                    "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet(%d) == "
-                                    "PK_OK\n",
-                                    __FILE__, __FUNCTION__, AxisId);
-#ifdef ULAPI
-                    usleep(sleepdur);
-#endif
-                    if (PK_SaveConfiguration(dev) == PK_OK) {
-                        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SaveConfiguration() == PK_OK\n", __FILE__, __FUNCTION__);
+                        if (PK_PEv2_AxisConfigurationSet(dev) != PK_OK) {
+                            rtapi_print_msg(RTAPI_MSG_ERR,
+                                            "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet(%d) "
+                                            "!= PK_OK\n",
+                                            __FILE__, __FUNCTION__, AxisId);
+                        }
+                    } else {
+                        rtapi_print_msg(RTAPI_MSG_DBG,
+                                        "PoKeys: %s:%s: PK_PEv2_AxisConfigurationSet(%d) == "
+                                        "PK_OK\n",
+                                        __FILE__, __FUNCTION__, AxisId);
 #ifdef ULAPI
                         usleep(sleepdur);
 #endif
-                        //	PK_PEv2_PulseEngineReboot(dev);
-                        usleep(1000000);
-                    } else {
-                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_SaveConfiguration() != PK_OK\n", __FILE__, __FUNCTION__);
-                    }
-                }
+                        if (PK_SaveConfiguration(dev) == PK_OK) {
+                            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_SaveConfiguration() == PK_OK\n", __FILE__, __FUNCTION__);
 #ifdef ULAPI
-                usleep(sleepdur);
+                            usleep(sleepdur);
 #endif
+                            //	PK_PEv2_PulseEngineReboot(dev);
+                            usleep(1000000);
+                        } else {
+                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_SaveConfiguration() != PK_OK\n", __FILE__, __FUNCTION__);
+                        }
+                    }
+#ifdef ULAPI
+                    usleep(sleepdur);
+#endif
+                }
+                return ret;
             }
+        } else {
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_AxisConfigurationSet(%d) != PK_OK\n", __FILE__, __FUNCTION__, AxisId);
             return ret;
         }
-    } else {
-        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_AxisConfigurationSet(%d) != PK_OK\n", __FILE__, __FUNCTION__, AxisId);
         return ret;
     }
-    return ret;
-}
 #ifdef RTAPI
-EXPORT_SYMBOL(PEv2_AxisConfigurationSet);
-EXPORT_SYMBOL(PKPEv2_export_pins);
-EXPORT_SYMBOL(PEv2_StatusGet);
-EXPORT_SYMBOL(PEv2_Status2Get);
-EXPORT_SYMBOL(PEv2_ExternalOutputsSet);
-EXPORT_SYMBOL(PEv2_PulseEngineSetup);
-EXPORT_SYMBOL(PEv2_AdditionalParametersGet);
-EXPORT_SYMBOL(PEv2_AdditionalParametersSet);
-EXPORT_SYMBOL(PEv2_AxisConfigurationGet);
-EXPORT_SYMBOL(PEv2_AxisConfigurationSet);
+    EXPORT_SYMBOL(PEv2_AxisConfigurationSet);
+    EXPORT_SYMBOL(PKPEv2_export_pins);
+    EXPORT_SYMBOL(PEv2_StatusGet);
+    EXPORT_SYMBOL(PEv2_Status2Get);
+    EXPORT_SYMBOL(PEv2_ExternalOutputsSet);
+    EXPORT_SYMBOL(PEv2_PulseEngineSetup);
+    EXPORT_SYMBOL(PEv2_AdditionalParametersGet);
+    EXPORT_SYMBOL(PEv2_AdditionalParametersSet);
+    EXPORT_SYMBOL(PEv2_AxisConfigurationGet);
+    EXPORT_SYMBOL(PEv2_AxisConfigurationSet);
 #endif
 #ifdef MODULE_INFO
-MODULE_INFO(linuxcnc, "pin:PEv2.deb.out:s32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.deb.estop:s32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.axxisout:s32:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.ishoming:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.inposition:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.PosMode:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.PosModeAct:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.velmode_count:s32:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.posmode_count:s32:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.doMove:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.RefSpeed:float:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.RefPos:float:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.RefPosSpeed:float:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.nrOfAxes:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.maxPulseFrequency:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.bufferDepth:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.slotTiming:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.params.ApplyIniSettings:bit:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.AxesState:u32:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.AxesCommand:u32:8:in::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.home_sequence:s32:8:rw:home_sequence:None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.AxesConfig:u32:8:out::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.AxisEnabled:s32:8:rw:Axis enabled:None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.AxisInverted:s32:8:rw:Axis inverted:None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.AxisInternalPlanner:s32:8:rw:Axis uses "
-                      "internal motion planner:None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.AxisPositionMode:s32:8:rw:Internal motion "
-                      "planner for this axis is in position mode:None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.AxisInvertedHome:s32:8:rw:Axis homing "
-                      "direction is inverted:None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.AxisSoftLimitEnabled:s32:8:rw:Use "
-                      "soft-limits for this axis:None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.AxisEnabledMasked:s32:8:rw:Use output "
-                      "enable pin masking:None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.SoftLimitMaximum:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.SoftLimitMinimum:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.SoftLimit.PosMin:u32:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.SoftLimit.PosMax:u32:8:rw::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.HomingSpeed:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.HomingReturnSpeed:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomingAlgorithm:u32:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OnHome.Stop:bit:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OnHome.ArmEncoder:bit:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OnHome.RevDirection:bit:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OnHome.ReducedSpeed:bit:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OutHome.Stop:bit:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OutHome.ArmEncoder:bit:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OutHome.RevDirection:bit:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OutHome.ReducedSpeed:bit:8:rw::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.HomeOffsets:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.Offset:u32:8:rw::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.ProbePosition:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.ProbeMaxPosition:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.CurrentPosition:s32:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.PositionSetup:s32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.ReferencePositionSpeed:u32:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.MaxSpeed:float:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.MaxAcceleration:float:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.MaxDecceleration:float:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-vel-cmd:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-pos-cmd:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-pos-fb:float:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-out-home:bit:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-in-position:bit:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-kb-jog-active:bit:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-wheel-jog-active:bit:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.TYPE:s32:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.STEPGEN_MAXVEL:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.STEPGEN_MAXACCEL:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.params.Feedback_Encoder_Id:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.DEADBAND:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.MAX-OUTPUT:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.ENCODER-SCALE:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.STEP-SCALE:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.MIN-LIMIT:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.MAX-LIMIT:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME-OFFSET:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME-SEARCH_VEL:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME-LATCH-VEL:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME-FINAL-VEL:float:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME-IGNORE-LIMITS:s32:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.MPGjogMultiplier:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.MPGjogEncoder:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.MPGjogDivider:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.AxesSwitchConfig:u32:8:rw::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitN.Enabled:bit:8:rw:Limit- is "
-                      "available (PK_ASO_SWITCH_LIMIT_N):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitP.Enabled:bit:8:rw:Limit+ is "
-                      "available (PK_ASO_SWITCH_LIMIT_P):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.Enabled:bit:8:rw:Invert "
-                      "home-switch (PK_ASO_SWITCH_HOME):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.OnLimitN:bit:8:rw:Shared with "
-                      "Limit- (PK_ASO_SWITCH_COMBINED_LN_H):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.OnLimitP:bit:8:rw:Shared with "
-                      "Limit+ (PK_ASO_SWITCH_COMBINED_LP_H):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitN.invert:bit:8:rw:Invert limit- "
-                      "(PK_ASO_SWITCH_INVERT_LIMIT_N):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitP.invert:bit:8:rw:Invert limit+ "
-                      "(PK_ASO_SWITCH_INVERT_LIMIT_P):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.invert:bit:8:rw:Invert "
-                      "home-switch (PK_ASO_SWITCH_INVERT_HOME):None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitN.in:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitN.in-not:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitN.DedicatedInput:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitN.Pin:u32:8:rw:Limit- switch "
-                      "pin (0 for external dedicated input):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitN.Filter:u32:8:rw:Digital "
-                      "filter for limit- switch:None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitP.in:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitP.in-not:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitP.DedicatedInput:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitP.Pin:u32:8:rw:Limit+ switch "
-                      "pin (0 for external dedicated input):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitP.Filter:u32:8:rw:Digital "
-                      "filter for limit+ switch:None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Home.in:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Home.in-not:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Home.DedicatedInput:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.Pin:u32:8:rw:Home switch pin (0 "
-                      "for external dedicated input):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.Filter:u32:8:rw:Digital filter "
-                      "for home-switch:None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digout.AxisEnable.out:bit:8:in::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digout.AxisEnable.Pin:u32:8:rw:Axis enabled output "
-                      "pin (0 for external dedicated output):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.#.digout.AxisEnable.invert:bit:8:rw:Invert "
-                      "axis enable signal:None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.HomeBackOffDistance:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.PulseEngineEnabled:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.PulseGeneratorType:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.PG_swap_stepdir:bit:0:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.PG_extended_io:bit:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.ChargePumpEnabled:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.PulseEngineActivated:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.PulseEngineState:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Error.in:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Error.in-not:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.MiscInputStatus:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.digin.Misc-#.in:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.digin.Misc-#.in-not:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.LimitOverride:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.LimitOverrideSetup:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.digin.Probed.in:bit:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Probe.in:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Probe.in-not:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.digin.Emergency.Pin:u32:0:rw::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.digin.Emergency.in:bit:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.digin.Emergency.in-not:bit:0:out::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.digin.Emergency.invert:u32:0:rw:Emergency "
-                      "switch polarity (set to 1 to invert):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.digout.Emergency.Pin:u32:0:rw:added in component only for "
-                      "estop-out to reset estop (if 0 EmergencyInput will be reused):None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.digout.Emergency.out:bit:0:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.SoftLimit.in:u32:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.AxisEnabledMask:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.AxisEnabledStatesMask:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digout.AxisEnabled.out:bit:8:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.AxisEnabled.in:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.digout.LimitOverride.out:bit:8:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.ExternalRelayOutputs:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.ExternalOCOutputs:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.digout.ExternalRelay-#.out:bit:4:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.digout.ExternalOC-#.out:bit:4:in::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.HomingStartMaskSetup:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.ProbeStartMaskSetup:u32:0:io::None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.digin.Probe.Pin:u32:0:rw:Probe input (0:disabled, "
-                      "1-8:external inputs, 9+ Pin ID-9):None:None");
-MODULE_INFO(linuxcnc, "param:PEv2.digin.Probe.invert:u32:0:rw:Probe input polarity:None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.ProbeStatus:u32:0:out::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.ProbeSpeed:float:0:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.BacklashWidth:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.BacklashRegister:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.#.BacklashAcceleration:u32:8:io::None:None");
-MODULE_INFO(linuxcnc, "pin:PEv2.BacklashCompensationEnabled:u32:0:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.deb.out:s32:0:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.deb.estop:s32:0:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.axxisout:s32:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.ishoming:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.inposition:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.PosMode:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.PosModeAct:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.velmode_count:s32:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.posmode_count:s32:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.doMove:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.RefSpeed:float:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.RefPos:float:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.deb.RefPosSpeed:float:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.nrOfAxes:u32:0:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.maxPulseFrequency:u32:0:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.bufferDepth:u32:0:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.slotTiming:u32:0:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.params.ApplyIniSettings:bit:0:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.AxesState:u32:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.AxesCommand:u32:8:in::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.home_sequence:s32:8:rw:home_sequence:None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.AxesConfig:u32:8:out::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.AxisEnabled:s32:8:rw:Axis enabled:None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.AxisInverted:s32:8:rw:Axis inverted:None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.AxisInternalPlanner:s32:8:rw:Axis uses "
+                          "internal motion planner:None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.AxisPositionMode:s32:8:rw:Internal motion "
+                          "planner for this axis is in position mode:None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.AxisInvertedHome:s32:8:rw:Axis homing "
+                          "direction is inverted:None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.AxisSoftLimitEnabled:s32:8:rw:Use "
+                          "soft-limits for this axis:None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.AxisEnabledMasked:s32:8:rw:Use output "
+                          "enable pin masking:None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.SoftLimitMaximum:u32:8:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.SoftLimitMinimum:u32:8:io::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digin.SoftLimit.PosMin:u32:8:rw::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digin.SoftLimit.PosMax:u32:8:rw::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.HomingSpeed:u32:8:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.HomingReturnSpeed:u32:8:io::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.HomingAlgorithm:u32:8:rw::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OnHome.Stop:bit:8:rw::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OnHome.ArmEncoder:bit:8:rw::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OnHome.RevDirection:bit:8:rw::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OnHome.ReducedSpeed:bit:8:rw::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OutHome.Stop:bit:8:rw::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OutHome.ArmEncoder:bit:8:rw::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OutHome.RevDirection:bit:8:rw::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.HomeAlg.OutHome.ReducedSpeed:bit:8:rw::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.HomeOffsets:u32:8:io::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.Offset:u32:8:rw::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.ProbePosition:u32:8:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.ProbeMaxPosition:u32:8:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.CurrentPosition:s32:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.PositionSetup:s32:8:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.ReferencePositionSpeed:u32:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.MaxSpeed:float:8:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.MaxAcceleration:float:8:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.MaxDecceleration:float:8:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-vel-cmd:float:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-pos-cmd:float:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-pos-fb:float:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-out-home:bit:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-in-position:bit:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-kb-jog-active:bit:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.joint-wheel-jog-active:bit:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.TYPE:s32:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME:float:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.STEPGEN_MAXVEL:float:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.STEPGEN_MAXACCEL:float:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.params.Feedback_Encoder_Id:float:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.DEADBAND:float:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.MAX-OUTPUT:float:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.ENCODER-SCALE:float:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.STEP-SCALE:float:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.MIN-LIMIT:float:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.MAX-LIMIT:float:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME-OFFSET:float:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME-SEARCH_VEL:float:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME-LATCH-VEL:float:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME-FINAL-VEL:float:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.stepgen.HOME-IGNORE-LIMITS:s32:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.MPGjogMultiplier:u32:8:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.MPGjogEncoder:u32:8:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.MPGjogDivider:u32:8:io::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.AxesSwitchConfig:u32:8:rw::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitN.Enabled:bit:8:rw:Limit- is "
+                          "available (PK_ASO_SWITCH_LIMIT_N):None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitP.Enabled:bit:8:rw:Limit+ is "
+                          "available (PK_ASO_SWITCH_LIMIT_P):None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.Enabled:bit:8:rw:Invert "
+                          "home-switch (PK_ASO_SWITCH_HOME):None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.OnLimitN:bit:8:rw:Shared with "
+                          "Limit- (PK_ASO_SWITCH_COMBINED_LN_H):None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.OnLimitP:bit:8:rw:Shared with "
+                          "Limit+ (PK_ASO_SWITCH_COMBINED_LP_H):None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitN.invert:bit:8:rw:Invert limit- "
+                          "(PK_ASO_SWITCH_INVERT_LIMIT_N):None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitP.invert:bit:8:rw:Invert limit+ "
+                          "(PK_ASO_SWITCH_INVERT_LIMIT_P):None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.invert:bit:8:rw:Invert "
+                          "home-switch (PK_ASO_SWITCH_INVERT_HOME):None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitN.in:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitN.in-not:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitN.DedicatedInput:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitN.Pin:u32:8:rw:Limit- switch "
+                          "pin (0 for external dedicated input):None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitN.Filter:u32:8:rw:Digital "
+                          "filter for limit- switch:None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitP.in:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitP.in-not:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.LimitP.DedicatedInput:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitP.Pin:u32:8:rw:Limit+ switch "
+                          "pin (0 for external dedicated input):None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digin.LimitP.Filter:u32:8:rw:Digital "
+                          "filter for limit+ switch:None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Home.in:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Home.in-not:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Home.DedicatedInput:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.Pin:u32:8:rw:Home switch pin (0 "
+                          "for external dedicated input):None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digin.Home.Filter:u32:8:rw:Digital filter "
+                          "for home-switch:None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digout.AxisEnable.out:bit:8:in::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digout.AxisEnable.Pin:u32:8:rw:Axis enabled output "
+                          "pin (0 for external dedicated output):None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.#.digout.AxisEnable.invert:bit:8:rw:Invert "
+                          "axis enable signal:None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.HomeBackOffDistance:u32:8:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.PulseEngineEnabled:u32:0:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.PulseGeneratorType:u32:0:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.PG_swap_stepdir:bit:0:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.PG_extended_io:bit:0:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.ChargePumpEnabled:u32:0:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.PulseEngineActivated:u32:0:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.PulseEngineState:u32:0:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Error.in:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Error.in-not:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.MiscInputStatus:u32:0:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.digin.Misc-#.in:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.digin.Misc-#.in-not:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.LimitOverride:u32:0:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.LimitOverrideSetup:u32:0:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.digin.Probed.in:bit:0:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Probe.in:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.Probe.in-not:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.digin.Emergency.Pin:u32:0:rw::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.digin.Emergency.in:bit:0:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.digin.Emergency.in-not:bit:0:out::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.digin.Emergency.invert:u32:0:rw:Emergency "
+                          "switch polarity (set to 1 to invert):None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.digout.Emergency.Pin:u32:0:rw:added in component only for "
+                          "estop-out to reset estop (if 0 EmergencyInput will be reused):None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.digout.Emergency.out:bit:0:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.SoftLimit.in:u32:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.AxisEnabledMask:u32:0:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.AxisEnabledStatesMask:u32:0:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digout.AxisEnabled.out:bit:8:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digin.AxisEnabled.in:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.digout.LimitOverride.out:bit:8:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.ExternalRelayOutputs:u32:0:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.ExternalOCOutputs:u32:0:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.digout.ExternalRelay-#.out:bit:4:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.digout.ExternalOC-#.out:bit:4:in::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.HomingStartMaskSetup:u32:0:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.ProbeStartMaskSetup:u32:0:io::None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.digin.Probe.Pin:u32:0:rw:Probe input (0:disabled, "
+                          "1-8:external inputs, 9+ Pin ID-9):None:None");
+    MODULE_INFO(linuxcnc, "param:PEv2.digin.Probe.invert:u32:0:rw:Probe input polarity:None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.ProbeStatus:u32:0:out::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.ProbeSpeed:float:0:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.BacklashWidth:u32:8:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.BacklashRegister:u32:8:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.#.BacklashAcceleration:u32:8:io::None:None");
+    MODULE_INFO(linuxcnc, "pin:PEv2.BacklashCompensationEnabled:u32:0:io::None:None");
 #endif // MODULE_INFO
