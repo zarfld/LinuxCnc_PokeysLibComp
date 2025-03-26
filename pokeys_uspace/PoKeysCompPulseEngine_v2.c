@@ -387,7 +387,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                         "PK_PEAxisState_axSTOPPED \n",
                                         __FILE__, __FUNCTION__, i);
                         *(PEv2_data->PEv2_deb_ishoming[i]) = false;
-                       // allhomed = false;
+                        // allhomed = false;
                     }
                     PEv2_deb_out = 310 + i;
                     *(PEv2_data->PEv2_HomingStatus[i]) = PK_Homing_axIDLE;
@@ -418,7 +418,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                         "PK_PEAxisState_axRUNNING \n",
                                         __FILE__, __FUNCTION__, i);
                     }
-                    
+
                     PEv2_deb_out = 330 + i;
                     break;
                 case PK_PEAxisState_axHOMING_RESETTING: // Stopping the axis to reset the position counters
@@ -637,7 +637,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     } else if (intAxesState == PK_PEAxisState_axHOME && Homing_PkHomeFinalizeeDone[i] != true) {
                         // ready to Finalize homing
                         intAxesState = PEAxisStateEx_axReadyToFinalizeHoming;
-                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisState_axHOME - ready to Finalize homing (%d)\n", i, __FILE__, __FUNCTION__,intAxesState);
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisState_axHOME - ready to Finalize homing (%d)\n", i, __FILE__, __FUNCTION__, intAxesState);
 
                         IsHoming[i] = true;
                         Homing_ArmEncodereDone[i] = false;
