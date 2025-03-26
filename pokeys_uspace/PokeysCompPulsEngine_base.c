@@ -1674,7 +1674,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         //     *(PEv2_data->PEv2_index_enable[axis]) = false; // disable index
                         break;
                     case PK_Homing_axARMENCODER:
-                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axARMENCODER\n", __FILE__, __FUNCTION__);
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axARMENCODER (ZeroPosition %d)\n", __FILE__, __FUNCTION__,PEv2_data->PEv2_ZeroPosition[axis]);
                         dev->PEv2.PositionSetup[axis] = PEv2_data->PEv2_ZeroPosition[axis];
                         bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, axis, 1);
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axARMENCODER;
@@ -1686,7 +1686,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         *(PEv2_data->PEv2_index_enable[axis]) = false; // disable index on step after ARMENCODER
                         break;
                     case PK_Homing_axHOMINGFinalMove:
-                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalMove\n", __FILE__, __FUNCTION__);
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalMove (HomePosition %d)\n", __FILE__, __FUNCTION__,(int32_t)PEv2_data->PEv2_HomePosition[axis]);
                         if ((dev->PEv2.CurrentPosition[axis] != (int32_t)PEv2_data->PEv2_HomePosition[axis])) {
                             bool POSITION_MODE_active = Get_BitOfByte(dev->PEv2.AxesConfig[axis], 3);
                             if ((POSITION_MODE_active == false)) {
@@ -1698,6 +1698,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
 
                             // last move to home position
                             dev->PEv2.ReferencePositionSpeed[axis] = (int32_t)PEv2_data->PEv2_HomePosition[axis];
+                            *(PEv2_data->PEv2_ReferencePosition[axis]) = (int)PEv2_data->PEv2_HomePosition[axis];
                             *(PEv2_data->PEv2_ReferencePositionSpeed[axis]) = (int)PEv2_data->PEv2_HomePosition[axis];
                             do_move = true;
                             *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGFinalMove;
