@@ -1770,32 +1770,32 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         }
                     }
                 }
-                    break;
-                    case PK_Homing_axHOMINGWaitFinalMove:
-                        break;
-                    case PK_Homing_axHOMINGFinalMove:
-                        if (do_move == true) {
-                            rtapi_print_msg(RTAPI_MSG_DBG, "PK_PEv2: PEv2_PulseEngineMove  \n");
-                            if (PK_PEv2_PulseEngineMove(dev) != PK_OK) {
-                                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PulseEngineMove!=PK_OK\n", __FILE__, __FUNCTION__);
-                            } else {
-                                rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_PulseEngineMove == PK_OK \n" __FILE__, __FUNCTION__);
-                            }
+                break;
+            case PK_Homing_axHOMINGWaitFinalMove:
+                break;
+            case PK_Homing_axHOMINGFinalMove:
+                if (do_move == true) {
+                    rtapi_print_msg(RTAPI_MSG_DBG, "PK_PEv2: PEv2_PulseEngineMove  \n");
+                    if (PK_PEv2_PulseEngineMove(dev) != PK_OK) {
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PulseEngineMove!=PK_OK\n", __FILE__, __FUNCTION__);
+                    } else {
+                        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PEv2_PulseEngineMove == PK_OK \n" __FILE__, __FUNCTION__);
+                    }
 #ifdef ULAPI
-                            usleep(sleepdur);
+                    usleep(sleepdur);
 #endif
-                        }
-                        break;
-                    case PK_Homing_axHOMINGCancel:
-                        break;
-                    case PK_Homing_axHOMINGFinalize:
-                        dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
-                        PK_PEv2_HomingFinish(dev);
-                        break;
                 }
-                return 0;
+                break;
+            case PK_Homing_axHOMINGCancel:
+                break;
+            case PK_Homing_axHOMINGFinalize:
+                dev->PEv2.HomingStartMaskSetup = HomingStartMaskSetup;
+                PK_PEv2_HomingFinish(dev);
+                break;
         }
+        return 0;
     }
+}
 
 /**
  * @brief Retrieves and parses the axis configuration from the PoKeys Pulse Engine v2.
