@@ -390,7 +390,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         // allhomed = false;
                     }
                     PEv2_deb_out = 310 + i;
-                    *(PEv2_data->PEv2_HomingStatus[i]) = PK_Homing_axIDLE;
+                  //  *(PEv2_data->PEv2_HomingStatus[i]) = PK_Homing_axIDLE;
                     // PEv2_digin_AxisEnabled_in(i) = false;
                     // PEv2_digin_LimitOverride_in(i) = false;
 
@@ -664,7 +664,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i])) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER\n", __FILE__, __FUNCTION__, i);
                     }
-                    if ((Homing_PkHomeFinalizeeDone[i] == true && Homing_ArmEncodereDone[i] != true)) {
+                    if ((intAxesState==PK_PEAxisState_axREADY) && (Homing_PkHomeFinalizeeDone[i] == true) && (Homing_ArmEncodereDone[i] != true)) {
                         // PK_PEAxisState_axHOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
 
                         if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGFinalize, PK_Homing_axARMENCODER) == 0) {
