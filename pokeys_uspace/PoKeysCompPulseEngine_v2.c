@@ -584,8 +584,6 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
             }
 
-            
-
             switch (*(PEv2_data->PEv2_AxesCommand[i])) {
                 case PK_PEAxisCommand_axIDLE:
                     if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i])) {
@@ -668,7 +666,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         if (repAxxiState[i] != intAxesState) {
                             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisState_axHOME - ready to Finalize homing\n", __FILE__, __FUNCTION__, i);
                         }
-                    } else if (intAxesState == PK_PEAxisState_axSTOPPED || intAxesState == PK_PEAxisState_axREADY ){
+                    } else if (intAxesState == PK_PEAxisState_axSTOPPED || intAxesState == PK_PEAxisState_axREADY) {
                         if (!Homing_PkHomeFinalizeeDone[i] && IsHoming[i]) {
                             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisState_axSTOPPED - ready to Finalize homing (%d)\n", __FILE__, __FUNCTION__, i, intAxesState);
                             intAxesState = PEAxisStateEx_axReadyToFinalizeHoming;
@@ -676,39 +674,36 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisState_axSTOPPED - Finalize homing done(%d)\n", __FILE__, __FUNCTION__, i, intAxesState);
                             if (intAxesState == PK_PEAxisState_axREADY) {
                                 intAxesState = PEAxisStateEx_axReadyToArmEncoder;
-                            }
-                            else {
+                            } else {
                                 intAxesState = PEAxisStateEx_axReadyToArmEncoder;
                             }
-                            
                         }
                     }
 
                     break;
                 case PK_PEAxisCommand_axARMENCODER:
-                if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) || oldAxxiState[i] != intAxesState) {
-                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER\n", __FILE__, __FUNCTION__, i);
-                }
-                intAxesState = PEAxisStateEx_axReadyToArmEncoder;
-                //rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER - Homing_PkHomeFinalizeeDone: %d Homing_ArmEncodereDone:%d\n", __FILE__, __FUNCTION__, i,Homing_PkHomeFinalizeeDone[i], Homing_ArmEncodereDone[i]);
-                if ((intAxesState == PK_PEAxisState_axREADY) && (Homing_PkHomeFinalizeeDone[i]) && (!Homing_ArmEncodereDone[i])) {
-                    // PEAxisStateEx_HOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
-                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER (intAxesState == PK_PEAxisState_axREADY) && (Homing_PkHomeFinalizeeDone[i]) && (!Homing_ArmEncodereDone[i])\n", __FILE__, __FUNCTION__, i);
-                    if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGFinalize, PK_Homing_axARMENCODER) == 0) {
-                        //rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER - PEAxisStateEx_HOMINGARMENCODER\n", __FILE__, __FUNCTION__, i);
-                        intAxesState = PEAxisStateEx_HOMINGARMENCODER;
-                        Homing_ArmEncodereDone[i] = true;
+                    if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) || oldAxxiState[i] != intAxesState) {
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER\n", __FILE__, __FUNCTION__, i);
                     }
-                    /*dev->PEv2.PositionSetup[i] = PEv2_data->PEv2_ZeroPosition[i];
-                    bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);*/
-                }
-                else{
-                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER !(intAxesState == PK_PEAxisState_axREADY) && (Homing_PkHomeFinalizeeDone[i]) && (!Homing_ArmEncodereDone[i])\n", __FILE__, __FUNCTION__, i);
-                }
-                if (repAxxiState[i] != intAxesState) {
-                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER: new reported AxesState:  %s(%d)\n", __FILE__, __FUNCTION__, i,PK_PEAxisState_names[intAxesState],intAxesState);
-                }
-                break;
+                    intAxesState = PEAxisStateEx_axReadyToArmEncoder;
+                    // rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER - Homing_PkHomeFinalizeeDone: %d Homing_ArmEncodereDone:%d\n", __FILE__, __FUNCTION__, i,Homing_PkHomeFinalizeeDone[i], Homing_ArmEncodereDone[i]);
+                    if ((intAxesState == PK_PEAxisState_axREADY) && (Homing_PkHomeFinalizeeDone[i]) && (!Homing_ArmEncodereDone[i])) {
+                        // PEAxisStateEx_HOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER (intAxesState == PK_PEAxisState_axREADY) && (Homing_PkHomeFinalizeeDone[i]) && (!Homing_ArmEncodereDone[i])\n", __FILE__, __FUNCTION__, i);
+                        if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGFinalize, PK_Homing_axARMENCODER) == 0) {
+                            // rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER - PEAxisStateEx_HOMINGARMENCODER\n", __FILE__, __FUNCTION__, i);
+                            intAxesState = PEAxisStateEx_HOMINGARMENCODER;
+                            Homing_ArmEncodereDone[i] = true;
+                        }
+                        /*dev->PEv2.PositionSetup[i] = PEv2_data->PEv2_ZeroPosition[i];
+                        bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);*/
+                    } else {
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER !(intAxesState == PK_PEAxisState_axREADY) && (Homing_PkHomeFinalizeeDone[i]) && (!Homing_ArmEncodereDone[i])\n", __FILE__, __FUNCTION__, i);
+                    }
+                    if (repAxxiState[i] != intAxesState) {
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER: new reported AxesState:  %s(%d)\n", __FILE__, __FUNCTION__, i, PK_PEAxisState_names[intAxesState], intAxesState);
+                    }
+                    break;
                 case PK_PEAxisCommand_axHOMINGWaitFinalMove:
                     if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i])) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGWaitFinalMove\n", __FILE__, __FUNCTION__, i);
