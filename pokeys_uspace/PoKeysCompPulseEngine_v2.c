@@ -382,12 +382,12 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 case PK_PEAxisState_axSTOPPED: // Axis is stopped
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axSTOPPED\n", __FILE__, __FUNCTION__);
                     if (oldAxxiState[i] != intAxesState) {
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(RTAPI_MSG_ERR,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axSTOPPED \n",
                                         __FILE__, __FUNCTION__, i);
                         *(PEv2_data->PEv2_deb_ishoming[i]) = false;
-                        allhomed = false;
+                       // allhomed = false;
                     }
                     PEv2_deb_out = 310 + i;
                     *(PEv2_data->PEv2_HomingStatus[i]) = PK_Homing_axIDLE;
@@ -398,7 +398,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 case PK_PEAxisState_axREADY: // Axis ready
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axREADY\n", __FILE__, __FUNCTION__);
                     if (oldAxxiState[i] != intAxesState) {
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(RTAPI_MSG_ERR,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axREADY \n",
                                         __FILE__, __FUNCTION__, i);
@@ -413,38 +413,18 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 case PK_PEAxisState_axRUNNING: // Axis is running
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axRUNNING\n", __FILE__, __FUNCTION__);
                     if (oldAxxiState[i] != intAxesState) {
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(RTAPI_MSG_ERR,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axRUNNING \n",
                                         __FILE__, __FUNCTION__, i);
                     }
-                    if (Homing_FinalMoveActive[i] != false) {
-                        //	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
-                        intAxesState = 19;
-                        if ((dev->PEv2.CurrentPosition[i] != (int32_t)PEv2_data->PEv2_HomePosition[i])) {
-                            intAxesState = PEAxisStateEx_HOMINGFINALMOVE;
-                            InPosition[i] = false;
-                        } else {
-                            rtapi_print_msg(RTAPI_MSG_ERR,
-                                            "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
-                                            "PK_PEAxisState_axHOME - InPosition[i] = "
-                                            "true\n",
-                                            __FILE__, __FUNCTION__, i);
-                            InPosition[i] = true;
-                            *(PEv2_data->PEv2_deb_ishoming[i]) = false;
-                            Homing_FinalMoveActive[i] = false;
-                        }
-                    } else if (Homing_FinalMoveDone[i] != false) {
-                        //	PEAxisStateEx_HOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
-                        intAxesState = PK_PEAxisState_axHOME;
-                    }
-                    // *(PEv2_data->PEv2_deb_ishoming[i]) = false;
+                    
                     PEv2_deb_out = 330 + i;
                     break;
                 case PK_PEAxisState_axHOMING_RESETTING: // Stopping the axis to reset the position counters
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axHOMING_RESETTING\n", __FILE__, __FUNCTION__);
                     if (oldAxxiState[i] != intAxesState) {
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(RTAPI_MSG_ERR,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axHOMING_RESETTING \n",
                                         __FILE__, __FUNCTION__, i);
@@ -534,7 +514,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 case PK_PEAxisState_axPROBED: // Probing completed for this axis
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axPROBED\n", __FILE__, __FUNCTION__);
                     if (oldAxxiState[i] != intAxesState) {
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(RTAPI_MSG_ERR,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axPROBED \n",
                                         __FILE__, __FUNCTION__, i);
@@ -547,7 +527,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 case PK_PEAxisState_axPROBESTART: // Probing procedure is starting on axis
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axPROBESTART\n", __FILE__, __FUNCTION__);
                     if (oldAxxiState[i] != intAxesState) {
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(RTAPI_MSG_ERR,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axPROBESTART \n",
                                         __FILE__, __FUNCTION__, i);
@@ -560,7 +540,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 case PK_PEAxisState_axPROBESEARCH: // Probing procedure - probing
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axPROBESEARCH\n", __FILE__, __FUNCTION__);
                     if (oldAxxiState[i] != intAxesState) {
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(RTAPI_MSG_ERR,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axPROBESEARCH \n",
                                         __FILE__, __FUNCTION__, i);
@@ -587,7 +567,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 case PK_PEAxisState_axLIMIT: // Axis limit tripped
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axLIMIT\n", __FILE__, __FUNCTION__);
                     if (oldAxxiState[i] != intAxesState) {
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(RTAPI_MSG_ERR,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axLIMIT \n",
                                         __FILE__, __FUNCTION__, i);
@@ -657,7 +637,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     } else if (intAxesState == PK_PEAxisState_axHOME && Homing_PkHomeFinalizeeDone[i] != true) {
                         // ready to Finalize homing
                         intAxesState = PEAxisStateEx_axReadyToFinalizeHoming;
-                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisState_axHOME - ready to Finalize homing (%d)\n", i, __FILE__, __FUNCTION__, intAxesState);
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisState_axHOME - ready to Finalize homing (%d)\n", i, __FILE__, __FUNCTION__,intAxesState);
 
                         IsHoming[i] = true;
                         Homing_ArmEncodereDone[i] = false;
