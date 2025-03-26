@@ -1769,6 +1769,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                             *(PEv2_data->PEv2_index_enable[axis]) = false; // re enable index
                         }
                     }
+                }
                     break;
                     case PK_Homing_axHOMINGWaitFinalMove:
                         break;
@@ -1795,7 +1796,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                 return 0;
         }
     }
-}
+
 /**
  * @brief Retrieves and parses the axis configuration from the PoKeys Pulse Engine v2.
  *
