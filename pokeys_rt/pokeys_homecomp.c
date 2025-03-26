@@ -264,6 +264,9 @@ static bool homing_active = 0;
 static bool homing_active_old = 0;
 static int all_joints = 0;
 static int current_sequence = 0;
+
+static bool index_search_active = 0;
+static bool index_search_armed = 1;
 /**
  * @brief State of the homing sequence
  * @param joint_num
@@ -752,7 +755,7 @@ int homing_init(int id, double servo_period, int n_joints, int n_extrajoints, em
         H[jno].homing = 0;
         H[jno].homed = 0;
         H[jno].home_state = HOME_IDLE;
-        H[jno].index_enable = 0;
+        H[jno].index_enable = index_search_armed;
 
         H[jno].PEv2_AxesState = PK_PEAxisState_axSTOPPED;
         H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
@@ -962,7 +965,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                 joint_num);
                 H[joint_num].homing = 1;
                 H[joint_num].home_state = HOME_INDEX_SEARCH_WAIT;
-                H[joint_num].index_enable = 1;
+                H[joint_num].index_enable = index_search_active;
                 break;
             case PK_PEAxisState_axHOMINGARMENCODER:
                 rtapi_print_msg(RTAPI_MSG_DBG,
@@ -972,7 +975,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 /* Pokeys resets encoder position to zeros */
                 H[joint_num].homing = 1;
                 H[joint_num].home_state = HOME_SET_INDEX_POSITION;
-                H[joint_num].index_enable = 1;
+                H[joint_num].index_enable = index_search_armed;
                 break;
 
             case PK_PEAxisState_axHOMINGWaitFINALMOVE:
