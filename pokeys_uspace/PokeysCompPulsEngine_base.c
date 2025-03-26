@@ -1671,7 +1671,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         HomingStartMaskSetup |= (1 << axis); // Home my axis only (bit MyHomeSequ)
                         rtapi_print_msg(RTAPI_MSG_DBG, "PK_HOMING: ensurinig that all axes (%d) with same Sequence(%d) startmask initialized (%d) \n", axis, PEv2_data->PEv2_home_sequence[axis], HomingStartMaskSetup);
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGSTART;
-                        *(PEv2_data->PEv2_index_enable[axis]) = false; // disable index
+                   //     *(PEv2_data->PEv2_index_enable[axis]) = false; // disable index
                         break;
                     case PK_Homing_axARMENCODER:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axARMENCODER\n", __FILE__, __FUNCTION__);
@@ -1683,7 +1683,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                     case PK_Homing_axHOMINGWaitFinalMove:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGWaitFinalMove\n", __FILE__, __FUNCTION__);
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGWaitFinalMove;
-
+                        *(PEv2_data->PEv2_index_enable[axis]) = false; // disable index on step after ARMENCODER
                         break;
                     case PK_Homing_axHOMINGFinalMove:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalMove\n", __FILE__, __FUNCTION__);
@@ -1734,7 +1734,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                     case PK_Homing_axIDLE:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axIDLE\n", __FILE__, __FUNCTION__);
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axIDLE;
-                        *(PEv2_data->PEv2_index_enable[axis]) = false; // re enable index
+                        
                         break;
                     default:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: Invalid state %d\n", __FILE__, __FUNCTION__, NextState);
@@ -1761,6 +1761,13 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                 dev->PEv2.param2 = bm_DoPositionSet;
                 if (PK_PEv2_PositionSet(dev) != PK_OK) {
                     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PositionSet!=PK_OK\n", __FILE__, __FUNCTION__);
+                }
+                else {
+                    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_PositionSet=PK_OK\n", __FILE__, __FUNCTION__);
+                    for (int axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
+                        if (abs(PEv2_data->PEv2_home_sequence[axis]) == abs(seq)) {
+                            *(PEv2_data->PEv2_index_enable[axis]) = false; // re enable index
+                        }
                 }
                 break;
             case PK_Homing_axHOMINGWaitFinalMove:
