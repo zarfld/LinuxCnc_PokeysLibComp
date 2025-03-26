@@ -661,7 +661,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER\n", __FILE__, __FUNCTION__, i);
                     }
                     if ((intAxesState == PK_PEAxisState_axREADY) && (Homing_PkHomeFinalizeeDone[i] == true) && (Homing_ArmEncodereDone[i] != true)) {
-                        // PK_PEAxisState_axHOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
+                        // PEAxisStateEx_HOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
 
                         if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGFinalize, PK_Homing_axARMENCODER) == 0) {
                             intAxesState = PEAxisStateEx_HOMINGARMENCODER;
@@ -680,7 +680,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         intAxesState = PEAxisStateEx_HOMINGWaitFINALMOVE; // PK_PEAxisState_axHOMINGWaitFINALMOVE = 18,          // (linuxcnc spec additional state) Pokeys moves to homeposition
                         Homing_ArmEncodereDone[i] = true;
                     } else {
-                        intAxesState = PK_PEAxisState_axHOMINGARMENCODER;
+                        intAxesState = PEAxisStateEx_HOMINGARMENCODER;
                     }
                     break;
 
@@ -772,7 +772,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
 
                         if (Homing_PkHomeFinalizeeDone[i] != true) {
-                            // PK_PEAxisState_axHOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
+                            // PEAxisStateEx_HOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
 
                             if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGSTART, PK_Homing_axHOMINGFinalize) == 0) {
 
