@@ -1613,7 +1613,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
             joints_in_Sequence++;
             if (*(PEv2_data->PEv2_HomingStatus[axis]) == RequiredState) {
                 if (RequiredState_Memory[axis] != RequiredState && NextState_Memory[axis] != NextState && ActState_Memory[axis] != *(PEv2_data->PEv2_HomingStatus[axis])) {
-                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] not in required state %s (ActualState %s NextState %s) \n", __FILE__, __FUNCTION__, axis, PK_HomingStatus_names[RequiredState], PK_HomingStatus_names[*(PEv2_data->PEv2_HomingStatus[axis])], PK_HomingStatus_names[NextState]);
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] in required state %s (ActualState %s NextState %s) \n", __FILE__, __FUNCTION__, axis, PK_HomingStatus_names[RequiredState], PK_HomingStatus_names[*(PEv2_data->PEv2_HomingStatus[axis])], PK_HomingStatus_names[NextState]);
 
                     RequiredState_Memory[axis] = RequiredState;
                     NextState_Memory[axis] = NextState;
