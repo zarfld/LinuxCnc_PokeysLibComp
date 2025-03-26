@@ -606,7 +606,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     }
 
                     if (Homing_FinalMoveActive[i] && !Homing_FinalMoveDone[i]) {
-                        int_AxesState = PEAxisStateEx_axFinalMove; // FinalMove still active
+                        int_AxesState = PEAxisStateEx_HOMINGFINALMOVE; // FinalMove still active
                     }
 
                     break;
