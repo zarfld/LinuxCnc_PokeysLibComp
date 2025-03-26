@@ -676,6 +676,9 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER\n", __FILE__, __FUNCTION__, i);
                     }
                     intAxesState = PEAxisStateEx_axReadyToArmEncoder;
+                    if (repAxxiState[i] != intAxesState){
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] new reported AxesState: PK_PEAxisCommand_axARMENCODER\n", __FILE__, __FUNCTION__, i);
+                    }
                     if ((intAxesState == PK_PEAxisState_axREADY) && (Homing_PkHomeFinalizeeDone[i] == true) && (Homing_ArmEncodereDone[i] != true)) {
                         // PEAxisStateEx_HOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
 

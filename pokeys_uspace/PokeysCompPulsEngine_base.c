@@ -1770,6 +1770,8 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         }
                     }
                 }
+                dev->PEv2.param2 = bm_DoPositionSet;
+                PK_PEv2_PositionSet(dev);
                 break;
             case PK_Homing_axHOMINGWaitFinalMove:
                 break;
