@@ -2223,7 +2223,7 @@ static void do_homing_sequence(void) {
                         sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
                         H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
                         break;
-                        default:
+                    default:
                         rtapi_print_msg(RTAPI_MSG_ERR,
                                         "HOMING: do_homing_sequence(%d) "
                                         "HOME_SEQUENCE_WAIT_JOINTS joint %d "
