@@ -227,6 +227,7 @@ bool HAL_Machine_On = false;
 pokeys_home_command_t old_PEv2_AxesCommand[8] = { 0 };
 
 int oldAxxiState[8] = { 0 };
+int repAxxiState[8] = { 0 };
 extern unsigned int sleepdur;
 extern bool ApplyIniSettings;
 
@@ -337,8 +338,8 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             PEv2_digin_Error_in(i) = Get_BitOfByte(bm_ErrorStatus, i);
             PEv2_digin_Error_in_not(i) = !Get_BitOfByte(bm_ErrorStatus, i);
             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: intAxesState = %d\n", __FILE__, __FUNCTION__, dev->PEv2.AxesState[i]);
-            if (intAxesState != oldAxxiState[i]) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d]: Status Changed to: %s (%d) \n", __FILE__, __FUNCTION__, i, PK_PEAxisState_names[intAxesState], intAxesState);
+            if (intAxesState != oldAxxiState[i] || old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) ) {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d]: new values on AxesState: %s(%d) or AxesCommand:  %s(%d) \n", __FILE__, __FUNCTION__, i, PK_PEAxisState_names[intAxesState], intAxesState, PEv2_AxisCommand_Names[*(PEv2_data->PEv2_AxesCommand[i])],*(PEv2_data->PEv2_AxesCommand[i]));
                 //  oldAxxiState[i] = intAxesState;
             }
             /**
@@ -583,9 +584,8 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
             }
 
-            if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i])) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] = %s (%d) \n", __FILE__, __FUNCTION__, i, PEv2_AxisCommand_Names[*(PEv2_data->PEv2_AxesCommand[i])], *(PEv2_data->PEv2_AxesCommand[i]));
-            }
+            oldAxxiState[i] = intAxesState;
+
             switch (*(PEv2_data->PEv2_AxesCommand[i])) {
                 case PK_PEAxisCommand_axIDLE:
                     if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i])) {
@@ -611,7 +611,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
 
                     break;
                 case PK_PEAxisCommand_axHOMINGSTART:
-                    if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) || intAxesState != oldAxxiState[i]) {
+                    if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) || intAxesState != repAxxiState[i]) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART - (intAxesState:%d IsHoming:%d Homing_PkHomeFinalizeeDone:%d)\n", __FILE__, __FUNCTION__, i, dev->PEv2.AxesState[i], IsHoming[i], Homing_PkHomeFinalizeeDone[i]);
                     }
 
@@ -665,7 +665,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         Homing_FinalMoveDone[i] = false;
                         Homing_FinalMoveActive[i] = false;
                         Homing_done[i] = false;
-                        if (oldAxxiState[i] != intAxesState) {
+                        if (repAxxiState[i] != intAxesState) {
                             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisState_axHOME - ready to Finalize homing\n", __FILE__, __FUNCTION__, i);
                         }
                     }
@@ -808,9 +808,10 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
             }
 
-            if (intAxesState != oldAxxiState[i]) {
+            if (intAxesState != repAxxiState[i]) {
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d]: reported Status Changed to: %s (%d) \n", __FILE__, __FUNCTION__, i, PK_PEAxisState_names[intAxesState], intAxesState);
-                oldAxxiState[i] = intAxesState;
+                
+                repAxxiState[i] = intAxesState;
             }
             old_PEv2_AxesCommand[i] = *(PEv2_data->PEv2_AxesCommand[i]);
             // placed here to as substates PK_PEAxisState_axHOME
