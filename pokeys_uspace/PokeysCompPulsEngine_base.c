@@ -1795,7 +1795,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                 return 0;
         }
     }
-
+}
     /**
      * @brief Retrieves and parses the axis configuration from the PoKeys Pulse Engine v2.
      *
