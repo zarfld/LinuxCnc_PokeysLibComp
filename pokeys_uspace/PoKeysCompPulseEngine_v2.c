@@ -641,7 +641,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     }
                     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART - inbetween (intAxesState:%d IsHoming:%d Homing_PkHomeFinalizeeDone:%d)\n", __FILE__, __FUNCTION__, i, dev->PEv2.AxesState[i], IsHoming[i], Homing_PkHomeFinalizeeDone[i]);
 
-                    if (dev->PEv2.AxesState[i] == 10 && Homing_PkHomeFinalizeeDone[i] == 0 && IsHoming[i] == 1) {
+                    if (dev->PEv2.AxesState[i] == 10 && !Homing_PkHomeFinalizeeDone[i] && IsHoming[i]) {
                         // ready to Finalize homing
 
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisState_axHOME - ready to Finalize homing (%d)\n", i, __FILE__, __FUNCTION__, intAxesState);
