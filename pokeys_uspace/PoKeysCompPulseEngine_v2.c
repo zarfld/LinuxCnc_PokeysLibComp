@@ -533,7 +533,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
                 case PK_PEAxisState_axPROBED: // Probing completed for this axis
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axPROBED\n", __FILE__, __FUNCTION__);
-                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
+                    if (oldAxxiState[i] != intAxesState) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axPROBED \n",
@@ -546,7 +546,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
                 case PK_PEAxisState_axPROBESTART: // Probing procedure is starting on axis
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axPROBESTART\n", __FILE__, __FUNCTION__);
-                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
+                    if (oldAxxiState[i] != intAxesState) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axPROBESTART \n",
@@ -559,7 +559,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
                 case PK_PEAxisState_axPROBESEARCH: // Probing procedure - probing
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axPROBESEARCH\n", __FILE__, __FUNCTION__);
-                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
+                    if (oldAxxiState[i] != intAxesState) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axPROBESEARCH \n",
@@ -572,7 +572,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
                 case PK_PEAxisState_axERROR: // Axis error
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axERROR\n", __FILE__, __FUNCTION__);
-                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
+                    if (oldAxxiState[i] != intAxesState) {
                         rtapi_print_msg(RTAPI_MSG_ERR,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axERROR \n",
@@ -586,7 +586,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
                 case PK_PEAxisState_axLIMIT: // Axis limit tripped
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s:PK_PEAxisState_axLIMIT\n", __FILE__, __FUNCTION__);
-                    if (*(PEv2_data->PEv2_deb_ishoming[i]) == true) {
+                    if (oldAxxiState[i] != intAxesState) {
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                         "PK_PEAxisState_axLIMIT \n",
@@ -616,7 +616,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
 
                     break;
                 case PK_PEAxisCommand_axHOMINGSTART:
-                    if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) || intAxesState != old_PEv2_AxesCommand[i]) {
+                    if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) || intAxesState != oldAxxiState[i]) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART\n", __FILE__, __FUNCTION__, i);
                     }
 
