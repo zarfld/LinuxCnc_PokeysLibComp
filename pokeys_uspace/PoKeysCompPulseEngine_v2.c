@@ -696,8 +696,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                             Homing_ArmEncodereDone[i] = true;
                         } else if (Homing_ArmEncodereDone[i]) {
                             intAxesState = PEAxisStateEx_HOMINGARMENCODER;
-                        }
-                        else {
+                        } else {
                             intAxesState = PEAxisStateEx_axReadyToArmEncoder;
                         }
                         /*dev->PEv2.PositionSetup[i] = PEv2_data->PEv2_ZeroPosition[i];
