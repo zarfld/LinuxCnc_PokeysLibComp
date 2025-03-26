@@ -732,53 +732,53 @@ int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id, PEv2_data_t *P
         return r;
 }
 
-static const char *const PK_HomingStatus_names[] = { [PK_Homing_axIDLE] = "IDLE", [PK_Homing_axHOMINGSTART] = "HOMINGSTART", [PK_Homing_axARMENCODER] = "ARMENCODER", [PK_Homing_axHOMINGWaitFinalMove] = "HOMINGWaitFinalMove", [PK_Homing_axHOMINGFinalMove] = "HOMINGFinalMove", [PK_Homing_axHOMINGCancel] = "HOMINGCancel", [PK_Homing_axHOMINGFinalize] = "HOMINGFinalize" };
+static const char *const PK_HomingStatus_names[] = { [PK_Homing_axIDLE] = "PK_Homing_axIDLE", [PK_Homing_axHOMINGSTART] = "PK_Homing_axHOMINGSTART", [PK_Homing_axARMENCODER] = "PK_Homing_axARMENCODER", [PK_Homing_axHOMINGWaitFinalMove] = "PK_Homing_axHOMINGWaitFinalMove", [PK_Homing_axHOMINGFinalMove] = "PK_Homing_axHOMINGFinalMove", [PK_Homing_axHOMINGCancel] = "PK_Homing_axHOMINGCancel", [PK_Homing_axHOMINGFinalize] = "PK_Homing_axHOMINGFinalize" };
 
 const char *const PEv2_AxisCommand_Names[] = {
     [PK_PEAxisCommand_axIDLE] = "PK_PEAxisCommand_axIDLE", [PK_PEAxisCommand_axHOMINGSTART] = "PK_PEAxisCommand_axHOMINGSTART", [PK_PEAxisCommand_axARMENCODER] = "PK_PEAxisCommand_axARMENCODER", [PK_PEAxisCommand_axHOMINGWaitFinalMove] = "PK_PEAxisCommand_axHOMINGWaitFinalMove", [PK_PEAxisCommand_axHOMINGFinalMove] = "PK_PEAxisCommand_axHOMINGFinalMove", [PK_PEAxisCommand_axHOMINGCancel] = "PK_PEAxisCommand_axHOMINGCancel", [PK_PEAxisCommand_axHOMINGFinalize] = "PK_PEAxisCommand_axHOMINGFinalize"
 };
 
-static const char *const PK_PEState_names[] = { [PK_PEState_peSTOPPED] = "STOPPED",
-                                                [PK_PEState_peINTERNAL] = "INTERNAL",
-                                                [PK_PEState_peBUFFER] = "BUFFER",
-                                                [PK_PEState_peRUNNING] = "RUNNING",
+static const char *const PK_PEState_names[] = { [PK_PEState_peSTOPPED] = "PK_PEState_peSTOPPED",
+                                                [PK_PEState_peINTERNAL] = "PK_PEState_peINTERNAL",
+                                                [PK_PEState_peBUFFER] = "PK_PEState_peBUFFER",
+                                                [PK_PEState_peRUNNING] = "PK_PEState_peRUNNING",
 
-                                                [PK_PEState_peJOGGING] = "JOGGING",
-                                                [PK_PEState_peSTOPPING] = "STOPPING",
+                                                [PK_PEState_peJOGGING] = "PK_PEState_peJOGGING",
+                                                [PK_PEState_peSTOPPING] = "PK_PEState_peSTOPPING",
 
-                                                [PK_PEState_peHOME] = "HOME",
-                                                [PK_PEState_peHOMING] = "HOMING",
+                                                [PK_PEState_peHOME] = "PK_PEState_peHOME",
+                                                [PK_PEState_peHOMING] = "PK_PEState_peHOMING",
 
-                                                [PK_PEState_pePROBECOMPLETE] = "PROBECOMPLETE",
-                                                [PK_PEState_pePROBE] = "PROBE",
-                                                [PK_PEState_pePROBEERROR] = "PROBEERROR",
+                                                [PK_PEState_pePROBECOMPLETE] = "PK_PEState_pePROBECOMPLETE",
+                                                [PK_PEState_pePROBE] = "PK_PEState_pePROBE",
+                                                [PK_PEState_pePROBEERROR] = "PK_PEState_pePROBEERROR",
 
-                                                [PK_PEState_peHYBRIDPROBE_STOPPING] = "HYBRIDPROBE_STOPPING",
-                                                [PK_PEState_peHYBRIDPROBE_COMPLETE] = "HYBRIDPROBE_COMPLETE",
+                                                [PK_PEState_peHYBRIDPROBE_STOPPING] = "PK_PEState_peHYBRIDPROBE_STOPPING",
+                                                [PK_PEState_peHYBRIDPROBE_COMPLETE] = "PK_PEState_peHYBRIDPROBE_COMPLETE",
 
-                                                [PK_PEState_peSTOP_LIMIT] = "STOP_LIMIT",
-                                                [PK_PEState_peSTOP_EMERGENCY] = "STOP_EMERGENCY" };
+                                                [PK_PEState_peSTOP_LIMIT] = "PK_PEState_peSTOP_LIMIT",
+                                                [PK_PEState_peSTOP_EMERGENCY] = "PK_PEState_peSTOP_EMERGENCY" };
 
-static const char *const PK_PEAxisState_names[] = { [PK_PEAxisState_axSTOPPED] = "STOPPED",
-                                                    [PK_PEAxisState_axREADY] = "READY",
-                                                    [PK_PEAxisState_axRUNNING] = "RUNNING",
-                                                    [PK_PEAxisState_axHOMING_RESETTING] = "HOMING_RESETTING",
-                                                    [PK_PEAxisState_axHOMING_BACKING_OFF] = "HOMING_BACKING_OFF",
-                                                    [PK_PEAxisState_axHOME] = "HOME",
-                                                    [PK_PEAxisState_axHOMINGSTART] = "HOMINGSTART",
-                                                    [PK_PEAxisState_axHOMINGSEARCH] = "HOMINGSEARCH",
-                                                    [PK_PEAxisState_axHOMINGBACK] = "HOMINGBACK",
-                                                    [PK_PEAxisState_axPROBED] = "PROBED",
-                                                    [PK_PEAxisState_axPROBESTART] = "PROBESTART",
-                                                    [PK_PEAxisState_axPROBESEARCH] = "PROBESEARCH",
-                                                    [PK_PEAxisState_axERROR] = "ERROR",
-                                                    [PK_PEAxisState_axLIMIT] = "LIMIT",
+static const char *const PK_PEAxisState_names[] = { [PK_PEAxisState_axSTOPPED] = "PK_PEAxisState_axSTOPPED",
+                                                    [PK_PEAxisState_axREADY] = "PK_PEAxisState_axREADY",
+                                                    [PK_PEAxisState_axRUNNING] = "PK_PEAxisState_axRUNNING",
+                                                    [PK_PEAxisState_axHOMING_RESETTING] = "PK_PEAxisState_axHOMING_RESETTING",
+                                                    [PK_PEAxisState_axHOMING_BACKING_OFF] = "PK_PEAxisState_axHOMING_BACKING_OFF",
+                                                    [PK_PEAxisState_axHOME] = "PK_PEAxisState_axHOME",
+                                                    [PK_PEAxisState_axHOMINGSTART] = "PK_PEAxisState_axHOMINGSTART",
+                                                    [PK_PEAxisState_axHOMINGSEARCH] = "PK_PEAxisState_axHOMINGSEARCH",
+                                                    [PK_PEAxisState_axHOMINGBACK] = "PK_PEAxisState_axHOMINGBACK",
+                                                    [PK_PEAxisState_axPROBED] = "PK_PEAxisState_axPROBED",
+                                                    [PK_PEAxisState_axPROBESTART] = "PK_PEAxisState_axPROBESTART",
+                                                    [PK_PEAxisState_axPROBESEARCH] = "PK_PEAxisState_axPROBESEARCH",
+                                                    [PK_PEAxisState_axERROR] = "PK_PEAxisState_axERROR",
+                                                    [PK_PEAxisState_axLIMIT] = "PK_PEAxisState_axLIMIT",
 
-                                                    [PEAxisStateEx_axReadyToFinalizeHoming] = "READY_TO_FINALIZE_HOMING",
-                                                    [PEAxisStateEx_axReadyToArmEncoder] = "READY_TO_ARM_ENCODER",
-                                                    [PEAxisStateEx_HOMINGARMENCODER] = "HOMING_ARM_ENCODER",
-                                                    [PEAxisStateEx_HOMINGWaitFINALMOVE] = "HOMING_WAIT_FINAL_MOVE",
-                                                    [PEAxisStateEx_HOMINGFINALMOVE] = "HOMING_FINAL_MOVE" };
+                                                    [PEAxisStateEx_axReadyToFinalizeHoming] = "PEAxisStateEx_axReadyToFinalizeHoming",
+                                                    [PEAxisStateEx_axReadyToArmEncoder] = "PEAxisStateEx_axReadyToArmEncoder",
+                                                    [PEAxisStateEx_HOMINGARMENCODER] = "PEAxisStateEx_HOMINGARMENCODER",
+                                                    [PEAxisStateEx_HOMINGWaitFINALMOVE] = "PEAxisStateEx_HOMINGWaitFINALMOVE",
+                                                    [PEAxisStateEx_HOMINGFINALMOVE] = "PEAxisStateEx_HOMINGFINALMOVE" };
 
 /**
  * @brief Retrieves the value of a specific bit in a byte.
@@ -1613,7 +1613,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
             joints_in_Sequence++;
             if (*(PEv2_data->PEv2_HomingStatus[axis]) == RequiredState) {
                 if (RequiredState_Memory[axis] != RequiredState && NextState_Memory[axis] != NextState && ActState_Memory[axis] != *(PEv2_data->PEv2_HomingStatus[axis])) {
-                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] not in required state %d (ActualState %d NextState %d) \n", __FILE__, __FUNCTION__, axis, RequiredState, *(PEv2_data->PEv2_HomingStatus[axis]), NextState);
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] not in required state %s (ActualState %s NextState %s) \n", __FILE__, __FUNCTION__, axis, PK_HomingStatus_names[RequiredState], PK_HomingStatus_names[*(PEv2_data->PEv2_HomingStatus[axis])], PK_HomingStatus_names[NextState]);
 
                     RequiredState_Memory[axis] = RequiredState;
                     NextState_Memory[axis] = NextState;
@@ -1622,7 +1622,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                 sequence_joints_ready++;
             } else if (*(PEv2_data->PEv2_HomingStatus[axis]) == NextState) {
                 if (RequiredState_Memory[axis] != RequiredState && NextState_Memory[axis] != NextState && ActState_Memory[axis] != *(PEv2_data->PEv2_HomingStatus[axis])) {
-                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] already in state %d (required state %d)\n", __FILE__, __FUNCTION__, axis, NextState, RequiredState);
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] already in state %s (required state %s)\n", __FILE__, __FUNCTION__, axis, PK_HomingStatus_names[NextState], PK_HomingStatus_names[RequiredState]);
 
                     RequiredState_Memory[axis] = RequiredState;
                     NextState_Memory[axis] = NextState;
@@ -1632,7 +1632,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                 sequence_joints_done++;
             } else {
                 if (RequiredState_Memory[axis] != RequiredState && NextState_Memory[axis] != NextState && ActState_Memory[axis] != *(PEv2_data->PEv2_HomingStatus[axis])) {
-                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] not in required state %d   (ActualState %d NextState %d) \n", __FILE__, __FUNCTION__, axis, RequiredState, *(PEv2_data->PEv2_HomingStatus[axis]), NextState);
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] not in required state %s   (ActualState %s NextState %s) \n", __FILE__, __FUNCTION__, axis, PK_HomingStatus_names[RequiredState], PK_HomingStatus_names[*(PEv2_data->PEv2_HomingStatus[axis])], PK_HomingStatus_names[NextState]);
 
                     RequiredState_Memory[axis] = RequiredState;
                     NextState_Memory[axis] = NextState;
