@@ -1142,7 +1142,7 @@ int pokeys_1joint_state_machine(int joint_num) {
 
             default:
                 /* should never get here */
-                rtapi_print_msg(RTAPI_MSG_DBG,
+                rtapi_print_msg(RTAPI_MSG_ERR,
                                 "HOMING: pokeys_1joint_state_machine unknown "
                                 "state '%d' during homing j=%d",
                                 H[joint_num].home_state, joint_num);
@@ -1221,7 +1221,7 @@ void do_home_sequence(int seq) {
                 break;
 
             default:
-                rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_home_sequence joint %d unknown state %d\n", jno, int_AxesState);
+                rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_home_sequence joint %d unknown state %d\n", jno, int_AxesState);
                 break;
         }
     }
@@ -1784,6 +1784,7 @@ void do_home_joint(int jno) {
                 break;
 
             default:
+                rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: do_home_joint joint %d unknown state %d\n", jno, int_AxesState);
                 break;
         }
     } else {
@@ -2007,6 +2008,10 @@ static void do_homing_sequence(void) {
                         break;
 
                     default:
+                        rtapi_print_msg(RTAPI_MSG_ERR,
+                                        "HOMING: do_homing_sequence(%d) "
+                                        "HOME_SEQUENCE_START joint %d unknown state %d\n",
+                                        current_sequence, jno, int_AxesState);
                         break;
                 }
             }
