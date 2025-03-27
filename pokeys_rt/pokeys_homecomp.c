@@ -991,16 +991,16 @@ int pokeys_1joint_state_machine(int joint_num) {
                 /**  has an index pulse arrived yet? encoder driver clears
                    enable when it does */
 
-                   if (H[joint_num].index_enable == index_search_armed) {
-                        /* yes, stop motion */
-                        joint->free_tp.enable = 0;
-                        joint->free_tp.pos_cmd = joint->free_tp.curr_pos; // set to zero
-                        joint->free_tp.vel_cmd = 0; //
-                        /* Pokeys resets encoder position to zeros */
-                        H[joint_num].index_enable = index_search_armed;
-                        H[joint_num].homing = 1;
-                        H[joint_num].home_state = HOME_SET_INDEX_POSITION;
-                   }
+                if (H[joint_num].index_enable == index_search_armed) {
+                    /* yes, stop motion */
+                    joint->free_tp.enable = 0;
+                    joint->free_tp.pos_cmd = joint->free_tp.curr_pos; // set to zero
+                    joint->free_tp.vel_cmd = 0;                       //
+                    /* Pokeys resets encoder position to zeros */
+                    H[joint_num].index_enable = index_search_armed;
+                    H[joint_num].homing = 1;
+                    H[joint_num].home_state = HOME_SET_INDEX_POSITION;
+                }
 
                 break;
 
