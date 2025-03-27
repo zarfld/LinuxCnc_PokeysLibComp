@@ -2,3 +2,6 @@
 path = external/pokeyslib
 url = https://bitbucket.org/mbosnak/pokeyslib.git
 branch = master
+[submodule "wiki"]
+	path = wiki
+	url = https://github.com/zarfld/LinuxCnc_PokeysLibComp.wiki.git
