@@ -1,21 +1,22 @@
 /********************************************************************
-* Description: emcmotcfg.h
-*   Default values for compile-time parameters.
-*
-*   Derived from a work by Fred Proctor & Will Shackleford
-*
-* Author:
-* License: GPL Version 2
-* System: Linux
-*    
-* Copyright (c) 2004 All rights reserved.
-********************************************************************/
+ * Description: emcmotcfg.h
+ *   Default values for compile-time parameters.
+ *
+ *   Derived from a work by Fred Proctor & Will Shackleford
+ *
+ * Author:
+ * License: GPL Version 2
+ * System: Linux
+ *
+ * Copyright (c) 2004 All rights reserved.
+ ********************************************************************/
 #ifndef EMCMOTCFG_H
 #define EMCMOTCFG_H
 
 /* default name of EMCMOT INI file */
-#define DEFAULT_EMCMOT_INIFILE "emc.ini"	/* same as for EMC-- we're in 
-						   touch */
+#define DEFAULT_EMCMOT_INIFILE                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 \
+    "emc.ini" /* same as for EMC-- we're in                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    \
+                 touch */
 
 /* number of joints supported
    Note: this is not a global variable but a compile-time parameter
@@ -27,7 +28,7 @@
 // number of extra joints (NOT used in kinematics calculations):
 #define EMCMOT_MAX_EXTRAJOINTS EMCMOT_MAX_JOINTS
 
-/* number of axes defined by the interp */ //FIXME: shouldn't be here..
+/* number of axes defined by the interp */ // FIXME: shouldn't be here..
 #define EMCMOT_MAX_AXIS 9
 
 #define EMCMOT_MAX_SPINDLES 8
@@ -39,8 +40,8 @@
 #error A 64 bit bitmask is used in the planner.  Don't increase these until that's fixed.
 #endif
 
-#define EMCMOT_ERROR_NUM 32	/* how many errors we can queue */
-#define EMCMOT_ERROR_LEN 1024	/* how long error string can be */
+#define EMCMOT_ERROR_NUM 32   /* how many errors we can queue */
+#define EMCMOT_ERROR_LEN 1024 /* how long error string can be */
 
 /*
   Shared memory keys for simulated motion process. No base address

@@ -27,22 +27,22 @@
 
 #include "hal/drivers/mesa-hostmot2/hostmot2.h"
 
-
-
-
 void hm2_watchdog_process_tram_read(hostmot2_t *hm2) {
     // if there is no watchdog, then there's nothing to do
-    if (hm2->watchdog.num_instances == 0) return;
+    if (hm2->watchdog.num_instances == 0)
+        return;
 
     // if there are comm problems, wait for the user to fix it
-    if ((*hm2->llio->io_error) != 0) return;
+    if ((*hm2->llio->io_error) != 0)
+        return;
 
     // if we've already noticed the board needs to be reset, don't re-read
     // the watchdog has-bit bit
     // Note: we check needs_reset instead of the has-bit pin here, because
     // has-bit might be cleared by the user at any time, so using it here
     // would cause a race condition between this function and pet_watchdog
-    if (hm2->llio->needs_reset != 0) return;
+    if (hm2->llio->needs_reset != 0)
+        return;
 
     // last time we were here, everything was fine
     // see if the watchdog has bit since then
@@ -53,13 +53,11 @@ void hm2_watchdog_process_tram_read(hostmot2_t *hm2) {
     }
 }
 
-
 int hm2_watchdog_parse_md(hostmot2_t *hm2, int md_index) {
     hm2_module_descriptor_t *md = &hm2->md[md_index];
     int r;
 
-
-    // 
+    //
     // some standard sanity checks
     //
 
@@ -69,15 +67,11 @@ int hm2_watchdog_parse_md(hostmot2_t *hm2, int md_index) {
     }
 
     if (hm2->watchdog.num_instances != 0) {
-        HM2_ERR(
-            "found duplicate Module Descriptor for %s (inconsistent firmware), not loading driver\n",
-            hm2_get_general_function_name(md->gtag)
-        );
+        HM2_ERR("found duplicate Module Descriptor for %s (inconsistent firmware), not loading driver\n", hm2_get_general_function_name(md->gtag));
         return -EINVAL;
     }
 
-
-    // 
+    //
     // special sanity checks for watchdog
     //
 
@@ -85,11 +79,9 @@ int hm2_watchdog_parse_md(hostmot2_t *hm2, int md_index) {
         HM2_PRINT("MD declares %d watchdogs!  only using the first one...\n", md->instances);
     }
 
-
-    // 
+    //
     // looks good, start initializing
-    // 
-
+    //
 
     hm2->watchdog.num_instances = 1;
 
@@ -107,7 +99,6 @@ int hm2_watchdog_parse_md(hostmot2_t *hm2, int md_index) {
     hm2->watchdog.status_addr = md->base_address + (1 * md->register_stride);
     hm2->watchdog.reset_addr = md->base_address + (2 * md->register_stride);
 
-
     r = hm2_register_tram_read_region(hm2, hm2->watchdog.status_addr, (hm2->watchdog.num_instances * sizeof(rtapi_u32)), &hm2->watchdog.status_reg);
     if (r < 0) {
         HM2_ERR("error registering tram read region for watchdog (%d)\n", r);
@@ -120,7 +111,7 @@ int hm2_watchdog_parse_md(hostmot2_t *hm2, int md_index) {
         goto fail0;
     }
 
-    // 
+    //
     // allocate memory for register buffers
     //
 
@@ -131,19 +122,12 @@ int hm2_watchdog_parse_md(hostmot2_t *hm2, int md_index) {
         goto fail0;
     }
 
-
     //
     // export to HAL
     //
 
     // pins
-    r = hal_pin_bit_newf(
-        HAL_IO,
-        &(hm2->watchdog.instance[0].hal.pin.has_bit),
-        hm2->llio->comp_id,
-        "%s.watchdog.has_bit",
-        hm2->llio->name
-    );
+    r = hal_pin_bit_newf(HAL_IO, &(hm2->watchdog.instance[0].hal.pin.has_bit), hm2->llio->comp_id, "%s.watchdog.has_bit", hm2->llio->name);
     if (r < 0) {
         HM2_ERR("error adding pin, aborting\n");
         r = -EINVAL;
@@ -151,13 +135,7 @@ int hm2_watchdog_parse_md(hostmot2_t *hm2, int md_index) {
     }
 
     // params
-    r = hal_param_u32_newf(
-        HAL_RW,
-        &(hm2->watchdog.instance[0].hal.param.timeout_ns),
-        hm2->llio->comp_id,
-        "%s.watchdog.timeout_ns",
-        hm2->llio->name
-    );
+    r = hal_param_u32_newf(HAL_RW, &(hm2->watchdog.instance[0].hal.param.timeout_ns), hm2->llio->comp_id, "%s.watchdog.timeout_ns", hm2->llio->name);
     if (r < 0) {
         HM2_ERR("error adding param, aborting\n");
         r = -EINVAL;
@@ -169,11 +147,10 @@ int hm2_watchdog_parse_md(hostmot2_t *hm2, int md_index) {
     //
 
     *hm2->watchdog.instance[0].hal.pin.has_bit = 0;
-    hm2->watchdog.instance[0].hal.param.timeout_ns = 5 * 1000 * 1000;  // default timeout is 5 milliseconds
-    hm2->watchdog.instance[0].enable = 0;  // the first pet_watchdog will turn it on
+    hm2->watchdog.instance[0].hal.param.timeout_ns = 5 * 1000 * 1000; // default timeout is 5 milliseconds
+    hm2->watchdog.instance[0].enable = 0;                             // the first pet_watchdog will turn it on
 
     return hm2->watchdog.num_instances;
-
 
 fail1:
     rtapi_kfree(hm2->watchdog.timer_reg);
@@ -183,17 +160,17 @@ fail0:
     return r;
 }
 
-
 void hm2_watchdog_print_module(hostmot2_t *hm2) {
     int i;
     HM2_PRINT("Watchdog: %d\n", hm2->watchdog.num_instances);
-    if (hm2->watchdog.num_instances <= 0) return;
+    if (hm2->watchdog.num_instances <= 0)
+        return;
     HM2_PRINT("    clock_frequency: %d Hz (%s MHz)\n", hm2->watchdog.clock_frequency, hm2_hz_to_mhz(hm2->watchdog.clock_frequency));
     HM2_PRINT("    version: %d\n", hm2->watchdog.version);
     HM2_PRINT("    timer_addr: 0x%04X\n", hm2->watchdog.timer_addr);
     HM2_PRINT("    status_addr: 0x%04X\n", hm2->watchdog.status_addr);
     HM2_PRINT("    reset_addr: 0x%04X\n", hm2->watchdog.reset_addr);
-    for (i = 0; i < hm2->watchdog.num_instances; i ++) {
+    for (i = 0; i < hm2->watchdog.num_instances; i++) {
         HM2_PRINT("    instance %d:\n", i);
         HM2_PRINT("        param timeout_ns = %u\n", hm2->watchdog.instance[i].hal.param.timeout_ns);
         HM2_PRINT("        pin has_bit = %d\n", (*hm2->watchdog.instance[i].hal.pin.has_bit));
@@ -201,18 +178,18 @@ void hm2_watchdog_print_module(hostmot2_t *hm2) {
     }
 }
 
-
 void hm2_watchdog_cleanup(hostmot2_t *hm2) {
-    if (hm2->watchdog.num_instances <= 0) return;
-    if (hm2->watchdog.timer_reg != NULL) rtapi_kfree(hm2->watchdog.timer_reg);
+    if (hm2->watchdog.num_instances <= 0)
+        return;
+    if (hm2->watchdog.timer_reg != NULL)
+        rtapi_kfree(hm2->watchdog.timer_reg);
 }
-
 
 void hm2_watchdog_prepare_tram_write(hostmot2_t *hm2) {
-    if (hm2->watchdog.num_instances <= 0) return;
+    if (hm2->watchdog.num_instances <= 0)
+        return;
     hm2->watchdog.reset_reg[0] = 0x5a000000;
 }
-
 
 // timeout_s = (timer_counts + 1) / clock_hz
 // (timeout_s * clock_hz) - 1 = timer_counts
@@ -220,7 +197,8 @@ void hm2_watchdog_prepare_tram_write(hostmot2_t *hm2) {
 void hm2_watchdog_force_write(hostmot2_t *hm2) {
     rtapi_u64 tmp;
 
-    if (hm2->watchdog.num_instances != 1) return;
+    if (hm2->watchdog.num_instances != 1)
+        return;
 
     if (hm2->watchdog.instance[0].enable == 0) {
         // watchdog is disabled, MSb=1 is secret handshake with FPGA
@@ -247,23 +225,25 @@ void hm2_watchdog_force_write(hostmot2_t *hm2) {
     hm2->llio->write(hm2->llio, hm2->watchdog.status_addr, hm2->watchdog.status_reg, sizeof(rtapi_u32));
 }
 
-
 // if the user has changed the timeout, sync it out to the watchdog
 void hm2_watchdog_write(hostmot2_t *hm2, long period_ns) {
-    if (hm2->watchdog.num_instances != 1) return;
+    if (hm2->watchdog.num_instances != 1)
+        return;
 
     // if there are comm problems, wait for the user to fix it
-    if ((*hm2->llio->io_error) != 0) return;
+    if ((*hm2->llio->io_error) != 0)
+        return;
 
     // if the watchdog has bit, wait for the user to reset it
-    if (*hm2->watchdog.instance[0].hal.pin.has_bit) return;
+    if (*hm2->watchdog.instance[0].hal.pin.has_bit)
+        return;
 
     // writing to the watchdog wakes it up, and now we can't stop or it will bite!
     hm2->watchdog.instance[0].enable = 1;
 
     if (hm2->llio->needs_reset || hm2->llio->needs_soft_reset) {
         // user has cleared the bit
-        if(hm2->llio->needs_reset)
+        if (hm2->llio->needs_reset)
             HM2_PRINT("trying to recover from IO error or Watchdog bite\n");
 
         // reset the watchdog status
@@ -275,29 +255,20 @@ void hm2_watchdog_write(hostmot2_t *hm2, long period_ns) {
             HM2_PRINT("error recovery failed\n");
             return;
         }
-        if(hm2->llio->needs_reset)
+        if (hm2->llio->needs_reset)
             HM2_PRINT("error recover successful!\n");
 
         hm2->llio->needs_reset = hm2->llio->needs_soft_reset = 0;
     }
 
-    if (
-        (hm2->watchdog.instance[0].hal.param.timeout_ns == hm2->watchdog.instance[0].written_timeout_ns)
-        &&
-        (hm2->watchdog.instance[0].enable == hm2->watchdog.instance[0].written_enable)
-    ) {
+    if ((hm2->watchdog.instance[0].hal.param.timeout_ns == hm2->watchdog.instance[0].written_timeout_ns) && (hm2->watchdog.instance[0].enable == hm2->watchdog.instance[0].written_enable)) {
         return;
     }
 
     // if the requested timeout is dangerously short compared to the petting-period, warn the user once
     if (hm2->watchdog.instance[0].hal.param.timeout_ns < (1.5 * period_ns)) {
-        HM2_PRINT(
-            "Watchdog timeout (%u ns) is dangerously short compared to hm2_write() period (%ld ns)\n",
-            hm2->watchdog.instance[0].hal.param.timeout_ns,
-            period_ns
-        );
+        HM2_PRINT("Watchdog timeout (%u ns) is dangerously short compared to hm2_write() period (%ld ns)\n", hm2->watchdog.instance[0].hal.param.timeout_ns, period_ns);
     }
 
     hm2_watchdog_force_write(hm2);
 }
-

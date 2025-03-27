@@ -34,19 +34,9 @@
 
 #else
 
-enum rtapi_gfp_e {
-    RTAPI_GFP_BUFFER,
-    RTAPI_GFP_ATOMIC,
-    RTAPI_GFP_KERNEL,
-    RTAPI_GFP_USER,
-    RTAPI_GFP_NOBUFFER,
-    RTAPI_GFP_NFS,
-    RTAPI_GFP_DMA
-};
+enum rtapi_gfp_e { RTAPI_GFP_BUFFER, RTAPI_GFP_ATOMIC, RTAPI_GFP_KERNEL, RTAPI_GFP_USER, RTAPI_GFP_NOBUFFER, RTAPI_GFP_NFS, RTAPI_GFP_DMA };
 
 typedef unsigned long rtapi_gfp_t;
-
-
 
 #endif
 #endif

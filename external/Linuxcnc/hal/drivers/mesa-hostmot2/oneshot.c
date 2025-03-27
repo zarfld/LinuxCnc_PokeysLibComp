@@ -27,9 +27,6 @@
 
 #include "hal/drivers/mesa-hostmot2/hostmot2.h"
 
-
-
-
 void hm2_oneshot_update_width1(hostmot2_t *hm2, int i) {
     // widths are in ms
     hm2->oneshot.width1_reg[i] = (double)*hm2->oneshot.instance[i].hal.pin.width1 * ((double)hm2->oneshot.clock_frequency / (double)1e3);
@@ -68,22 +65,22 @@ void hm2_oneshot_update_filter2(hostmot2_t *hm2, int i) {
         hm2->oneshot.width2_reg[i] = 0xFFFFFF;
         *hm2->oneshot.instance[i].hal.pin.filter2 = (double)hm2->oneshot.filter2_reg[i] * ((double)1e3 / (double)hm2->oneshot.clock_frequency);
     }
-} 
+}
 
 void hm2_oneshot_update_rate(hostmot2_t *hm2, int i) {
-       hm2->oneshot.rate_reg[i] = (uint32_t)(*hm2->oneshot.instance[i].hal.pin.rate * (4294967296.0 / (double)hm2->oneshot.clock_frequency));
+    hm2->oneshot.rate_reg[i] = (uint32_t)(*hm2->oneshot.instance[i].hal.pin.rate * (4294967296.0 / (double)hm2->oneshot.clock_frequency));
 }
 
 void hm2_oneshot_update_control(hostmot2_t *hm2, int i) {
     rtapi_u32 controlbuff;
-    if(*hm2->oneshot.instance[i].hal.pin.trigselect1 > 7) {
+    if (*hm2->oneshot.instance[i].hal.pin.trigselect1 > 7) {
         HM2_ERR("oneshot %d has invalid trigger 1 select value , resetting to 0\n", i);
-		  *hm2->oneshot.instance[i].hal.pin.trigselect1 = 0;
-    }     
-	 if(*hm2->oneshot.instance[i].hal.pin.trigselect2 > 7) {
-	     HM2_ERR("oneshot %d has invalid trigger 2 select value , resetting to 0\n", i);
-		  *hm2->oneshot.instance[i].hal.pin.trigselect2 = 0;
-    }     
+        *hm2->oneshot.instance[i].hal.pin.trigselect1 = 0;
+    }
+    if (*hm2->oneshot.instance[i].hal.pin.trigselect2 > 7) {
+        HM2_ERR("oneshot %d has invalid trigger 2 select value , resetting to 0\n", i);
+        *hm2->oneshot.instance[i].hal.pin.trigselect2 = 0;
+    }
     controlbuff = 0;
     controlbuff |= (*hm2->oneshot.instance[i].hal.pin.trigselect1 << 0);
     controlbuff |= (*hm2->oneshot.instance[i].hal.pin.trigrise1 << 3);
@@ -101,29 +98,28 @@ void hm2_oneshot_update_control(hostmot2_t *hm2, int i) {
     controlbuff |= (*hm2->oneshot.instance[i].hal.pin.reset2 << 23);
     controlbuff |= (*hm2->oneshot.instance[i].hal.pin.swtrig2 << 26);
 
-	 hm2->oneshot.control_reg[i] = controlbuff;
+    hm2->oneshot.control_reg[i] = controlbuff;
 }
 
 void hm2_oneshot_update_regs(hostmot2_t *hm2) {
     int i;
 
-    if (hm2->oneshot.num_instances == 0) return;
+    if (hm2->oneshot.num_instances == 0)
+        return;
 
-    for (i = 0; i < hm2->oneshot.num_instances; i ++) {
-        hm2_oneshot_update_width1(hm2,i);
-        hm2_oneshot_update_width2(hm2,i);
-        hm2_oneshot_update_filter1(hm2,i);
-        hm2_oneshot_update_filter2(hm2,i);
-        hm2_oneshot_update_rate(hm2,i);
-        hm2_oneshot_update_control(hm2,i);
-  
+    for (i = 0; i < hm2->oneshot.num_instances; i++) {
+        hm2_oneshot_update_width1(hm2, i);
+        hm2_oneshot_update_width2(hm2, i);
+        hm2_oneshot_update_filter1(hm2, i);
+        hm2_oneshot_update_filter2(hm2, i);
+        hm2_oneshot_update_rate(hm2, i);
+        hm2_oneshot_update_control(hm2, i);
     }
 }
 
-
 void hm2_oneshot_force_write(hostmot2_t *hm2) {
     hm2_oneshot_update_regs(hm2);
-    
+
     hm2->llio->write(hm2->llio, hm2->oneshot.width1_addr, hm2->oneshot.width1_reg, (hm2->oneshot.num_instances * sizeof(rtapi_u32)));
     hm2->llio->write(hm2->llio, hm2->oneshot.width2_addr, hm2->oneshot.width2_reg, (hm2->oneshot.num_instances * sizeof(rtapi_u32)));
     hm2->llio->write(hm2->llio, hm2->oneshot.filter1_addr, hm2->oneshot.filter1_reg, (hm2->oneshot.num_instances * sizeof(rtapi_u32)));
@@ -131,33 +127,26 @@ void hm2_oneshot_force_write(hostmot2_t *hm2) {
     hm2->llio->write(hm2->llio, hm2->oneshot.rate_addr, hm2->oneshot.rate_reg, (hm2->oneshot.num_instances * sizeof(rtapi_u32)));
     hm2->llio->write(hm2->llio, hm2->oneshot.control_addr, hm2->oneshot.control_reg, (hm2->oneshot.num_instances * sizeof(rtapi_u32)));
 
-    
-    if ((*hm2->llio->io_error) != 0) return;
-
+    if ((*hm2->llio->io_error) != 0)
+        return;
 }
 
-
-
-
 //
-// Since these are all pins, write is the same as force write 
+// Since these are all pins, write is the same as force write
 //
 
 void hm2_oneshot_write(hostmot2_t *hm2) {
 
-    if (hm2->oneshot.num_instances == 0) return;
+    if (hm2->oneshot.num_instances == 0)
+        return;
     hm2_oneshot_force_write(hm2);
 }
-
-
-
 
 int hm2_oneshot_parse_md(hostmot2_t *hm2, int md_index) {
     hm2_module_descriptor_t *md = &hm2->md[md_index];
     int r;
 
-
-    // 
+    //
     // some standard sanity checks
     //
 
@@ -167,19 +156,12 @@ int hm2_oneshot_parse_md(hostmot2_t *hm2, int md_index) {
     }
 
     if (hm2->oneshot.num_instances != 0) {
-        HM2_ERR(
-            "found duplicate Module Descriptor for %s (inconsistent firmware), not loading driver\n",
-            hm2_get_general_function_name(md->gtag)
-        );
+        HM2_ERR("found duplicate Module Descriptor for %s (inconsistent firmware), not loading driver\n", hm2_get_general_function_name(md->gtag));
         return -EINVAL;
     }
 
     if (hm2->config.num_oneshots > md->instances) {
-        HM2_ERR(
-            "config.num_oneshots=%d, but only %d are available, not loading driver\n",
-            hm2->config.num_oneshots,
-            md->instances
-        );
+        HM2_ERR("config.num_oneshots=%d, but only %d are available, not loading driver\n", hm2->config.num_oneshots, md->instances);
         return -EINVAL;
     }
 
@@ -187,19 +169,15 @@ int hm2_oneshot_parse_md(hostmot2_t *hm2, int md_index) {
         return 0;
     }
 
-
-    // 
+    //
     // looks good, start initializing
-    // 
-
+    //
 
     if (hm2->config.num_oneshots == -1) {
         hm2->oneshot.num_instances = md->instances;
     } else {
         hm2->oneshot.num_instances = hm2->config.num_oneshots;
     }
-
-
 
     hm2->oneshot.instance = (hm2_oneshot_instance_t *)hal_malloc(hm2->oneshot.num_instances * sizeof(hm2_oneshot_instance_t));
     if (hm2->oneshot.instance == NULL) {
@@ -261,7 +239,6 @@ int hm2_oneshot_parse_md(hostmot2_t *hm2, int md_index) {
         goto fail0;
     }
 
-
     // export to HAL
     // FIXME: r hides the r in enclosing function, and it returns the wrong thing
     {
@@ -269,8 +246,7 @@ int hm2_oneshot_parse_md(hostmot2_t *hm2, int md_index) {
         int r;
         char name[HAL_NAME_LEN + 1];
 
-
-        for (i = 0; i < hm2->oneshot.num_instances; i ++) {
+        for (i = 0; i < hm2->oneshot.num_instances; i++) {
             // pins
             rtapi_snprintf(name, sizeof(name), "%s.oneshot.%02d.width1", hm2->llio->name, i);
             r = hal_pin_float_new(name, HAL_IN, &(hm2->oneshot.instance[i].hal.pin.width1), hm2->llio->comp_id);
@@ -327,7 +303,7 @@ int hm2_oneshot_parse_md(hostmot2_t *hm2, int md_index) {
                 HM2_ERR("error adding pin '%s', aborting\n", name);
                 goto fail1;
             }
-  
+
             rtapi_snprintf(name, sizeof(name), "%s.oneshot.%02d.trigger_on_rise1", hm2->llio->name, i);
             r = hal_pin_bit_new(name, HAL_IN, &(hm2->oneshot.instance[i].hal.pin.trigrise1), hm2->llio->comp_id);
             if (r < 0) {
@@ -425,7 +401,7 @@ int hm2_oneshot_parse_md(hostmot2_t *hm2, int md_index) {
                 HM2_ERR("error adding pin '%s', aborting\n", name);
                 goto fail1;
             }
- 
+
             rtapi_snprintf(name, sizeof(name), "%s.oneshot.%02d.out1", hm2->llio->name, i);
             r = hal_pin_bit_new(name, HAL_OUT, &(hm2->oneshot.instance[i].hal.pin.out1), hm2->llio->comp_id);
             if (r < 0) {
@@ -439,7 +415,6 @@ int hm2_oneshot_parse_md(hostmot2_t *hm2, int md_index) {
                 HM2_ERR("error adding pin '%s', aborting\n", name);
                 goto fail1;
             }
-
 
             // init hal objects
             *(hm2->oneshot.instance[i].hal.pin.width1) = 1.0;
@@ -464,9 +439,7 @@ int hm2_oneshot_parse_md(hostmot2_t *hm2, int md_index) {
         }
     }
 
-
     return hm2->oneshot.num_instances;
-
 
 fail1:
     rtapi_kfree(hm2->oneshot.control_reg);
@@ -476,11 +449,9 @@ fail0:
     return r;
 }
 
-
-
-
 void hm2_oneshot_cleanup(hostmot2_t *hm2) {
-    if (hm2->oneshot.num_instances <= 0) return;
+    if (hm2->oneshot.num_instances <= 0)
+        return;
     if (hm2->oneshot.control_reg != NULL) {
         rtapi_kfree(hm2->oneshot.control_reg);
         hm2->oneshot.control_reg = NULL;
@@ -488,12 +459,10 @@ void hm2_oneshot_cleanup(hostmot2_t *hm2) {
     hm2->oneshot.num_instances = 0;
 }
 
-
-
-
 void hm2_oneshot_print_module(hostmot2_t *hm2) {
     int i;
-    if (hm2->oneshot.num_instances <= 0) return;
+    if (hm2->oneshot.num_instances <= 0)
+        return;
     HM2_PRINT("OneShots: %d\n", hm2->oneshot.num_instances);
     HM2_PRINT("    clock_frequency: %d Hz (%s MHz)\n", hm2->oneshot.clock_frequency, hm2_hz_to_mhz(hm2->oneshot.clock_frequency));
     HM2_PRINT("    version: %d\n", hm2->oneshot.version);
@@ -504,7 +473,7 @@ void hm2_oneshot_print_module(hostmot2_t *hm2) {
     HM2_PRINT("    rate_addr: 0x%04X\n", hm2->oneshot.rate_addr);
     HM2_PRINT("    control_addr: 0x%04X\n", hm2->oneshot.control_addr);
 
-    for (i = 0; i < hm2->oneshot.num_instances; i ++) {
+    for (i = 0; i < hm2->oneshot.num_instances; i++) {
         HM2_PRINT("        width1_reg = 0x%08X\n", hm2->oneshot.width1_reg[i]);
         HM2_PRINT("        width2_reg = 0x%08X\n", hm2->oneshot.width2_reg[i]);
         HM2_PRINT("        filter1_reg = 0x%08X\n", hm2->oneshot.filter1_reg[i]);
@@ -514,28 +483,21 @@ void hm2_oneshot_print_module(hostmot2_t *hm2) {
     }
 }
 
-
-
-
 void hm2_oneshot_prepare_tram_write(hostmot2_t *hm2) {
 
-    if (hm2->oneshot.num_instances <= 0) return;
+    if (hm2->oneshot.num_instances <= 0)
+        return;
     hm2_oneshot_update_regs(hm2);
-
-
 }
 
 void hm2_oneshot_process_tram_read(hostmot2_t *hm2) {
     int i;
     rtapi_u32 control = 0;
-    for (i = 0; i < hm2->oneshot.num_instances; i ++) {
+    for (i = 0; i < hm2->oneshot.num_instances; i++) {
         control = hm2->oneshot.control_read_reg[i];
         *hm2->oneshot.instance[i].hal.pin.out1 = ((control & (1 << 8)) != 0);
         *hm2->oneshot.instance[i].hal.pin.out2 = ((control & (1 << 24)) != 0);
         *hm2->oneshot.instance[i].hal.pin.exttrig1 = ((control & (1 << 9)) != 0);
         *hm2->oneshot.instance[i].hal.pin.exttrig2 = ((control & (1 << 25)) != 0);
-    }    
+    }
 }
-
-
-

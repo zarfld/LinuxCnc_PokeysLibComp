@@ -18,7 +18,6 @@
 /* License along with this library; if not, write to the Free Software */
 /* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. */
 
-
 #define NBR_SEQUENTIAL_PAGES 5
 
 #define NBR_STEPS 128
@@ -49,71 +48,63 @@
 
 #define SEQ_COMMENT_LGT 51
 
-typedef struct StrStep
-{
-	/* step is activated at init */
-	char InitStep;
-	/* step number */
-	int StepNumber;
-	/* positions on the page and on which page */
-	signed char NumPage; /* -1 if do not exist */
-	char PosiX;
-	char PosiY;
+typedef struct StrStep {
+    /* step is activated at init */
+    char InitStep;
+    /* step number */
+    int StepNumber;
+    /* positions on the page and on which page */
+    signed char NumPage; /* -1 if do not exist */
+    char PosiX;
+    char PosiY;
 
-	/* dynamic state */
-	char Activated;
-	int TimeActivated;
-	
-	/* for drawing cross step */
-	char OffDrawCrossStep;
-}StrStep;
+    /* dynamic state */
+    char Activated;
+    int TimeActivated;
 
-typedef struct StrTransition
-{
-	/* condition for the transition to become activated */
-	/* if boolean variable true */
-	int VarTypeCondi;
-	int VarNumCondi;
-	/* number of the steps to activate if condition true
-	   >1 if start of 'AND' */
-	short int NumStepToActiv[ NBR_SWITCHS_MAX ];
-	/* number of the steps to deactivate if condition true
-	   >1 if end of 'AND' */
-	short int NumStepToDesactiv[ NBR_SWITCHS_MAX ];
-	/* if start of 'OR' */
-	short int NumTransLinkedForStart[ NBR_SWITCHS_MAX ];
-	/* if end of 'OR' */
-	short int NumTransLinkedForEnd[ NBR_SWITCHS_MAX ];
-	/* Positions on the page and on which page */
-	signed char NumPage; /* -1 if do not exist */
-	char PosiX;
-	char PosiY;
+    /* for drawing cross step */
+    char OffDrawCrossStep;
+} StrStep;
 
-	/* dynamic state */
-	char Activated;
-}StrTransition;
+typedef struct StrTransition {
+    /* condition for the transition to become activated */
+    /* if boolean variable true */
+    int VarTypeCondi;
+    int VarNumCondi;
+    /* number of the steps to activate if condition true
+       >1 if start of 'AND' */
+    short int NumStepToActiv[NBR_SWITCHS_MAX];
+    /* number of the steps to deactivate if condition true
+       >1 if end of 'AND' */
+    short int NumStepToDesactiv[NBR_SWITCHS_MAX];
+    /* if start of 'OR' */
+    short int NumTransLinkedForStart[NBR_SWITCHS_MAX];
+    /* if end of 'OR' */
+    short int NumTransLinkedForEnd[NBR_SWITCHS_MAX];
+    /* Positions on the page and on which page */
+    signed char NumPage; /* -1 if do not exist */
+    char PosiX;
+    char PosiY;
 
-typedef struct StrReturn
-{
-	short int NumStepToGo;
-}StrReturn;
+    /* dynamic state */
+    char Activated;
+} StrTransition;
 
-typedef struct StrSeqComment
-{
-	/* positions on the page and on which page */
-	signed char NumPage; /* -1 if do not exist */
-	char PosiX;
-	char PosiY;
-	/* comment string */
-	char Comment[ SEQ_COMMENT_LGT ];
-}StrSeqComment;
+typedef struct StrReturn {
+    short int NumStepToGo;
+} StrReturn;
 
+typedef struct StrSeqComment {
+    /* positions on the page and on which page */
+    signed char NumPage; /* -1 if do not exist */
+    char PosiX;
+    char PosiY;
+    /* comment string */
+    char Comment[SEQ_COMMENT_LGT];
+} StrSeqComment;
 
-typedef struct StrSequential
-{
-	StrStep Step[ NBR_STEPS ];
-	StrTransition Transition[ NBR_TRANSITIONS ];
-	StrSeqComment SeqComment[ NBR_SEQ_COMMENTS ];
-}StrSequential;
-
-
+typedef struct StrSequential {
+    StrStep Step[NBR_STEPS];
+    StrTransition Transition[NBR_TRANSITIONS];
+    StrSeqComment SeqComment[NBR_SEQ_COMMENTS];
+} StrSequential;

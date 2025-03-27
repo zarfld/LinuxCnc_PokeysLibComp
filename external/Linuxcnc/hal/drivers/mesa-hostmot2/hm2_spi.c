@@ -50,7 +50,7 @@ MODULE_SUPPORTED_DEVICE("Mesa-AnythingIO-7i90");
 // turned on uses just 28 words.
 #define MAX_TRX (1024)
 
-static int spidev_rate[MAX_BOARDS] = { [0 ... MAX_BOARDS-1] = 24000 };
+static int spidev_rate[MAX_BOARDS] = { [0 ... MAX_BOARDS - 1] = 24000 };
 RTAPI_MP_ARRAY_INT(spidev_rate, MAX_BOARDS, "SPI clock rate in kHz");
 
 static char *spidev_path[MAX_BOARDS] = { "/dev/spidev1.0" };
@@ -84,7 +84,8 @@ static uint32_t write_command(uint16_t addr, unsigned nelem) {
 }
 
 static int do_pending(hm2_spi_t *this) {
-    if(this->nbuf == 0) return 0;
+    if (this->nbuf == 0)
+        return 0;
 
     struct spi_ioc_transfer t;
     t = this->settings;
@@ -92,23 +93,22 @@ static int do_pending(hm2_spi_t *this) {
     t.len = 4 * this->nbuf;
     t.delay_usecs = 10; // Magic is required or timeouts happen
 
-    if(this->settings.bits_per_word == 8) {
-	int i;
-	for(i=0; i<this->nbuf; i++)
-	   this->trxbuf[i] = htobe32(this->trxbuf[i]);
+    if (this->settings.bits_per_word == 8) {
+        int i;
+        for (i = 0; i < this->nbuf; i++)
+            this->trxbuf[i] = htobe32(this->trxbuf[i]);
     }
     int r = ioctl(this->fd, SPI_IOC_MESSAGE(1), &t);
-    if(r < 0) {
-        rtapi_print_msg(RTAPI_MSG_ERR,
-            "hm2_spi: SPI_IOC_MESSAGE: %s\n", strerror(errno));
+    if (r < 0) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "hm2_spi: SPI_IOC_MESSAGE: %s\n", strerror(errno));
         this->nbuf = 0;
         return -errno;
     }
 
-    if(this->settings.bits_per_word == 8) {
-	int i;
-	for(i=0; i<this->nbuf; i++)
-	   this->trxbuf[i] = be32toh(this->trxbuf[i]);
+    if (this->settings.bits_per_word == 8) {
+        int i;
+        for (i = 0; i < this->nbuf; i++)
+            this->trxbuf[i] = be32toh(this->trxbuf[i]);
     }
 
     // because linux manages SPI chip select behind our backs, we can't know
@@ -118,10 +118,11 @@ static int do_pending(hm2_spi_t *this) {
     // a disconnected cable.
     uint32_t *buf = this->trxbuf;
     uint32_t **scatter = this->scatter;
-    int i=0;
-    for(i=0; i<this->nbuf; i++) {
+    int i = 0;
+    for (i = 0; i < this->nbuf; i++) {
         uint32_t *target = scatter[i];
-        if(target) *target = buf[i];
+        if (target)
+            *target = buf[i];
     }
 
     this->nbuf = 0;
@@ -131,73 +132,82 @@ static int do_pending(hm2_spi_t *this) {
 // Add a word to the transaction.  The "send_data" word is transmitted, and the
 // response to that word is stored at "recv_addr" if it is not NULL.  Typically
 // one argument is 0/NULL and the other argument has a value.
-#define PUT(send_data, recv_addr) do { \
-    this->trxbuf[this->nbuf] = send_data; \
-    this->scatter[this->nbuf++] = recv_addr; \
-} while(0)
+#define PUT(send_data, recv_addr)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              \
+    do {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       \
+        this->trxbuf[this->nbuf] = send_data;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  \
+        this->scatter[this->nbuf++] = recv_addr;                                                                                                                                                                                                                                                                                                                                                                                                                                                                               \
+    } while (0)
 
 static int send_queued_writes(hm2_lowlevel_io_t *llio) {
-    hm2_spi_t *this = (hm2_spi_t*) llio;
+    hm2_spi_t *this = (hm2_spi_t *)llio;
     return do_pending(this) >= 0;
 }
 
 static int queue_write(hm2_lowlevel_io_t *llio, rtapi_u32 addr, const void *buffer, int size) {
-    hm2_spi_t *this = (hm2_spi_t*) llio;
-    if(size == 0) return 0;
-    if(size % 4) return -EINVAL;
+    hm2_spi_t *this = (hm2_spi_t *)llio;
+    if (size == 0)
+        return 0;
+    if (size % 4)
+        return -EINVAL;
 
     int wsize = size / 4;
-    if(wsize + this->nbuf + 1 > MAX_TRX) {
+    if (wsize + this->nbuf + 1 > MAX_TRX) {
         int r = do_pending(this);
-        if(r < 0) return r;
+        if (r < 0)
+            return r;
     }
 
     PUT(write_command(addr, wsize), 0);
 
     const uint32_t *wbuffer = buffer;
-    int i=0;
-    for(i=0; i<wsize; i++)
+    int i = 0;
+    for (i = 0; i < wsize; i++)
         PUT(wbuffer[i], 0);
 
     return 1;
 }
 
 static int send_queued_reads(hm2_lowlevel_io_t *llio) {
-    hm2_spi_t *this = (hm2_spi_t*) llio;
+    hm2_spi_t *this = (hm2_spi_t *)llio;
     return do_pending(this) >= 0;
 }
 
 static int queue_read(hm2_lowlevel_io_t *llio, rtapi_u32 addr, void *buffer, int size) {
-    hm2_spi_t *this = (hm2_spi_t*) llio;
-    if(size == 0) return 0;
-    if(size % 4) return -EINVAL;
+    hm2_spi_t *this = (hm2_spi_t *)llio;
+    if (size == 0)
+        return 0;
+    if (size % 4)
+        return -EINVAL;
 
     int wsize = size / 4;
-    if(wsize + this->nbuf + 1 > MAX_TRX) {
+    if (wsize + this->nbuf + 1 > MAX_TRX) {
         int r = do_pending(this);
-        if(r < 0) return r;
+        if (r < 0)
+            return r;
     }
 
     uint32_t *wbuffer = buffer;
-    int i=0;
+    int i = 0;
     PUT(read_command(addr, wsize), 0);
-    for(i=0; i<wsize; i++)
+    for (i = 0; i < wsize; i++)
         PUT(0, &wbuffer[i]);
 
     return 1;
 }
 
 static int do_write(hm2_lowlevel_io_t *llio, rtapi_u32 addr, const void *buffer, int size) {
-    hm2_spi_t *this = (hm2_spi_t*) llio;
+    hm2_spi_t *this = (hm2_spi_t *)llio;
     int r = queue_write(llio, addr, buffer, size);
-    if(r < 0) return r;
+    if (r < 0)
+        return r;
     return do_pending(this) >= 0;
 }
 
 static int do_read(hm2_lowlevel_io_t *llio, rtapi_u32 addr, void *buffer, int size) {
-    hm2_spi_t *this = (hm2_spi_t*) llio;
+    hm2_spi_t *this = (hm2_spi_t *)llio;
     int r = queue_read(llio, addr, buffer, size);
-    if(r < 0) return r;
+    if (r < 0)
+        return r;
     return do_pending(this);
 }
 
@@ -231,22 +241,27 @@ static int spidev_get_bits_per_word(int fd) {
 static int spidev_open_and_configure(char *dev, int rate) {
     int fd = open(dev, O_RDWR);
 
-    if(fd < 0) return -errno;
+    if (fd < 0)
+        return -errno;
 
     int r = spidev_set_lsb_first(fd, false);
-    if(r < 0) goto fail_errno;
+    if (r < 0)
+        goto fail_errno;
 
     r = spidev_set_mode(fd, 0);
-    if(r < 0) goto fail_errno;
+    if (r < 0)
+        goto fail_errno;
 
     // Fixed to 8-bit, variable bit sizes does not work
     // r = spidev_set_bits_per_word(fd, 32);
     // if(r < 0) r = spidev_set_bits_per_word(fd, 8);
     r = spidev_set_bits_per_word(fd, 8);
-    if(r < 0) goto fail_errno;
+    if (r < 0)
+        goto fail_errno;
 
     r = spidev_set_max_speed_hz(fd, rate);
-    if(r < 0) goto fail_errno;
+    if (r < 0)
+        goto fail_errno;
 
     return fd;
 
@@ -258,14 +273,14 @@ fail_errno:
 
 static int check_cookie(hm2_spi_t *board) {
     uint32_t cookie[4];
-    uint32_t xcookie[4] = {0x55aacafe, 0x54534f48, 0x32544f4d, 0x00000400};
+    uint32_t xcookie[4] = { 0x55aacafe, 0x54534f48, 0x32544f4d, 0x00000400 };
     int r = do_read(&board->llio, 0x100, cookie, 16);
-    if(r < 0) return -errno;
+    if (r < 0)
+        return -errno;
 
-    if(memcmp(cookie, xcookie, sizeof(cookie))) {
+    if (memcmp(cookie, xcookie, sizeof(cookie))) {
         rtapi_print_msg(RTAPI_MSG_ERR, "Invalid cookie\n");
-        rtapi_print_msg(RTAPI_MSG_ERR, "Read: %08x %08x %08x %08x\n",
-            cookie[0], cookie[1], cookie[2], cookie[3]);
+        rtapi_print_msg(RTAPI_MSG_ERR, "Read: %08x %08x %08x %08x\n", cookie[0], cookie[1], cookie[2], cookie[3]);
         return -ENODEV;
     }
     return 0;
@@ -273,11 +288,13 @@ static int check_cookie(hm2_spi_t *board) {
 
 static int probe(char *dev, int rate) {
     printf("probe %d\n", rate);
-    if(nboards >= MAX_BOARDS) return -ENOSPC;
+    if (nboards >= MAX_BOARDS)
+        return -ENOSPC;
 
     hm2_spi_t *board = &boards[nboards];
     board->fd = spidev_open_and_configure(dev, rate);
-    if(board->fd < 0) return board->fd;
+    if (board->fd < 0)
+        return board->fd;
 
     board->settings.speed_hz = rate;
     // This doesn't work:
@@ -286,11 +303,12 @@ static int probe(char *dev, int rate) {
     board->settings.bits_per_word = 8;
 
     int r = check_cookie(board);
-    if(r < 0) goto fail;
+    if (r < 0)
+        goto fail;
 
     // Read the IDROM from the board.
     hm2_idrom_t idrom;
-    if(do_read(&board->llio, 0x400, &idrom, sizeof(hm2_idrom_t)) <= 0) {
+    if (do_read(&board->llio, 0x400, &idrom, sizeof(hm2_idrom_t)) <= 0) {
         rtapi_print_msg(RTAPI_MSG_ERR, "Board ident read failed (dev=%s)\n", dev);
         r = -EIO; // Cookie could be read, so this is a comms error
         goto fail;
@@ -298,13 +316,12 @@ static int probe(char *dev, int rate) {
 
     // Detect board name and fill in informational values
     const char *base;
-    if(!(base = set_llio_info_spi(&board->llio, &idrom))) {
+    if (!(base = set_llio_info_spi(&board->llio, &idrom))) {
         r = -ENOENT;
         goto fail;
     }
 
-    rtapi_snprintf(board->llio.name, sizeof(board->llio.name),
-        "%s.%d", base, nboards);
+    rtapi_snprintf(board->llio.name, sizeof(board->llio.name), "%s.%d", base, nboards);
     board->llio.comp_id = comp_id;
     board->llio.private = &board;
     board->llio.read = do_read;
@@ -315,7 +332,8 @@ static int probe(char *dev, int rate) {
     board->llio.send_queued_writes = send_queued_writes;
 
     r = hm2_register(&board->llio, config[nboards]);
-    if(r < 0) goto fail;
+    if (r < 0)
+        goto fail;
 
     nboards++;
     return 0;
@@ -326,20 +344,22 @@ fail:
 
 int rtapi_app_main() {
     int ret;
-    int i=0;
+    int i = 0;
     comp_id = ret = hal_init("hm2_spi");
-    if(ret < 0) goto fail;
+    if (ret < 0)
+        goto fail;
 
-    for(i=0; i<MAX_BOARDS && spidev_path[i]; i++) {
+    for (i = 0; i < MAX_BOARDS && spidev_path[i]; i++) {
         ret = probe(spidev_path[i], 1000 * spidev_rate[i]);
-        if(ret < 0) goto fail;
+        if (ret < 0)
+            goto fail;
     }
 
     hal_ready(comp_id);
     return 0;
 
 fail:
-    for(i=0; i<MAX_BOARDS && boards[i].fd; i++)
+    for (i = 0; i < MAX_BOARDS && boards[i].fd; i++)
         close(boards[i].fd);
     return ret;
 }

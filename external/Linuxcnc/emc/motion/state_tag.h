@@ -1,31 +1,29 @@
 /********************************************************************
-* Description: state_tag.h
-*
-* A "tag" struct that is used to add interpreter state information to
-* a given motion line. This state info isn't actually used by motion
-* directly, but indicates the motion state.
-*
-* Copyright © 2015 Robert W. Ellenberg
-*
-* This program is free software; you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation; either version 2 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-********************************************************************/
-
+ * Description: state_tag.h
+ *
+ * A "tag" struct that is used to add interpreter state information to
+ * a given motion line. This state info isn't actually used by motion
+ * directly, but indicates the motion state.
+ *
+ * Copyright © 2015 Robert W. Ellenberg
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ ********************************************************************/
 
 #ifndef STATE_TAG_H
 #define STATE_TAG_H
-
 
 /**
  * Enum to define bit names for StateTag's flags register.
@@ -60,7 +58,6 @@ typedef enum {
     GM_FLAG_MAX_FLAGS
 } StateFlag;
 
-
 /**
  * Enum for various fields of state info that are int type.
  *
@@ -75,18 +72,7 @@ typedef enum {
  *
  * TODO: make that standalone function a method here for maintainability
  */
-typedef enum {
-    GM_FIELD_LINE_NUMBER,
-    GM_FIELD_G_MODE_0,
-    GM_FIELD_CUTTER_COMP,
-    GM_FIELD_MOTION_MODE,
-    GM_FIELD_PLANE,
-    GM_FIELD_M_MODES_4,
-    GM_FIELD_ORIGIN,
-    GM_FIELD_TOOLCHANGE,
-    GM_FIELD_MAX_FIELDS
-} StateField;
-
+typedef enum { GM_FIELD_LINE_NUMBER, GM_FIELD_G_MODE_0, GM_FIELD_CUTTER_COMP, GM_FIELD_MOTION_MODE, GM_FIELD_PLANE, GM_FIELD_M_MODES_4, GM_FIELD_ORIGIN, GM_FIELD_TOOLCHANGE, GM_FIELD_MAX_FIELDS } StateField;
 
 /**
  * Enum for indexing state tag `fields_float`, machine state float

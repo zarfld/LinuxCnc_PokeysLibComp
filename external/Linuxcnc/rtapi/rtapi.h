@@ -2,17 +2,17 @@
 #define RTAPI_H
 
 /********************************************************************
-* Description:  rtapi.h
-*               This file, 'rtapi.h', defines the RTAPI for both 
-*               realtime and non-realtime code.
-*
-* Author: John Kasunich, Paul Corner
-* License: LGPL Version 2.1
-*
-* Copyright (c) 2004 All rights reserved.
-*
-* Last change: 
-********************************************************************/
+ * Description:  rtapi.h
+ *               This file, 'rtapi.h', defines the RTAPI for both
+ *               realtime and non-realtime code.
+ *
+ * Author: John Kasunich, Paul Corner
+ * License: LGPL Version 2.1
+ *
+ * Copyright (c) 2004 All rights reserved.
+ *
+ * Last change:
+ ********************************************************************/
 
 /**
  * @file
@@ -27,7 +27,7 @@
  * determine which mode is being compiled, RTAPI for realtime and ULAPI for
  * non-realtime. The API is implemented in files named @c xxx_rtapi.c, where
  * xxx is the RTOS.
-*/
+ */
 
 /*  Copyright (C) 2003 John Kasunich
                        <jmkasunich AT users DOT sourceforge DOT net>
@@ -62,18 +62,17 @@
     information, go to www.linuxcnc.org.
 */
 
-#if ( !defined RTAPI ) && ( !defined ULAPI )
+#if (!defined RTAPI) && (!defined ULAPI)
 #error "Please define either RTAPI or ULAPI!"
 #endif
-#if ( defined RTAPI ) && ( defined ULAPI )
+#if (defined RTAPI) && (defined ULAPI)
 #error "Can't define both RTAPI and ULAPI!"
 #endif
 
 #include <stdarg.h>
 #include <stddef.h> // provides NULL
 
-
-#define RTAPI_NAME_LEN   31    /*!< Length for module, etc, names */
+#define RTAPI_NAME_LEN 31 /*!< Length for module, etc, names */
 
 #ifdef __cplusplus
 #define RTAPI_BEGIN_DECLS extern "C" {
@@ -86,8 +85,8 @@
 RTAPI_BEGIN_DECLS
 
 /***********************************************************************
-*                   GENERAL PURPOSE FUNCTIONS                          *
-************************************************************************/
+ *                   GENERAL PURPOSE FUNCTIONS                          *
+ ************************************************************************/
 
 /**
  * @brief Sets up the RTAPI.
@@ -103,7 +102,7 @@ RTAPI_BEGIN_DECLS
  * @note Call only from within user or init/cleanup code, not from realtime
  *       tasks.
  */
-    extern int rtapi_init(const char *modname);
+extern int rtapi_init(const char *modname);
 
 /**
  * @brief Shuts down and cleans up the RTAPI.
@@ -116,7 +115,7 @@ RTAPI_BEGIN_DECLS
  * @return 0 on success, negative value on failure.
  * @note Call only from user or init/cleanup code, not from realtime tasks.
  */
-    extern int rtapi_exit(int module_id);
+extern int rtapi_exit(int module_id);
 
 /**
  * @brief Format and store a string in a buffer with a specified maximum length.
@@ -129,9 +128,7 @@ RTAPI_BEGIN_DECLS
  * snprintf().
  * @note May be called from user, init/cleanup, and realtime code.
  */
-    extern int rtapi_snprintf(char *buf, unsigned long int size,
-	const char *fmt, ...)
-	    __attribute__((format(printf,3,4)));
+extern int rtapi_snprintf(char *buf, unsigned long int size, const char *fmt, ...) __attribute__((format(printf, 3, 4)));
 
 /**
  * @brief Works like vsnprintf() from the normal C library, except that it
@@ -143,8 +140,7 @@ RTAPI_BEGIN_DECLS
  * function simply calls the normal vsnrintf().
  * @note May be called from user, init/cleanup, and realtime code.
  */
-    extern int rtapi_vsnprintf(char *buf, unsigned long size,
-	const char *fmt, va_list ap);
+extern int rtapi_vsnprintf(char *buf, unsigned long size, const char *fmt, va_list ap);
 
 /**
  * @brief Prints a printf() style message.
@@ -159,29 +155,18 @@ RTAPI_BEGIN_DECLS
  * block, but can take a fairly long time, depending on the format string and
  * OS.
  * @note May be called from user, init/cleanup, and realtime code.
-*/
-    extern void rtapi_print(const char *fmt, ...)
-	    __attribute__((format(printf,1,2)));
-
+ */
+extern void rtapi_print(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
 
 /** Message levels */
-    typedef enum {
-	RTAPI_MSG_NONE = 0,
-	RTAPI_MSG_ERR,
-	RTAPI_MSG_WARN,
-	RTAPI_MSG_INFO,
-	RTAPI_MSG_DBG,
-	RTAPI_MSG_ALL
-    } msg_level_t;
+typedef enum { RTAPI_MSG_NONE = 0, RTAPI_MSG_ERR, RTAPI_MSG_WARN, RTAPI_MSG_INFO, RTAPI_MSG_DBG, RTAPI_MSG_ALL } msg_level_t;
 
 /**
  * @brief Prints a printf-style message when the level is less than or equal to
  * the current message level set by rtapi_set_msg_level().
  * @note May be called from user, init/cleanup, and realtime code.
  */
-    extern void rtapi_print_msg(msg_level_t level, const char *fmt, ...)
-	    __attribute__((format(printf,2,3)));
-
+extern void rtapi_print_msg(msg_level_t level, const char *fmt, ...) __attribute__((format(printf, 2, 3)));
 
 /**
  * @brief Set the maximum level of message to print.
@@ -189,13 +174,13 @@ RTAPI_BEGIN_DECLS
  * In userspace code, each component has its own independent message level.
  * In realtime code, all components share a single message level.
  * @param level Maximum level of message to print, should be one of
-*              ::msg_level_t.
+ *              ::msg_level_t.
  * @return 0 for success or @c -EINVAL if the level is out of range.
  */
-    extern int rtapi_set_msg_level(int level);
+extern int rtapi_set_msg_level(int level);
 
 /** Retrieve the message level set by the last call to rtapi_set_msg_level() */
-    extern int rtapi_get_msg_level(void);
+extern int rtapi_get_msg_level(void);
 
 /**
  * @brief Set the message handler.
@@ -208,15 +193,15 @@ RTAPI_BEGIN_DECLS
  * @note When called from rtapi_print(), @c level is ::RTAPI_MSG_ALL,
  *       a level which should not normally be used with rtapi_print_msg().
  */
-    typedef void(*rtapi_msg_handler_t)(msg_level_t level, const char *fmt, va_list ap);
+typedef void (*rtapi_msg_handler_t)(msg_level_t level, const char *fmt, va_list ap);
 #ifdef RTAPI
-    extern void rtapi_set_msg_handler(rtapi_msg_handler_t handler);
-    extern rtapi_msg_handler_t rtapi_get_msg_handler(void);
+extern void rtapi_set_msg_handler(rtapi_msg_handler_t handler);
+extern rtapi_msg_handler_t rtapi_get_msg_handler(void);
 #endif
 
 /***********************************************************************
-*                      TIME RELATED FUNCTIONS                          *
-************************************************************************/
+ *                      TIME RELATED FUNCTIONS                          *
+ ************************************************************************/
 
 /*  NOTE: These timing related functions are only available in
     realtime modules.  User processes may not call them!
@@ -239,8 +224,8 @@ RTAPI_BEGIN_DECLS
  *         returning the current clock period, or zero if the clock has not yet
  *         been started.
  * @note Call only from within init/cleanup code, not from realtime tasks.
-*/
-    extern long int rtapi_clock_set_period(long int nsecs);
+ */
+extern long int rtapi_clock_set_period(long int nsecs);
 #endif /* RTAPI */
 
 /**
@@ -256,8 +241,7 @@ RTAPI_BEGIN_DECLS
  * @note This timing function is only available in realtime modules. User
  *       processes may not call them!
  */
-    extern void rtapi_delay(long int nsec);
-
+extern void rtapi_delay(long int nsec);
 
 /**
  * @brief Returns the max delay permitted for rtapi_delay().
@@ -265,8 +249,7 @@ RTAPI_BEGIN_DECLS
  * @note This timing function is only available in realtime modules. User
  *       processes may not call them!
  */
-    extern long int rtapi_delay_max(void);
-
+extern long int rtapi_delay_max(void);
 
 /**
  * @brief Returns the current time in nanoseconds.
@@ -298,7 +281,7 @@ RTAPI_BEGIN_DECLS
  * @note rtapi_print() will NOT print longlong values.
  * @return Current time in nanoseconds
  */
-    extern long long int rtapi_get_time(void);
+extern long long int rtapi_get_time(void);
 
 /**
  * @brief Returns the current time in CPU clocks.
@@ -328,12 +311,11 @@ RTAPI_BEGIN_DECLS
  *       kernel space. Also note that rtapi_print() will NOT print longlong.
 
  */
-    extern long long int rtapi_get_clocks(void);
-
+extern long long int rtapi_get_clocks(void);
 
 /***********************************************************************
-*                     TASK RELATED FUNCTIONS                           *
-************************************************************************/
+ *                     TASK RELATED FUNCTIONS                           *
+ ************************************************************************/
 
 /*  NOTE: These realtime task related functions are only available in
     realtime modules.  User processes may not call them!
@@ -373,7 +355,7 @@ RTAPI_BEGIN_DECLS
  * @note Call these functions only from within init/cleanup code, not from
  *       realtime tasks.
  */
-    extern int rtapi_prio_highest(void);
+extern int rtapi_prio_highest(void);
 
 /**
  * @brief Sets task priority to the lowest possible value.
@@ -381,7 +363,7 @@ RTAPI_BEGIN_DECLS
  * @note Call these functions only from within init/cleanup code, not from
  *       realtime tasks.
  */
-    extern int rtapi_prio_lowest(void);
+extern int rtapi_prio_lowest(void);
 
 /**
  * @brief Returns the next higher priority
@@ -389,7 +371,7 @@ RTAPI_BEGIN_DECLS
  * @note Call these functions only from within init/cleanup code, not from
  *       realtime tasks.
  */
-    extern int rtapi_prio_next_higher(int prio);
+extern int rtapi_prio_next_higher(int prio);
 
 /**
  * @brief Returns the next lower priority
@@ -397,45 +379,43 @@ RTAPI_BEGIN_DECLS
  * @note Call these functions only from within init/cleanup code, not from
  *       realtime tasks.
  */
-    extern int rtapi_prio_next_lower(int prio);
+extern int rtapi_prio_next_lower(int prio);
 
-
-#define RTAPI_NO_FP   0 /*!< No floating point. */
+#define RTAPI_NO_FP 0   /*!< No floating point. */
 #define RTAPI_USES_FP 1 /*!< Uses floating point. */
- /**
-  * @brief Creates but does not start a realtime task.
-  *
-  * The task is created in the "paused" state. To start it, call either
-  * rtapi_task_start() for periodic tasks, or rtapi_task_resume() for
-  * free-running tasks.
-  *
-  * @c taskcode is the name of a function taking one int and returning void,
-  * which contains the task code. @c arg will be passed to @c taskcode as an
-  * arbitrary void pointer when the task is started, and can be used to pass any
-  * amount of data to the task (by pointing to a struct, or other such tricks).
-  *
-  * @c uses_fp is a flag that tells the OS whether the task uses floating point
-  * so it can save the FPU registers on a task switch. Failing to save registers
-  * when needed causes the dreaded "NAN bug", so most tasks should set @c
-  * uses_fp to ::RTAPI_USES_FP. If a task definitely does not use floating
-  * point, setting @c uses_fp to ::RTAPI_NO_FP saves a few microseconds per task
-  * switch.
-  * @param taskcode Pointer to the function to be called when the task is
-  *                 started.
-  * @param arg Argument to be passed to the taskcode function.
-  * @param prio Priority of the task, determined by one of rtapi_prio_xxxx().
-  * @param owner ID of the module that is making the call see rtapi_init().
-  * @param stacksize The amount of stack to be used for the task, be generous,
-  *                  hardware interrupts may use the same stack.
-  * @param uses_fp Whether the task uses floating point set with ::RTAPI_NO_FP
-  *                or ::RTAPI_USES_FP.
-  * @return On success, returns a positive integer task ID, @c task_id. This ID
-  *         is used for all subsequent calls that need to act on the task. On
-  *         failure, returns a negative error code as listed above.
- * @note Call only from within init/cleanup code, not from realtime tasks.
- */
-    extern int rtapi_task_new(void (*taskcode) (void *), void *arg,
-	int prio, int owner, unsigned long int stacksize, int uses_fp);
+                        /**
+                         * @brief Creates but does not start a realtime task.
+                         *
+                         * The task is created in the "paused" state. To start it, call either
+                         * rtapi_task_start() for periodic tasks, or rtapi_task_resume() for
+                         * free-running tasks.
+                         *
+                         * @c taskcode is the name of a function taking one int and returning void,
+                         * which contains the task code. @c arg will be passed to @c taskcode as an
+                         * arbitrary void pointer when the task is started, and can be used to pass any
+                         * amount of data to the task (by pointing to a struct, or other such tricks).
+                         *
+                         * @c uses_fp is a flag that tells the OS whether the task uses floating point
+                         * so it can save the FPU registers on a task switch. Failing to save registers
+                         * when needed causes the dreaded "NAN bug", so most tasks should set @c
+                         * uses_fp to ::RTAPI_USES_FP. If a task definitely does not use floating
+                         * point, setting @c uses_fp to ::RTAPI_NO_FP saves a few microseconds per task
+                         * switch.
+                         * @param taskcode Pointer to the function to be called when the task is
+                         *                 started.
+                         * @param arg Argument to be passed to the taskcode function.
+                         * @param prio Priority of the task, determined by one of rtapi_prio_xxxx().
+                         * @param owner ID of the module that is making the call see rtapi_init().
+                         * @param stacksize The amount of stack to be used for the task, be generous,
+                         *                  hardware interrupts may use the same stack.
+                         * @param uses_fp Whether the task uses floating point set with ::RTAPI_NO_FP
+                         *                or ::RTAPI_USES_FP.
+                         * @return On success, returns a positive integer task ID, @c task_id. This ID
+                         *         is used for all subsequent calls that need to act on the task. On
+                         *         failure, returns a negative error code as listed above.
+                         * @note Call only from within init/cleanup code, not from realtime tasks.
+                         */
+extern int rtapi_task_new(void (*taskcode)(void *), void *arg, int prio, int owner, unsigned long int stacksize, int uses_fp);
 
 /**
  * @brief Deletes a task.
@@ -446,7 +426,7 @@ RTAPI_BEGIN_DECLS
  * @return 0 on success, negative value on failure.
  * @note Call only from within init/cleanup code, not from realtime tasks.
  */
-    extern int rtapi_task_delete(int task_id);
+extern int rtapi_task_delete(int task_id);
 
 /**
  * @brief Starts a task in periodic mode.
@@ -460,7 +440,7 @@ RTAPI_BEGIN_DECLS
  *         "paused" state, or it will return @c -EINVAL.
  * @note Call only from within init/cleanup code, not from realtime tasks.
  */
-    extern int rtapi_task_start(int task_id, unsigned long int period_nsec);
+extern int rtapi_task_start(int task_id, unsigned long int period_nsec);
 
 /**
  * @brief Suspends execution of the current task until the next period.
@@ -469,7 +449,7 @@ RTAPI_BEGIN_DECLS
  * @return The function will return at the beginning of the next period.
  * @note Call only from within a realtime task.
  */
-    extern void rtapi_wait(void);
+extern void rtapi_wait(void);
 
 /**
  * @brief Starts a task in free-running mode.
@@ -485,7 +465,7 @@ RTAPI_BEGIN_DECLS
  *         "paused" state, or it will return @c -EINVAL.
  * @note May be called from init/cleanup code, and from within realtime tasks.
  */
-    extern int rtapi_task_resume(int task_id);
+extern int rtapi_task_resume(int task_id);
 
 /**
  * @brief Stop task  execution and change to the "paused" state.
@@ -498,13 +478,13 @@ RTAPI_BEGIN_DECLS
  *       the task that is to be paused.
  * @note May be called from init/cleanup code, and from within realtime tasks.
  */
-    extern int rtapi_task_pause(int task_id);
+extern int rtapi_task_pause(int task_id);
 
 /**
  * Returns the @c task_id of the current task or -EINVAL.
  * @note May be called from init/cleanup code, and from within realtime tasks.
  */
-    extern int rtapi_task_self(void);
+extern int rtapi_task_self(void);
 
 #if defined(RTAPI_USPACE) || defined(USPACE)
 
@@ -514,7 +494,7 @@ RTAPI_BEGIN_DECLS
  * @brief Gets the reference timestamp for the start of the current cycle.
  * @return Reference value in nanoseconds on success, 0 on failure.
  */
-    extern long long rtapi_task_pll_get_reference(void);
+extern long long rtapi_task_pll_get_reference(void);
 
 /**
  * @brief Sets the correction value for the next scheduling cycle of the current
@@ -524,14 +504,14 @@ RTAPI_BEGIN_DECLS
  * @param value New correction value.
  * @return 0 on success, negative value on failure.
  */
-    extern int rtapi_task_pll_set_correction(long value);
+extern int rtapi_task_pll_set_correction(long value);
 #endif /* USPACE */
 
 #endif /* RTAPI */
 
 /***********************************************************************
-*                  SHARED MEMORY RELATED FUNCTIONS                     *
-************************************************************************/
+ *                  SHARED MEMORY RELATED FUNCTIONS                     *
+ ************************************************************************/
 
 /**
  * @brief Allocates a block of shared memory.
@@ -550,8 +530,7 @@ RTAPI_BEGIN_DECLS
  * @note Call only from within user or init/cleanup code, not from realtime
  *       tasks.
  */
-    extern int rtapi_shmem_new(int key, int module_id,
-	unsigned long int size);
+extern int rtapi_shmem_new(int key, int module_id, unsigned long int size);
 
 /**
  * @brief Frees the shared memory block associated with @c shmem_id.
@@ -561,7 +540,7 @@ RTAPI_BEGIN_DECLS
  * @note Call only from within user or init/cleanup code, not from realtime
  *       tasks.
  */
-    extern int rtapi_shmem_delete(int shmem_id, int module_id);
+extern int rtapi_shmem_delete(int shmem_id, int module_id);
 
 /**
  * @brief Sets @c *ptr to point to shared memory block associated with
@@ -571,11 +550,11 @@ RTAPI_BEGIN_DECLS
  * @return 0 on success, negative value on failure.
  * @note May be called from user code, init/cleanup code, or realtime tasks.
  */
-    extern int rtapi_shmem_getptr(int shmem_id, void **ptr);
+extern int rtapi_shmem_getptr(int shmem_id, void **ptr);
 
 /***********************************************************************
-*                    SEMAPHORE RELATED FUNCTIONS                       *
-************************************************************************/
+ *                    SEMAPHORE RELATED FUNCTIONS                       *
+ ************************************************************************/
 
 /*  NOTE: These semaphore related functions are only available in
     realtime modules.  User processes may not call them!  Consider
@@ -596,7 +575,7 @@ RTAPI_BEGIN_DECLS
  * @note Only available in realtime modules. User processes may not call them!
  *       Consider the mutex functions in rtapi_mutex.h instead.
  */
-    extern int rtapi_sem_new(int key, int module_id);
+extern int rtapi_sem_new(int key, int module_id);
 
 /**
  * @brief Delete a semaphore.
@@ -607,7 +586,7 @@ RTAPI_BEGIN_DECLS
  * @return 0 on success, negative value on failure.
  * @note Call only from within init/cleanup code, not from realtime tasks.
  */
-    extern int rtapi_sem_delete(int sem_id, int module_id);
+extern int rtapi_sem_delete(int sem_id, int module_id);
 
 /**
  * @brief Unlocks a semaphore.
@@ -618,7 +597,7 @@ RTAPI_BEGIN_DECLS
  * @return 0 on success, negative value on failure.
  * @note May be called from init/cleanup code, and from within realtime tasks.
  */
-    extern int rtapi_sem_give(int sem_id);
+extern int rtapi_sem_give(int sem_id);
 
 /**
  * @brief Locks a semaphore.
@@ -628,7 +607,7 @@ RTAPI_BEGIN_DECLS
  *         until the semaphore is unlocked, then it returns 0.
  * @note Call only from within a realtime task.
  */
-    extern int rtapi_sem_take(int sem_id);
+extern int rtapi_sem_take(int sem_id);
 
 /**
  * @brief Non-blocking attempt to lock a semaphore.
@@ -638,13 +617,13 @@ RTAPI_BEGIN_DECLS
  *         -EBUSY, and the caller can decide how to deal with the situation.
  * @note Call only from within a realtime task.
  */
-    extern int rtapi_sem_try(int sem_id);
+extern int rtapi_sem_try(int sem_id);
 
 #endif /* RTAPI */
 
 /***********************************************************************
-*                        FIFO RELATED FUNCTIONS                        *
-************************************************************************/
+ *                        FIFO RELATED FUNCTIONS                        *
+ ************************************************************************/
 
 /**
  * @brief Creates a realtime fifo.
@@ -662,8 +641,7 @@ RTAPI_BEGIN_DECLS
  * @note RTAI fifos require \f$(stacksize >= fifosize + 256)\f$ to avoid oops
  *       messages on removal.
  */
-    extern int rtapi_fifo_new(int key, int module_id,
-	unsigned long int size, char mode);
+extern int rtapi_fifo_new(int key, int module_id, unsigned long int size, char mode);
 
 /**
  * @brief Closes the fifo associated with @c fifo_id.
@@ -673,7 +651,7 @@ RTAPI_BEGIN_DECLS
  * @note Call only from within user or init/cleanup code, not from realtime
  *       tasks.
  */
-    extern int rtapi_fifo_delete(int fifo_id, int module_id);
+extern int rtapi_fifo_delete(int fifo_id, int module_id);
 
 /*  FIFO notes. These comments apply to both read and write functions.
     A fifo is a character device, an int is typically four bytes long...
@@ -706,7 +684,7 @@ RTAPI_BEGIN_DECLS
  * @return Number of bytes actually read, or -EINVAL.
  * @note Call only from within a realtime task.
  */
-#else /* ULAPI */
+#else  /* ULAPI */
 /**
  * @brief Reads data from @c fifo_id.
  * @param fifo_id ID of the fifo to read from.
@@ -717,11 +695,10 @@ RTAPI_BEGIN_DECLS
  *         bytes are not available, it will read whatever is available, and
  *         return that count (will be greater than zero). If interrupted by a
  *         signal or some other error occurs, will return -EINVAL.
-*/
+ */
 #endif /* ULAPI */
 
-    extern int rtapi_fifo_read(int fifo_id, char *buf,
-	unsigned long int size);
+extern int rtapi_fifo_read(int fifo_id, char *buf, unsigned long int size);
 
 #ifdef RTAPI
 /**
@@ -733,7 +710,7 @@ RTAPI_BEGIN_DECLS
  *         @c size bytes of space are not available in the fifo, it will write
  *         as many bytes as it can and return that count (which may be zero).
  */
-#else /* ULAPI */
+#else  /* ULAPI */
 /**
  * @brief Writes data to @c fifo_id.
  * @param fifo_id ID of the fifo to write to.
@@ -746,12 +723,11 @@ RTAPI_BEGIN_DECLS
  */
 #endif /* ULAPI */
 
-    extern int rtapi_fifo_write(int fifo_id, char *buf,
-	unsigned long int size);
+extern int rtapi_fifo_write(int fifo_id, char *buf, unsigned long int size);
 
 /***********************************************************************
-*                    INTERRUPT RELATED FUNCTIONS                       *
-************************************************************************/
+ *                    INTERRUPT RELATED FUNCTIONS                       *
+ ************************************************************************/
 
 /*  NOTE: These interrupt related functions are only available in
     realtime modules.  User processes may not call them!
@@ -768,8 +744,7 @@ RTAPI_BEGIN_DECLS
  * @note The simulated RTOS does not support interrupts.
  * @note Call only from within init/cleanup code, not from realtime tasks.
  */
-    extern int rtapi_irq_new(unsigned int irq_num, int owner,
-	void (*handler) (void));
+extern int rtapi_irq_new(unsigned int irq_num, int owner, void (*handler)(void));
 
 /**
  * @brief Removes an interrupt handler that was previously installed by
@@ -780,7 +755,7 @@ RTAPI_BEGIN_DECLS
  * @warning Removing a realtime module without freeing any handlers it has
  *          installed will almost certainly crash the box.
  */
-    extern int rtapi_irq_delete(unsigned int irq_num);
+extern int rtapi_irq_delete(unsigned int irq_num);
 
 /**
  * @brief Enable interrupt.
@@ -791,7 +766,7 @@ RTAPI_BEGIN_DECLS
  * @note May be called from init/cleanup code, and from within realtime tasks.
 
 */
-    extern int rtapi_enable_interrupt(unsigned int irq);
+extern int rtapi_enable_interrupt(unsigned int irq);
 
 /**
  * @brief Disable interrupt.
@@ -801,13 +776,13 @@ RTAPI_BEGIN_DECLS
  * @return Always returns 0.
  * @note May be called from init/cleanup code, and from within realtime tasks.
  */
-    extern int rtapi_disable_interrupt(unsigned int irq);
+extern int rtapi_disable_interrupt(unsigned int irq);
 
 #endif /* RTAPI */
 
 /***********************************************************************
-*                        I/O RELATED FUNCTIONS                         *
-************************************************************************/
+ *                        I/O RELATED FUNCTIONS                         *
+ ************************************************************************/
 
 /**
  * @brief Write @c byte to a hardware I/O @c port.
@@ -817,7 +792,7 @@ RTAPI_BEGIN_DECLS
  * @note This function does nothing on the simulated RTOS.
  * @note Many platforms provide an inline outb() that is faster.
  */
-    extern void rtapi_outb(unsigned char byte, unsigned int port);
+extern void rtapi_outb(unsigned char byte, unsigned int port);
 
 /**
  * @brief Read byte from @c port.
@@ -827,7 +802,7 @@ RTAPI_BEGIN_DECLS
  * @note This function always returns zero on the simulated RTOS.
  * @note Many platforms provide an inline inb() that is faster.
  */
-    extern unsigned char rtapi_inb(unsigned int port);
+extern unsigned char rtapi_inb(unsigned int port);
 
 #if defined(__KERNEL__)
 #include <linux/version.h>
@@ -844,10 +819,9 @@ RTAPI_BEGIN_DECLS
  * @return @c NULL on failure. Otherwise, a non-NULL value.
  * @note Note that on kernels before 2.4.0, this function always succeeds.
  */
-    static __inline__ void *rtapi_request_region(unsigned long base,
-            unsigned long size, const char *name) {
-        return (void*)request_region(base, size, name);
-    }
+static __inline__ void *rtapi_request_region(unsigned long base, unsigned long size, const char *name) {
+    return (void *)request_region(base, size, name);
+}
 
 /**
  * @brief Release I/O memory.
@@ -859,18 +833,17 @@ RTAPI_BEGIN_DECLS
  * @param size Size of the I/O region.
  * @param name Name to be shown in @c /proc/ioports.
  */
-    static __inline__ void rtapi_release_region(unsigned long base,
-            unsigned long int size) {
-        release_region(base, size);
-    }
+static __inline__ void rtapi_release_region(unsigned long base, unsigned long int size) {
+    release_region(base, size);
+}
 #else
-    #define rtapi_request_region(base, size, name) ((void*)-1)
-    #define rtapi_release_region(base, size) ((void)0)
+#define rtapi_request_region(base, size, name) ((void *)-1)
+#define rtapi_release_region(base, size) ((void)0)
 #endif
 
 /***********************************************************************
-*                      MODULE PARAMETER MACROS                         *
-************************************************************************/
+ *                      MODULE PARAMETER MACROS                         *
+ ************************************************************************/
 
 #ifdef RTAPI
 
@@ -893,30 +866,30 @@ RTAPI_BEGIN_DECLS
 */
 
 #if !defined(__KERNEL__)
-#define MODULE_INFO1(t, a, c) __attribute__((section(".modinfo"))) \
-    t rtapi_info_##a = c; EXPORT_SYMBOL(rtapi_info_##a);
-#define MODULE_INFO2x(t, a, b, c) MODULE_INFO2(t,a,b,c)
-#define MODULE_INFO2(t, a, b, c) __attribute__((section(".modinfo"))) \
-    t rtapi_info_##a##_##b = c; EXPORT_SYMBOL(rtapi_info_##a##_##b);
-#define MODULE_PARM(v,t) MODULE_INFO2(const char*, type, v, t) MODULE_INFO2(void*, address, v, &v)
-#define MODULE_PARM_DESC(v,t) MODULE_INFO2(const char*, description, v, t)
-#define MODULE_LICENSE(s) MODULE_INFO1(const char*, license, s)
-#define MODULE_AUTHOR(s) MODULE_INFO1(const char*, author, s)
-#define MODULE_DESCRIPTION(s) MODULE_INFO1(const char*, description, s)
-#define MODULE_SUPPORTED_DEVICE(s) MODULE_INFO1(const char*, supported_device, s)
-#define MODULE_DEVICE_TABLE(x,y) MODULE_INFO2(struct rtapi_pci_device_id*, device_table, x, y)
-#define MODULE_INFO(x,y) MODULE_INFO2x(char*, x, __LINE__, y)
-#define EXPORT_SYMBOL(x) __attribute__((section(".rtapi_export"))) \
-    char rtapi_exported_##x[] = #x;
-#define EXPORT_SYMBOL_GPL(x) __attribute__((section(".rtapi_export"))) \
-    char rtapi_exported_##x[] = #x;
+#define MODULE_INFO1(t, a, c)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  \
+    __attribute__((section(".modinfo"))) t rtapi_info_##a = c;                                                                                                                                                                                                                                                                                                                                                                                                                                                                 \
+    EXPORT_SYMBOL(rtapi_info_##a);
+#define MODULE_INFO2x(t, a, b, c) MODULE_INFO2(t, a, b, c)
+#define MODULE_INFO2(t, a, b, c)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               \
+    __attribute__((section(".modinfo"))) t rtapi_info_##a##_##b = c;                                                                                                                                                                                                                                                                                                                                                                                                                                                           \
+    EXPORT_SYMBOL(rtapi_info_##a##_##b);
+#define MODULE_PARM(v, t) MODULE_INFO2(const char *, type, v, t) MODULE_INFO2(void *, address, v, &v)
+#define MODULE_PARM_DESC(v, t) MODULE_INFO2(const char *, description, v, t)
+#define MODULE_LICENSE(s) MODULE_INFO1(const char *, license, s)
+#define MODULE_AUTHOR(s) MODULE_INFO1(const char *, author, s)
+#define MODULE_DESCRIPTION(s) MODULE_INFO1(const char *, description, s)
+#define MODULE_SUPPORTED_DEVICE(s) MODULE_INFO1(const char *, supported_device, s)
+#define MODULE_DEVICE_TABLE(x, y) MODULE_INFO2(struct rtapi_pci_device_id *, device_table, x, y)
+#define MODULE_INFO(x, y) MODULE_INFO2x(char *, x, __LINE__, y)
+#define EXPORT_SYMBOL(x) __attribute__((section(".rtapi_export"))) char rtapi_exported_##x[] = #x;
+#define EXPORT_SYMBOL_GPL(x) __attribute__((section(".rtapi_export"))) char rtapi_exported_##x[] = #x;
 #else
 #ifndef LINUX_VERSION_CODE
 #include <linux/version.h>
 #endif
 #endif
 #ifndef KERNEL_VERSION
-#define KERNEL_VERSION(a,b,c) (((a) << 16) + ((b) << 8) + (c))
+#define KERNEL_VERSION(a, b, c) (((a) << 16) + ((b) << 8) + (c))
 #endif
 
 #ifndef LINUX_VERSION_CODE
@@ -924,65 +897,61 @@ RTAPI_BEGIN_DECLS
 #endif
 
 #if !defined(__KERNEL__)
-#define RTAPI_STRINGIFY(x)    #x
+#define RTAPI_STRINGIFY(x) #x
 
-   
-#define RTAPI_MP_INT(var,descr)    \
-  MODULE_PARM(var,"i");            \
-  MODULE_PARM_DESC(var,descr);
+#define RTAPI_MP_INT(var, descr)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               \
+    MODULE_PARM(var, "i");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     \
+    MODULE_PARM_DESC(var, descr);
 
-#define RTAPI_MP_LONG(var,descr)   \
-  MODULE_PARM(var,"l");            \
-  MODULE_PARM_DESC(var,descr);
+#define RTAPI_MP_LONG(var, descr)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              \
+    MODULE_PARM(var, "l");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     \
+    MODULE_PARM_DESC(var, descr);
 
-#define RTAPI_MP_STRING(var,descr) \
-  MODULE_PARM(var,"s");            \
-  MODULE_PARM_DESC(var,descr);
+#define RTAPI_MP_STRING(var, descr)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            \
+    MODULE_PARM(var, "s");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     \
+    MODULE_PARM_DESC(var, descr);
 
-#define RTAPI_MP_ARRAY(type, var, num, descr)      \
-  MODULE_PARM(var,type);                           \
-  MODULE_INFO2(int, size, var, num);               \
-  MODULE_PARM_DESC(var,descr);
+#define RTAPI_MP_ARRAY(type, var, num, descr)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  \
+    MODULE_PARM(var, type);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    \
+    MODULE_INFO2(int, size, var, num);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         \
+    MODULE_PARM_DESC(var, descr);
 
-#define RTAPI_MP_ARRAY_INT(var,num,descr)          \
-  RTAPI_MP_ARRAY("i", var, num, descr);
+#define RTAPI_MP_ARRAY_INT(var, num, descr) RTAPI_MP_ARRAY("i", var, num, descr);
 
-#define RTAPI_MP_ARRAY_LONG(var,num,descr)         \
-  RTAPI_MP_ARRAY("l", var, num, descr);
+#define RTAPI_MP_ARRAY_LONG(var, num, descr) RTAPI_MP_ARRAY("l", var, num, descr);
 
-#define RTAPI_MP_ARRAY_STRING(var,num,descr)       \
-  RTAPI_MP_ARRAY("s", var, num, descr);
+#define RTAPI_MP_ARRAY_STRING(var, num, descr) RTAPI_MP_ARRAY("s", var, num, descr);
 
 #else /* kernel */
 
 #include <linux/module.h>
 
-#define RTAPI_MP_INT(var,descr)    \
-  module_param(var, int, 0);       \
-  MODULE_PARM_DESC(var,descr);
+#define RTAPI_MP_INT(var, descr)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               \
+    module_param(var, int, 0);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 \
+    MODULE_PARM_DESC(var, descr);
 
-#define RTAPI_MP_LONG(var,descr)   \
-  module_param(var, long, 0);      \
-  MODULE_PARM_DESC(var,descr);
+#define RTAPI_MP_LONG(var, descr)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              \
+    module_param(var, long, 0);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                \
+    MODULE_PARM_DESC(var, descr);
 
-#define RTAPI_MP_STRING(var,descr) \
-  module_param(var, charp, 0);     \
-  MODULE_PARM_DESC(var,descr);
+#define RTAPI_MP_STRING(var, descr)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            \
+    module_param(var, charp, 0);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               \
+    MODULE_PARM_DESC(var, descr);
 
-#define RTAPI_MP_ARRAY_INT(var,num,descr)                \
-  int __dummy_##var;                                     \
-  module_param_array(var, int, &(__dummy_##var), 0);     \
-  MODULE_PARM_DESC(var,descr);
+#define RTAPI_MP_ARRAY_INT(var, num, descr)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    \
+    int __dummy_##var;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         \
+    module_param_array(var, int, &(__dummy_##var), 0);                                                                                                                                                                                                                                                                                                                                                                                                                                                                         \
+    MODULE_PARM_DESC(var, descr);
 
-#define RTAPI_MP_ARRAY_LONG(var,num,descr)               \
-  int __dummy_##var;                                     \
-  module_param_array(var, long, &(__dummy_##var), 0);    \
-  MODULE_PARM_DESC(var,descr);
+#define RTAPI_MP_ARRAY_LONG(var, num, descr)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   \
+    int __dummy_##var;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         \
+    module_param_array(var, long, &(__dummy_##var), 0);                                                                                                                                                                                                                                                                                                                                                                                                                                                                        \
+    MODULE_PARM_DESC(var, descr);
 
-#define RTAPI_MP_ARRAY_STRING(var,num,descr)             \
-  int __dummy_##var;                                     \
-  module_param_array(var, charp, &(__dummy_##var), 0);  \
-  MODULE_PARM_DESC(var,descr);
+#define RTAPI_MP_ARRAY_STRING(var, num, descr)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 \
+    int __dummy_##var;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         \
+    module_param_array(var, charp, &(__dummy_##var), 0);                                                                                                                                                                                                                                                                                                                                                                                                                                                                       \
+    MODULE_PARM_DESC(var, descr);
 
 #endif
 
@@ -993,15 +962,9 @@ extern long int simple_strtol(const char *nptr, char **endptr, int base);
 
 #include <spawn.h>
 
-int rtapi_spawn_as_root(pid_t *pid, const char *path,
-    const posix_spawn_file_actions_t *file_actions,
-    const posix_spawnattr_t *attrp,
-    char *const argv[], char *const envp[]);
+int rtapi_spawn_as_root(pid_t *pid, const char *path, const posix_spawn_file_actions_t *file_actions, const posix_spawnattr_t *attrp, char *const argv[], char *const envp[]);
 
-int rtapi_spawnp_as_root(pid_t *pid, const char *path,
-    const posix_spawn_file_actions_t *file_actions,
-    const posix_spawnattr_t *attrp,
-    char *const argv[], char *const envp[]);
+int rtapi_spawnp_as_root(pid_t *pid, const char *path, const posix_spawn_file_actions_t *file_actions, const posix_spawnattr_t *attrp, char *const argv[], char *const envp[]);
 #endif
 
 extern int rtapi_is_kernelspace(void);

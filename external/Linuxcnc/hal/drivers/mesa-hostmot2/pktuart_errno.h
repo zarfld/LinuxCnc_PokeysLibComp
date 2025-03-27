@@ -21,21 +21,20 @@
 #define __PKTUART_ERRNO_H
 
 // Tx mode register errors
-#define  HM2_PKTUART_TxSCFIFOError  (214)  // Tx Send Count FIFO Error
-
+#define HM2_PKTUART_TxSCFIFOError (214) // Tx Send Count FIFO Error
 
 // Rx mode register errors
-#define HM2_PKTUART_RxRCFIFOError   (114)  // RCFIFO Error, Bit  4  
-#define HM2_PKTUART_RxOverrunError  (111)  // Overrun error (no stop bit when expected) (sticky), Bit  1
-#define HM2_PKTUART_RxStartbitError (110)  // False Start bit error (sticky), Bit  0
+#define HM2_PKTUART_RxRCFIFOError (114)   // RCFIFO Error, Bit  4
+#define HM2_PKTUART_RxOverrunError (111)  // Overrun error (no stop bit when expected) (sticky), Bit  1
+#define HM2_PKTUART_RxStartbitError (110) // False Start bit error (sticky), Bit  0
 
 // Rx count register errors
-#define HM2_PKTUART_RxPacketOverrrunError (1115)    // Bit 15         Overrun error in this packet
-#define HM2_PKTUART_RxPacketStartbitError (1114)    // Bit 14         False Start bit error in this packet
+#define HM2_PKTUART_RxPacketOverrrunError (1115) // Bit 15         Overrun error in this packet
+#define HM2_PKTUART_RxPacketStartbitError (1114) // Bit 14         False Start bit error in this packet
 
 // the next two error conditions
 // are very improbable, but we consider them nevertheless
-#define HM2_PKTUART_RxPacketSizeZero      (1120)    // the length of the received packet is 0
-#define HM2_PKTUART_RxArraySizeError      (1140)    // sizeof(data array)= num_frames*max_frame_length is too small for all the data in the buffer
+#define HM2_PKTUART_RxPacketSizeZero (1120) // the length of the received packet is 0
+#define HM2_PKTUART_RxArraySizeError (1140) // sizeof(data array)= num_frames*max_frame_length is too small for all the data in the buffer
 
 #endif

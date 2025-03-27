@@ -33,15 +33,13 @@
 #include "emc_mods.h"
 #include <rtapi_string.h>
 
-
-
 // This function is a development of Jeff's original work for ver 7.100
 // it converts variables or symbols to HAL signal names (if present)
 
 // It is called from the GetElementPropertiesForStatusBar function in edit.c
 // it checks to see if the VarsNameParam is a symbol, if it is, converts it to a variable name
 // if Variable is B or W then exports that it is a memory variable
-//also checks to see if in the range of max number of word variables loaded by realtime
+// also checks to see if in the range of max number of word variables loaded by realtime
 // if not I, Q, QW, or IW  then returns an error message
 // then checks for what the pinname would be if it is a I, Q, IW or QW  variable
 // (these are the only variables that can connect to the outside world)
@@ -54,75 +52,97 @@
 // edit.c uses this function
 // Chris Morley NOV 08
 
-
-char * ConvVarNameToHalSigName(char * VarNameParam)
-{
-    if( (VarNameParam[0]=='\0') ||  (VarNameParam[0]==' ')) {return _("Error blank symbol name");}
-    if( VarNameParam[0] != '%') {VarNameParam= ConvSymbolToVarName(VarNameParam);}
+char *ConvVarNameToHalSigName(char *VarNameParam) {
+    if ((VarNameParam[0] == '\0') || (VarNameParam[0] == ' ')) {
+        return _("Error blank symbol name");
+    }
+    if (VarNameParam[0] != '%') {
+        VarNameParam = ConvSymbolToVarName(VarNameParam);
+    }
     // We need to test for 'NULL', since ConvSymbolToVarName()
     // returns NULL, if no symbols is found.
-    if( VarNameParam == NULL) {return _("Error unknown symbol name");}
-    if( VarNameParam[0] == '%'){
-        char pin_name[100] = {0};
-        int arrowside=0;
+    if (VarNameParam == NULL) {
+        return _("Error unknown symbol name");
+    }
+    if (VarNameParam[0] == '%') {
+        char pin_name[100] = { 0 };
+        int arrowside = 0;
         int idx;
 
-        switch(VarNameParam[1]) {
+        switch (VarNameParam[1]) {
             case 'I':
-                switch(VarNameParam[2]) {
+                switch (VarNameParam[2]) {
                     case 'W':
-                        sscanf(VarNameParam+3, "%d", &idx);
-                        if((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_phys_words_inputs) {return _("out of bounds variable number");}
+                        sscanf(VarNameParam + 3, "%d", &idx);
+                        if ((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_phys_words_inputs) {
+                            return _("out of bounds variable number");
+                        }
                         snprintf(pin_name, 100, "classicladder.0.s32in-%02d", idx);
                         arrowside = 1;
                         break;
                     case 'F':
-                        sscanf(VarNameParam+3, "%d", &idx);
-                        if((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_phys_float_inputs) {return _("out of bounds variable number");}
+                        sscanf(VarNameParam + 3, "%d", &idx);
+                        if ((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_phys_float_inputs) {
+                            return _("out of bounds variable number");
+                        }
                         snprintf(pin_name, 100, "classicladder.0.floatin-%02d", idx);
                         arrowside = 1;
                         break;
                     default:
-                        sscanf(VarNameParam+2, "%d", &idx);
+                        sscanf(VarNameParam + 2, "%d", &idx);
                         snprintf(pin_name, 100, "classicladder.0.in-%02d", idx);
                         arrowside = 1;
-                        if((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_phys_inputs) {return _("out of bounds variable number");}
+                        if ((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_phys_inputs) {
+                            return _("out of bounds variable number");
+                        }
                         break;
                 }
                 break;
             case 'Q':
-                switch(VarNameParam[2]) {
+                switch (VarNameParam[2]) {
                     case 'W':
-                        sscanf(VarNameParam+3, "%d", &idx);
-                        if((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_phys_words_outputs) {return _("out of bounds variable number");}
+                        sscanf(VarNameParam + 3, "%d", &idx);
+                        if ((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_phys_words_outputs) {
+                            return _("out of bounds variable number");
+                        }
                         snprintf(pin_name, 100, "classicladder.0.s32out-%02d", idx);
                         arrowside = 0;
                         break;
                     case 'F':
-                        sscanf(VarNameParam+3, "%d", &idx);
-                        if((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_phys_float_outputs) {return _("out of bounds variable number");}
+                        sscanf(VarNameParam + 3, "%d", &idx);
+                        if ((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_phys_float_outputs) {
+                            return _("out of bounds variable number");
+                        }
                         snprintf(pin_name, 100, "classicladder.0.floatout-%02d", idx);
                         arrowside = 0;
                         break;
                     default:
-                        sscanf(VarNameParam+2, "%d", &idx);
+                        sscanf(VarNameParam + 2, "%d", &idx);
                         snprintf(pin_name, 100, "classicladder.0.out-%02d", idx);
                         arrowside = 0;
-                        if((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_phys_outputs) {return _("out of bounds variable number");}
+                        if ((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_phys_outputs) {
+                            return _("out of bounds variable number");
+                        }
                         break;
                 }
                 break;
             case 'W':
-                sscanf(VarNameParam+2, "%d", &idx);
-                if((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_words) {return _("out of bounds variable number");}
+                sscanf(VarNameParam + 2, "%d", &idx);
+                if ((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_words) {
+                    return _("out of bounds variable number");
+                }
                 return _("None -Internal Memory");
             case 'B':
-                sscanf(VarNameParam+2, "%d", &idx);
-                if((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_bits) {return _("out of bounds variable number");}
+                sscanf(VarNameParam + 2, "%d", &idx);
+                if ((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_bits) {
+                    return _("out of bounds variable number");
+                }
                 return _("None -Internal Memory");
             case 'E':
-                sscanf(VarNameParam+2, "%d", &idx);
-                if((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_error_bits) {return _("out of bounds variable number");}
+                sscanf(VarNameParam + 2, "%d", &idx);
+                if ((idx) >= InfosGene->GeneralParams.SizesInfos.nbr_error_bits) {
+                    return _("out of bounds variable number");
+                }
                 return _("None -Internal Error Status");
             case 'T':
             case 'C':
@@ -133,16 +153,16 @@ char * ConvVarNameToHalSigName(char * VarNameParam)
                 return _("error");
         }
 
-        if(*pin_name) {
+        if (*pin_name) {
             hal_pin_t *pin = halpr_find_pin_by_name(pin_name);
-            if(pin && pin->signal) {
+            if (pin && pin->signal) {
                 hal_sig_t *sig = SHMPTR(pin->signal);
-                if(0 != sig->name[0]) {
+                if (0 != sig->name[0]) {
                     static char sig_name[100];
                     // char *arrow = "\xe2\x86\x90";
                     char *arrow = "\xe2\x87\x92";
 
-                    if(arrowside == 0) {
+                    if (arrowside == 0) {
                         snprintf(sig_name, 100, "%s%s", sig->name, arrow);
                     } else {
                         snprintf(sig_name, 100, "%s%s", arrow, sig->name);
@@ -151,7 +171,9 @@ char * ConvVarNameToHalSigName(char * VarNameParam)
                     return sig_name;
                 }
             }
-            if (pin && !pin->signal) {return _("no signal connected");  }
+            if (pin && !pin->signal) {
+                return _("no signal connected");
+            }
         }
     }
 
@@ -168,11 +190,10 @@ char * ConvVarNameToHalSigName(char * VarNameParam)
 // Edit.c uses this function
 // Chris Morley Feb 08
 
-char * FirstVariableInArithm(char * Expr)
-{
+char *FirstVariableInArithm(char *Expr) {
     static char Buffer[100];
     static char Tempbuf[100];
-    char * Ptr = Expr;
+    char *Ptr = Expr;
     int i;
     Buffer[0] = '\0';
 
@@ -184,14 +205,14 @@ char * FirstVariableInArithm(char * Expr)
 
     for (i = 0; i < 100; i++) {
         switch (Ptr[i]) {
-            case ':' :
-            case '=' :
+            case ':':
+            case '=':
             case '\0':
-            case '&' :
-            case '!' :
-            case '|' :
-            case '[' :
-            case '(' :
+            case '&':
+            case '!':
+            case '|':
+            case '[':
+            case '(':
                 snprintf(Buffer, i + 1, "%s", Expr);
                 snprintf(Tempbuf, 100, _(" %s (for %s)  Exprsn~ %s"), ConvVarNameToHalSigName(Buffer), Buffer, Expr);
                 return Tempbuf;
@@ -204,94 +225,78 @@ char * FirstVariableInArithm(char * Expr)
 // Auto assignment of names for symbols of s32in, s32out, bitin and bitout
 // if not already assigned a name.
 // You must assign s32in before s32out unless there are no s32in
-void SymbolsAutoAssign(void)
-{
-    enum pinnames {
-        BITINS = 0,
-        BITOUTS,
-        BITS,
-        WORDS,
-        S32INS,
-        S32OUTS,
-        FLOATINS,
-        FLOATOUTS,
-        TIMERS,
-        IEC_TIMERS,
-        MONOS,
-        COUNTERS,
-        ERRORS,
-        NUMVARTYPES
-    };
+void SymbolsAutoAssign(void) {
+    enum pinnames { BITINS = 0, BITOUTS, BITS, WORDS, S32INS, S32OUTS, FLOATINS, FLOATOUTS, TIMERS, IEC_TIMERS, MONOS, COUNTERS, ERRORS, NUMVARTYPES };
     int scansymb, found = FALSE, i, v, numofvariable;
     char Buffer[30], SymbolBuf[5], CommentBuf[40] = "";
 
     for (v = 0; v < NUMVARTYPES; v++) {
-        switch(v) {
-        case BITINS:
-            numofvariable = NBR_PHYS_INPUTS ;
-            rtapi_strxcpy(SymbolBuf, "I");
-            break;
-        case BITOUTS:
-            numofvariable = NBR_PHYS_OUTPUTS;
-            rtapi_strxcpy(SymbolBuf, "Q");
-            break;
-        case BITS:
-            numofvariable = NBR_BITS;
-            rtapi_strxcpy(SymbolBuf, "B");
-            break;
-        case WORDS:
-            numofvariable = NBR_WORDS;
-            rtapi_strxcpy(SymbolBuf, "W");
-            break;
-        case S32INS:
-            numofvariable = NBR_PHYS_WORDS_INPUTS ;
-            rtapi_strxcpy(SymbolBuf, "IW");
-            break;
-        case S32OUTS:
-            numofvariable = NBR_PHYS_WORDS_OUTPUTS;
-            rtapi_strxcpy(SymbolBuf, "QW");
-            break;
-        case FLOATINS:
-            numofvariable = NBR_PHYS_FLOAT_INPUTS ;
-            rtapi_strxcpy(SymbolBuf, "IF");
-            break;
-        case FLOATOUTS:
-            numofvariable = NBR_PHYS_FLOAT_OUTPUTS;
-            rtapi_strxcpy(SymbolBuf, "QF");
-            break;
-        case TIMERS:
-            numofvariable = NBR_TIMERS;
-            rtapi_strxcpy(SymbolBuf, "T");
-            rtapi_strxcpy(CommentBuf, _("Old Timer"));
-            break;
-        case IEC_TIMERS:
-            numofvariable = NBR_TIMERS_IEC ;
-            rtapi_strxcpy(SymbolBuf, "TM");
-            rtapi_strxcpy(CommentBuf, _("New Timer"));
-            break;
-        case MONOS:
-            numofvariable = NBR_MONOSTABLES;
-            rtapi_strxcpy(SymbolBuf, "M");
-            rtapi_strxcpy(CommentBuf, _("One-shot"));
-            break;
-        case COUNTERS:
-            numofvariable = NBR_COUNTERS;
-            rtapi_strxcpy(SymbolBuf, "C");
-            rtapi_strxcpy(CommentBuf, _("Counter"));
-            break;
-        case ERRORS:
-            numofvariable = NBR_ERROR_BITS;
-            rtapi_strxcpy(SymbolBuf, "E");
-            rtapi_strxcpy(CommentBuf, _("Error Flag Bit"));
-            break;
-        default :
-            rtapi_print_msg(RTAPI_MSG_ERR, _("Cannot auto assign symbol names-wrong variable name"));
-            return;
+        switch (v) {
+            case BITINS:
+                numofvariable = NBR_PHYS_INPUTS;
+                rtapi_strxcpy(SymbolBuf, "I");
+                break;
+            case BITOUTS:
+                numofvariable = NBR_PHYS_OUTPUTS;
+                rtapi_strxcpy(SymbolBuf, "Q");
+                break;
+            case BITS:
+                numofvariable = NBR_BITS;
+                rtapi_strxcpy(SymbolBuf, "B");
+                break;
+            case WORDS:
+                numofvariable = NBR_WORDS;
+                rtapi_strxcpy(SymbolBuf, "W");
+                break;
+            case S32INS:
+                numofvariable = NBR_PHYS_WORDS_INPUTS;
+                rtapi_strxcpy(SymbolBuf, "IW");
+                break;
+            case S32OUTS:
+                numofvariable = NBR_PHYS_WORDS_OUTPUTS;
+                rtapi_strxcpy(SymbolBuf, "QW");
+                break;
+            case FLOATINS:
+                numofvariable = NBR_PHYS_FLOAT_INPUTS;
+                rtapi_strxcpy(SymbolBuf, "IF");
+                break;
+            case FLOATOUTS:
+                numofvariable = NBR_PHYS_FLOAT_OUTPUTS;
+                rtapi_strxcpy(SymbolBuf, "QF");
+                break;
+            case TIMERS:
+                numofvariable = NBR_TIMERS;
+                rtapi_strxcpy(SymbolBuf, "T");
+                rtapi_strxcpy(CommentBuf, _("Old Timer"));
+                break;
+            case IEC_TIMERS:
+                numofvariable = NBR_TIMERS_IEC;
+                rtapi_strxcpy(SymbolBuf, "TM");
+                rtapi_strxcpy(CommentBuf, _("New Timer"));
+                break;
+            case MONOS:
+                numofvariable = NBR_MONOSTABLES;
+                rtapi_strxcpy(SymbolBuf, "M");
+                rtapi_strxcpy(CommentBuf, _("One-shot"));
+                break;
+            case COUNTERS:
+                numofvariable = NBR_COUNTERS;
+                rtapi_strxcpy(SymbolBuf, "C");
+                rtapi_strxcpy(CommentBuf, _("Counter"));
+                break;
+            case ERRORS:
+                numofvariable = NBR_ERROR_BITS;
+                rtapi_strxcpy(SymbolBuf, "E");
+                rtapi_strxcpy(CommentBuf, _("Error Flag Bit"));
+                break;
+            default:
+                rtapi_print_msg(RTAPI_MSG_ERR, _("Cannot auto assign symbol names-wrong variable name"));
+                return;
         }
-        //printf("symbol-%s number-%i\n",SymbolBuf,v);
+        // printf("symbol-%s number-%i\n",SymbolBuf,v);
         for (i = 0; i < numofvariable; i++) {
             found = FALSE;
-            //set buffer to variable to check variable name
+            // set buffer to variable to check variable name
             rtapi_strxcpy(Buffer, "");
             snprintf(Buffer, sizeof(Buffer), "%%%s%d", SymbolBuf, i);
 
@@ -301,8 +306,8 @@ void SymbolsAutoAssign(void)
             while (scansymb < NBR_SYMBOLS) {
                 // check for existing variable/symbol name
                 if (strcmp(SymbolArray[scansymb].VarName, Buffer) == FALSE) {
-                    found = TRUE ; // already a symbol for this variable
-                    break; // stop looking then
+                    found = TRUE; // already a symbol for this variable
+                    break;        // stop looking then
                 }
                 scansymb++; // check the rest
             }
@@ -314,17 +319,18 @@ void SymbolsAutoAssign(void)
             while (found == FALSE && scansymb < NBR_SYMBOLS) {
                 // look for an empty spot...
                 if (SymbolArray[scansymb].VarName[0] == '\0') {
-                    //copy variable name already in Buffer to VarName array
-                    rtapi_strxcpy(SymbolArray[scansymb].VarName, Buffer );
+                    // copy variable name already in Buffer to VarName array
+                    rtapi_strxcpy(SymbolArray[scansymb].VarName, Buffer);
 
-                    //put a symbol name (and it's number) in buffer
-                    rtapi_strxcpy(SymbolArray[scansymb].Symbol, Buffer );
-                    //printf("%s\n",Buffer);
-                    // copy a comment if there is one...
+                    // put a symbol name (and it's number) in buffer
+                    rtapi_strxcpy(SymbolArray[scansymb].Symbol, Buffer);
+                    // printf("%s\n",Buffer);
+                    //  copy a comment if there is one...
                     rtapi_strxcpy(Buffer, "");
                     size_t ret = snprintf(Buffer, sizeof(Buffer), "%s", CommentBuf);
-                    if (ret >= sizeof(Buffer)) snprintf(Buffer, sizeof(Buffer), "<comment too long>");
-                        rtapi_strxcpy(SymbolArray[scansymb].Comment, Buffer );
+                    if (ret >= sizeof(Buffer))
+                        snprintf(Buffer, sizeof(Buffer), "<comment too long>");
+                    rtapi_strxcpy(SymbolArray[scansymb].Comment, Buffer);
 
                     break; // we are done looking
                 }

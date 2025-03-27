@@ -90,13 +90,11 @@ struct bitfile {
 */
 struct bitfile *bitfile_new(void);
 
-
 /* 'bitfile_free' frees all memory associated with a struct bitfile,
    including the chunk bodies and the struct itself.  It assumes that
    the struct was create by a call to 'bitfile_new' or 'bitfile_read'.
 */
 void bitfile_free(struct bitfile *bf);
-
 
 /* 'bitfile_read' reads a bitfile from disk, parses the individual chunks,
    and stores them in a struct bitfile in memory.  The struct and the chunk
@@ -105,18 +103,16 @@ void bitfile_free(struct bitfile *bf);
 */
 struct bitfile *bitfile_read(char *fname);
 
-
 /* 'bitfile_write' writes the contents of a caller supplied struct bitfile
    to a specified file in standard bitfile format.  It returns zero on
    success, or -1 on failure.  It will write the standard xilinx 'a'
    through 'e' chunks first, and in order, even if they are not that way
    in the structure, followed by any extra chunks in the order in which
-   they are encountered.  (This is to ensure compatibility with other 
+   they are encountered.  (This is to ensure compatibility with other
    programs that read bitfiles - this library doesn't care about chunk
    ordering, but other programs might.)
 */
 int bitfile_write(struct bitfile *bf, char *fname);
-
 
 /* 'bitfile_add_chunk` adds a new chunk to a caller supplied struct bitfile.
    The data is copied into a newly allocated block of memory, so the original
@@ -124,7 +120,6 @@ int bitfile_write(struct bitfile *bf, char *fname);
    success, or -1 on error.
 */
 int bitfile_add_chunk(struct bitfile *bf, char tag, int len, unsigned char *data);
-
 
 /* 'bitfile_find_chunk` searches a caller supplied struct bitfile for a
    chunk whose tag matches 'tag', and returns a pointer to that chunk, or
@@ -134,7 +129,6 @@ int bitfile_add_chunk(struct bitfile *bf, char tag, int len, unsigned char *data
    'n' should usually be zero.
 */
 struct bitfile_chunk *bitfile_find_chunk(struct bitfile *bf, char tag, int n);
-
 
 /* 'bitfile_print_chunk' searches a caller supplied struct bitfile for a
    chunk whose tag matches 'tag', and prints the body of that chunk as a
@@ -146,14 +140,12 @@ struct bitfile_chunk *bitfile_find_chunk(struct bitfile *bf, char tag, int n);
 */
 void bitfile_print_chunk(struct bitfile *bf, char tag, char *title);
 
-
 /* 'bitfile_validate_xilinx_info` verifies that the caller supplied
    struct bitfile contains the minimum chunks to be a valid Xilinx
    bitstream - 'a' through 'e'.  It returns 0 for a valid bitstream,
    and -1 if any required chunk is missing.
 */
 int bitfile_validate_xilinx_info(struct bitfile *bf);
-
 
 /* 'bitfile_print_xilinx_info` invokes `bitfile_print_chunk` to print
    the standard Xilinx 'a' through 'd' chunks (design name, targeted part,

@@ -52,7 +52,6 @@ int axis_update_coord_with_bound(double *pcmd_p[], double servo_period);
 
 int axis_calc_motion(double servo_period);
 
-
 #ifdef __cplusplus
 }
 #endif

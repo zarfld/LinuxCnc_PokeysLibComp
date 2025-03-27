@@ -34,7 +34,6 @@
 //                   is setup
 //
 
-
 #include <rtapi_slab.h>
 
 #include "rtapi.h"
@@ -42,32 +41,23 @@
 
 #include "hal/drivers/mesa-hostmot2/hostmot2.h"
 
-
 int hm2_ssr_parse_md(hostmot2_t *hm2, int md_index) {
     hm2_module_descriptor_t *md = &hm2->md[md_index];
     int r;
 
     if (hm2->ssr.num_instances != 0) {
-        HM2_ERR(
-            "found duplicate Module Descriptor for %s (inconsistent firmware), not loading driver\n",
-            hm2_get_general_function_name(md->gtag)
-        );
+        HM2_ERR("found duplicate Module Descriptor for %s (inconsistent firmware), not loading driver\n", hm2_get_general_function_name(md->gtag));
         return -EINVAL;
     }
 
     if (hm2->config.num_ssrs > md->instances) {
-        HM2_ERR(
-            "config.num_ssrs=%d, but only %d are available, not loading driver\n",
-            hm2->config.num_ssrs,
-            md->instances
-        );
+        HM2_ERR("config.num_ssrs=%d, but only %d are available, not loading driver\n", hm2->config.num_ssrs, md->instances);
         return -EINVAL;
     }
 
     if (hm2->config.num_ssrs == 0) {
         return 0;
     }
-
 
     //
     // Looks good, start initializing.
@@ -93,13 +83,9 @@ int hm2_ssr_parse_md(hostmot2_t *hm2, int md_index) {
     // the ones that have Pin Descriptors below.
     {
         int inst;
-        for (inst = 0; inst < hm2->ssr.num_instances; inst ++) {
+        for (inst = 0; inst < hm2->ssr.num_instances; inst++) {
             unsigned out;
-            for (
-                out = 0;
-                out < sizeof(hm2->ssr.instance[0].hal.pin.out)/sizeof(hm2->ssr.instance[0].hal.pin.out[0]);
-                out ++
-            ) {
+            for (out = 0; out < sizeof(hm2->ssr.instance[0].hal.pin.out) / sizeof(hm2->ssr.instance[0].hal.pin.out[0]); out++) {
                 hm2->ssr.instance[inst].hal.pin.out[out] = NULL;
             }
         }
@@ -108,7 +94,7 @@ int hm2_ssr_parse_md(hostmot2_t *hm2, int md_index) {
     hm2->ssr.data_addr = md->base_address + (0 * md->register_stride);
     hm2->ssr.rate_addr = md->base_address + (1 * md->register_stride);
 
-    hm2->ssr.rate_reg = (rtapi_u32*)rtapi_kmalloc(hm2->ssr.num_instances * sizeof(rtapi_u32), RTAPI_GFP_KERNEL);
+    hm2->ssr.rate_reg = (rtapi_u32 *)rtapi_kmalloc(hm2->ssr.num_instances * sizeof(rtapi_u32), RTAPI_GFP_KERNEL);
     if (hm2->ssr.rate_reg == NULL) {
         HM2_ERR("out of memory!\n");
         r = -ENOMEM;
@@ -129,7 +115,7 @@ int hm2_ssr_parse_md(hostmot2_t *hm2, int md_index) {
         int i;
         char name[HAL_NAME_LEN + 1];
 
-        for (i = 0; i < hm2->ssr.num_instances; i ++) {
+        for (i = 0; i < hm2->ssr.num_instances; i++) {
             rtapi_snprintf(name, sizeof(name), "%s.ssr.%02d.rate", hm2->llio->name, i);
             r = hal_pin_u32_new(name, HAL_IN, &(hm2->ssr.instance[i].hal.pin.rate), hm2->llio->comp_id);
             if (r < 0) {
@@ -141,7 +127,7 @@ int hm2_ssr_parse_md(hostmot2_t *hm2, int md_index) {
             {
                 int j = 0;
                 int ssr_number;
-                for (j = 0; j < hm2->num_pins; j++){
+                for (j = 0; j < hm2->num_pins; j++) {
                     if (hm2->pin[j].sec_tag == HM2_GTAG_SSR && hm2->pin[j].sec_unit == i) {
                         if ((hm2->pin[j].sec_pin & 0x80) != 0x80) {
                             HM2_ERR("Pin Descriptor %d has an SSR pin that's not an output!\n", j);
@@ -174,11 +160,9 @@ int hm2_ssr_parse_md(hostmot2_t *hm2, int md_index) {
                             r = -ENOMEM;
                             goto fail1;
                         }
-                        
                     }
                 }
             }
-
         }
     }
 
@@ -191,18 +175,18 @@ int hm2_ssr_parse_md(hostmot2_t *hm2, int md_index) {
     //
     {
         int i;
-        for (i = 0; i < hm2->ssr.num_instances; i ++) {
+        for (i = 0; i < hm2->ssr.num_instances; i++) {
             int pin;
             rtapi_u32 zero = 0;
 
-            *hm2->ssr.instance[i].hal.pin.rate = 1000*1000;
+            *hm2->ssr.instance[i].hal.pin.rate = 1000 * 1000;
 
-            for (pin = 0; pin < 32; pin ++) {
+            for (pin = 0; pin < 32; pin++) {
                 if (hm2->ssr.instance[i].hal.pin.out[pin] != NULL) {
                     *hm2->ssr.instance[i].hal.pin.out[pin] = 0;
                     *hm2->ssr.instance[i].hal.pin.invert[pin] = 0;
                 }
-            }		 
+            }
             hm2->llio->write(hm2->llio, hm2->ssr.rate_addr + (i * md->instance_stride), &zero, sizeof(zero));
             hm2->llio->write(hm2->llio, hm2->ssr.data_addr + (i * md->instance_stride), &zero, sizeof(zero));
         }
@@ -218,18 +202,17 @@ fail0:
     return r;
 }
 
-
 void hm2_ssr_cleanup(hostmot2_t *hm2) {
-    if (hm2->ssr.num_instances <= 0) return;
+    if (hm2->ssr.num_instances <= 0)
+        return;
 }
-
 
 // Set all instances' `rate_reg` variables according to the `.rate` pin.
 // Does *not* write the value to the FPGA.
 static void hm2_ssr_compute_rate_regs(hostmot2_t *hm2) {
     int i;
 
-    for (i = 0; i < hm2->ssr.num_instances; i ++) {
+    for (i = 0; i < hm2->ssr.num_instances; i++) {
         rtapi_u32 reg;
 
         if (*hm2->ssr.instance[i].hal.pin.rate <= 0) {
@@ -241,8 +224,8 @@ static void hm2_ssr_compute_rate_regs(hostmot2_t *hm2) {
 
             if (*hm2->ssr.instance[i].hal.pin.rate < 25000) {
                 rate = 25000;
-            } else if (*hm2->ssr.instance[i].hal.pin.rate > (25*1000*1000)) {
-                rate = 25*1000*1000;
+            } else if (*hm2->ssr.instance[i].hal.pin.rate > (25 * 1000 * 1000)) {
+                rate = 25 * 1000 * 1000;
             }
 
             // The `rate` variable has the desired frequency in Hz.
@@ -268,7 +251,6 @@ static void hm2_ssr_compute_rate_regs(hostmot2_t *hm2) {
     }
 }
 
-
 void hm2_ssr_force_write(hostmot2_t *hm2) {
     int size;
     int i;
@@ -280,11 +262,11 @@ void hm2_ssr_force_write(hostmot2_t *hm2) {
     hm2_ssr_compute_rate_regs(hm2);
 
     // Set register values from HAL pin values.
-    for (i = 0; i < hm2->ssr.num_instances; i ++) {
+    for (i = 0; i < hm2->ssr.num_instances; i++) {
         int pin;
 
         hm2->ssr.data_reg[i] = 0;
-        for (pin = 0; pin < 32; pin ++) {
+        for (pin = 0; pin < 32; pin++) {
             if (hm2->ssr.instance[i].hal.pin.out[pin] != NULL) {
                 hm2->ssr.data_reg[i] |= *hm2->ssr.instance[i].hal.pin.out[pin] << pin;
                 hm2->ssr.data_reg[i] ^= *hm2->ssr.instance[i].hal.pin.invert[pin] << pin;
@@ -299,19 +281,18 @@ void hm2_ssr_force_write(hostmot2_t *hm2) {
     hm2->llio->write(hm2->llio, hm2->ssr.data_addr, hm2->ssr.data_reg, size);
 
     // Cache written-out register values.
-    for (i = 0; i < hm2->ssr.num_instances; i ++) {
+    for (i = 0; i < hm2->ssr.num_instances; i++) {
         hm2->ssr.instance[i].written_rate = hm2->ssr.rate_reg[i];
         hm2->ssr.instance[i].written_data = hm2->ssr.data_reg[i];
     }
 }
-
 
 void hm2_ssr_write(hostmot2_t *hm2) {
     int i;
 
     hm2_ssr_compute_rate_regs(hm2);
 
-    for (i = 0; i < hm2->ssr.num_instances; i ++) {
+    for (i = 0; i < hm2->ssr.num_instances; i++) {
         if (hm2->ssr.rate_reg[i] != hm2->ssr.instance[i].written_rate) {
             hm2->llio->write(hm2->llio, hm2->ssr.rate_addr, &hm2->ssr.rate_reg[i], sizeof(hm2->ssr.rate_reg[i]));
             hm2->ssr.instance[i].written_rate = hm2->ssr.rate_reg[i];
@@ -319,16 +300,15 @@ void hm2_ssr_write(hostmot2_t *hm2) {
     }
 }
 
-
 void hm2_ssr_prepare_tram_write(hostmot2_t *hm2) {
     int i;
 
     // Set register values from HAL pin values.
-    for (i = 0; i < hm2->ssr.num_instances; i ++) {
+    for (i = 0; i < hm2->ssr.num_instances; i++) {
         int pin;
 
         hm2->ssr.data_reg[i] = 0;
-        for (pin = 0; pin < 32; pin ++) {
+        for (pin = 0; pin < 32; pin++) {
             if (hm2->ssr.instance[i].hal.pin.out[pin] != NULL) {
                 hm2->ssr.data_reg[i] |= *hm2->ssr.instance[i].hal.pin.out[pin] << pin;
                 hm2->ssr.data_reg[i] ^= *hm2->ssr.instance[i].hal.pin.invert[pin] << pin;
@@ -340,16 +320,16 @@ void hm2_ssr_prepare_tram_write(hostmot2_t *hm2) {
     }
 }
 
-
 void hm2_ssr_print_module(hostmot2_t *hm2) {
     int i;
-    if (hm2->ssr.num_instances <= 0) return;
+    if (hm2->ssr.num_instances <= 0)
+        return;
     HM2_PRINT("SSRs: %d\n", hm2->ssr.num_instances);
     HM2_PRINT("    clock_frequency: %d Hz (%s MHz)\n", hm2->ssr.clock_freq, hm2_hz_to_mhz(hm2->ssr.clock_freq));
     HM2_PRINT("    version: %d\n", hm2->ssr.version);
     HM2_PRINT("    data_addr: 0x%04X\n", hm2->ssr.data_addr);
     HM2_PRINT("    rate_addr: 0x%04X\n", hm2->ssr.rate_addr);
-    for (i = 0; i < hm2->ssr.num_instances; i ++) {
+    for (i = 0; i < hm2->ssr.num_instances; i++) {
         HM2_PRINT("    instance %d:\n", i);
         HM2_PRINT("        data_reg = 0x%08X\n", hm2->ssr.data_reg[i]);
         HM2_PRINT("        rate_reg = 0x%08X\n", hm2->ssr.rate_reg[i]);

@@ -28,34 +28,32 @@
 
 #include "bitfile.h"
 
-
 //
 // Note: LL_PRINT(), LL_PRINT_IF(), and THIS_PRINT() all use rtapi_print()
 //       The others all use rtapi_print_msg()
 //
 
-#define LL_PRINT(fmt, args...)    rtapi_print(HM2_LLIO_NAME ": " fmt, ## args);
-#define THIS_PRINT(fmt, args...)  rtapi_print("%s: " fmt, this->name, ## args);
+#define LL_PRINT(fmt, args...) rtapi_print(HM2_LLIO_NAME ": " fmt, ##args);
+#define THIS_PRINT(fmt, args...) rtapi_print("%s: " fmt, this->name, ##args);
 
-#define LL_PRINT_IF(enable, fmt, args...)  if (enable) { rtapi_print(HM2_LLIO_NAME ": " fmt, ## args); }
+#define LL_PRINT_IF(enable, fmt, args...)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      \
+    if (enable) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              \
+        rtapi_print(HM2_LLIO_NAME ": " fmt, ##args);                                                                                                                                                                                                                                                                                                                                                                                                                                                                           \
+    }
 
-#define LL_ERR(fmt, args...)   rtapi_print_msg(RTAPI_MSG_ERR,  HM2_LLIO_NAME ": " fmt, ## args);
-#define LL_WARN(fmt, args...)  rtapi_print_msg(RTAPI_MSG_WARN, HM2_LLIO_NAME ": " fmt, ## args);
-#define LL_INFO(fmt, args...)  rtapi_print_msg(RTAPI_MSG_INFO, HM2_LLIO_NAME ": " fmt, ## args);
-#define LL_DBG(fmt, args...)   rtapi_print_msg(RTAPI_MSG_DBG,  HM2_LLIO_NAME ": " fmt, ## args);
+#define LL_ERR(fmt, args...) rtapi_print_msg(RTAPI_MSG_ERR, HM2_LLIO_NAME ": " fmt, ##args);
+#define LL_WARN(fmt, args...) rtapi_print_msg(RTAPI_MSG_WARN, HM2_LLIO_NAME ": " fmt, ##args);
+#define LL_INFO(fmt, args...) rtapi_print_msg(RTAPI_MSG_INFO, HM2_LLIO_NAME ": " fmt, ##args);
+#define LL_DBG(fmt, args...) rtapi_print_msg(RTAPI_MSG_DBG, HM2_LLIO_NAME ": " fmt, ##args);
 
-#define THIS_ERR(fmt, args...)   rtapi_print_msg(RTAPI_MSG_ERR,  "%s: " fmt, this->name, ## args);
-#define THIS_WARN(fmt, args...)  rtapi_print_msg(RTAPI_MSG_WARN, "%s: " fmt, this->name, ## args);
-#define THIS_INFO(fmt, args...)  rtapi_print_msg(RTAPI_MSG_INFO, "%s: " fmt, this->name, ## args);
-#define THIS_DBG(fmt, args...)   rtapi_print_msg(RTAPI_MSG_DBG,  "%s: " fmt, this->name, ## args);
-
+#define THIS_ERR(fmt, args...) rtapi_print_msg(RTAPI_MSG_ERR, "%s: " fmt, this->name, ##args);
+#define THIS_WARN(fmt, args...) rtapi_print_msg(RTAPI_MSG_WARN, "%s: " fmt, this->name, ##args);
+#define THIS_INFO(fmt, args...) rtapi_print_msg(RTAPI_MSG_INFO, "%s: " fmt, this->name, ##args);
+#define THIS_DBG(fmt, args...) rtapi_print_msg(RTAPI_MSG_DBG, "%s: " fmt, this->name, ##args);
 
 #define ANYIO_MAX_IOPORT_CONNECTORS (8)
 
-
-
-
-// 
+//
 // this struct holds an abstract "low-level I/O" driver
 //
 
@@ -63,7 +61,7 @@ typedef struct hm2_lowlevel_io_struct hm2_lowlevel_io_t;
 
 // FIXME: this is really a lowlevel io *instance*, or maybe a "board"
 struct hm2_lowlevel_io_struct {
-    char name[HAL_NAME_LEN+1];
+    char name[HAL_NAME_LEN + 1];
     int comp_id;
 
     // these two are required
@@ -110,18 +108,18 @@ struct hm2_lowlevel_io_struct {
     // set back to 0, the packet is set.
     int (*set_force_enqueue)(hm2_lowlevel_io_t *self, int do_enqueue);
 
-    // 
+    //
     // This is a HAL parameter allocated and added to HAL by hostmot2.
-    // 
+    //
     // * The llio driver sets it whenever it detects an I/O error.
-    // 
+    //
     // * The hostmot2 driver checks it and stops calling the llio driver if
     //   it's true.
-    // 
+    //
     // * Users can clear it (by poking the HAL parameter), which makes the
     //   hostmot2 driver call into llio to reset the hardware and start
     //   driving it again.
-    // 
+    //
     hal_bit_t *io_error;
 
     // this gets set to TRUE by .read-request and cleared by .read, in order
@@ -166,19 +164,14 @@ struct hm2_lowlevel_io_struct {
     // if TRUE, the hostmot2 driver will also export read_gpio() and write_gpio()
     int threadsafe;
 
-    void *private;  // for the low-level driver to hang their struct on
+    void *private; // for the low-level driver to hang their struct on
 };
 
-
-
-
-// 
+//
 // HostMot2 functions for the low-level I/O drivers to call
 //
 
 int hm2_register(hm2_lowlevel_io_t *llio, char *config);
 void hm2_unregister(hm2_lowlevel_io_t *llio);
 
-
 #endif //  HOSTMOT2_LOWLEVEL_H
-

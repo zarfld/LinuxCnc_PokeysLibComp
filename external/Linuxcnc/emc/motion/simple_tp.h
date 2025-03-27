@@ -1,13 +1,13 @@
 /********************************************************************
-* Description: simple_tp.h
-*   A simple, single axis trajectory planner
-*
-* Author:
-* License: GPL Version 2
-* System: Linux
-*
-* Copyright (c) 2004 All rights reserved
-********************************************************************/
+ * Description: simple_tp.h
+ *   A simple, single axis trajectory planner
+ *
+ * Author:
+ * License: GPL Version 2
+ * System: Linux
+ *
+ * Copyright (c) 2004 All rights reserved
+ ********************************************************************/
 
 /*  simple_tp.c and simple_tp.h define a simple, single axis trajectory
     planner.  It is based on the "free mode trajectory planner" that was
@@ -20,21 +20,21 @@
 #define SIMPLE_TP_H
 
 // stopping criterion:
-#define TINY_DP(max_acc,period) (max_acc*period*period*0.001)
+#define TINY_DP(max_acc, period) (max_acc * period * period * 0.001)
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    typedef struct simple_tp_t {
-	double pos_cmd;		/* position command */
-	double max_vel;		/* velocity limit */
-	double max_acc;		/* acceleration limit */
-	int enable;		/* if zero, motion stops ASAP */
-	double curr_pos;	/* current position */
-	double curr_vel;	/* current velocity */
-	int active;		/* non-zero if motion in progress */
-    } simple_tp_t;
+typedef struct simple_tp_t {
+    double pos_cmd;  /* position command */
+    double max_vel;  /* velocity limit */
+    double max_acc;  /* acceleration limit */
+    int enable;      /* if zero, motion stops ASAP */
+    double curr_pos; /* current position */
+    double curr_vel; /* current velocity */
+    int active;      /* non-zero if motion in progress */
+} simple_tp_t;
 
 /* I could write a bunch of functions to read and write the first four
    structure members, and to read the last three, but that seems silly.
@@ -53,8 +53,7 @@ extern "C" {
 
 extern void simple_tp_update(simple_tp_t *tp, double period);
 
-
 #ifdef __cplusplus
 }
 #endif
-#endif	/* SIMPLE_TP_H */
+#endif /* SIMPLE_TP_H */

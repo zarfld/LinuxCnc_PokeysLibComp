@@ -40,23 +40,21 @@
 #include <string.h>
 
 #include <gtk/gtk.h>
-#include "miscgtk.h"		/* decls for this code */
+#include "miscgtk.h" /* decls for this code */
 
 /***********************************************************************
-*                  GLOBAL VARIABLES DECLARATIONS                       *
-************************************************************************/
+ *                  GLOBAL VARIABLES DECLARATIONS                       *
+ ************************************************************************/
 
 /***********************************************************************
-*                  LOCAL FUNCTION PROTOTYPES                           *
-************************************************************************/
+ *                  LOCAL FUNCTION PROTOTYPES                           *
+ ************************************************************************/
 
 /***********************************************************************
-*                    PUBLIC FUNCTION DEFINITIONS                       *
-************************************************************************/
+ *                    PUBLIC FUNCTION DEFINITIONS                       *
+ ************************************************************************/
 
-GtkWidget *gtk_label_new_in_box(const gchar * text, GtkWidget * box,
-    gboolean expand, gboolean fill, guint padding)
-{
+GtkWidget *gtk_label_new_in_box(const gchar *text, GtkWidget *box, gboolean expand, gboolean fill, guint padding) {
     GtkWidget *label;
 
     label = gtk_label_new(text);
@@ -68,8 +66,7 @@ GtkWidget *gtk_label_new_in_box(const gchar * text, GtkWidget * box,
     return label;
 }
 
-void gtk_vseparator_new_in_box(GtkWidget * box, guint padding)
-{
+void gtk_vseparator_new_in_box(GtkWidget *box, guint padding) {
     GtkWidget *bar;
 
     bar = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
@@ -77,8 +74,7 @@ void gtk_vseparator_new_in_box(GtkWidget * box, guint padding)
     gtk_widget_show(bar);
 }
 
-void gtk_hseparator_new_in_box(GtkWidget * box, guint padding)
-{
+void gtk_hseparator_new_in_box(GtkWidget *box, guint padding) {
     GtkWidget *bar;
 
     bar = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
@@ -86,10 +82,7 @@ void gtk_hseparator_new_in_box(GtkWidget * box, guint padding)
     gtk_widget_show(bar);
 }
 
-GtkWidget *gtk_vbox_new_in_box(gboolean homogeneous, guint spacing,
-    guint border, GtkWidget * box, gboolean expand, gboolean fill,
-    guint padding)
-{
+GtkWidget *gtk_vbox_new_in_box(gboolean homogeneous, guint spacing, guint border, GtkWidget *box, gboolean expand, gboolean fill, guint padding) {
     GtkWidget *vbox;
 
     vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, spacing);
@@ -100,10 +93,7 @@ GtkWidget *gtk_vbox_new_in_box(gboolean homogeneous, guint spacing,
     return vbox;
 }
 
-GtkWidget *gtk_hbox_new_in_box(gboolean homogeneous, guint spacing,
-    guint border, GtkWidget * box, gboolean expand, gboolean fill,
-    guint padding)
-{
+GtkWidget *gtk_hbox_new_in_box(gboolean homogeneous, guint spacing, guint border, GtkWidget *box, gboolean expand, gboolean fill, guint padding) {
     GtkWidget *hbox;
 
     hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, spacing);
@@ -114,10 +104,7 @@ GtkWidget *gtk_hbox_new_in_box(gboolean homogeneous, guint spacing,
     return hbox;
 }
 
-GtkWidget *gtk_vbox_framed_new_in_box(const gchar * name, gboolean homogeneous,
-    guint spacing, guint border, GtkWidget * box, gboolean expand,
-    gboolean fill, guint padding)
-{
+GtkWidget *gtk_vbox_framed_new_in_box(const gchar *name, gboolean homogeneous, guint spacing, guint border, GtkWidget *box, gboolean expand, gboolean fill, guint padding) {
     GtkWidget *vbox, *frame;
 
     frame = gtk_frame_new(name);
@@ -131,10 +118,7 @@ GtkWidget *gtk_vbox_framed_new_in_box(const gchar * name, gboolean homogeneous,
     return vbox;
 }
 
-GtkWidget *gtk_hbox_framed_new_in_box(const gchar * name, gboolean homogeneous,
-    guint spacing, guint border, GtkWidget * box, gboolean expand,
-    gboolean fill, guint padding)
-{
+GtkWidget *gtk_hbox_framed_new_in_box(const gchar *name, gboolean homogeneous, guint spacing, guint border, GtkWidget *box, gboolean expand, gboolean fill, guint padding) {
     GtkWidget *hbox, *frame;
 
     frame = gtk_frame_new(name);
@@ -148,15 +132,13 @@ GtkWidget *gtk_hbox_framed_new_in_box(const gchar * name, gboolean homogeneous,
     return hbox;
 }
 
-void gtk_label_set_text_if(GtkWidget * label, const gchar * text)
-{
+void gtk_label_set_text_if(GtkWidget *label, const gchar *text) {
     if (label != NULL) {
-	gtk_label_set_text(GTK_LABEL(label), text);
+        gtk_label_set_text(GTK_LABEL(label), text);
     }
 }
 
-void gtk_label_size_to_fit(GtkLabel * label, const gchar * str)
-{
+void gtk_label_size_to_fit(GtkLabel *label, const gchar *str) {
     GtkRequisition req;
     const gchar *current_text;
     gchar *text_buf;
@@ -166,8 +148,8 @@ void gtk_label_size_to_fit(GtkLabel * label, const gchar * str)
     /* make a temporary copy */
     text_buf = strdup(current_text);
     if (text_buf == NULL) {
-	printf("gtk_label_size_to_fit() - strdup failed\n");
-	return;
+        printf("gtk_label_size_to_fit() - strdup failed\n");
+        return;
     }
     /* set the label to display the new text */
     gtk_label_set_text(label, str);
@@ -183,8 +165,7 @@ void gtk_label_size_to_fit(GtkLabel * label, const gchar * str)
     return;
 }
 
-void add_to_list(GtkWidget *list, char *strs[], const int num_cols)
-{
+void add_to_list(GtkWidget *list, char *strs[], const int num_cols) {
     GtkListStore *store;
     GtkTreeIter iter;
 
@@ -201,17 +182,15 @@ void add_to_list(GtkWidget *list, char *strs[], const int num_cols)
     }
 }
 
-void init_list(GtkWidget *list, char *titles[], const int len)
-{
+void init_list(GtkWidget *list, char *titles[], const int len) {
     GtkCellRenderer *renderer;
     GtkListStore *store;
 
     int i;
 
     for (i = 0; i < len; i++) {
-        renderer = gtk_cell_renderer_text_new ();
-        gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(list),
-                -1, titles[i], renderer, "text", i, NULL);
+        renderer = gtk_cell_renderer_text_new();
+        gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(list), -1, titles[i], renderer, "text", i, NULL);
     }
 
     store = gtk_list_store_new(len, G_TYPE_STRING, G_TYPE_STRING);
@@ -221,8 +200,7 @@ void init_list(GtkWidget *list, char *titles[], const int len)
     g_object_unref(store);
 }
 
-void clear_list(GtkWidget *list)
-{
+void clear_list(GtkWidget *list) {
     GtkListStore *store;
     GtkTreeModel *model;
     GtkTreeIter iter;
@@ -237,8 +215,7 @@ void clear_list(GtkWidget *list)
     gtk_list_store_clear(store);
 }
 
-void mark_selected_row(GtkWidget *list, const int row)
-{
+void mark_selected_row(GtkWidget *list, const int row) {
     GtkTreePath *path;
     GtkTreeSelection *selection;
 
@@ -249,8 +226,7 @@ void mark_selected_row(GtkWidget *list, const int row)
     gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(list), path, NULL, TRUE, 0.5, 0.5);
 }
 
-void set_file_filter(GtkFileChooser *chooser, const char *str, const char *ext)
-{
+void set_file_filter(GtkFileChooser *chooser, const char *str, const char *ext) {
     GtkFileFilter *filter_all;
     GtkFileFilter *filter_spes;
 
@@ -268,5 +244,5 @@ void set_file_filter(GtkFileChooser *chooser, const char *str, const char *ext)
 }
 
 /***********************************************************************
-*                        LOCAL FUNCTION CODE                           *
-************************************************************************/
+ *                        LOCAL FUNCTION CODE                           *
+ ************************************************************************/

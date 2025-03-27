@@ -27,18 +27,13 @@
 
 #include "hal/drivers/mesa-hostmot2/hostmot2.h"
 
-
-
-
 int hm2_raw_setup(hostmot2_t *hm2) {
     int r;
     char name[HAL_NAME_LEN + 1];
 
-
     if (hm2->config.enable_raw == 0) {
         return 0;
     }
-
 
     hm2->raw = (hm2_raw_t *)hal_malloc(sizeof(hm2_raw_t));
     if (hm2->raw == NULL) {
@@ -90,7 +85,7 @@ int hm2_raw_setup(hostmot2_t *hm2) {
     }
 
     // init hal objects
-    *(hm2->raw->hal.pin.read_address)  = 0;
+    *(hm2->raw->hal.pin.read_address) = 0;
     *(hm2->raw->hal.pin.read_data) = 0;
 
     *(hm2->raw->hal.pin.write_address) = 0;
@@ -102,18 +97,11 @@ int hm2_raw_setup(hostmot2_t *hm2) {
     return 0;
 }
 
-
-
-
 void hm2_raw_queue_read(hostmot2_t *hm2) {
-    if (hm2->config.enable_raw == 0) return;
+    if (hm2->config.enable_raw == 0)
+        return;
 
-    hm2->llio->queue_read(
-        hm2->llio,
-        *hm2->raw->hal.pin.read_address & 0xffff,
-        (void *)hm2->raw->hal.pin.read_data,
-        sizeof(rtapi_u32)
-    );
+    hm2->llio->queue_read(hm2->llio, *hm2->raw->hal.pin.read_address & 0xffff, (void *)hm2->raw->hal.pin.read_data, sizeof(rtapi_u32));
 
     if (*hm2->raw->hal.pin.dump_state != 0) {
         hm2_print_modules(hm2);
@@ -121,20 +109,13 @@ void hm2_raw_queue_read(hostmot2_t *hm2) {
     }
 }
 
-
-
-
 void hm2_raw_write(hostmot2_t *hm2) {
-    if (hm2->config.enable_raw == 0) return;
-    if (*hm2->raw->hal.pin.write_strobe == 0) return;
+    if (hm2->config.enable_raw == 0)
+        return;
+    if (*hm2->raw->hal.pin.write_strobe == 0)
+        return;
 
-    hm2->llio->write(
-        hm2->llio,
-        *hm2->raw->hal.pin.write_address & 0xffff,
-        (void *)hm2->raw->hal.pin.write_data,
-        sizeof(rtapi_u32)
-    );
+    hm2->llio->write(hm2->llio, *hm2->raw->hal.pin.write_address & 0xffff, (void *)hm2->raw->hal.pin.write_data, sizeof(rtapi_u32));
 
     *hm2->raw->hal.pin.write_strobe = 0;
 }
-

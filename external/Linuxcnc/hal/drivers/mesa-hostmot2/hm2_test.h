@@ -17,7 +17,6 @@
 //    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
 //
 
-
 #define HM2_LLIO_NAME "hm2_test"
 
 #define HM2_TEST_MAX_BOARDS (2)
@@ -30,4 +29,3 @@ typedef struct {
 
     hm2_lowlevel_io_t llio;
 } hm2_test_t;
-
