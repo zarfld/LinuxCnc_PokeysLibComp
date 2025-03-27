@@ -1764,11 +1764,11 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                 PK_PEv2_PositionSet(dev);
 
                 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_PositionSet=PK_OK\n", __FILE__, __FUNCTION__);
-                    for (int axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
-                        if (abs(PEv2_data->PEv2_home_sequence[axis]) == abs(seq)) {
-                            *(PEv2_data->PEv2_index_enable[axis]) = false; // re enable index
-                        }
+                for (int axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
+                    if (abs(PEv2_data->PEv2_home_sequence[axis]) == abs(seq)) {
+                        *(PEv2_data->PEv2_index_enable[axis]) = false; // re enable index
                     }
+                }
                 dev->PEv2.param2 = bm_DoPositionSet;
                 PK_PEv2_PositionSet(dev);
                 break;
