@@ -32,8 +32,8 @@ static unsigned int master_count = 0;
 enum { TIMER_PERIOD_NSEC = 10000000 }; /* timer period, in nanoseconds */
 enum {
     MASTER_PERIOD_NSEC = 1000000000
-};                                /* timer period, in
-                                     nanoseconds */
+}; /* timer period, in
+      nanoseconds */
 enum { MASTER_STACKSIZE = 1024 }; /* how big the stack is */
 
 /* task code, executed each timer interrupt */
