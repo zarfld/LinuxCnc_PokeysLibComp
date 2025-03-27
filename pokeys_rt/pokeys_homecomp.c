@@ -265,8 +265,8 @@ static bool homing_active_old = 0;
 static int all_joints = 0;
 static int current_sequence = 0;
 
-static bool index_search_active = 0;
-static bool index_search_armed = 1;
+static bool index_search_active = 1;
+static bool index_search_armed = 0;
 /**
  * @brief State of the homing sequence
  * @param joint_num
@@ -916,6 +916,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d ready\n", joint_num);
                 /* Axis ready */
                 H[joint_num].homing = 0;
+                joint->free_tp.enable = 0;
                 H[joint_num].home_state = HOME_IDLE;
                 break;
 
@@ -956,26 +957,53 @@ int pokeys_1joint_state_machine(int joint_num) {
                                 "ready to finalize homing\n",
                                 joint_num);
                 H[joint_num].homing = 1;
+                H[joint_num].index_enable = index_search_active;
                 H[joint_num].home_state = HOME_INDEX_SEARCH_START;
                 break;
             case PK_PEAxisState_axReadyToArmEncoder:
-                rtapi_print_msg(RTAPI_MSG_DBG,
-                                "HOMING: pokeys_1joint_state_machine joint %d "
-                                "ready to arm encoder\n",
-                                joint_num);
+            rtapi_print_msg(RTAPI_MSG_DBG,
+                "HOMING: pokeys_1joint_state_machine joint %d "
+                "ready to arm encoder\n",
+                joint_num);
+                /** This state is called after the machine has made a low
+                   speed pass to determine the limit switch location. It
+                   sets index-enable, which tells the encoder driver to
+                   reset its counter to zero and clear the enable when the
+                   next index pulse arrives. */
+                /** set the index enable */
+                H[joint_num].index_enable = index_search_active;
+
                 H[joint_num].homing = 1;
                 H[joint_num].home_state = HOME_INDEX_SEARCH_WAIT;
-                H[joint_num].index_enable = index_search_active;
+                
                 break;
             case PK_PEAxisState_axHOMINGARMENCODER:
-                rtapi_print_msg(RTAPI_MSG_DBG,
-                                "HOMING: pokeys_1joint_state_machine joint %d "
-                                "homing arm encoder\n",
-                                joint_num);
-                /* Pokeys resets encoder position to zeros */
-                H[joint_num].homing = 1;
-                H[joint_num].home_state = HOME_SET_INDEX_POSITION;
-                H[joint_num].index_enable = index_search_armed;
+            /** This state is called after the machine has found the
+                   home switch and "armed" the encoder counter to reset on
+                   the next index pulse. It continues at low speed until
+                   an index pulse is detected, at which point it sets the
+                   final home position.  If the move ends or hits a limit
+                   before an index pulse occurs, the home is aborted. */
+                   rtapi_print_msg(RTAPI_MSG_DBG,
+                    "HOMING: pokeys_1joint_state_machine joint %d "
+                    "homing arm encoder\n",
+                    joint_num);
+                /**  has an index pulse arrived yet? encoder driver clears
+                   enable when it does */
+                   if (H[joint_num].index_enable == index_search_armed) {
+                        /* yes, stop motion */
+                        joint->free_tp.enable = 0;
+                        joint->free_tp.pos_cmd = 0; // set to zero
+                        joint->free_tp.vel_cmd = 0; //
+                        /* Pokeys resets encoder position to zeros */
+                        H[joint_num].index_enable = index_search_armed;
+                        H[joint_num].homing = 1;
+                        H[joint_num].home_state = HOME_SET_INDEX_POSITION;
+                   }
+
+                
+                
+                
                 break;
 
             case PK_PEAxisState_axHOMINGWaitFINALMOVE:
@@ -983,6 +1011,16 @@ int pokeys_1joint_state_machine(int joint_num) {
                                 "HOMING: pokeys_1joint_state_machine joint %d "
                                 "homing wait final move\n",
                                 joint_num);
+
+                                if ( H[joint_num].home_state== HOME_SET_INDEX_POSITION){
+                                    /* This state is called when the encoder has been reset at
+                   the index pulse position.  It sets the current joint
+                   position to 'home_offset', which is the location of the
+                   index pulse in joint coordinates. */
+
+                                }
+
+                                
                 /* waiting for sync before Pokeys moves to homeposition */
                 H[joint_num].homing = 1;
                 H[joint_num].index_enable = 1;
