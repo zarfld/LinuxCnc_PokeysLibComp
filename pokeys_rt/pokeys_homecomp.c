@@ -1003,15 +1003,15 @@ int pokeys_1joint_state_machine(int joint_num) {
                     /* yes, stop motion */
                     joint->free_tp.enable = 0;
                     rtapi_print_msg(RTAPI_MSG_ERR,
-                                     "HOMING: pokeys_1joint_state_machine joint %d "
-                                     "homing arm encoder - index pulse arrived %d\n",
-                                     joint_num, joint->free_tp.enable);
+                                    "HOMING: pokeys_1joint_state_machine joint %d "
+                                    "homing arm encoder - index pulse arrived %d\n",
+                                    joint_num, joint->free_tp.enable);
                     // joint->free_tp.pos_cmd = joint->free_tp.curr_pos; // set to zero
                     joint->free_tp.pos_cmd = 0; // set to zero
                     rtapi_print_msg(RTAPI_MSG_ERR,
-                                     "HOMING: pokeys_1joint_state_machine joint %d "
-                                     "homing arm encoder - index pulse arrived %d\n",
-                                     joint_num, joint->free_tp.pos_cmd);
+                                    "HOMING: pokeys_1joint_state_machine joint %d "
+                                    "homing arm encoder - index pulse arrived %d\n",
+                                    joint_num, joint->free_tp.pos_cmd);
                     /* Pokeys resets encoder position to zeros */
                     H[joint_num].index_enable = index_search_armed;
                     rtapi_print_msg(RTAPI_MSG_ERR,
