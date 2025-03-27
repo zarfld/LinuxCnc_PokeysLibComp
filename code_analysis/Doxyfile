@@ -3,6 +3,9 @@ INPUT = ../pokeys_rt ../pokeys_uspace ../external/pokeyslib ../external/linuxcnc
 FILE_PATTERNS          = *.c *.h *.hh *.dox
 PROJECT_NAME = "PoKeys HAL Component"
 
+PROJECT_LOGO = html/logo.png
+HTML_FAVICON = html/favicon.ico
+
 # Dokumentationsformate
 GENERATE_HTML          = YES
 GENERATE_LATEX         = NO
