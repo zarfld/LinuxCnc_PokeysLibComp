@@ -68,14 +68,10 @@ jobs:
       - name: init submodule
         run: sudo /bin/bash "./prerequisites.sh"
 
-      - name: Auto-generate .dox files from .c/.h comments
-        run: |
-          cd code_analysis
-          python3 C2Dox.py
-          
       - name: Generate Doxygen documentation
         run: |
           cd code_analysis
+          python3 C2Dox.py
           doxygen Doxyfile
       
       - name: Deploy to GitHub Pages
