@@ -1,6 +1,6 @@
 # Eingabedateien
 INPUT = ../pokeys_rt ../pokeys_uspace ../external/pokeyslib ../external/linuxcnc/motion ../external/linuxcnc/rtapi ../README.md /usr/include/linuxcnc/
-FILE_PATTERNS          = *.c *.h *.hh
+FILE_PATTERNS          = *.c *.h *.hh *.dox
 PROJECT_NAME = "PoKeys HAL Component"
 
 # Dokumentationsformate
