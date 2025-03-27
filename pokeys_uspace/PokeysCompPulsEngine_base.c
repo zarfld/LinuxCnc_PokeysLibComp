@@ -1766,8 +1766,12 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_PositionSet=PK_OK\n", __FILE__, __FUNCTION__);
                 for (int axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
                     if (abs(PEv2_data->PEv2_home_sequence[axis]) == abs(seq)) {
+                        
+                        *(PEv2_data->PEv2_joint_pos_fb[i] = ((float)PEv2_data->PEv2_ZeroPosition[axis] / PEv2_data->PEv2_PositionScale[i]) - PEv2_data->PEv2_PositionOffset[i];
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PEv2_joint_pos_fb = %f\n", __FILE__, __FUNCTION__, axis, *(PEv2_data->PEv2_joint_pos_cmd[i]));
+
                         *(PEv2_data->PEv2_index_enable[axis]) = false; // re enable index
-                        *(PEv2_data->PEv2_joint_pos_cmd[i] = ((float)PEv2_data->PEv2_ZeroPosition[axis] / PEv2_data->PEv2_PositionScale[i]) - PEv2_data->PEv2_PositionOffset[i];
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] index_enable = %d\n", __FILE__, __FUNCTION__, axis, *(PEv2_data->PEv2_index_enable[axis]));
                     }
                 }
                 dev->PEv2.param2 = bm_DoPositionSet;
