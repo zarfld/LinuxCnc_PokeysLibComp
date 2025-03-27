@@ -1,0 +1,16 @@
+component not "Inverter";
+pin in bit in;
+pin out bit out;
+function _ nofp;
+see_also """
+\\fBand2\\fR(9),
+\\fBlogic\\fR(9),
+\\fBlut5\\fR(9),
+\\fBor2\\fR(9),
+\\fBxor2\\fR(9).
+""";
+license "GPL";
+author "Jeff Epler";
+option period no;
+;;
+FUNCTION(_) { out = ! in; }
