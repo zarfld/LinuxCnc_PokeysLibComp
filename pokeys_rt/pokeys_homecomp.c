@@ -978,7 +978,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 H[joint_num].index_enable = index_search_active;
                 rtapi_print_msg(RTAPI_MSG_ERR,
                                 "HOMING: pokeys_1joint_state_machine joint %d "
-                                "ready to arm encoder - index_enable %d\n",
+                                "ready to arm encoder - index_search_active %d\n",
                                 joint_num, H[joint_num].index_enable);
 
                 H[joint_num].homing = 1;
@@ -1004,19 +1004,19 @@ int pokeys_1joint_state_machine(int joint_num) {
                     joint->free_tp.enable = 0;
                     rtapi_print_msg(RTAPI_MSG_ERR,
                                     "HOMING: pokeys_1joint_state_machine joint %d "
-                                    "homing arm encoder - index pulse arrived %d\n",
+                                    "homing arm encoder - index pulse arrived joint->free_tp.enable %d\n",
                                     joint_num, joint->free_tp.enable);
                     // joint->free_tp.pos_cmd = joint->free_tp.curr_pos; // set to zero
                     joint->free_tp.pos_cmd = 0; // set to zero
                     rtapi_print_msg(RTAPI_MSG_ERR,
                                     "HOMING: pokeys_1joint_state_machine joint %d "
-                                    "homing arm encoder - index pulse arrived %d\n",
+                                    "homing arm encoder - index pulse arrived joint->free_tp.pos_cmd %d\n",
                                     joint_num, joint->free_tp.pos_cmd);
                     /* Pokeys resets encoder position to zeros */
                     H[joint_num].index_enable = index_search_armed;
                     rtapi_print_msg(RTAPI_MSG_ERR,
                                     "HOMING: pokeys_1joint_state_machine joint %d "
-                                    "homing arm encoder - index pulse arrived %d\n",
+                                    "homing arm encoder - index pulse arrived H[joint_num].index_enable %d\n",
                                     joint_num, H[joint_num].index_enable);
                     H[joint_num].homing = 1;
                     H[joint_num].home_state = HOME_SET_INDEX_POSITION;
@@ -1040,6 +1040,10 @@ int pokeys_1joint_state_machine(int joint_num) {
                 /* waiting for sync before Pokeys moves to homeposition */
                 H[joint_num].homing = 1;
                 H[joint_num].index_enable = 1;
+                rtapi_print_msg(RTAPI_MSG_ERR,
+                    "HOMING: pokeys_1joint_state_machine joint %d "
+                    "PK_PEAxisState_axHOMINGWaitFINALMOVE - index pulse arrived H[joint_num].index_enable %d\n",
+                    joint_num, H[joint_num].index_enable);
                 joints_in_sequence = 0;
                 ready_in_sequence = 0;
 
@@ -1099,6 +1103,10 @@ int pokeys_1joint_state_machine(int joint_num) {
                 joints_in_sequence = 0;
                 int homed_in_sequence = 0;
                 H[joint_num].index_enable = 0;
+                rtapi_print_msg(RTAPI_MSG_ERR,
+                    "HOMING: pokeys_1joint_state_machine joint %d "
+                    "PK_PEAxisState_axHOME - H[joint_num].index_enable %d\n",
+                    joint_num, H[joint_num].index_enable);
                 for (int jj = 0; jj < all_joints; jj++) {
                     if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence)) {
                         joints_in_sequence++;
