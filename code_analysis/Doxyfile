@@ -6,7 +6,7 @@ PROJECT_BRIEF = "unofficial HAL Component for PoKeys"
 
 PROJECT_LOGO = html/logo.png
 PROJECT_ICON = html/favicon.ico
-HTML_STYLESHEET = custom_doxygen.css
+HTML_EXTRA_STYLESHEET = custom_doxygen.css
 
 # Dokumentationsformate
 GENERATE_HTML          = YES
@@ -22,6 +22,10 @@ CALL_GRAPH_DEPTH       = 8
 CALLER_GRAPH_DEPTH     = 5
 DOT_GRAPH_MAX_NODES	 = 500
 DOT_MULTI_TARGETS      = YES
+
+DISABLE_INDEX		 = NO
+GENERATE_TREEVIEW	 = YES
+FULL_SIDEBAR = YES
 
 # optional für Funktionen ohne Doku
 EXTRACT_ALL            = YES
