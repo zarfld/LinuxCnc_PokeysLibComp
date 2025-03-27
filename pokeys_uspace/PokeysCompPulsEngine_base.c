@@ -1767,6 +1767,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                 for (int axis = 0; axis < (*PEv2_data->PEv2_nrOfAxes); axis++) {
                     if (abs(PEv2_data->PEv2_home_sequence[axis]) == abs(seq)) {
                         *(PEv2_data->PEv2_index_enable[axis]) = false; // re enable index
+                        *(PEv2_data->PEv2_joint_pos_cmd[i] = ((float)PEv2_data->PEv2_ZeroPosition[axis] / PEv2_data->PEv2_PositionScale[i]) - PEv2_data->PEv2_PositionOffset[i];
                     }
                 }
                 dev->PEv2.param2 = bm_DoPositionSet;
