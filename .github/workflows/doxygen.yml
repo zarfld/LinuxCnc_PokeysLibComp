@@ -5,10 +5,12 @@ on:
     paths:
       - 'pokeys_rt/**'
       - 'pokeys_uspace/**'
+      - 'external/Linuxcnc/**'
   pull_request:
     paths:
       - 'pokeys_rt/**'
       - 'pokeys_uspace/**'
+      - 'external/Linuxcnc/**'
   workflow_dispatch:
 
 
