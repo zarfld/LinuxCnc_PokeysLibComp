@@ -45,11 +45,11 @@ def generate_dox_files(source_dir):
                     print(f"Generated {dox_file_path}")
 
 # Specify the path to your source directory
-source_directory = 'external/Linuxcnc/emc/motion/'
+source_directory = '../external/Linuxcnc/emc/motion/'
 generate_dox_files(source_directory)
 
-source_directory = 'external/Linuxcnc/hal/'
+source_directory = '../external/Linuxcnc/hal/'
 generate_dox_files(source_directory)
 
-source_directory = 'external/Linuxcnc/rtapi/'
+source_directory = '../external/Linuxcnc/rtapi/'
 generate_dox_files(source_directory)
