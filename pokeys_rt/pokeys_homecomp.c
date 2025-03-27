@@ -957,7 +957,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                 "ready to finalize homing\n",
                                 joint_num);
                 H[joint_num].homing = 1;
-                //H[joint_num].index_enable = index_search_active;
+                // H[joint_num].index_enable = index_search_active;
                 rtapi_print_msg(RTAPI_MSG_ERR,
                                 "HOMING: pokeys_1joint_state_machine joint %d "
                                 "ready to finalize homing - index_enable %d\n",
