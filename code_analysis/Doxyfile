@@ -5,6 +5,7 @@ PROJECT_NAME = "PoKeys HAL Component"
 
 PROJECT_LOGO = html/logo.png
 HTML_FAVICON = html/favicon.ico
+HTML_STYLESHEET = custom_doxygen.css
 
 # Dokumentationsformate
 GENERATE_HTML          = YES
