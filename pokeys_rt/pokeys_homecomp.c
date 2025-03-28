@@ -284,8 +284,8 @@ typedef enum {
     PK_PEAxisState_axREADY = 1,   // Axis ready
     PK_PEAxisState_axRUNNING = 2, // Axis is running
 
-    PK_PEAxisState_axReadyToFinalizeHoming = 3, // (linuxcnc spec additional state) pokeys ready to finalize PKhoming
-    PK_PEAxisState_axReadyToArmEncoder = 4,     // (linuxcnc spec additional state) pokeys ready to finalize PKhoming
+    PEAxisStateEx_axReadyToFinalizeHoming = 3, // (linuxcnc spec additional state) pokeys ready to finalize PKhoming
+    PEAxisStateEx_axReadyToArmEncoder = 4,     // (linuxcnc spec additional state) pokeys ready to finalize PKhoming
 
     PK_PEAxisState_axHOMING_RESETTING = 8,   // Stopping the axis to reset the position counters
     PK_PEAxisState_axHOMING_BACKING_OFF = 9, // Backing off switch
@@ -298,9 +298,9 @@ typedef enum {
     PK_PEAxisState_axPROBESTART = 15,  // Probing procedure is starting on axis
     PK_PEAxisState_axPROBESEARCH = 16, // Probing procedure - probing
 
-    PK_PEAxisState_axHOMINGARMENCODER = 17,    // (linuxcnc spec additional state) pokeys resets encoder position to zeros
-    PK_PEAxisState_axHOMINGWaitFINALMOVE = 18, // (linuxcnc spec additional state) Pokeys moves to homeposition
-    PK_PEAxisState_axHOMINGFINALMOVE = 19,     // (linuxcnc spec additional state) Pokeys moves to homeposition
+    PEAxisStateEx_HOMINGARMENCODER = 17,    // (linuxcnc spec additional state) pokeys resets encoder position to zeros
+    PEAxisStateEx_HOMINGWaitFINALMOVE = 18, // (linuxcnc spec additional state) Pokeys moves to homeposition
+    PEAxisStateEx_HOMINGFINALMOVE = 19,     // (linuxcnc spec additional state) Pokeys moves to homeposition
 
     PK_PEAxisState_axERROR = 20, // Axis error
     PK_PEAxisState_axLIMIT = 30  // Axis limit tripped
@@ -960,7 +960,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 homing_flag = 1;
                 break;
 
-            case PK_PEAxisState_axReadyToFinalizeHoming:
+            case PEAxisStateEx_axReadyToFinalizeHoming:
                 rtapi_print_msg(RTAPI_MSG_DBG,
                                 "HOMING: pokeys_1joint_state_machine joint %d "
                                 "ready to finalize homing\n",
@@ -973,7 +973,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                 joint_num, H[joint_num].index_enable);
                 H[joint_num].home_state = HOME_INDEX_SEARCH_START;
                 break;
-            case PK_PEAxisState_axReadyToArmEncoder:
+            case PEAxisStateEx_axReadyToArmEncoder:
                 rtapi_print_msg(RTAPI_MSG_DBG,
                                 "HOMING: pokeys_1joint_state_machine joint %d "
                                 "ready to arm encoder\n",
@@ -994,7 +994,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 H[joint_num].home_state = HOME_INDEX_SEARCH_WAIT;
 
                 break;
-            case PK_PEAxisState_axHOMINGARMENCODER:
+            case PEAxisStateEx_HOMINGARMENCODER:
                 /** This state is called after the machine has found the
                        home switch and "armed" the encoder counter to reset on
                        the next index pulse. It continues at low speed until
@@ -1033,7 +1033,7 @@ int pokeys_1joint_state_machine(int joint_num) {
 
                 break;
 
-            case PK_PEAxisState_axHOMINGWaitFINALMOVE:
+            case PEAxisStateEx_HOMINGWaitFINALMOVE:
                 rtapi_print_msg(RTAPI_MSG_DBG,
                                 "HOMING: pokeys_1joint_state_machine joint %d "
                                 "homing wait final move\n",
@@ -1051,7 +1051,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 H[joint_num].index_enable = 1;
                 rtapi_print_msg(RTAPI_MSG_ERR,
                                 "HOMING: pokeys_1joint_state_machine joint %d "
-                                "PK_PEAxisState_axHOMINGWaitFINALMOVE - index pulse arrived H[joint_num].index_enable %d\n",
+                                "PEAxisStateEx_HOMINGWaitFINALMOVE - index pulse arrived H[joint_num].index_enable %d\n",
                                 joint_num, H[joint_num].index_enable);
                 joints_in_sequence = 0;
                 ready_in_sequence = 0;
@@ -1059,7 +1059,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 for (int jj = 0; jj < all_joints; jj++) {
                     if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence)) {
                         joints_in_sequence++;
-                        if (H[jj].PEv2_AxesState == PK_PEAxisState_axHOMINGWaitFINALMOVE) {
+                        if (H[jj].PEv2_AxesState == PEAxisStateEx_HOMINGWaitFINALMOVE) {
                             ready_in_sequence++;
                         }
                     }
@@ -1095,7 +1095,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 }
 
                 break;
-            case PK_PEAxisState_axHOMINGFINALMOVE:
+            case PEAxisStateEx_HOMINGFINALMOVE:
                 rtapi_print_msg(RTAPI_MSG_DBG,
                                 "HOMING: pokeys_1joint_state_machine joint %d "
                                 "homing final move\n",
@@ -1760,10 +1760,10 @@ void do_home_joint(int jno) {
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axARMENCODER;
                 break;
 
-            case PK_PEAxisState_axHOMINGARMENCODER:
+            case PEAxisStateEx_HOMINGARMENCODER:
                 if (H[jno].PEv2_AxesCommand != PK_PEAxisCommand_axHOMINGWAITFINALMOVE) {
                     rtapi_print_msg(RTAPI_MSG_DBG,
-                                    "HOMING: do_home_joint joint %d homing state:PK_PEAxisState_axHOMINGARMENCODER "
+                                    "HOMING: do_home_joint joint %d homing state:PEAxisStateEx_HOMINGARMENCODER "
                                     "command:PK_PEAxisCommand_axHOMINGWAITFINALMOVE\n",
                                     jno);
                 }
@@ -1771,14 +1771,14 @@ void do_home_joint(int jno) {
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGWAITFINALMOVE;
                 break;
 
-            case PK_PEAxisState_axHOMINGWaitFINALMOVE:
+            case PEAxisStateEx_HOMINGWaitFINALMOVE:
                 rtapi_print_msg(RTAPI_MSG_DBG,
                                 "HOMING: do_home_joint joint %d homing finalize "
                                 "PK_PEAxisCommand_axIDLE\n",
                                 jno);
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALMOVE;
                 break;
-            case PK_PEAxisState_axHOMINGFINALMOVE:
+            case PEAxisStateEx_HOMINGFINALMOVE:
                 rtapi_print_msg(RTAPI_MSG_DBG,
                                 "HOMING: do_home_joint joint %d homing finalize "
                                 "PK_PEAxisCommand_axIDLE\n",
@@ -1922,51 +1922,97 @@ void do_home_joint(int jno) {
 }
 
 /**
- * @brief Executes the homing state machine for a joint sequence.
+ * @brief Executes the homing sequence state machine for multiple CNC joints.
  *
- * This function handles the high-level orchestration of homing procedures
- * for one or more joints grouped in a sequence. It transitions through various
- * homing sequence states (e.g., `HOME_SEQUENCE_DO_ONE_JOINT`, `HOME_SEQUENCE_START`,
- * `HOME_SEQUENCE_WAIT_JOINTS`) and issues commands to individual joints.
+ * This function handles joint homing by advancing the global `sequence_state` and controlling individual joints via `PEv2_AxesCommand`.
  *
- * Each joint's homing status is monitored using its `PEv2_AxesState` and
- * appropriate homing commands are issued based on the current joint and sequence state.
+ * ## Detailed Behavior:
+ * Depending on the current `sequence_state`, this function:
+ * - Selects joints involved in the current homing sequence.
+ * - Updates joint status flags (`H[*].home_state`, `H[*].homed`, `H[*].homing`).
+ * - Issues homing commands (`PEv2_AxesCommand`) based on the feedback from `PEv2_AxesState`.
+ * - Manages index-enable logic (`H[*].index_enable`) and sequence transitions.
  *
- * Homing sequences can be single-joint or multi-joint (grouped by `home_sequence`),
- * and will automatically advance to the next sequence if defined via `addr.next_sequence`.
+ * ## Relevant State Variables:
+ * - **sequence_state**: Controls global sequence flow.
+ * - **H[*].home_state**: Individual joint homing state (`HOME_START`, etc.).
+ * - **H[*].homed**: Indicates joint has completed homing.
+ * - **H[*].homing**: Indicates joint homing is active.
+ * - **H[*].PEv2_AxesState**: Current PoKeys Pulse Engine axis state.
+ * - **H[*].PEv2_AxesCommand**: Commands sent to the PoKeys Pulse Engine.
+ * - **H[*].index_enable**: Controls position indexing during homing.
  *
- * This function is typically called periodically in the real-time loop.
- *
- * @note This function cooperates with `pokeys_1joint_state_machine()` and
- *       updates `homing_active`, `allhomed`, and `sequence_state`.
+ * ## State Machine (`sequence_state`) Overview:
  *
  * @dot
- * digraph HomingSequence {
+ * digraph homing_sequence_state_machine {
+ *   rankdir=LR;
  *   node [shape=ellipse];
- *   HOME_SEQUENCE_IDLE -> HOME_SEQUENCE_DO_ONE_JOINT [label="single joint start"];
- *   HOME_SEQUENCE_IDLE -> HOME_SEQUENCE_DO_ONE_SEQUENCE [label="multi-joint start"];
- *   HOME_SEQUENCE_DO_ONE_JOINT -> HOME_SEQUENCE_START;
- *   HOME_SEQUENCE_DO_ONE_SEQUENCE -> HOME_SEQUENCE_START;
- *   HOME_SEQUENCE_START -> HOME_SEQUENCE_WAIT_JOINTS;
- *   HOME_SEQUENCE_WAIT_JOINTS -> HOME_SEQUENCE_START_JOINTS [label="joint reset"];
- *   HOME_SEQUENCE_START_JOINTS -> HOME_SEQUENCE_WAIT_JOINTS;
- *   HOME_SEQUENCE_WAIT_JOINTS -> HOME_SEQUENCE_DO_ONE_SEQUENCE [label="next_sequence"];
- *   HOME_SEQUENCE_WAIT_JOINTS -> HOME_SEQUENCE_IDLE [label="last sequence done"];
+ *
+ *   IDLE [label="IDLE"];
+ *   DO_ONE_JOINT [label="DO_ONE_JOINT"];
+ *   DO_ONE_SEQUENCE [label="DO_ONE_SEQUENCE"];
+ *   START [label="START"];
+ *   START_JOINTS [label="START_JOINTS"];
+ *   WAIT_JOINTS [label="WAIT_JOINTS"];
+ *
+ *   IDLE -> DO_ONE_JOINT [label="H[*].home_state=START"];
+ *   DO_ONE_JOINT -> START [label="joints selected"];
+ *   DO_ONE_SEQUENCE -> START [label="multiple joints selected"];
+ *   START -> WAIT_JOINTS [label="homing initiated"];
+ *   WAIT_JOINTS -> IDLE [label="all joints homed,\nlast sequence"];
+ *   WAIT_JOINTS -> DO_ONE_SEQUENCE [label="next sequence"];
+ *   WAIT_JOINTS -> START_JOINTS [label="state reset needed"];
+ *   START_JOINTS -> WAIT_JOINTS [label="re-init joints"];
  * }
  * @enddot
  *
+ * ## PlantUML Interaction Diagram:
+ *
  * @startuml
- * [*] --> HOME_SEQUENCE_IDLE
- * HOME_SEQUENCE_IDLE --> HOME_SEQUENCE_DO_ONE_JOINT : single joint
- * HOME_SEQUENCE_IDLE --> HOME_SEQUENCE_DO_ONE_SEQUENCE : group
- * HOME_SEQUENCE_DO_ONE_JOINT --> HOME_SEQUENCE_START
- * HOME_SEQUENCE_DO_ONE_SEQUENCE --> HOME_SEQUENCE_START
- * HOME_SEQUENCE_START --> HOME_SEQUENCE_WAIT_JOINTS
- * HOME_SEQUENCE_WAIT_JOINTS --> HOME_SEQUENCE_START_JOINTS : recheck
- * HOME_SEQUENCE_START_JOINTS --> HOME_SEQUENCE_WAIT_JOINTS
- * HOME_SEQUENCE_WAIT_JOINTS --> HOME_SEQUENCE_DO_ONE_SEQUENCE : has next
- * HOME_SEQUENCE_WAIT_JOINTS --> HOME_SEQUENCE_IDLE : all homed
+ * title Homing Sequence Interaction
+ *
+ * state IDLE
+ * state DO_ONE_JOINT
+ * state DO_ONE_SEQUENCE
+ * state START
+ * state START_JOINTS
+ * state WAIT_JOINTS
+ *
+ * [*] --> IDLE
+ * IDLE --> DO_ONE_JOINT : H[*].home_state = START
+ * DO_ONE_JOINT --> START : joints_in_sequence > 0
+ * DO_ONE_SEQUENCE --> START : prepare multi-joint homing
+ * START --> WAIT_JOINTS : issue HOMINGSTART
+ * WAIT_JOINTS --> IDLE : all joints homed\n(last sequence)
+ * WAIT_JOINTS --> DO_ONE_SEQUENCE : proceed next sequence
+ * WAIT_JOINTS --> START_JOINTS : AxesState = READY/RUNNING
+ * START_JOINTS --> WAIT_JOINTS : reset joint states
  * @enduml
+ *
+ * ## State Variables & Commands:
+ * | Variable                  | Description                                 |
+ * |---------------------------|---------------------------------------------|
+ * | H[*].home_state           | Individual joint homing state               |
+ * | H[*].homed                | Set to 1 when joint homing is completed     |
+ * | H[*].homing               | Set to 1 during active homing               |
+ * | H[*].PEv2_AxesState       | Axis state reported from PoKeys Pulse Engine|
+ * | H[*].PEv2_AxesCommand     | Axis command sent to PoKeys Pulse Engine    |
+ * | H[*].index_enable         | Controls encoder indexing during homing     |
+ *
+ * ## Axis State Transitions (`PEv2_AxesState` → `PEv2_AxesCommand`):
+ * | PEv2_AxesState                           | Resulting Command (`PEv2_AxesCommand`) |
+ * |------------------------------------------|----------------------------------------|
+ * | axSTOPPED, axREADY, axRUNNING            | axHOMINGSTART                         |
+ * | axERROR                                  | axHOMINGCANCEL                        |
+ * | axHOME (final state)                     | axIDLE                                |
+ * | axReadyToFinalizeHoming                  | axHOMINGFINALIZE                      |
+ * | axReadyToArmEncoder                      | axARMENCODER                          |
+ * | axHOMINGARMENCODER                       | axHOMINGWAITFINALMOVE                 |
+ * | axHOMINGWaitFINALMOVE                    | axHOMINGFINALMOVE                     |
+ * | axHOMINGFINALMOVE                        | axIDLE                                |
+ *
+ * @note All transitions are logged via `rtapi_print_msg` for detailed debugging.
  */
 static void do_homing_sequence(void) {
     int i, ii;
@@ -2267,47 +2313,47 @@ static void do_homing_sequence(void) {
                         sequence_state = HOME_SEQUENCE_IDLE;
                         H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGCANCEL;
                         break;
-                    case PK_PEAxisState_axReadyToFinalizeHoming:
+                    case PEAxisStateEx_axReadyToFinalizeHoming:
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "HOMING:  do_homing_sequence(%d) joint "
                                         "%d HOME_SEQUENCE_WAIT_JOINTS "
-                                        "PK_PEAxisState_axReadyToFinalizeHoming\n",
+                                        "PEAxisStateEx_axReadyToFinalizeHoming\n",
                                         current_sequence, jno);
                         sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
                         H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                         break;
-                    case PK_PEAxisState_axReadyToArmEncoder:
+                    case PEAxisStateEx_axReadyToArmEncoder:
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "HOMING:  do_homing_sequence(%d) joint "
                                         "%d HOME_SEQUENCE_WAIT_JOINTS "
-                                        "PK_PEAxisState_axReadyToArmEncoder\n",
+                                        "PEAxisStateEx_axReadyToArmEncoder\n",
                                         current_sequence, jno);
                         sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
                         H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axARMENCODER;
                         break;
-                    case PK_PEAxisState_axHOMINGARMENCODER:
+                    case PEAxisStateEx_HOMINGARMENCODER:
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "HOMING:  do_homing_sequence(%d) joint "
                                         "%d HOME_SEQUENCE_WAIT_JOINTS "
-                                        "PK_PEAxisState_axHOMINGARMENCODER\n",
+                                        "PEAxisStateEx_HOMINGARMENCODER\n",
                                         current_sequence, jno);
                         sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
                         H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGWAITFINALMOVE;
                         break;
-                    case PK_PEAxisState_axHOMINGWaitFINALMOVE:
+                    case PEAxisStateEx_HOMINGWaitFINALMOVE:
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "HOMING:  do_homing_sequence(%d) joint "
                                         "%d HOME_SEQUENCE_WAIT_JOINTS "
-                                        "PK_PEAxisState_axHOMINGWaitFINALMOVE\n",
+                                        "PEAxisStateEx_HOMINGWaitFINALMOVE\n",
                                         current_sequence, jno);
                         sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
                         H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALMOVE;
                         break;
-                    case PK_PEAxisState_axHOMINGFINALMOVE:
+                    case PEAxisStateEx_HOMINGFINALMOVE:
                         rtapi_print_msg(RTAPI_MSG_DBG,
                                         "HOMING:  do_homing_sequence(%d) joint "
                                         "%d HOME_SEQUENCE_WAIT_JOINTS "
-                                        "PK_PEAxisState_axHOMINGFINALMOVE\n",
+                                        "PEAxisStateEx_HOMINGFINALMOVE\n",
                                         current_sequence, jno);
                         sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
                         H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
