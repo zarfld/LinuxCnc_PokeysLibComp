@@ -1545,13 +1545,13 @@ int32_t PEv2_AdditionalParametersSet(sPoKeysDevice *dev) {
             if (PEv2_data->PEv2_digin_Emergency_Pin != 0) { // check if pin is parametrized in HAL
                 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: IO_data->Pin[%d].PinFunction = %d\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_digin_Emergency_Pin - 1, IO_data->Pin[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction);
                 if (IO_data->Pin[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction == 0) {
-                    IO_data->Pin[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction = PK_PinCap_digitalInput;
-                } else if (IO_data->Pin[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction != PK_PinCap_digitalInput) {
+                    IO_data->Pin[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction |= PK_PinCap_digitalInput;
+                } else if (!(IO_data->Pin[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction & PK_PinCap_digitalInput)) {
                     rtapi_print_msg(RTAPI_MSG_ERR,
                                     "PoKeys: %s:%s: Emergency input pin is not "
                                     "set as digital input\n",
                                     __FILE__, __FUNCTION__);
-                    IO_data->Pin[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction = PK_PinCap_digitalInput;
+                    IO_data->Pin[PEv2_data->PEv2_digin_Emergency_Pin - 1].PinFunction |= PK_PinCap_digitalInput;
                 }
             }
         }
@@ -2180,8 +2180,8 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
                 }
                 if (Home != LimM && Home != LimP) {
 
-                    if (IO_data->Pin[Home - 1].PinFunction != PK_PinCap_digitalInput) {
-                        IO_data->Pin[Home - 1].PinFunction = PK_PinCap_digitalInput;
+                    if (!(IO_data->Pin[Home - 1].PinFunction & PK_PinCap_digitalInput)) {
+                        IO_data->Pin[Home - 1].PinFunction |= PK_PinCap_digitalInput;
                     }
                 } else if (Home == LimP) {
                     // dev->PEv2.PinHomeSwitch[AxisId]=0;
@@ -2228,21 +2228,21 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 2, false); // PK_ASO_SWITCH_HOME ;
             }
 
-            if (PEv2_data->PEv2_digin_LimitN_invert[AxisId] != 0) {
+            if (PEv2_data->PEv2_digin_LimitN_invert[AxisId]) {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5,
                                                          true); // PK_ASO_SWITCH_INVERT_LIMIT_N ;
             } else {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5,
                                                          false); // PK_ASO_SWITCH_INVERT_LIMIT_N ;
             }
-            if (PEv2_data->PEv2_digin_LimitP_invert[AxisId] != 0) {
+            if (PEv2_data->PEv2_digin_LimitP_invert[AxisId]) {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 6,
                                                          true); // PK_ASO_SWITCH_INVERT_LIMIT_P ;
             } else {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 6,
                                                          false); // PK_ASO_SWITCH_INVERT_LIMIT_P ;
             }
-            if (PEv2_data->PEv2_digin_Home_invert[AxisId] != 0) {
+            if (PEv2_data->PEv2_digin_Home_invert[AxisId]) {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7,
                                                          true); // PK_ASO_SWITCH_INVERT_HOME ;
             } else {
@@ -2250,14 +2250,14 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
                                                          false); // PK_ASO_SWITCH_INVERT_HOME ;
             }
 
-            if (PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] != 0) {
+            if (PEv2_data->PEv2_digin_Home_OnLimitN[AxisId]) {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3,
                                                          true); // PK_ASO_SWITCH_COMBINED_LN_H ;
             } else {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3,
                                                          false); // PK_ASO_SWITCH_COMBINED_LN_H ;
             }
-            if (PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] != 0) {
+            if (PEv2_data->PEv2_digin_Home_OnLimitP[AxisId]) {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4,
                                                          true); // PK_ASO_SWITCH_COMBINED_LP_H ;
             } else {
@@ -2265,35 +2265,35 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
                                                          false); // PK_ASO_SWITCH_COMBINED_LP_H ;
             }
 
-            if (PEv2_data->PEv2_digin_Home_OnLimitN[AxisId] != 0) {
+            if (PEv2_data->PEv2_digin_Home_OnLimitN[AxisId]) {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3,
                                                          true); // PK_ASO_SWITCH_COMBINED_LN_H = (1 << 3),   // 8 Home switch is shared with Limit- switch
             } else {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 3,
                                                          false); // PK_ASO_SWITCH_COMBINED_LN_H = (1 << 3),   // 8 Home switch is shared with Limit- switch
             }
-            if (PEv2_data->PEv2_digin_Home_OnLimitP[AxisId] != 0) {
+            if (PEv2_data->PEv2_digin_Home_OnLimitP[AxisId]) {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4,
                                                          true); // PK_ASO_SWITCH_COMBINED_LP_H = (1 << 4),   // 16 Home switch is shared with Limit+ switch
             } else {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 4,
                                                          false); // PK_ASO_SWITCH_COMBINED_LP_H = (1 << 4),   // 16 Home switch is shared with Limit+ switch
             }
-            if (PEv2_data->PEv2_digin_Home_invert[AxisId] != 0) {
+            if (PEv2_data->PEv2_digin_Home_invert[AxisId]) {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7,
                                                          true); // PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
             } else {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 7,
                                                          false); // PK_ASO_SWITCH_INVERT_HOME    = (1 << 7)    // 128 Invert home switch polarity
             }
-            if (PEv2_data->PEv2_digin_LimitN_invert[AxisId] != 0) {
+            if (PEv2_data->PEv2_digin_LimitN_invert[AxisId]) {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5,
                                                          true); // PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
             } else {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 5,
                                                          false); // PK_ASO_SWITCH_INVERT_LIMIT_N = (1 << 5),   // 32 Invert limit- switch polarity
             }
-            if (PEv2_data->PEv2_digin_LimitP_invert[AxisId] != 0) {
+            if (PEv2_data->PEv2_digin_LimitP_invert[AxisId]) {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 6,
                                                          true); // PK_ASO_SWITCH_INVERT_LIMIT_P = (1 << 6),   // 64 Invert limit+ switch polarity
             } else {
@@ -2324,8 +2324,8 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 0,
                                                          true); // | PK_ASO_SWITCH_LIMIT_N;
 
-                if (IO_data->Pin[PEv2_data->PEv2_digin_LimitN_Pin[AxisId] - 1].PinFunction != PK_PinCap_digitalInput) {
-                    IO_data->Pin[PEv2_data->PEv2_digin_LimitN_Pin[AxisId] - 1].PinFunction = PK_PinCap_digitalInput;
+                if (!(IO_data->Pin[PEv2_data->PEv2_digin_LimitN_Pin[AxisId] - 1].PinFunction & PK_PinCap_digitalInput)) {
+                    IO_data->Pin[PEv2_data->PEv2_digin_LimitN_Pin[AxisId] - 1].PinFunction |= PK_PinCap_digitalInput;
                 }
             }
 
@@ -2337,8 +2337,8 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
                 AxesSwitchConfig[AxisId] = Set_BitOfByte(AxesSwitchConfig[AxisId], 1,
                                                          true); // | PK_ASO_SWITCH_LIMIT_P;
 
-                if (IO_data->Pin[PEv2_data->PEv2_digin_LimitP_Pin[AxisId] - 1].PinFunction != PK_PinCap_digitalInput) {
-                    IO_data->Pin[PEv2_data->PEv2_digin_LimitP_Pin[AxisId] - 1].PinFunction = PK_PinCap_digitalInput;
+                if (!(IO_data->Pin[PEv2_data->PEv2_digin_LimitP_Pin[AxisId] - 1].PinFunction & PK_PinCap_digitalInput)) {
+                    IO_data->Pin[PEv2_data->PEv2_digin_LimitP_Pin[AxisId] - 1].PinFunction |= PK_PinCap_digitalInput;
                 }
             }
 
@@ -2477,8 +2477,8 @@ int32_t PEv2_AxisConfigurationSet(sPoKeysDevice *dev, int AxisId) {
                 doSetup = true;
             }
             if (PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] != 0) { // check if pin is parametrized in HAL
-                if (IO_data->Pin[PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - 1].PinFunction != PK_PinCap_digitalOutput) {
-                    IO_data->Pin[PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - 1].PinFunction = PK_PinCap_digitalOutput;
+                if (!(IO_data->Pin[PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - 1].PinFunction & PK_PinCap_digitalOutput)) {
+                    IO_data->Pin[PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - 1].PinFunction |= PK_PinCap_digitalOutput;
                 }
                 Pins_DigitalValueSet_ignore[PEv2_data->PEv2_digout_AxisEnable_Pin[AxisId] - 1] = true;
             }
