@@ -1544,9 +1544,9 @@ pokeys_home_status_t ActState_step2_Memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
  * This function checks all axes in a given homing sequence and evaluates whether
  * all of them are in the required state. If so, it transitions them to the next state
  * and performs related hardware actions (e.g., arming encoders, setting positions, starting movement).
- * 
+ *
  * The function logs state mismatches and suppresses repeated messages using memory buffers.
- * 
+ *
  * Synchronization ensures that axes in the same sequence only transition when all
  * others are also ready, making it suitable for multi-axis machines requiring coordinated homing.
  *
@@ -1554,10 +1554,10 @@ pokeys_home_status_t ActState_step2_Memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
  * @param seq Homing sequence number to process.
  * @param RequiredState Expected current homing status for all axes in sequence.
  * @param NextState Next state to transition to if all axes match RequiredState.
- * 
+ *
  * @retval 0 Success, state transition triggered.
  * @retval 1 Transition not triggered (not all axes ready, invalid state, etc).
- * 
+ *
  * @dot
  * digraph HomingSync {
  *   node [shape=box];
@@ -1572,7 +1572,7 @@ pokeys_home_status_t ActState_step2_Memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
  *   DoMove -> Done;
  * }
  * @enddot
- * 
+ *
  * @startuml
  * start
  * :Check all axes in sequence;
