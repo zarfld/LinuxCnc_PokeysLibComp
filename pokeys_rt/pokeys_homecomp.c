@@ -1011,7 +1011,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 /**  has an index pulse arrived yet? encoder driver clears
                    enable when it does */
 
-                if (H[joint_num].index_enable == index_search_armed) {
+                if (H[joint_num].index_enable == index_search_armed && H[joint_num].home_state != HOME_SET_INDEX_POSITION) {
                     /* yes, stop motion */
                     joint->free_tp.enable = 0;
                     rtapi_print_msg(RTAPI_MSG_ERR,
