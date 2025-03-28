@@ -85,8 +85,8 @@ jobs:
         
           # Run the generator from that location
           sudo java -jar PlantUMLGenerator.jar \
-            -s "${{ github.workspace }}/pokeys_rt" \
-            -o "${{ github.workspace }}/code_analysis/plantuml-diagrams"
+            "${{ github.workspace }}/pokeys_rt" \
+            "${{ github.workspace }}/code_analysis/plantuml-diagrams"
 
       - name: init submodule
         run: sudo /bin/bash "./prerequisites.sh"
