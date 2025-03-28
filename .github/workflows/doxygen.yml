@@ -82,24 +82,24 @@ jobs:
       - name: run PlantUML Generator pokeys_rt
         run: |
           cd /usr/share/plantuml
-          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}/pokeys_rt" "${{ github.workspace }}/code_analysis/plantuml-diagrams"
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}/pokeys_rt/pokeys_homecomp.c" "${{ github.workspace }}/code_analysis/plantuml-diagrams/pokeys_homecomp.puml"
 
       - name: run PlantUML Generator pokeys_uspace
         run: |
           cd /usr/share/plantuml
-          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}/pokeys_uspace" ${{ github.workspace }}/"code_analysis/plantuml-diagrams"
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}/pokeys_uspace" ${{ github.workspace }}/"code_analysis/plantuml-diagrams/pokeys.puml"
 
       - name: run PlantUML Generator pokeyslib
         run: |
           cd /usr/share/plantuml
-          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}/external/pokeyslib" "${{ github.workspace }}/code_analysis/plantuml-diagrams"
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}/external/pokeyslib" "${{ github.workspace }}/code_analysis/plantuml-diagrams/pokeyslib.puml"
 
       - name: run PlantUML Generator LinuxCNC
         run: |
           cd /usr/share/plantuml
-          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}//external/Linuxcnc/emc/motion" "${{ github.workspace }}//code_analysis/plantuml-diagrams"
-          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}//external/Linuxcnc/hal" "${{ github.workspace }}//code_analysis/plantuml-diagrams"
-          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}//external/Linuxcnc/rtapi" "${{ github.workspace }}//code_analysis/plantuml-diagrams"
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}/external/Linuxcnc/emc/motion" "${{ github.workspace }}//code_analysis/plantuml-diagrams/motion.puml"
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}/external/Linuxcnc/hal" "${{ github.workspace }}//code_analysis/plantuml-diagrams/hal.puml"
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}/external/Linuxcnc/rtapi" "${{ github.workspace }}//code_analysis/plantuml-diagrams/rtapi.puml"
   
       - name: init submodule
         run:  |
