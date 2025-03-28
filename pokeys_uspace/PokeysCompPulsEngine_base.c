@@ -1094,8 +1094,8 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
                     int polarity = PEv2_data->PEv2_digin_LimitN_invert[i];
                     if (!polarity) {
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: LimitN Switch PinId: %d polarity:%d \n", __FILE__, __FUNCTION__, PinId, polarity);
-                        (*PEv2_data->PEv2_digin_LimitN_in[i]) = *(IO_data->Pin[PinId]).digin_in;
-                        (*PEv2_data->PEv2_digin_LimitN_in_not[i]) = *(IO_data->Pin[PinId]).digin_in_not;
+                        (*PEv2_data->PEv2_digin_LimitN_in[i]) = *(IO_data->Pin[PinId].digin_in);
+                        (*PEv2_data->PEv2_digin_LimitN_in_not[i]) = *(IO_data->Pin[PinId].digin_in_not);
                         ;
 
                     } else {
@@ -1104,8 +1104,8 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
                                         "%d polarity:%d \n",
                                         __FILE__, __FUNCTION__, PinId, polarity);
 
-                        (*PEv2_data->PEv2_digin_LimitN_in[i]) = *(IO_data->Pin[PinId]).digin_in_not;
-                        (*PEv2_data->PEv2_digin_LimitN_in_not[i]) = *(IO_data->Pin[PinId]).digin_in;
+                        (*PEv2_data->PEv2_digin_LimitN_in[i]) = *(IO_data->Pin[PinId].digin_in_not);
+                        (*PEv2_data->PEv2_digin_LimitN_in_not[i]) = *(IO_data->Pin[PinId].digin_in);
                     }
                 }
 
@@ -1125,8 +1125,8 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
                 if (*(PEv2_data->PEv2_AxesState[i]) != PK_PEAxisState_axSTOPPED) {
                     *(PEv2_data->PEv2_digin_LimitP_DedicatedInput[i]) = Get_BitOfByte(bm_DedicatedLimitPInputs, i);
                     if (PEv2_data->PEv2_digin_LimitP_invert[i]) {
-                        *(PEv2_data->PEv2_digin_LimitP_in[i]) = !Get_BitOfByte(bm_LimitStatusP, i);
-                        *(PEv2_data->PEv2_digin_LimitP_in_not[i]) = Get_BitOfByte(bm_LimitStatusP, i);
+                        *(PEv2_data->PEv2_digin_LimitP_in[i]) = Get_BitOfByte(bm_LimitStatusP, i);
+                        *(PEv2_data->PEv2_digin_LimitP_in_not[i]) = !Get_BitOfByte(bm_LimitStatusP, i);
                     } else {
                         *(PEv2_data->PEv2_digin_LimitP_in[i]) = !Get_BitOfByte(bm_LimitStatusP, i);
                         *(PEv2_data->PEv2_digin_LimitP_in_not[i]) = Get_BitOfByte(bm_LimitStatusP, i);
@@ -1137,8 +1137,8 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
                     int polarity = PEv2_data->PEv2_digin_LimitP_invert[i];
                     if (!polarity) {
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: LimitP Switch PinId: %d polarity:%d \n", __FILE__, __FUNCTION__, PinId, polarity);
-                        (*PEv2_data->PEv2_digin_LimitP_in[i]) = *(IO_data->Pin[PinId]).digin_in;
-                        (*PEv2_data->PEv2_digin_LimitP_in_not[i]) = *(IO_data->Pin[PinId]).digin_in_not;
+                        (*PEv2_data->PEv2_digin_LimitP_in[i]) = *(IO_data->Pin[PinId].digin_in);
+                        (*PEv2_data->PEv2_digin_LimitP_in_not[i]) = *(IO_data->Pin[PinId].digin_in_not);
                         ;
 
                     } else {
@@ -1147,8 +1147,8 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
                                         "%d polarity:%d \n",
                                         __FILE__, __FUNCTION__, PinId, polarity);
 
-                        (*PEv2_data->PEv2_digin_LimitP_in[i]) = *(IO_data->Pin[PinId]).digin_in_not;
-                        (*PEv2_data->PEv2_digin_LimitP_in_not[i]) = *(IO_data->Pin[PinId]).digin_in;
+                        (*PEv2_data->PEv2_digin_LimitP_in[i]) = *(IO_data->Pin[PinId].digin_in_not);
+                        (*PEv2_data->PEv2_digin_LimitP_in_not[i]) = *(IO_data->Pin[PinId].digin_in);
                     }
                 }
             } else if (PEv2_data->PEv2_digin_LimitP_Enabled[i]) {
@@ -1178,8 +1178,8 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
                     int polarity = PEv2_data->PEv2_digin_Home_invert[i];
                     if (!polarity) {
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Home Switch PinId: %d polarity:%d \n", __FILE__, __FUNCTION__, PinId, polarity);
-                        (*PEv2_data->PEv2_digin_Home_in[i]) = *(IO_data->Pin[PinId]).digin_in;
-                        (*PEv2_data->PEv2_digin_Home_in_not[i]) = *(IO_data->Pin[PinId]).digin_in_not;
+                        (*PEv2_data->PEv2_digin_Home_in[i]) = *(IO_data->Pin[PinId].digin_in);
+                        (*PEv2_data->PEv2_digin_Home_in_not[i]) = *(IO_data->Pin[PinId].digin_in_not);
                         ;
 
                     } else {
@@ -1188,8 +1188,8 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
                                         "%d polarity:%d \n",
                                         __FILE__, __FUNCTION__, PinId, polarity);
 
-                        (*PEv2_data->PEv2_digin_Home_in[i]) = *(IO_data->Pin[PinId]).digin_in_not;
-                        (*PEv2_data->PEv2_digin_Home_in_not[i]) = *(IO_data->Pin[PinId]).digin_in;
+                        (*PEv2_data->PEv2_digin_Home_in[i]) = *(IO_data->Pin[PinId].digin_in_not);
+                        (*PEv2_data->PEv2_digin_Home_in_not[i]) = *(IO_data->Pin[PinId].digin_in);
                     }
                 }
             } else if (PEv2_data->PEv2_digin_Home_Enabled[i]) {
