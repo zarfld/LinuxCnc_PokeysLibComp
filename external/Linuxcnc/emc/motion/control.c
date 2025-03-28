@@ -1,7 +1,7 @@
 /**
  * @file control.c
  * @ingroup pokeys_homecomp
- * @brief 
+ * @brief
  *   emcmotController() is the main loop running at the servo cycle
  *   rate. All state logic and trajectory calcs are called from here.
  *
@@ -205,7 +205,7 @@ static void handle_kinematicsSwitch(void);
   Inactive axes are still calculated, but the PIDs are inhibited and
   the amp enable/disable are inhibited
   */
-  /**
+/**
  * @brief Real-time servo loop for motion control.
  *
  * This function is the heart of the motion system, called periodically by the
@@ -507,10 +507,10 @@ static void process_inputs(void) {
         /** @brief copy data from HAL to joint structure */
         joint->motor_pos_fb = *(joint_data->motor_pos_fb);
 
-        /** @brief calculate pos_fb 
+        /** @brief calculate pos_fb
         @see get_homing_at_index_search_wait() for special case
         @see get_index_enable() for special case
-        
+
         */
         if ((get_homing_at_index_search_wait(joint_num)) && (get_index_enable(joint_num) == 0)) {
             /** @brief special case - we're homing the joint, and it just

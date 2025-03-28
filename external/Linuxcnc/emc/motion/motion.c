@@ -420,7 +420,7 @@ int rtapi_app_main(void) {
         return -1;
     }
 
-     /**
+    /**
      * @brief Initializes the homing subsystem for all motion joints.
      *
      * This function sets up the internal homing logic and data structures
