@@ -1052,7 +1052,8 @@ int pokeys_1joint_state_machine(int joint_num) {
                 /* waiting for sync before Pokeys moves to homeposition */
                 H[joint_num].homing = 1;
 
-                if (H[joint_num].index_enable != index_search_armed) {
+                if (H[joint_num].index_enable != index_search_armed){
+
 
                     H[joint_num].index_enable = index_search_armed;
                     rtapi_print_msg(RTAPI_MSG_ERR,
@@ -1073,12 +1074,13 @@ int pokeys_1joint_state_machine(int joint_num) {
                     }
                 }
 
+                
                 if (joints_in_sequence == ready_in_sequence) {
                     // if all Joints of the Sequence show Hommed
                     rtapi_print_msg(RTAPI_MSG_ERR,
-                                    "HOMING:PEAxisStateEx_HOMINGWaitFINALMOVE joint %d "
-                                    "joints_in_sequence:%d  ready_in_sequence:%d \n",
-                                    joint_num, joints_in_sequence, ready_in_sequence);
+                        "HOMING:PEAxisStateEx_HOMINGWaitFINALMOVE joint %d "
+                        "joints_in_sequence:%d  ready_in_sequence:%d \n",
+                        joint_num, joints_in_sequence, ready_in_sequence);
                     for (int jj = 0; jj < all_joints; jj++) {
 
                         if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence)) {
@@ -1111,7 +1113,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 /* Pokeys moves to homeposition */
                 H[joint_num].homing = 1;
                 H[joint_num].home_state = HOME_FINAL_MOVE_WAIT;
-                H[joint_num].index_enable = 1;
+               // H[joint_num].index_enable = 1;
                 break;
 
             case PK_PEAxisState_axHOME:
