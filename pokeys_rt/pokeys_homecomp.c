@@ -2037,8 +2037,8 @@ static void do_homing_sequence(void) {
             current_sequence = sequence_home_data.min_sequence;
             /* nothing to do */
             break;
-        /** } */
-        
+            /** } */
+
         case HOME_SEQUENCE_DO_ONE_JOINT: /** state HOME_SEQUENCE_WAIT_JOINTS {*/
             rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing_sequence HOME_SEQUENCE_DO_ONE_JOINT\n");
             update_sequence_home_data();
@@ -2062,7 +2062,7 @@ static void do_homing_sequence(void) {
                 }
             }
             sequence_is_set = 1;
-            
+
             /** state choice_joints_in_sequence_1 <<choice>> */
             if (joints_in_sequence == 0) {
                 rtapi_print_msg(RTAPI_MSG_DBG,
@@ -2084,8 +2084,8 @@ static void do_homing_sequence(void) {
                 /** choice_joints_in_sequence_1 -> HOME_SEQUENCE_IDLE : joints_in_sequence != 0*/
                 sequence_state = HOME_SEQUENCE_START;
             }
-                
-            break;  /** } */
+
+            break; /** } */
 
         /** state HOME_SEQUENCE_DO_ONE_SEQUENCE*/
         case HOME_SEQUENCE_DO_ONE_SEQUENCE:
