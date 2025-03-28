@@ -1,5 +1,5 @@
 # Eingabedateien
-INPUT = ../pokeys_rt ../pokeys_uspace ../external/pokeyslib ../external/linuxcnc/motion ../external/linuxcnc/rtapi ../README.md ../wiki /usr/include/linuxcnc/ ./plantuml-diagrams
+INPUT = ../pokeys_rt ../pokeys_uspace ../external/pokeyslib ../external/linuxcnc/motion ../external/linuxcnc/rtapi ../README.md ../wiki /usr/include/linuxcnc/ ./plantuml
 FILE_PATTERNS          = *.c *.h *.hh *.dox *.md
 PROJECT_NAME = "LinuxCNC PoKeysLib-Comp"
 PROJECT_BRIEF = "unofficial PoKeys HAL-Component for LinuxCNC"
