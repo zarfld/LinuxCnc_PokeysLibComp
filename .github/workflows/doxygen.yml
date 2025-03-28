@@ -79,6 +79,28 @@ jobs:
           sudo wget -O PlantUMLGenerator.jar https://github.com/lorenzovngl/plantuml-generator/releases/download/v1.0/PlantUMLGenerator.jar
           sudo java -jar PlantUMLGenerator.jar "${{ github.workspace }}/pokeys_rt" "${{ github.workspace }}/code_analysis/plantuml-diagrams"
 
+      - name: run PlantUML Generator pokeys_rt
+        run: |
+          cd ${{ github.workspace }}
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "pokeys_rt" "code_analysis/plantuml-diagrams"
+
+      - name: run PlantUML Generator pokeys_uspace
+        run: |
+          cd ${{ github.workspace }}
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "pokeys_uspace" "code_analysis/plantuml-diagrams"
+
+      - name: run PlantUML Generator pokeyslib
+        run: |
+          cd ${{ github.workspace }}
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "external/pokeyslib" "code_analysis/plantuml-diagrams"
+
+      - name: run PlantUML Generator LinuxCNC
+        run: |
+          cd ${{ github.workspace }}
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "./external/Linuxcnc/emc/motion" "./code_analysis/plantuml-diagrams"
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "./external/Linuxcnc/hal" "./code_analysis/plantuml-diagrams"
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "./external/Linuxcnc/rtapi" "./code_analysis/plantuml-diagrams"
+  
       - name: init submodule
         run: sudo /bin/bash "./prerequisites.sh"
 
