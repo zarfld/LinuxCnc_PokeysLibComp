@@ -1044,18 +1044,22 @@ int pokeys_1joint_state_machine(int joint_num) {
 
                 if (H[joint_num].home_state == HOME_SET_INDEX_POSITION) {
                     /* This state is called when the encoder has been reset at
-   the index pulse position.  It sets the current joint
-   position to 'home_offset', which is the location of the
-   index pulse in joint coordinates. */
+                    the index pulse position.  It sets the current joint
+                    position to 'home_offset', which is the location of the
+                    index pulse in joint coordinates. */
                 }
 
                 /* waiting for sync before Pokeys moves to homeposition */
                 H[joint_num].homing = 1;
-                H[joint_num].index_enable = 1;
-                rtapi_print_msg(RTAPI_MSG_ERR,
-                                "HOMING: pokeys_1joint_state_machine joint %d "
-                                "PEAxisStateEx_HOMINGWaitFINALMOVE - index pulse arrived H[joint_num].index_enable %d\n",
-                                joint_num, H[joint_num].index_enable);
+                if (H[joint_num].index_enable == index_search_armed){
+                    H[joint_num].index_enable = index_search_armed;
+                    rtapi_print_msg(RTAPI_MSG_ERR,
+                                    "HOMING: pokeys_1joint_state_machine joint %d "
+                                    "PEAxisStateEx_HOMINGWaitFINALMOVE - index pulse arrived H[joint_num].index_enable %d\n",
+                                    joint_num, H[joint_num].index_enable);
+
+                }
+                
                 joints_in_sequence = 0;
                 ready_in_sequence = 0;
 
