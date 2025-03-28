@@ -721,11 +721,11 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         } else if (Homing_PkHomeFinalizeeDone[i] && IsHoming[i] && !Homing_ArmEncodereDone[i]) {
                             if (intAxesState == PK_PEAxisState_axREADY) {
                                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART PK_PEAxisState_axREADY - PEAxisStateEx_axReadyToArmEncoder(%d)\n", __FILE__, __FUNCTION__, i, intAxesState);
-                            
+
                                 intAxesState = PEAxisStateEx_axReadyToArmEncoder;
                             } else {
                                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART PK_PEAxisState_axSTOPPED - PEAxisStateEx_axReadyToArmEncoder(%d)\n", __FILE__, __FUNCTION__, i, intAxesState);
-                            
+
                                 intAxesState = PEAxisStateEx_axReadyToArmEncoder;
                             }
                         }
