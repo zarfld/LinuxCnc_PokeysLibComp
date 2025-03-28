@@ -279,7 +279,6 @@ static home_sequence_state_t sequence_state = HOME_SEQUENCE_IDLE;
  * @brief Enumeration of the homing state of pokeys component
 
 * @ingroup PoKeys_PEv2_AxisState */
-
 typedef enum {
     PK_PEAxisState_axSTOPPED = 0, // Axis is stopped
     PK_PEAxisState_axREADY = 1,   // Axis ready

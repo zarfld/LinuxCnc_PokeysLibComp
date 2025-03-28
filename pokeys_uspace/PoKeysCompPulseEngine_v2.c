@@ -342,43 +342,52 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d]: new values on AxesState: %s(%d) or AxesCommand:  %s(%d) \n", __FILE__, __FUNCTION__, i, PK_PEAxisState_names[intAxesState], intAxesState, PEv2_AxisCommand_Names[*(PEv2_data->PEv2_AxesCommand[i])], *(PEv2_data->PEv2_AxesCommand[i]));
                 //  oldAxxiState[i] = intAxesState;
             }
+ 
             /**
-             * @brief Synchronised homing state machine trigger for PoKeys axes
-             *
-             * This function checks if all axes in a homing sequence have reached a specific required state,
-             * and transitions them to the given next state synchronously. The transition is only performed
-             * if all axes in the sequence are ready.
-             *
-             * The homing state machine follows this logic:
-             * @dot
-             * digraph HomingState {
-             *   IDLE -> HOMINGSTART;
-             *   HOMINGSTART -> HOMINGFinalize;
-             *   HOMINGFinalize -> ARMENCODER;
-             *   ARMENCODER -> HOMINGWaitFinalMove;
-             *   HOMINGWaitFinalMove -> HOMINGFinalMove;
-             *   HOMINGFinalMove -> HOMINGFinalize;
-             *   HOMINGSTART -> HOMINGCancel;
-             *   HOMINGCancel -> IDLE;
-             *   HOMINGFinalMove -> IDLE [label="Already at position"];
-             * }
-             * @enddot
-             *
-             * Additional logic:
-             * - ARMENCODER uses `PK_PEv2_PositionSet()` to reset axis position.
-             * - HOMINGFinalMove triggers `PK_PEv2_PulseEngineMove()` only if not already at HomePosition.
-             * - `Homing_FinalMoveActive[i]` and `Homing_FinalMoveDone[i]` are used to track motion state and prevent repeated execution.
-             * - Final transition to IDLE sets `index_enable = false` and clears `deb_ishoming`.
-             *
-             * This logic ensures compatibility with LinuxCNC's homing expectations as described in:
-             * https://linuxcnc.org/docs/html/config/ini-homing.html
-             *
-             * @param dev The PoKeys device instance
-             * @param seq Homing sequence number (can be shared by multiple joints)
-             * @param RequiredState State that must be met before transition is triggered
-             * @param NextState Target state to apply if all involved axes are ready
-             * @return 0 if transition triggered, 1 if not all axes ready or already transitioned
-             */
+ * @brief Evaluate the current axis state and react accordingly.
+ *
+ * This state machine reads the current axis state from the PoKeys device
+ * and sets internal homing flags, position feedback, and diagnostics.
+ * It is part of the homing and motion logic.
+ *
+ * Transitions depend on feedback from the Pulse Engine (`PEv2`) regarding
+ * the real-time state of the axis.
+ *
+ * @dot
+ * digraph AxisStateMachine {
+ *   STOPPED -> READY;
+ *   READY -> RUNNING;
+ *   RUNNING -> HOMINGSTART;
+ *   HOMINGSTART -> HOMING_RESETTING -> HOMING_BACKING_OFF;
+ *   HOMING_BACKING_OFF -> HOMINGSEARCH -> HOMINGBACK -> HOME;
+ *   HOME -> ERROR;
+ *   ERROR -> STOPPED;
+ *   PROBESTART -> PROBESEARCH -> PROBED -> READY;
+ *   LIMIT -> STOPPED;
+ * }
+ * @enddot
+ *
+ * @startuml AxisStateMachine
+ * [*] --> STOPPED
+ * STOPPED --> READY
+ * READY --> RUNNING
+ * RUNNING --> HOMINGSTART
+ * HOMINGSTART --> HOMING_RESETTING
+ * HOMING_RESETTING --> HOMING_BACKING_OFF
+ * HOMING_BACKING_OFF --> HOMINGSEARCH
+ * HOMINGSEARCH --> HOMINGBACK
+ * HOMINGBACK --> HOME
+ * HOME --> [*]
+ * PROBESTART --> PROBESEARCH
+ * PROBESEARCH --> PROBED
+ * PROBED --> READY
+ * LIMIT --> STOPPED
+ * ERROR --> STOPPED
+ * @enduml
+ *
+ * @param i Axis index.
+ * @see PK_PEAxisState_ax*
+ */
             switch (intAxesState) {
                 case PK_PEAxisState_axSTOPPED: // Axis is stopped
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEAxisState_axSTOPPED\n", __FILE__, __FUNCTION__);
@@ -584,6 +593,45 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     break;
             }
 
+            /**
+ * @brief Dispatch and trigger actions based on axis command.
+ *
+ * This command-state machine interprets the current command assigned
+ * to a PoKeys axis and initiates necessary transitions, such as homing
+ * start, arming encoder, waiting for final move, or canceling homing.
+ *
+ * `PEv2_HomingStateSyncedTrigger()` is used to synchronize actions
+ * across multiple axes sharing the same sequence.
+ *
+ * @dot
+ * digraph AxisCommand {
+ *   IDLE -> HOMINGSTART;
+ *   HOMINGSTART -> ARMENCODER;
+ *   ARMENCODER -> HOMINGWaitFinalMove;
+ *   HOMINGWaitFinalMove -> HOMINGFinalMove;
+ *   HOMINGFinalMove -> IDLE;
+ *   IDLE -> HOMINGCancel;
+ *   HOMINGFinalMove -> HOMINGFinalize;
+ *   HOMINGFinalize -> ARMENCODER;
+ * }
+ * @enddot
+ *
+ * @startuml AxisCommand
+ * [*] --> IDLE
+ * IDLE --> HOMINGSTART
+ * HOMINGSTART --> ARMENCODER
+ * ARMENCODER --> HOMINGWaitFinalMove
+ * HOMINGWaitFinalMove --> HOMINGFinalMove
+ * HOMINGFinalMove --> IDLE
+ * IDLE --> HOMINGCancel
+ * HOMINGFinalMove --> HOMINGFinalize
+ * HOMINGFinalize --> ARMENCODER
+ * @enduml
+ *
+ * @param i Axis index
+ * @see PK_PEAxisCommand_ax*
+ * @see PEv2_HomingStateSyncedTrigger
+ */
             switch (*(PEv2_data->PEv2_AxesCommand[i])) {
                 case PK_PEAxisCommand_axIDLE:
                     if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i])) {

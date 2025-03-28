@@ -1539,64 +1539,57 @@ pokeys_home_status_t NextState_Memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 pokeys_home_status_t ActState_Memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 pokeys_home_status_t ActState_step2_Memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 /**
- * @brief Executes a synchronized homing step for all axes within a given sequence.
+ * @brief Trigger state transitions for all axes in a homing sequence synchronously.
  *
- * This function transitions all axes in the specified homing sequence from a required
- * to a next homing state, synchronizing them in the process.
+ * This function checks all axes in a given homing sequence and evaluates whether
+ * all of them are in the required state. If so, it transitions them to the next state
+ * and performs related hardware actions (e.g., arming encoders, setting positions, starting movement).
+ * 
+ * The function logs state mismatches and suppresses repeated messages using memory buffers.
+ * 
+ * Synchronization ensures that axes in the same sequence only transition when all
+ * others are also ready, making it suitable for multi-axis machines requiring coordinated homing.
  *
- * The internal homing state machine follows this pattern:
- * - IDLE → HOMINGSTART
- * - HOMINGSTART → HOMINGFinalize
- * - HOMINGFinalize → ARMENCODER
- * - ARMENCODER → HOMINGWaitFinalMove
- * - HOMINGWaitFinalMove → HOMINGFinalMove
- * - HOMINGFinalMove → HOMINGFinalize
- * - HOMINGSTART → HOMINGCancel
- * - HOMINGCancel → IDLE
- * - HOMINGFinalMove → IDLE (if already at home position)
- *
- * The PoKeys-specific homing commands:
- * - `PK_PEv2_HomingStart()` → starts internal homing
- * - `PK_PEv2_HomingFinish()` → finalizes internal homing
- * - `PK_PEv2_PositionSet()` → sets current position to zero
- * - `PK_PEv2_PulseEngineMove()` → performs the final move to home position
- *
- * LinuxCNC relies on `index_enable` to determine when it is allowed to apply position commands.
- * Therefore, `index_enable` should be disabled at the beginning of homing and re-enabled only
- * in the final `IDLE` state to avoid unexpected `pos-cmd` interference.
- *
- * @param dev PoKeys device structure
- * @param seq Homing sequence number (positive = group, negative = individual)
- * @param RequiredState The state that all axes must be in to proceed
- * @param NextState The target state to set for all axes in the sequence
- * @return 0 on success, 1 if not all axes are ready or state is invalid
- *
- * @ingroup PoKeys_HomingSetup
- *
+ * @param dev Pointer to the PoKeys device structure.
+ * @param seq Homing sequence number to process.
+ * @param RequiredState Expected current homing status for all axes in sequence.
+ * @param NextState Next state to transition to if all axes match RequiredState.
+ * 
+ * @retval 0 Success, state transition triggered.
+ * @retval 1 Transition not triggered (not all axes ready, invalid state, etc).
+ * 
  * @dot
- * digraph PEv2_HomingStateMachine {
- *     rankdir=LR;
- *     node [shape=box, style=filled, color=lightgrey, fontname="Helvetica"];
- *
- *     IDLE               [label="IDLE", shape=ellipse, color=lightblue];
- *     HOMINGSTART        [label="HOMINGSTART"];
- *     HOMINGFinalize     [label="HOMINGFinalize"];
- *     ARMENCODER         [label="ARMENCODER"];
- *     HOMINGWaitFinalMove[label="HOMINGWaitFinalMove"];
- *     HOMINGFinalMove    [label="HOMINGFinalMove", color=lightgreen];
- *     HOMINGCancel       [label="HOMINGCancel", color=lightpink];
- *
- *     IDLE               -> HOMINGSTART       [label="start"];
- *     HOMINGSTART        -> HOMINGFinalize    [label="PK_PEv2_HomingStart"];
- *     HOMINGFinalize     -> ARMENCODER        [label="PK_PEv2_HomingFinish"];
- *     ARMENCODER         -> HOMINGWaitFinalMove[label="PK_PEv2_PositionSet"];
- *     HOMINGWaitFinalMove-> HOMINGFinalMove   [label="sync & move"];
- *     HOMINGFinalMove    -> HOMINGFinalize    [label="move done"];
- *     HOMINGFinalMove    -> IDLE              [label="already at position"];
- *     HOMINGSTART        -> HOMINGCancel      [label="cancel"];
- *     HOMINGCancel       -> IDLE              [label="abort"];
+ * digraph HomingSync {
+ *   node [shape=box];
+ *   Start -> CheckAxes [label="match RequiredState"];
+ *   CheckAxes -> AllReady [label="all match"];
+ *   AllReady -> ApplyTransition [label="set NextState"];
+ *   ApplyTransition -> Finalize [label="if ARMENCODER → SetPosition"];
+ *   Finalize -> Done;
+ *   CheckAxes -> Wait [label="some not ready"];
+ *   Wait -> Done;
+ *   ApplyTransition -> DoMove [label="if HOMINGFinalMove"];
+ *   DoMove -> Done;
  * }
  * @enddot
+ * 
+ * @startuml
+ * start
+ * :Check all axes in sequence;
+ * if (All in RequiredState?) then (yes)
+ *   :Set NextState for each axis;
+ *   if (NextState == ARMENCODER) then (yes)
+ *     :Set zero position;
+ *   endif
+ *   if (NextState == HOMINGFinalMove) then (yes)
+ *     :Start final move;
+ *   endif
+ *   :Done;
+ * else (no)
+ *   :Wait;
+ * endif
+ * stop
+ * @enduml
  */
 int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_status_t RequiredState, pokeys_home_status_t NextState) {
 
