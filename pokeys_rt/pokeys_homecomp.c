@@ -1450,9 +1450,11 @@ bool get_allhomed() {
  *
  * @ingroup PoKeys_HomingStatus
  */
+bool get_homed_memory;
 bool get_homed(int jno) {
-    if (H[jno].homed == 1) {
-        rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_homed homed %d\n", H[jno].homed);
+    if (H[jno].homed != get_homed_memory) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_homed(%d) homed %d\n",jno, H[jno].homed);
+        get_homed_memory = H[jno].homed;
     }
     return H[jno].homed ? 1 : 0;
 }
@@ -1572,7 +1574,7 @@ bool get_homing_at_index_search_wait(int jno) {
  */
 bool get_homing_is_active() {
     if (homing_active != homing_active_old) {
-        rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: get_homing_is_active ==  %d\n", homing_active);
+        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_homing_is_active ==  %d\n", homing_active);
         homing_active_old = homing_active;
     }
     return homing_active;
@@ -1590,7 +1592,12 @@ bool get_homing_is_active() {
  *
  * @ingroup PoKeys_HomingRuntime
  */
+bool get_index_enable_memory;
 bool get_index_enable(int jno) {
+    if (get_index_enable_memory != H[jno].index_enable){
+        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_index_enable joint %d index_enable %d\n", jno, H[jno].index_enable);
+        get_index_enable_memory = H[jno].index_enable;
+    }
     return H[jno].index_enable ? 1 : 0;
 }
 
@@ -1630,7 +1637,7 @@ void read_homing_in_pins(int njoints) {
             rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: read_homing_in_pins joint %d state changed :%d\n", jno, H[jno].PEv2_AxesState);
         }
         if (H[jno].index_enable != org_index_enable) {
-            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: read_homing_in_pins joint %d index_enable changed :%d\n", jno, H[jno].index_enable);
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: read_homing_in_pins joint %d index_enable changed :%d\n", jno, *(addr->index_enable));
         }
     }
     return;
