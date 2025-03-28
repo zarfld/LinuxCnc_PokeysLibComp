@@ -1069,6 +1069,8 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
  * @see PEv2_data->PEv2_digin_Home_*
  */
 int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
+    int PinId = 0;
+    int polarity = 0;
 
     int32_t ret = PK_PEv2_Status2Get(dev);
     if (ret == PK_OK) {
@@ -1090,8 +1092,8 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
                         *(PEv2_data->PEv2_digin_LimitN_in_not[i]) = Get_BitOfByte(bm_LimitStatusN, i);
                     }
                 } else {
-                    int PinId = PEv2_data->PEv2_digin_LimitN_Pin[i] - 1;
-                    int polarity = PEv2_data->PEv2_digin_LimitN_invert[i];
+                    PinId = PEv2_data->PEv2_digin_LimitN_Pin[i] - 1;
+                    polarity = PEv2_data->PEv2_digin_LimitN_invert[i];
                     if (!polarity) {
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: LimitN Switch PinId: %d polarity:%d \n", __FILE__, __FUNCTION__, PinId, polarity);
                         (*PEv2_data->PEv2_digin_LimitN_in[i]) = *(IO_data->Pin[PinId].digin_in);
@@ -1133,8 +1135,8 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
                     }
                 } else {
 
-                    int PinId = PEv2_data->PEv2_digin_LimitP_Pin[i] - 1;
-                    int polarity = PEv2_data->PEv2_digin_LimitP_invert[i];
+                    PinId = PEv2_data->PEv2_digin_LimitP_Pin[i] - 1;
+                    polarity = PEv2_data->PEv2_digin_LimitP_invert[i];
                     if (!polarity) {
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: LimitP Switch PinId: %d polarity:%d \n", __FILE__, __FUNCTION__, PinId, polarity);
                         (*PEv2_data->PEv2_digin_LimitP_in[i]) = *(IO_data->Pin[PinId].digin_in);
@@ -1174,8 +1176,8 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
                         *(PEv2_data->PEv2_digin_Home_in_not[i]) = !Get_BitOfByte(bm_HomeStatus, i);
                     }
                 } else {
-                    int PinId = PEv2_data->PEv2_digin_Home_Pin[i] - 1;
-                    int polarity = PEv2_data->PEv2_digin_Home_invert[i];
+                    PinId = PEv2_data->PEv2_digin_Home_Pin[i] - 1;
+                    polarity = PEv2_data->PEv2_digin_Home_invert[i];
                     if (!polarity) {
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Home Switch PinId: %d polarity:%d \n", __FILE__, __FUNCTION__, PinId, polarity);
                         (*PEv2_data->PEv2_digin_Home_in[i]) = *(IO_data->Pin[PinId].digin_in);
