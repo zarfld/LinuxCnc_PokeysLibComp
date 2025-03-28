@@ -1032,6 +1032,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                     joint_num, H[joint_num].index_enable);
                     H[joint_num].homing = 1;
                     H[joint_num].home_state = HOME_SET_INDEX_POSITION;
+                    immediate_state = 1;
                 }
 
                 break;
