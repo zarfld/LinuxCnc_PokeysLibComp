@@ -1051,15 +1051,14 @@ int pokeys_1joint_state_machine(int joint_num) {
 
                 /* waiting for sync before Pokeys moves to homeposition */
                 H[joint_num].homing = 1;
-                if (H[joint_num].index_enable == index_search_armed){
+                if (H[joint_num].index_enable == index_search_armed) {
                     H[joint_num].index_enable = index_search_armed;
                     rtapi_print_msg(RTAPI_MSG_ERR,
                                     "HOMING: pokeys_1joint_state_machine joint %d "
                                     "PEAxisStateEx_HOMINGWaitFINALMOVE - index pulse arrived H[joint_num].index_enable %d\n",
                                     joint_num, H[joint_num].index_enable);
-
                 }
-                
+
                 joints_in_sequence = 0;
                 ready_in_sequence = 0;
 
