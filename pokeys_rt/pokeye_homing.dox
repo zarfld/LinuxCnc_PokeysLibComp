@@ -1,0 +1,92 @@
+/**
+ * @file pokeys_homecomp_homing.dot
+ * @brief Combined Doxygen graph (dot + PlantUML) for homing-related state machines and coordination logic.
+ *
+ * This graph represents the interaction between:
+ * - The homing sequence logic (`do_homing_sequence()`)
+ * - The joint-level homing logic (`pokeys_1joint_state_machine()`)
+ * - Axis state updates from the device (`do_update()`)
+ * - The synchronized state transition function (`PEv2_HomingStateSyncedTrigger()`)
+ *
+ * @dot
+ * digraph HomingStateMachine {
+ *   rankdir=LR;
+ *
+ *   subgraph cluster_sequence {
+ *     label="do_homing_sequence()";
+ *     HOME_SEQUENCE_DO_ONE_JOINT;
+ *     HOME_SEQUENCE_DO_ONE_SEQUENCE;
+ *     HOME_SEQUENCE_START;
+ *     HOME_SEQUENCE_WAIT_JOINTS;
+ *     HOME_SEQUENCE_START_JOINTS;
+ *     HOME_SEQUENCE_IDLE;
+ *     HOME_SEQUENCE_DO_ONE_JOINT -> HOME_SEQUENCE_START;
+ *     HOME_SEQUENCE_DO_ONE_SEQUENCE -> HOME_SEQUENCE_START;
+ *     HOME_SEQUENCE_START -> HOME_SEQUENCE_WAIT_JOINTS;
+ *     HOME_SEQUENCE_WAIT_JOINTS -> HOME_SEQUENCE_DO_ONE_SEQUENCE;
+ *     HOME_SEQUENCE_WAIT_JOINTS -> HOME_SEQUENCE_IDLE;
+ *   }
+ *
+ *   subgraph cluster_joint {
+ *     label="pokeys_1joint_state_machine()";
+ *     PK_PEAxisState_axHOMINGSTART;
+ *     PK_PEAxisState_axHOMING_RESETTING;
+ *     PK_PEAxisState_axHOMING_BACKING_OFF;
+ *     PK_PEAxisState_axReadyToFinalizeHoming;
+ *     PK_PEAxisState_axReadyToArmEncoder;
+ *     PK_PEAxisState_axHOMINGARMENCODER;
+ *     PK_PEAxisState_axHOMINGWaitFINALMOVE;
+ *     PK_PEAxisState_axHOMINGFINALMOVE;
+ *     PK_PEAxisState_axHOME;
+ *     PK_PEAxisState_axHOMINGSTART -> PK_PEAxisState_axHOMING_RESETTING;
+ *     PK_PEAxisState_axHOMING_RESETTING -> PK_PEAxisState_axHOMING_BACKING_OFF;
+ *     PK_PEAxisState_axHOMING_BACKING_OFF -> PK_PEAxisState_axReadyToFinalizeHoming;
+ *     PK_PEAxisState_axReadyToFinalizeHoming -> PK_PEAxisState_axReadyToArmEncoder;
+ *     PK_PEAxisState_axReadyToArmEncoder -> PK_PEAxisState_axHOMINGARMENCODER;
+ *     PK_PEAxisState_axHOMINGARMENCODER -> PK_PEAxisState_axHOMINGWaitFINALMOVE;
+ *     PK_PEAxisState_axHOMINGWaitFINALMOVE -> PK_PEAxisState_axHOMINGFINALMOVE;
+ *     PK_PEAxisState_axHOMINGFINALMOVE -> PK_PEAxisState_axHOME;
+ *   }
+ *
+ *   subgraph cluster_trigger {
+ *     label="PEv2_HomingStateSyncedTrigger()";
+ *     PK_Homing_axHOMINGSTART;
+ *     PK_Homing_axARMENCODER;
+ *     PK_Homing_axHOMINGWaitFinalMove;
+ *     PK_Homing_axHOMINGFinalMove;
+ *     PK_Homing_axHOMINGFinalize;
+ *     PK_Homing_axHOMINGSTART -> PK_Homing_axARMENCODER;
+ *     PK_Homing_axARMENCODER -> PK_Homing_axHOMINGWaitFinalMove;
+ *     PK_Homing_axHOMINGWaitFinalMove -> PK_Homing_axHOMINGFinalMove;
+ *     PK_Homing_axHOMINGFinalMove -> PK_Homing_axHOMINGFinalize;
+ *   }
+ * }
+ * @enddot
+ *
+ * @startuml
+ * title Homing Process Overview
+ *
+ * start
+ * :do_homing_sequence();
+ * :identify sequence and participating joints;
+ * :set HOME_START per joint;
+ * repeat
+ *   :call pokeys_1joint_state_machine();
+ *   if (axis in desired state?) then (yes)
+ *     :set PEv2_AxesCommand accordingly;
+ *     :wait for next axis state;
+ *   else (no)
+ *     :skip or retry;
+ *   endif
+ * repeat while (not all axes homed?)
+ * :trigger PEv2_HomingStateSyncedTrigger();
+ * :update PEv2_HomingStatus for all axes;
+ * :advance joint states;
+ * if (all homed?) then (yes)
+ *   :mark sequence complete;
+ *   stop
+ * else (no)
+ *   :continue with next sequence;
+ * endif
+ * @enduml
+ */
