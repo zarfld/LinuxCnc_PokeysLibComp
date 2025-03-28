@@ -965,14 +965,15 @@ int pokeys_1joint_state_machine(int joint_num) {
                                 "HOMING: pokeys_1joint_state_machine joint %d "
                                 "ready to finalize homing\n",
                                 joint_num);
-                                if(H[joint_num].home_state != HOME_INDEX_SEARCH_START){
-                H[joint_num].homing = 1;
-                // H[joint_num].index_enable = index_search_active;
-                rtapi_print_msg(RTAPI_MSG_ERR,
-                                "HOMING: pokeys_1joint_state_machine joint %d "
-                                "ready to finalize homing - index_enable %d\n",
-                                joint_num, H[joint_num].index_enable);
-                H[joint_num].home_state = HOME_INDEX_SEARCH_START;}
+                if (H[joint_num].home_state != HOME_INDEX_SEARCH_START) {
+                    H[joint_num].homing = 1;
+                    // H[joint_num].index_enable = index_search_active;
+                    rtapi_print_msg(RTAPI_MSG_ERR,
+                                    "HOMING: pokeys_1joint_state_machine joint %d "
+                                    "ready to finalize homing - index_enable %d\n",
+                                    joint_num, H[joint_num].index_enable);
+                    H[joint_num].home_state = HOME_INDEX_SEARCH_START;
+                }
                 break;
             case PEAxisStateEx_axReadyToArmEncoder:
                 rtapi_print_msg(RTAPI_MSG_DBG,
@@ -985,7 +986,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                    reset its counter to zero and clear the enable when the
                    next index pulse arrives. */
                 /** set the index enable */
-                if (H[joint_num].index_enable != index_search_active){
+                if (H[joint_num].index_enable != index_search_active) {
                     H[joint_num].index_enable = index_search_active;
                     rtapi_print_msg(RTAPI_MSG_ERR,
                                     "HOMING: pokeys_1joint_state_machine joint %d "
