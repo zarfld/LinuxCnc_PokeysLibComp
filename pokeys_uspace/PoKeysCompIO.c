@@ -568,7 +568,7 @@ void PKIO_Update(sPoKeysDevice *dev) {
                                         "dev->Pins[i].DigitalValueGet = %d\n",
                                         __FILE__, __FUNCTION__, dev->Pins[i].DigitalValueGet);
 
-                        if (dev->Pins[i].DigitalValueGet == 0) {
+                        if (!dev->Pins[i].DigitalValueGet) {
                             rtapi_print_msg(RTAPI_MSG_DBG,
                                             "PoKeys: %s:%s: dev->Pins[%d].DigitalValueGet "
                                             "= 0\n",
@@ -593,7 +593,7 @@ void PKIO_Update(sPoKeysDevice *dev) {
                 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DigitalOutput\n", __FILE__, __FUNCTION__);
                 *(IO_data->deb_out) = 2322 + i;
                 if (PK_CheckPinCapability(dev, i, PK_AllPinCap_digitalOutput) == 1) {
-                    if (IO_data->Pin[i].DigitalValueSet_ignore == false) {
+                    if (!IO_data->Pin[i].DigitalValueSet_ignore) {
                         bool setDigoutvalue = false;
                         if (*(IO_data->Pin[i]).digout_out == 1) {
                             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev->Pins[%d].digout_out = 1\n", __FILE__, __FUNCTION__, i);
@@ -601,14 +601,14 @@ void PKIO_Update(sPoKeysDevice *dev) {
                         }
 
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: setDigoutvalue = %d\n", __FILE__, __FUNCTION__, setDigoutvalue);
-                        if ((setDigoutvalue == true) && (dev->Pins[i].DigitalValueSet == 0)) {
+                        if ((setDigoutvalue) && (!dev->Pins[i].DigitalValueSet)) {
                             rtapi_print_msg(RTAPI_MSG_DBG,
                                             "PoKeys: %s:%s: dev->Pins[%d].DigitalValueSet "
                                             "= 1\n",
                                             __FILE__, __FUNCTION__, i);
                             dev->Pins[i].DigitalValueSet = 1;
                             DigitalIOSet = true;
-                        } else if ((setDigoutvalue == false) && (dev->Pins[i].DigitalValueSet == 1)) {
+                        } else if ((!setDigoutvalue) && (dev->Pins[i].DigitalValueSet)) {
                             dev->Pins[i].DigitalValueSet = 0;
                             DigitalIOSet = true;
                         }
