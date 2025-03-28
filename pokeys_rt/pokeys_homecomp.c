@@ -826,48 +826,58 @@ bool get_sequence_homing(int seq) {
 }
 
 /**
- * @brief Processes the homing state machine for a single PoKeys axis.
+ * @brief Homing state machine handler for a single PoKeys-controlled joint.
  *
- * This function maps internal Pulse Engine v2 axis states (`PEv2_AxesState`)
- * to LinuxCNC homing states (`home_state`) for a given joint. It ensures proper
- * synchronization and transition management during the homing procedure,
- * including encoder arming and final positioning steps.
+ * This function implements the homing logic for a single joint, using
+ * feedback from the PoKeys Pulse Engine v2 axis state. It maps internal
+ * PoKeys axis states to LinuxCNC-style homing state transitions and
+ * drives the associated joint’s homing process forward.
  *
- * The function loops as long as `immediate_state` is set, allowing fast transitions
- * through multiple states within a single servo cycle.
+ * The function updates `H[joint_num].home_state`, `homed`, and `homing` flags,
+ * and manages synchronization of multiple joints within the same `home_sequence`.
  *
- * @param joint_num Index of the joint to process.
- * @return Returns 1 if the joint is in an active homing state, 0 otherwise.
+ * The homing states follow the Pulse Engine v2 sequence and extend it with
+ * LinuxCNC-style behaviors (e.g. index-enable logic, homing-finalize handoff).
+ *
+ * @param joint_num The joint number (index into `joints[]` and `H[]` arrays).
+ * @return `1` if the joint is currently homing, `0` otherwise.
+ *
+ * @note Uses PoKeys-specific `PEv2_AxesState` values to drive the state machine.
  *
  * @dot
- * digraph PEv2_Homing {
- *   rankdir=LR;
- *   node [shape=ellipse, style=filled, fillcolor=lightgray];
-
- *   STOPPED -> HOME_IDLE              [label="→ STOPPED"];
- *   READY   -> HOME_IDLE              [label="→ READY"];
- *   RUNNING -> HOME_IDLE              [label="→ RUNNING"];
- *   HOMINGSTART -> HOME_START        [label="→ HOMINGSTART"];
- *   HOMINGSEARCH -> HOME_INITIAL_SEARCH_WAIT [label="→ HOMINGSEARCH"];
- *   HOMINGBACK -> HOME_FINAL_BACKOFF_START [label="→ HOMINGBACK"];
- *   HOMING_RESETTING -> HOME_UNLOCK  [label="→ HOMING_RESETTING"];
- *   HOMING_BACKING_OFF -> HOME_INITIAL_BACKOFF_WAIT [label="→ HOMING_BACKING_OFF"];
- *   HOMINGARMENCODER -> HOME_SET_INDEX_POSITION [label="→ HOMINGARMENCODER"];
- *   HOMINGWaitFINALMOVE -> HOME_FINAL_MOVE_START [label="→ if all ready"];
- *   HOMINGFINALMOVE -> HOME_FINAL_MOVE_WAIT [label="→ HOMINGFINALMOVE"];
- *   HOME -> HOME_FINISHED            [label="→ if all homed"];
- *   PROBESTART -> HOME_IDLE;
- *   PROBESEARCH -> HOME_IDLE;
- *   PROBED -> HOME_IDLE;
- *   ERROR -> HOME_IDLE;
- *   LIMIT -> HOME_IDLE;
-
- *   // Styling key transitions
- *   HOMINGSTART [fillcolor=lightblue];
- *   HOMINGFINALMOVE [fillcolor=lightblue];
- *   HOME [fillcolor=lightgreen];
+ * digraph HomingState {
+ *   node [shape=box];
+ *   axREADY -> axHOMINGSTART;
+ *   axHOMINGSTART -> axHOMINGSEARCH;
+ *   axHOMINGSEARCH -> axHOMINGBACK;
+ *   axHOMINGBACK -> axHOMING_RESETTING;
+ *   axHOMING_RESETTING -> axHOMING_BACKING_OFF;
+ *   axHOMING_BACKING_OFF -> axHOME;
+ *   axHOME -> axReadyToFinalizeHoming;
+ *   axReadyToFinalizeHoming -> axReadyToArmEncoder;
+ *   axReadyToArmEncoder -> axHOMINGARMENCODER;
+ *   axHOMINGARMENCODER -> axHOMINGWaitFINALMOVE;
+ *   axHOMINGWaitFINALMOVE -> axHOMINGFINALMOVE;
+ *   axHOMINGFINALMOVE -> axHOME;
  * }
  * @enddot
+ *
+ * @startuml
+ * [*] --> axREADY
+ * axREADY --> axHOMINGSTART : trigger homing
+ * axHOMINGSTART --> axHOMINGSEARCH
+ * axHOMINGSEARCH --> axHOMINGBACK
+ * axHOMINGBACK --> axHOMING_RESETTING
+ * axHOMING_RESETTING --> axHOMING_BACKING_OFF
+ * axHOMING_BACKING_OFF --> axHOME
+ * axHOME --> axReadyToFinalizeHoming : suppress internal state
+ * axReadyToFinalizeHoming --> axReadyToArmEncoder
+ * axReadyToArmEncoder --> axHOMINGARMENCODER : index-enable set
+ * axHOMINGARMENCODER --> axHOMINGWaitFINALMOVE : index detected
+ * axHOMINGWaitFINALMOVE --> axHOMINGFINALMOVE : synchronized
+ * axHOMINGFINALMOVE --> axHOME : move complete
+ * axHOME --> [*]
+ * @enduml
  */
 int pokeys_1joint_state_machine(int joint_num) {
     emcmot_joint_t *joint;
@@ -1913,47 +1923,51 @@ void do_home_joint(int jno) {
 }
 
 /**
- * @brief Executes the main state machine for homing sequences.
+ * @brief Executes the homing state machine for a joint sequence.
  *
- * This function processes and advances the current homing sequence by stepping through a well-defined
- * state machine. It handles homing for single joints as well as synchronized sequences involving multiple joints.
+ * This function handles the high-level orchestration of homing procedures
+ * for one or more joints grouped in a sequence. It transitions through various
+ * homing sequence states (e.g., `HOME_SEQUENCE_DO_ONE_JOINT`, `HOME_SEQUENCE_START`,
+ * `HOME_SEQUENCE_WAIT_JOINTS`) and issues commands to individual joints.
  *
- * The state machine includes:
- * - Initialization of sequences (`HOME_SEQUENCE_DO_ONE_JOINT`, `HOME_SEQUENCE_DO_ONE_SEQUENCE`)
- * - Starting homing motions (`HOME_SEQUENCE_START`, `HOME_SEQUENCE_START_JOINTS`)
- * - Monitoring completion status (`HOME_SEQUENCE_WAIT_JOINTS`)
- * - Transitioning between sequences or terminating when done.
+ * Each joint's homing status is monitored using its `PEv2_AxesState` and
+ * appropriate homing commands are issued based on the current joint and sequence state.
  *
- * It interacts with joint states (`PEv2_AxesState`) and sets `PEv2_AxesCommand` accordingly. The homing process
- * can be cancelled if an axis enters an `axERROR` state. On successful homing, the machine transitions to the
- * next sequence or sets the `allhomed` flag.
+ * Homing sequences can be single-joint or multi-joint (grouped by `home_sequence`),
+ * and will automatically advance to the next sequence if defined via `addr.next_sequence`.
+ *
+ * This function is typically called periodically in the real-time loop.
+ *
+ * @note This function cooperates with `pokeys_1joint_state_machine()` and
+ *       updates `homing_active`, `allhomed`, and `sequence_state`.
  *
  * @dot
- * digraph homing_sequence_state_machine {
- *   rankdir=LR;
- *   node [shape=box, style=filled, fillcolor=lightgray];
-
- *   IDLE            [label="HOME_SEQUENCE_IDLE", fillcolor=white];
- *   DO_ONE_JOINT    [label="DO_ONE_JOINT\nset 1 joint", fillcolor=lightyellow];
- *   DO_ONE_SEQ      [label="DO_ONE_SEQUENCE\nset all joints in seq", fillcolor=lightyellow];
- *   START           [label="START\nsend HOMINGSTART", fillcolor=lightblue];
- *   START_JOINTS    [label="START_JOINTS\nmatch seq IDs", fillcolor=lightblue];
- *   WAIT_JOINTS     [label="WAIT_JOINTS\nmonitor PEv2_AxesState", fillcolor=lightgreen];
- *   CANCEL          [label="PEv2_AxesState == ERROR\n-> HOMINGCANCEL", fillcolor=orangered];
- *   NEXT_SEQ        [label="next_sequence", shape=ellipse, fillcolor=lightcyan];
-
- *   IDLE          -> DO_ONE_JOINT   [label="if single home_state==START"];
- *   DO_ONE_JOINT  -> START          [label="if joint count > 0"];
- *   DO_ONE_SEQ    -> START          [label="multi-joint sequence"];
- *   START         -> WAIT_JOINTS    [label="after HOMINGSTART"];
- *   START_JOINTS  -> WAIT_JOINTS    [label="if any seen"];
- *   WAIT_JOINTS   -> NEXT_SEQ       [label="if all homed && !is_last"];
- *   WAIT_JOINTS   -> IDLE           [label="if all homed && is_last"];
- *   WAIT_JOINTS   -> START_JOINTS   [label="if any joint READY/STOPPED"];
- *   WAIT_JOINTS   -> CANCEL         [label="if any ERROR"];
- *   CANCEL        -> IDLE;
+ * digraph HomingSequence {
+ *   node [shape=ellipse];
+ *   HOME_SEQUENCE_IDLE -> HOME_SEQUENCE_DO_ONE_JOINT [label="single joint start"];
+ *   HOME_SEQUENCE_IDLE -> HOME_SEQUENCE_DO_ONE_SEQUENCE [label="multi-joint start"];
+ *   HOME_SEQUENCE_DO_ONE_JOINT -> HOME_SEQUENCE_START;
+ *   HOME_SEQUENCE_DO_ONE_SEQUENCE -> HOME_SEQUENCE_START;
+ *   HOME_SEQUENCE_START -> HOME_SEQUENCE_WAIT_JOINTS;
+ *   HOME_SEQUENCE_WAIT_JOINTS -> HOME_SEQUENCE_START_JOINTS [label="joint reset"];
+ *   HOME_SEQUENCE_START_JOINTS -> HOME_SEQUENCE_WAIT_JOINTS;
+ *   HOME_SEQUENCE_WAIT_JOINTS -> HOME_SEQUENCE_DO_ONE_SEQUENCE [label="next_sequence"];
+ *   HOME_SEQUENCE_WAIT_JOINTS -> HOME_SEQUENCE_IDLE [label="last sequence done"];
  * }
  * @enddot
+ *
+ * @startuml
+ * [*] --> HOME_SEQUENCE_IDLE
+ * HOME_SEQUENCE_IDLE --> HOME_SEQUENCE_DO_ONE_JOINT : single joint
+ * HOME_SEQUENCE_IDLE --> HOME_SEQUENCE_DO_ONE_SEQUENCE : group
+ * HOME_SEQUENCE_DO_ONE_JOINT --> HOME_SEQUENCE_START
+ * HOME_SEQUENCE_DO_ONE_SEQUENCE --> HOME_SEQUENCE_START
+ * HOME_SEQUENCE_START --> HOME_SEQUENCE_WAIT_JOINTS
+ * HOME_SEQUENCE_WAIT_JOINTS --> HOME_SEQUENCE_START_JOINTS : recheck
+ * HOME_SEQUENCE_START_JOINTS --> HOME_SEQUENCE_WAIT_JOINTS
+ * HOME_SEQUENCE_WAIT_JOINTS --> HOME_SEQUENCE_DO_ONE_SEQUENCE : has next
+ * HOME_SEQUENCE_WAIT_JOINTS --> HOME_SEQUENCE_IDLE : all homed
+ * @enduml
  */
 static void do_homing_sequence(void) {
     int i, ii;
