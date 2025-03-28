@@ -67,8 +67,9 @@ jobs:
       - name: Install Doxygen and Graphviz, PlantUML, and Java
         run: |
           sudo apt-get update
-          sudo apt-get install -y doxygen graphviz default-jre plantuml
+          sudo apt-get install -y doxygen graphviz default-jre plantuml git maven
           plantuml -version  # verify installation
+          mvn -version  # verify Maven installation
           dpkg -L plantuml | grep plantuml.jar  # verify installation
 
       - name: Setup PlantUML Generator
