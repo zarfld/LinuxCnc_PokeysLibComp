@@ -824,15 +824,18 @@ uint8_t Set_BitOfByte(uint8_t in_Byte, int Bit_Id, bool value) {
     return in_Byte;
 }
 
+uint8_t bm_LimitStatusP; // Limit+ status (bit-mapped)
+uint8_t bm_LimitStatusN; // Limit- status (bit-mapped)
+uint8_t bm_HomeStatus;   // Home status (bit-mapped)
+uint8_t bm_ErrorStatus;
+uint8_t bm_DedicatedLimitNInputs;
+uint8_t bm_DedicatedLimitPInputs;
+uint8_t bm_DedicatedHomeInputs;
+uint8_t bm_ProbeStatus;
 void Read_digin_LimitHome_Pins(sPoKeysDevice *dev, int i) {
-    uint8_t bm_LimitStatusP; // Limit+ status (bit-mapped)
-    uint8_t bm_LimitStatusN; // Limit- status (bit-mapped)
-    uint8_t bm_HomeStatus;   // Home status (bit-mapped)
-    uint8_t bm_ErrorStatus;
-    uint8_t bm_ProbeStatus = dev->PEv2.ProbeStatus; // will be update in "PK_PEv2_ProbingFinish" or "PK_PEv2_ProbingFinishSimple"
-    uint8_t bm_DedicatedLimitNInputs;
-    uint8_t bm_DedicatedLimitPInputs;
-    uint8_t bm_DedicatedHomeInputs;
+
+    bm_ProbeStatus = dev->PEv2.ProbeStatus; // will be update in "PK_PEv2_ProbingFinish" or "PK_PEv2_ProbingFinishSimple"
+
     /*
                            param rw unsigned PEv2.#.digin.LimitN.Pin [8] "Limit- switch pin (0 for external dedicated input)";			// Limit- switch pin (0 for external dedicated input)
                            param rw unsigned PEv2.#.digin.LimitN.Filter[8] "Digital filter for limit- switch";		// Digital filter for limit- switch
@@ -840,37 +843,19 @@ void Read_digin_LimitHome_Pins(sPoKeysDevice *dev, int i) {
                            param rw bit PEv2.#.digin.LimitN.Enabled[8] "Limit- is available (PK_ASO_SWITCH_LIMIT_N)";
                         */
     if (PEv2_data->PEv2_digin_LimitP_Pin[i] > 0) {
-        if (PEv2_data->PEv2_digin_LimitP_invert[i] != 0) {
-            *(PEv2_data->PEv2_digin_LimitP_in[i]) = !Get_BitOfByte(bm_LimitStatusP, i);
-            *(PEv2_data->PEv2_digin_LimitP_in_not[i]) = Get_BitOfByte(bm_LimitStatusP, i);
-        } else {
-            *(PEv2_data->PEv2_digin_LimitP_in[i]) = !Get_BitOfByte(bm_LimitStatusP, i);
-            *(PEv2_data->PEv2_digin_LimitP_in_not[i]) = Get_BitOfByte(bm_LimitStatusP, i);
-        }
-    } else if (PEv2_data->PEv2_digin_LimitP_Enabled[i] != 0) {
+
+    } else if (PEv2_data->PEv2_digin_LimitP_Enabled[i]) {
         // will be written from dedicated input in PEv2_Status2Get()
     }
 
     if (PEv2_data->PEv2_digin_LimitN_Pin[i] > 0) {
-        if (PEv2_data->PEv2_digin_LimitN_invert[i] != 0) {
-            *(PEv2_data->PEv2_digin_LimitN_in[i]) = !Get_BitOfByte(bm_LimitStatusN, i);
-            *(PEv2_data->PEv2_digin_LimitN_in_not[i]) = Get_BitOfByte(bm_LimitStatusN, i);
-        } else {
-            *(PEv2_data->PEv2_digin_LimitN_in[i]) = !Get_BitOfByte(bm_LimitStatusN, i);
-            *(PEv2_data->PEv2_digin_LimitN_in_not[i]) = Get_BitOfByte(bm_LimitStatusN, i);
-        }
+
     } else if (PEv2_data->PEv2_digin_LimitN_Enabled[i] != 0) {
         // will be written from dedicated input in PEv2_Status2Get()
     }
 
     if (PEv2_data->PEv2_digin_Home_Pin[i] > 0) {
-        if (PEv2_data->PEv2_digin_Home_invert[i] != 0) {
-            *(PEv2_data->PEv2_digin_Home_in[i]) = !Get_BitOfByte(bm_HomeStatus, i);
-            *(PEv2_data->PEv2_digin_Home_in_not[i]) = Get_BitOfByte(bm_HomeStatus, i);
-        } else {
-            *(PEv2_data->PEv2_digin_Home_in[i]) = Get_BitOfByte(bm_HomeStatus, i);
-            *(PEv2_data->PEv2_digin_Home_in_not[i]) = !Get_BitOfByte(bm_HomeStatus, i);
-        }
+
     } else if (PEv2_data->PEv2_digin_Home_Enabled[i] != 0) {
         // will be written from dedicated input in PEv2_Status2Get()
     }
@@ -907,10 +892,9 @@ void Read_digin_LimitHome_Pins(sPoKeysDevice *dev, int i) {
  * @see PEv2_data
  * @see ePoKeysPEState
  */
+
 int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
-    uint8_t bm_LimitStatusP; // Limit+ status (bit-mapped)
-    uint8_t bm_LimitStatusN; // Limit- status (bit-mapped)
-    uint8_t bm_HomeStatus;   // Home status (bit-mapped)
+
     uint8_t bm_ErrorStatus;
     uint8_t bm_ProbeStatus = dev->PEv2.ProbeStatus; // will be update in "PK_PEv2_ProbingFinish" or "PK_PEv2_ProbingFinishSimple"
     int32_t ret = PK_OK;
@@ -1085,9 +1069,7 @@ int32_t PEv2_StatusGet(sPoKeysDevice *dev) {
  * @see PEv2_data->PEv2_digin_Home_*
  */
 int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
-    uint8_t bm_DedicatedLimitNInputs;
-    uint8_t bm_DedicatedLimitPInputs;
-    uint8_t bm_DedicatedHomeInputs;
+
     int32_t ret = PK_PEv2_Status2Get(dev);
     if (ret == PK_OK) {
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_PEv2_Status2Get(dev) = PK_OK\n", __FILE__, __FUNCTION__);
@@ -1100,6 +1082,13 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
             if (PEv2_data->PEv2_digin_LimitN_Pin[i] > 0) {
                 if (*(PEv2_data->PEv2_AxesState[i]) != PK_PEAxisState_axSTOPPED) {
                     *(PEv2_data->PEv2_digin_LimitN_DedicatedInput[i]) = Get_BitOfByte(bm_DedicatedLimitNInputs, i);
+                    if (PEv2_data->PEv2_digin_LimitN_invert[i] != 0) {
+                        *(PEv2_data->PEv2_digin_LimitN_in[i]) = !Get_BitOfByte(bm_LimitStatusN, i);
+                        *(PEv2_data->PEv2_digin_LimitN_in_not[i]) = Get_BitOfByte(bm_LimitStatusN, i);
+                    } else {
+                        *(PEv2_data->PEv2_digin_LimitN_in[i]) = !Get_BitOfByte(bm_LimitStatusN, i);
+                        *(PEv2_data->PEv2_digin_LimitN_in_not[i]) = Get_BitOfByte(bm_LimitStatusN, i);
+                    }
                 } else {
                     int PinId = PEv2_data->PEv2_digin_LimitN_Pin[i] - 1;
                     int polarity = PEv2_data->PEv2_digin_LimitN_invert[i];
@@ -1135,6 +1124,13 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
             if (PEv2_data->PEv2_digin_LimitP_Pin[i] > 0) {
                 if (*(PEv2_data->PEv2_AxesState[i]) != PK_PEAxisState_axSTOPPED) {
                     *(PEv2_data->PEv2_digin_LimitP_DedicatedInput[i]) = Get_BitOfByte(bm_DedicatedLimitPInputs, i);
+                    if (PEv2_data->PEv2_digin_LimitP_invert[i]) {
+                        *(PEv2_data->PEv2_digin_LimitP_in[i]) = !Get_BitOfByte(bm_LimitStatusP, i);
+                        *(PEv2_data->PEv2_digin_LimitP_in_not[i]) = Get_BitOfByte(bm_LimitStatusP, i);
+                    } else {
+                        *(PEv2_data->PEv2_digin_LimitP_in[i]) = !Get_BitOfByte(bm_LimitStatusP, i);
+                        *(PEv2_data->PEv2_digin_LimitP_in_not[i]) = Get_BitOfByte(bm_LimitStatusP, i);
+                    }
                 } else {
 
                     int PinId = PEv2_data->PEv2_digin_LimitP_Pin[i] - 1;
@@ -1170,6 +1166,13 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
             if (PEv2_data->PEv2_digin_Home_Pin[i] > 0) {
                 if (*(PEv2_data->PEv2_AxesState[i]) != PK_PEAxisState_axSTOPPED) {
                     *(PEv2_data->PEv2_digin_Home_DedicatedInput[i]) = Get_BitOfByte(bm_DedicatedHomeInputs, i);
+                    if (PEv2_data->PEv2_digin_Home_invert[i] != 0) {
+                        *(PEv2_data->PEv2_digin_Home_in[i]) = !Get_BitOfByte(bm_HomeStatus, i);
+                        *(PEv2_data->PEv2_digin_Home_in_not[i]) = Get_BitOfByte(bm_HomeStatus, i);
+                    } else {
+                        *(PEv2_data->PEv2_digin_Home_in[i]) = Get_BitOfByte(bm_HomeStatus, i);
+                        *(PEv2_data->PEv2_digin_Home_in_not[i]) = !Get_BitOfByte(bm_HomeStatus, i);
+                    }
                 } else {
                     int PinId = PEv2_data->PEv2_digin_Home_Pin[i] - 1;
                     int polarity = PEv2_data->PEv2_digin_Home_invert[i];
