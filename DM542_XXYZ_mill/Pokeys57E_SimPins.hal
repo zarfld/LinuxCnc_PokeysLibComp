@@ -86,45 +86,45 @@ setp pokeys.0.pins.14.PinFunction 4
 # configure the points at which the simulated switches trip
 # X axis first
 # set min limit switch to trip at -10.2, release at -1000
-setp wcomp_xmin.max -1.2
+setp wcomp_xmin.max [JOINT_0]MIN_LIMIT -0.2
 setp wcomp_xmin.min -1000
 # set max limit switch to trip at +10.2, release at +10.21
 #setp wcomp_xmax.min 10.20
 #setp wcomp_xmax.max 10.21
 # set home switch to trip at 9.5 and release at 9.75
-setp wcomp_xhome.min 851
-setp wcomp_xhome.max 859
+setp wcomp_xhome.min [JOINT_0]MAX_LIMIT +0.5
+setp wcomp_xhome.max [JOINT_0]MAX_LIMIT +5
 
 # X2 axis
 # set min limit switch to trip at -10.2, release at -1000
-#setp wcomp_x2min.max -1.1
+setp wcomp_x2min.max -[JOINT_1]MIN_LIMIT -0.2
 setp wcomp_x2min.min -1000
 # set max limit switch to trip at +10.2, release at +10.21
 #setp wcomp_x2max.min 10.23
 #setp wcomp_x2max.max 10.25
 # set home switch to trip at 9.5 and release at 9.75
-setp wcomp_x2home.min 852
-setp wcomp_x2home.max 860
+setp wcomp_x2home.min [JOINT_1]MAX_LIMIT +0.5
+setp wcomp_x2home.max [JOINT_1]MAX_LIMIT +5
 
 # Y axis
 # set min limit switch to trip at -10.2, release at -1000
-setp wcomp_ymin.max -1.2
+setp wcomp_ymin.max [JOINT_2]MIN_LIMIT -0.2
 setp wcomp_ymin.min -1000
 # set max limit switch to trip at +10.2, release at +10.21
 #setp wcomp_ymax.min 10.20
 #setp wcomp_ymax.max 10.21
 # set home switch to trip at 9.5 and release at 9.75
-setp wcomp_yhome.min 351
-setp wcomp_yhome.max 355
+setp wcomp_yhome.min [JOINT_2]MAX_LIMIT +0.5
+setp wcomp_yhome.max [JOINT_2]MAX_LIMIT +5
 
 # Z axis
 # set min limit switch to trip at -2.1, release at -1000
-setp wcomp_zmin.max -102
+setp wcomp_zmin.max [JOINT_3]MIN_LIMIT -0.2
 setp wcomp_zmin.min -1000
 # set max limit switch to trip at +4.05,release at +5
 #setp wcomp_zmax.min 4.05
 #setp wcomp_zmax.max 5
 # set home switch to trip at 3.9 and release at 4.1
-setp wcomp_zhome.min 0.1
-setp wcomp_zhome.max 4.1
+setp wcomp_zhome.min [JOINT_3]MAX_LIMIT +0.5
+setp wcomp_zhome.max [JOINT_3]MAX_LIMIT +5
 
