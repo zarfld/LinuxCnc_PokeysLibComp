@@ -81,7 +81,7 @@ jobs:
           cd /usr/share/plantuml
         
           # Download PlantUMLGenerator.jar to the PlantUML folder
-          sudo wget -O PlantUMLGenerator.jar https://github.com/lorenzovngl/plantuml-generator/releases/download/1.4.0/PlantUMLGenerator.jar
+          sudo wget -O PlantUMLGenerator.jar https://github.com/lorenzovngl/plantuml-generator/releases/download/v1.0/PlantUMLGenerator.jar
         
           # Run the generator from that location
           sudo java -jar PlantUMLGenerator.jar --source ${{ github.workspace }}/pokeys_rt --output ${{ github.workspace }}/code_analysis/plantuml-diagrams
