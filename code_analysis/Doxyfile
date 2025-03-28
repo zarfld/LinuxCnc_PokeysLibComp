@@ -2,7 +2,7 @@
 INPUT = ../pokeys_rt ../pokeys_uspace ../external/pokeyslib ../external/linuxcnc/motion ../external/linuxcnc/rtapi ../README.md ../wiki /usr/include/linuxcnc/ 
 FILE_PATTERNS          = *.c *.h *.hh *.dox *.md
 PROJECT_NAME = "LinuxCNC PoKeysLib-Comp"
-PROJECT_BRIEF = "unofficial HAL Component for PoKeys"
+PROJECT_BRIEF = "unofficial PoKeys HAL-Component for LinuxCNC"
 
 PROJECT_LOGO = html/logo.png
 PROJECT_ICON = html/favicon.ico
