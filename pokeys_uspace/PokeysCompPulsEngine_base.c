@@ -1120,8 +1120,8 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
                     }
                 }
 
-            } else if (PEv2_data->PEv2_digin_LimitN_Enabled[i] != 0) {
-                if (PEv2_data->PEv2_digin_LimitN_invert[i] != 0) {
+            } else if (PEv2_data->PEv2_digin_LimitN_Enabled[i]) {
+                if (PEv2_data->PEv2_digin_LimitN_invert[i]) {
                     *(PEv2_data->PEv2_digin_LimitN_in[i]) = !Get_BitOfByte(bm_DedicatedLimitNInputs, i);
                     *(PEv2_data->PEv2_digin_LimitN_in_not[i]) = Get_BitOfByte(bm_DedicatedLimitNInputs, i);
                     *(PEv2_data->PEv2_digin_LimitN_DedicatedInput[i]) = !Get_BitOfByte(bm_DedicatedLimitNInputs, i);
@@ -1155,8 +1155,8 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
                         (*PEv2_data->PEv2_digin_LimitP_in_not[i]) = *(IO_data->Pin[PinId]).digin_in;
                     }
                 }
-            } else if (PEv2_data->PEv2_digin_LimitP_Enabled[i] != 0) {
-                if (PEv2_data->PEv2_digin_LimitP_invert[i] != 0) {
+            } else if (PEv2_data->PEv2_digin_LimitP_Enabled[i]) {
+                if (PEv2_data->PEv2_digin_LimitP_invert[i]) {
                     *(PEv2_data->PEv2_digin_LimitP_in[i]) = !Get_BitOfByte(bm_DedicatedLimitPInputs, i);
                     *(PEv2_data->PEv2_digin_LimitP_in_not[i]) = Get_BitOfByte(bm_DedicatedLimitPInputs, i);
                     *(PEv2_data->PEv2_digin_LimitP_DedicatedInput[i]) = !Get_BitOfByte(bm_DedicatedLimitPInputs, i);
@@ -1189,8 +1189,8 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
                         (*PEv2_data->PEv2_digin_Home_in_not[i]) = *(IO_data->Pin[PinId]).digin_in;
                     }
                 }
-            } else if (PEv2_data->PEv2_digin_Home_Enabled[i] != 0) {
-                if (PEv2_data->PEv2_digin_Home_invert[i] != 0) {
+            } else if (PEv2_data->PEv2_digin_Home_Enabled[i]) {
+                if (PEv2_data->PEv2_digin_Home_invert[i]) {
                     *(PEv2_data->PEv2_digin_Home_in[i]) = !Get_BitOfByte(bm_DedicatedHomeInputs, i);
                     *(PEv2_data->PEv2_digin_Home_in_not[i]) = Get_BitOfByte(bm_DedicatedHomeInputs, i);
                 } else {
