@@ -1453,7 +1453,7 @@ bool get_allhomed() {
 bool get_homed_memory;
 bool get_homed(int jno) {
     if (H[jno].homed != get_homed_memory) {
-        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_homed(%d) homed %d\n",jno, H[jno].homed);
+        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_homed(%d) homed %d\n", jno, H[jno].homed);
         get_homed_memory = H[jno].homed;
     }
     return H[jno].homed ? 1 : 0;
@@ -1594,7 +1594,7 @@ bool get_homing_is_active() {
  */
 bool get_index_enable_memory;
 bool get_index_enable(int jno) {
-    if (get_index_enable_memory != H[jno].index_enable){
+    if (get_index_enable_memory != H[jno].index_enable) {
         rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_index_enable joint %d index_enable %d\n", jno, H[jno].index_enable);
         get_index_enable_memory = H[jno].index_enable;
     }
