@@ -74,11 +74,18 @@ jobs:
 
       - name: Setup PlantUML Generator
         run: |
-          git clone https://github.com/lorenzovngl/plantuml-generator.git
-          cd plantuml-generator
-          mvn package -DskipTests
-          java -jar target/plantuml-generator-1.4.0.jar --source ../pokeys_rt --output ../code_analysis/plantuml-diagrams
-          cd ..
+          # Ensure wget is installed
+          sudo apt-get install -y wget
+        
+          # Navigate to PlantUML directory
+          cd /usr/share/plantuml
+        
+          # Download PlantUMLGenerator.jar to the PlantUML folder
+          sudo wget -O PlantUMLGenerator.jar https://github.com/lorenzovngl/plantuml-generator/releases/download/1.4.0/PlantUMLGenerator.jar
+        
+          # Run the generator from that location
+          sudo java -jar PlantUMLGenerator.jar --source ${{ github.workspace }}/pokeys_rt --output ${{ github.workspace }}/code_analysis/plantuml-diagrams
+        
 
       - name: init submodule
         run: sudo /bin/bash "./prerequisites.sh"
