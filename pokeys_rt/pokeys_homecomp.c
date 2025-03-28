@@ -2027,14 +2027,19 @@ static void do_homing_sequence(void) {
     one_sequence_home_data_t addr = (sequence_home_data.shd[current_sequence]);
     int joints_in_sequence = addr.joints_in_sequence;
     rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing_sequence(%d) joints_in_sequence = %d\n", current_sequence, joints_in_sequence);
+
+    /** @startuml */
     switch (sequence_state) {
+
+        /** state HOME_SEQUENCE_IDLE {*/
         case HOME_SEQUENCE_IDLE:
             rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing_sequence HOME_SEQUENCE_IDLE\n");
             current_sequence = sequence_home_data.min_sequence;
             /* nothing to do */
             break;
-
-        case HOME_SEQUENCE_DO_ONE_JOINT:
+        /** } */
+        
+        case HOME_SEQUENCE_DO_ONE_JOINT: /** state HOME_SEQUENCE_WAIT_JOINTS {*/
             rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing_sequence HOME_SEQUENCE_DO_ONE_JOINT\n");
             update_sequence_home_data();
             // Expect one joint with home_state==HOME_START
@@ -2057,22 +2062,16 @@ static void do_homing_sequence(void) {
                 }
             }
             sequence_is_set = 1;
-            /*if (current_sequence ==0)
-        {
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_DO_ONE_JOINT current_sequence = 0\n",current_sequence);
-            current_sequence=sequence_home_data.min_sequence;
-            addr = (sequence_home_data.shd[current_sequence]);
-            joints_in_sequence = addr.joints_in_sequence; //count of all joints in sequence
-            rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: do_homing_sequence(%d) use first HOME_SEQUENCE_DO_ONE_JOINT joints_in_sequence = %d, new current_sequence = %d\n",current_sequence,joints_in_sequence);
-        }*/
-
+            
+            /** state choice_joints_in_sequence_1 <<choice>> */
             if (joints_in_sequence == 0) {
                 rtapi_print_msg(RTAPI_MSG_DBG,
                                 "HOMING: do_homing_sequence(%d) HOME_SEQUENCE_DO_ONE_JOINT "
                                 "joints_in_sequence = 0\n",
                                 current_sequence);
                 update_sequence_home_data();
-                // sequence_state = HOME_SEQUENCE_IDLE;
+                /** choice_joints_in_sequence_1 -> HOME_SEQUENCE_IDLE : joints_in_sequence == 0*/
+                sequence_state = HOME_SEQUENCE_IDLE;
                 addr = (sequence_home_data.shd[current_sequence]);
                 joints_in_sequence = addr.joints_in_sequence; // count of all joints in sequence
                 rtapi_print_msg(RTAPI_MSG_DBG,
@@ -2082,12 +2081,13 @@ static void do_homing_sequence(void) {
 
                 break;
             } else {
+                /** choice_joints_in_sequence_1 -> HOME_SEQUENCE_IDLE : joints_in_sequence != 0*/
                 sequence_state = HOME_SEQUENCE_START;
             }
-            // drop through----drop through----drop through----drop through
+                
+            break;  /** } */
 
-            break;
-
+        /** state HOME_SEQUENCE_DO_ONE_SEQUENCE*/
         case HOME_SEQUENCE_DO_ONE_SEQUENCE:
             // Expect multiple joints with home_state==HOME_START
             // specified by a negative sequence

@@ -55,7 +55,7 @@ jobs:
     runs-on: self-hosted
         
     steps:
-      - name: reinit runner directory
+      - name: Reinit runner directory
         run: |
           sudo chown -R cnc:cnc /home/cnc/actions-runner
           sudo chown -R cnc:cnc /home/cnc/actions-runner/_work
@@ -64,14 +64,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         
-      - name: Install Doxygen and Graphviz
-        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
+      - name: Install Doxygen and Graphviz, PlantUML, and Java
+        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz default-jre plantuml
+          plantuml -version  # verify installation
 
       - name: init submodule
         run: sudo /bin/bash "./prerequisites.sh"
 
       - name: Generate Doxygen documentation
         run: |
+          dpkg -L plantuml | grep plantuml.jar
           cd code_analysis
           python3 C2Dox.py
           doxygen Doxyfile
