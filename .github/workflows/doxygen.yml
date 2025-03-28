@@ -65,9 +65,11 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Install Doxygen and Graphviz, PlantUML, and Java
-        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz default-jre plantuml
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz default-jre plantuml
           plantuml -version  # verify installation
-
+        
       - name: init submodule
         run: sudo /bin/bash "./prerequisites.sh"
 
