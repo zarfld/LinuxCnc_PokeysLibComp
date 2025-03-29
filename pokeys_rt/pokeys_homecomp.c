@@ -2294,7 +2294,7 @@ static void do_homing_sequence(void) {
                                         "PK_PEAxisState_axSTOPPED\n",
                                         __FILE__, __FUNCTION__, current_sequence, jno);
 
-                        if (sequence_state = HOME_SEQUENCE_START_JOINTS) {
+                        if (sequence_state != HOME_SEQUENCE_START_JOINTS) {
                             sequence_state = HOME_SEQUENCE_START_JOINTS; // back to start
                             rtapi_print_msg(RTAPI_MSG_ERR,
                                             "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) "
@@ -2311,7 +2311,7 @@ static void do_homing_sequence(void) {
                                         "PK_PEAxisState_axREADY\n",
                                         __FILE__, __FUNCTION__, current_sequence, jno);
 
-                        if (sequence_state = HOME_SEQUENCE_START_JOINTS) {
+                        if (sequence_state != HOME_SEQUENCE_START_JOINTS) {
                             sequence_state = HOME_SEQUENCE_START_JOINTS; // back to start
                             rtapi_print_msg(RTAPI_MSG_ERR,
                                             "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) "
@@ -2327,7 +2327,7 @@ static void do_homing_sequence(void) {
                                         "HOME_SEQUENCE_WAIT_JOINTS joint %d "
                                         "PK_PEAxisState_axRUNNING\n",
                                         __FILE__, __FUNCTION__, current_sequence, jno);
-                        if (sequence_state = HOME_SEQUENCE_START_JOINTS) {
+                        if (sequence_state != HOME_SEQUENCE_START_JOINTS) {
                             sequence_state = HOME_SEQUENCE_START_JOINTS; // back to start
                             rtapi_print_msg(RTAPI_MSG_DBG,
                                             "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) "
