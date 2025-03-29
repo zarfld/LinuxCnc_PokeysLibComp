@@ -1601,11 +1601,11 @@ bool get_homing_is_active() {
  *
  * @ingroup PoKeys_HomingRuntime
  */
-bool get_index_enable_memory;
+bool get_index_enable_memory[8];
 bool get_index_enable(int jno) {
-    if (get_index_enable_memory != H[jno].index_enable) {
+    if (get_index_enable_memory[jno] != H[jno].index_enable) {
         rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_index_enable joint %d index_enable %d\n", jno, H[jno].index_enable);
-        get_index_enable_memory = H[jno].index_enable;
+        get_index_enable_memory[jno] = H[jno].index_enable;
     }
     return H[jno].index_enable ? 1 : 0;
 }
