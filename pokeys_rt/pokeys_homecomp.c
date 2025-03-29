@@ -1120,11 +1120,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 /* Axis is homed */
                 joints_in_sequence = 0;
                 int homed_in_sequence = 0;
-                H[joint_num].index_enable = 0;
-                rtapi_print_msg(RTAPI_MSG_ERR,
-                                "HOMING: pokeys_1joint_state_machine joint %d "
-                                "PK_PEAxisState_axHOME - H[joint_num].index_enable %d\n",
-                                joint_num, H[joint_num].index_enable);
+                
                 for (int jj = 0; jj < all_joints; jj++) {
                     if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence)) {
                         joints_in_sequence++;
