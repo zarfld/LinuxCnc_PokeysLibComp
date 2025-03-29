@@ -953,7 +953,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d PK_PEAxisState_axREADY/HOME_FINAL_MOVE_WAIT - set PEv2_AxesCommand=0\n", __FILE__, __FUNCTION__, joint_num);
                         H[joint_num].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
                     }
-                    H[joint_num].home_state == HOME_FINISHED;
+                    H[joint_num].home_state = HOME_FINISHED;
                 } else if (H[joint_num].home_state == HOME_START) {
                     if (H[joint_num].PEv2_AxesCommand != PK_PEAxisCommand_axIDLE) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d PK_PEAxisState_axREADY/HOME_START - set PEv2_AxesCommand=0\n", __FILE__, __FUNCTION__, joint_num);
@@ -1067,7 +1067,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                     joint->free_tp.pos_cmd = 0.0; // set to zero
                     rtapi_print_msg(RTAPI_MSG_ERR,
                                     "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d "
-                                    "homing arm encoder - index pulse arrived joint->free_tp.pos_cmd %d\n",
+                                    "homing arm encoder - index pulse arrived joint->free_tp.pos_cmd %f\n",
                                     __FILE__, __FUNCTION__, joint_num, joint->free_tp.pos_cmd);
                     /* Pokeys resets encoder position to zeros */
                     if (H[joint_num].index_enable != index_search_armed) {
@@ -1300,7 +1300,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 /* should never get here */
                 rtapi_print_msg(RTAPI_MSG_ERR,
                                 "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine unknown "
-                                "state '%d' during homing j=%d",
+                                "state '%d' during homing j=%d", __FILE__, __FUNCTION__,
                                 H[joint_num].home_state, joint_num);
                 H[joint_num].home_state = HOME_ABORT;
                 // immediate_state = 1;
@@ -2116,7 +2116,7 @@ static void do_homing_sequence(void) {
 
         /** state HOME_SEQUENCE_IDLE {*/
         case HOME_SEQUENCE_IDLE:
-            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing_sequence HOME_SEQUENCE_IDLE\n");
+            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing_sequence HOME_SEQUENCE_IDLE\n", __FILE__, __FUNCTION__);
             current_sequence = sequence_home_data.min_sequence;
             /* nothing to do */
             break;
@@ -2497,7 +2497,7 @@ static void do_homing_sequence(void) {
                                         "PEAxisStateEx_HOMINGWaitFINALMOVE\n",
                                         __FILE__, __FUNCTION__, current_sequence, jno);
                         sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
-                        if (H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALMOVE) {
+                        if (H[jno].PEv2_AxesCommand != PK_PEAxisCommand_axHOMINGFINALMOVE) {
                             H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALMOVE;
                             rtapi_print_msg(RTAPI_MSG_ERR,
                                             "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) joint "
