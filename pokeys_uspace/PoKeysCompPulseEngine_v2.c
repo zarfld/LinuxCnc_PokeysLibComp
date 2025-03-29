@@ -717,11 +717,30 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         intAxesState = PEAxisStateEx_axReadyToFinalizeHoming;
 
                         IsHoming[i] = true;
-                        Homing_ArmEncodereDone[i] = false;
-                        Homing_PkHomeFinalizeeDone[i] = false;
-                        Homing_FinalMoveDone[i] = false;
-                        Homing_FinalMoveActive[i] = false;
-                        Homing_done[i] = false;
+                        if(Homing_ArmEncodereDone[i]) {
+                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART PK_PEAxisState_axHOME - ready to Finalize homing (%d) - Homing_ArmEncodereDone[i]\n", __FILE__, __FUNCTION__, i, intAxesState);
+                            Homing_ArmEncodereDone[i] = false;
+                        }
+                        if(Homing_FinalMoveDone[i]) {
+                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART PK_PEAxisState_axHOME - ready to Finalize homing (%d) - Homing_FinalMoveDone[i]\n", __FILE__, __FUNCTION__, i, intAxesState);
+                            Homing_FinalMoveDone[i] = false;
+                        }
+                        if(Homing_FinalMoveActive[i]) {
+                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART PK_PEAxisState_axHOME - ready to Finalize homing (%d) - Homing_FinalMoveActive[i]\n", __FILE__, __FUNCTION__, i, intAxesState);
+                            Homing_FinalMoveActive[i] = false;
+                        }
+                        if(Homing_done[i]) {
+                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART PK_PEAxisState_axHOME - ready to Finalize homing (%d) - Homing_done[i]\n", __FILE__, __FUNCTION__, i, intAxesState);
+                            Homing_done[i] = false;
+                        }
+                        if(Homing_PkHomeFinalizeeDone[i]){
+                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART PK_PEAxisState_axHOME - ready to Finalize homing (%d) - Homing_PkHomeFinalizeeDone[i]\n", __FILE__, __FUNCTION__, i, intAxesState);
+                            Homing_PkHomeFinalizeeDone[i] = false;
+                        }
+                       // Homing_PkHomeFinalizeeDone[i] = false;
+                       // Homing_FinalMoveDone[i] = false;
+                       // Homing_FinalMoveActive[i] = false;
+                       // Homing_done[i] = false;
                         if (repAxxiState[i] != intAxesState) {
                             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisState_axHOME - ready to Finalize homing\n", __FILE__, __FUNCTION__, i);
                         }
