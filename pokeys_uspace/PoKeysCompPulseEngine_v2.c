@@ -831,11 +831,11 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                 // intAxesState is already set from dev->PEv2.AxesState[i]
                                 intAxesState = PK_PEAxisState_axHOME;
                                 Homing_FinalMoveActive[i] = false;
-                                if(Homing_FinalMoveDone[i] != true){
+                                if (Homing_FinalMoveDone[i] != true) {
                                     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGFinalMove - FinalMove done\n", __FILE__, __FUNCTION__, i);
                                     Homing_FinalMoveDone[i] = true;
                                 }
-                                
+
                                 InPosition[i] = true;
                                 *(PEv2_data->PEv2_deb_ishoming[i]) = false;
                             }
