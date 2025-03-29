@@ -1300,8 +1300,8 @@ int pokeys_1joint_state_machine(int joint_num) {
                 /* should never get here */
                 rtapi_print_msg(RTAPI_MSG_ERR,
                                 "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine unknown "
-                                "state '%d' during homing j=%d", __FILE__, __FUNCTION__,
-                                H[joint_num].home_state, joint_num);
+                                "state '%d' during homing j=%d",
+                                __FILE__, __FUNCTION__, H[joint_num].home_state, joint_num);
                 H[joint_num].home_state = HOME_ABORT;
                 // immediate_state = 1;
                 break;
