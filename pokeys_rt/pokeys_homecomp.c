@@ -2114,7 +2114,8 @@ static void do_homing_sequence(void) {
     one_sequence_home_data_t addr = (sequence_home_data.shd[current_sequence]);
     int joints_in_sequence = addr.joints_in_sequence;
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) joints_in_sequence = %d\n", __FILE__, __FUNCTION__, current_sequence, joints_in_sequence);
-
+    int joints_in_sequence_DBG = 0;
+    one_sequence_home_data_t addr_dbg;
     /** @startuml */
     switch (sequence_state) {
 
@@ -2127,11 +2128,10 @@ static void do_homing_sequence(void) {
             /** } */
 
         case HOME_SEQUENCE_DO_ONE_JOINT: /** state HOME_SEQUENCE_WAIT_JOINTS {*/
-            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing_sequence HOME_SEQUENCE_DO_ONE_JOINT\n");
+            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing_sequence HOME_SEQUENCE_DO_ONE_JOINT\n", __FILE__, __FUNCTION__);
             update_sequence_home_data();
             // Expect one joint with home_state==HOME_START
-            int joints_in_sequence_DBG = 0;
-            one_sequence_home_data_t addr_dbg;
+
             for (i = 0; i < all_joints; i++) {
                 // pokeys_1joint_state_machine(i);
                 if (H[i].home_state == HOME_START) {
@@ -2537,7 +2537,7 @@ static void do_homing_sequence(void) {
                         break;
                 }
             }
-            rtapi_print_msg(RTAPI_MSG_DBG,
+            rtapi_print_msg(RTAPI_MSG_ERR,
                             "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS "
                             "homed_count:%d joints_in_sequence:%d \n",
                             __FILE__, __FUNCTION__, current_sequence, homed_count, joints_in_sequence);
