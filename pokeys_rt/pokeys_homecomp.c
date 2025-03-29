@@ -925,7 +925,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine joint %d ready\n", joint_num);
                 /* Axis ready */
                 H[joint_num].homing = 0;
-               // joint->free_tp.enable = 0;
+                // joint->free_tp.enable = 0;
                 H[joint_num].home_state = HOME_IDLE;
                 break;
 

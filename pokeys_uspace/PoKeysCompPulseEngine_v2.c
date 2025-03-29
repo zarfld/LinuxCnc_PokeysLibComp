@@ -656,12 +656,12 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     if (Homing_FinalMoveActive[i] && !Homing_FinalMoveDone[i]) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axIDLE - FinalMove still active\n", __FILE__, __FUNCTION__, i);
                         intAxesState = PEAxisStateEx_HOMINGFINALMOVE; // FinalMove still active
-                    }else if (Homing_FinalMoveDone[i] && !Homing_done[i]) {
+                    } else if (Homing_FinalMoveDone[i] && !Homing_done[i]) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axIDLE - FinalMove done but not yet set to done\n", __FILE__, __FUNCTION__, i);
                         intAxesState = PEAxisStateEx_HOMINGFINALMOVE; // FinalMove done
                     } else if (Homing_done[i]) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axIDLE - FinalMove done and set to done\n", __FILE__, __FUNCTION__, i);
-                     //   intAxesState = PEAxisStateEx_axREADY; // FinalMove done
+                        //   intAxesState = PEAxisStateEx_axREADY; // FinalMove done
                     } else {
                         intAxesState = PK_PEAxisState_axIDLE;
                     }
