@@ -1143,7 +1143,7 @@ int pokeys_1joint_state_machine(int joint_num) {
             case PEAxisStateEx_HOMINGFINALMOVE:
                 rtapi_print_msg(RTAPI_MSG_ERR,
                                 "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d "
-                                "homing final move\n",
+                                "PEAxisStateEx_HOMINGFINALMOVE\n",
                                 __FILE__, __FUNCTION__, joint_num);
                 /* Pokeys moves to homeposition */
                 H[joint_num].homing = 1;
@@ -1348,7 +1348,7 @@ void do_home_sequence(int seq) {
                 break;
 
             case PK_PEAxisState_axREADY:
-                rtapi_print_msg(RTAPI_MSG_DBG, "XPoKeys_homecomp: %s:%s: do_home_sequence joint %d ready\n", __FILE__, __FUNCTION__, jno);
+                rtapi_print_msg(RTAPI_MSG_ERR, "XPoKeys_homecomp: %s:%s: do_home_sequence joint %d ready\n", __FILE__, __FUNCTION__, jno);
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                 break;
 
@@ -1838,8 +1838,8 @@ void do_home_joint(int jno) {
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALMOVE;
                 break;
             case PEAxisStateEx_HOMINGFINALMOVE:
-                rtapi_print_msg(RTAPI_MSG_DBG,
-                                "XPoKeys_homecomp: %s:%s: do_home_joint joint %d homing finalize "
+                rtapi_print_msg(RTAPI_MSG_ERR,
+                                "XPoKeys_homecomp: %s:%s: do_home_joint joint %d PEAxisStateEx_HOMINGFINALMOVE "
                                 "PK_PEAxisCommand_axIDLE\n",
                                 __FILE__, __FUNCTION__, jno);
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
@@ -2409,7 +2409,7 @@ static void do_homing_sequence(void) {
                         H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALMOVE;
                         break;
                     case PEAxisStateEx_HOMINGFINALMOVE:
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(RTAPI_MSG_ERR,
                                         "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) joint "
                                         "%d HOME_SEQUENCE_WAIT_JOINTS "
                                         "PEAxisStateEx_HOMINGFINALMOVE\n",
