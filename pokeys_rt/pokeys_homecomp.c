@@ -1089,7 +1089,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                             jj, H[joint_num].home_sequence);
                             H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALMOVE;
                             H[jj].home_state = HOME_FINAL_MOVE_START;
-                           // H[jj].homing = 0;
+                            // H[jj].homing = 0;
                             H[jj].homed = 0;
                         }
                     }
