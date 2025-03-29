@@ -866,7 +866,31 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
 
                     if (*(PEv2_data->PEv2_AxesCommand[i]) == PK_PEAxisCommand_axHOMINGCancel && old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i]) && (intAxesState == PK_PEAxisState_axHOMINGSTART || intAxesState == PK_PEAxisState_axHOMINGSEARCH || intAxesState == PK_PEAxisState_axHOMINGBACK)) {
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingCancel\n", __FILE__, __FUNCTION__);
-                        //	dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+                        dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
+                    }
+                    if(Homing_active){
+                        Homing_active = false;
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGCancel - Homing_active = false\n", __FILE__, __FUNCTION__, i);
+                    }
+                    if(Homing_PkHomeFinalizeeDone[i]){
+                        Homing_PkHomeFinalizeeDone[i] = false;
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGCancel - Homing_PkHomeFinalizeeDone[i] = false\n", __FILE__, __FUNCTION__, i);
+                    }
+                    if (Homing_ArmEncodereDone[i]) {
+                        Homing_ArmEncodereDone[i] = false;
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGCancel - Homing_ArmEncodereDone[i] = false\n", __FILE__, __FUNCTION__, i);
+                    }
+                    if (Homing_FinalMoveDone[i]) {
+                        Homing_FinalMoveDone[i] = false;
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGCancel - Homing_FinalMoveDone[i] = false\n", __FILE__, __FUNCTION__, i);
+                    }
+                    if (Homing_FinalMoveActive[i]) {
+                        Homing_FinalMoveActive[i] = false;
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGCancel - Homing_FinalMoveActive[i] = false\n", __FILE__, __FUNCTION__, i);
+                    }
+                    if (Homing_done[i]) {
+                        Homing_done[i] = false;
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGCancel - Homing_done[i] = false\n", __FILE__, __FUNCTION__, i);
                     }
                     break;
                 case PK_PEAxisCommand_axHOMINGFinalize:

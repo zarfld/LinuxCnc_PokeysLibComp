@@ -931,25 +931,27 @@ int pokeys_1joint_state_machine(int joint_num) {
                 break;
 
             case PK_PEAxisState_axREADY:
-                rtapi_print_msg(RTAPI_MSG_ERR, "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d ready\n", __FILE__, __FUNCTION__, joint_num);
+                rtapi_print_msg(RTAPI_MSG_ERR, "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d PK_PEAxisState_axREADY\n", __FILE__, __FUNCTION__, joint_num);
                 /* Axis ready */
                 if (!joint->free_tp.enable) {
                     joint->free_tp.enable = 1;
-                    rtapi_print_msg(RTAPI_MSG_ERR, "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d ready - set free_tp.enable=1\n", __FILE__, __FUNCTION__, joint_num);
+                    rtapi_print_msg(RTAPI_MSG_ERR, "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d PK_PEAxisState_axREADY - set free_tp.enable=1\n", __FILE__, __FUNCTION__, joint_num);
                 }
 
                 if (H[joint_num].homing) {
                     /* Axis is homing */
-                    rtapi_print_msg(RTAPI_MSG_ERR, "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d ready - set homing=0\n", __FILE__, __FUNCTION__, joint_num);
+                    rtapi_print_msg(RTAPI_MSG_ERR, "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d PK_PEAxisState_axREADY - set homing=0\n", __FILE__, __FUNCTION__, joint_num);
                     H[joint_num].homing = 0;
-                    joint->free_tp.enable = 1;
+                    
                 }
+
+                
                 if (H[joint_num].home_state != HOME_IDLE) {
-                    rtapi_print_msg(RTAPI_MSG_ERR, "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d ready - set homing=0\n", __FILE__, __FUNCTION__, joint_num);
+                    rtapi_print_msg(RTAPI_MSG_ERR, "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d PK_PEAxisState_axREADY - set homing=0\n", __FILE__, __FUNCTION__, joint_num);
                     H[joint_num].home_state = HOME_IDLE;
                 }
                 if (H[joint_num].PEv2_AxesCommand != PK_PEAxisCommand_axIDLE) {
-                    rtapi_print_msg(RTAPI_MSG_ERR, "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d ready - set PEv2_AxesCommand=0\n", __FILE__, __FUNCTION__, joint_num);
+                    rtapi_print_msg(RTAPI_MSG_ERR, "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d PK_PEAxisState_axREADY - set PEv2_AxesCommand=0\n", __FILE__, __FUNCTION__, joint_num);
                     H[joint_num].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
                 }
 
