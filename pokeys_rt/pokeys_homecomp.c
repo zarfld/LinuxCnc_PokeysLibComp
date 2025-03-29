@@ -936,7 +936,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                     joint->free_tp.enable = 1;
                     rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine joint %d ready - set free_tp.enable=1\n", joint_num);
                 }
-                
+
                 if (H[joint_num].homing) {
                     /* Axis is homing */
                     rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine joint %d ready - set homing=0\n", joint_num);
@@ -947,7 +947,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                     rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine joint %d ready - set homing=0\n", joint_num);
                     H[joint_num].home_state = HOME_IDLE;
                 }
-                if(H[joint_num].AxesCommand != PK_PEAxisCommand_axIDLE) {
+                if(H[joint_num].PEv2_AxesCommand != PK_PEAxisCommand_axIDLE) {
                     rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine joint %d ready - set PEv2_AxesCommand=0\n", joint_num);
                     H[joint_num].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
                 }
