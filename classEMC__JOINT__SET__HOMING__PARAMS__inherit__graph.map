@@ -1,0 +1,6 @@
+<map id="EMC_JOINT_SET_HOMING_PARAMS" name="EMC_JOINT_SET_HOMING_PARAMS">
+<area shape="rect" id="node1" title=" " alt="" coords="5,484,208,781"/>
+<area shape="rect" id="node2" href="$classEMC__JOINT__CMD__MSG.html" title=" " alt="" coords="9,344,204,436"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="33,219,181,296"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="23,5,190,171"/>
+</map>

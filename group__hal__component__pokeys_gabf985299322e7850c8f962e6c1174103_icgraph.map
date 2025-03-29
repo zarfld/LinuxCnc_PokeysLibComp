@@ -1,0 +1,4 @@
+<map id="PEv2_AdditionalParametersGet" name="PEv2_AdditionalParametersGet">
+<area shape="rect" id="node1" title="Reads additional Pulse Engine v2 parameters from the PoKeys device." alt="" coords="224,13,448,39"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#ga1fd300cd610e9545e58b62ffd50e474e" title="Applies INI&#45;based configuration to PulseEngine and IO." alt="" coords="5,5,176,47"/>
+</map>

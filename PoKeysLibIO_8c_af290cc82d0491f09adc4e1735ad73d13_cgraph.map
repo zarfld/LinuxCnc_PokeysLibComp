@@ -1,0 +1,12 @@
+<map id="PK_PWMConfigurationSetDirectly" name="PK_PWMConfigurationSetDirectly">
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,244,57"/>
+<area shape="rect" id="node2" href="$PoKeysLibIO_8c.html#a5bbc9f37369faac5fbbe357a9393b8ae" title=" " alt="" coords="292,5,481,32"/>
+<area shape="rect" id="node10" href="$PoKeysLibIO_8c.html#a74a7b181f1bbb877bb965343a64d43e2" title=" " alt="" coords="293,56,480,83"/>
+<area shape="rect" id="node3" href="$PoKeysLibCore_8c.html#acb1fdd8f77277dc66c4d037218bfcece" title=" " alt="" coords="529,5,648,32"/>
+<area shape="rect" id="node4" href="$PoKeysLibCore_8c.html#ab5d92aa36d0a4a6953a055f5cd960aff" title=" " alt="" coords="535,56,642,83"/>
+<area shape="rect" id="node5" href="$PoKeysLibCore_8c.html#a273b6d635dea8f559b915cdb289d021e" title=" " alt="" coords="885,5,995,32"/>
+<area shape="rect" id="node6" href="$group__API.html#ga6b820f3e72097cf7f994e33715dc7af1" title="Read an Input report from a HID device." alt="" coords="721,81,799,108"/>
+<area shape="rect" id="node8" href="$group__API.html#gad14ea48e440cf5066df87cc6488493af" title="Write an Output report to a HID device." alt="" coords="719,132,801,159"/>
+<area shape="rect" id="node9" href="$PoKeysLibCoreSockets_8c.html#a22759fb4024c9081af26ac1bc6541b47" title=" " alt="" coords="696,31,824,57"/>
+<area shape="rect" id="node7" href="$group__API.html#gaa5c9ed5aa290688ffac03343989ad75a" title="Read an Input report from a HID device with timeout." alt="" coords="872,81,1008,108"/>
+</map>

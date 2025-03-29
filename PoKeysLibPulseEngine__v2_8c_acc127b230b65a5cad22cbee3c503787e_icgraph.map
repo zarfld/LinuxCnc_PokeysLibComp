@@ -1,0 +1,5 @@
+<map id="PK_PEv2_AdditionalParametersSet" name="PK_PEv2_AdditionalParametersSet">
+<area shape="rect" id="node1" title=" " alt="" coords="495,13,741,39"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#ga03f28595c27000ef997f76c58d387efa" title="Updates and sets additional Pulse Engine v2 parameters, such as the emergency input pin." alt="" coords="224,13,447,39"/>
+<area shape="rect" id="node3" href="$group__hal__component__pokeys.html#ga1fd300cd610e9545e58b62ffd50e474e" title="Applies INI&#45;based configuration to PulseEngine and IO." alt="" coords="5,5,176,47"/>
+</map>

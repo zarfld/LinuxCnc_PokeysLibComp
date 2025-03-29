@@ -1,0 +1,4 @@
+<map id="do_home_joint" name="do_home_joint">
+<area shape="rect" id="node1" title="Initiates and manages the homing process for a given joint or sequence." alt="" coords="5,13,124,39"/>
+<area shape="rect" id="node2" href="$group__pokeys__homecomp.html#ga3a082b8f66b5eeb6c0ed88408318c35c" title=" " alt="" coords="172,5,324,47"/>
+</map>

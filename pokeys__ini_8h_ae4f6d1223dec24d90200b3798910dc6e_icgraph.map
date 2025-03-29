@@ -1,0 +1,6 @@
+<map id="ini_read_int" name="ini_read_int">
+<area shape="rect" id="node1" title=" " alt="" coords="399,46,497,73"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#ga1499e979e9aca26d5f59b8f25fd4406a" title="Reads and applies I/O configuration values for the PoKeys device from the INI file." alt="" coords="180,5,351,47"/>
+<area shape="rect" id="node4" href="$structPoKeysHALComponent.html#ad94418b2caeac0cbdd7c43ef55f15623" title="Reads configuration parameters for the PoKeys Pulse Engine v2 from the INI file." alt="" coords="180,71,351,112"/>
+<area shape="rect" id="node3" href="$pokeys_8c.html#a1d59e212b57d33fe74e44b64cadf3314" title=" " alt="" coords="5,46,132,73"/>
+</map>
