@@ -1536,12 +1536,12 @@ int get_home_sequence(int jno) {
  *
  * @ingroup PoKeys_HomingStatusQuery
  */
-bool get_homing_memory;
+bool get_homing_memory[8];
 bool get_homing(int jno) {
     one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
-    if (get_homing_memory != *addr->homing) {
+    if (get_homing_memory[jno] != *addr->homing) {
         rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_homing joint %d homing %d\n", jno, *addr->homing);
-        get_homing_memory = *addr->homing;
+        get_homing_memory[jno] = *addr->homing;
     }
     return *addr->homing ? 1 : 0;
 }
