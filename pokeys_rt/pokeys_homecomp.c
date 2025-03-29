@@ -1083,11 +1083,11 @@ int pokeys_1joint_state_machine(int joint_num) {
                     for (int jj = 0; jj < all_joints; jj++) {
 
                         if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence)) {
-                            rtapi_print_msg(RTAPI_MSG_DBG,
+                            rtapi_print_msg(RTAPI_MSG_ERR,
                                             "HOMING:do_home_joint.PK_PEAxisState_axHOME "
                                             "joint %d homed (home_sequence %d)\n",
                                             jj, H[joint_num].home_sequence);
-                            // H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
+                            H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFinalMove;
                             H[jj].home_state = HOME_FINAL_MOVE_START;
                             H[jj].homing = 0;
                             H[jj].homed = 0;
@@ -1536,9 +1536,13 @@ int get_home_sequence(int jno) {
  *
  * @ingroup PoKeys_HomingStatusQuery
  */
+ bool get_homing_memory;
 bool get_homing(int jno) {
     one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
-
+    if (get_homing_memory != *addr->homing) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_homing joint %d homing %d\n", jno, *addr->homing);
+        get_homing_memory = *addr->homing;
+    }
     return *addr->homing ? 1 : 0;
 }
 
