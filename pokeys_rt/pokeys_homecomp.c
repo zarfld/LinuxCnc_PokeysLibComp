@@ -1536,7 +1536,7 @@ int get_home_sequence(int jno) {
  *
  * @ingroup PoKeys_HomingStatusQuery
  */
- bool get_homing_memory;
+bool get_homing_memory;
 bool get_homing(int jno) {
     one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
     if (get_homing_memory != *addr->homing) {
