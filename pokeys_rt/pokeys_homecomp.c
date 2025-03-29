@@ -2321,7 +2321,14 @@ static void do_homing_sequence(void) {
                                         "HOME_SEQUENCE_WAIT_JOINTS joint %d "
                                         "PK_PEAxisState_axREADY\n",
                                         __FILE__, __FUNCTION__, current_sequence, jno);
-                        if (H[joint_num].home_state == HOME_FINAL_MOVE_WAIT || H[joint_num].home_state == HOME_FINISHED || H[joint_num].home_state == HOME_INDEX_SEARCH_WAIT || H[joint_num].home_state == HOME_SET_INDEX_POSITION) {
+                        if (H[jj].home_state == HOME_FINAL_MOVE_WAIT){
+
+                        } else if ( H[jj].home_state == HOME_FINISHED){
+                            if (H[jj].homed){
+                                homed_count++;
+                            }
+                            
+                        } else if ( H[jj].home_state == HOME_INDEX_SEARCH_WAIT || H[jj].home_state == HOME_SET_INDEX_POSITION) {
 
                         } else if (sequence_state != HOME_SEQUENCE_START_JOINTS) {
                             sequence_state = HOME_SEQUENCE_START_JOINTS; // back to start
