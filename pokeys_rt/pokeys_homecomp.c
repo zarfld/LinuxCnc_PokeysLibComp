@@ -942,10 +942,8 @@ int pokeys_1joint_state_machine(int joint_num) {
                     /* Axis is homing */
                     rtapi_print_msg(RTAPI_MSG_ERR, "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d PK_PEAxisState_axREADY - set homing=0\n", __FILE__, __FUNCTION__, joint_num);
                     H[joint_num].homing = 0;
-                    
                 }
 
-                
                 if (H[joint_num].home_state != HOME_IDLE) {
                     rtapi_print_msg(RTAPI_MSG_ERR, "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d PK_PEAxisState_axREADY - set homing=0\n", __FILE__, __FUNCTION__, joint_num);
                     H[joint_num].home_state = HOME_IDLE;
