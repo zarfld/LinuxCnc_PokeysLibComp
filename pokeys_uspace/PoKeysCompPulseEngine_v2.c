@@ -815,15 +815,14 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i])) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGFinalMove\n", __FILE__, __FUNCTION__, i);
                     }
-                    
+
                     if (Homing_FinalMoveDone[i] != true) {
 
                         if (Homing_FinalMoveActive[i] != true) {
                             if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGWaitFinalMove, PK_Homing_axHOMINGFinalMove) == 0) {
                                 intAxesState = PEAxisStateEx_HOMINGFINALMOVE; //	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
                                 Homing_FinalMoveActive[i] = true;
-                            }
-                            else{
+                            } else {
                                 intAxesState = PEAxisStateEx_HOMINGWaitFINALMOVE;
                             }
                         } else if ((dev->PEv2.CurrentPosition[i] == (int32_t)PEv2_data->PEv2_HomePosition[i])) {
@@ -835,8 +834,9 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                 InPosition[i] = true;
                                 *(PEv2_data->PEv2_deb_ishoming[i]) = false;
                             }
+                        } else {
+                            intAxesState = PEAxisStateEx_HOMINGWaitFINALMOVE;
                         }
-                        else{intAxesState = PEAxisStateEx_HOMINGWaitFINALMOVE;}
 
                     } else if (Homing_FinalMoveActive[i] != false) {
                         //	PEAxisStateEx_HOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
