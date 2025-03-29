@@ -878,6 +878,7 @@ bool get_sequence_homing(int seq) {
  * axHOME --> [*]
  * @enduml
  */
+bool Homing_ArmEncodereDone[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 int pokeys_1joint_state_machine(int joint_num) {
     emcmot_joint_t *joint;
     double offset, tmp;
@@ -989,7 +990,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 /* Backing off switch */
                 H[joint_num].homing = 1;
                 H[joint_num].home_state = HOME_INITIAL_BACKOFF_WAIT;
-
+                Homing_ArmEncodereDone[joint_num] = 0;
                 homing_flag = 1;
                 break;
 
