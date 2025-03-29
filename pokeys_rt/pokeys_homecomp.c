@@ -1120,7 +1120,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 /* Axis is homed */
                 joints_in_sequence = 0;
                 int homed_in_sequence = 0;
-                
+
                 for (int jj = 0; jj < all_joints; jj++) {
                     if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence)) {
                         joints_in_sequence++;
