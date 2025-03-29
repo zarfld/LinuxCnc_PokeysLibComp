@@ -1059,11 +1059,13 @@ int pokeys_1joint_state_machine(int joint_num) {
                                     "homing arm encoder - index pulse arrived joint->free_tp.pos_cmd %d\n",
                                     __FILE__, __FUNCTION__, joint_num, joint->free_tp.pos_cmd);
                     /* Pokeys resets encoder position to zeros */
+                    if(H[joint_num].index_enable != index_search_armed){
                     H[joint_num].index_enable = index_search_armed;
                     rtapi_print_msg(RTAPI_MSG_ERR,
                                     "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d "
                                     "homing arm encoder - index pulse arrived H[joint_num].index_enable %d\n",
                                     __FILE__, __FUNCTION__, joint_num, H[joint_num].index_enable);
+                    }
                     H[joint_num].homing = 1;
                     H[joint_num].home_state = HOME_SET_INDEX_POSITION;
                     immediate_state = 1;
