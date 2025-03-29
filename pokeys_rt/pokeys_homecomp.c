@@ -1516,11 +1516,11 @@ bool get_allhomed() {
  *
  * @ingroup PoKeys_HomingStatus
  */
-bool get_homed_memory;
+bool get_homed_memory[8];
 bool get_homed(int jno) {
-    if (H[jno].homed != get_homed_memory) {
+    if (H[jno].homed != get_homed_memory[jno]) {
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: get_homed(%d) homed %d\n", __FILE__, __FUNCTION__, jno, H[jno].homed);
-        get_homed_memory = H[jno].homed;
+        get_homed_memory[jno] = H[jno].homed;
     }
     return H[jno].homed ? 1 : 0;
 }
