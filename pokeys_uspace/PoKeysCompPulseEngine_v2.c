@@ -754,9 +754,11 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         }
                         /*dev->PEv2.PositionSetup[i] = PEv2_data->PEv2_ZeroPosition[i];
                         bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);*/
-                    } else {
+                    } else if (!Homing_ArmEncodereDone[i]){
                         intAxesState = PEAxisStateEx_axReadyToArmEncoder;
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER !(intAxesState == PK_PEAxisState_axREADY) && (Homing_PkHomeFinalizeeDone[i]) && (!Homing_ArmEncodereDone[i])\n", __FILE__, __FUNCTION__, i);
+                    } else(){
+                        intAxesState = PEAxisStateEx_HOMINGARMENCODER;
                     }
                     if (repAxxiState[i] != intAxesState) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER: new reported AxesState:  %s(%d)\n", __FILE__, __FUNCTION__, i, PK_PEAxisState_names[intAxesState], intAxesState);
