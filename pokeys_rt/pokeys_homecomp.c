@@ -1564,7 +1564,7 @@ bool get_homing_at_index_search_wait(int jno) {
         get_homing_at_index_search_wait_memory = H[jno].index_enable;
     }
     // return H[jno].home_state == HOME_INDEX_SEARCH_WAIT ? 1 : 0;
-    return H[jno].index_enable ? 1 : 0;
+    return H[jno].index_enable ? index_search_active : 0;
 }
 
 /**
