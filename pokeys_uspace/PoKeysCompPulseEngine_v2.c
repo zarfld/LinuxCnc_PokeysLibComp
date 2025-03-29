@@ -753,8 +753,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         // Encoder already armed, never regress state!
                         intAxesState = PEAxisStateEx_HOMINGARMENCODER;
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: Axis[%d] already armed encoder, remain in PEAxisStateEx_HOMINGARMENCODER\n", i);
-                    }
-                    else if ((intAxesState == PK_PEAxisState_axREADY) && (Homing_PkHomeFinalizeeDone[i]) && (!Homing_ArmEncodereDone[i])) {
+                    } else if ((intAxesState == PK_PEAxisState_axREADY) && (Homing_PkHomeFinalizeeDone[i]) && (!Homing_ArmEncodereDone[i])) {
                         // PEAxisStateEx_HOMINGARMENCODER = 17,         // (linuxcnc spec additional state) pokeys resets encoder position to zeros
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER (intAxesState == PK_PEAxisState_axREADY) && (Homing_PkHomeFinalizeeDone[i]) && (!Homing_ArmEncodereDone[i])\n", __FILE__, __FUNCTION__, i);
                         if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGFinalize, PK_Homing_axARMENCODER) == 0) {
