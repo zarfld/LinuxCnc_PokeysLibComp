@@ -1560,11 +1560,11 @@ bool get_homing_at_index_search_wait_memory;
 bool get_homing_at_index_search_wait(int jno) {
     // return 0;
     if (get_homing_at_index_search_wait_memory != (HOME_INDEX_SEARCH_WAIT ? 1 : 0))) {
-        rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_homing_at_index_search_wait joint %d index_enable %d\n", jno, H[jno].index_enable);
-        get_homing_at_index_search_wait_memory = HOME_INDEX_SEARCH_WAIT ? 1 : 0;
-    }
+            rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: get_homing_at_index_search_wait joint %d index_enable %d\n", jno, H[jno].index_enable);
+            get_homing_at_index_search_wait_memory = HOME_INDEX_SEARCH_WAIT ? 1 : 0;
+        }
     // return H[jno].home_state == HOME_INDEX_SEARCH_WAIT ? 1 : 0;
-    //return H[jno] ? index_search_active : 0;
+    // return H[jno] ? index_search_active : 0;
 }
 
 /**
