@@ -942,7 +942,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                     /* Axis is homing */
                     rtapi_print_msg(RTAPI_MSG_ERR, "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d ready - set homing=0\n", __FILE__, __FUNCTION__, joint_num);
                     H[joint_num].homing = 0;
-                    // joint->free_tp.enable = 0;
+                    joint->free_tp.enable = 1;
                 }
                 if (H[joint_num].home_state != HOME_IDLE) {
                     rtapi_print_msg(RTAPI_MSG_ERR, "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d ready - set homing=0\n", __FILE__, __FUNCTION__, joint_num);
@@ -1059,12 +1059,12 @@ int pokeys_1joint_state_machine(int joint_num) {
                                     "homing arm encoder - index pulse arrived joint->free_tp.pos_cmd %d\n",
                                     __FILE__, __FUNCTION__, joint_num, joint->free_tp.pos_cmd);
                     /* Pokeys resets encoder position to zeros */
-                    if (H[joint_num].index_enable != index_search_armed) {
-                        H[joint_num].index_enable = index_search_armed;
-                        rtapi_print_msg(RTAPI_MSG_ERR,
-                                        "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d "
-                                        "homing arm encoder - index pulse arrived H[joint_num].index_enable %d\n",
-                                        __FILE__, __FUNCTION__, joint_num, H[joint_num].index_enable);
+                    if(H[joint_num].index_enable != index_search_armed){
+                    H[joint_num].index_enable = index_search_armed;
+                    rtapi_print_msg(RTAPI_MSG_ERR,
+                                    "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d "
+                                    "homing arm encoder - index pulse arrived H[joint_num].index_enable %d\n",
+                                    __FILE__, __FUNCTION__, joint_num, H[joint_num].index_enable);
                     }
                     H[joint_num].homing = 1;
                     H[joint_num].home_state = HOME_SET_INDEX_POSITION;
@@ -1135,7 +1135,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                     __FILE__, __FUNCTION__, joint_num, H[joint_num].home_sequence);
                     // H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                     H[joint_num].home_state = HOME_FINAL_MOVE_START;
-                    H[joint_num].homing = 0;
+                   // H[joint_num].homing = 0;
                     H[joint_num].homed = 0;
                 }
 
