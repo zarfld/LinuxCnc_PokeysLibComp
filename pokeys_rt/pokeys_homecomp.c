@@ -2486,7 +2486,7 @@ static void do_homing_sequence(void) {
 
                         break;
                     case PEAxisStateEx_HOMINGFINALMOVE:
-                        rtapi_print_msg(RTAPI_MSG_ERR,
+                        rtapi_print_msg(RTAPI_MSG_DBG,
                                         "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) joint "
                                         "%d HOME_SEQUENCE_WAIT_JOINTS "
                                         "PEAxisStateEx_HOMINGFINALMOVE\n",
