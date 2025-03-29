@@ -868,7 +868,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: Trigger HomingCancel\n", __FILE__, __FUNCTION__);
                         dev->PEv2.PulseEngineStateSetup = PK_PEState_peSTOPPED;
                     }
-
+                    
                     if (Homing_PkHomeFinalizeeDone[i]) {
                         Homing_PkHomeFinalizeeDone[i] = false;
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGCancel - Homing_PkHomeFinalizeeDone[i] = false\n", __FILE__, __FUNCTION__, i);
