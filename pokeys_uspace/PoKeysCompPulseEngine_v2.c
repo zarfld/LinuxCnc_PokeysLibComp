@@ -758,8 +758,8 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         intAxesState = PEAxisStateEx_axReadyToArmEncoder;
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER !(intAxesState == PK_PEAxisState_axREADY) && (Homing_PkHomeFinalizeeDone[i]) && (!Homing_ArmEncodereDone[i])\n", __FILE__, __FUNCTION__, i);
                     } else {
-                            intAxesState = PEAxisStateEx_HOMINGARMENCODER;
-                        }
+                        intAxesState = PEAxisStateEx_HOMINGARMENCODER;
+                    }
                     if (repAxxiState[i] != intAxesState) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axARMENCODER: new reported AxesState:  %s(%d)\n", __FILE__, __FUNCTION__, i, PK_PEAxisState_names[intAxesState], intAxesState);
                     }
