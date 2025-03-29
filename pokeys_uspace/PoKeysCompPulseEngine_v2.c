@@ -663,7 +663,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axIDLE - FinalMove done and set to done\n", __FILE__, __FUNCTION__, i);
                         //   intAxesState = PEAxisStateEx_axREADY; // FinalMove done
                     } else {
-                       // intAxesState = PK_PEAxisState_axIDLE;
+                        // intAxesState = PK_PEAxisState_axIDLE;
                     }
 
                     break;

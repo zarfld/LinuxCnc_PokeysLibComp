@@ -1145,8 +1145,8 @@ int pokeys_1joint_state_machine(int joint_num) {
                                             jj, H[joint_num].home_sequence);
                             // H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                             H[jj].home_state = HOME_FINISHED;
-                           // H[jj].homing = 0;
-                           // H[jj].homed = 1;
+                            // H[jj].homing = 0;
+                            // H[jj].homed = 1;
                         }
                     }
                     rtapi_print_msg(RTAPI_MSG_ERR,
