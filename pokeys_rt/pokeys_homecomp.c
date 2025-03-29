@@ -916,16 +916,16 @@ int pokeys_1joint_state_machine(int joint_num) {
             case PK_PEAxisState_axSTOPPED:
                 /* Axis is stopped */
                 rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d stopped\n", joint_num);
-                if(H[joint_num].homing){
+                if (H[joint_num].homing) {
                     rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine joint %d stopped - set homing=0\n", joint_num);
                     H[joint_num].homing = 0;
                 }
-                
-                if(H[joint_num].homed){
+
+                if (H[joint_num].homed) {
                     rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine joint %d stopped - set homed=0\n", joint_num);
                     H[joint_num].homed = 0;
                 }
-                
+
                 H[joint_num].home_state = HOME_IDLE;
                 break;
 
@@ -934,12 +934,10 @@ int pokeys_1joint_state_machine(int joint_num) {
                 /* Axis ready */
                 if (H[joint_num].homing) {
                     /* Axis is homing */
-                    rtapi
-                    H[joint_num].homing = 0;
+                    rtapi H[joint_num].homing = 0;
                     // joint->free_tp.enable = 0;
-                    
                 }
-                if(H[joint_num].home_state != HOME_IDLE){
+                if (H[joint_num].home_state != HOME_IDLE) {
                     rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine joint %d ready - set homing=0\n", joint_num);
                     H[joint_num].home_state = HOME_IDLE;
                 }
@@ -948,16 +946,15 @@ int pokeys_1joint_state_machine(int joint_num) {
             case PK_PEAxisState_axRUNNING:
                 rtapi_print_msg(RTAPI_MSG_DBG, "HOMING: pokeys_1joint_state_machine joint %d running\n", joint_num);
                 /* Axis is running */
-                
+
                 if (H[joint_num].homing) {
                     /* Axis is homing */
                     rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine joint %d running - set homing=0\n", joint_num);
                     H[joint_num].homing = 0;
                 }
-                if(H[joint_num].home_state != HOME_IDLE){
+                if (H[joint_num].home_state != HOME_IDLE) {
                     rtapi_print_msg(RTAPI_MSG_ERR, "HOMING: pokeys_1joint_state_machine joint %d running - set homing=0\n", joint_num);
                     H[joint_num].home_state = HOME_IDLE;
-
                 }
                 break;
 
