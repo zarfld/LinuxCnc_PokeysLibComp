@@ -1053,7 +1053,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                     "homing arm encoder - index pulse arrived joint->free_tp.enable %d\n",
                                     __FILE__, __FUNCTION__, joint_num, joint->free_tp.enable);
                     // joint->free_tp.pos_cmd = joint->free_tp.curr_pos; // set to zero
-                    joint->free_tp.pos_cmd = 0; // set to zero
+                    joint->free_tp.pos_cmd = 0.0; // set to zero
                     rtapi_print_msg(RTAPI_MSG_ERR,
                                     "XPoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d "
                                     "homing arm encoder - index pulse arrived joint->free_tp.pos_cmd %d\n",
