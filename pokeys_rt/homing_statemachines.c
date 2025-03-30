@@ -109,12 +109,22 @@ static int base_1joint_state_machine(int joint_num) {
                 break;
 
             case HOME_UNLOCK:
+                // @startuml
+                // note right of HOME_START
+                // Transition to HOME_UNLOCK if HOME_UNLOCK_FIRST flag is set
+                // end note
+                // @enduml
                 // unlock now
                 SetRotaryUnlock(joint_num, 1);
                 H[joint_num].home_state = HOME_UNLOCK_WAIT;
                 break;
 
             case HOME_UNLOCK_WAIT:
+                // @startuml
+                // note right of HOME_UNLOCK
+                // Transition to HOME_UNLOCK_WAIT if not yet unlocked
+                // end note
+                // @enduml
                 // if not yet unlocked, continue waiting
                 if ((H[joint_num].home_flags & HOME_UNLOCK_FIRST) && !GetRotaryIsUnlocked(joint_num))
                     break;
@@ -147,6 +157,11 @@ static int base_1joint_state_machine(int joint_num) {
                 break;
 
             case HOME_INITIAL_BACKOFF_START:
+                // @startuml
+                // note right of HOME_UNLOCK_WAIT
+                // Transition to HOME_INITIAL_BACKOFF_START if home_search_vel is non-zero
+                // end note
+                // @enduml
                 /** @brief  This state is called if the homing sequence starts at a
                    location where the home switch is already tripped. It
                    starts a move away from the switch. */
@@ -170,6 +185,11 @@ static int base_1joint_state_machine(int joint_num) {
                 break;
 
             case HOME_INITIAL_BACKOFF_WAIT:
+                // @startuml
+                // note right of HOME_INITIAL_BACKOFF_START
+                // Transition to HOME_INITIAL_BACKOFF_WAIT if joint is still moving
+                // end note
+                // @enduml
                 /** @brief  This state is called while the machine is moving off of
                    the home switch.  It terminates when the switch is cleared
                    successfully.  If the move ends or hits a limit before it
