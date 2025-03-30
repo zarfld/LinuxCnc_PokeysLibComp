@@ -2699,6 +2699,10 @@ void do_cancel_homing(int jno) {
     // one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: do_cancel_homing(%d)\n", __FILE__, __FUNCTION__, jno);
     H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGCANCEL;
+    H[jno].home_state = HOME_ABORT;
+    H[jno].homing = 0;
+    H[jno].homed = 0;
+    H[jno].joint_in_sequence = 0;
     return;
 }
 
