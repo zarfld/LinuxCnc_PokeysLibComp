@@ -942,6 +942,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                         /* Axis is homing */
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d PK_PEAxisState_axREADY/HOME_FINAL_MOVE_WAIT - set homing=0\n", __FILE__, __FUNCTION__, joint_num);
                         H[joint_num].homing = 0;
+                        homing_flag = 0;
                     }
                     if (!H[joint_num].homed) {
                         /* Axis is homing */
@@ -983,6 +984,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                     /* Axis is homing */
                     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d running - set homing=0\n", __FILE__, __FUNCTION__, joint_num);
                     H[joint_num].homing = 0;
+                    homing_flag = 0;
                 }
                 if (H[joint_num].home_state != HOME_IDLE) {
                     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d running - set homing=0\n", __FILE__, __FUNCTION__, joint_num);
@@ -2326,11 +2328,11 @@ static void do_homing_sequence(void) {
                         break;
 
                     case PK_PEAxisState_axREADY:
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(RTAPI_MSG_ERR,
                                         "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) "
                                         "HOME_SEQUENCE_WAIT_JOINTS joint %d "
-                                        "PK_PEAxisState_axREADY\n",
-                                        __FILE__, __FUNCTION__, current_sequence, jno);
+                                        "PK_PEAxisState_axREADY (home_state %d home %d )\n",
+                                        __FILE__, __FUNCTION__, current_sequence, jno,H[jj].home_state,H[jj].homed);
                         if (H[jj].homed) {
                             homed_count++;
                         }
