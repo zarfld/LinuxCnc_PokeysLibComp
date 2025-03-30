@@ -2108,7 +2108,9 @@ void do_home_joint(int jno) {
  *
  * @note All transitions are logged via `rtapi_print_msg` for detailed debugging.
  */
-static void do_homing_sequence(void) {
+ int dhs_homed_count_memory = 0; 
+ int dhs_joints_in_sequence_memory= 0;  
+ static void do_homing_sequence(void) {
     int i, ii;
     int seen;
     emcmot_joint_t *joint;
@@ -2544,10 +2546,16 @@ static void do_homing_sequence(void) {
                         break;
                 }
             }
-            rtapi_print_msg(RTAPI_MSG_ERR,
-                            "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS "
-                            "homed_count:%d joints_in_sequence:%d \n",
-                            __FILE__, __FUNCTION__, current_sequence, homed_count, joints_in_sequence);
+
+            if(dhs_homed_count_memory != homed_count || dhs_joints_in_sequence_memory != joints_in_sequence) {
+                rtapi_print_msg(RTAPI_MSG_ERR,
+                    "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS "
+                    "homed_count:%d joints_in_sequence:%d \n",
+                    __FILE__, __FUNCTION__, current_sequence, homed_count, joints_in_sequence);
+                dhs_homed_count_memory = homed_count;
+                dhs_joints_in_sequence_memory = joints_in_sequence;
+            }
+            
             if (homed_count == joints_in_sequence) {
                 if (addr.is_last) {
                     rtapi_print_msg(RTAPI_MSG_ERR,
@@ -2624,7 +2632,7 @@ static void do_homing_sequence(void) {
 bool beginning_allhomed_memory = 0;
 bool end_allhomed_memory = 0;
 bool homing_active_memory = 0;
-bool homing_flag_memory = 0;
+int homing_flag_memory = 0;
 bool do_homing(void) {
     int joint_num;
     int homing_flag = 0;
@@ -2652,9 +2660,9 @@ bool do_homing(void) {
             continue;
         }
         active_joints++;
-        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: do_homing joint %d - pokeys_1joint_state_machine\n", __FILE__, __FUNCTION__, joint_num);
+        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing joint %d - pokeys_1joint_state_machine\n", __FILE__, __FUNCTION__, joint_num);
         homing_flag += pokeys_1joint_state_machine(joint_num);
-        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: do_homing joint: %d homing_flag: %d \n", __FILE__, __FUNCTION__, joint_num, homing_flag);
+        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing joint: %d homing_flag: %d \n", __FILE__, __FUNCTION__, joint_num, homing_flag);
     }
     // return 1 if homing completed this period
 
