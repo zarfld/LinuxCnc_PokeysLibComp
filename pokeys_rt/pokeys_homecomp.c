@@ -2335,14 +2335,14 @@ static void do_homing_sequence(void) {
                                         "HOME_SEQUENCE_WAIT_JOINTS joint %d "
                                         "PK_PEAxisState_axREADY (home_state %d home %d )\n",
                                         __FILE__, __FUNCTION__, current_sequence, jno, H[jj].home_state, H[jj].homed);
-                        if (H[jj].homed) {
+                        if (H[jno].homed) {
                             homed_count++;
                         }
-                        if (H[jj].home_state == HOME_FINAL_MOVE_WAIT) {
+                        if (H[jno].home_state == HOME_FINAL_MOVE_WAIT) {
 
-                        } else if (H[jj].home_state == HOME_FINISHED) {
+                        } else if (H[jno].home_state == HOME_FINISHED) {
 
-                        } else if (H[jj].home_state == HOME_INDEX_SEARCH_WAIT || H[jj].home_state == HOME_SET_INDEX_POSITION) {
+                        } else if (H[jno].home_state == HOME_INDEX_SEARCH_WAIT || H[jno].home_state == HOME_SET_INDEX_POSITION) {
 
                         } else if (sequence_state != HOME_SEQUENCE_START_JOINTS && sequence_state != HOME_SEQUENCE_WAIT_JOINTS) {
 
