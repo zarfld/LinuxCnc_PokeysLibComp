@@ -1145,21 +1145,21 @@ int pokeys_1joint_state_machine(int joint_num) {
                                             "PoKeys_homecomp: %s:%s: do_home_joint.PK_PEAxisState_axHOME "
                                             "joint %d homed (home_sequence %d)\n",
                                             __FILE__, __FUNCTION__, jj, H[joint_num].home_sequence);
-                                            if(H[jj].PEv2_AxesCommand != PK_PEAxisCommand_axHOMINGFINALMOVE){
-                                                rtapi_print_msg(RTAPI_MSG_ERR,
-                                                                "PoKeys_homecomp: %s:%s: do_home_joint.PK_PEAxisState_axHOME "
-                                                                "joint %d homed (home_sequence %d) - set PEv2_AxesCommand=PK_PEAxisCommand_axHOMINGFINALMOVE\n",
-                                                                __FILE__, __FUNCTION__, jj, H[joint_num].home_sequence);
-                                                H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALMOVE;
-                                            }
-                            if(H[jj].home_state != HOME_FINAL_MOVE_START){
+                            if (H[jj].PEv2_AxesCommand != PK_PEAxisCommand_axHOMINGFINALMOVE) {
+                                rtapi_print_msg(RTAPI_MSG_ERR,
+                                                "PoKeys_homecomp: %s:%s: do_home_joint.PK_PEAxisState_axHOME "
+                                                "joint %d homed (home_sequence %d) - set PEv2_AxesCommand=PK_PEAxisCommand_axHOMINGFINALMOVE\n",
+                                                __FILE__, __FUNCTION__, jj, H[joint_num].home_sequence);
+                                H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALMOVE;
+                            }
+                            if (H[jj].home_state != HOME_FINAL_MOVE_START) {
                                 rtapi_print_msg(RTAPI_MSG_ERR,
                                                 "PoKeys_homecomp: %s:%s: do_home_joint.PK_PEAxisState_axHOME "
                                                 "joint %d homed (home_sequence %d) - set home_state=HOME_FINAL_MOVE_START\n",
                                                 __FILE__, __FUNCTION__, jj, H[joint_num].home_sequence);
                                 H[jj].home_state = HOME_FINAL_MOVE_START;
                             }
-                            
+
                             // H[jj].homing = 0;
                             H[jj].homed = 0;
                         }
