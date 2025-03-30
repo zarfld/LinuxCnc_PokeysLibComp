@@ -2108,9 +2108,9 @@ void do_home_joint(int jno) {
  *
  * @note All transitions are logged via `rtapi_print_msg` for detailed debugging.
  */
- int dhs_homed_count_memory = 0; 
- int dhs_joints_in_sequence_memory= 0;  
- static void do_homing_sequence(void) {
+int dhs_homed_count_memory = 0;
+int dhs_joints_in_sequence_memory = 0;
+static void do_homing_sequence(void) {
     int i, ii;
     int seen;
     emcmot_joint_t *joint;
@@ -2547,15 +2547,15 @@ void do_home_joint(int jno) {
                 }
             }
 
-            if(dhs_homed_count_memory != homed_count || dhs_joints_in_sequence_memory != joints_in_sequence) {
+            if (dhs_homed_count_memory != homed_count || dhs_joints_in_sequence_memory != joints_in_sequence) {
                 rtapi_print_msg(RTAPI_MSG_ERR,
-                    "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS "
-                    "homed_count:%d joints_in_sequence:%d \n",
-                    __FILE__, __FUNCTION__, current_sequence, homed_count, joints_in_sequence);
+                                "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS "
+                                "homed_count:%d joints_in_sequence:%d \n",
+                                __FILE__, __FUNCTION__, current_sequence, homed_count, joints_in_sequence);
                 dhs_homed_count_memory = homed_count;
                 dhs_joints_in_sequence_memory = joints_in_sequence;
             }
-            
+
             if (homed_count == joints_in_sequence) {
                 if (addr.is_last) {
                     rtapi_print_msg(RTAPI_MSG_ERR,
