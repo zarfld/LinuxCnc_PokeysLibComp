@@ -2625,7 +2625,7 @@ bool beginning_allhomed_memory = 0;
 bool end_allhomed_memory = 0;
 bool homing_active_memory = 0;
 bool homing_flag_memory = 0;
- bool do_homing(void) {
+bool do_homing(void) {
     int joint_num;
     int homing_flag = 0;
     int active_joints = 0;
@@ -2660,15 +2660,15 @@ bool homing_flag_memory = 0;
 
     bool end_allhomed = get_allhomed();
     //    sequence_state = HOME_SEQUENCE_IDLE;
-    if (beginning_allhomed_memory != beginning_allhomed || end_allhomed_memory == 1 && end_allhomed == 0 || homing_active_memory != homing_active ||    homing_flag_memory != homing_flag) {
+    if (beginning_allhomed_memory != beginning_allhomed || end_allhomed_memory == 1 && end_allhomed == 0 || homing_active_memory != homing_active || homing_flag_memory != homing_flag) {
         rtapi_print_msg(RTAPI_MSG_DBG,
-            "PoKeys_homecomp: %s:%s: beginning_allhomed: %d / end_allhomed: %d  "
-            "homing_active: %d homing_flag:%d\n",
-            __FILE__, __FUNCTION__, beginning_allhomed, end_allhomed, homing_active,homing_flag);
-            beginning_allhomed_memory = beginning_allhomed;
-            end_allhomed_memory = end_allhomed;
-            homing_active_memory = homing_active;
-            homing_flag_memory = homing_flag;
+                        "PoKeys_homecomp: %s:%s: beginning_allhomed: %d / end_allhomed: %d  "
+                        "homing_active: %d homing_flag:%d\n",
+                        __FILE__, __FUNCTION__, beginning_allhomed, end_allhomed, homing_active, homing_flag);
+        beginning_allhomed_memory = beginning_allhomed;
+        end_allhomed_memory = end_allhomed;
+        homing_active_memory = homing_active;
+        homing_flag_memory = homing_flag;
     }
     if (beginning_allhomed == 0 && end_allhomed == 1 && homing_flag == 0) {
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: do_homing homing completed\n", __FILE__, __FUNCTION__);
@@ -2678,7 +2678,7 @@ bool homing_flag_memory = 0;
     } else {
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing homing_flag %d\n", __FILE__, __FUNCTION__, homing_flag);
     }
-    
+
     return false;
 }
 
