@@ -1237,21 +1237,21 @@ int pokeys_1joint_state_machine(int joint_num) {
                                     "PoKeys_homecomp: %s:%s: PK_PEAxisState_axHOME joint %d "
                                     "homed (home_sequence %d)\n",
                                     __FILE__, __FUNCTION__, joint_num, H[joint_num].home_sequence);
-                                    if(H[joint_num].PEv2_AxesCommand != PK_PEAxisCommand_axIDLE){
-                                        H[joint_num].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
-                                        rtapi_print_msg(RTAPI_MSG_ERR,
-                                                        "PoKeys_homecomp: %s:%s: PK_PEAxisState_axHOME joint %d "
-                                                        "homed (home_sequence %d) - set PEv2_AxesCommand=PK_PEAxisCommand_axIDLE\n",
-                                                        __FILE__, __FUNCTION__, joint_num, H[joint_num].home_sequence);
-                                    }
+                    if (H[joint_num].PEv2_AxesCommand != PK_PEAxisCommand_axIDLE) {
+                        H[joint_num].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
+                        rtapi_print_msg(RTAPI_MSG_ERR,
+                                        "PoKeys_homecomp: %s:%s: PK_PEAxisState_axHOME joint %d "
+                                        "homed (home_sequence %d) - set PEv2_AxesCommand=PK_PEAxisCommand_axIDLE\n",
+                                        __FILE__, __FUNCTION__, joint_num, H[joint_num].home_sequence);
+                    }
                     if (H[joint_num].home_state != HOME_FINISHED) {
                         rtapi_print_msg(RTAPI_MSG_ERR,
                                         "PoKeys_homecomp: %s:%s: PK_PEAxisState_axHOME joint %d "
                                         "homed (home_sequence %d) - set home_state=HOME_FINISHED\n",
                                         __FILE__, __FUNCTION__, joint_num, H[joint_num].home_sequence);
-                                        H[joint_num].home_state = HOME_FINISHED;
+                        H[joint_num].home_state = HOME_FINISHED;
                     }
-                    
+
                     // H[joint_num].homing = 0;
                     // H[joint_num].homed = 1;
                 }
