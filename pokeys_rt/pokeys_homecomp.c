@@ -2332,7 +2332,7 @@ static void do_homing_sequence(void) {
                                         "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) "
                                         "HOME_SEQUENCE_WAIT_JOINTS joint %d "
                                         "PK_PEAxisState_axREADY (home_state %d home %d )\n",
-                                        __FILE__, __FUNCTION__, current_sequence, jno,H[jj].home_state,H[jj].homed);
+                                        __FILE__, __FUNCTION__, current_sequence, jno, H[jj].home_state, H[jj].homed);
                         if (H[jj].homed) {
                             homed_count++;
                         }
