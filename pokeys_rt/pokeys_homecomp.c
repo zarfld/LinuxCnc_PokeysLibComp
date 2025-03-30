@@ -2661,16 +2661,15 @@ bool do_homing(void) {
     bool end_allhomed = get_allhomed();
     //    sequence_state = HOME_SEQUENCE_IDLE;
 
-    if (beginning_allhomed_memory != beginning_allhomed || end_allhomed_memory == 1 && end_allhomed == 0 || homing_active_memory != homing_active ||    homing_flag_memory != homing_flag) {
+    if (beginning_allhomed_memory != beginning_allhomed || end_allhomed_memory == 1 && end_allhomed == 0 || homing_active_memory != homing_active || homing_flag_memory != homing_flag) {
         rtapi_print_msg(RTAPI_MSG_ERR,
-            "PoKeys_homecomp: %s:%s: beginning_allhomed: %d / end_allhomed: %d  "
-            "homing_active: %d homing_flag:%d\n",
-            __FILE__, __FUNCTION__, beginning_allhomed, end_allhomed, homing_active,homing_flag);
-            beginning_allhomed_memory = beginning_allhomed;
-            end_allhomed_memory = end_allhomed;
-            homing_active_memory = homing_active;
-            homing_flag_memory = homing_flag;
-
+                        "PoKeys_homecomp: %s:%s: beginning_allhomed: %d / end_allhomed: %d  "
+                        "homing_active: %d homing_flag:%d\n",
+                        __FILE__, __FUNCTION__, beginning_allhomed, end_allhomed, homing_active, homing_flag);
+        beginning_allhomed_memory = beginning_allhomed;
+        end_allhomed_memory = end_allhomed;
+        homing_active_memory = homing_active;
+        homing_flag_memory = homing_flag;
     }
     if (beginning_allhomed == 0 && end_allhomed == 1 && homing_flag == 0) {
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: do_homing homing completed\n", __FILE__, __FUNCTION__);
