@@ -2706,7 +2706,7 @@ void do_cancel_homing(int jno) {
     H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGCANCEL;
     H[jno].home_state = HOME_ABORT;
     H[jno].homing = 0;
-   // H[jno].homed = 0;
+    // H[jno].homed = 0;
     H[jno].joint_in_sequence = 0;
     return;
 }
