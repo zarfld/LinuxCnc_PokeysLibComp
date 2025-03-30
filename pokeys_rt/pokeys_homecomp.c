@@ -1311,7 +1311,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                 "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine unknown "
                                 "state '%d' during homing j=%d",
                                 __FILE__, __FUNCTION__, H[joint_num].home_state, joint_num);
-                H[joint_num].home_state = HOME_ABORT;
+              //  H[joint_num].home_state = HOME_ABORT;
                 // immediate_state = 1;
                 break;
         } /* end of switch(H[joint_num].home_state) */
@@ -2331,12 +2331,13 @@ static void do_homing_sequence(void) {
                                         "HOME_SEQUENCE_WAIT_JOINTS joint %d "
                                         "PK_PEAxisState_axREADY\n",
                                         __FILE__, __FUNCTION__, current_sequence, jno);
+                                        if (H[jj].homed) {
+                                            homed_count++;
+                                        }
                         if (H[jj].home_state == HOME_FINAL_MOVE_WAIT) {
 
                         } else if (H[jj].home_state == HOME_FINISHED) {
-                            if (H[jj].homed) {
-                                homed_count++;
-                            }
+                            
 
                         } else if (H[jj].home_state == HOME_INDEX_SEARCH_WAIT || H[jj].home_state == HOME_SET_INDEX_POSITION) {
 

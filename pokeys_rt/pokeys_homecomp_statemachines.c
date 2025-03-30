@@ -607,7 +607,7 @@ static void do_homing_sequence(void) {
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) joints_in_sequence = %d\n", __FILE__, __FUNCTION__, current_sequence, joints_in_sequence);
     int joints_in_sequence_DBG = 0;
     one_sequence_home_data_t addr_dbg;
-    /** @startuml */
+
     switch (sequence_state) {
 
         /** state HOME_SEQUENCE_IDLE {*/
