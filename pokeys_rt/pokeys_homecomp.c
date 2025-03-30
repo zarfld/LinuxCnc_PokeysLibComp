@@ -962,7 +962,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d PK_PEAxisState_axREADY/HOME_FINAL_MOVE_WAIT - set PEv2_AxesCommand=PK_PEAxisCommand_axIDLE\n", __FILE__, __FUNCTION__, joint_num);
                         H[joint_num].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
                     }
-                   // H[joint_num].home_state = HOME_FINISHED;
+                    // H[joint_num].home_state = HOME_FINISHED;
                 } else if (H[joint_num].home_state == HOME_START) {
                     if (H[joint_num].PEv2_AxesCommand != PK_PEAxisCommand_axIDLE) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d PK_PEAxisState_axREADY/HOME_START - set PEv2_AxesCommand=0\n", __FILE__, __FUNCTION__, joint_num);
