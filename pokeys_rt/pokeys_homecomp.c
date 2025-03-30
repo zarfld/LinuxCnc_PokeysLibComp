@@ -1631,16 +1631,16 @@ bool get_homing(int jno) {
  * @ingroup PoKeys_HomingRuntime
  * @ingroup PoKeys_HomingStatusQuery
  */
-bool get_homing_at_index_search_wait_memory;
+bool get_homing_at_index_search_wait_memory[8];
 bool get_homing_at_index_search_wait(int jno) {
     // return 0;
 
-    if (get_homing_at_index_search_wait_memory != (HOME_INDEX_SEARCH_WAIT ? 1 : 0)) {
+    if (get_homing_at_index_search_wait_memory[jno] != (HOME_INDEX_SEARCH_WAIT ? 1 : 0)) {
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: get_homing_at_index_search_wait joint %d index_enable %d\n", __FILE__, __FUNCTION__, jno, H[jno].index_enable);
-        get_homing_at_index_search_wait_memory = HOME_INDEX_SEARCH_WAIT ? 1 : 0;
+        get_homing_at_index_search_wait_memory[jno] = HOME_INDEX_SEARCH_WAIT ? 1 : 0;
     }
 
-    // return H[jno].home_state == HOME_INDEX_SEARCH_WAIT ? 1 : 0;
+    return H[jno].home_state == HOME_INDEX_SEARCH_WAIT ? 1 : 0;
     // return H[jno] ? index_search_active : 0;
 }
 
@@ -2621,7 +2621,11 @@ static void do_homing_sequence(void) {
  * }
  * @enddot
  */
-bool do_homing(void) {
+bool beginning_allhomed_memory = 0;
+bool end_allhomed_memory = 0;
+bool homing_active_memory = 0;
+bool homing_flag_memory = 0;
+ bool do_homing(void) {
     int joint_num;
     int homing_flag = 0;
     int active_joints = 0;
@@ -2655,6 +2659,17 @@ bool do_homing(void) {
     // return 1 if homing completed this period
 
     bool end_allhomed = get_allhomed();
+    //    sequence_state = HOME_SEQUENCE_IDLE;
+    if (beginning_allhomed_memory != beginning_allhomed || end_allhomed_memory == 1 && end_allhomed == 0 || homing_active_memory != homing_active ||    homing_flag_memory != homing_flag) {
+        rtapi_print_msg(RTAPI_MSG_DBG,
+            "PoKeys_homecomp: %s:%s: beginning_allhomed: %d / end_allhomed: %d  "
+            "homing_active: %d homing_flag:%d\n",
+            __FILE__, __FUNCTION__, beginning_allhomed, end_allhomed, homing_active,homing_flag);
+            beginning_allhomed_memory = beginning_allhomed;
+            end_allhomed_memory = end_allhomed;
+            homing_active_memory = homing_active;
+            homing_flag_memory = homing_flag;
+    }
     if (beginning_allhomed == 0 && end_allhomed == 1 && homing_flag == 0) {
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: do_homing homing completed\n", __FILE__, __FUNCTION__);
         homing_active = 0;
@@ -2663,10 +2678,7 @@ bool do_homing(void) {
     } else {
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing homing_flag %d\n", __FILE__, __FUNCTION__, homing_flag);
     }
-    rtapi_print_msg(RTAPI_MSG_DBG,
-                    "PoKeys_homecomp: %s:%s: beginning_allhomed: %d / end_allhomed: %d  "
-                    "homing_active: %d \n",
-                    __FILE__, __FUNCTION__, beginning_allhomed, end_allhomed, homing_active);
+    
     return false;
 }
 
