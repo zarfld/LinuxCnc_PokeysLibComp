@@ -1025,7 +1025,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                     H[joint_num].homing = 1;
                 }
 
-                if (H[joint_num].home_state != HOME_UNLOCK){
+                if (H[joint_num].home_state != HOME_UNLOCK) {
 
                     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] PK_PEAxisState_axHOMING_RESETTING - set home_state = HOME_UNLOCK\n", __FILE__, __FUNCTION__, joint_num);
                     H[joint_num].home_state = HOME_UNLOCK;
