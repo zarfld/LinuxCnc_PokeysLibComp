@@ -1161,8 +1161,10 @@ int pokeys_1joint_state_machine(int joint_num) {
                             }
 
                             // H[jj].homing = 0;
-                            if (H[jj].homed) {
-                                H[jj].homed = 0;
+
+                            if(H[jj].homed) {
+                             //   H[jj].homed = 0;
+
                                 rtapi_print_msg(RTAPI_MSG_ERR,
                                                 "PoKeys_homecomp: %s:%s: PEAxisStateEx_HOMINGWaitFINALMOVE "
                                                 "joint %d homed (home_sequence %d) - set homed=0\n",
@@ -1184,8 +1186,13 @@ int pokeys_1joint_state_machine(int joint_num) {
                     }
 
                     // H[joint_num].homing = 0;
+<<<<<<< HEAD
+                    if(H[joint_num].homed){
+                      //  H[joint_num].homed = 0;
+=======
                     if (H[joint_num].homed) {
                         H[joint_num].homed = 0;
+>>>>>>> ffbecdac9abdf489bac7a203650156a30439c93d
                         rtapi_print_msg(RTAPI_MSG_ERR,
                                         "PoKeys_homecomp: %s:%s: PEAxisStateEx_HOMINGWaitFINALMOVE joint %d "
                                         "homed (home_sequence %d) - set homed=0\n",
