@@ -2712,7 +2712,7 @@ bool do_homing(void) {
         homing_active = 0;
         sequence_state = HOME_SEQUENCE_IDLE;
 
-        retval= true;
+        retval = true;
     } else {
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing homing_flag %d\n", __FILE__, __FUNCTION__, homing_flag);
     }
