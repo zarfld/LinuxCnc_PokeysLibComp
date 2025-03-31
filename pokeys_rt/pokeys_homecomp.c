@@ -2659,11 +2659,13 @@ bool beginning_allhomed_memory = 0;
 bool end_allhomed_memory = 0;
 bool homing_active_memory = 0;
 int homing_flag_memory = 0;
+bool do_homing_retval_memory = 0;
 bool do_homing(void) {
     int joint_num;
     int homing_flag = 0;
     int active_joints = 0;
     bool beginning_allhomed = get_allhomed();
+    bool retval = false;
 
     if (sequence_state != HOME_SEQUENCE_IDLE) {
         // check_home_sequence(current_sequence);
@@ -2709,12 +2711,16 @@ bool do_homing(void) {
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: do_homing homing completed\n", __FILE__, __FUNCTION__);
         homing_active = 0;
         sequence_state = HOME_SEQUENCE_IDLE;
-        return true;
+
+        retval= true;
     } else {
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing homing_flag %d\n", __FILE__, __FUNCTION__, homing_flag);
     }
-
-    return false;
+    if (do_homing_retval_memory != retval) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: do_homing retval %d\n", __FILE__, __FUNCTION__, retval);
+        do_homing_retval_memory = retval;
+    }
+    return retval;
 }
 
 /**
