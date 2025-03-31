@@ -1178,7 +1178,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                     for (int jj = 0; jj < all_joints; jj++) {
 
                         if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence)) {
-                            rtapi_print_msg(RTAPI_MSG_ERR,
+                            rtapi_print_msg(RTAPI_MSG_DBG,
                                             "PoKeys_homecomp: %s:%s: PEAxisStateEx_HOMINGWaitFINALMOVE "
                                             "joint %d homed (home_sequence %d)\n",
                                             __FILE__, __FUNCTION__, jj, H[joint_num].home_sequence);
