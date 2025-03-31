@@ -1856,17 +1856,16 @@ void read_homing_in_pins(int njoints) {
     int jno;
     int org_state;
     int org_index_enable;
-    int org_home_sw:
-    one_joint_home_data_t *addr;
+    int org_home_sw : one_joint_home_data_t *addr;
     for (jno = 0; jno < njoints; jno++) {
         addr = &(joint_home_data->jhd[jno]);
- 
+
         org_home_sw = H[jno].home_sw;
         H[jno].home_sw = *(addr->home_sw); // IN
         if (H[jno].home_sw != org_home_sw) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: read_homing_in_pins joint[%d] home_sw changed :%d\n", __FILE__, __FUNCTION__, jno, H[jno].home_sw);
         }
-     
+
         org_state = H[jno].PEv2_AxesState;
         H[jno].PEv2_AxesState = *(addr->PEv2_AxesState); // IN
         if (H[jno].PEv2_AxesState != org_state) {
@@ -1907,13 +1906,13 @@ void write_homing_out_pins(int njoints) {
         addr = &(joint_home_data->jhd[jno]);
 
         org_homing = *(addr->homing);
-        *(addr->homing) = H[jno].homing;         // OUT
+        *(addr->homing) = H[jno].homing; // OUT
         if (org_homing != H[jno].homing) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: write_homing_out_pins joint[%d] homing changed :%d\n", __FILE__, __FUNCTION__, jno, H[jno].homing);
         }
 
         org_homed = *(addr->homed);
-        *(addr->homed) = H[jno].homed;           // OUT
+        *(addr->homed) = H[jno].homed; // OUT
         if (org_homed != H[jno].homed) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: write_homing_out_pins joint[%d] homed changed :%d\n", __FILE__, __FUNCTION__, jno, H[jno].homed);
         }
@@ -1929,13 +1928,12 @@ void write_homing_out_pins(int njoints) {
         if (org_index_enable != H[jno].index_enable) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: write_homing_out_pins joint[%d] index_enable changed :%d\n", __FILE__, __FUNCTION__, jno, H[jno].index_enable);
         }
-        
+
         org_cmd = *(addr->PEv2_AxesCommand);
         *(addr->PEv2_AxesCommand) = H[jno].PEv2_AxesCommand; // OUT
         if (org_cmd != H[jno].PEv2_AxesCommand) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: write_homing_out_pins joint[%d] command changed :%d\n", __FILE__, __FUNCTION__, jno, H[jno].PEv2_AxesCommand);
         }
-
     }
     //  rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: write_homing_out_pins\n");
     return;
