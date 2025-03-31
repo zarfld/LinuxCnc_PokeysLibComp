@@ -1595,7 +1595,7 @@ void user_mainloop(void) {
                 } else {
                     sleepdur_S[0] = sleepdur; // use normal Sleepduration
                 }
-                if (rtc_lastmin != rtc_min) { // tome for a setup loop
+                if (rtc_lastsec != rtc_sec && !HAL_Machine_On) { // tome for a setup loop
                     use_sleepdur1 = false;
                     sleepdur_S[0] = sleepdur;       // store normal sleepduration
                     sleepdur = sleepdur_S[doSetup]; // apply setup sleepduration
