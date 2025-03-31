@@ -970,11 +970,10 @@ int pokeys_1joint_state_machine(int joint_num) {
                     }
 
                     if (!(H[joint_num].home_flags & HOME_ABSOLUTE_ENCODER)) {
-                        if(joints[joint_num].free_tp.curr_pos != H[joint_num].home){
-                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] PK_PEAxisState_axREADY/HOME_FINAL_MOVE_WAIT - set free_tp.curr_pos=home (%f)\n", __FILE__, __FUNCTION__, joint_num,H[joint_num].home);
+                        if (joints[joint_num].free_tp.curr_pos != H[joint_num].home) {
+                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] PK_PEAxisState_axREADY/HOME_FINAL_MOVE_WAIT - set free_tp.curr_pos=home (%f)\n", __FILE__, __FUNCTION__, joint_num, H[joint_num].home);
                             joints[joint_num].free_tp.curr_pos = H[joint_num].home; // home position
                         }
-                        
                     }
 
                     if (H[joint_num].home_state != HOME_IDLE) {
@@ -1868,13 +1867,13 @@ void read_homing_in_pins(int njoints) {
     one_joint_home_data_t *addr;
     for (jno = 0; jno < njoints; jno++) {
         addr = &(joint_home_data->jhd[jno]);
- 
+
         org_home_sw = H[jno].home_sw;
         H[jno].home_sw = *(addr->home_sw); // IN
         if (H[jno].home_sw != org_home_sw) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: read_homing_in_pins joint[%d] home_sw changed :%d\n", __FILE__, __FUNCTION__, jno, H[jno].home_sw);
         }
-     
+
         org_state = H[jno].PEv2_AxesState;
         H[jno].PEv2_AxesState = *(addr->PEv2_AxesState); // IN
         if (H[jno].PEv2_AxesState != org_state) {
@@ -1915,13 +1914,13 @@ void write_homing_out_pins(int njoints) {
         addr = &(joint_home_data->jhd[jno]);
 
         org_homing = *(addr->homing);
-        *(addr->homing) = H[jno].homing;         // OUT
+        *(addr->homing) = H[jno].homing; // OUT
         if (org_homing != H[jno].homing) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: write_homing_out_pins joint[%d] homing changed :%d\n", __FILE__, __FUNCTION__, jno, H[jno].homing);
         }
 
         org_homed = *(addr->homed);
-        *(addr->homed) = H[jno].homed;           // OUT
+        *(addr->homed) = H[jno].homed; // OUT
         if (org_homed != H[jno].homed) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: write_homing_out_pins joint[%d] homed changed :%d\n", __FILE__, __FUNCTION__, jno, H[jno].homed);
         }
@@ -1937,13 +1936,12 @@ void write_homing_out_pins(int njoints) {
         if (org_index_enable != H[jno].index_enable) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: write_homing_out_pins joint[%d] index_enable changed :%d\n", __FILE__, __FUNCTION__, jno, H[jno].index_enable);
         }
-        
+
         org_cmd = *(addr->PEv2_AxesCommand);
         *(addr->PEv2_AxesCommand) = H[jno].PEv2_AxesCommand; // OUT
         if (org_cmd != H[jno].PEv2_AxesCommand) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: write_homing_out_pins joint[%d] command changed :%d\n", __FILE__, __FUNCTION__, jno, H[jno].PEv2_AxesCommand);
         }
-
     }
     //  rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: write_homing_out_pins\n");
     return;
