@@ -1253,7 +1253,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                     __FILE__, __FUNCTION__, joint_num);
                 }
                 if (H[joint_num].home_state != HOME_FINAL_MOVE_WAIT) {
-                    H[joint_num].home_state = HOME_FINAL_MOVE_WAIT;
+                  //  H[joint_num].home_state = HOME_FINAL_MOVE_WAIT;
                     rtapi_print_msg(RTAPI_MSG_ERR,
                                     "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint %d "
                                     "PEAxisStateEx_HOMINGFINALMOVE - set home_state=HOME_FINAL_MOVE_WAIT\n",
