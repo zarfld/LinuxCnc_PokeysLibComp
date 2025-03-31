@@ -879,7 +879,7 @@ bool get_sequence_homing(int seq) {
  * @enduml
  */
 bool Homing_ArmEncodereDone[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-in 1jsm_AxesState_memory [8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+int 1jsm_AxesState_memory [8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 int pokeys_1joint_state_machine(int joint_num) {
     emcmot_joint_t *joint;
     double offset, tmp;
