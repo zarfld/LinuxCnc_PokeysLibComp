@@ -916,7 +916,7 @@ bool use_sleepdur1 = true;
 unsigned int sleepdur1 = 1000;
 unsigned int sleepdur2 = 1000;
 
-unsigned int sleepdur_S[10] = { 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000 };
+unsigned int sleepdur_S[20] = { 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000,1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000 };
 
 // bool DoPWM = false;
 bool DoEncoders = true;
@@ -1563,7 +1563,8 @@ void user_mainloop(void) {
                     // sleepdur
                     if (rtc_loop_frequ > 15) {
                         if (rtc_loop_frequ_demand == 0) {
-                            sleepdur = sleepdur * rtc_loop_frequ / 15;
+                            sleepdur = sleepdur * rtc_loop_frequ / 25;
+                            rtc_loop_frequ_demand = 25;
                         } else {
                             sleepdur = sleepdur * rtc_loop_frequ / rtc_loop_frequ_demand;
                         }
@@ -1583,17 +1584,22 @@ void user_mainloop(void) {
                     }
                 }
                 // hope to get loopfrequency more stable - as on everyminute additional actions
-                if (use_sleepdur1 == false) {
-                    sleepdur2 = sleepdur;
-                    sleepdur = sleepdur1;
+                if (HAL_Machine_On == false) {
+                    if (doSetup > 0) {
+
+                    }
+                }
+                if (use_sleepdur1 == false) { // detect if last loop was do setup
+                    sleepdur_S[doSetup] = sleepdur; // rememeber sleepdur of Setup loop
+                    sleepdur = sleepdur_S[0] ; // reset to normal sleepduration
                     use_sleepdur1 = true;
                 } else {
-                    sleepdur1 = sleepdur;
+                    sleepdur_S[0] = sleepdur; // use normal Sleepduration
                 }
-                if (rtc_lastmin != rtc_min) {
+                if (rtc_lastmin != rtc_min) { // tome for a setup loop
                     use_sleepdur1 = false;
-                    sleepdur1 = sleepdur;
-                    sleepdur = sleepdur2;
+                    sleepdur_S[0] = sleepdur;  // store normal sleepduration
+                    sleepdur = sleepdur_S[doSetup] ; // apply setup sleepduration
                 }
 
                 if (rtc_sec_ret >= rtc_latencycheck_set && rtc_latencycheck_set > 0) {
