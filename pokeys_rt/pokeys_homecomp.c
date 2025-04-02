@@ -1239,7 +1239,7 @@ int pokeys_1joint_state_machine(int joint_num) {
         int Set_PEAxisCommand;
         int Set_home_state;
         int requested_PEAxisState;
-        const char* home_state_case;
+        const char *home_state_case;
 
         /** switch to analyz homestate */
         switch (H[joint_num].home_state) {
