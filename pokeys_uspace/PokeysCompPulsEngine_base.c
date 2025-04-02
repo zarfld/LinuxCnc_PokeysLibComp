@@ -1743,7 +1743,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                     case PK_Homing_axHOMINGWaitFinalMove:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGWaitFinalMove\n", __FILE__, __FUNCTION__);
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGWaitFinalMove;
-                       // *(PEv2_data->PEv2_index_enable[axis]) = false; // disable index on step after ARMENCODER
+                        // *(PEv2_data->PEv2_index_enable[axis]) = false; // disable index on step after ARMENCODER
                         break;
                     case PK_Homing_axHOMINGFinalMove:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalMove (HomePosition %d)\n", __FILE__, __FUNCTION__, (int32_t)PEv2_data->PEv2_HomePosition[axis]);
