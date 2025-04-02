@@ -954,7 +954,7 @@ bool get_sequence_synchronized_state(int seq, int desired_state) {
     }
 
     if (joints_in_sequence == ready_in_sequence) {
-    }
+    
     return 1;
 }
 else {
