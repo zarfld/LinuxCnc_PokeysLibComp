@@ -395,7 +395,7 @@ typedef enum {
 } local_home_state_t;
 
 const char *const PEv2_AxisCommand_Names[] = {
-    [PK_PEAxisCommand_axIDLE] = "PK_PEAxisCommand_axIDLE", [PK_PEAxisCommand_axHOMINGSTART] = "PK_PEAxisCommand_axHOMINGSTART", [PK_PEAxisCommand_axARMENCODER] = "PK_PEAxisCommand_axARMENCODER", [PK_PEAxisCommand_axHOMINGWaitFinalMove] = "PK_PEAxisCommand_axHOMINGWaitFinalMove", [PK_PEAxisCommand_axHOMINGFinalMove] = "PK_PEAxisCommand_axHOMINGFinalMove", [PK_PEAxisCommand_axHOMINGCancel] = "PK_PEAxisCommand_axHOMINGCancel", [PK_PEAxisCommand_axHOMINGFinalize] = "PK_PEAxisCommand_axHOMINGFinalize"
+    [PK_PEAxisCommand_axIDLE] = "PK_PEAxisCommand_axIDLE", [PK_PEAxisCommand_axHOMINGSTART] = "PK_PEAxisCommand_axHOMINGSTART", [PK_PEAxisCommand_axARMENCODER] = "PK_PEAxisCommand_axARMENCODER", [PK_PEAxisCommand_axHOMINGWAITFINALMOVE] = "PK_PEAxisCommand_axHOMINGWAITFINALMOVE", [PK_PEAxisCommand_axHOMINGFINALMOVE] = "PK_PEAxisCommand_axHOMINGFINALMOVE", [PK_PEAxisCommand_axHOMINGCANCEL] = "PK_PEAxisCommand_axHOMINGCANCEL", [PK_PEAxisCommand_axHOMINGFINALIZE] = "PK_PEAxisCommand_axHOMINGFINALIZE"
 };
 
 const char *const local_home_state_names[] = { [HOME_IDLE] = "HOME_IDLE",
@@ -425,26 +425,26 @@ const char *const local_home_state_names[] = { [HOME_IDLE] = "HOME_IDLE",
                                                [HOME_FINISHED] = "HOME_FINISHED",
                                                [HOME_ABORT] = "HOME_ABORT" };
 
-static const char *const PK_PEState_names[] = { [PK_PEState_peSTOPPED] = "PK_PEState_peSTOPPED",
-                                                [PK_PEState_peINTERNAL] = "PK_PEState_peINTERNAL",
-                                                [PK_PEState_peBUFFER] = "PK_PEState_peBUFFER",
-                                                [PK_PEState_peRUNNING] = "PK_PEState_peRUNNING",
+static const char *const PK_PEState_names[] = { [PK_PEAxisState_axPSTOPPED] = "PK_PEAxisState_axPSTOPPED",
+                                                [PK_PEAxisState_axPINTERNAL] = "PK_PEAxisState_axPINTERNAL",
+                                                [PK_PEAxisState_axPBUFFER] = "PK_PEAxisState_axPBUFFER",
+                                                [PK_PEAxisState_axPRUNNING] = "PK_PEAxisState_axPRUNNING",
 
-                                                [PK_PEState_peJOGGING] = "PK_PEState_peJOGGING",
-                                                [PK_PEState_peSTOPPING] = "PK_PEState_peSTOPPING",
+                                                [PK_PEAxisState_axPJOGGING] = "PK_PEAxisState_axPJOGGING",
+                                                [PK_PEAxisState_axPSTOPPING] = "PK_PEAxisState_axPSTOPPING",
 
-                                                [PK_PEState_peHOME] = "PK_PEState_peHOME",
-                                                [PK_PEState_peHOMING] = "PK_PEState_peHOMING",
+                                                [PK_PEAxisState_axPHOME] = "PK_PEAxisState_axPHOME",
+                                                [PK_PEAxisState_axPHOMING] = "PK_PEAxisState_axPHOMING",
 
-                                                [PK_PEState_pePROBECOMPLETE] = "PK_PEState_pePROBECOMPLETE",
-                                                [PK_PEState_pePROBE] = "PK_PEState_pePROBE",
-                                                [PK_PEState_pePROBEERROR] = "PK_PEState_pePROBEERROR",
+                                                [PK_PEAxisState_axPPROBECOMPLETE] = "PK_PEAxisState_axPPROBECOMPLETE",
+                                                [PK_PEAxisState_axPPROBE] = "PK_PEAxisState_axPPROBE",
+                                                [PK_PEAxisState_axPPROBEERROR] = "PK_PEAxisState_axPPROBEERROR",
 
-                                                [PK_PEState_peHYBRIDPROBE_STOPPING] = "PK_PEState_peHYBRIDPROBE_STOPPING",
-                                                [PK_PEState_peHYBRIDPROBE_COMPLETE] = "PK_PEState_peHYBRIDPROBE_COMPLETE",
+                                                [PK_PEAxisState_axPHYBRIDPROBE_STOPPING] = "PK_PEAxisState_axPHYBRIDPROBE_STOPPING",
+                                                [PK_PEAxisState_axPHYBRIDPROBE_COMPLETE] = "PK_PEAxisState_axPHYBRIDPROBE_COMPLETE",
 
-                                                [PK_PEState_peSTOP_LIMIT] = "PK_PEState_peSTOP_LIMIT",
-                                                [PK_PEState_peSTOP_EMERGENCY] = "PK_PEState_peSTOP_EMERGENCY" };
+                                                [PK_PEAxisState_axPSTOP_LIMIT] = "PK_PEAxisState_axPSTOP_LIMIT",
+                                                [PK_PEAxisState_axPSTOP_EMERGENCY] = "PK_PEAxisState_axPSTOP_EMERGENCY" };
 
 static const char *const PK_PEAxisState_names[] = { [PK_PEAxisState_axSTOPPED] = "PK_PEAxisState_axSTOPPED",
                                                     [PK_PEAxisState_axREADY] = "PK_PEAxisState_axREADY",
@@ -1401,7 +1401,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
                 joint->free_tp.vel_cmd = 0;
 
-                int Set_PEAxisCommand = PK_PEAxisCommand_axHOMINGFinalize;
+                int Set_PEAxisCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                 int Set_home_state = HOME_INDEX_SEARCH_START;
                 int requested_PEAxisState = PEAxisStateEx_axReadyToFinalizeHoming;
                 char home_state_case = "HOME_FINAL_BACKOFF_WAIT";
