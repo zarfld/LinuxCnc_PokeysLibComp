@@ -1167,7 +1167,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                     jsm_AxesState_memory[joint_num] = H[joint_num].PEv2_AxesState;
                 }
                 // HOME_INDEX_SEARCH_START
-                if (H[joint_num].home_state != HOME_INDEX_SEARCH_START) {
+                if (H[joint_num].home_state != HOME_INDEX_SEARCH_START && H[joint_num].home_state != HOME_INDEX_SEARCH_WAIT) {
                     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] PEAxisStateEx_axReadyToFinalizeHoming - set home_state = HOME_INDEX_SEARCH_START\n", __FILE__, __FUNCTION__, joint_num);
                     H[joint_num].home_state = HOME_INDEX_SEARCH_START;
                 }
@@ -1471,9 +1471,10 @@ int pokeys_1joint_state_machine(int joint_num) {
                                     "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] "
                                     "ready to arm encoder - index_search_active %d\n",
                                     __FILE__, __FUNCTION__, joint_num, H[joint_num].index_enable);
+                    H[joint_num].home_state = HOME_INDEX_SEARCH_WAIT;
                 }
                 H[joint_num].homing = 1;
-                H[joint_num].home_state = HOME_INDEX_SEARCH_WAIT;
+                
                 homing_flag = 1;
                 break;
             case HOME_INDEX_SEARCH_WAIT:
