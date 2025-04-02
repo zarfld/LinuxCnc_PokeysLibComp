@@ -1241,6 +1241,8 @@ int pokeys_1joint_state_machine(int joint_num) {
         int requested_PEAxisState;
         const char *home_state_case;
 
+        int seq = abs(H[joint_num].home_sequence);
+        
         /** switch to analyz homestate */
         switch (H[joint_num].home_state) {
             case HOME_IDLE:
@@ -1323,7 +1325,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 // prevent following errors due to external movement
                 joint->free_tp.enable = 0;
                 joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
-                joint->free_tp.vel_cmd = 0;
+                //joint->free_tp.vel_cmd - not there = 0;
                 if (!H[joint_num].homing) {
                     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] PK_PEAxisState_axHOMING_RESETTING - set homing=1\n", __FILE__, __FUNCTION__, joint_num);
                     H[joint_num].homing = 1;
@@ -1337,7 +1339,7 @@ int pokeys_1joint_state_machine(int joint_num) {
 
                 joint->free_tp.enable = 0;
                 joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
-                joint->free_tp.vel_cmd = 0;
+                //joint->free_tp.vel_cmd - not there = 0;
 
                 break;
             case HOME_INITIAL_BACKOFF_START:
@@ -1353,7 +1355,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 }
                 joint->free_tp.enable = 0;
                 joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
-                joint->free_tp.vel_cmd = 0;
+                //joint->free_tp.vel_cmd - not there = 0;
                 /* Backing off switch */
 
                 break;
@@ -1364,7 +1366,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 }
                 joint->free_tp.enable = 0;
                 joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
-                joint->free_tp.vel_cmd = 0;
+                //joint->free_tp.vel_cmd - not there = 0;
                 break;
             case HOME_INITIAL_SEARCH_WAIT:
                 if (jsm_home_state_memory[joint_num] != H[joint_num].home_state) {
@@ -1373,7 +1375,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 }
                 joint->free_tp.enable = 0;
                 joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
-                joint->free_tp.vel_cmd = 0;
+                //joint->free_tp.vel_cmd - not there = 0;
                 /* Homing procedure first step - going to home */
                 H[joint_num].homing = 1;
 
@@ -1382,7 +1384,7 @@ int pokeys_1joint_state_machine(int joint_num) {
             case HOME_SET_COARSE_POSITION:
                 joint->free_tp.enable = 0;
                 joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
-                joint->free_tp.vel_cmd = 0;
+                //joint->free_tp.vel_cmd - not there = 0;
                 break;
 
             case HOME_FINAL_BACKOFF_START:
@@ -1392,7 +1394,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 }
                 joint->free_tp.enable = 0;
                 joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
-                joint->free_tp.vel_cmd = 0;
+                //joint->free_tp.vel_cmd - not there = 0;
                 /* Homing procedure second step - slow homing */
                 H[joint_num].homing = 1;
                 homing_flag = 1;
@@ -1405,7 +1407,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 }
                 joint->free_tp.enable = 0;
                 joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
-                joint->free_tp.vel_cmd = 0;
+                //joint->free_tp.vel_cmd - not there = 0;
 
                 Set_PEAxisCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                 Set_home_state = HOME_INDEX_SEARCH_START;
@@ -1497,7 +1499,7 @@ int pokeys_1joint_state_machine(int joint_num) {
 
                     H[joint_num].homing = 1;
                     H[joint_num].home_state = HOME_SET_INDEX_POSITION;
-                    is being set from pokeye comp with immediate_state = 1;
+                  //  is being set from pokeye comp with immediate_state = 1;
                 }
                 homing_flag = 1;
                 break;
@@ -1584,7 +1586,7 @@ int pokeys_1joint_state_machine(int joint_num) {
 
                 joint->free_tp.enable = 0;
                 joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
-                joint->free_tp.vel_cmd = 0;
+                //joint->free_tp.vel_cmd - not there = 0;
 
                 /* waiting for sync before Pokeys moves to homeposition */
                 Set_PEAxisCommand = PK_PEAxisCommand_axHOMINGFINALMOVE;
@@ -1636,7 +1638,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 }
                 joint->free_tp.enable = 0;
                 joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
-                joint->free_tp.vel_cmd = 0;
+                //joint->free_tp.vel_cmd - not there = 0;
 
                 Set_PEAxisCommand = PK_PEAxisCommand_axIDLE;
                 Set_home_state = HOME_FINISHED;
