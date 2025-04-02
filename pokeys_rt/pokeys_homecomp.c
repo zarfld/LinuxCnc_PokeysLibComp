@@ -1235,6 +1235,12 @@ int pokeys_1joint_state_machine(int joint_num) {
                 // immediate_state = 1;
                 break;
         }
+
+        int Set_PEAxisCommand;
+        int Set_home_state;
+        int requested_PEAxisState;
+        const char* home_state_case;
+
         /** switch to analyz homestate */
         switch (H[joint_num].home_state) {
             case HOME_IDLE:
@@ -1268,9 +1274,9 @@ int pokeys_1joint_state_machine(int joint_num) {
                     H[joint_num].homed = 0;
                 }
 
-                int Set_PEAxisCommand = PK_PEAxisCommand_axHOMINGSTART;
-                int Set_home_state = HOME_UNLOCK;
-                char home_state_case = "HOME_START";
+                Set_PEAxisCommand = PK_PEAxisCommand_axHOMINGSTART;
+                Set_home_state = HOME_UNLOCK;
+                home_state_case = "HOME_START";
 
                 for (int jj = 0; jj < all_joints; jj++) {
                     if (abs(H[jj].home_sequence) == abs(seq)) {
@@ -1401,10 +1407,10 @@ int pokeys_1joint_state_machine(int joint_num) {
                 joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
                 joint->free_tp.vel_cmd = 0;
 
-                int Set_PEAxisCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
-                int Set_home_state = HOME_INDEX_SEARCH_START;
-                int requested_PEAxisState = PEAxisStateEx_axReadyToFinalizeHoming;
-                char home_state_case = "HOME_FINAL_BACKOFF_WAIT";
+                Set_PEAxisCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
+                Set_home_state = HOME_INDEX_SEARCH_START;
+                requested_PEAxisState = PEAxisStateEx_axReadyToFinalizeHoming;
+                home_state_case = "HOME_FINAL_BACKOFF_WAIT";
                 if (get_sequence_synchronized_state(H[joint_num].home_sequence, requested_PEAxisState)) {
                     for (int jj = 0; jj < all_joints; jj++) {
                         if (abs(H[jj].home_sequence) == abs(seq)) {
@@ -1517,8 +1523,8 @@ int pokeys_1joint_state_machine(int joint_num) {
                                     __FILE__, __FUNCTION__, joint_num, H[joint_num].index_enable);
                 }
 
-                int Set_home_state = HOME_FINAL_MOVE_START;
-                char home_state_case = "HOME_SET_INDEX_POSITION";
+                Set_home_state = HOME_FINAL_MOVE_START;
+                home_state_case = "HOME_SET_INDEX_POSITION";
                 if (H[joint_num].home_state != Set_home_state) {
                     rtapi_print_msg(RTAPI_MSG_ERR,
                                     "PoKeys_homecomp: %s:%s: %s joint[%d] "
@@ -1527,10 +1533,10 @@ int pokeys_1joint_state_machine(int joint_num) {
                     H[joint_num].home_state = Set_home_state;
                 }
 
-                int Set_PEAxisCommand = PK_PEAxisCommand_axHOMINGWAITFINALMOVE;
-                int Set_home_state = HOME_FINAL_MOVE_START;
-                int requested_PEAxisState = PEAxisStateEx_HOMINGARMENCODER;
-                char home_state_case = "HOME_SET_INDEX_POSITION";
+                Set_PEAxisCommand = PK_PEAxisCommand_axHOMINGWAITFINALMOVE;
+                Set_home_state = HOME_FINAL_MOVE_START;
+                requested_PEAxisState = PEAxisStateEx_HOMINGARMENCODER;
+                home_state_case = "HOME_SET_INDEX_POSITION";
                 if (get_sequence_synchronized_state(H[joint_num].home_sequence, requested_PEAxisState)) {
                     for (int jj = 0; jj < all_joints; jj++) {
                         if (abs(H[jj].home_sequence) == abs(seq)) {
@@ -1581,10 +1587,10 @@ int pokeys_1joint_state_machine(int joint_num) {
                 joint->free_tp.vel_cmd = 0;
 
                 /* waiting for sync before Pokeys moves to homeposition */
-                int Set_PEAxisCommand = PK_PEAxisCommand_axHOMINGFINALMOVE;
-                int Set_home_state = HOME_FINAL_MOVE_WAIT;
-                int requested_PEAxisState = PEAxisStateEx_HOMINGWaitFINALMOVE;
-                char home_state_case = "HOME_FINAL_MOVE_START";
+                Set_PEAxisCommand = PK_PEAxisCommand_axHOMINGFINALMOVE;
+                Set_home_state = HOME_FINAL_MOVE_WAIT;
+                requested_PEAxisState = PEAxisStateEx_HOMINGWaitFINALMOVE;
+                home_state_case = "HOME_FINAL_MOVE_START";
                 if (get_sequence_synchronized_state(H[joint_num].home_sequence, requested_PEAxisState)) {
                     for (int jj = 0; jj < all_joints; jj++) {
                         if (abs(H[jj].home_sequence) == abs(seq)) {
@@ -1632,10 +1638,10 @@ int pokeys_1joint_state_machine(int joint_num) {
                 joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
                 joint->free_tp.vel_cmd = 0;
 
-                int Set_PEAxisCommand = PK_PEAxisCommand_axIDLE;
-                int Set_home_state = HOME_FINISHED;
-                int requested_PEAxisState = PK_PEAxisState_axREADY;
-                char home_state_case = "HOME_FINAL_MOVE_WAIT";
+                Set_PEAxisCommand = PK_PEAxisCommand_axIDLE;
+                Set_home_state = HOME_FINISHED;
+                requested_PEAxisState = PK_PEAxisState_axREADY;
+                home_state_case = "HOME_FINAL_MOVE_WAIT";
                 if (get_sequence_synchronized_state(H[joint_num].home_sequence, requested_PEAxisState)) {
                     for (int jj = 0; jj < all_joints; jj++) {
                         if (abs(H[jj].home_sequence) == abs(seq)) {
