@@ -1473,7 +1473,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                     __FILE__, __FUNCTION__, joint_num, H[joint_num].index_enable);
                     H[joint_num].home_state = HOME_INDEX_SEARCH_WAIT;
                 }
-                H[joint_num].homing = 1;
+                H[joint_num].homing = 1; // set to 1
                 
                 homing_flag = 1;
                 break;
