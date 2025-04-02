@@ -425,26 +425,26 @@ const char *const local_home_state_names[] = { [HOME_IDLE] = "HOME_IDLE",
                                                [HOME_FINISHED] = "HOME_FINISHED",
                                                [HOME_ABORT] = "HOME_ABORT" };
 
-static const char *const PK_PEState_names[] = { [PK_PEAxisState_axPSTOPPED] = "PK_PEAxisState_axPSTOPPED",
-                                                [PK_PEAxisState_axPINTERNAL] = "PK_PEAxisState_axPINTERNAL",
-                                                [PK_PEAxisState_axPBUFFER] = "PK_PEAxisState_axPBUFFER",
-                                                [PK_PEAxisState_axPRUNNING] = "PK_PEAxisState_axPRUNNING",
+static const char *const PK_PEState_names[] = { [PK_PEAxisState_axSTOPPED] = "PK_PEAxisState_axSTOPPED",
+                                                [PK_PEAxisState_axINTERNAL] = "PK_PEAxisState_axINTERNAL",
+                                                [PK_PEAxisState_axBUFFER] = "PK_PEAxisState_axBUFFER",
+                                                [PK_PEAxisState_axRUNNING] = "PK_PEAxisState_axRUNNING",
 
-                                                [PK_PEAxisState_axPJOGGING] = "PK_PEAxisState_axPJOGGING",
-                                                [PK_PEAxisState_axPSTOPPING] = "PK_PEAxisState_axPSTOPPING",
+                                                [PK_PEAxisState_axJOGGING] = "PK_PEAxisState_axJOGGING",
+                                                [PK_PEAxisState_axSTOPPING] = "PK_PEAxisState_axSTOPPING",
 
-                                                [PK_PEAxisState_axPHOME] = "PK_PEAxisState_axPHOME",
-                                                [PK_PEAxisState_axPHOMING] = "PK_PEAxisState_axPHOMING",
+                                                [PK_PEAxisState_axHOME] = "PK_PEAxisState_axHOME",
+                                                [PK_PEAxisState_axHOMING] = "PK_PEAxisState_axHOMING",
 
-                                                [PK_PEAxisState_axPPROBECOMPLETE] = "PK_PEAxisState_axPPROBECOMPLETE",
-                                                [PK_PEAxisState_axPPROBE] = "PK_PEAxisState_axPPROBE",
-                                                [PK_PEAxisState_axPPROBEERROR] = "PK_PEAxisState_axPPROBEERROR",
+                                                [PK_PEAxisState_axPROBECOMPLETE] = "PK_PEAxisState_axPROBECOMPLETE",
+                                                [PK_PEAxisState_axPROBE] = "PK_PEAxisState_axPROBE",
+                                                [PK_PEAxisState_axPROBEERROR] = "PK_PEAxisState_axPROBEERROR",
 
-                                                [PK_PEAxisState_axPHYBRIDPROBE_STOPPING] = "PK_PEAxisState_axPHYBRIDPROBE_STOPPING",
-                                                [PK_PEAxisState_axPHYBRIDPROBE_COMPLETE] = "PK_PEAxisState_axPHYBRIDPROBE_COMPLETE",
+                                                [PK_PEAxisState_axHYBRIDPROBE_STOPPING] = "PK_PEAxisState_axHYBRIDPROBE_STOPPING",
+                                                [PK_PEAxisState_axHYBRIDPROBE_COMPLETE] = "PK_PEAxisState_axHYBRIDPROBE_COMPLETE",
 
-                                                [PK_PEAxisState_axPSTOP_LIMIT] = "PK_PEAxisState_axPSTOP_LIMIT",
-                                                [PK_PEAxisState_axPSTOP_EMERGENCY] = "PK_PEAxisState_axPSTOP_EMERGENCY" };
+                                                [PK_PEAxisState_axSTOP_LIMIT] = "PK_PEAxisState_axSTOP_LIMIT",
+                                                [PK_PEAxisState_axSTOP_EMERGENCY] = "PK_PEAxisState_axSTOP_EMERGENCY" };
 
 static const char *const PK_PEAxisState_names[] = { [PK_PEAxisState_axSTOPPED] = "PK_PEAxisState_axSTOPPED",
                                                     [PK_PEAxisState_axREADY] = "PK_PEAxisState_axREADY",
