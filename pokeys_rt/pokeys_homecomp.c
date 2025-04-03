@@ -1778,8 +1778,18 @@ int pokeys_1joint_state_machine(int joint_num) {
                 for (int jj = 0; jj < all_joints; jj++) {
                     if (abs(H[jj].home_sequence) == abs(H[joint_num].home_sequence)) {
                         joints_in_sequence++;
-                        if (H[jj].PEv2_AxesState == PK_PEAxisState_axHOME) {
+                        if (H[jj].PEv2_AxesState == PK_PEAxisState_axHOME || H[jj].PEv2_AxesState == PK_PEAxisState_axREADY) {
+                            rtapi_print_msg(RTAPI_MSG_ERR,
+                                            "PoKeys_homecomp: %s:%s: PK_PEAxisState_axHOME "
+                                            "joint[%d] homed (home_sequence %d)\n",
+                                            __FILE__, __FUNCTION__, jj, H[jj].home_sequence);
                             homed_in_sequence++;
+                        }
+                        else {
+                            rtapi_print_msg(RTAPI_MSG_ERR,
+                                            "PoKeys_homecomp: %s:%s: PK_PEAxisState_axHOME "
+                                            "joint[%d] not homed (home_sequence %d)\n",
+                                            __FILE__, __FUNCTION__, jj, H[jj].home_sequence);
                         }
                     }
                 }
