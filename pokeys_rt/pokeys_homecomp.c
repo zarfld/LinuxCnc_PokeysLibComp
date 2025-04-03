@@ -667,7 +667,7 @@ typedef struct {
 static all_sequences_home_data_t sequence_home_data;
 static bool allhomed = 0;
 
-static msg_level_t debug_level = RTAPI_MSG_ERR;
+static msg_level_t debug_level = RTAPI_MSG_DBG;
 /**
  * @brief Erstellt HAL-Pins für Homing-Logik aller Joints.
  *
@@ -693,7 +693,7 @@ static int makepins(int id, int njoints) {
 
     joint_home_data = hal_malloc(sizeof(all_joints_home_data_t));
     if (joint_home_data == 0) {
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: all_joints_home_data_t malloc failed\n", __FILE__, __FUNCTION__);
+        rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: all_joints_home_data_t malloc failed\n", __FILE__, __FUNCTION__);
         return -1;
     }
 
@@ -769,7 +769,7 @@ static void update_sequence_home_data(void) {
         }
     }
     sequence_count = max_sequence - min_sequence + 1;
-    rtapi_print_msg(RTAPI_MSG_DBG,
+    rtapi_print_msg(debug_level,
                     "PoKeys_homecomp: %s:%s: update_sequence_home_data(min_sequence:%d  to "
                     "max_sequence:%d)\n",
                     __FILE__, __FUNCTION__, min_sequence, max_sequence);
@@ -800,7 +800,7 @@ static void update_sequence_home_data(void) {
             }
         }
 
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: update_sequence_home_data(%d) joints_in_sequence:%d\n", __FILE__, __FUNCTION__, sno, sequence_home_data.shd[sno].joints_in_sequence);
+        rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: update_sequence_home_data(%d) joints_in_sequence:%d\n", __FILE__, __FUNCTION__, sno, sequence_home_data.shd[sno].joints_in_sequence);
     }
 }
 
@@ -886,7 +886,7 @@ bool get_sequence_homed(int seq) {
             return 0;
         }
     }
-    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: get_sequence_homed(%d) TRUE\n", __FILE__, __FUNCTION__, seq);
+    rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: get_sequence_homed(%d) TRUE\n", __FILE__, __FUNCTION__, seq);
     return 1;
 }
 
@@ -1262,7 +1262,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                     jsm_home_state_memory[joint_num] = H[joint_num].home_state;
                 }
 
-                rtapi_print_msg(RTAPI_MSG_DBG,
+                rtapi_print_msg(debug_level,
                                 "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] "
                                 "homing start\n",
                                 __FILE__, __FUNCTION__, joint_num);
@@ -1829,7 +1829,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                             }
                         }
                     }
-                    rtapi_print_msg(RTAPI_MSG_DBG,
+                    rtapi_print_msg(debug_level,
                                     "PoKeys_homecomp: %s:%s: PK_PEAxisState_axHOME joint[%d] "
                                     "homed (home_sequence %d)\n",
                                     __FILE__, __FUNCTION__, joint_num, H[joint_num].home_sequence);
@@ -1866,7 +1866,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                     rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] HOME_ABORT\n", __FILE__, __FUNCTION__, joint_num);
                     jsm_home_state_memory[joint_num] = H[joint_num].home_state;
                 }
-                rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] limit\n", __FILE__, __FUNCTION__, joint_num);
+                rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] limit\n", __FILE__, __FUNCTION__, joint_num);
                 /* Axis limit tripped */
                 H[joint_num].homing = 0;
                 H[joint_num].homed = 0;
@@ -1929,7 +1929,7 @@ void do_home_sequence(int seq) {
     sequence_home_data.current_sequence = seq;
 
     int joints_in_sequence = addr.joints_in_sequence;
-    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_home_sequence sequence %d\n", __FILE__, __FUNCTION__, seq);
+    rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_home_sequence sequence %d\n", __FILE__, __FUNCTION__, seq);
     current_sequence = seq;
     sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
 
@@ -1945,7 +1945,7 @@ void do_home_sequence(int seq) {
         int int_AxesState = H[jno].PEv2_AxesState;
         switch (int_AxesState) {
             case PK_PEAxisState_axSTOPPED:
-                rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_home_sequence joint[%d] stopped\n", __FILE__, __FUNCTION__, jno);
+                rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_home_sequence joint[%d] stopped\n", __FILE__, __FUNCTION__, jno);
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                 break;
 
@@ -2007,22 +2007,22 @@ void check_home_sequence(int seq) {
 
     if (addr.homed) {
         if (addr.is_last) {
-            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: check_home_sequence sequence %d homed - finished\n", __FILE__, __FUNCTION__, seq);
+            rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: check_home_sequence sequence %d homed - finished\n", __FILE__, __FUNCTION__, seq);
             sequence_state = HOME_SEQUENCE_IDLE;
         } else {
-            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: check_home_sequence sequence %d homed - next sequ.\n", __FILE__, __FUNCTION__, seq);
+            rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: check_home_sequence sequence %d homed - next sequ.\n", __FILE__, __FUNCTION__, seq);
             sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
             do_home_sequence(addr.next_sequence);
         }
         return;
     } else if (addr.homing) {
         if (get_sequence_homed(seq)) {
-            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: check_home_sequence sequence %d homed\n", __FILE__, __FUNCTION__, seq);
+            rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: check_home_sequence sequence %d homed\n", __FILE__, __FUNCTION__, seq);
             // addr.homed = 1;
             // addr.homing = 0;
             addr.home_state = HOME_FINISHED;
             if (addr.is_last) {
-                rtapi_print_msg(RTAPI_MSG_DBG,
+                rtapi_print_msg(debug_level,
                                 "PoKeys_homecomp: %s:%s: check_home_sequence sequence %d "
                                 "sequence_state = HOME_SEQUENCE_IDLE\n",
                                 __FILE__, __FUNCTION__, seq);
@@ -2072,7 +2072,7 @@ bool get_allhomed() {
         //usleep(10); // Add a small delay to prevent CPU hogging
     }
     if(ret==1){
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: get_allhomed homed %d\n", __FILE__, __FUNCTION__, ret);
+        rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: get_allhomed homed %d\n", __FILE__, __FUNCTION__, ret);
     }*/
     return allhomed;
     // return ret ? 1 : 0;
@@ -2360,7 +2360,7 @@ void write_homing_out_pins(int njoints) {
             rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: write_homing_out_pins joint[%d] command changed :%d\n", __FILE__, __FUNCTION__, jno, H[jno].PEv2_AxesCommand);
         }
     }
-    //  rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: write_homing_out_pins\n");
+    //  rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: write_homing_out_pins\n");
     return;
 }
 
@@ -2411,14 +2411,14 @@ void do_home_all(void) {
  * @enddot
  */
 void do_home_joint(int jno) {
-    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_home_joint joint[%d] homing start\n", __FILE__, __FUNCTION__, jno);
+    rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_home_joint joint[%d] homing start\n", __FILE__, __FUNCTION__, jno);
     if (jno >= 0) {
         // one_joint_home_data_t *addr = &(joint_home_data->jhd[jno]);
         pokeys_1joint_state_machine(jno);
         int int_AxesState = H[jno].PEv2_AxesState;
         switch (int_AxesState) {
             case PK_PEAxisState_axHOMINGSTART:
-                rtapi_print_msg(RTAPI_MSG_DBG,
+                rtapi_print_msg(debug_level,
                                 "PoKeys_homecomp: %s:%s: do_home_joint joint[%d] homing start - "
                                 "PK_PEAxisCommand_axIDLE\n",
                                 __FILE__, __FUNCTION__, jno);
@@ -2426,21 +2426,21 @@ void do_home_joint(int jno) {
                 break;
 
             case PK_PEAxisState_axHOMINGSEARCH:
-                rtapi_print_msg(RTAPI_MSG_DBG,
+                rtapi_print_msg(debug_level,
                                 "PoKeys_homecomp: %s:%s: do_home_joint joint[%d] homing search "
                                 "- PK_PEAxisCommand_axIDLE\n",
                                 __FILE__, __FUNCTION__, jno);
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
                 break;
             case PK_PEAxisState_axHOMINGBACK:
-                rtapi_print_msg(RTAPI_MSG_DBG,
+                rtapi_print_msg(debug_level,
                                 "PoKeys_homecomp: %s:%s: do_home_joint joint[%d] homing back - "
                                 "PK_PEAxisCommand_axIDLE\n",
                                 __FILE__, __FUNCTION__, jno);
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axIDLE;
                 break;
             case PK_PEAxisState_axHOMING_RESETTING:
-                rtapi_print_msg(RTAPI_MSG_DBG,
+                rtapi_print_msg(debug_level,
                                 "PoKeys_homecomp: %s:%s: do_home_joint joint[%d] homing "
                                 "resetting PK_PEAxisCommand_axIDLE\n",
                                 __FILE__, __FUNCTION__, jno);
@@ -2448,7 +2448,7 @@ void do_home_joint(int jno) {
                 break;
 
             case PK_PEAxisState_axHOMING_BACKING_OFF:
-                rtapi_print_msg(RTAPI_MSG_DBG,
+                rtapi_print_msg(debug_level,
                                 "PoKeys_homecomp: %s:%s: do_home_joint joint[%d] homing state:PK_PEAxisState_axHOMING_BACKING_OFF "
                                 "command:PK_PEAxisCommand_axARMENCODER\n",
                                 __FILE__, __FUNCTION__, jno);
@@ -2457,7 +2457,7 @@ void do_home_joint(int jno) {
 
             case PEAxisStateEx_HOMINGARMENCODER:
                 if (H[jno].PEv2_AxesCommand != PK_PEAxisCommand_axHOMINGWAITFINALMOVE) {
-                    rtapi_print_msg(RTAPI_MSG_DBG,
+                    rtapi_print_msg(debug_level,
                                     "PoKeys_homecomp: %s:%s: do_home_joint joint[%d] homing state:PEAxisStateEx_HOMINGARMENCODER "
                                     "command:PK_PEAxisCommand_axHOMINGWAITFINALMOVE\n",
                                     __FILE__, __FUNCTION__, jno);
@@ -2467,7 +2467,7 @@ void do_home_joint(int jno) {
                 break;
 
             case PEAxisStateEx_HOMINGWaitFINALMOVE:
-                rtapi_print_msg(RTAPI_MSG_DBG,
+                rtapi_print_msg(debug_level,
                                 "PoKeys_homecomp: %s:%s: do_home_joint joint[%d] homing finalize "
                                 "PK_PEAxisCommand_axIDLE\n",
                                 __FILE__, __FUNCTION__, jno);
@@ -2481,7 +2481,7 @@ void do_home_joint(int jno) {
 
                 break;
             case PEAxisStateEx_HOMINGFINALMOVE:
-                rtapi_print_msg(RTAPI_MSG_DBG,
+                rtapi_print_msg(debug_level,
                                 "PoKeys_homecomp: %s:%s: do_home_joint joint[%d] PEAxisStateEx_HOMINGFINALMOVE "
                                 "PK_PEAxisCommand_axIDLE\n",
                                 __FILE__, __FUNCTION__, jno);
@@ -2495,7 +2495,7 @@ void do_home_joint(int jno) {
 
                 break;
             case PK_PEAxisState_axHOME:
-                rtapi_print_msg(RTAPI_MSG_DBG,
+                rtapi_print_msg(debug_level,
                                 "PoKeys_homecomp: %s:%s: do_home_joint.PK_PEAxisState_axHOME do_home_joint "
                                 "joint[%d] homed (home_sequence %d)\n",
                                 __FILE__, __FUNCTION__, jno, H[jno].home_sequence);
@@ -2515,7 +2515,7 @@ void do_home_joint(int jno) {
                         }
                     }
 
-                    rtapi_print_msg(RTAPI_MSG_DBG,
+                    rtapi_print_msg(debug_level,
                                     "PoKeys_homecomp: %s:%s: PK_PEAxisState_axHOME joint[%d] "
                                     "joints_in_sequence:%d  homed_in_sequence:%d \n",
                                     __FILE__, __FUNCTION__, jno, joints_in_sequence, homed_in_sequence);
@@ -2524,7 +2524,7 @@ void do_home_joint(int jno) {
                         for (jj = 0; jj < all_joints; jj++) {
 
                             if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence)) {
-                                rtapi_print_msg(RTAPI_MSG_DBG,
+                                rtapi_print_msg(debug_level,
                                                 "PoKeys_homecomp: %s:%s: do_home_joint.PK_"
                                                 "PEAxisState_axHOME joint[%d] "
                                                 "homed (home_sequence %d) PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE\n",
@@ -2539,7 +2539,7 @@ void do_home_joint(int jno) {
                                 }
                             }
                         }
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(debug_level,
                                         "PoKeys_homecomp: %s:%s: do_home_joint.PK_PEAxisState_axHOME joint "
                                         "%d homed (home_sequence %d) PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGFINALIZE\n",
                                         __FILE__, __FUNCTION__, jno, H[jno].home_sequence);
@@ -2560,7 +2560,7 @@ void do_home_joint(int jno) {
                 }
                 break;
             case PK_PEAxisState_axSTOPPED:
-                rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_home_joint joint[%d] stopped\n", __FILE__, __FUNCTION__, jno);
+                rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_home_joint joint[%d] stopped\n", __FILE__, __FUNCTION__, jno);
                 H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                 H[jno].home_state = HOME_START;
                 if (H[jno].home_sequence < 0) {
@@ -2568,7 +2568,7 @@ void do_home_joint(int jno) {
                     int jj;
                     for (jj = 0; jj < all_joints; jj++) {
                         if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence)) {
-                            rtapi_print_msg(RTAPI_MSG_DBG,
+                            rtapi_print_msg(debug_level,
                                             "PoKeys_homecomp: %s:%s: joint[%d] in sequence %d "
                                             "PK_PEAxisCommand_axHOMINGSTART\n",
                                             __FILE__, __FUNCTION__, jj, H[jno].home_sequence);
@@ -2582,7 +2582,7 @@ void do_home_joint(int jno) {
 
                 break;
             case PK_PEAxisState_axREADY:
-                rtapi_print_msg(RTAPI_MSG_DBG,
+                rtapi_print_msg(debug_level,
                                 "PoKeys_homecomp: %s:%s: do_home_joint joint[%d] ready "
                                 "PK_PEAxisCommand_axHOMINGSTART\n",
                                 __FILE__, __FUNCTION__, jno);
@@ -2593,7 +2593,7 @@ void do_home_joint(int jno) {
                     int jj;
                     for (jj = 0; jj < all_joints; jj++) {
                         if (abs(H[jj].home_sequence) == abs(H[jno].home_sequence)) {
-                            rtapi_print_msg(RTAPI_MSG_DBG,
+                            rtapi_print_msg(debug_level,
                                             "PoKeys_homecomp: %s:%s: joint[%d] in sequence %d "
                                             "PK_PEAxisCommand_axHOMINGSTART\n",
                                             __FILE__, __FUNCTION__, jj, H[jj].home_sequence);
@@ -2612,7 +2612,7 @@ void do_home_joint(int jno) {
                 break;
         }
     } else {
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_home_joint joint number %d out of range\n", __FILE__, __FUNCTION__, jno);
+        rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_home_joint joint number %d out of range\n", __FILE__, __FUNCTION__, jno);
 
         // triger homing for first sequence (index 0)
 
@@ -2624,7 +2624,7 @@ void do_home_joint(int jno) {
         int trigered = 0;
         for (jj = 0; jj < all_joints; jj++) {
             if (abs(H[jj].home_sequence) == abs(sequence_home_data.min_sequence)) {
-                rtapi_print_msg(RTAPI_MSG_DBG,
+                rtapi_print_msg(debug_level,
                                 "PoKeys_homecomp: %s:%s: joint[%d] in sequence %d "
                                 "PK_PEAxisCommand_axHOMINGSTART\n",
                                 __FILE__, __FUNCTION__, jj, sequence_home_data.min_sequence);
@@ -2632,7 +2632,7 @@ void do_home_joint(int jno) {
                 H[jno].home_state = HOME_START;
                 trigered++;
             } else {
-                rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: joint[%d] not in sequence %d\n", __FILE__, __FUNCTION__, jj, sequence_home_data.min_sequence);
+                rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: joint[%d] not in sequence %d\n", __FILE__, __FUNCTION__, jj, sequence_home_data.min_sequence);
             }
         }
 
@@ -2744,14 +2744,14 @@ static void do_homing_sequence(void) {
     int seen;
     emcmot_joint_t *joint;
     int sequence_is_set = 0;
-    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: >do_homing_sequence(%d) sequence_state = %d\n", __FILE__, __FUNCTION__, current_sequence, sequence_state);
+    rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: >do_homing_sequence(%d) sequence_state = %d\n", __FILE__, __FUNCTION__, current_sequence, sequence_state);
     if (current_sequence < sequence_home_data.min_sequence || current_sequence > sequence_home_data.max_sequence) {
         // no sequence set, use the first one
         current_sequence = sequence_home_data.min_sequence;
     }
     one_sequence_home_data_t addr = (sequence_home_data.shd[current_sequence]);
     int joints_in_sequence = addr.joints_in_sequence;
-    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) joints_in_sequence = %d\n", __FILE__, __FUNCTION__, current_sequence, joints_in_sequence);
+    rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) joints_in_sequence = %d\n", __FILE__, __FUNCTION__, current_sequence, joints_in_sequence);
     int joints_in_sequence_DBG = 0;
     one_sequence_home_data_t addr_dbg;
     /** @startuml */
@@ -2759,14 +2759,14 @@ static void do_homing_sequence(void) {
 
         /** state HOME_SEQUENCE_IDLE {*/
         case HOME_SEQUENCE_IDLE:
-            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing_sequence HOME_SEQUENCE_IDLE\n", __FILE__, __FUNCTION__);
+            rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_homing_sequence HOME_SEQUENCE_IDLE\n", __FILE__, __FUNCTION__);
             current_sequence = sequence_home_data.min_sequence;
             /* nothing to do */
             break;
             /** } */
 
         case HOME_SEQUENCE_DO_ONE_JOINT: /** state HOME_SEQUENCE_WAIT_JOINTS {*/
-            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing_sequence HOME_SEQUENCE_DO_ONE_JOINT\n", __FILE__, __FUNCTION__);
+            rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_homing_sequence HOME_SEQUENCE_DO_ONE_JOINT\n", __FILE__, __FUNCTION__);
             update_sequence_home_data();
             // Expect one joint with home_state==HOME_START
 
@@ -2790,7 +2790,7 @@ static void do_homing_sequence(void) {
 
             /** state choice_joints_in_sequence_1 <<choice>> */
             if (joints_in_sequence == 0) {
-                rtapi_print_msg(RTAPI_MSG_DBG,
+                rtapi_print_msg(debug_level,
                                 "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) HOME_SEQUENCE_DO_ONE_JOINT "
                                 "joints_in_sequence = 0\n",
                                 __FILE__, __FUNCTION__, current_sequence);
@@ -2799,7 +2799,7 @@ static void do_homing_sequence(void) {
                 sequence_state = HOME_SEQUENCE_IDLE;
                 addr = (sequence_home_data.shd[current_sequence]);
                 joints_in_sequence = addr.joints_in_sequence; // count of all joints in sequence
-                rtapi_print_msg(RTAPI_MSG_DBG,
+                rtapi_print_msg(debug_level,
                                 "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) after update "
                                 "HOME_SEQUENCE_DO_ONE_JOINT joints_in_sequence = %d \n",
                                 __FILE__, __FUNCTION__, current_sequence, joints_in_sequence);
@@ -2818,7 +2818,7 @@ static void do_homing_sequence(void) {
             // specified by a negative sequence
             // Determine current_sequence and set H[i].joint_in_sequence
             // based on home_state[i] == HOME_START
-            rtapi_print_msg(RTAPI_MSG_DBG,
+            rtapi_print_msg(debug_level,
                             "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) HOME_SEQUENCE_DO_ONE_SEQUENCE "
                             "joints_in_sequence = %d\n",
                             __FILE__, __FUNCTION__, current_sequence, joints_in_sequence);
@@ -2841,7 +2841,7 @@ static void do_homing_sequence(void) {
             // Request to home all joints or a single sequence
             sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
             allhomed = 0;
-            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) HOME_SEQUENCE_START\n", __FILE__, __FUNCTION__, current_sequence);
+            rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) HOME_SEQUENCE_START\n", __FILE__, __FUNCTION__, current_sequence);
             for (int jj = 0; jj < joints_in_sequence; jj++) {
                 int jno = addr.joint_ids[jj];
                 H[jno].home_state = HOME_START;
@@ -2849,7 +2849,7 @@ static void do_homing_sequence(void) {
                 /*int int_AxesState = H[jno].PEv2_AxesState;
                 switch (int_AxesState) {
                     case PK_PEAxisState_axSTOPPED:
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(debug_level,
                                         "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) "
                                         "HOME_SEQUENCE_START joint[%d] stopped "
                                         "PK_PEAxisCommand_axHOMINGSTART\n",
@@ -2858,7 +2858,7 @@ static void do_homing_sequence(void) {
                         break;
 
                     case PK_PEAxisState_axREADY:
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(debug_level,
                                         "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) "
                                         "HOME_SEQUENCE_START joint[%d] ready "
                                         "PK_PEAxisCommand_axHOMINGSTART\n",
@@ -2867,7 +2867,7 @@ static void do_homing_sequence(void) {
                         break;
 
                     case PK_PEAxisState_axRUNNING:
-                        rtapi_print_msg(RTAPI_MSG_DBG,
+                        rtapi_print_msg(debug_level,
                                         "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) "
                                         "HOME_SEQUENCE_START joint[%d] running "
                                         "PK_PEAxisCommand_axHOMINGSTART\n",
@@ -2901,7 +2901,7 @@ static void do_homing_sequence(void) {
             // drop through----drop through----drop through----drop through
 
         case HOME_SEQUENCE_START_JOINTS:
-            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) HOME_SEQUENCE_START_JOINTS\n", __FILE__, __FUNCTION__, current_sequence);
+            rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) HOME_SEQUENCE_START_JOINTS\n", __FILE__, __FUNCTION__, current_sequence);
             seen = 0;
             allhomed = 0;
             /* start all joints whose sequence number matches H[i].home_sequence */
@@ -2919,7 +2919,7 @@ static void do_homing_sequence(void) {
             if (seen || current_sequence == 0) {
                 sequence_state = HOME_SEQUENCE_WAIT_JOINTS;
             } else {
-                rtapi_print_msg(RTAPI_MSG_DBG,
+                rtapi_print_msg(debug_level,
                                 "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) HOME_SEQUENCE_START_JOINTS "
                                 "no joints in sequence %d\n",
                                 __FILE__, __FUNCTION__, current_sequence, current_sequence);
@@ -2931,7 +2931,7 @@ static void do_homing_sequence(void) {
             break;
 
         case HOME_SEQUENCE_WAIT_JOINTS:
-            // rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS joints_in_sequence: %d \n", __FILE__, __FUNCTION__,current_sequence,joints_in_sequence);
+            // rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) HOME_SEQUENCE_WAIT_JOINTS joints_in_sequence: %d \n", __FILE__, __FUNCTION__,current_sequence,joints_in_sequence);
             seen = 0;
 
             int homed_count = 0;
@@ -2946,7 +2946,7 @@ static void do_homing_sequence(void) {
                     homed_count++;
                 }
                 if (homed_memory[jno] != H[jno].homed) {
-                    rtapi_print_msg(RTAPI_MSG_DBG,
+                    rtapi_print_msg(debug_level,
                                     "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) "
                                     "joint[%d] homed status changed to %d\n",
                                     __FILE__, __FUNCTION__, current_sequence, jno, H[jno].homed);
@@ -2987,7 +2987,7 @@ static void do_homing_sequence(void) {
 
         default:
             /* should never get here */
-            rtapi_print_msg(RTAPI_MSG_DBG,
+            rtapi_print_msg(debug_level,
                             "PoKeys_homecomp: %s:%s: do_homing_sequence(%d) unknown state '%d' "
                             "during homing sequence\n",
                             __FILE__, __FUNCTION__, current_sequence, sequence_state);
@@ -2995,7 +2995,7 @@ static void do_homing_sequence(void) {
             homing_active = 0;
             break;
     }
-    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: <do_homing_sequence(%d) sequence_state %d\n", __FILE__, __FUNCTION__, current_sequence, sequence_state);
+    rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: <do_homing_sequence(%d) sequence_state %d\n", __FILE__, __FUNCTION__, current_sequence, sequence_state);
     return;
 } // do_homing_sequence()
 
@@ -3050,7 +3050,7 @@ bool do_homing(void) {
 
     if (sequence_state != HOME_SEQUENCE_IDLE) {
         // check_home_sequence(current_sequence);
-        rtapi_print_msg(RTAPI_MSG_DBG,
+        rtapi_print_msg(debug_level,
                         "PoKeys_homecomp: %s:%s: do_homing sequence_state %d  -  trigger "
                         "do_homing_sequence()\n",
                         __FILE__, __FUNCTION__, sequence_state);
@@ -3058,20 +3058,20 @@ bool do_homing(void) {
     }
 
     /* loop thru joints, treat each one individually */
-    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing loop thru joints, treat each one individually\n", __FILE__, __FUNCTION__);
+    rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_homing loop thru joints, treat each one individually\n", __FILE__, __FUNCTION__);
     for (joint_num = 0; joint_num < all_joints; joint_num++) {
         if (!H[joint_num].joint_in_sequence) {
-            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing joint[%d] not in sequence\n", __FILE__, __FUNCTION__, joint_num);
+            rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_homing joint[%d] not in sequence\n", __FILE__, __FUNCTION__, joint_num);
             continue;
         }
         if (!GET_JOINT_ACTIVE_FLAG(&joints[joint_num])) {
-            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing joint[%d] not active\n", __FILE__, __FUNCTION__, joint_num);
+            rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_homing joint[%d] not active\n", __FILE__, __FUNCTION__, joint_num);
             continue;
         }
         active_joints++;
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing joint[%d] - pokeys_1joint_state_machine\n", __FILE__, __FUNCTION__, joint_num);
+        rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_homing joint[%d] - pokeys_1joint_state_machine\n", __FILE__, __FUNCTION__, joint_num);
         homing_flag += pokeys_1joint_state_machine(joint_num);
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing joint: %d homing_flag: %d \n", __FILE__, __FUNCTION__, joint_num, homing_flag);
+        rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_homing joint: %d homing_flag: %d \n", __FILE__, __FUNCTION__, joint_num, homing_flag);
     }
     // return 1 if homing completed this period
 
@@ -3095,7 +3095,7 @@ bool do_homing(void) {
 
         retval = true;
     } else {
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys_homecomp: %s:%s: do_homing homing_flag %d\n", __FILE__, __FUNCTION__, homing_flag);
+        rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_homing homing_flag %d\n", __FILE__, __FUNCTION__, homing_flag);
     }
     if (do_homing_retval_memory != retval) {
         rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_homing retval %d\n", __FILE__, __FUNCTION__, retval);
@@ -3171,7 +3171,7 @@ void do_cancel_homing(int jno) {
  * @ingroup PoKeys_HomingSetup
  */
 void set_joint_homing_params(int jno, double offset, double home, double home_final_vel, double home_search_vel, double home_latch_vel, int home_flags, int home_sequence, bool volatile_home) {
-    rtapi_print_msg(RTAPI_MSG_DBG,
+    rtapi_print_msg(debug_level,
                     "PoKeys_homecomp: %s:%s: set_joint_homing_params(%d) offset:%f home:%f "
                     "home_final_vel:%f home_search_vel:%f home_latch_vel:%f "
                     "home_flags:%d home_sequence:%d volatile_home:%d\n",
@@ -3205,7 +3205,7 @@ void set_joint_homing_params(int jno, double offset, double home, double home_fi
  * @ingroup PoKeys_HomingSetup
  */
 void update_joint_homing_params(int jno, double offset, double home, int home_sequence) {
-    rtapi_print_msg(RTAPI_MSG_DBG,
+    rtapi_print_msg(debug_level,
                     "PoKeys_homecomp: %s:%s: update_joint_homing_params(%d) offset:%f home:%f "
                     "home_sequence:%d\n",
                     __FILE__, __FUNCTION__, jno, offset, home, home_sequence);
