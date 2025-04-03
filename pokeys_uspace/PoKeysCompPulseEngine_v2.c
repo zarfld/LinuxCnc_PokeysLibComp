@@ -924,8 +924,10 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                      * @see PK_PEAxisCommand_axHOMINGFinalize
                      * @memberof PoKeysHALComponent
                      */
-                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGFinalize\n", __FILE__, __FUNCTION__);
-                    if (dev->PEv2.AxesState[i] == PK_PEAxisState_axHOME || intAxesState == PEAxisStateEx_axReadyToFinalizeHoming) {
+                    if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i])) {
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGFinalize\n", __FILE__, __FUNCTION__);
+                    }
+                    if (dev->PEv2.AxesState[i] == PK_PEAxisState_axHOME || intAxesState == PEAxisStateEx_axReadyToFinalizeHoming || intAxesState == PK_PEAxisState_axREADY) {
                         int MyHomeSequ, seq;
                         MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
 
