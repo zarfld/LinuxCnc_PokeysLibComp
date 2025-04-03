@@ -938,11 +938,15 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGFinalize - PEAxisStateEx_HOMINGARMENCODER\n", __FILE__, __FUNCTION__, i);
                                 Homing_PkHomeFinalizeeDone[i] = true;
                                 intAxesState = PEAxisStateEx_axReadyToArmEncoder; // keep previous state
-                            } else {
+                            } else if (Homing_PkHomeFinalizeeDone[i] == true) {
+                                intAxesState = PEAxisStateEx_axReadyToArmEncoder;
+                                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGFinalize - PEAxisStateEx_HOMINGARMENCODER - Homing_PkHomeFinalizeeDone[i] = true\n", __FILE__, __FUNCTION__, i);
+                        }else {
                                 rtapi_print_msg(RTAPI_MSG_ERR,
                                                 "PoKeys: %s:%s: PEv2_Axis[%d].AxesState = "
                                                 "PK_PEAxisState_axHOME - Homing_PkHomeFinalizeeDone[i] = false\n",
                                                 __FILE__, __FUNCTION__, i);
+                                intAxesState = PEAxisStateEx_axReadyToFinalizeHoming;
                             }
                         }
                     }
