@@ -1784,8 +1784,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                             "joint[%d] homed (home_sequence %d)\n",
                                             __FILE__, __FUNCTION__, jj, H[jj].home_sequence);
                             homed_in_sequence++;
-                        }
-                        else {
+                        } else {
                             rtapi_print_msg(RTAPI_MSG_ERR,
                                             "PoKeys_homecomp: %s:%s: PK_PEAxisState_axHOME "
                                             "joint[%d] not homed (home_sequence %d)\n",
