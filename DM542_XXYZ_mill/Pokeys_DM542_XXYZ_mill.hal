@@ -312,8 +312,8 @@ net z-in-position     => pokeys.0.PEv2.2.joint-in-position
 # ---setup home / limit switch signals---
 
 net home-z     =>  joint.3.home-sw-in
-net min-z     =>  joint.3.neg-lim-sw-in
-net max-z     =>  joint.3.pos-lim-sw-in
+#net min-z     =>  joint.3.neg-lim-sw-in
+#net max-z     =>  joint.3.pos-lim-sw-in
 
 #*******************
 #  SPINDLE
