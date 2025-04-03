@@ -425,6 +425,7 @@ const char *const local_home_state_names[] = { [HOME_IDLE] = "HOME_IDLE",
                                                [HOME_FINISHED] = "HOME_FINISHED",
                                                [HOME_ABORT] = "HOME_ABORT" };
 
+
 static const char *const PK_PEAxisState_names[] = { [PK_PEAxisState_axSTOPPED] = "PK_PEAxisState_axSTOPPED",
                                                     [PK_PEAxisState_axREADY] = "PK_PEAxisState_axREADY",
                                                     [PK_PEAxisState_axRUNNING] = "PK_PEAxisState_axRUNNING",
@@ -930,9 +931,10 @@ bool get_sequence_synchronized_state(int seq, int desired_state) {
         if (abs(H[jj].home_sequence) == abs(seq)) {
             joints_in_sequence++;
 
-            if (get_sequence_synchronized_PEv2_AxesState_memory[] != H[jj].PEv2_AxesState) {
+            if (get_sequence_synchronized_PEv2_AxesState_memory[jj] != H[jj].PEv2_AxesState) {
                 get_sequence_synchronized_PEv2_AxesState_memory[jj] = H[jj].PEv2_AxesState;
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: get_sequence_synchronized_state(%d) PEv2_AxesState[%d]:%d\n", __FILE__, __FUNCTION__, seq, jj, H[jj].PEv2_AxesState);
+
             }
             if (H[jj].PEv2_AxesState == desired_state) {
                 ready_in_sequence++;
