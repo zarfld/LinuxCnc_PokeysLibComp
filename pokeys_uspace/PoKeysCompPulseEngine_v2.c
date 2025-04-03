@@ -655,22 +655,21 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
 
                     if (Homing_FinalMoveActive[i] && !Homing_FinalMoveDone[i]) {
                         if (intAxesState != repAxxiState[i]) {
-                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axIDLE - FinalMove still active(intAxesState %d)\n", __FILE__, __FUNCTION__, i, intAxesState);
-                        intAxesState = PEAxisStateEx_HOMINGFINALMOVE; // FinalMove still active
+                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axIDLE - FinalMove still active(intAxesState %d)\n", __FILE__, __FUNCTION__, i, intAxesState);
+                            intAxesState = PEAxisStateEx_HOMINGFINALMOVE; // FinalMove still active
                         }
                     } else if (Homing_FinalMoveDone[i] && !Homing_done[i]) {
 
                         if (intAxesState != repAxxiState[i]) {
                             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axIDLE - FinalMove done but not yet set to done(intAxesState %d)\n", __FILE__, __FUNCTION__, i, intAxesState);
-                            //intAxesState = PEAxisStateEx_HOMINGFINALMOVE; // FinalMove done
+                            // intAxesState = PEAxisStateEx_HOMINGFINALMOVE; // FinalMove done
                         }
-
 
                         Homing_done[i] = true;
                     } else if (Homing_done[i]) {
                         if (intAxesState != repAxxiState[i]) {
-                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axIDLE - FinalMove done and set to done (intAxesState %d)\n", __FILE__, __FUNCTION__, i, intAxesState);
-                        //   intAxesState = PEAxisStateEx_axREADY; // FinalMove done
+                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axIDLE - FinalMove done and set to done (intAxesState %d)\n", __FILE__, __FUNCTION__, i, intAxesState);
+                            //   intAxesState = PEAxisStateEx_axREADY; // FinalMove done
                         }
                     } else {
                         // intAxesState = PK_PEAxisState_axIDLE;
