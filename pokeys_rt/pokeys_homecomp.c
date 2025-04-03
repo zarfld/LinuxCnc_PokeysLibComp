@@ -1166,7 +1166,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                     jsm_AxesState_memory[joint_num] = H[joint_num].PEv2_AxesState;
                 }
                 // HOME_INDEX_SEARCH_START
-                if (H[joint_num].home_state != HOME_FINAL_BACKOFF_WAIT && H[joint_num].home_state != HOME_INDEX_SEARCH_WAIT) {
+                if (H[joint_num].home_state != HOME_FINAL_BACKOFF_WAIT && H[joint_num].home_state != HOME_INDEX_SEARCH_START) {
                     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] PEAxisStateEx_axReadyToFinalizeHoming - set home_state = HOME_FINAL_BACKOFF_WAIT\n", __FILE__, __FUNCTION__, joint_num);
                     H[joint_num].home_state = HOME_FINAL_BACKOFF_WAIT;
                 }
