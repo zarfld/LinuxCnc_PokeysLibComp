@@ -1470,7 +1470,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                     "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] "
                                     "ready to arm encoder - index_search_active %d\n",
                                     __FILE__, __FUNCTION__, joint_num, H[joint_num].index_enable);
-                //    H[joint_num].home_state = HOME_INDEX_SEARCH_WAIT;
+                    //    H[joint_num].home_state = HOME_INDEX_SEARCH_WAIT;
                 }
 
                 Set_PEAxisCommand = PK_PEAxisCommand_axARMENCODER;
@@ -1545,7 +1545,6 @@ int pokeys_1joint_state_machine(int joint_num) {
                     H[joint_num].home_state = HOME_SET_INDEX_POSITION;
                     //  is being set from pokeye comp with immediate_state = 1;
                 }
-
 
                 homing_flag = 1;
                 break;
