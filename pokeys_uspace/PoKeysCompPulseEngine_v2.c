@@ -698,7 +698,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axIDLE, PK_Homing_axHOMINGSTART) == 0) {
                             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGSTART ensure that all axes with same Sequence start homing at the same time\n", __FILE__, __FUNCTION__);
                             doHomingStart = true;
- 
+
                             IsHoming[i] = true;
                             if (Homing_ArmEncodereDone[i]) {
                                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART PK_PEAxisState_axHOME - ready to Finalize homing (%d) - Homing_ArmEncodereDone[i]\n", __FILE__, __FUNCTION__, i, intAxesState);
@@ -732,9 +732,8 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                         intAxesState = PEAxisStateEx_axReadyToFinalizeHoming;
                         if (intAxesState != repAxxiState[i]) {
                             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGSTART PK_PEAxisState_axHOME - ready to Finalize homing (%d)\n", __FILE__, __FUNCTION__, i, intAxesState);
-
                         }
-                       
+
                         // Homing_PkHomeFinalizeeDone[i] = false;
                         // Homing_FinalMoveDone[i] = false;
                         // Homing_FinalMoveActive[i] = false;
