@@ -927,13 +927,14 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     if (old_PEv2_AxesCommand[i] != *(PEv2_data->PEv2_AxesCommand[i])) {
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEAxisCommand_axHOMINGFinalize\n", __FILE__, __FUNCTION__);
                     }
-                    if (*(PEv2_data->PEv2_HomingStatus[axis]) == PK_Homing_axHOMINGFinalize) {
+                    if (*(PEv2_data->PEv2_HomingStatus[i]) == PK_Homing_axHOMINGFinalize){
                         intAxesState = PEAxisStateEx_axReadyToArmEncoder;
-                        if (Homing_PkHomeFinalizeeDone[i] != true) {
+                        if(Homing_PkHomeFinalizeeDone[i] != true){
                             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGFinalize - PEAxisStateEx_axReadyToArmEncoder\n", __FILE__, __FUNCTION__, i);
                             Homing_PkHomeFinalizeeDone[i] = true;
                         }
-                    } else if (dev->PEv2.AxesState[i] == PK_PEAxisState_axHOME || intAxesState == PEAxisStateEx_axReadyToFinalizeHoming || intAxesState == PK_PEAxisState_axREADY) {
+                    }
+                    else if (dev->PEv2.AxesState[i] == PK_PEAxisState_axHOME || intAxesState == PEAxisStateEx_axReadyToFinalizeHoming || intAxesState == PK_PEAxisState_axREADY) {
                         int MyHomeSequ, seq;
                         MyHomeSequ = PEv2_data->PEv2_home_sequence[i];
 
@@ -956,7 +957,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                             }
                         }
                     }
-            }
+
             else if (Homing_PkHomeFinalizeeDone[i] == true) {
                 intAxesState = PEAxisStateEx_axReadyToArmEncoder;
                 if (intAxesState != repAxxiState[i]) {
