@@ -425,30 +425,6 @@ const char *const local_home_state_names[] = { [HOME_IDLE] = "HOME_IDLE",
                                                [HOME_FINISHED] = "HOME_FINISHED",
                                                [HOME_ABORT] = "HOME_ABORT" };
 
-static const char *const PK_PEState_names[] = { [PK_PEAxisState_axSTOPPED] = "PK_PEAxisState_axSTOPPED",
-                                                [PK_PEAxisState_axREADY] = "PK_PEAxisState_axREADY",
-                                                [PK_PEAxisState_axRUNNING] = "PK_PEAxisState_axRUNNING",
-                                                [PEAxisStateEx_axReadyToFinalizeHoming] = "PEAxisStateEx_axReadyToFinalizeHoming",
-
-                                                [PEAxisStateEx_axReadyToArmEncoder] = "PEAxisStateEx_axReadyToArmEncoder",
-                                                [PK_PEAxisState_axHOMING_RESETTING] = "PK_PEAxisState_axHOMING_RESETTING",
-
-                                                [PK_PEAxisState_axHOMING_BACKING_OFF] = "PK_PEAxisState_axHOMING_BACKING_OFF",
-                                                [PK_PEAxisState_axHOME] = "PK_PEAxisState_axHOME",
-
-                                                [PK_PEAxisState_axHOMINGSTART] = "PK_PEAxisState_axHOMINGSTART",
-                                                [PK_PEAxisState_axHOMINGSEARCH] = "PK_PEAxisState_axHOMINGSEARCH",
-                                                [PK_PEAxisState_axHOMINGBACK] = "PK_PEAxisState_axHOMINGBACK",
-
-                                                [PK_PEAxisState_axPROBED] = "PK_PEAxisState_axPROBED",
-                                                [PK_PEAxisState_axPROBESTART] = "PK_PEAxisState_axPROBESTART",
-                                                [PK_PEAxisState_axPROBESEARCH] = "PK_PEAxisState_axPROBESEARCH",
-                                                [PEAxisStateEx_HOMINGARMENCODER] = "PEAxisStateEx_HOMINGARMENCODER",
-                                                [PEAxisStateEx_HOMINGWaitFINALMOVE] = "PEAxisStateEx_HOMINGWaitFINALMOVE",
-                                                [PEAxisStateEx_HOMINGFINALMOVE] = "PEAxisStateEx_HOMINGFINALMOVE",
-
-                                                [PK_PEAxisState_axERROR] = "PK_PEAxisState_axERROR",
-                                                [PK_PEAxisState_axLIMIT] = "PK_PEAxisState_axLIMIT" };
 
 static const char *const PK_PEAxisState_names[] = { [PK_PEAxisState_axSTOPPED] = "PK_PEAxisState_axSTOPPED",
                                                     [PK_PEAxisState_axREADY] = "PK_PEAxisState_axREADY",
@@ -940,23 +916,48 @@ bool get_sequence_homing(int seq) {
     return 0;
 }
 
+int get_sequence_synchronized_state_seq_memory = 0;
+int get_sequence_synchronized_state_memory = 0;
+int get_sequence_synchronized_PEv2_AxesState_memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+int get_sequence_synchronized_state_PEv2_ready_in_sequence_memory = 0;
 bool get_sequence_synchronized_state(int seq, int desired_state) {
     int joints_in_sequence = 0;
     int ready_in_sequence = 0;
 
+    if (get_sequence_synchronized_state_seq_memory != seq || get_sequence_synchronized_state_memory != desired_state) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: get_sequence_synchronized_state(%d) desired_state:%d\n", __FILE__, __FUNCTION__, seq, desired_state);
+    }
     for (int jj = 0; jj < all_joints; jj++) {
         if (abs(H[jj].home_sequence) == abs(seq)) {
             joints_in_sequence++;
+
+            if (get_sequence_synchronized_PEv2_AxesState_memory[] != H[jj].PEv2_AxesState) {
+                get_sequence_synchronized_PEv2_AxesState_memory[jj] = H[jj].PEv2_AxesState;
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: get_sequence_synchronized_state(%d) PEv2_AxesState[%d]:%d\n", __FILE__, __FUNCTION__, seq, jj, H[jj].PEv2_AxesState);
+
+            }
             if (H[jj].PEv2_AxesState == desired_state) {
                 ready_in_sequence++;
             }
         }
     }
 
-    if (joints_in_sequence == ready_in_sequence) {
+    if (get_sequence_synchronized_state_PEv2_ready_in_sequence_memory != ready_in_sequence) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: get_sequence_synchronized_state(%d) ready_in_sequence:%d\n", __FILE__, __FUNCTION__, seq, ready_in_sequence);
+        get_sequence_synchronized_state_PEv2_ready_in_sequence_memory = ready_in_sequence;
+    }
 
+    if (joints_in_sequence == ready_in_sequence) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: get_sequence_synchronized_state(%d) TRUE\n", __FILE__, __FUNCTION__, seq);
+        get_sequence_synchronized_state_memory = desired_state;
+        get_sequence_synchronized_state_seq_memory = seq;
         return 1;
     } else {
+        if (get_sequence_synchronized_state_seq_memory != seq || get_sequence_synchronized_state_memory != desired_state) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys_homecomp: %s:%s: get_sequence_synchronized_state(%d, %d) - FALSE\n", __FILE__, __FUNCTION__, seq, desired_state);
+        }
+        get_sequence_synchronized_state_memory = desired_state;
+        get_sequence_synchronized_state_seq_memory = seq;
         return 0;
     }
 }
