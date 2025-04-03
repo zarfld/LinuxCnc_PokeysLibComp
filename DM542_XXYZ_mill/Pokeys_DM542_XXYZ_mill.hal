@@ -125,9 +125,9 @@ net x-pos-fb               =>  joint.0.motor-pos-fb
 
 
 # ---setup home / limit switch signals---
-net home-x     =>  joint.0.home-sw-in
-net min-x     =>  joint.0.neg-lim-sw-in
-net max-x     =>  joint.0.pos-lim-sw-in
+#net home-x     =>  joint.0.home-sw-in
+#net min-x     =>  joint.0.neg-lim-sw-in
+#net max-x     =>  joint.0.pos-lim-sw-in
 
 #*******************
 #  Tandem AXIS X2 JOINT 1
@@ -190,9 +190,9 @@ net x2-pos-fb     => joint.1.motor-pos-fb
 
 # ---setup home / limit switch signals---
 
-net home-x2     =>  joint.1.home-sw-in
-net min-x2     =>  joint.1.neg-lim-sw-in
-net max-x2     =>  joint.1.pos-lim-sw-in
+#net home-x2     =>  joint.1.home-sw-in
+#net min-x2     =>  joint.1.neg-lim-sw-in
+#net max-x2     =>  joint.1.pos-lim-sw-in
 
 #*******************
 #  AXIS Y JOINT 2
@@ -253,9 +253,9 @@ net y-in-position     => pokeys.0.PEv2.1.joint-in-position
 
 # ---setup home / limit switch signals---
 
-net home-y     =>  joint.2.home-sw-in
-net min-y     =>  joint.2.neg-lim-sw-in
-net max-y     =>  joint.2.pos-lim-sw-in
+#net home-y     =>  joint.2.home-sw-in
+#net min-y     =>  joint.2.neg-lim-sw-in
+#net max-y     =>  joint.2.pos-lim-sw-in
 
 #*******************
 #  AXIS Z JOINT 3
@@ -311,7 +311,7 @@ net z-in-position     => pokeys.0.PEv2.2.joint-in-position
 
 # ---setup home / limit switch signals---
 
-net home-z     =>  joint.3.home-sw-in
+#net home-z     =>  joint.3.home-sw-in
 #net min-z     =>  joint.3.neg-lim-sw-in
 #net max-z     =>  joint.3.pos-lim-sw-in
 
