@@ -1304,6 +1304,23 @@ void pokeys_read_ini(sPoKeysDevice *dev) {
     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPEv2_ReadIniFile - done\n", __FILE__, __FUNCTION__);
     PKEncoder_ReadIniFile(dev);
     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKEncoder_ReadIniFile - done\n", __FILE__, __FUNCTION__);
+
+    PKIO_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_Setup - done\n", __FILE__, __FUNCTION__);
+    PKPEv2_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPEv2_Setup - done\n", __FILE__, __FUNCTION__);
+    PKEncoder_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKEncoder_Setup - done\n", __FILE__, __FUNCTION__);
+    PKPoExtBus_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPoExtBus_Setup - done\n", __FILE__, __FUNCTION__);
+    PKPoNet_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPoNet_Setup - done\n", __FILE__, __FUNCTION__);
+//    PKPoStep_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPoStep_Setup - done\n", __FILE__, __FUNCTION__);
+//    PKLCD_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKLCD_Setup - done\n", __FILE__, __FUNCTION__);
+//    PKMatrixKB_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKMatrixKB_Setup - done\n", __FILE__, __FUNCTION__);
 }
 /**
  * @brief
@@ -1387,6 +1404,10 @@ void pokeys_setup(sPoKeysDevice *dev) {
     }
     doSetup = 0;*/
 }
+
+
+
+
 /**
  * @brief user_mainloop
  *
@@ -1780,9 +1801,7 @@ EXTRA_SETUP() {
 
     if (dev == NULL) {
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: could not connect to device\n", __FILE__, __FUNCTION__);
-    } else {
-        //    pokeys_read_ini(dev);
-    }
+    } 
     //	PKEncoder_init(comp_id, dev);
     rtapi_print("");
     // devSerial = extra_arg;
