@@ -934,23 +934,28 @@ void PKIO_ReadIniFile(sPoKeysDevice *dev) {
 
     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_ReadIniFile\n", __FILE__, __FUNCTION__);
     int digitalCount = dev->info.iPinCount;
-    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_ReadIniFile - digitalCount: %d\n", __FILE__, __FUNCTION__, digitalCount);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_ReadIniFile - digitalCount: %d  - PinFunction\n", __FILE__, __FUNCTION__, digitalCount);
     for (int i = 0; i < digitalCount; i++) {
         snprintf(key, sizeof(key), "Pin_%i_Function", i);
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_ReadIniFile - i: %d key:%s\n", __FILE__, __FUNCTION__, i, key);
-        IO_data->Pin[i].PinFunction = ini_read_int("POKEYS", key, 0);
+        int tmp = ini_read_int("POKEYS", key, 0);
+        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_ReadIniFile - IO_data->Pin[%d].PinFunction :%d\n", __FILE__, __FUNCTION__, i, tmp);
+        IO_data->Pin[i].PinFunction = tmp;
     }
 
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_ReadIniFile - digin_invert\n", __FILE__, __FUNCTION__);
     for (int i = 0; i < digitalCount; i++) {
         snprintf(key, sizeof(key), "DigIn_%i_invert", i);
         IO_data->Pin[i].digin_invert = ini_read_int("POKEYS", key, 0);
     }
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_ReadIniFile - digout_invert\n", __FILE__, __FUNCTION__);
     for (int i = 0; i < digitalCount; i++) {
         snprintf(key, sizeof(key), "DigOut_%i_invert", i);
         IO_data->Pin[i].digout_invert = ini_read_int("POKEYS", key, 0);
     }
 
     int analogOutCount = dev->info.iPWMCount;
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_ReadIniFile - analogOutCount: %d\n", __FILE__, __FUNCTION__, analogOutCount);
     for (int j = 0; j < (analogOutCount); j++) {
 
         snprintf(key, sizeof(key), "AdcOut_%i_offset", j);
