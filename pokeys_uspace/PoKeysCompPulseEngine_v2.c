@@ -1368,7 +1368,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             positions_reset_onbootup_done = true;
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PositionSet!=PK_OK\n", __FILE__, __FUNCTION__);
         }
-   
+
         if (allhomed != false) {
 
             for (int i = 0; i < (*PEv2_data->PEv2_nrOfAxes); i++) {
