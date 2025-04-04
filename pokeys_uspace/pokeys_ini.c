@@ -46,7 +46,11 @@ void set_pokeys_ini_path(const char *path) {
 
 // **2. INI-Datei nach Integer-Wert durchsuchen**
 int ini_read_int(const char *section, const char *key, int default_value) {
-    rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_int: section='%s' key='%s' ini='%s' default_value=%i\n", section ? section : "NULL", key ? key : "NULL", pokeys_ini_path ? pokeys_ini_path : "NULL", default_value);
+    rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_int: section='%s' key='%s' ini='%s' default_value=%i\n",
+                    section ? section : "NULL",
+                    key ? key : "NULL",
+                    pokeys_ini_path ? pokeys_ini_path : "NULL",
+                    default_value);
 
     FILE *fp = fopen(pokeys_ini_path, "r");
     if (!fp) {
@@ -68,7 +72,8 @@ int ini_read_int(const char *section, const char *key, int default_value) {
             sscanf(line, "[%63[^]]", current_section);
             in_section = (strcmp(current_section, section) == 0);
 
-            rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_int: found section [%s] → %s\n", current_section, in_section ? "MATCH" : "no match");
+            rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_int: found section [%s] → %s\n",
+                            current_section, in_section ? "MATCH" : "no match");
             continue;
         }
 
@@ -172,7 +177,11 @@ float ini_read_float(const char *section, const char *key, float default_value) 
 
 // **4. INI-Datei nach String durchsuchen**
 void ini_read_string(const char *section, const char *key, char *buffer, size_t size, const char *default_value) {
-    rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_string: section='%s' key='%s' ini='%s' default='%s'\n", section ? section : "NULL", key ? key : "NULL", pokeys_ini_path ? pokeys_ini_path : "NULL", default_value ? default_value : "NULL");
+    rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_string: section='%s' key='%s' ini='%s' default='%s'\n",
+                    section ? section : "NULL",
+                    key ? key : "NULL",
+                    pokeys_ini_path ? pokeys_ini_path : "NULL",
+                    default_value ? default_value : "NULL");
 
     FILE *fp = fopen(pokeys_ini_path, "r");
     if (!fp) {
@@ -205,22 +214,26 @@ void ini_read_string(const char *section, const char *key, char *buffer, size_t 
             char *equalsign = strchr(line, '=');
 
             if (sscanf(line, "%63[^=]", file_key) == 1) {
-                // Whitespace vom Key-Ende entfernen
+                // Whitespace rechts vom Key entfernen
                 char *end = file_key + strlen(file_key) - 1;
                 while (end > file_key && isspace((unsigned char)*end))
                     *end-- = '\0';
 
-                if (strcmp(file_key, key) == 0) {
-                    // Whitespace nach dem '=' überspringen
+                // Case-insensitive Vergleich
+                char file_key_lower[64], key_lower[64];
+                tolower_str(file_key_lower, file_key, sizeof(file_key_lower));
+                tolower_str(key_lower, key, sizeof(key_lower));
+
+                if (strcmp(file_key_lower, key_lower) == 0) {
+                    // Wert extrahieren (Whitespace nach '=' überspringen)
                     char *val_start = equalsign + 1;
                     while (isspace((unsigned char)*val_start))
                         val_start++;
 
-                    // Kopiere bis zur maximalen Größe
                     strncpy(buffer, val_start, size - 1);
                     buffer[size - 1] = '\0';
 
-                    // Entferne Newline-Zeichen
+                    // Zeilenumbrüche entfernen
                     buffer[strcspn(buffer, "\r\n")] = '\0';
 
                     rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_string: FOUND key='%s', value='%s'\n", key, buffer);
@@ -236,6 +249,7 @@ void ini_read_string(const char *section, const char *key, char *buffer, size_t 
     strncpy(buffer, default_value, size - 1);
     buffer[size - 1] = '\0';
 }
+
 
 // **5. INI-Werte schreiben (ersetzen oder hinzufügen)**
 void ini_write_int(const char *section, const char *key, int value) {
