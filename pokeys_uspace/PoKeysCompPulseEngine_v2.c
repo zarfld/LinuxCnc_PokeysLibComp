@@ -1635,7 +1635,7 @@ void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
 
     PEv2_data->PEv2_digin_Emergency_invert = ini_read_int("POKEYS", "PEv2_EmergencyInput_invert", 0);
     PEv2_data->PEv2_digin_Emergency_invert = ini_read_int("POKEYS", "PEv2_EmergencyInputPolarity", PEv2_data->PEv2_digin_Emergency_invert);
-    
+
     // not in use	*PEv2_data->PEv2_AxisEnabledStatesMask = ini_read_int("POKEYS", "PEv2_EmergencyOutputPolarity", 0);
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: nrOfAxes = %d\n", __FILE__, __FUNCTION__, dev->PEv2.info.nrOfAxes);
     for (int AxisId = 0; AxisId < dev->PEv2.info.nrOfAxes; AxisId++) {
