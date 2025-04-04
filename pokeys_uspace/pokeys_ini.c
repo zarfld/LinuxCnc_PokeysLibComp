@@ -115,11 +115,7 @@ void tolower_str(char *dst, const char *src, size_t size) {
 }
 
 float ini_read_float(const char *section, const char *key, float default_value) {
-    rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_float: section='%s' key='%s' ini='%s' default_value=%f\n",
-                    section ? section : "NULL",
-                    key ? key : "NULL",
-                    pokeys_ini_path ? pokeys_ini_path : "NULL",
-                    default_value);
+    rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_float: section='%s' key='%s' ini='%s' default_value=%f\n", section ? section : "NULL", key ? key : "NULL", pokeys_ini_path ? pokeys_ini_path : "NULL", default_value);
 
     FILE *fp = fopen(pokeys_ini_path, "r");
     if (!fp) {
@@ -141,8 +137,7 @@ float ini_read_float(const char *section, const char *key, float default_value) 
             sscanf(line, "[%63[^]]", current_section);
             in_section = (strcmp(current_section, section) == 0);
 
-            rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_float: found section [%s] → %s\n",
-                            current_section, in_section ? "MATCH" : "no match");
+            rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_float: found section [%s] → %s\n", current_section, in_section ? "MATCH" : "no match");
             continue;
         }
 
@@ -177,8 +172,7 @@ float ini_read_float(const char *section, const char *key, float default_value) 
     }
 
     fclose(fp);
-    rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_float: FAILED to find key '%s' in section [%s], returning default=%f\n",
-                    key, section, default_value);
+    rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_float: FAILED to find key '%s' in section [%s], returning default=%f\n", key, section, default_value);
     return default_value;
 }
 
