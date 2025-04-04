@@ -1363,6 +1363,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             PEv2_deb_RefPosSpeed(i) = dev->PEv2.ReferencePositionSpeed[i];
         }
         if (!positions_reset_onbootup_done && bm_DoPositionSet != 0) {
+            dev->PEv2.param2 = bm_DoPositionSet;
             PK_PEv2_PositionSet(dev);
             positions_reset_onbootup_done = true;
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PositionSet!=PK_OK\n", __FILE__, __FUNCTION__);
