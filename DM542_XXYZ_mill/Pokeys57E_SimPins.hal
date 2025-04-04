@@ -132,7 +132,7 @@ setp wcomp_yhome.max 580000
 # Z axis
 # set min limit switch to trip at -2.1, release at -1000
 setp wcomp_zmin.max -6000
-setp wcomp_zmin.min -1000
+setp wcomp_zmin.min -8000
 
 # set home switch to trip at 3.9 and release at 4.1
 setp wcomp_zhome.min 160000
