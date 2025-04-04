@@ -1296,7 +1296,7 @@ void pokeys_read_ini(sPoKeysDevice *dev) {
 
     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: pokeys_read_ini -start \n", __FILE__, __FUNCTION__);
     set_pokeys_ini_path(ini_path);
-    
+
     PKIO_ReadIniFile(dev);
     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_ReadIniFile - done\n", __FILE__, __FUNCTION__);
     PKPEv2_ReadIniFile(dev);
