@@ -31,6 +31,7 @@ void get_pokeys_ini_path(int device_id, char *buffer, size_t size) {
 }
 
 void set_pokeys_ini_path(const char *path) {
+    rtapi_print_msg(RTAPI_MSG_ERR, "set_pokeys_ini_path: %s\n", path);
     strncpy(pokeys_ini_path, path, sizeof(pokeys_ini_path) - 1);
     pokeys_ini_path[sizeof(pokeys_ini_path) - 1] = '\0'; // Ensure null-termination
 }
@@ -43,6 +44,7 @@ int ini_read_int(const char *section, const char *key, int default_value) {
     if (!fp)
         return default_value;
 
+    rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: %s %s  (%s)\n", section, key, pokeys_ini_path);
     char line[256];
     int in_section = 0;
     while (fgets(line, sizeof(line), fp)) {
