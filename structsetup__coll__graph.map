@@ -1,0 +1,37 @@
+<map id="setup" name="setup">
+<area shape="rect" id="node1" title=" " alt="" coords="2100,1177,2236,1416"/>
+<area shape="rect" id="node2" title=" " alt="" coords="213,5,280,83"/>
+<area shape="rect" id="node10" href="$structblock__struct.html" title=" " alt="" coords="1217,876,1381,1100"/>
+<area shape="rect" id="node25" href="$structEmcPose.html" title=" " alt="" coords="241,547,322,625"/>
+<area shape="rect" id="node26" href="$structPmCartesian.html" title=" " alt="" coords="270,197,375,274"/>
+<area shape="rect" id="node27" href="$structCANON__TOOL__TABLE.html" title=" " alt="" coords="214,949,373,1027"/>
+<area shape="rect" id="node28" href="$structcontext__struct.html" title=" " alt="" coords="1674,540,1814,632"/>
+<area shape="rect" id="node3" title=" " alt="" coords="742,197,781,274"/>
+<area shape="rect" id="node5" href="$structstate__tag__t.html" title=" " alt="" coords="346,547,441,625"/>
+<area shape="rect" id="node14" href="$structremap__struct.html" title=" " alt="" coords="1290,547,1398,625"/>
+<area shape="rect" id="node4" href="$structStateTag.html" title=" " alt="" coords="571,927,707,1049"/>
+<area shape="rect" id="node6" title=" " alt="" coords="505,197,556,274"/>
+<area shape="rect" id="node7" title=" " alt="" coords="399,197,481,274"/>
+<area shape="rect" id="node8" title=" " alt="" coords="601,547,706,625"/>
+<area shape="rect" id="node9" title=" " alt="" coords="1548,547,1599,625"/>
+<area shape="rect" id="node11" title=" " alt="" coords="1404,197,1455,274"/>
+<area shape="rect" id="node12" title=" " alt="" coords="2051,197,2101,274"/>
+<area shape="rect" id="node13" title=" " alt="" coords="986,547,1153,625"/>
+<area shape="rect" id="node15" title=" " alt="" coords="1177,547,1266,625"/>
+<area shape="rect" id="node16" title=" " alt="" coords="1859,949,2037,1027"/>
+<area shape="rect" id="node17" title=" " alt="" coords="2062,949,2197,1027"/>
+<area shape="rect" id="node18" title=" " alt="" coords="2221,949,2281,1027"/>
+<area shape="rect" id="node19" title=" " alt="" coords="2305,949,2423,1027"/>
+<area shape="rect" id="node20" title=" " alt="" coords="2447,949,2567,1027"/>
+<area shape="rect" id="node21" title=" " alt="" coords="2591,949,2721,1027"/>
+<area shape="rect" id="node22" title=" " alt="" coords="2745,949,2869,1027"/>
+<area shape="rect" id="node23" title=" " alt="" coords="2893,949,3099,1027"/>
+<area shape="rect" id="node24" title=" " alt="" coords="3124,949,3273,1027"/>
+<area shape="rect" id="node29" title=" " alt="" coords="1638,189,1879,281"/>
+<area shape="rect" id="node30" href="$structpycontext.html" title=" " alt="" coords="1904,175,2027,296"/>
+<area shape="rect" id="node31" title=" " alt="" coords="1898,5,2033,83"/>
+<area shape="rect" id="node32" title=" " alt="" coords="3298,942,3465,1034"/>
+<area shape="rect" id="node33" title=" " alt="" coords="3489,949,3562,1027"/>
+<area shape="rect" id="node34" title=" " alt="" coords="3586,949,3787,1027"/>
+<area shape="rect" id="node35" title=" " alt="" coords="3811,942,3983,1034"/>
+</map>

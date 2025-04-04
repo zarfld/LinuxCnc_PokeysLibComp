@@ -1,0 +1,27 @@
+var structemcmot__config__t =
+[
+    [ "arcBlendEnable", "structemcmot__config__t.html#ab5242baa9b18dced5c1abdcb2e9800e4", null ],
+    [ "arcBlendFallbackEnable", "structemcmot__config__t.html#a9118485acf3abed7e634b29d81e6129d", null ],
+    [ "arcBlendGapCycles", "structemcmot__config__t.html#a32d466158f1e9714e91de60822d7f344", null ],
+    [ "arcBlendOptDepth", "structemcmot__config__t.html#ac9a42eeea4f6db3f6511031f904ab59b", null ],
+    [ "arcBlendRampFreq", "structemcmot__config__t.html#af4153e5da45d68cc470697e94b79f124", null ],
+    [ "arcBlendTangentKinkRatio", "structemcmot__config__t.html#a29f9bd1c649a6d2277e27d3e14e092fe", null ],
+    [ "config_num", "structemcmot__config__t.html#a615d0add5aec05d1b565eb0105cb81d6", null ],
+    [ "debug", "structemcmot__config__t.html#a4c034eef04d5fe8ba0d64131c2073dfb", null ],
+    [ "head", "structemcmot__config__t.html#ab7bead15a6a22340ae5925a50a724d5b", null ],
+    [ "inhibit_probe_home_error", "structemcmot__config__t.html#a7dd0b08e544e85c52eefcf69b0a91937", null ],
+    [ "inhibit_probe_jog_error", "structemcmot__config__t.html#ab31a3e9c28eb1586668d36150342f01e", null ],
+    [ "interpolationRate", "structemcmot__config__t.html#a886e923fbfa5276cf43e8bada4fd9652", null ],
+    [ "kinType", "structemcmot__config__t.html#a9e5904a9da635c90133b4149a135e5a0", null ],
+    [ "limitVel", "structemcmot__config__t.html#ad4009cfc85c6505a6f2043dd8738f20b", null ],
+    [ "maxFeedScale", "structemcmot__config__t.html#aac0396a7f8c031b2211d3f2df73cf35a", null ],
+    [ "numAIO", "structemcmot__config__t.html#a5bd309db5e9c139d3aec0574bde4cd59", null ],
+    [ "numDIO", "structemcmot__config__t.html#a2dc763a6d727d1ceb89b31980cf625a8", null ],
+    [ "numExtraJoints", "structemcmot__config__t.html#a52ed907db0aa82ffb8ec068303f0cb8d", null ],
+    [ "numJoints", "structemcmot__config__t.html#a69ea316f6d82fe1353f1f9a76c912d68", null ],
+    [ "numMiscError", "structemcmot__config__t.html#a493350a00a7c067d5dae1bf78d6cc288", null ],
+    [ "numSpindles", "structemcmot__config__t.html#a5fdfcb8ee2543267c8164c4553cff37b", null ],
+    [ "servoCycleTime", "structemcmot__config__t.html#aa2a18744db06101d68472930554983f2", null ],
+    [ "tail", "structemcmot__config__t.html#a29a2b15da232c54a83e11cf7120a0193", null ],
+    [ "trajCycleTime", "structemcmot__config__t.html#a3820418329bda8ae26a1a77d4c973802", null ]
+];

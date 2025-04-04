@@ -1,0 +1,9 @@
+<map id="EMC_AUX_INPUT_WAIT" name="EMC_AUX_INPUT_WAIT">
+<area shape="rect" id="node1" title=" " alt="" coords="61,627,259,719"/>
+<area shape="rect" id="node2" href="$classEMC__AUX__CMD__MSG.html" title=" " alt="" coords="67,472,253,564"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="111,345,259,423"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="200,160,304,296"/>
+<area shape="rect" id="node5" title=" " alt="" coords="47,5,86,83"/>
+<area shape="rect" id="node6" title=" " alt="" coords="261,5,312,83"/>
+<area shape="rect" id="node7" title=" " alt="" coords="277,479,344,557"/>
+</map>

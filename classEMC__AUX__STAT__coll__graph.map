@@ -1,0 +1,9 @@
+<map id="EMC_AUX_STAT" name="EMC_AUX_STAT">
+<area shape="rect" id="node1" title=" " alt="" coords="5,627,155,719"/>
+<area shape="rect" id="node2" href="$classEMC__AUX__STAT__MSG.html" title=" " alt="" coords="108,485,295,577"/>
+<area shape="rect" id="node3" href="$classRCS__STAT__MSG.html" title=" " alt="" coords="170,359,318,436"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="257,160,361,296"/>
+<area shape="rect" id="node5" title=" " alt="" coords="71,5,110,83"/>
+<area shape="rect" id="node6" title=" " alt="" coords="285,5,336,83"/>
+<area shape="rect" id="node7" title=" " alt="" coords="385,189,436,267"/>
+</map>

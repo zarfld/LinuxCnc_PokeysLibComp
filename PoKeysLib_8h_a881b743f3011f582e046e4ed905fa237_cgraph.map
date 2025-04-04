@@ -1,0 +1,11 @@
+<map id="PK_AnalogIOGetAsArray" name="PK_AnalogIOGetAsArray">
+<area shape="rect" id="node1" title=" " alt="" coords="5,56,184,83"/>
+<area shape="rect" id="node2" href="$PoKeysLibIO_8c.html#aa3cbbaa7a57191d5e9d626757d45e396" title=" " alt="" coords="232,56,360,83"/>
+<area shape="rect" id="node3" href="$PoKeysLibCore_8c.html#acb1fdd8f77277dc66c4d037218bfcece" title=" " alt="" coords="408,31,527,57"/>
+<area shape="rect" id="node4" href="$PoKeysLibCore_8c.html#ab5d92aa36d0a4a6953a055f5cd960aff" title=" " alt="" coords="414,81,521,108"/>
+<area shape="rect" id="node5" href="$PoKeysLibCore_8c.html#a273b6d635dea8f559b915cdb289d021e" title=" " alt="" coords="763,107,874,133"/>
+<area shape="rect" id="node6" href="$group__API.html#ga6b820f3e72097cf7f994e33715dc7af1" title="Read an Input report from a HID device." alt="" coords="599,5,678,32"/>
+<area shape="rect" id="node8" href="$group__API.html#gad14ea48e440cf5066df87cc6488493af" title="Write an Output report to a HID device." alt="" coords="597,107,680,133"/>
+<area shape="rect" id="node9" href="$PoKeysLibCoreSockets_8c.html#a22759fb4024c9081af26ac1bc6541b47" title=" " alt="" coords="575,157,703,184"/>
+<area shape="rect" id="node7" href="$group__API.html#gaa5c9ed5aa290688ffac03343989ad75a" title="Read an Input report from a HID device with timeout." alt="" coords="751,5,887,32"/>
+</map>

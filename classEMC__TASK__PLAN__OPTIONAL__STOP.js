@@ -1,0 +1,5 @@
+var classEMC__TASK__PLAN__OPTIONAL__STOP =
+[
+    [ "EMC_TASK_PLAN_OPTIONAL_STOP", "classEMC__TASK__PLAN__OPTIONAL__STOP.html#ad7683f9991060b95340cfb0774fd2243", null ],
+    [ "update", "classEMC__TASK__PLAN__OPTIONAL__STOP.html#abd9583f309d8387c95687db3e8b136af", null ]
+];

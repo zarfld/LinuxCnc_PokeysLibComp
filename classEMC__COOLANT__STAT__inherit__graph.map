@@ -1,0 +1,6 @@
+<map id="EMC_COOLANT_STAT" name="EMC_COOLANT_STAT">
+<area shape="rect" id="node1" title=" " alt="" coords="24,572,209,679"/>
+<area shape="rect" id="node2" href="$classEMC__COOLANT__STAT__MSG.html" title=" " alt="" coords="5,432,228,524"/>
+<area shape="rect" id="node3" href="$classRCS__STAT__MSG.html" title=" " alt="" coords="33,219,201,384"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="33,5,200,171"/>
+</map>

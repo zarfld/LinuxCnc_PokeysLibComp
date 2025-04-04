@@ -1,0 +1,9 @@
+<map id="/usr/include/linuxcnc/nml.hh" name="/usr/include/linuxcnc/nml.hh">
+<area shape="rect" id="node1" title=" " alt="" coords="299,5,453,47"/>
+<area shape="rect" id="node2" href="$cmd__msg_8hh.html" title=" " alt="" coords="184,95,339,136"/>
+<area shape="rect" id="node4" href="$nml__mod_8hh.html" title=" " alt="" coords="184,184,339,225"/>
+<area shape="rect" id="node5" href="$nml__oi_8hh.html" title=" " alt="" coords="413,95,568,136"/>
+<area shape="rect" id="node6" href="$nml__srv_8hh.html" title=" " alt="" coords="592,95,747,136"/>
+<area shape="rect" id="node7" href="$stat__msg_8hh.html" title=" " alt="" coords="5,95,160,136"/>
+<area shape="rect" id="node3" href="$emc__nml_8hh.html" title=" " alt="" coords="5,184,160,225"/>
+</map>

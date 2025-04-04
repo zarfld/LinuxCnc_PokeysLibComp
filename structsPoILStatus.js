@@ -1,0 +1,26 @@
+var structsPoILStatus =
+[
+    [ "codeMemoryPage", "structsPoILStatus.html#a58cafddcb1f898de3b602f0621fda86c", null ],
+    [ "CoreDebugBreakpoint", "structsPoILStatus.html#a42b766ef7606a00074a7a65c94fa4598", null ],
+    [ "CoreDebugMode", "structsPoILStatus.html#acfa1b45019051a2adfd5192d56b38835", null ],
+    [ "CoreState", "structsPoILStatus.html#abb475e8b14448dc6b4d867892c5487f5", null ],
+    [ "currentTask", "structsPoILStatus.html#a4b3f1e90a9b3f39e7ffdaa5e8bf54b11", null ],
+    [ "dataMemoryPage", "structsPoILStatus.html#ac29c96f5ee503f5f4a377e3826b8ad91", null ],
+    [ "dataStack", "structsPoILStatus.html#af65610a29a8dd383079f92dfbe4dcb61", null ],
+    [ "ExceptionDescription", "structsPoILStatus.html#a8d7c8570b79ca123ed3a52fca6ce1b99", null ],
+    [ "ExceptionLocation", "structsPoILStatus.html#aa7011d7a135cc5fe937f0b1e48b03917", null ],
+    [ "ExceptionPC", "structsPoILStatus.html#ad1fe7f16e798550bd60515b071a8d967", null ],
+    [ "ExternalCoreID", "structsPoILStatus.html#ac8f12d2edb78380082a9a5d41717a554", null ],
+    [ "functionStack", "structsPoILStatus.html#ada5a222a052333dedc4bf5e5330e9559", null ],
+    [ "inactiveLoad", "structsPoILStatus.html#adc60a15a3e85edee4fb9f2d05e7adb70", null ],
+    [ "info", "structsPoILStatus.html#ac5c5f597cfa433c55ec97bcb665e56c7", null ],
+    [ "MasterEnable", "structsPoILStatus.html#aaf3616380a4b7c5a193e6cb35054a108", null ],
+    [ "monitorChunks", "structsPoILStatus.html#ae0433d3c148803bb5c95083d97965ee0", null ],
+    [ "PC", "structsPoILStatus.html#ad0f014acd931526dc87e8f23e892f2c1", null ],
+    [ "reserved", "structsPoILStatus.html#ae7ae7747d943bd9c5ebce3c5f7ea0f43", null ],
+    [ "reserved_for_64", "structsPoILStatus.html#a747e5d79db7710b6171da4429ac4eabd", null ],
+    [ "STATUS", "structsPoILStatus.html#a654f70d87bc48e2ecf6d0fbf02cdd2ab", null ],
+    [ "taskCount", "structsPoILStatus.html#af060b2f53d932b912670c5dbe6472ee5", null ],
+    [ "tasks", "structsPoILStatus.html#a070b41d362d28d2481a341071634b12b", null ],
+    [ "W", "structsPoILStatus.html#abca7f5ae0924a97a14ccc2357c27b2c6", null ]
+];
