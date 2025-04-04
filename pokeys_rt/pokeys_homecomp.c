@@ -2561,7 +2561,7 @@ void do_home_joint(int jno) {
                 break;
             case PK_PEAxisState_axSTOPPED:
                 rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: do_home_joint joint[%d] stopped\n", __FILE__, __FUNCTION__, jno);
-              //  H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+                //  H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                 H[jno].home_state = HOME_START;
                 if (H[jno].home_sequence < 0) {
                     sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
@@ -2572,7 +2572,7 @@ void do_home_joint(int jno) {
                                             "PoKeys_homecomp: %s:%s: joint[%d] in sequence %d "
                                             "PK_PEAxisCommand_axHOMINGSTART\n",
                                             __FILE__, __FUNCTION__, jj, H[jno].home_sequence);
-                           // H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+                            // H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                             H[jj].home_state = HOME_START;
                         }
                     }
@@ -2586,7 +2586,7 @@ void do_home_joint(int jno) {
                                 "PoKeys_homecomp: %s:%s: do_home_joint joint[%d] ready "
                                 "PK_PEAxisCommand_axHOMINGSTART\n",
                                 __FILE__, __FUNCTION__, jno);
-               // H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+                // H[jno].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                 H[jno].home_state = HOME_START;
                 if (H[jno].home_sequence < 0) {
                     sequence_state = HOME_SEQUENCE_DO_ONE_SEQUENCE;
@@ -2597,7 +2597,7 @@ void do_home_joint(int jno) {
                                             "PoKeys_homecomp: %s:%s: joint[%d] in sequence %d "
                                             "PK_PEAxisCommand_axHOMINGSTART\n",
                                             __FILE__, __FUNCTION__, jj, H[jj].home_sequence);
-                       //     H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+                            //     H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                             H[jj].home_state = HOME_START;
                         }
                     }
@@ -2628,7 +2628,7 @@ void do_home_joint(int jno) {
                                 "PoKeys_homecomp: %s:%s: joint[%d] in sequence %d "
                                 "PK_PEAxisCommand_axHOMINGSTART\n",
                                 __FILE__, __FUNCTION__, jj, sequence_home_data.min_sequence);
-              //  H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
+                //  H[jj].PEv2_AxesCommand = PK_PEAxisCommand_axHOMINGSTART;
                 H[jno].home_state = HOME_START;
                 trigered++;
             } else {
