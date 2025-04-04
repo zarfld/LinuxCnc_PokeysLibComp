@@ -491,7 +491,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     allhomed = false;
 
                     *(PEv2_data->PEv2_deb_ishoming[i]) = true;
-//                    *(PEv2_data->PEv2_joint_pos_fb[i]) = 0;
+                    //                    *(PEv2_data->PEv2_joint_pos_fb[i]) = 0;
                     Homing_active = true;
                     PEv2_deb_out = 340 + i;
                     break;
@@ -1013,7 +1013,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                 //*(PEv2_data->PEv2_joint_pos_fb[i]) = PEv2_joint_pos_cmd(i);
 
                 //*(PEv2_data->PEv2_joint_pos_fb[i]) = ((float)*(PEv2_data->PEv2_CurrentPosition[i]) / PEv2_data->PEv2_PositionScale[i]) - PEv2_data->PEv2_PositionOffset[i];
-//                PosFb[i] = 0;
+                //                PosFb[i] = 0;
                 //*(PEv2_data->PEv2_joint_pos_fb[i]) = ((float)intCurrentPosition[i] / PEv2_data->PEv2_PositionScale[i]) - PEv2_data->PEv2_PositionOffset[i];
             }
 
