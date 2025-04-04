@@ -532,6 +532,7 @@ static int export(char *prefix, long extra_arg) {
     if (r != 0)
         return r;
 
+    pokeys_read_ini(dev);
     if (__comp_last_inst)
         __comp_last_inst->_next = inst;
     __comp_last_inst = inst;
@@ -1780,7 +1781,7 @@ EXTRA_SETUP() {
     if (dev == NULL) {
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: could not connect to device\n", __FILE__, __FUNCTION__);
     } else {
-        pokeys_read_ini(dev);
+    //    pokeys_read_ini(dev);
     }
     //	PKEncoder_init(comp_id, dev);
     rtapi_print("");
