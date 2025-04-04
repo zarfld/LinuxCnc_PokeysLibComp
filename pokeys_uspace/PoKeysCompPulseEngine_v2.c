@@ -405,7 +405,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     // PEv2_digin_AxisEnabled_in(i) = false;
                     // PEv2_digin_LimitOverride_in(i) = false;
 
-                    if (!positions_reset_onbootup_done && dev->PEv2.PositionSetup[i] != PEv2_data->PEv2_ZeroPosition[i]) {
+                    if (!positions_reset_onbootup_done && *(PEv2_data->PEv2_CurrentPosition[i]) != PEv2_data->PEv2_ZeroPosition[i]) {
                         dev->PEv2.PositionSetup[i] = PEv2_data->PEv2_ZeroPosition[i];
                         bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1);
                     }
