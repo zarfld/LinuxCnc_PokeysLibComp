@@ -224,6 +224,7 @@ bool IsHoming[8] = { false, false, false, false, false, false, false, false };
 float StepScale[8];
 bool Pins_DigitalValueSet_ignore[55];
 bool HAL_Machine_On = false;
+bool positions_reset_onbootup_done = false;
 pokeys_home_command_t old_PEv2_AxesCommand[8] = { 0 };
 
 int oldAxxiState[8] = { 0 };
@@ -403,6 +404,11 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     //  *(PEv2_data->PEv2_HomingStatus[i]) = PK_Homing_axIDLE;
                     // PEv2_digin_AxisEnabled_in(i) = false;
                     // PEv2_digin_LimitOverride_in(i) = false;
+
+                    if (!positions_reset_onbootup_done){
+                        dev->PEv2.PositionSetup[i] = PEv2_data->PEv2_ZeroPosition[i];
+                        bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, i, 1)
+                    }
 
                     break;
                 case PK_PEAxisState_axREADY: // Axis ready
@@ -1356,7 +1362,11 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             PEv2_deb_doMove(i) = doMove;
             PEv2_deb_RefPosSpeed(i) = dev->PEv2.ReferencePositionSpeed[i];
         }
-
+        if (!positions_reset_onbootup_done && bm_DoPositionSet != 0){
+            PK_PEv2_PositionSet(dev) 
+            positions_reset_onbootup_done = true;
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PositionSet!=PK_OK\n", __FILE__, __FUNCTION__);
+        }
         /*if (bm_DoPositionSet != 0) {
             PEv2_deb_out = 4000;
             dev->PEv2.param2 = bm_DoPositionSet;
