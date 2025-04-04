@@ -667,7 +667,7 @@ typedef struct {
 static all_sequences_home_data_t sequence_home_data;
 static bool allhomed = 0;
 
-static msg_level_t debug_level = RTAPI_MSG_ERR;
+static msg_level_t debug_level = RTAPI_MSG_DBG;
 /**
  * @brief Erstellt HAL-Pins für Homing-Logik aller Joints.
  *
