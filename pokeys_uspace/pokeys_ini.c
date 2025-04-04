@@ -46,11 +46,7 @@ void set_pokeys_ini_path(const char *path) {
 
 // **2. INI-Datei nach Integer-Wert durchsuchen**
 int ini_read_int(const char *section, const char *key, int default_value) {
-    rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_int: section='%s' key='%s' ini='%s' default_value=%i\n",
-                    section ? section : "NULL",
-                    key ? key : "NULL",
-                    pokeys_ini_path ? pokeys_ini_path : "NULL",
-                    default_value);
+    rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_int: section='%s' key='%s' ini='%s' default_value=%i\n", section ? section : "NULL", key ? key : "NULL", pokeys_ini_path ? pokeys_ini_path : "NULL", default_value);
 
     FILE *fp = fopen(pokeys_ini_path, "r");
     if (!fp) {
@@ -72,8 +68,7 @@ int ini_read_int(const char *section, const char *key, int default_value) {
             sscanf(line, "[%63[^]]", current_section);
             in_section = (strcmp(current_section, section) == 0);
 
-            rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_int: found section [%s] → %s\n",
-                            current_section, in_section ? "MATCH" : "no match");
+            rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_int: found section [%s] → %s\n", current_section, in_section ? "MATCH" : "no match");
             continue;
         }
 
@@ -111,7 +106,6 @@ int ini_read_int(const char *section, const char *key, int default_value) {
     rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: FAILED to find key '%s' in section [%s], returning default=%d\n", key, section, default_value);
     return default_value;
 }
-
 
 // **3. INI-Datei nach Float-Wert durchsuchen**
 float ini_read_float(const char *section, const char *key, float default_value) {
