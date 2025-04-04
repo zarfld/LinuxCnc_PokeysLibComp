@@ -932,6 +932,7 @@ void PKIO_ReadIniFile(sPoKeysDevice *dev) {
 
     char key[256]; // Puffer für den zusammengesetzten String
 
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_ReadIniFile\n", __FILE__, __FUNCTION__);
     int digitalCount = dev->info.iPinCount;
     for (int i = 0; i < digitalCount; i++) {
         snprintf(key, sizeof(key), "Pin_%i_Function", i);

@@ -37,6 +37,8 @@ void set_pokeys_ini_path(const char *path) {
 
 // **2. INI-Datei nach Integer-Wert durchsuchen**
 int ini_read_int(const char *section, const char *key, int default_value) {
+
+    rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: %s %s  (%s)\n", section, key, pokeys_ini_path);
     FILE *fp = fopen(pokeys_ini_path, "r");
     if (!fp)
         return default_value;
