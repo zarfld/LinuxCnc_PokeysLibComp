@@ -39,7 +39,7 @@ void set_pokeys_ini_path(const char *path) {
 // **2. INI-Datei nach Integer-Wert durchsuchen**
 int ini_read_int(const char *section, const char *key, int default_value) {
 
-    rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: %s %s (%s) default_value: %i\n", section, key, pokeys_ini_path,default_value);
+    rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: %s %s (%s) default_value: %i\n", section, key, pokeys_ini_path, default_value);
     FILE *fp = fopen(pokeys_ini_path, "r");
     if (!fp) {
         rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: FAILED to open ini file\n");
@@ -53,10 +53,9 @@ int ini_read_int(const char *section, const char *key, int default_value) {
         rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: line='%s'\n", line);
         if (line[0] == '[') {
             char current_section[64] = "";
-            sscanf(line, "[%63[^]]", current_section);  // robustere Erkennung
+            sscanf(line, "[%63[^]]", current_section); // robustere Erkennung
             in_section = (strcmp(current_section, section) == 0);
-            rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: found section [%s] → %s\n",
-                            current_section, in_section ? "MATCH" : "no match");
+            rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: found section [%s] → %s\n", current_section, in_section ? "MATCH" : "no match");
         }
         if (in_section && strstr(line, key) && strchr(line, '=')) {
             fclose(fp);
