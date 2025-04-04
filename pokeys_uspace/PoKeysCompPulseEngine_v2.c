@@ -1629,11 +1629,15 @@ void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
     PEv2_data->PEv2_digout_Emergency_Pin = ini_read_int("POKEYS", "PEv2_EmergencyOutputPin", 0);
 
     // PEv2_PulseEngineSetup settings
-    PEv2_data->PEv2_PulseEngineEnabled = ini_read_int("POKEYS", "PEv2_PulseEngineEnabled", 0);
-    PEv2_data->PEv2_ChargePumpEnabled = ini_read_int("POKEYS", "PEv2_ChargePumpEnabled", 0);
+    PEv2_data->PEv2_PulseEngineEnabled = ini_read_int("POKEYS", "PEv2_PulseEngineEnabled", 1);
+    PEv2_data->PEv2_ChargePumpEnabled = ini_read_int("POKEYS", "PEv2_ChargePumpEnabled", 1);
     PEv2_data->PEv2_PulseGeneratorType = ini_read_int("POKEYS", "PEv2_PulseGeneratorType", 0);
-    PEv2_data->PEv2_digin_Emergency_invert = ini_read_int("POKEYS", "PEv2_EmergencyInputPolarity", 0);
+
+    PEv2_data->PEv2_digin_Emergency_invert = ini_read_int("POKEYS", "PEv2_EmergencyInput_invert", 0);
+    PEv2_data->PEv2_digin_Emergency_invert = ini_read_int("POKEYS", "PEv2_EmergencyInputPolarity", PEv2_data->PEv2_digin_Emergency_invert);
+    
     // not in use	*PEv2_data->PEv2_AxisEnabledStatesMask = ini_read_int("POKEYS", "PEv2_EmergencyOutputPolarity", 0);
+    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: nrOfAxes = %d\n", __FILE__, __FUNCTION__, dev->PEv2.info.nrOfAxes);
     for (int AxisId = 0; AxisId < dev->PEv2.info.nrOfAxes; AxisId++) {
         // PEv2_AxisConfigurationGet settings
 
