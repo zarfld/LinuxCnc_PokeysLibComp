@@ -42,7 +42,7 @@ int ini_read_int(const char *section, const char *key, int default_value) {
     rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: %s %s (%s) default_value: %i\n", section, key, pokeys_ini_path, default_value);
     FILE *fp = fopen(pokeys_ini_path, "r");
     if (!fp) {
-        rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: FAILED to open ini file return:%i\n",default_value);
+        rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: FAILED to open ini file return:%i\n", default_value);
         return default_value;
     }
 
