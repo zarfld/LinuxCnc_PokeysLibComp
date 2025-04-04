@@ -50,7 +50,7 @@ int ini_read_int(const char *section, const char *key, int default_value) {
     char line[256];
     int in_section = 0;
     while (fgets(line, sizeof(line), fp)) {
-       // rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: line='%s'\n", line);
+        // rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: line='%s'\n", line);
         if (line[0] == '[') {
             char current_section[64] = "";
             sscanf(line, "[%63[^]]", current_section); // robustere Erkennung
