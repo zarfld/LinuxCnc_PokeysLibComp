@@ -11,6 +11,13 @@ static char pokeys_ini_path[MAX_PATH_LENGTH] = { 0 };
 extern uint32_t device_id;
 extern bool ApplyIniSettings;
 
+void tolower_str(char *dst, const char *src, size_t size) {
+    size_t i;
+    for (i = 0; i < size - 1 && src[i]; ++i)
+        dst[i] = tolower((unsigned char)src[i]);
+    dst[i] = '\0';
+}
+
 // **1. Pfad der INI-Datei ermitteln**
 void get_pokeys_ini_path(int device_id, char *buffer, size_t size) {
     const char *ini_path = getenv("INI_FILE_NAME");
@@ -100,8 +107,19 @@ int ini_read_int(const char *section, const char *key, int default_value) {
 }
 
 // **3. INI-Datei nach Float-Wert durchsuchen**
+void tolower_str(char *dst, const char *src, size_t size) {
+    size_t i;
+    for (i = 0; i < size - 1 && src[i]; ++i)
+        dst[i] = tolower((unsigned char)src[i]);
+    dst[i] = '\0';
+}
+
 float ini_read_float(const char *section, const char *key, float default_value) {
-    rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_float: section='%s' key='%s' ini='%s' default_value=%f\n", section ? section : "NULL", key ? key : "NULL", pokeys_ini_path ? pokeys_ini_path : "NULL", default_value);
+    rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_float: section='%s' key='%s' ini='%s' default_value=%f\n",
+                    section ? section : "NULL",
+                    key ? key : "NULL",
+                    pokeys_ini_path ? pokeys_ini_path : "NULL",
+                    default_value);
 
     FILE *fp = fopen(pokeys_ini_path, "r");
     if (!fp) {
@@ -115,7 +133,6 @@ float ini_read_float(const char *section, const char *key, float default_value) 
     while (fgets(line, sizeof(line), fp)) {
         if (line[0] == '[') {
             if (in_section) {
-                // Wir waren bereits in der gewünschten Section und nun beginnt eine neue
                 rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_float: left section [%s] without finding key '%s'\n", section, key);
                 break;
             }
@@ -124,7 +141,8 @@ float ini_read_float(const char *section, const char *key, float default_value) 
             sscanf(line, "[%63[^]]", current_section);
             in_section = (strcmp(current_section, section) == 0);
 
-            rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_float: found section [%s] → %s\n", current_section, in_section ? "MATCH" : "no match");
+            rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_float: found section [%s] → %s\n",
+                            current_section, in_section ? "MATCH" : "no match");
             continue;
         }
 
@@ -133,13 +151,18 @@ float ini_read_float(const char *section, const char *key, float default_value) 
             char *equalsign = strchr(line, '=');
 
             if (sscanf(line, "%63[^=]", file_key) == 1) {
-                // Trim trailing whitespace from key
+                // Whitespace am Ende entfernen
                 char *end = file_key + strlen(file_key) - 1;
                 while (end > file_key && isspace((unsigned char)*end))
                     *end-- = '\0';
 
-                if (strcmp(file_key, key) == 0) {
-                    // Skip whitespace after '='
+                // Case-insensitive Vergleich
+                char file_key_lower[64];
+                char key_lower[64];
+                tolower_str(file_key_lower, file_key, sizeof(file_key_lower));
+                tolower_str(key_lower, key, sizeof(key_lower));
+
+                if (strcmp(file_key_lower, key_lower) == 0) {
                     char *val_start = equalsign + 1;
                     while (isspace((unsigned char)*val_start))
                         val_start++;
@@ -154,7 +177,8 @@ float ini_read_float(const char *section, const char *key, float default_value) 
     }
 
     fclose(fp);
-    rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_float: FAILED to find key '%s' in section [%s], returning default=%f\n", key, section, default_value);
+    rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_float: FAILED to find key '%s' in section [%s], returning default=%f\n",
+                    key, section, default_value);
     return default_value;
 }
 
