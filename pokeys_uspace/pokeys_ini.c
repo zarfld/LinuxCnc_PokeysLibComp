@@ -5,7 +5,7 @@
 #include "pokeys_ini.h"
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h> 
+#include <ctype.h>
 
 static char pokeys_ini_path[MAX_PATH_LENGTH] = { 0 };
 extern uint32_t device_id;
@@ -40,12 +40,7 @@ void set_pokeys_ini_path(const char *path) {
 // **2. INI-Datei nach Integer-Wert durchsuchen**
 int ini_read_int(const char *section, const char *key, int default_value) {
 
-    rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_int: section='%s' key='%s' ini='%s' default_value=%i\n",
-                    section ? section : "NULL",
-                    key ? key : "NULL",
-                    pokeys_ini_path ? pokeys_ini_path : "NULL",
-                    default_value);
-
+    rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_int: section='%s' key='%s' ini='%s' default_value=%i\n", section ? section : "NULL", key ? key : "NULL", pokeys_ini_path ? pokeys_ini_path : "NULL", default_value);
 
     FILE *fp = fopen(pokeys_ini_path, "r");
     if (!fp) {
@@ -68,8 +63,7 @@ int ini_read_int(const char *section, const char *key, int default_value) {
             sscanf(line, "[%63[^]]", current_section);
             in_section = (strcmp(current_section, section) == 0);
 
-            rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_int: found section [%s] → %s\n",
-                            current_section, in_section ? "MATCH" : "no match");
+            rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_int: found section [%s] → %s\n", current_section, in_section ? "MATCH" : "no match");
 
             continue;
         }
@@ -82,12 +76,14 @@ int ini_read_int(const char *section, const char *key, int default_value) {
             if (sscanf(line, "%63[^=]", file_key) == 1) {
                 // Whitespace rechts vom Key entfernen
                 char *end = file_key + strlen(file_key) - 1;
-                while (end > file_key && isspace((unsigned char)*end)) *end-- = '\0';
+                while (end > file_key && isspace((unsigned char)*end))
+                    *end-- = '\0';
 
                 if (strcmp(file_key, key) == 0) {
                     // Whitespace nach dem '=' überspringen
                     char *val_start = equalsign + 1;
-                    while (isspace((unsigned char)*val_start)) val_start++;
+                    while (isspace((unsigned char)*val_start))
+                        val_start++;
 
                     int value = atoi(val_start);
                     rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: FOUND key='%s', value=%d\n", key, value);
@@ -105,11 +101,7 @@ int ini_read_int(const char *section, const char *key, int default_value) {
 
 // **3. INI-Datei nach Float-Wert durchsuchen**
 float ini_read_float(const char *section, const char *key, float default_value) {
-    rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_float: section='%s' key='%s' ini='%s' default_value=%f\n",
-                    section ? section : "NULL",
-                    key ? key : "NULL",
-                    pokeys_ini_path ? pokeys_ini_path : "NULL",
-                    default_value);
+    rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_float: section='%s' key='%s' ini='%s' default_value=%f\n", section ? section : "NULL", key ? key : "NULL", pokeys_ini_path ? pokeys_ini_path : "NULL", default_value);
 
     FILE *fp = fopen(pokeys_ini_path, "r");
     if (!fp) {
@@ -132,8 +124,7 @@ float ini_read_float(const char *section, const char *key, float default_value) 
             sscanf(line, "[%63[^]]", current_section);
             in_section = (strcmp(current_section, section) == 0);
 
-            rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_float: found section [%s] → %s\n",
-                            current_section, in_section ? "MATCH" : "no match");
+            rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_float: found section [%s] → %s\n", current_section, in_section ? "MATCH" : "no match");
             continue;
         }
 
@@ -144,14 +135,16 @@ float ini_read_float(const char *section, const char *key, float default_value) 
             if (sscanf(line, "%63[^=]", file_key) == 1) {
                 // Trim trailing whitespace from key
                 char *end = file_key + strlen(file_key) - 1;
-                while (end > file_key && isspace((unsigned char)*end)) *end-- = '\0';
+                while (end > file_key && isspace((unsigned char)*end))
+                    *end-- = '\0';
 
                 if (strcmp(file_key, key) == 0) {
                     // Skip whitespace after '='
                     char *val_start = equalsign + 1;
-                    while (isspace((unsigned char)*val_start)) val_start++;
+                    while (isspace((unsigned char)*val_start))
+                        val_start++;
 
-                    float value = (float) atof(val_start);
+                    float value = (float)atof(val_start);
                     rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_float: FOUND key='%s', value=%f\n", key, value);
                     fclose(fp);
                     return value;
@@ -164,7 +157,6 @@ float ini_read_float(const char *section, const char *key, float default_value) 
     rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_float: FAILED to find key '%s' in section [%s], returning default=%f\n", key, section, default_value);
     return default_value;
 }
-
 
 // **4. INI-Datei nach String durchsuchen**
 void ini_read_string(const char *section, const char *key, char *buffer, size_t size, const char *default_value) {
