@@ -1775,7 +1775,7 @@ EXTRA_SETUP() {
 
     if (dev == NULL) {
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: could not connect to device\n", __FILE__, __FUNCTION__);
-    } else{
+    } else {
         pokeys_read_ini(dev);
     }
     //	PKEncoder_init(comp_id, dev);
