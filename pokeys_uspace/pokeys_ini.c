@@ -107,13 +107,6 @@ int ini_read_int(const char *section, const char *key, int default_value) {
 }
 
 // **3. INI-Datei nach Float-Wert durchsuchen**
-void tolower_str(char *dst, const char *src, size_t size) {
-    size_t i;
-    for (i = 0; i < size - 1 && src[i]; ++i)
-        dst[i] = tolower((unsigned char)src[i]);
-    dst[i] = '\0';
-}
-
 float ini_read_float(const char *section, const char *key, float default_value) {
     rtapi_print_msg(RTAPI_MSG_DBG, "ini_read_float: section='%s' key='%s' ini='%s' default_value=%f\n", section ? section : "NULL", key ? key : "NULL", pokeys_ini_path ? pokeys_ini_path : "NULL", default_value);
 
