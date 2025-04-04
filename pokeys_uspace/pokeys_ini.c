@@ -39,31 +39,52 @@ void set_pokeys_ini_path(const char *path) {
 // **2. INI-Datei nach Integer-Wert durchsuchen**
 int ini_read_int(const char *section, const char *key, int default_value) {
 
-    rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: %s %s (%s) default_value: %i\n", section, key, pokeys_ini_path, default_value);
+    rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: section='%s' key='%s' ini='%s' default_value=%i\n",
+                    section ? section : "NULL",
+                    key ? key : "NULL",
+                    pokeys_ini_path ? pokeys_ini_path : "NULL",
+                    default_value);
+
     FILE *fp = fopen(pokeys_ini_path, "r");
     if (!fp) {
-        rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: FAILED to open ini file return:%i\n", default_value);
+        rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: FAILED to open ini file '%s'\n", pokeys_ini_path);
         return default_value;
     }
 
-    rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: %s %s  (%s)\n", section, key, pokeys_ini_path);
     char line[256];
     int in_section = 0;
     while (fgets(line, sizeof(line), fp)) {
-        // rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: line='%s'\n", line);
+
+        // Sektion beginnt – prüfen
         if (line[0] == '[') {
+            if (in_section) {
+                // Wir waren bereits in der gewünschten Sektion und nun kommt eine neue
+                rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: left section [%s] without finding key '%s'\n", section, key);
+                break;
+            }
+
             char current_section[64] = "";
-            sscanf(line, "[%63[^]]", current_section); // robustere Erkennung
+            sscanf(line, "[%63[^]]", current_section);
             in_section = (strcmp(current_section, section) == 0);
-            rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: found section [%s] → %s\n", current_section, in_section ? "MATCH" : "no match");
+
+            rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: found section [%s] → %s\n",
+                            current_section, in_section ? "MATCH" : "no match");
+            continue;
         }
+
         if (in_section && strstr(line, key) && strchr(line, '=')) {
-            fclose(fp);
-            return atoi(strchr(line, '=') + 1);
+            char *equalsign = strchr(line, '=');
+            if (equalsign) {
+                int value = atoi(equalsign + 1);
+                rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: FOUND key='%s', value=%d\n", key, value);
+                fclose(fp);
+                return value;
+            }
         }
     }
+
     fclose(fp);
-    rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: FAILED to find key %s in section %s return:%i\n", key, section, default_value);
+    rtapi_print_msg(RTAPI_MSG_ERR, "ini_read_int: FAILED to find key '%s' in section [%s], returning default=%d\n", key, section, default_value);
     return default_value;
 }
 
