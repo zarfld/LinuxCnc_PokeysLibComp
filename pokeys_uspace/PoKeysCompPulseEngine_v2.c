@@ -1632,10 +1632,10 @@ void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
     PEv2_data->PEv2_PulseEngineEnabled = ini_read_int("POKEYS", "PEv2_PulseEngineEnabled", 1);
     PEv2_data->PEv2_ChargePumpEnabled = ini_read_int("POKEYS", "PEv2_ChargePumpEnabled", 1);
     PEv2_data->PEv2_PulseGeneratorType = ini_read_int("POKEYS", "PEv2_PulseGeneratorType", 0);
-/*
-PEv2_PG_swap_stepdir=0
-PEv2_PG_extended_io=0
-*/
+    /*
+    PEv2_PG_swap_stepdir=0
+    PEv2_PG_extended_io=0
+    */
     PEv2_data->PEv2_digin_Emergency_invert = ini_read_int("POKEYS", "PEv2_EmergencyInput_invert", 0);
     PEv2_data->PEv2_digin_Emergency_invert = ini_read_int("POKEYS", "PEv2_EmergencyInputPolarity", PEv2_data->PEv2_digin_Emergency_invert);
 
