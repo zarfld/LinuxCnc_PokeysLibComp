@@ -1368,38 +1368,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
             positions_reset_onbootup_done = true;
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PositionSet!=PK_OK\n", __FILE__, __FUNCTION__);
         }
-        /*if (bm_DoPositionSet != 0) {
-            PEv2_deb_out = 4000;
-            dev->PEv2.param2 = bm_DoPositionSet;
-            for (int i = 0; i < (*PEv2_data->PEv2_nrOfAxes); i++) {
-                // if bit is set, then set IsHoming to false
-                if (bm_DoPositionSet & (1 << i)) {
-                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].DoPositionSetup = %d \n", __FILE__, __FUNCTION__, i, PEv2_data->PEv2_ZeroPosition[i]);
-                    dev->PEv2.PositionSetup[i] = PEv2_data->PEv2_ZeroPosition[i];
-                }
-            }
-            //
-            if (PK_PEv2_PositionSet(dev) != PK_OK) {
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_PEv2_PositionSet!=PK_OK\n", __FILE__, __FUNCTION__);
-    #ifdef ULAPI
-                usleep(sleepdur);
-    #endif
-
-            } else {
-                for (int i = 0; i < (*PEv2_data->PEv2_nrOfAxes); i++) {
-                    // if bit is set, then set IsHoming to false
-                    if (bm_DoPositionSet & (1 << i)) {
-                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d].DoPositionSet = 0 \n", __FILE__, __FUNCTION__, i);
-                        Homing_ArmEncodereDone[i] = true;
-                    }
-                }
-                bm_DoPositionSet = 0;
-            }
-
-    #ifdef ULAPI
-            usleep(sleepdur);
-    #endif
-        }*/
+   
         if (allhomed != false) {
 
             for (int i = 0; i < (*PEv2_data->PEv2_nrOfAxes); i++) {
@@ -1872,6 +1841,9 @@ void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
         snprintf(key, sizeof(key), "PEv2_InvertAxisEnable_%i", AxisId);
         PEv2_data->PEv2_digout_AxisEnable_invert[AxisId] = ini_read_int("POKEYS", key, 0);
     }
+
+    // need to ensure the correct ZeroPosition is set
+    positions_reset_onbootup_done = false;
 }
 
 /**
