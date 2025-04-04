@@ -934,8 +934,10 @@ void PKIO_ReadIniFile(sPoKeysDevice *dev) {
 
     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_ReadIniFile\n", __FILE__, __FUNCTION__);
     int digitalCount = dev->info.iPinCount;
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_ReadIniFile - digitalCount: %d\n", __FILE__, __FUNCTION__,digitalCount);
     for (int i = 0; i < digitalCount; i++) {
         snprintf(key, sizeof(key), "Pin_%i_Function", i);
+        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_ReadIniFile - i: %d key:%s\n", __FILE__, __FUNCTION__,i,key);
         IO_data->Pin[i].PinFunction = ini_read_int("POKEYS", key, 0);
     }
 
