@@ -1329,6 +1329,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 // prevent following errors due to external movement
                 joint->free_tp.enable = 0;
                 joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
+                joint->pos_cmd = joint->pos_fb;
                 // joint->free_tp.vel_cmd - not there = 0;
                 if (!H[joint_num].homing) {
                     rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] PK_PEAxisState_axHOMING_RESETTING - set homing=1\n", __FILE__, __FUNCTION__, joint_num);
@@ -1598,7 +1599,8 @@ int pokeys_1joint_state_machine(int joint_num) {
                 /* yes, stop motion */
                 joint->free_tp.enable = 0;
                 // joint->free_tp.pos_cmd = joint->free_tp.curr_pos; // set to zero
-                joint->free_tp.pos_cmd = 0.0; // set to zero
+                joint->pos_cmd = joint->pos_fb;
+                joint->free_tp.curr_pos = joint->pos_fb;
                 rtapi_print_msg(debug_level,
                                 "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] "
                                 "homing arm encoder - index pulse arrived joint->free_tp.pos_cmd %f\n",
