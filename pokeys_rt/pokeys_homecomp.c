@@ -1247,7 +1247,7 @@ int pokeys_1joint_state_machine(int joint_num) {
 
         int seq = abs(H[joint_num].home_sequence);
 
-        if(H[joint_num].home_state != HOME_IDLE){
+        if (H[joint_num].home_state != HOME_IDLE) {
             joint->pos_cmd = joint->pos_fb;
             joint->free_tp.curr_pos = joint->pos_fb;
         }
