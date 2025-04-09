@@ -1865,12 +1865,12 @@ void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
             *(PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[AxisId]) = ini_read_float(section, "STEPGEN_MAXVEL", 0.0);
             *(PEv2_data->PEv2_stepgen_HOME[AxisId]) = ini_read_int(section, "HOME", 0);
             *(PEv2_data->PEv2_stepgen_HOME_IGNORE_LIMITS[AxisId]) = ini_read_int(section, "HOME_IGNORE_LIMITS", 0);
-            *(PEv2_data->PEv2_stepgen_HOME_FINAL_VEL[AxisId]) = ini_read_float(section, "HOME_FINAL_VEL", 0.0);
-            *(PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[AxisId]) = ini_read_float(section, "HOME_LATCH_VEL", 0.0);
-            *(PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]) = ini_read_float(section, "HOME_SEARCH_VEL", 0.0);
-            *(PEv2_data->PEv2_stepgen_HOME_OFFSET[AxisId]) = ini_read_float(section, "HOME_OFFSET", 0.0);
-            *(PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId]) = ini_read_float(section, "MAX_LIMIT", 0.0);
-            *(PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId]) = ini_read_float(section, "MIN_LIMIT", 0.0);
+            (PEv2_data->PEv2_stepgen_HOME_FINAL_VEL[AxisId]) = ini_read_float(section, "HOME_FINAL_VEL", 0.0);
+            (PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[AxisId]) = ini_read_float(section, "HOME_LATCH_VEL", 0.0);
+            (PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[AxisId]) = ini_read_float(section, "HOME_SEARCH_VEL", 0.0);
+            (PEv2_data->PEv2_stepgen_HOME_OFFSET[AxisId]) = ini_read_float(section, "HOME_OFFSET", 0.0);
+            (PEv2_data->PEv2_stepgen_MAX_LIMIT[AxisId]) = ini_read_float(section, "MAX_LIMIT", 0.0);
+            (PEv2_data->PEv2_stepgen_MIN_LIMIT[AxisId]) = ini_read_float(section, "MIN_LIMIT", 0.0);
             *(PEv2_data->PEv2_stepgen_ENCODER_SCALE[AxisId]) = ini_read_float(section, "ENCODER_SCALE", 0.0);
             *(PEv2_data->PEv2_stepgen_TYPE[AxisId]) = ini_read_int(section, "TYPE", 0);
         }
