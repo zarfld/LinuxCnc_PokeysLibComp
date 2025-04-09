@@ -1620,6 +1620,7 @@ void PKPEv2_Setup(sPoKeysDevice *dev) {
  */
 void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
     char key[256]; // Puffer für den zusammengesetzten String
+    char section[256];
 
     PEv2_data->PEv2_digin_Probe_Pin = ini_read_int("POKEYS", "PEv2_ProbeInput", 0);
     PEv2_data->PEv2_digin_Probe_invert = ini_read_int("POKEYS", "PEv2_ProbeInputPolarity", 0);
@@ -1850,6 +1851,29 @@ void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
         // PEv2_data->PEv2_digout_AxisEnable_invert[AxisId] - PEv2_InvertAxisEnable_0
         snprintf(key, sizeof(key), "PEv2_InvertAxisEnable_%i", AxisId);
         PEv2_data->PEv2_digout_AxisEnable_invert[AxisId] = ini_read_int("POKEYS", key, 0);
+
+        snprintf(key, sizeof(key), "PEv2_linked_joint_%i", AxisId);
+        int linked_joint = ini_read_int("POKEYS", key, -1);
+
+        if (linked_joint >= 0) {
+            
+            snprintf(section, sizeof(section), "JOINT_%i", AxisId);
+            *(PEv2_data->PEv2_stepgen_STEP_SCALE[j]) = ini_read_float(section, "STEP_SCALE", 0.0);
+            *(PEv2_data->PEv2_stepgen_MAX_OUTPUT[j]) = ini_read_float(section, "MAX_OUTPUT", 0.0);
+            *(PEv2_data->PEv2_stepgen_DEADBAND[j]) = ini_read_float(section, "DEADBAND", 0.0);
+            *(PEv2_data->PEv2_stepgen_STEPGEN_MAXACCEL[j]) = ini_read_float(section, "STEPGEN_MAXACCEL", 0.0);
+            *(PEv2_data->PEv2_stepgen_STEPGEN_MAXVEL[j]) = ini_read_float(section, "STEPGEN_MAXVEL", 0.0);
+            *(PEv2_data->PEv2_stepgen_HOME[j]) = ini_read_int(section, "HOME", 0);
+            *(PEv2_data->PEv2_stepgen_HOME_IGNORE_LIMITS[j]) = ini_read_int(section, "HOME_IGNORE_LIMITS", 0);
+            *(PEv2_data->PEv2_stepgen_HOME_FINAL_VEL[j]) = ini_read_float(section, "HOME_FINAL_VEL", 0.0);
+            *(PEv2_data->PEv2_stepgen_HOME_LATCH_VEL[j]) = ini_read_float(section, "HOME_LATCH_VEL", 0.0);
+            *(PEv2_data->PEv2_stepgen_HOME_SEARCH_VEL[j]) = ini_read_float(section, "HOME_SEARCH_VEL", 0.0);
+            *(PEv2_data->PEv2_stepgen_HOME_OFFSET[j]) = ini_read_float(section, "HOME_OFFSET", 0.0);
+            *(PEv2_data->PEv2_stepgen_MAX_LIMIT[j]) = ini_read_float(section, "MAX_LIMIT", 0.0);
+            *(PEv2_data->PEv2_stepgen_MIN_LIMIT[j]) = ini_read_float(section, "MIN_LIMIT", 0.0);
+            *(PEv2_data->PEv2_stepgen_ENCODER_SCALE[j]) = ini_read_float(section, "ENCODER_SCALE", 0.0);
+            *(PEv2_data->PEv2_stepgen_TYPE[j]) = ini_read_int(section, "TYPE", 0);
+        }
     }
 
     // need to ensure the correct ZeroPosition is set
