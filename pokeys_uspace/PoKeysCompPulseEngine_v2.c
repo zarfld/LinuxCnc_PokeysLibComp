@@ -1856,7 +1856,7 @@ void PKPEv2_ReadIniFile(sPoKeysDevice *dev) {
         int linked_joint = ini_read_int("POKEYS", key, -1);
 
         if (linked_joint >= 0) {
-            
+
             snprintf(section, sizeof(section), "JOINT_%i", AxisId);
             *(PEv2_data->PEv2_stepgen_STEP_SCALE[j]) = ini_read_float(section, "STEP_SCALE", 0.0);
             *(PEv2_data->PEv2_stepgen_MAX_OUTPUT[j]) = ini_read_float(section, "MAX_OUTPUT", 0.0);
