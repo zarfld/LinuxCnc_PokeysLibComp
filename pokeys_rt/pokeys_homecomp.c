@@ -127,7 +127,7 @@
 #include "rtapi_errno.h"
 #include "hal.h"
 #include "rtapi_math64.h"
-
+#include <math.h>
 static int comp_id;
 
 #ifdef MODULE_INFO
@@ -1043,9 +1043,10 @@ bool Homing_ArmEncodereDone[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 int jsm_AxesState_memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 int jsm_home_state_memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 bool home_sw_active_memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-static double saved_min_ferror[NJOINTS];
-static double saved_max_ferror[NJOINTS];
-static int ferror_saved[NJOINTS]; // flag to track if we’ve cached it already
+
+static double saved_min_ferror[8];
+static double saved_max_ferror[8];
+static int ferror_saved[8];  // flag to track if we’ve cached it already
 
 int pokeys_1joint_state_machine(int joint_num) {
     emcmot_joint_t *joint;
