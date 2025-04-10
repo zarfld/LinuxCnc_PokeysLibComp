@@ -1046,7 +1046,7 @@ bool home_sw_active_memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
 static double saved_min_ferror[8];
 static double saved_max_ferror[8];
-static int ferror_saved[8];  // flag to track if we’ve cached it already
+static int ferror_saved[8]; // flag to track if we’ve cached it already
 
 int pokeys_1joint_state_machine(int joint_num) {
     emcmot_joint_t *joint;
