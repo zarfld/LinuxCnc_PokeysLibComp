@@ -1715,7 +1715,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 }
 
                 joint->free_tp.enable = 0;
-              //  joint->free_tp.pos_cmd = H[joint_num].home;
+                //  joint->free_tp.pos_cmd = H[joint_num].home;
 
                 /* waiting for sync before Pokeys moves to homeposition */
                 Set_PEAxisCommand = PK_PEAxisCommand_axHOMINGFINALMOVE;
