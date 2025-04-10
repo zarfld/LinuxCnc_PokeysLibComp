@@ -1072,7 +1072,8 @@ int pokeys_1joint_state_machine(int joint_num) {
         double ferror_limit_during_homing = range + margin;
 
         if (!ferror_saved[joint_num]) {
-            RTAPI_PRINT_MSG(debug_level, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] ferror_saved[%d] = 0\n", __FILE__, __FUNCTION__, joint_num, ferror_saved[joint_num]);
+            rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] ferror_saved[%d] = 0\n", __FILE__, __FUNCTION__, joint_num, ferror_saved[joint_num]);
+            
             saved_min_ferror[joint_num] = joint->min_ferror;
             saved_max_ferror[joint_num] = joint->max_ferror;
             ferror_saved[joint_num] = 1;
