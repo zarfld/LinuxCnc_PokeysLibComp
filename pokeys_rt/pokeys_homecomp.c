@@ -1721,7 +1721,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 }
 
                 joint->free_tp.enable = 0;
-              //  joint->free_tp.pos_cmd = H[joint_num].home;
+                //  joint->free_tp.pos_cmd = H[joint_num].home;
 
                 /* waiting for sync before Pokeys moves to homeposition */
                 Set_PEAxisCommand = PK_PEAxisCommand_axHOMINGFINALMOVE;
@@ -1787,8 +1787,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                     "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] "
                                     "homing arm encoder - index pulse arrived joint->free_tp.pos_cmd %f\n",
                                     __FILE__, __FUNCTION__, joint_num, joint->free_tp.pos_cmd);
-                }
-                else{
+                } else {
                     if (get_sequence_synchronized_state(H[joint_num].home_sequence, requested_PEAxisState)) {
                         for (int jj = 0; jj < all_joints; jj++) {
                             if (abs(H[jj].home_sequence) == abs(seq)) {
@@ -1808,7 +1807,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                 }
                             }
                         }
-    
+
                         if (H[joint_num].PEv2_AxesCommand != Set_PEAxisCommand) {
                             H[joint_num].PEv2_AxesCommand = Set_PEAxisCommand;
                             rtapi_print_msg(debug_level,
@@ -1824,9 +1823,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                             H[joint_num].home_state = Set_home_state;
                         }
                     }
-
                 }
-                
 
                 break;
 
