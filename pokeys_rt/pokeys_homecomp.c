@@ -1330,8 +1330,6 @@ int pokeys_1joint_state_machine(int joint_num) {
                                             __FILE__, __FUNCTION__, home_state_case, joint_num, H[joint_num].home_sequence, local_home_state_names[Set_home_state]);
                             H[joint_num].home_state = Set_home_state;
                         }
-
-
                     }
                 }
 
@@ -1762,8 +1760,8 @@ int pokeys_1joint_state_machine(int joint_num) {
                     jsm_home_state_memory[joint_num] = H[joint_num].home_state;
                 }
                 joint->free_tp.enable = 0;
-                //joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
-                // joint->free_tp.vel_cmd - not there = 0;
+                // joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
+                //  joint->free_tp.vel_cmd - not there = 0;
 
                 Set_PEAxisCommand = PK_PEAxisCommand_axIDLE;
                 Set_home_state = HOME_FINISHED;
@@ -1813,7 +1811,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 }
                 joint->pos_cmd = joint->pos_fb;
                 joint->free_tp.curr_pos = joint->pos_fb;
-                
+
                 /* Axis is homed */
                 joints_in_sequence = 0;
                 int homed_in_sequence = 0;
