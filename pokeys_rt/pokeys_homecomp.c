@@ -1045,7 +1045,7 @@ int jsm_home_state_memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 bool home_sw_active_memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 static double saved_min_ferror[NJOINTS];
 static double saved_max_ferror[NJOINTS];
-static int ferror_saved[NJOINTS];  // flag to track if we’ve cached it already
+static int ferror_saved[NJOINTS]; // flag to track if we’ve cached it already
 
 int pokeys_1joint_state_machine(int joint_num) {
     emcmot_joint_t *joint;
@@ -1074,22 +1074,17 @@ int pokeys_1joint_state_machine(int joint_num) {
             saved_min_ferror[joint_num] = joint->min_ferror;
             saved_max_ferror[joint_num] = joint->max_ferror;
             ferror_saved[joint_num] = 1;
-        }
-        else
-        {
+        } else {
             joint->min_ferror = joint->max_ferror = joint->ferror_limit = ferror_limit_during_homing;
         }
-        
-    }
-    else{
+
+    } else {
         if (ferror_saved[joint_num]) {
             joint->min_ferror = saved_min_ferror[joint_num];
             joint->max_ferror = saved_max_ferror[joint_num];
             ferror_saved[joint_num] = 0;
         }
     }
-
-
 
     /* when a joint is homing, 'check_for_faults()' ignores its limit
        switches, so that this code can do the right thing with them. Once
@@ -1277,7 +1272,6 @@ int pokeys_1joint_state_machine(int joint_num) {
         const char *home_state_case;
 
         int seq = abs(H[joint_num].home_sequence);
-
 
         /** switch to analyz homestate */
         switch (H[joint_num].home_state) {
