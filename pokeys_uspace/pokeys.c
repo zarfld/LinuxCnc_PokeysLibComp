@@ -263,7 +263,7 @@ bool ApplyIniSettings;
  * @brief
  *
  */
- void pokeys_read_ini(sPoKeysDevice *dev) {
+void pokeys_read_ini(sPoKeysDevice *dev) {
     const char *ini_path = getenv("INI_FILE_NAME");
 
     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: pokeys_read_ini -start \n", __FILE__, __FUNCTION__);
@@ -1334,7 +1334,6 @@ bool initdone = 0;
 int doSetup = 0;
 
 int next_setup = 1;
-
 
 void pokeys_update(sPoKeysDevice *dev) {
 

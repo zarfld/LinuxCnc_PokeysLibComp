@@ -1736,7 +1736,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                     case PK_Homing_axARMENCODER:
                         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axARMENCODER (ZeroPosition %d)\n", __FILE__, __FUNCTION__, PEv2_data->PEv2_ZeroPosition[axis]);
                         dev->PEv2.PositionSetup[axis] = PEv2_data->PEv2_ZeroPosition[axis];
-                       // *(PEv2_data->PEv2_joint_pos_fb[axis]) = (PEv2_data->PEv2_ZeroPosition[axis] / PEv2_data->PEv2_PositionScale[axis]) - PEv2_data->PEv2_PositionOffset[axis];
+                        // *(PEv2_data->PEv2_joint_pos_fb[axis]) = (PEv2_data->PEv2_ZeroPosition[axis] / PEv2_data->PEv2_PositionScale[axis]) - PEv2_data->PEv2_PositionOffset[axis];
 
                         bm_DoPositionSet = Set_BitOfByte(bm_DoPositionSet, axis, 1);
                         *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axARMENCODER;
