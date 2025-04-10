@@ -1,0 +1,6 @@
+<map id="EMC_TRAJ_SET_ACCELERATION" name="EMC_TRAJ_SET_ACCELERATION">
+<area shape="rect" id="node1" title=" " alt="" coords="5,484,256,576"/>
+<area shape="rect" id="node2" href="$classEMC__TRAJ__CMD__MSG.html" title=" " alt="" coords="37,344,225,436"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="57,219,205,296"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="47,5,214,171"/>
+</map>

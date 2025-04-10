@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['x_0',['x',['../structPmCartesian.html#a145c5fdd25037b86b5fa002e7d3e03b2',1,'PmCartesian']]],
+  ['x_1',['X',['../structCONTROL__POINT.html#a9cc70b6d2459a23e2b4a483ee082b8c1',1,'CONTROL_POINT']]],
+  ['x_2',['x',['../structPmEulerZyx.html#a05f63fddcbebd46ff61343ad5741fa35',1,'PmEulerZyx::x()'],['../structPmQuaternion.html#a84b05f2af41e52cfc051d77c6cc53234',1,'PmQuaternion::x()'],['../structPmRotationMatrix.html#a2e78c81df93428e13cc0dbf7dcecb16a',1,'PmRotationMatrix::x()'],['../structPmRotationVector.html#a5cbee5c6028a38d43252d885b6d63ca8',1,'PmRotationVector::x()'],['../structgo__zyx.html#aa6e03088973bbac9ad61d2aa2dae3c82',1,'go_zyx::x()'],['../structgo__quat.html#abcadeef8b1b3c34d076c101e6156cc1e',1,'go_quat::x()'],['../structgo__mat.html#a1b4da1c082577dc61f5fd547f245714b',1,'go_mat::x()'],['../structgo__rvec.html#a9b149a899acb07e46b89704abfa1d88a',1,'go_rvec::x()'],['../structgo__cart.html#aedda4f8c9ffeb4c4ed07dac7e2c7ef22',1,'go_cart::x()'],['../structCANON__POSITION.html#a9da208eb0dedb6805dc37b6833152ab9',1,'CANON_POSITION::x()'],['../structCANON__VECTOR.html#aaf822b5ba8fe4adc58094613b7bb730c',1,'CANON_VECTOR::x()']]],
+  ['x_3',['X',['../structPLANE__POINT.html#a4d7c50d483cede8cffa6950bb7b690d0',1,'PLANE_POINT']]],
+  ['x0_4',['x0',['../structCUBIC__STRUCT.html#a5ef98a4bcc984f747421de1beaf17ebb',1,'CUBIC_STRUCT']]],
+  ['x1_5',['x1',['../structCUBIC__STRUCT.html#a64dca8fe627a9c17fe4f91400178bd02',1,'CUBIC_STRUCT']]],
+  ['x2_6',['x2',['../structCUBIC__STRUCT.html#af641d5286c2986b3db674919c47ec7f1',1,'CUBIC_STRUCT']]],
+  ['x3_7',['x3',['../structCUBIC__STRUCT.html#a2f45fbfcb3c280e98c19a580860ea9a0',1,'CUBIC_STRUCT']]],
+  ['x_5fflag_8',['x_flag',['../structblock__struct.html#a562954ec290c53ed79397fdabae4e3da',1,'block_struct']]],
+  ['x_5fnumber_9',['x_number',['../structblock__struct.html#a0c9ba0cc6d6c02b73edd6d8f944cea19',1,'block_struct']]],
+  ['xoffset_10',['xoffset',['../classEMC__SPINDLE__SPEED.html#a5906c3a0ed179f2ddcf92638ea7fe560',1,'EMC_SPINDLE_SPEED::xoffset()'],['../classEMC__SPINDLE__ON.html#a0b484215bc7f599d169d761277860085',1,'EMC_SPINDLE_ON::xoffset()'],['../structspindle__status__t.html#a737c1e344f95111bb114daabb9c1b3c9',1,'spindle_status_t::xoffset()']]],
+  ['xstr_11',['XSTR',['../group__pokeys__homecomp.html#ga03943706e48069237cd57f2d35ca987e',1,'pokeys_homecomp.c']]],
+  ['xy_5frotation_12',['xy_rotation',['../structCanonConfig__t.html#a0932aaaac45d5b167f710e2b6b3b0ced',1,'CanonConfig_t']]],
+  ['xyz_13',['xyz',['../structPmLine9.html#a3dd5e3c577cc1510150636a5687ee3bc',1,'PmLine9::xyz()'],['../structPmCircle9.html#adf8cdfaeab7c575582affb3cd74864df',1,'PmCircle9::xyz()'],['../structArc9.html#a79c5b961ccfeef0098213e46df07991c',1,'Arc9::xyz()'],['../structPmRigidTap.html#acf4b1f331738a7e056717599082988ef',1,'PmRigidTap::xyz()'],['../structCANON__POSITION.html#ae2854958f45bef97a46e03c8db0a5102',1,'CANON_POSITION::xyz()']]],
+  ['xyzackinematicsforward_14',['xyzacKinematicsForward',['../kinematics_8h.html#aaa4ccf50d0c73a339867ff724598339c',1,'kinematics.h']]],
+  ['xyzackinematicsinverse_15',['xyzacKinematicsInverse',['../kinematics_8h.html#a19bd4a59ef2389aa3ad58acb7647cfeb',1,'kinematics.h']]],
+  ['xyzbckinematicsforward_16',['xyzbcKinematicsForward',['../kinematics_8h.html#ad9d9ecb9b18ddfea8d755af19b52b5a1',1,'kinematics.h']]],
+  ['xyzbckinematicsinverse_17',['xyzbcKinematicsInverse',['../kinematics_8h.html#a97a15cb3b9dde5042e62a965af0d8553',1,'kinematics.h']]]
+];

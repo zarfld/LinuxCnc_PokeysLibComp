@@ -1,0 +1,4 @@
+<map id="PoKeysHALComponent::PEv2_HomingStateSyncedTrigger" name="PoKeysHALComponent::PEv2_HomingStateSyncedTrigger">
+<area shape="rect" id="node1" title="Triggers a synchronized homing state transition for all axes in a given homing sequence." alt="" coords="5,5,251,47"/>
+<area shape="rect" id="node2" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="299,13,423,39"/>
+</map>
