@@ -45,12 +45,17 @@ jobs:
             cd code_analysis
             doxygen Doxyfile
 
-      - name: Upload generated docs as artifact
+      - name: Compress HTML docs
+        run: |
+          cd code_analysis
+          tar -czf doxygen-html.tar.gz html
+      
+      - name: Upload compressed docs
         uses: actions/upload-artifact@v4
         with:
           name: doxygen-html
-          path: code_analysis/html/
-
+          path: code_analysis/doxygen-html.tar.gz
+    
   deploy-docs:
     runs-on: self-hosted
         
