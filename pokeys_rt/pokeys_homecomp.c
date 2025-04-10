@@ -1081,6 +1081,10 @@ int pokeys_1joint_state_machine(int joint_num) {
 
     } else {
         if (ferror_saved[joint_num]) {
+            rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] ferror_saved[%d] = 1\n", __FILE__, __FUNCTION__, joint_num, ferror_saved[joint_num]);
+            joint->pos_cmd = joint->pos_fb; // reset pos_cmd to fb before reducing ferror
+            joint->free_tp.curr_pos = joint->pos_fb;
+
             joint->min_ferror = saved_min_ferror[joint_num];
             joint->max_ferror = saved_max_ferror[joint_num];
             ferror_saved[joint_num] = 0;
@@ -1709,7 +1713,7 @@ int pokeys_1joint_state_machine(int joint_num) {
 
                 joint->free_tp.enable = 0;
                 joint->free_tp.pos_cmd = H[joint_num].home;
-                // joint->free_tp.vel_cmd - not there = 0;
+                
 
                 /* waiting for sync before Pokeys moves to homeposition */
                 Set_PEAxisCommand = PK_PEAxisCommand_axHOMINGFINALMOVE;
