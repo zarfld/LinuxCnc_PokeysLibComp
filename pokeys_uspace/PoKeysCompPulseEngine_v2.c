@@ -831,6 +831,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                     if (Homing_FinalMoveDone[i] != true) {
 
                         if (Homing_FinalMoveActive[i] != true) {
+                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGFinalMove - FinalMove not yet active\n", __FILE__, __FUNCTION__, i);
                             if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGWaitFinalMove, PK_Homing_axHOMINGFinalMove) == 0) {
                                 intAxesState = PEAxisStateEx_HOMINGFINALMOVE; //	PK_PEAxisState_axHOMINGFINALMOVE = 19,          // (linuxcnc spec additional state) Pokeys moves to homeposition
                                 Homing_FinalMoveActive[i] = true;
@@ -838,7 +839,7 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                 intAxesState = PEAxisStateEx_HOMINGWaitFINALMOVE;
                             }
                         } else if ((dev->PEv2.CurrentPosition[i] == (int32_t)PEv2_data->PEv2_HomePosition[i])) {
-
+                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGFinalMove - FinalMove reached home (CurrentPosition: %d HomePosition: %d) \n", __FILE__, __FUNCTION__, i,dev->PEv2.CurrentPosition[i], (int32_t)PEv2_data->PEv2_HomePosition[i]);
                             if (PEv2_HomingStateSyncedTrigger(dev, PEv2_data->PEv2_home_sequence[i], PK_Homing_axHOMINGFinalMove, PK_Homing_axIDLE) == 0) {
                                 // intAxesState is already set from dev->PEv2.AxesState[i]
                                 intAxesState = PK_PEAxisState_axHOME;
@@ -851,8 +852,12 @@ void PKPEv2_Update(sPoKeysDevice *dev, bool HAL_Machine_On) {
                                 InPosition[i] = true;
                                 *(PEv2_data->PEv2_deb_ishoming[i]) = false;
                             }
+                            else{
+                                intAxesState = PEAxisStateEx_HOMINGFINALMOVE;
+                            }
                         } else {
-                            intAxesState = PEAxisStateEx_HOMINGWaitFINALMOVE;
+                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PEv2_Axis[%d] PK_PEAxisCommand_axHOMINGFinalMove - FinalMove still active (CurrentPosition: %d HomePosition: %d) \n", __FILE__, __FUNCTION__, i, dev->PEv2.CurrentPosition[i], (int32_t)PEv2_data->PEv2_HomePosition[i]);
+                            intAxesState = PEAxisStateEx_HOMINGFINALMOVE;
                         }
 
                     } else if (Homing_FinalMoveActive[i] != false) {
