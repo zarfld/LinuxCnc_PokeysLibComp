@@ -1043,6 +1043,10 @@ bool Homing_ArmEncodereDone[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 int jsm_AxesState_memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 int jsm_home_state_memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 bool home_sw_active_memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+static double saved_min_ferror[NJOINTS];
+static double saved_max_ferror[NJOINTS];
+static int ferror_saved[NJOINTS];  // flag to track if we’ve cached it already
+
 int pokeys_1joint_state_machine(int joint_num) {
     emcmot_joint_t *joint;
     double offset, tmp;
@@ -1058,7 +1062,34 @@ int pokeys_1joint_state_machine(int joint_num) {
     }
     if (H[joint_num].home_state != HOME_IDLE) {
         homing_flag = 1; // at least one joint is homing
+
+        joint->pos_cmd = joint->pos_fb;
+        joint->free_tp.curr_pos = joint->pos_fb;
+
+        double range = fmax(joint->max_pos_limit - joint->min_pos_limit, 1.0);
+        double margin = 0.2 * range;
+        double ferror_limit_during_homing = range + margin;
+
+        if (!ferror_saved[joint_num]) {
+            saved_min_ferror[joint_num] = joint->min_ferror;
+            saved_max_ferror[joint_num] = joint->max_ferror;
+            ferror_saved[joint_num] = 1;
+        }
+        else
+        {
+            joint->min_ferror = joint->max_ferror = joint->ferror_limit = ferror_limit_during_homing;
+        }
+        
     }
+    else{
+        if (ferror_saved[joint_num]) {
+            joint->min_ferror = saved_min_ferror[joint_num];
+            joint->max_ferror = saved_max_ferror[joint_num];
+            ferror_saved[joint_num] = 0;
+        }
+    }
+
+
 
     /* when a joint is homing, 'check_for_faults()' ignores its limit
        switches, so that this code can do the right thing with them. Once
@@ -1247,10 +1278,7 @@ int pokeys_1joint_state_machine(int joint_num) {
 
         int seq = abs(H[joint_num].home_sequence);
 
-        if (H[joint_num].home_state != HOME_IDLE) {
-            joint->pos_cmd = joint->pos_fb;
-            joint->free_tp.curr_pos = joint->pos_fb;
-        }
+
         /** switch to analyz homestate */
         switch (H[joint_num].home_state) {
             case HOME_IDLE:
