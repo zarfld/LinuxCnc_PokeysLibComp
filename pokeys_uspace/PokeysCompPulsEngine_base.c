@@ -1748,7 +1748,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                         // *(PEv2_data->PEv2_index_enable[axis]) = false; // disable index on step after ARMENCODER
                         break;
                     case PK_Homing_axHOMINGFinalMove:
-                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalMove (HomePosition %d CurrentPosition %d)\n", __FILE__, __FUNCTION__, (int32_t)PEv2_data->PEv2_HomePosition[axis],dev->PEv2.CurrentPosition[axis]);
+                        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalMove (HomePosition %d CurrentPosition %d)\n", __FILE__, __FUNCTION__, (int32_t)PEv2_data->PEv2_HomePosition[axis], dev->PEv2.CurrentPosition[axis]);
                         if ((dev->PEv2.CurrentPosition[axis] != (int32_t)PEv2_data->PEv2_HomePosition[axis])) {
                             bool POSITION_MODE_active = Get_BitOfByte(dev->PEv2.AxesConfig[axis], 3);
                             if ((POSITION_MODE_active == false)) {
@@ -1765,7 +1765,7 @@ int32_t PEv2_HomingStateSyncedTrigger(sPoKeysDevice *dev, int seq, pokeys_home_s
                             do_move = true;
                             *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGFinalMove;
                         } else {
-                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalMove PEv2_Axis[%d] (%d) already on HomePosition - skip Final move\n", __FILE__, __FUNCTION__, axis,dev->PEv2.CurrentPosition[axis] );
+                            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_Homing_axHOMINGFinalMove PEv2_Axis[%d] (%d) already on HomePosition - skip Final move\n", __FILE__, __FUNCTION__, axis, dev->PEv2.CurrentPosition[axis]);
                             *(PEv2_data->PEv2_HomingStatus[axis]) = PK_Homing_axHOMINGFinalMove;
                         }
 
