@@ -1046,7 +1046,7 @@ bool home_sw_active_memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
 static double saved_min_ferror[8];
 static double saved_max_ferror[8];
-static int ferror_saved[8]; // flag to track if we’ve cached it already
+static int ferror_saved[8];  // flag to track if we’ve cached it already
 
 int pokeys_1joint_state_machine(int joint_num) {
     emcmot_joint_t *joint;
@@ -1064,8 +1064,8 @@ int pokeys_1joint_state_machine(int joint_num) {
     if (H[joint_num].home_state != HOME_IDLE) {
         homing_flag = 1; // at least one joint is homing
 
-        joint->pos_cmd = joint->pos_fb;
-        joint->free_tp.curr_pos = joint->pos_fb;
+    //    joint->pos_cmd = joint->pos_fb;
+    //    joint->free_tp.curr_pos = joint->pos_fb;
 
         double range = fmax(joint->max_pos_limit - joint->min_pos_limit, 1.0);
         double margin = 0.2 * range;
