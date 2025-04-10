@@ -258,6 +258,52 @@ bool ApplyIniSettings;
 #define true (1)
 #undef false
 #define false (0)
+
+/**
+ * @brief
+ *
+ */
+ void pokeys_read_ini(sPoKeysDevice *dev) {
+    const char *ini_path = getenv("INI_FILE_NAME");
+
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: pokeys_read_ini -start \n", __FILE__, __FUNCTION__);
+    set_pokeys_ini_path(ini_path);
+
+    PKIO_ReadIniFile(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_ReadIniFile - done\n", __FILE__, __FUNCTION__);
+    PKPEv2_ReadIniFile(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPEv2_ReadIniFile - done\n", __FILE__, __FUNCTION__);
+    PKEncoder_ReadIniFile(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKEncoder_ReadIniFile - done\n", __FILE__, __FUNCTION__);
+
+    PKIO_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_Setup - done\n", __FILE__, __FUNCTION__);
+    PKPEv2_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPEv2_Setup - done\n", __FILE__, __FUNCTION__);
+    PKEncoder_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKEncoder_Setup - done\n", __FILE__, __FUNCTION__);
+    PKPoExtBus_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPoExtBus_Setup - done\n", __FILE__, __FUNCTION__);
+    PKPoNet_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPoNet_Setup - done\n", __FILE__, __FUNCTION__);
+    //    PKPoStep_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPoStep_Setup - done\n", __FILE__, __FUNCTION__);
+    //    PKLCD_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKLCD_Setup - done\n", __FILE__, __FUNCTION__);
+    //    PKMatrixKB_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKMatrixKB_Setup - done\n", __FILE__, __FUNCTION__);
+}
+/**
+ * @brief
+ *
+ */
+void pokeys_write_ini(sPoKeysDevice *dev) {
+
+    PKIO_WriteIniFile(dev);
+    PKPEv2_WriteIniFile(dev);
+    PKEncoder_WriteIniFile(dev);
+}
+
 /**
  * @brief     Get the size of the component state
  *
@@ -1288,50 +1334,7 @@ bool initdone = 0;
 int doSetup = 0;
 
 int next_setup = 1;
-/**
- * @brief
- *
- */
-void pokeys_read_ini(sPoKeysDevice *dev) {
-    const char *ini_path = getenv("INI_FILE_NAME");
 
-    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: pokeys_read_ini -start \n", __FILE__, __FUNCTION__);
-    set_pokeys_ini_path(ini_path);
-
-    PKIO_ReadIniFile(dev);
-    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_ReadIniFile - done\n", __FILE__, __FUNCTION__);
-    PKPEv2_ReadIniFile(dev);
-    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPEv2_ReadIniFile - done\n", __FILE__, __FUNCTION__);
-    PKEncoder_ReadIniFile(dev);
-    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKEncoder_ReadIniFile - done\n", __FILE__, __FUNCTION__);
-
-    PKIO_Setup(dev);
-    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_Setup - done\n", __FILE__, __FUNCTION__);
-    PKPEv2_Setup(dev);
-    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPEv2_Setup - done\n", __FILE__, __FUNCTION__);
-    PKEncoder_Setup(dev);
-    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKEncoder_Setup - done\n", __FILE__, __FUNCTION__);
-    PKPoExtBus_Setup(dev);
-    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPoExtBus_Setup - done\n", __FILE__, __FUNCTION__);
-    PKPoNet_Setup(dev);
-    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPoNet_Setup - done\n", __FILE__, __FUNCTION__);
-    //    PKPoStep_Setup(dev);
-    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPoStep_Setup - done\n", __FILE__, __FUNCTION__);
-    //    PKLCD_Setup(dev);
-    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKLCD_Setup - done\n", __FILE__, __FUNCTION__);
-    //    PKMatrixKB_Setup(dev);
-    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKMatrixKB_Setup - done\n", __FILE__, __FUNCTION__);
-}
-/**
- * @brief
- *
- */
-void pokeys_write_ini(sPoKeysDevice *dev) {
-
-    PKIO_WriteIniFile(dev);
-    PKPEv2_WriteIniFile(dev);
-    PKEncoder_WriteIniFile(dev);
-}
 
 void pokeys_update(sPoKeysDevice *dev) {
 
