@@ -1808,7 +1808,18 @@ int pokeys_1joint_state_machine(int joint_num) {
                             H[joint_num].home_state = Set_home_state;
                         }
                     }
+<<<<<<< HEAD
+                    if (H[joint_num].home_state != Set_home_state) {
+                        rtapi_print_msg(debug_level,
+                                        "PoKeys_homecomp: %s:%s: %s joint[%d] "
+                                        "homed (home_sequence %d) - set home_state=%s\n",
+                                        __FILE__, __FUNCTION__, home_state_case, joint_num, H[joint_num].home_sequence, local_home_state_names[Set_home_state]);
+                        H[joint_num].home_state = Set_home_state;
+                    }
+                
+=======
                 }
+>>>>>>> a99f7b0c8b1a8a8d61e06bdab3690fcb35a7f913
 
                 joint->pos_cmd = joint->pos_fb;
                 joint->free_tp.curr_pos = joint->pos_fb;
