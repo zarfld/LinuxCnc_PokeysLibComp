@@ -296,13 +296,11 @@ EXTRA_SETUP() {
     return 0;
 }
 
-
 /** @brief  Length of delay between homing motions - this is intended to
    ensure that all motion has ceased and switch bouncing has
    ended.  We might want to make this user adjustable, but for
    now it's a constant.  It is in seconds */
-   #define HOME_DELAY 0.100
-
+#define HOME_DELAY 0.100
 
 //=====================================================================
 // All (skeleton) functions required for homing api follow:
