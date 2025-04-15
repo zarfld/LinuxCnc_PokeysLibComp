@@ -1858,7 +1858,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                     "HOME_FINISHED - axis still moving %f\n",
                                     __FILE__, __FUNCTION__, joint_num, joint->free_tp.pos_cmd);
                     position_memory[joint_num] = joint->pos_fb;
-                    break
+                    break;
                 }
 
                 position_memory[joint_num] = joint->pos_fb;
