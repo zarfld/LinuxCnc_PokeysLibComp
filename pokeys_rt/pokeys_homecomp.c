@@ -296,8 +296,17 @@ EXTRA_SETUP() {
     return 0;
 }
 
+
+/** @brief  Length of delay between homing motions - this is intended to
+   ensure that all motion has ceased and switch bouncing has
+   ended.  We might want to make this user adjustable, but for
+   now it's a constant.  It is in seconds */
+   #define HOME_DELAY 0.100
+
+
 //=====================================================================
 // All (skeleton) functions required for homing api follow:
+static double servo_freq;
 static emcmot_joint_t *joints;
 static bool homing_active = 0;
 static bool homing_active_old = 0;
@@ -831,6 +840,7 @@ int homing_init(int id, double servo_period, int n_joints, int n_extrajoints, em
     all_joints = n_joints;
     return makepins(id, n_joints);
 
+    servo_freq = 1 / servo_period;
     // initialize jid[] and jhd[] data here
     for (int jno = 0; jno < EMCMOT_MAX_JOINTS; jno++) {
 
