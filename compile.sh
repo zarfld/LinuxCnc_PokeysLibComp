@@ -25,10 +25,12 @@ halcompile --install start_delay_3000.comp
 halcompile --install start_delay_5000.comp
 echo "start_delay.comp compiled successfully."
 
-echo "Compiling pokeys_rt.comp..."
-halcompile --install pokeys_rt/pokeys_rt.comp
-echo "pokeys_rt.comp compiled successfully."
+# that part is not there yet convert of uspace to rt will be done instead of AI generated component that did not work as expected
+# echo "Compiling pokeys_rt.comp..."
+# halcompile --install pokeys_rt/pokeys_rt.comp
+# echo "pokeys_rt.comp compiled successfully."
 
-echo "Compiling pokeys_py components..."
-python3 setup.py install
-echo "pokeys_py components compiled successfully."
+# no real py code there yet - will be required with QtPyVCP aor GladeVCP some are there but no required code
+# echo "Compiling pokeys_py components..."
+# python3 setup.py install
+# echo "pokeys_py components compiled successfully."
