@@ -1,0 +1,11 @@
+<map id="/usr/include/linuxcnc/emc.hh" name="/usr/include/linuxcnc/emc.hh">
+<area shape="rect" id="node1" title=" " alt="" coords="201,5,355,47"/>
+<area shape="rect" id="node2" href="$emcmotcfg_8h.html" title=" " alt="" coords="5,95,113,121"/>
+<area shape="rect" id="node3" href="$nml__type_8hh.html" title=" " alt="" coords="137,95,240,121"/>
+<area shape="rect" id="node4" title=" " alt="" coords="199,169,269,196"/>
+<area shape="rect" id="node5" href="$motion__types_8h.html" title=" " alt="" coords="315,95,438,121"/>
+<area shape="rect" id="node6" href="$modal__state_8hh.html" title=" " alt="" coords="462,95,585,121"/>
+<area shape="rect" id="node7" title=" " alt="" coords="407,169,469,196"/>
+<area shape="rect" id="node8" title=" " alt="" coords="494,169,553,196"/>
+<area shape="rect" id="node9" href="$state__tag_8h.html" title=" " alt="" coords="577,169,672,196"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="hid_read" name="hid_read">
+<area shape="rect" id="node1" title="Read an Input report from a HID device." alt="" coords="5,5,84,32"/>
+<area shape="rect" id="node2" href="$group__API.html#gaa5c9ed5aa290688ffac03343989ad75a" title="Read an Input report from a HID device with timeout." alt="" coords="132,5,268,32"/>
+</map>

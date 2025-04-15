@@ -1,0 +1,11 @@
+<map id="EMC_TOOL_SET_OFFSET" name="EMC_TOOL_SET_OFFSET">
+<area shape="rect" id="node1" title=" " alt="" coords="176,723,381,815"/>
+<area shape="rect" id="node2" href="$classEMC__TOOL__CMD__MSG.html" title=" " alt="" coords="82,568,275,660"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="117,393,265,471"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="200,160,304,296"/>
+<area shape="rect" id="node5" title=" " alt="" coords="47,5,86,83"/>
+<area shape="rect" id="node6" title=" " alt="" coords="261,5,312,83"/>
+<area shape="rect" id="node7" href="$structEmcPose.html" title=" " alt="" coords="374,575,455,653"/>
+<area shape="rect" id="node8" href="$structPmCartesian.html" title=" " alt="" coords="463,393,569,471"/>
+<area shape="rect" id="node9" title=" " alt="" coords="381,189,448,267"/>
+</map>
