@@ -579,7 +579,7 @@ typedef struct {
     int home_sequence;
     bool volatile_home;
 
-    int pause_timer; 
+    int pause_timer;
     bool home_is_synchronized;
 
     bool joint_in_sequence;
@@ -1781,19 +1781,19 @@ int pokeys_1joint_state_machine(int joint_num) {
                     jsm_home_state_memory[joint_num] = H[joint_num].home_state;
                 }
 
-                                /** @brief  is the joint already moving? */
-                                if (joint->free_tp.active) {
-                                    /** @brief  yes, reset delay, wait until joint stops */
-                                    H[joint_num].pause_timer = 0;
-                                    break;
-                                }
-                                /** @brief  has delay timed out? */
-                                if (H[joint_num].pause_timer < (HOME_DELAY * servo_freq)) {
-                                    /** @brief  no, update timer and wait some more */
-                                    H[joint_num].pause_timer++;
-                                    break;
-                                }
-                                H[joint_num].pause_timer = 0;
+                /** @brief  is the joint already moving? */
+                if (joint->free_tp.active) {
+                    /** @brief  yes, reset delay, wait until joint stops */
+                    H[joint_num].pause_timer = 0;
+                    break;
+                }
+                /** @brief  has delay timed out? */
+                if (H[joint_num].pause_timer < (HOME_DELAY * servo_freq)) {
+                    /** @brief  no, update timer and wait some more */
+                    H[joint_num].pause_timer++;
+                    break;
+                }
+                H[joint_num].pause_timer = 0;
                 joint->free_tp.enable = 0;
                 // joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
                 //  joint->free_tp.vel_cmd - not there = 0;
@@ -1817,7 +1817,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                                     "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] "
                                     "HOME_FINAL_MOVE_WAIT - axis still moving %f\n",
                                     __FILE__, __FUNCTION__, joint_num, joint->free_tp.pos_cmd);
-                                    joint->free_tp.enable = 0;
+                    joint->free_tp.enable = 0;
                     position_memory[joint_num] = joint->pos_fb;
                     break;
                 }
@@ -1865,19 +1865,19 @@ int pokeys_1joint_state_machine(int joint_num) {
                     rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] HOME_FINISHED\n", __FILE__, __FUNCTION__, joint_num);
                     jsm_home_state_memory[joint_num] = H[joint_num].home_state;
                 }
-                                /** @brief  is the joint already moving? */
-                                if (joint->free_tp.active) {
-                                    /** @brief  yes, reset delay, wait until joint stops */
-                                    H[joint_num].pause_timer = 0;
-                                    break;
-                                }
-                                /** @brief  has delay timed out? */
-                                if (H[joint_num].pause_timer < (HOME_DELAY * servo_freq)) {
-                                    /** @brief  no, update timer and wait some more */
-                                    H[joint_num].pause_timer++;
-                                    break;
-                                }
-                                H[joint_num].pause_timer = 0;
+                /** @brief  is the joint already moving? */
+                if (joint->free_tp.active) {
+                    /** @brief  yes, reset delay, wait until joint stops */
+                    H[joint_num].pause_timer = 0;
+                    break;
+                }
+                /** @brief  has delay timed out? */
+                if (H[joint_num].pause_timer < (HOME_DELAY * servo_freq)) {
+                    /** @brief  no, update timer and wait some more */
+                    H[joint_num].pause_timer++;
+                    break;
+                }
+                H[joint_num].pause_timer = 0;
                 joint->free_tp.enable = 0;
                 joint->pos_cmd = joint->pos_fb;
                 joint->free_tp.curr_pos = joint->pos_fb;
