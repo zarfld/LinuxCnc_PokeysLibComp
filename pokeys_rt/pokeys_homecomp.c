@@ -1070,7 +1070,7 @@ int pokeys_1joint_state_machine(int joint_num) {
         rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] home_sw_active_memory != home_sw_active(%d)\n", __FILE__, __FUNCTION__, joint_num, home_sw_active);
         home_sw_active_memory[joint_num] = home_sw_active;
     }
-    if (H[joint_num].home_state != HOME_IDLE) {
+    if (H[joint_num].home_state != HOME_IDLE || position_memory[joint_num] != joint->pos_fb) {
         homing_flag = 1; // at least one joint is homing
 
         //    joint->pos_cmd = joint->pos_fb;
@@ -1089,7 +1089,7 @@ int pokeys_1joint_state_machine(int joint_num) {
         } else {
             joint->min_ferror = joint->max_ferror = joint->ferror_limit = ferror_limit_during_homing;
         }
-
+        
     } else {
         if (ferror_saved[joint_num]) {
             rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] ferror_saved[%d] = 1\n", __FILE__, __FUNCTION__, joint_num, ferror_saved[joint_num]);
@@ -1101,6 +1101,7 @@ int pokeys_1joint_state_machine(int joint_num) {
             joint->max_ferror = saved_max_ferror[joint_num];
             ferror_saved[joint_num] = 0;
         }
+        position_memory[joint_num] = joint->pos_fb;
     }
 
     /* when a joint is homing, 'check_for_faults()' ignores its limit
