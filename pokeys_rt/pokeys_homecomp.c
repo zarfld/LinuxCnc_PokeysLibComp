@@ -1047,7 +1047,7 @@ bool home_sw_active_memory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 static double saved_min_ferror[8];
 static double saved_max_ferror[8];
 static int ferror_saved[8]; // flag to track if we’ve cached it already
-
+static double position_memory[8];
 int pokeys_1joint_state_machine(int joint_num) {
     emcmot_joint_t *joint;
     double offset, tmp;
@@ -1087,7 +1087,7 @@ int pokeys_1joint_state_machine(int joint_num) {
             joint->free_tp.enable = 0;
             joint->pos_cmd = joint->pos_fb; // reset pos_cmd to fb before reducing ferror
             joint->free_tp.curr_pos = joint->pos_fb;
-
+            position_memory[joint_num] = joint->pos_fb;
             joint->min_ferror = saved_min_ferror[joint_num];
             joint->max_ferror = saved_max_ferror[joint_num];
             ferror_saved[joint_num] = 0;
@@ -1322,7 +1322,7 @@ int pokeys_1joint_state_machine(int joint_num) {
 
                 joint->pos_cmd = joint->pos_fb;
                 joint->free_tp.curr_pos = joint->pos_fb;
-
+                position_memory[joint_num] = joint->pos_fb;
                 Set_PEAxisCommand = PK_PEAxisCommand_axHOMINGSTART;
                 Set_home_state = HOME_UNLOCK;
                 home_state_case = "HOME_START";
@@ -1373,7 +1373,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 joint->free_tp.enable = 0;
                 joint->free_tp.pos_cmd = joint->free_tp.curr_pos;
                 joint->pos_cmd = joint->pos_fb;
-
+                position_memory[joint_num] = joint->pos_fb;
                 // joint->free_tp.vel_cmd - not there = 0;
                 if (!H[joint_num].homing) {
                     rtapi_print_msg(debug_level, "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] PK_PEAxisState_axHOMING_RESETTING - set homing=1\n", __FILE__, __FUNCTION__, joint_num);
@@ -1388,6 +1388,7 @@ int pokeys_1joint_state_machine(int joint_num) {
 
                 joint->free_tp.enable = 0;
                 joint->pos_cmd = joint->pos_fb;
+                position_memory[joint_num] = joint->pos_fb;
                 joint->free_tp.curr_pos = joint->pos_fb;
 
                 break;
@@ -1398,6 +1399,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 }
                 joint->pos_cmd = joint->pos_fb;
                 joint->free_tp.curr_pos = joint->pos_fb;
+                position_memory[joint_num] = joint->pos_fb;
                 break;
             case HOME_INITIAL_BACKOFF_WAIT:
                 if (jsm_home_state_memory[joint_num] != H[joint_num].home_state) {
@@ -1407,6 +1409,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 joint->free_tp.enable = 0;
                 joint->pos_cmd = joint->pos_fb;
                 joint->free_tp.curr_pos = joint->pos_fb;
+                position_memory[joint_num] = joint->pos_fb;
                 /* Backing off switch */
 
                 break;
@@ -1418,6 +1421,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 joint->free_tp.enable = 0;
                 joint->pos_cmd = joint->pos_fb;
                 joint->free_tp.curr_pos = joint->pos_fb;
+                position_memory[joint_num] = joint->pos_fb;
                 break;
             case HOME_INITIAL_SEARCH_WAIT:
                 if (jsm_home_state_memory[joint_num] != H[joint_num].home_state) {
@@ -1427,6 +1431,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 joint->free_tp.enable = 0;
                 joint->pos_cmd = joint->pos_fb;
                 joint->free_tp.curr_pos = joint->pos_fb;
+                position_memory[joint_num] = joint->pos_fb;
                 /* Homing procedure first step - going to home */
                 H[joint_num].homing = 1;
 
@@ -1436,6 +1441,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 joint->free_tp.enable = 0;
                 joint->pos_cmd = joint->pos_fb;
                 joint->free_tp.curr_pos = joint->pos_fb;
+                position_memory[joint_num] = joint->pos_fb;
                 break;
 
             case HOME_FINAL_BACKOFF_START:
@@ -1446,6 +1452,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 joint->free_tp.enable = 0;
                 joint->pos_cmd = joint->pos_fb;
                 joint->free_tp.curr_pos = joint->pos_fb;
+                position_memory[joint_num] = joint->pos_fb;
                 /* Homing procedure second step - slow homing */
                 H[joint_num].homing = 1;
                 homing_flag = 1;
@@ -1459,7 +1466,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 joint->free_tp.enable = 0;
                 joint->pos_cmd = joint->pos_fb;
                 joint->free_tp.curr_pos = joint->pos_fb;
-
+                position_memory[joint_num] = joint->pos_fb;
                 Set_PEAxisCommand = PK_PEAxisCommand_axHOMINGFINALIZE;
                 Set_home_state = HOME_INDEX_SEARCH_START;
                 requested_PEAxisState = PEAxisStateEx_axReadyToFinalizeHoming;
@@ -1508,6 +1515,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 }
                 joint->pos_cmd = joint->pos_fb;
                 joint->free_tp.curr_pos = joint->pos_fb;
+                position_memory[joint_num] = joint->pos_fb;
                 /** This state is called after the machine has made a low
                    speed pass to determine the limit switch location. It
                    sets index-enable, which tells the encoder driver to
@@ -1647,7 +1655,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 joint->free_tp.enable = 0;
                 joint->pos_cmd = joint->pos_fb;
                 joint->free_tp.curr_pos = joint->pos_fb;
-
+                position_memory[joint_num] = joint->pos_fb;
                 rtapi_print_msg(debug_level,
                                 "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] "
                                 "homing arm encoder - index pulse arrived joint->free_tp.pos_cmd %f\n",
@@ -1788,6 +1796,15 @@ int pokeys_1joint_state_machine(int joint_num) {
                                        "homing arm encoder - index pulse arrived joint->free_tp.pos_cmd %f\n",
                                        __FILE__, __FUNCTION__, joint_num, joint->free_tp.pos_cmd);
                    } else {*/
+
+                   if(position_memory[joint_num] != joint->pos_fb){
+                    rtapi_print_msg(debug_level,
+                                    "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] "
+                                    "HOME_FINAL_MOVE_WAIT - axis still moving %f\n",
+                                    __FILE__, __FUNCTION__, joint_num, joint->free_tp.pos_cmd);
+                                    position_memory[joint_num] = joint->pos_fb;
+                                    break;
+                }
                 if (get_sequence_synchronized_state(H[joint_num].home_sequence, requested_PEAxisState)) {
                     for (int jj = 0; jj < all_joints; jj++) {
                         if (abs(H[jj].home_sequence) == abs(seq)) {
@@ -1835,7 +1852,16 @@ int pokeys_1joint_state_machine(int joint_num) {
 
                 joint->pos_cmd = joint->pos_fb;
                 joint->free_tp.curr_pos = joint->pos_fb;
+                if(position_memory[joint_num] != joint->pos_fb){
+                    rtapi_print_msg(debug_level,
+                                    "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] "
+                                    "HOME_FINISHED - axis still moving %f\n",
+                                    __FILE__, __FUNCTION__, joint_num, joint->free_tp.pos_cmd);
+                                    position_memory[joint_num] = joint->pos_fb;
+                                    break
+                }
 
+                position_memory[joint_num] = joint->pos_fb;
                 /* Axis is homed */
                 joints_in_sequence = 0;
                 int homed_in_sequence = 0;
