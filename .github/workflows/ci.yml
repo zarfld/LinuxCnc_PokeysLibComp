@@ -69,16 +69,32 @@ jobs:
         ./install_pokeyslib.sh
 
     - name: Build Pokeys Userspace Component
-      run: sudo halcompile --install --userspace --extra-link-args="-L/usr/lib -lPoKeys -llinuxcncini" pokeys_uspace/pokeys.c | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+      run: sudo halcompile --install --userspace --extra-link-args="-L/usr/lib -lPoKeys -llinuxcncini" pokeys_uspace/pokeys.c
 
+    - name: rerun Build Pokeys Userspace Component with logging
+      if: failure()
+      run: sudo halcompile --install --userspace --extra-link-args="-L/usr/lib -lPoKeys -llinuxcncini" pokeys_uspace/pokeys.c | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+     
     - name: Compile Pokeys HAL Components
       run: |
-        sudo halcompile --install pokeys_rt/pokeys_homecomp.c | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
-        sudo halcompile --install kbd48CNC.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
-        sudo halcompile --install start_delay_3000.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
-        sudo halcompile --install start_delay_5000.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+        sudo halcompile --install pokeys_rt/pokeys_homecomp.c
+        sudo halcompile --install kbd48CNC.comp
+        sudo halcompile --install start_delay_3000.comp
+        sudo halcompile --install start_delay_5000.comp
 
-    - name: Final Install
+    - name: Compile Pokeys HAL Components
+      if: failure()
+      run: |
+          sudo halcompile --install pokeys_rt/pokeys_homecomp.c | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+          sudo halcompile --install kbd48CNC.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+          sudo halcompile --install start_delay_3000.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+          sudo halcompile --install start_delay_5000.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+
+    - name: check Install
+      run: sudo bash install.sh
+
+    - name: rerun check Install
+      if: failure()
       run: sudo bash install.sh | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
 
     - name: Upload logs on failure
