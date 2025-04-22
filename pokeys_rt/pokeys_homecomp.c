@@ -1891,7 +1891,7 @@ int pokeys_1joint_state_machine(int joint_num) {
                 joint->pos_cmd = joint->pos_fb;
                 joint->free_tp.curr_pos = joint->pos_fb;
                 if (position_memory[joint_num] != joint->pos_fb) {
-                    rtapi_print_msg(debug_level,
+                    rtapi_print_msg(RTAPI_MSG_ERR,
                                     "PoKeys_homecomp: %s:%s: pokeys_1joint_state_machine joint[%d] "
                                     "HOME_FINISHED - axis still moving %f\n",
                                     __FILE__, __FUNCTION__, joint_num, joint->free_tp.pos_cmd);
