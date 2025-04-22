@@ -22,17 +22,41 @@ retry() {
     done
 }
 
-if ! dpkg -s linuxcnc-dev >/dev/null 2>&1; then
-    # Ask user if linuxcnc-dev should be installed
-    read -p "Do you want to install linuxcnc-dev? (y/n): " install_linuxcnc_dev
-    if [ "$install_linuxcnc_dev" = "y" ]; then
-        # Installing Development Packages needed to build COMP files
-        echo "Installing linuxcnc-dev..."
-        retry sudo apt-get install -y linuxcnc-dev
+#if ! dpkg -s linuxcnc-dev >/dev/null 2>&1; then
+#    # Ask user if linuxcnc-dev should be installed
+#    read -p "Do you want to install linuxcnc-dev? (y/n): " install_linuxcnc_dev
+#    if [ "$install_linuxcnc_dev" = "y" ]; then
+#        # Installing Development Packages needed to build COMP files
+#        echo "Installing linuxcnc-dev..."
+#        retry sudo apt-get install -y linuxcnc-dev
+#    fi
+#else
+#    echo "Updating linuxcnc-dev..."
+#    retry sudo apt-get install --only-upgrade -y linuxcnc-dev
+#fi
+
+# Determine if we're running a PREEMPT_RT kernel
+if uname -v | grep -q "PREEMPT_RT"; then
+    PKG_NAME="linuxcnc-uspace-dev"
+else
+    PKG_NAME="linuxcnc-dev"
+fi
+
+echo "Detected package to install/update: $PKG_NAME"
+
+# Check if the package is already installed
+if ! dpkg -s "$PKG_NAME" >/dev/null 2>&1; then
+    # Ask user if the package should be installed
+    read -rp "Do you want to install $PKG_NAME? (y/n): " install_choice
+    if [[ "$install_choice" =~ ^[Yy]$ ]]; then
+        echo "Installing $PKG_NAME..."
+        retry sudo apt-get install -y "$PKG_NAME"
+    else
+        echo "Skipping installation of $PKG_NAME."
     fi
 else
-    echo "Updating linuxcnc-dev..."
-    retry sudo apt-get install --only-upgrade -y linuxcnc-dev
+    echo "Updating $PKG_NAME..."
+    retry sudo apt-get install --only-upgrade -y "$PKG_NAME"
 fi
 
 # Install or update required packages
@@ -122,8 +146,3 @@ if [ ! -f "/etc/udev/rules.d/90-usb-pokeys.rules" ]; then
     echo "Reloading udev rules..."
     udevadm control --reload-rules
 fi
-
-# Verify QEMU installation
-echo "Verifying QEMU installation..."
-qemu_version=$(qemu-system-x86_64 --version)
-echo "QEMU version: $qemu_version"
