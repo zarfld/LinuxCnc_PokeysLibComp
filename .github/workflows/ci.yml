@@ -82,7 +82,7 @@ jobs:
         sudo halcompile --install start_delay_3000.comp
         sudo halcompile --install start_delay_5000.comp
 
-    - name: Compile Pokeys HAL Components
+    - name: rerun Compile Pokeys HAL Components
       if: failure()
       run: |
           sudo halcompile --install pokeys_rt/pokeys_homecomp.c | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
