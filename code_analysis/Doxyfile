@@ -1,8 +1,8 @@
 # Eingabedateien
-INPUT = ../pokeys_rt ../pokeys_uspace ../external/pokeyslib ../external/linuxcnc/motion ../external/linuxcnc/rtapi ../README.md ../wiki /usr/include/linuxcnc/ 
+INPUT = ../pokeys_rt ../pokeys_uspace ../external/pokeyslib ../external/linuxcnc/motion ../external/linuxcnc/rtapi ../README.md ../wiki /usr/include/linuxcnc/ ./plantuml
 FILE_PATTERNS          = *.c *.h *.hh *.dox *.md
 PROJECT_NAME = "LinuxCNC PoKeysLib-Comp"
-PROJECT_BRIEF = "unofficial HAL Component for PoKeys"
+PROJECT_BRIEF = "unofficial PoKeys HAL-Component for LinuxCNC"
 
 PROJECT_LOGO = html/logo.png
 PROJECT_ICON = html/favicon.ico
@@ -16,6 +16,8 @@ GENERATE_LATEX         = NO
 HAVE_DOT               = YES
 DOT_IMAGE_FORMAT       = svg
 INTERACTIVE_SVG	   = YES
+UML_LOOK               = YES
+PLANTUML_JAR_PATH      = /usr/share/plantuml/plantuml.jar
 CALL_GRAPH             = YES
 CALLER_GRAPH           = YES
 CALL_GRAPH_DEPTH       = 8

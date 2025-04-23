@@ -45,17 +45,22 @@ jobs:
             cd code_analysis
             doxygen Doxyfile
 
-      - name: Upload generated docs as artifact
+      - name: Compress HTML docs
+        run: |
+          cd code_analysis
+          tar -czf doxygen-html.tar.gz html
+      
+      - name: Upload compressed docs
         uses: actions/upload-artifact@v4
         with:
           name: doxygen-html
-          path: code_analysis/html/
-
+          path: code_analysis/doxygen-html.tar.gz
+    
   deploy-docs:
     runs-on: self-hosted
         
     steps:
-      - name: reinit runner directory
+      - name: Reinit runner directory
         run: |
           sudo chown -R cnc:cnc /home/cnc/actions-runner
           sudo chown -R cnc:cnc /home/cnc/actions-runner/_work
@@ -64,11 +69,47 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         
-      - name: Install Doxygen and Graphviz
-        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
+      - name: Install Doxygen and Graphviz, PlantUML, and Java
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz default-jre plantuml git maven
+          plantuml -version  # verify installation
+          mvn -version  # verify Maven installation
+          dpkg -L plantuml | grep plantuml.jar  # verify installation
 
+      - name: Setup PlantUML Generator
+        run: |
+          sudo apt-get install -y wget
+          cd /usr/share/plantuml
+          sudo wget -O PlantUMLGenerator.jar https://github.com/lorenzovngl/plantuml-generator/releases/download/v1.0/PlantUMLGenerator.jar
+          sudo java -jar PlantUMLGenerator.jar "${{ github.workspace }}/pokeys_rt" "${{ github.workspace }}/code_analysis/plantuml/pokeys_rt.puml"
+
+      - name: run PlantUML Generator pokeys_rt
+        run: |
+          cd /usr/share/plantuml
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}/pokeys_rt/pokeys_homecomp.c" "${{ github.workspace }}/code_analysis/plantuml/pokeys_homecomp.puml"
+
+      - name: run PlantUML Generator pokeys_uspace
+        run: |
+          cd /usr/share/plantuml
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}/pokeys_uspace" ${{ github.workspace }}/"code_analysis/plantuml/pokeys.puml"
+
+      - name: run PlantUML Generator pokeyslib
+        run: |
+          cd /usr/share/plantuml
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}/external/pokeyslib" "${{ github.workspace }}/code_analysis/plantuml/pokeyslib.puml"
+
+      - name: run PlantUML Generator LinuxCNC
+        run: |
+          cd /usr/share/plantuml
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}/external/Linuxcnc/emc/motion" "${{ github.workspace }}//code_analysis/plantuml/motion.puml"
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}/external/Linuxcnc/hal" "${{ github.workspace }}//code_analysis/plantuml/hal.puml"
+          sudo java -jar /usr/share/plantuml/PlantUMLGenerator.jar "${{ github.workspace }}/external/Linuxcnc/rtapi" "${{ github.workspace }}//code_analysis/plantuml/rtapi.puml"
+  
       - name: init submodule
-        run: sudo /bin/bash "./prerequisites.sh"
+        run:  |
+          cd ${{ github.workspace }}
+          sudo /bin/bash "./prerequisites.sh"
 
       - name: Generate Doxygen documentation
         run: |

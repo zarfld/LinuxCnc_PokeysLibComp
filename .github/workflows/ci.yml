@@ -29,6 +29,14 @@ jobs:
         sudo chown -R cnc:cnc /home/cnc/actions-runner/_work
         chmod -R u+rwx /home/cnc/actions-runner/_work
 
+    - name: Cleanup old logs and temp files
+      run: |
+          echo "Cleaning up logs and temp files to free up space..."
+          rm -rf /home/cnc/actions-runner/_diag/*.log || true
+          rm -rf /home/cnc/actions-runner/_work/_temp/* || true
+          sudo apt clean
+          df -h
+  
     - name: Checkout code
       uses: actions/checkout@v3
       with:
@@ -61,16 +69,32 @@ jobs:
         ./install_pokeyslib.sh
 
     - name: Build Pokeys Userspace Component
-      run: sudo halcompile --install --userspace --extra-link-args="-L/usr/lib -lPoKeys -llinuxcncini" pokeys_uspace/pokeys.c | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+      run: sudo halcompile --install --userspace --extra-link-args="-L/usr/lib -lPoKeys -llinuxcncini" pokeys_uspace/pokeys.c
 
+    - name: rerun Build Pokeys Userspace Component with logging
+      if: failure()
+      run: sudo halcompile --install --userspace --extra-link-args="-L/usr/lib -lPoKeys -llinuxcncini" pokeys_uspace/pokeys.c | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+     
     - name: Compile Pokeys HAL Components
       run: |
-        sudo halcompile --install pokeys_homecomp.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
-        sudo halcompile --install kbd48CNC.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
-        sudo halcompile --install start_delay_3000.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
-        sudo halcompile --install start_delay_5000.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+        sudo halcompile --install pokeys_rt/pokeys_homecomp.c
+        sudo halcompile --install kbd48CNC.comp
+        sudo halcompile --install start_delay_3000.comp
+        sudo halcompile --install start_delay_5000.comp
 
-    - name: Final Install
+    - name: rerun Compile Pokeys HAL Components
+      if: failure()
+      run: |
+          sudo halcompile --install pokeys_rt/pokeys_homecomp.c | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+          sudo halcompile --install kbd48CNC.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+          sudo halcompile --install start_delay_3000.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+          sudo halcompile --install start_delay_5000.comp | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
+
+    - name: check Install
+      run: sudo bash install.sh
+
+    - name: rerun check Install
+      if: failure()
       run: sudo bash install.sh | tee -a /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log
 
     - name: Upload logs on failure
@@ -117,6 +141,7 @@ jobs:
 
     - name: Set up environment variables for PoKeys57E
       run: echo "POKEYS57E_ID=${{ secrets.POKEYS57E_ID }}" >> $GITHUB_ENV
+
 
   close-issue2:
     # Only run on pull_request events where the PR was merged into the main branch

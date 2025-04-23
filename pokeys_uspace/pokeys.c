@@ -258,6 +258,52 @@ bool ApplyIniSettings;
 #define true (1)
 #undef false
 #define false (0)
+
+/**
+ * @brief
+ *
+ */
+void pokeys_read_ini(sPoKeysDevice *dev) {
+    const char *ini_path = getenv("INI_FILE_NAME");
+
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: pokeys_read_ini -start \n", __FILE__, __FUNCTION__);
+    set_pokeys_ini_path(ini_path);
+
+    PKIO_ReadIniFile(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_ReadIniFile - done\n", __FILE__, __FUNCTION__);
+    PKPEv2_ReadIniFile(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPEv2_ReadIniFile - done\n", __FILE__, __FUNCTION__);
+    PKEncoder_ReadIniFile(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKEncoder_ReadIniFile - done\n", __FILE__, __FUNCTION__);
+
+    PKIO_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_Setup - done\n", __FILE__, __FUNCTION__);
+    PKPEv2_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPEv2_Setup - done\n", __FILE__, __FUNCTION__);
+    PKEncoder_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKEncoder_Setup - done\n", __FILE__, __FUNCTION__);
+    PKPoExtBus_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPoExtBus_Setup - done\n", __FILE__, __FUNCTION__);
+    PKPoNet_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPoNet_Setup - done\n", __FILE__, __FUNCTION__);
+    //    PKPoStep_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPoStep_Setup - done\n", __FILE__, __FUNCTION__);
+    //    PKLCD_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKLCD_Setup - done\n", __FILE__, __FUNCTION__);
+    //    PKMatrixKB_Setup(dev);
+    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKMatrixKB_Setup - done\n", __FILE__, __FUNCTION__);
+}
+/**
+ * @brief
+ *
+ */
+void pokeys_write_ini(sPoKeysDevice *dev) {
+
+    PKIO_WriteIniFile(dev);
+    PKPEv2_WriteIniFile(dev);
+    PKEncoder_WriteIniFile(dev);
+}
+
 /**
  * @brief     Get the size of the component state
  *
@@ -532,6 +578,7 @@ static int export(char *prefix, long extra_arg) {
     if (r != 0)
         return r;
 
+    pokeys_read_ini(dev);
     if (__comp_last_inst)
         __comp_last_inst->_next = inst;
     __comp_last_inst = inst;
@@ -916,7 +963,7 @@ bool use_sleepdur1 = true;
 unsigned int sleepdur1 = 1000;
 unsigned int sleepdur2 = 1000;
 
-unsigned int sleepdur_S[10] = { 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000 };
+unsigned int sleepdur_S[20] = { 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000 };
 
 // bool DoPWM = false;
 bool DoEncoders = true;
@@ -1287,26 +1334,6 @@ bool initdone = 0;
 int doSetup = 0;
 
 int next_setup = 1;
-/**
- * @brief
- *
- */
-void pokeys_read_ini(sPoKeysDevice *dev) {
-
-    PKIO_ReadIniFile(dev);
-    PKPEv2_ReadIniFile(dev);
-    PKEncoder_ReadIniFile(dev);
-}
-/**
- * @brief
- *
- */
-void pokeys_write_ini(sPoKeysDevice *dev) {
-
-    PKIO_WriteIniFile(dev);
-    PKPEv2_WriteIniFile(dev);
-    PKEncoder_WriteIniFile(dev);
-}
 
 void pokeys_update(sPoKeysDevice *dev) {
 
@@ -1379,6 +1406,7 @@ void pokeys_setup(sPoKeysDevice *dev) {
     }
     doSetup = 0;*/
 }
+
 /**
  * @brief user_mainloop
  *
@@ -1563,7 +1591,8 @@ void user_mainloop(void) {
                     // sleepdur
                     if (rtc_loop_frequ > 15) {
                         if (rtc_loop_frequ_demand == 0) {
-                            sleepdur = sleepdur * rtc_loop_frequ / 15;
+                            sleepdur = sleepdur * rtc_loop_frequ / 25;
+                            // rtc_loop_frequ_demand = 25;
                         } else {
                             sleepdur = sleepdur * rtc_loop_frequ / rtc_loop_frequ_demand;
                         }
@@ -1583,17 +1612,21 @@ void user_mainloop(void) {
                     }
                 }
                 // hope to get loopfrequency more stable - as on everyminute additional actions
-                if (use_sleepdur1 == false) {
-                    sleepdur2 = sleepdur;
-                    sleepdur = sleepdur1;
+                if (HAL_Machine_On == false) {
+                    if (doSetup > 0) {
+                    }
+                }
+                if (use_sleepdur1 == false) {       // detect if last loop was do setup
+                    sleepdur_S[doSetup] = sleepdur; // rememeber sleepdur of Setup loop
+                    sleepdur = sleepdur_S[0];       // reset to normal sleepduration
                     use_sleepdur1 = true;
                 } else {
-                    sleepdur1 = sleepdur;
+                    sleepdur_S[0] = sleepdur; // use normal Sleepduration
                 }
-                if (rtc_lastmin != rtc_min) {
+                if (rtc_lastsec != rtc_sec && !HAL_Machine_On) { // time for a setup loop
                     use_sleepdur1 = false;
-                    sleepdur1 = sleepdur;
-                    sleepdur = sleepdur2;
+                    sleepdur_S[0] = sleepdur;       // store normal sleepduration
+                    sleepdur = sleepdur_S[doSetup]; // apply setup sleepduration
                 }
 
                 if (rtc_sec_ret >= rtc_latencycheck_set && rtc_latencycheck_set > 0) {
