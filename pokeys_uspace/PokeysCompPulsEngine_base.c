@@ -1316,77 +1316,75 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
 
                 */
 
-                switch (dev->DeviceData.DeviceTypeID) {
-                    case PK_DeviceID_PoKeys57CNC:
-                        /* acc. "PoKeys protocol specification - Version:14.3.2025":
-                            Bit 0  -> SSR2
-                            Bit 1  -> Relay2
-                            Bit 2  -> Relay1
-                            Bit 3  -> OC 1
-                            Bit 4  -> OC 2
-                            Bit 5  -> OC 3 
-                            Bit 6  -> OC 4
-                            Bit 7  -> SSR1
-                        */
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, *(PEv2_data->PEv2_digout_ExternalRelay_out[1])); //SSR2
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, *(PEv2_data->PEv2_digout_ExternalRelay_out[3])); //Relay2
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, *(PEv2_data->PEv2_digout_ExternalRelay_out[2])); //Relay1
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, *(PEv2_data->PEv2_digout_ExternalOC_out[0])); //OC1
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 4, *(PEv2_data->PEv2_digout_ExternalOC_out[1])); //OC2
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, *(PEv2_data->PEv2_digout_ExternalOC_out[2])); //OC3
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6, *(PEv2_data->PEv2_digout_ExternalOC_out[3])); //OC4
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7, *(PEv2_data->PEv2_digout_ExternalRelay_out[0])); //SSR1
-                        break;
-                    case PK_DeviceID_PoKeys57CNCpro4x25:
-                        /* acc. "PoKeys protocol specification - Version:14.3.2025":
-                            Bit 0  -> FAN control
-                            Bit 1  -> Relay1
-                            Bit 2  -> Relay2
-                            Bit 3  -> OC 1
-                            Bit 4  -> OC 2
-                            Bit 5  -> OC 3 
-                            Bit 6  -> OC 4
-                            Bit 7  -> Plasma Relay
-                        */
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, *(PEv2_data->PEv2_digout_ExternalRelay_out[1])); //FAN control
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, *(PEv2_data->PEv2_digout_ExternalRelay_out[2])); //Relay1
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, *(PEv2_data->PEv2_digout_ExternalRelay_out[3])); //Relay2
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, *(PEv2_data->PEv2_digout_ExternalOC_out[0])); //OC1
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 4, *(PEv2_data->PEv2_digout_ExternalOC_out[1])); //OC2
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, *(PEv2_data->PEv2_digout_ExternalOC_out[2])); //OC3
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6, *(PEv2_data->PEv2_digout_ExternalOC_out[3])); //OC4
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7, *(PEv2_data->PEv2_digout_ExternalRelay_out[0])); //Plasma Relay
-                        break;
-                    default:
-                        /* asuming old "PoKeysCNCaddon" 
-                        
-                        where acc. "PoKeys protocol specification - Version:14.3.2025":
-                        RelayOutputs 
-                            Bit 0  -> Relay1
-                            Bit 1  -> Relay2
-                            Bit 2  -> Relay3
-                            Bit 3  -> Relay4
-                        OCOutputs
-                            Bit 0  -> OC 1
-                            Bit 1  -> OC 2
-                            Bit 2  -> OC 3 
-                            Bit 3  -> OC 4
+        switch (dev->DeviceData.DeviceTypeID) {
+            case PK_DeviceID_PoKeys57CNC:
+                /* acc. "PoKeys protocol specification - Version:14.3.2025":
+                    Bit 0  -> SSR2
+                    Bit 1  -> Relay2
+                    Bit 2  -> Relay1
+                    Bit 3  -> OC 1
+                    Bit 4  -> OC 2
+                    Bit 5  -> OC 3
+                    Bit 6  -> OC 4
+                    Bit 7  -> SSR1
+                */
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, *(PEv2_data->PEv2_digout_ExternalRelay_out[1])); // SSR2
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, *(PEv2_data->PEv2_digout_ExternalRelay_out[3])); // Relay2
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, *(PEv2_data->PEv2_digout_ExternalRelay_out[2])); // Relay1
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, *(PEv2_data->PEv2_digout_ExternalOC_out[0]));    // OC1
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 4, *(PEv2_data->PEv2_digout_ExternalOC_out[1]));    // OC2
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, *(PEv2_data->PEv2_digout_ExternalOC_out[2]));    // OC3
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6, *(PEv2_data->PEv2_digout_ExternalOC_out[3]));    // OC4
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7, *(PEv2_data->PEv2_digout_ExternalRelay_out[0])); // SSR1
+                break;
+            case PK_DeviceID_PoKeys57CNCpro4x25:
+                /* acc. "PoKeys protocol specification - Version:14.3.2025":
+                    Bit 0  -> FAN control
+                    Bit 1  -> Relay1
+                    Bit 2  -> Relay2
+                    Bit 3  -> OC 1
+                    Bit 4  -> OC 2
+                    Bit 5  -> OC 3
+                    Bit 6  -> OC 4
+                    Bit 7  -> Plasma Relay
+                */
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, *(PEv2_data->PEv2_digout_ExternalRelay_out[1])); // FAN control
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, *(PEv2_data->PEv2_digout_ExternalRelay_out[2])); // Relay1
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, *(PEv2_data->PEv2_digout_ExternalRelay_out[3])); // Relay2
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, *(PEv2_data->PEv2_digout_ExternalOC_out[0]));    // OC1
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 4, *(PEv2_data->PEv2_digout_ExternalOC_out[1]));    // OC2
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, *(PEv2_data->PEv2_digout_ExternalOC_out[2]));    // OC3
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6, *(PEv2_data->PEv2_digout_ExternalOC_out[3]));    // OC4
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7, *(PEv2_data->PEv2_digout_ExternalRelay_out[0])); // Plasma Relay
+                break;
+            default:
+                /* asuming old "PoKeysCNCaddon"
 
-                        */
-                        ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 0, PEv2_digout_ExternalRelay_out(0));
-                        ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 1, PEv2_digout_ExternalRelay_out(1));
-                        ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 2, PEv2_digout_ExternalRelay_out(2));
-                        ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 3, PEv2_digout_ExternalRelay_out(3));
-                        
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, PEv2_digout_ExternalOC_out(0));
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, PEv2_digout_ExternalOC_out(1));
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, PEv2_digout_ExternalOC_out(2));
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, PEv2_digout_ExternalOC_out(3));
-                        break;
+                where acc. "PoKeys protocol specification - Version:14.3.2025":
+                RelayOutputs
+                    Bit 0  -> Relay1
+                    Bit 1  -> Relay2
+                    Bit 2  -> Relay3
+                    Bit 3  -> Relay4
+                OCOutputs
+                    Bit 0  -> OC 1
+                    Bit 1  -> OC 2
+                    Bit 2  -> OC 3
+                    Bit 3  -> OC 4
 
-                }
+                */
+                ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 0, PEv2_digout_ExternalRelay_out(0));
+                ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 1, PEv2_digout_ExternalRelay_out(1));
+                ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 2, PEv2_digout_ExternalRelay_out(2));
+                ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 3, PEv2_digout_ExternalRelay_out(3));
 
-              
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, PEv2_digout_ExternalOC_out(0));
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, PEv2_digout_ExternalOC_out(1));
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, PEv2_digout_ExternalOC_out(2));
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, PEv2_digout_ExternalOC_out(3));
+                break;
+        }
+
         if (ExternalRelayOutputs_set != dev->PEv2.ExternalRelayOutputs) {
             dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set;
             DoExternalOutputsSet = true;
