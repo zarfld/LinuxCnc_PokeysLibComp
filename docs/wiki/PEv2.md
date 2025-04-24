@@ -796,3 +796,92 @@ The PEv2 component in the PoKeys library provides a flexible and powerful way to
 - `pokeys.[DevID].PEv2.[PEv2ID].digin.SoftLimit.PosMax[8]`
 - `pokeys.[DevID].PEv2.[PEv2ID].digin.Home.Offset[8]`
 - `pokeys.[DevID].PEv2.[PEv2ID].digin.LimitN
+
+# 🔌 External Outputs: Relay & Open-Collector Output Handling
+
+This page describes how **external relay and open-collector (OC) outputs** are handled by the `pokeys_uspace` HAL component when using Pulse Engine v2–capable PoKeys devices.
+
+## 📋 Overview
+
+The PoKeys device exposes external outputs grouped into:
+
+- **Relay Outputs** (mechanical or solid-state relays)
+- **Open-Collector (OC) Outputs** (transistor outputs, typically for higher-frequency or lower-voltage loads)
+
+Output control is supported through dedicated HAL pins and automatically adapts to different device types. This feature is enabled when `PEv2_PG_extended_io` is set.
+
+## 🔁 Operation Flow
+
+1. **Read current device states**  
+   `PK_PEv2_ExternalOutputsGet()` is called to retrieve the current output values.
+2. **HAL pin update**  
+   HAL pins are updated to reflect the current state of the device.
+
+3. **Bit-packing for output update**  
+   Desired output states are assembled from HAL pin values using `Set_BitOfByte()`.
+
+4. **Device update**  
+   If a change is detected, the new values are written back to the device using `PK_PEv2_ExternalOutputsSet()`.
+
+---
+
+## 🧩 Output Bit Mapping by Device Type
+
+### 🔷 PoKeys57CNC
+
+| Bit | Output | HAL Pin                            |
+| --- | ------ | ---------------------------------- |
+| 0   | SSR2   | `PEv2_digout_ExternalRelay_out[1]` |
+| 1   | Relay2 | `PEv2_digout_ExternalRelay_out[3]` |
+| 2   | Relay1 | `PEv2_digout_ExternalRelay_out[2]` |
+| 3   | OC1    | `PEv2_digout_ExternalOC_out[0]`    |
+| 4   | OC2    | `PEv2_digout_ExternalOC_out[1]`    |
+| 5   | OC3    | `PEv2_digout_ExternalOC_out[2]`    |
+| 6   | OC4    | `PEv2_digout_ExternalOC_out[3]`    |
+| 7   | SSR1   | `PEv2_digout_ExternalRelay_out[0]` |
+
+---
+
+### 🔷 PoKeys57CNCpro4x25
+
+| Bit | Output       | HAL Pin                            |
+| --- | ------------ | ---------------------------------- |
+| 0   | FAN Control  | `PEv2_digout_ExternalRelay_out[0]` |
+| 1   | Relay1       | `PEv2_digout_ExternalRelay_out[2]` |
+| 2   | Relay2       | `PEv2_digout_ExternalRelay_out[3]` |
+| 3   | OC1          | `PEv2_digout_ExternalOC_out[0]`    |
+| 4   | OC2          | `PEv2_digout_ExternalOC_out[1]`    |
+| 5   | OC3          | `PEv2_digout_ExternalOC_out[2]`    |
+| 6   | OC4          | `PEv2_digout_ExternalOC_out[3]`    |
+| 7   | Plasma Relay | `PEv2_digout_ExternalRelay_out[1]` |
+
+---
+
+### 🔶 Default: PoKeysCNCaddon
+
+#### Relay Outputs
+
+| Bit | Output | HAL Pin                            |
+| --- | ------ | ---------------------------------- |
+| 0   | Relay1 | `PEv2_digout_ExternalRelay_out[0]` |
+| 1   | Relay2 | `PEv2_digout_ExternalRelay_out[1]` |
+| 2   | Relay3 | `PEv2_digout_ExternalRelay_out[2]` |
+| 3   | Relay4 | `PEv2_digout_ExternalRelay_out[3]` |
+
+#### OC Outputs
+
+| Bit | Output | HAL Pin                         |
+| --- | ------ | ------------------------------- |
+| 0   | OC1    | `PEv2_digout_ExternalOC_out[0]` |
+| 1   | OC2    | `PEv2_digout_ExternalOC_out[1]` |
+| 2   | OC3    | `PEv2_digout_ExternalOC_out[2]` |
+| 3   | OC4    | `PEv2_digout_ExternalOC_out[3]` |
+
+---
+
+## 💡 Notes
+
+- All outputs are packed into one or two bytes depending on the device type.
+- Output changes are only sent to the device if a difference from the last known state is detected.
+- Two write attempts are made per update cycle for robustness.
+- Delay (`usleep`) is applied between attempts if `ULAPI` is defined.

@@ -1214,30 +1214,72 @@ int32_t PEv2_Status2Get(sPoKeysDevice *dev) {
 }
 
 /**
- * @brief Sets the state of external relay and open-collector outputs on the PoKeys device.
+ * @brief Sets external relay and open-collector (OC) outputs on PoKeys devices.
  *
- * This function configures the external relay and open-collector (OC) outputs
- * available on Pulse Engine v2–capable PoKeys devices (if extended I/O is enabled).
+ * Configures external relay and OC outputs for Pulse Engine v2–enabled PoKeys devices.
+ * The function supports different output bit mappings based on the detected device type:
+ * - PoKeys57CNC
+ * - PoKeys57CNCpro4x25
+ * - PoKeysCNCaddon (default)
  *
- * The function first reads the current output states from the device using
- * `PK_PEv2_ExternalOutputsGet()` and stores them in the corresponding HAL pin values.
+ * Procedure:
+ * 1. Reads the current device output states via PK_PEv2_ExternalOutputsGet().
+ * 2. Updates corresponding HAL pin values with retrieved states.
+ * 3. Composes desired output states based on HAL pins:
+ *    - PEv2_digout_ExternalRelay_out[] for relay outputs
+ *    - PEv2_digout_ExternalOC_out[] for OC outputs
  *
- * Then, the desired output states are composed based on the values of HAL pins:
- * - `PEv2_digout_ExternalRelay_out[]` for relay outputs
- * - `PEv2_digout_ExternalOC_out[]` for OC outputs
+ * Device-specific bit mappings (based on PoKeys protocol specification v14.3.2025):
  *
- * Bitwise packing of the 8-bit outputs is done using `Set_BitOfByte()`, following the
- * hardware-specific wiring pattern described in the code comment.
+ * @par PoKeys57CNC:
+ * | Bit | Output | HAL Pin                             |
+ * |-----|--------|-------------------------------------|
+ * | 0   | SSR2   | PEv2_digout_ExternalRelay_out[1]    |
+ * | 1   | Relay2 | PEv2_digout_ExternalRelay_out[3]    |
+ * | 2   | Relay1 | PEv2_digout_ExternalRelay_out[2]    |
+ * | 3   | OC1    | PEv2_digout_ExternalOC_out[0]       |
+ * | 4   | OC2    | PEv2_digout_ExternalOC_out[1]       |
+ * | 5   | OC3    | PEv2_digout_ExternalOC_out[2]       |
+ * | 6   | OC4    | PEv2_digout_ExternalOC_out[3]       |
+ * | 7   | SSR1   | PEv2_digout_ExternalRelay_out[0]    |
  *
- * If the target states differ from the current values on the device, the new states are
- * set using `PK_PEv2_ExternalOutputsSet()`. The operation is retried once in case of failure.
+ * @par PoKeys57CNCpro4x25:
+ * | Bit | Output       | HAL Pin                             |
+ * |-----|--------------|-------------------------------------|
+ * | 0   | FAN Control  | PEv2_digout_ExternalRelay_out[0]    |
+ * | 1   | Relay1       | PEv2_digout_ExternalRelay_out[2]    |
+ * | 2   | Relay2       | PEv2_digout_ExternalRelay_out[3]    |
+ * | 3   | OC1          | PEv2_digout_ExternalOC_out[0]       |
+ * | 4   | OC2          | PEv2_digout_ExternalOC_out[1]       |
+ * | 5   | OC3          | PEv2_digout_ExternalOC_out[2]       |
+ * | 6   | OC4          | PEv2_digout_ExternalOC_out[3]       |
+ * | 7   | Plasma Relay | PEv2_digout_ExternalRelay_out[1]    |
+ *
+ * @par Default (PoKeysCNCaddon):
+ * Relay Outputs:
+ * | Bit | Output | HAL Pin                             |
+ * |-----|--------|-------------------------------------|
+ * | 0   | Relay1 | PEv2_digout_ExternalRelay_out[0]    |
+ * | 1   | Relay2 | PEv2_digout_ExternalRelay_out[1]    |
+ * | 2   | Relay3 | PEv2_digout_ExternalRelay_out[2]    |
+ * | 3   | Relay4 | PEv2_digout_ExternalRelay_out[3]    |
+ *
+ * OC Outputs:
+ * | Bit | Output | HAL Pin                             |
+ * |-----|--------|-------------------------------------|
+ * | 0   | OC1    | PEv2_digout_ExternalOC_out[0]       |
+ * | 1   | OC2    | PEv2_digout_ExternalOC_out[1]       |
+ * | 2   | OC3    | PEv2_digout_ExternalOC_out[2]       |
+ * | 3   | OC4    | PEv2_digout_ExternalOC_out[3]       |
+ *
+ * If composed states differ from device states, the outputs are updated on the device using
+ * PK_PEv2_ExternalOutputsSet(). The setting is executed twice to ensure reliability.
  *
  * @param dev Pointer to the PoKeys device structure.
- * @return `PK_OK` on success or the error code returned by `PK_PEv2_ExternalOutputsGet()` or `PK_PEv2_ExternalOutputsSet()`.
+ * @return PK_OK on success; otherwise, returns the error code from output get/set operations.
  *
- * @note Requires `PEv2_PG_extended_io` to be enabled for output access.
- * @note Uses `Set_BitOfByte()` to construct byte values from individual output bits.
- * @note Applies delays using `usleep()` if compiled with `ULAPI`.
+ * @note Requires PEv2_PG_extended_io enabled.
+ * @note Delays (usleep) applied if compiled with ULAPI.
  *
  * @see PK_PEv2_ExternalOutputsGet
  * @see PK_PEv2_ExternalOutputsSet
@@ -1273,35 +1315,78 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
                 - bit 8 / int 128 -> switches switches ext_Relays0
 
                 */
-        /*
+
+                switch (dev->DeviceData.DeviceTypeID) {
+                    case PK_DeviceID_PoKeys57CNC:
+                        /* acc. "PoKeys protocol specification - Version:14.3.2025":
+                            Bit 0  -> SSR2
+                            Bit 1  -> Relay2
+                            Bit 2  -> Relay1
+                            Bit 3  -> OC 1
+                            Bit 4  -> OC 2
+                            Bit 5  -> OC 3 
+                            Bit 6  -> OC 4
+                            Bit 7  -> SSR1
+                        */
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, *(PEv2_data->PEv2_digout_ExternalRelay_out[1])); //SSR2
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, *(PEv2_data->PEv2_digout_ExternalRelay_out[3])); //Relay2
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, *(PEv2_data->PEv2_digout_ExternalRelay_out[2])); //Relay1
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, *(PEv2_data->PEv2_digout_ExternalOC_out[0])); //OC1
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 4, *(PEv2_data->PEv2_digout_ExternalOC_out[1])); //OC2
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, *(PEv2_data->PEv2_digout_ExternalOC_out[2])); //OC3
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6, *(PEv2_data->PEv2_digout_ExternalOC_out[3])); //OC4
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7, *(PEv2_data->PEv2_digout_ExternalRelay_out[0])); //SSR1
+                        break;
+                    case PK_DeviceID_PoKeys57CNCpro4x25:
+                        /* acc. "PoKeys protocol specification - Version:14.3.2025":
+                            Bit 0  -> FAN control
+                            Bit 1  -> Relay1
+                            Bit 2  -> Relay2
+                            Bit 3  -> OC 1
+                            Bit 4  -> OC 2
+                            Bit 5  -> OC 3 
+                            Bit 6  -> OC 4
+                            Bit 7  -> Plasma Relay
+                        */
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, *(PEv2_data->PEv2_digout_ExternalRelay_out[1])); //FAN control
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, *(PEv2_data->PEv2_digout_ExternalRelay_out[2])); //Relay1
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, *(PEv2_data->PEv2_digout_ExternalRelay_out[3])); //Relay2
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, *(PEv2_data->PEv2_digout_ExternalOC_out[0])); //OC1
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 4, *(PEv2_data->PEv2_digout_ExternalOC_out[1])); //OC2
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, *(PEv2_data->PEv2_digout_ExternalOC_out[2])); //OC3
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6, *(PEv2_data->PEv2_digout_ExternalOC_out[3])); //OC4
+                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7, *(PEv2_data->PEv2_digout_ExternalRelay_out[0])); //Plasma Relay
+                        break;
+                    default:
+                        /* asuming old "PoKeysCNCaddon" 
+                        
+                        where acc. "PoKeys protocol specification - Version:14.3.2025":
+                        RelayOutputs 
+                            Bit 0  -> Relay1
+                            Bit 1  -> Relay2
+                            Bit 2  -> Relay3
+                            Bit 3  -> Relay4
+                        OCOutputs
+                            Bit 0  -> OC 1
+                            Bit 1  -> OC 2
+                            Bit 2  -> OC 3 
+                            Bit 3  -> OC 4
+
+                        */
                         ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 0, PEv2_digout_ExternalRelay_out(0));
                         ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 1, PEv2_digout_ExternalRelay_out(1));
                         ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 2, PEv2_digout_ExternalRelay_out(2));
                         ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 3, PEv2_digout_ExternalRelay_out(3));
-                        ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 4, PEv2_digout_ExternalRelay_out(4));
-                        ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 5, PEv2_digout_ExternalRelay_out(5));
-                        ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 6, PEv2_digout_ExternalRelay_out(6));
-                        ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 7, PEv2_digout_ExternalRelay_out(7));
-
+                        
                         ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, PEv2_digout_ExternalOC_out(0));
                         ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, PEv2_digout_ExternalOC_out(1));
                         ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, PEv2_digout_ExternalOC_out(2));
                         ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, PEv2_digout_ExternalOC_out(3));
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 4, PEv2_digout_ExternalOC_out(4));
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, PEv2_digout_ExternalOC_out(5));
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6, PEv2_digout_ExternalOC_out(6));
-                        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7, PEv2_digout_ExternalOC_out(7));
-                */
+                        break;
 
-        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, *(PEv2_data->PEv2_digout_ExternalRelay_out[1]));
-        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, *(PEv2_data->PEv2_digout_ExternalRelay_out[3]));
-        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, *(PEv2_data->PEv2_digout_ExternalRelay_out[2]));
-        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, *(PEv2_data->PEv2_digout_ExternalRelay_out[0]));
-        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 4, *(PEv2_data->PEv2_digout_ExternalOC_out[1]));
-        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 5, *(PEv2_data->PEv2_digout_ExternalOC_out[2]));
-        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 6, *(PEv2_data->PEv2_digout_ExternalOC_out[3]));
-        ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 7, *(PEv2_data->PEv2_digout_ExternalOC_out[0]));
+                }
 
+              
         if (ExternalRelayOutputs_set != dev->PEv2.ExternalRelayOutputs) {
             dev->PEv2.ExternalRelayOutputs = ExternalRelayOutputs_set;
             DoExternalOutputsSet = true;
@@ -1371,6 +1456,11 @@ int32_t PEv2_PulseEngineSetup(sPoKeysDevice *dev) {
         case PK_DeviceID_PoKeys57CNC:
             rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_PoKeys57CNC\n", __FILE__, __FUNCTION__);
             PEv2_data->PEv2_PulseEngineEnabled = 8;
+            PEv2_data->PEv2_PG_extended_io = 1;
+            break;
+        case PK_DeviceID_PoKeys57CNCpro4x25:
+            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: DeviceID_PoKeys57CNCpro4x25\n", __FILE__, __FUNCTION__);
+            PEv2_data->PEv2_PulseEngineEnabled = 4;
             PEv2_data->PEv2_PG_extended_io = 1;
             break;
         case PK_DeviceID_PoKeys57CNCdb25:
