@@ -1373,15 +1373,15 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
                     Bit 3  -> OC 4
 
                 */
-                ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 0, PEv2_digout_ExternalRelay_out(0));
-                ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 1, PEv2_digout_ExternalRelay_out(1));
-                ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 2, PEv2_digout_ExternalRelay_out(2));
-                ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 3, PEv2_digout_ExternalRelay_out(3));
+                ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 0, *(PEv2_data->PEv2_digout_ExternalRelay_out[0]));
+                ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 1, *(PEv2_data->PEv2_digout_ExternalRelay_out[1]));
+                ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 2, *(PEv2_data->PEv2_digout_ExternalRelay_out[2]));
+                ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 3, *(PEv2_data->PEv2_digout_ExternalRelay_out[3]));
 
-                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, PEv2_digout_ExternalOC_out(0));
-                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, PEv2_digout_ExternalOC_out(1));
-                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, PEv2_digout_ExternalOC_out(2));
-                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, PEv2_digout_ExternalOC_out(3));
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, *(PEv2_data->PEv2_digout_ExternalOC_out[0]));
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, *(PEv2_data->PEv2_digout_ExternalOC_out[1]));
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, *(PEv2_data->PEv2_digout_ExternalOC_out[2]));
+                ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 3, *(PEv2_data->PEv2_digout_ExternalOC_out[3]));
                 break;
         }
 
