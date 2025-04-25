@@ -1328,6 +1328,7 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
                     Bit 6  -> OC 4
                     Bit 7  -> SSR1
                 */
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PoKeys57CNC\n", __FILE__, __FUNCTION__);
                 ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, *(PEv2_data->PEv2_digout_ExternalRelay_out[1])); // SSR2
                 ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, *(PEv2_data->PEv2_digout_ExternalRelay_out[3])); // Relay2
                 ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, *(PEv2_data->PEv2_digout_ExternalRelay_out[2])); // Relay1
@@ -1348,6 +1349,7 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
                     Bit 6  -> OC 4
                     Bit 7  -> Plasma Relay
                 */
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PoKeys57CNCpro4x25\n", __FILE__, __FUNCTION__);
                 ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, *(PEv2_data->PEv2_digout_ExternalRelay_out[1])); // FAN control
                 ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, *(PEv2_data->PEv2_digout_ExternalRelay_out[2])); // Relay1
                 ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, *(PEv2_data->PEv2_digout_ExternalRelay_out[3])); // Relay2
@@ -1373,6 +1375,7 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
                     Bit 3  -> OC 4
 
                 */
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PoKeysCNCaddon\n", __FILE__, __FUNCTION__);
                 ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 0, *(PEv2_data->PEv2_digout_ExternalRelay_out[0]));
                 ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 1, *(PEv2_data->PEv2_digout_ExternalRelay_out[1]));
                 ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 2, *(PEv2_data->PEv2_digout_ExternalRelay_out[2]));

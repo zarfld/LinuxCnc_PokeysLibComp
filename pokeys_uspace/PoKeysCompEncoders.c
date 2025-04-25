@@ -214,6 +214,52 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
             return r;
         }
 
+        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.%01d.enable\n", __FILE__, __FUNCTION__, prefix, j);
+        r = hal_param_bit_newf(HAL_RW, &(addr->enable), id, "%s.encoder.%01d.enable", prefix, j);
+        if (r != 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.%01d.enable failed\n", __FILE__, __FUNCTION__, prefix, j);
+            return r;
+        }
+
+        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.%01d.4x_sampling\n", __FILE__, __FUNCTION__, prefix, j);
+        r = hal_param_bit_newf(HAL_RW, &(addr->x4_sampling), id, "%s.encoder.%01d.4x_sampling", prefix, j);
+        if (r != 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.%01d.4x_sampling failed\n", __FILE__, __FUNCTION__, prefix, j);
+            return r;
+        }
+        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.%01d.2x_sampling\n", __FILE__, __FUNCTION__, prefix, j);
+        r = hal_param_bit_newf(HAL_RW, &(addr->x2_sampling), id, "%s.encoder.%01d.2x_sampling", prefix, j);
+        if (r != 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.%01d.2x_sampling failed\n", __FILE__, __FUNCTION__, prefix, j);
+            return r;
+        }
+        
+/* prepared but it seems that there is no use for that in LinuxCnc
+        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.%01d.direct_key_mapping_A\n", __FILE__, __FUNCTION__, prefix, j);
+        r = hal_param_bit_newf(HAL_RW, &(addr->direct_key_mapping_A), id, "%s.encoder.%01d.direct_key_mapping_A", prefix, j);
+        if (r != 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.%01d.direct_key_mapping_A failed\n", __FILE__, __FUNCTION__, prefix, j);
+            return r;
+        }
+        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.%01d.macro_mapping_A\n", __FILE__, __FUNCTION__, prefix, j);
+        r = hal_param_bit_newf(HAL_RW, &(addr->macro_mapping_A), id, "%s.encoder.%01d.macro_mapping_A", prefix, j);
+        if (r != 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.%01d.macro_mapping_A failed\n", __FILE__, __FUNCTION__, prefix, j);
+            return r;
+        }
+        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.%01d.direct_key_mapping_B\n", __FILE__, __FUNCTION__, prefix, j);
+        r = hal_param_bit_newf(HAL_RW, &(addr->direct_key_mapping_B), id, "%s.encoder.%01d.direct_key_mapping_B", prefix, j);
+        if (r != 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.%01d.direct_key_mapping_B failed\n", __FILE__, __FUNCTION__, prefix, j);
+            return r;
+        }
+        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.%01d.macro_mapping_B\n", __FILE__, __FUNCTION__, prefix, j);
+        r = hal_param_bit_newf(HAL_RW, &(addr->macro_mapping_B), id, "%s.encoder.%01d.macro_mapping_B", prefix, j);
+        if (r != 0) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.%01d.macro_mapping_B failed\n", __FILE__, __FUNCTION__, prefix, j);
+            return r;
+        }
+*/
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.%01d.channelApin\n", __FILE__, __FUNCTION__, prefix, j);
         r = hal_param_u32_newf(HAL_RW, &(addr->channelApin), id, "%s.encoder.%01d.channelApin", prefix, j);
         if (r != 0) {
@@ -236,30 +282,35 @@ bool initEncodersDone = 0;
 bool EncoderValuesGet = false;
 
 /**
- * @brief Updates encoder data from the PoKeys device and writes values to HAL pins.
+ * @brief Updates encoder values and handles reset/index-enable logic.
  *
- * This function retrieves encoder values (basic and ultra-fast) from the PoKeys device
- * and updates the corresponding HAL pins for count and position. It also checks if the
- * encoder should be reset (based on HAL reset pin or during initialization).
- * If reset is requested, it sets the encoder value on the device to zero.
+ * This function is called periodically to:
+ * - Retrieve encoder counts from the PoKeys device via `PK_EncoderValuesGet()`
+ * - Update corresponding HAL output pins:
+ *   - `count`: raw encoder value
+ *   - `position`: scaled encoder value (`count * scale`)
+ * - Perform reset operations when one of the following conditions is met:
+ *   - HAL pin `reset` is set to `TRUE`
+ *   - HAL pin `index-enable` is set to `TRUE` (LinuxCNC-style homing)
+ *   - The component is being initialized (`initEncodersDone == false`)
  *
- * The following values are updated for each encoder:
- * - `encoder.#.count`         – the raw encoder count value
- * - `encoder.#.position`      – the scaled position based on count and scale parameter
- * - `encoder.#.velocity`      – currently not set (placeholder)
+ * When any reset condition is met, the corresponding encoder value is set to zero,
+ * and `PK_EncoderValuesSet()` is used to push the updated values to the PoKeys device.
  *
- * If `reset` pin is high or this is the first update (`initEncodersDone == false`),
- * the encoder is reset on the device using `PK_EncoderValuesSet()`.
+ * The `index-enable` pin is automatically cleared after use to prevent repeated resets.
  *
- * Debug values are written to `encoder_data->encoder_deb_out` to help trace progress or hangs.
+ * Ultra-fast encoders (if present) are also updated and reset in the same pass.
  *
- * @param[in,out] dev Pointer to the initialized PoKeys device structure
+ * Debug status values are written to `encoder_deb_out` for traceability.
  *
- * @note The function supports both basic and ultra-fast encoders.
- *       Fast encoders are not handled in the current implementation (commented out).
+ * @param dev Pointer to the PoKeys device structure.
  *
- * @see PK_EncoderValuesGet()
- * @see PK_EncoderValuesSet()
+ * @note Uses `usleep()` if compiled with `ULAPI` to avoid overloading the USB bus.
+ * @note All encoders are reset once at startup before the first completed update.
+ * @note This logic does not currently include fast encoders unless they are mapped as basic/ultra-fast.
+ *
+ * @see PK_EncoderValuesGet
+ * @see PK_EncoderValuesSet
  * @see one_encoder_data_t
  */
 void PKEncoder_Update(sPoKeysDevice *dev) {
@@ -294,12 +345,15 @@ void PKEncoder_Update(sPoKeysDevice *dev) {
                 rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: encoder %d position = %d\n", __FILE__, __FUNCTION__, i, dev->Encoders[i].encoderValue * Scale);
                 *(encoder_data->encoder[i].position) = dev->Encoders[i].encoderValue * Scale;
                 *(encoder_data->encoder_deb_out) = 2201;
-                if ((*(encoder_data->encoder[i].reset) != 0) || (initEncodersDone == false)) {
+                if ((*(encoder_data->encoder[i].reset) != 0) || (*(encoder_data->encoder[i].index_enable) != 0) || (initEncodersDone == false)) {
                     *(encoder_data->encoder_deb_out) = 2212;
                     dev->Encoders[i].encoderValue = 0;
                     *(encoder_data->encoder_deb_out) = 2213;
                     resetEncoders = true;
                     *(encoder_data->encoder_deb_out) = 2214;
+                    if (*(encoder_data->encoder[i].index_enable) != 0){
+                        *(encoder_data->encoder[i].index_enable) = 0;
+                    }
                 }
                 *(encoder_data->encoder_deb_out) = 2215;
 #ifdef ULAPI
@@ -322,9 +376,12 @@ void PKEncoder_Update(sPoKeysDevice *dev) {
                     *(encoder_data->encoder_deb_out) = 221;
                     *(encoder_data->encoder[i].count) = dev->Encoders[i].encoderValue;
                     *(encoder_data->encoder[i].position) = dev->Encoders[i].encoderValue * (encoder_data->encoder[i].scale);
-                    if ((encoder_data->encoder[i].reset != 0) || (initEncodersDone == false)) {
+                    if ((encoder_data->encoder[i].reset != 0) || (*(encoder_data->encoder[i].index_enable) != 0) || (initEncodersDone == false)) {
                         dev->Encoders[i].encoderValue = 0;
                         resetEncoders = true;
+                        if (*(encoder_data->encoder[i].index_enable) != 0){
+                            *(encoder_data->encoder[i].index_enable) = 0;
+                        }
                     }
 #ifdef ULAPI
                     usleep(sleepdur);
