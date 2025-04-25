@@ -463,7 +463,142 @@ void PKEncoder_Setup(sPoKeysDevice *dev) {
     POKEYSDECL int32_t PK_EncoderConfigurationSet(sPoKeysDevice* device);
     */
     if (dev->info.iBasicEncoderCount > 0) {
+        for (i = 0; i < device->info.iBasicEncoderCount; i++)
+        { 
+            encoder_data->encoder[i].encoderOptions = dev->Encoders[i].encoderOptions;
+
+            hal_u32_t encoderOptions = 0;
+            bool enable       = ((encoder_data->encoder[i].encoderOptions) & PK_ENCODER_OPTION_ENABLE)         ? 1 : 0;
+            bool x4_sampling  = ((encoder_data->encoder[i].encoderOptions) & PK_ENCODER_OPTION_4X_SAMPLING)    ? 1 : 0;
+            bool x2_sampling  = ((encoder_data->encoder[i].encoderOptions & PK_ENCODER_OPTION_2X_SAMPLING)    ? 1 : 0;
+            bool keymap_dirA  = ((encoder_data->encoder[i].encoderOptions) & PK_ENCODER_OPTION_KEYMAP_DIR_A)   ? 1 : 0;
+            bool macro_dirA   = ((encoder_data->encoder[i].encoderOptions) & PK_ENCODER_OPTION_MACRO_DIR_A)    ? 1 : 0;
+            bool keymap_dirB  = ((encoder_data->encoder[i].encoderOptions) & PK_ENCODER_OPTION_KEYMAP_DIR_B)   ? 1 : 0;
+            bool macro_dirB   = ((encoder_data->encoder[i].encoderOptions) & PK_ENCODER_OPTION_MACRO_DIR_B)    ? 1 : 0;
+
+            if (ApplyIniSettings == false || encoder_data->encoder[i].enable == 0) {
+                encoder_data->encoder[i].enable = enable;
+            }
+            else if(encoder_data->encoder[i].enable != enable) {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d enable = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].enable);
+                enable = encoder_data->encoder[i].enable;
+            }
+
+            if (ApplyIniSettings == false || encoder_data->encoder[i].x4_sampling == 0) {
+                encoder_data->encoder[i].x4_sampling = x4_sampling;
+            }
+            else if(encoder_data->encoder[i].x4_sampling != x4_sampling) {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d x4_sampling = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].x4_sampling);
+                x4_sampling = encoder_data->encoder[i].x4_sampling;
+            }
+
+            if (ApplyIniSettings == false || encoder_data->encoder[i].x2_sampling == 0) {
+                encoder_data->encoder[i].x2_sampling = x2_sampling;
+            }
+            else if(encoder_data->encoder[i].x2_sampling != x2_sampling) {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d x2_sampling = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].x2_sampling);
+                x2_sampling = encoder_data->encoder[i].x2_sampling;
+            }
        
+            if (ApplyIniSettings == false || encoder_data->encoder[i].keymap_dirA == 0) {
+                encoder_data->encoder[i].keymap_dirA = keymap_dirA;
+            }
+            else if(encoder_data->encoder[i].keymap_dirA != dev->Encoders[i].keymap_dirA) {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d keymap_dirA = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].keymap_dirA);
+                dev->Encoders[i].keymap_dirA = encoder_data->encoder[i].keymap_dirA;
+            }
+
+            if (ApplyIniSettings == false || encoder_data->encoder[i].macro_dirA == 0) {
+                encoder_data->encoder[i].macro_dirA = macro_dirA;
+            }
+            else if(encoder_data->encoder[i].macro_dirA != macro_dirA) {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d macro_dirA = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].macro_dirA);
+                macro_dirA = encoder_data->encoder[i].macro_dirA;
+            }
+            if (ApplyIniSettings == false || encoder_data->encoder[i].keymap_dirB == 0) {
+                encoder_data->encoder[i].keymap_dirB = keymap_dirB;
+            }
+            else if(encoder_data->encoder[i].keymap_dirB != keymap_dirB) {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d keymap_dirB = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].keymap_dirB);
+                keymap_dirB = encoder_data->encoder[i].keymap_dirB;
+            }
+            if (ApplyIniSettings == false || encoder_data->encoder[i].macro_dirB == 0) {
+                encoder_data->encoder[i].macro_dirB = macro_dirB;
+            }
+            else if(encoder_data->encoder[i].macro_dirB != macro_dirB) {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d macro_dirB = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].macro_dirB);
+                macro_dirB = encoder_data->encoder[i].macro_dirB;
+            }
+            
+            if (enable)       encoderOptions |= PK_ENCODER_OPTION_ENABLE;
+            if (x4_sampling)  encoderOptions |= PK_ENCODER_OPTION_4X_SAMPLING;
+            if (x2_sampling)  encoderOptions |= PK_ENCODER_OPTION_2X_SAMPLING;
+            if (keymap_dirA)  encoderOptions |= PK_ENCODER_OPTION_KEYMAP_DIR_A;
+            if (macro_dirA)   encoderOptions |= PK_ENCODER_OPTION_MACRO_DIR_A;
+            if (keymap_dirB)  encoderOptions |= PK_ENCODER_OPTION_KEYMAP_DIR_B;
+            if (macro_dirB)   encoderOptions |= PK_ENCODER_OPTION_MACRO_DIR_B;
+
+            if (ApplyIniSettings && dev->Encoders[i].encoderOptions != encoderOptions) {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d encoderOptions = %d\n", __FILE__, __FUNCTION__, i, dev->Encoders[i].encoderOptions);
+                dev->Encoders[i].encoderOptions = encoderOptions;
+                EncoderConfigurationSet = true;
+            }     
+
+            if (ApplyIniSettings == false || encoder_data->encoder[i].channelApin == 0) {
+                encoder_data->encoder[i].channelApin = device->Encoders[i].channelApin ;
+            }
+            else if (encoder_data->encoder[i].channelApin != device->Encoders[i].channelApin){
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d channelApin = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].channelApin);
+                device->Encoders[i].channelApin = encoder_data->encoder[i].channelApin;
+                EncoderConfigurationSet = true;
+            }
+
+            if (ApplyIniSettings == false || encoder_data->encoder[i].channelBpin == 0) {
+                encoder_data->encoder[i].channelBpin = device->Encoders[i].channelBpin;
+            }
+            else if (encoder_data->encoder[i].channelBpin != device->Encoders[i].channelBpin){
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d channelBpin = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].channelBpin);
+                device->Encoders[i].channelBpin = encoder_data->encoder[i].channelBpin;
+                EncoderConfigurationSet = true;
+            }
+
+            /* prepared not existing - in current tasks of Linuxcnc not in use
+            if (ApplyIniSettings == false || encoder_data->encoder[i].dirAkeyCode == 0) {
+                encoder_data->encoder[i].dirAkeyCode = device->Encoders[i].dirAkeyCode;
+            }
+            else if (encoder_data->encoder[i].dirAkeyCode != device->Encoders[i].dirAkeyCode){
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d dirAkeyCode = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].dirAkeyCode);
+                device->Encoders[i].dirAkeyCode = encoder_data->encoder[i].dirAkeyCode;
+                EncoderConfigurationSet = true;
+            }
+
+            if (ApplyIniSettings == false || encoder_data->encoder[i].dirAkeyModifier == 0) {
+                encoder_data->encoder[i].dirAkeyModifier = device->Encoders[i].dirAkeyModifier;
+            }
+            else if (encoder_data->encoder[i].dirAkeyModifier != device->Encoders[i].dirAkeyModifier){
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d dirAkeyModifier = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].dirAkeyModifier);
+                device->Encoders[i].dirAkeyModifier = encoder_data->encoder[i].dirAkeyModifier;
+                EncoderConfigurationSet = true;
+            }
+
+            if (ApplyIniSettings == false || encoder_data->encoder[i].dirBkeyCode == 0) {
+                encoder_data->encoder[i].dirBkeyCode = device->Encoders[i].dirBkeyCode;
+            }
+            else if (encoder_data->encoder[i].dirBkeyCode != device->Encoders[i].dirBkeyCode){
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d dirBkeyCode = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].dirBkeyCode);
+                device->Encoders[i].dirBkeyCode = encoder_data->encoder[i].dirBkeyCode;
+                EncoderConfigurationSet = true;
+            }
+
+            if (ApplyIniSettings == false || encoder_data->encoder[i].keymap_dirB == 0) {
+                encoder_data->encoder[i].keymap_dirB = device->Encoders[i].dirBkeyModifier;
+            }
+            else if (encoder_data->encoder[i].keymap_dirB != device->Encoders[i].dirBkeyModifier){
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d dirBkeyModifier = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].dirBkeyModifier);
+                device->Encoders[i].dirBkeyModifier = encoder_data->encoder[i].keymap_dirB;
+                EncoderConfigurationSet = true;
+            }*/
+        }
     }
 
     /* FastEncoder parameters dev->FastEncodersConfiguration and dev->FastEncodersOptions
@@ -471,20 +606,175 @@ void PKEncoder_Setup(sPoKeysDevice *dev) {
     uint8_t                   FastEncodersOptions;           // Fast encoders additional options
 
     */
-    if(dev->info.iFastEncoders){
+    if (dev->info.iFastEncoders) {
+        uint8_t config = 0;
+        uint8_t options = 0;
+    
+        encoder_data->FastEncodersOptions = dev->FastEncodersOptions;
+        encoder_data->FastEncodersConfiguration = dev->FastEncodersConfiguration;
+
+        bool encoderFastEnable = ((encoder_data->FastEncodersOptions) & PK_FASTENCODER_ENABLE)         ? 1 : 0;
+        bool encoderFastInvertE1 = ((encoder_data->FastEncodersOptions) & PK_FASTENCODER_INVERT_E1)     ? 1 : 0;
+        bool encoderFastInvertE2 = ((encoder_data->FastEncodersOptions) & PK_FASTENCODER_INVERT_E2)     ? 1 : 0;
+        bool encoderFastInvertE3 = ((encoder_data->FastEncodersOptions) & PK_FASTENCODER_INVERT_E3)     ? 1 : 0;
+        bool encoderFastDisable4xSampling = ((encoder_data->FastEncodersOptions) & PK_FASTENCODER_DISABLE_4X_SAMPLING) ? 1 : 0;
+
+        if (ApplyIniSettings == false ) {
+            encoder_data->encoderFastEnable = encoderFastEnable;
+            encoder_data->FastEncodersInvert[0] = encoderFastInvertE1;
+            encoder_data->FastEncodersInvert[1] = encoderFastInvertE2;
+            encoder_data->FastEncodersInvert[2] = encoderFastInvertE3;
+            encoder_data->disable_4x_sampling = encoderFastDisable4xSampling;
+        }
+        else{
+
+            if(encoder_data->encoderFastEnable != encoderFastEnable) {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: FastEncoder enable = %d\n", __FILE__, __FUNCTION__, encoder_data->encoderFastEnable);
+                encoderFastEnable = encoder_data->encoderFastEnable;
+                EncoderConfigurationSet = true;
+            }
+
+            if(encoder_data->FastEncodersInvert[0] != encoderFastInvertE1) {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: FastEncoder E1 invert = %d\n", __FILE__, __FUNCTION__, encoder_data->FastEncodersInvert[0]);
+                encoderFastInvertE1 = encoder_data->FastEncodersInvert[0];
+                EncoderConfigurationSet = true;
+            }
+            if(encoder_data->FastEncodersInvert[1] != encoderFastInvertE2) {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: FastEncoder E2 invert = %d\n", __FILE__, __FUNCTION__, encoder_data->FastEncodersInvert[1]);
+                encoderFastInvertE2 = encoder_data->FastEncodersInvert[1];
+                EncoderConfigurationSet = true;
+            }
+            if(encoder_data->FastEncodersInvert[2] != encoderFastInvertE3) {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: FastEncoder E3 invert = %d\n", __FILE__, __FUNCTION__, encoder_data->FastEncodersInvert[2]);
+                encoderFastInvertE3 = encoder_data->FastEncodersInvert[2];
+                EncoderConfigurationSet = true;
+            }
+            if(encoder_data->disable_4x_sampling != encoderFastDisable4xSampling) {
+                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: FastEncoder disable_4x_sampling = %d\n", __FILE__, __FUNCTION__, encoder_data->disable_4x_sampling);
+                encoderFastDisable4xSampling = encoder_data->disable_4x_sampling;
+                EncoderConfigurationSet = true;
+            }
+        }
+
+
+
+
+        // 1. CONFIG: Which pin group config to use?
+        if (encoder_data->encoderFastEnable) {
+            if (encoder_data->alternativeconfig)
+                config = PK_FASTENCODER_CONF_CFG2;
+            else
+                config = PK_FASTENCODER_CONF_CFG1;
+        } else {
+            config = 0; // Disabled
+        }
+    
+        // 2. OPTIONS: Pack inversion and sampling settings
+        if (encoderFastDisable4xSampling)
+            options |= PK_FASTENCODER_DISABLE_4X_SAMPLING;
+    
+        if (encoderFastInvertE1)
+            options |= PK_FASTENCODER_INVERT_E1;
+        if (encoderFastInvertE2)
+            options |= PK_FASTENCODER_INVERT_E2;
+        if (encoderFastInvertE3)
+            options |= PK_FASTENCODER_INVERT_E3;
+    
+        // 3. Update HAL feedback
+        
+    
+        // 4. Compare and apply
+        if (ApplyIniSettings && (
+                dev->FastEncodersConfiguration != config ||
+                dev->FastEncodersOptions != options)) {
+    
+            rtapi_print_msg(RTAPI_MSG_ERR,
+                "PoKeys: %s:%s: FastEncoder config changed: cfg=%d, opts=0x%02X\n",
+                __FILE__, __FUNCTION__, config, options);
+    
+            dev->FastEncodersConfiguration = config;
+            dev->FastEncodersOptions = options;
+            EncoderConfigurationSet = true;
+        }
+    }
+
+
+    if(dev->info.iUltraFastEncoders){
+
+
+        if (ApplyIniSettings == false) {
+            encoder_data->UltraFastEncoderConfiguration = dev->UltraFastEncoderConfiguration;
+        }
+        encoder_data->UltraFastEncoderOptions = dev->UltraFastEncoderOptions;
+
+        uint8_t UltraFastEncoderOptions = 0;
+        bool UltraFastEncoderOptions_INVERT_DIRECTION       = ((encoder_data->UltraFastEncoderOptions) & PK_UFENCODER_INVERT_DIRECTION)         ? 1 : 0;
+        bool UltraFastEncoderOptions_SIGNAL_MODE          = ((encoder_data->UltraFastEncoderOptions) & PK_UFENCODER_SIGNAL_MODE)            ? 1 : 0;
+        bool UltraFastEncoderOptions_ENABLE_4X_SAMPLING   = ((encoder_data->UltraFastEncoderOptions) & PK_UFENCODER_ENABLE_4X_SAMPLING)       ? 1 : 0;
+        
+
+        if (ApplyIniSettings == false || encoder_data->UltraFastEncoderOptions_INVERT_DIRECTION == 0) {
+            encoder_data->UltraFastEncoderOptions_INVERT_DIRECTION = UltraFastEncoderOptions_INVERT_DIRECTION;
+        }
+        else if(encoder_data->UltraFastEncoderOptions_INVERT_DIRECTION != UltraFastEncoderOptions_INVERT_DIRECTION) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: UltraFastEncoder INVERT_DIRECTION = %d\n", __FILE__, __FUNCTION__,  encoder_data->UltraFastEncoderOptions_INVERT_DIRECTION);
+            UltraFastEncoderOptions_INVERT_DIRECTION = encoder_data->UltraFastEncoderOptions_INVERT_DIRECTION;
+        }
+
+        if (ApplyIniSettings == false || encoder_data->UltraFastEncoderOptions_SIGNAL_MODE == 0) {
+            encoder_data->UltraFastEncoderOptions_SIGNAL_MODE = UltraFastEncoderOptions_SIGNAL_MODE;
+        }
+        else if(encoder_data->UltraFastEncoderOptions_SIGNAL_MODE != UltraFastEncoderOptions_SIGNAL_MODE) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: UltraFastEncoder SIGNAL_MODE = %d\n", __FILE__, __FUNCTION__,  encoder_data->UltraFastEncoderOptions_SIGNAL_MODE);
+            UltraFastEncoderOptions_SIGNAL_MODE = encoder_data->UltraFastEncoderOptions_SIGNAL_MODE;
+        }
+        if (ApplyIniSettings == false || encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING == 0) {
+            encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING = UltraFastEncoderOptions_ENABLE_4X_SAMPLING;
+        }
+        else if(encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING != UltraFastEncoderOptions_ENABLE_4X_SAMPLING) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: UltraFastEncoder ENABLE_4X_SAMPLING = %d\n", __FILE__, __FUNCTION__,  encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING);
+            UltraFastEncoderOptions_ENABLE_4X_SAMPLING = encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING;
+        }
+        if (ApplyIniSettings == false || encoder_data->UltraFastEncoderFilter == 0) {
+            encoder_data->UltraFastEncoderFilter = dev->UltraFastEncoderFilter;
+        }
+        else if(encoder_data->UltraFastEncoderFilter != dev->UltraFastEncoderFilter) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: UltraFastEncoder Filter = %d\n", __FILE__, __FUNCTION__,  encoder_data->UltraFastEncoderFilter);
+            dev->UltraFastEncoderFilter = encoder_data->UltraFastEncoderFilter;
+        }
+
+
+
+        // Compose UltraFastEncoderOptions from HAL bits
+        uint8_t options = dev->UltraFastEncoderOptions;
+        if (encoder_data->UltraFastEncoderOptions_INVERT_DIRECTION) options |= PK_UFENCODER_INVERT_DIRECTION;
+        if (encoder_data->UltraFastEncoderOptions_SIGNAL_MODE)      options |= PK_UFENCODER_SIGNAL_MODE;
+        if (encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING) options |= PK_UFENCODER_ENABLE_4X_SAMPLING;
+       // if (encoder_data->UltraFastEncoderOptions_RESET_ON_INDEX)   options |= PK_UFENCODER_RESET_ON_INDEX;
+    
+       if (ApplyIniSettings && encoder_data->UltraFastEncoderOptions != options) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: UltraFastEncoderOptions = %d\n", __FILE__, __FUNCTION__,  encoder_data->UltraFastEncoderOptions);
+        dev->UltraFastEncoderOptions = options;
+        EncoderConfigurationSet = true;
+       }
+
+       if (ApplyIniSettings && dev->UltraFastEncoderConfiguration != encoder_data->UltraFastEncoderConfiguration){
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: UltraFastEncoderConfiguration = %d\n", __FILE__, __FUNCTION__,  dev->UltraFastEncoderConfiguration);
+            dev->UltraFastEncoderConfiguration = encoder_data->UltraFastEncoderConfiguration;
+       }
+        
         
     }
 
-    /*
-    uint8_t                   UltraFastEncoderConfiguration; // Ultra fast encoder configuration (see protocol specification for details)
-    uint8_t                   UltraFastEncoderOptions;       // Ultra fast encoder additional options
-    uint32_t                  UltraFastEncoderFilter;        // Ultra fast encoder digital filter setting
-    */
-    if(dev->info.iUltraFastEncoders){
-        
+
+    if (EncoderConfigurationSet == true) {
+        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: PK_EncoderConfigurationSet(dev)\n", __FILE__, __FUNCTION__);
+        if (PK_EncoderConfigurationSet(dev) != PK_OK) {
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_EncoderConfigurationSet failed\n", __FILE__, __FUNCTION__);
+            return;
+        }
+        EncoderConfigurationSet = false;
     }
-    // PK_EncoderConfigurationSet(dev);
-    // PK_EncoderConfigurationGet(dev);
 
 }
 
