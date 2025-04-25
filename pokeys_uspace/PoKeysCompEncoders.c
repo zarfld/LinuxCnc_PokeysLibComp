@@ -439,6 +439,53 @@ int PKEncoder_init(int id, sPoKeysDevice *dev) {
  * @param[in,out] dev Pointer to the initialized PoKeys device structure
  */
 void PKEncoder_Setup(sPoKeysDevice *dev) {
+    bool EncoderConfigurationSet = false;
+
+    if (dev->info.iBasicEncoderCount == 0 && dev->info.iUltraFastEncoders == 0 && dev->info.iFastEncoders == 0) {
+        // No encoders available
+        return;
+    }
+
+    if (PK_EncoderConfigurationGet(dev) != PK_OK) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_EncoderConfigurationGet failed\n", __FILE__, __FUNCTION__);
+        return;
+    }
+
+
+    /* encoder Data dev->Encoders
+    sPoKeysEncoder*           Encoders;                      // PoKeys encoders
+
+    dev->info.iBasicEncoderCount = 0; // Number of basic encoders
+    dev->info.iUltraFastEncoders = 0; // Number of ultra fast encoders
+    dev->info.iFastEncoders = 0;      // Number of fast encoders
+
+    POKEYSDECL int32_t PK_EncoderConfigurationGet(sPoKeysDevice* device);
+    POKEYSDECL int32_t PK_EncoderConfigurationSet(sPoKeysDevice* device);
+    */
+    if (dev->info.iBasicEncoderCount > 0) {
+       
+    }
+
+    /* FastEncoder parameters dev->FastEncodersConfiguration and dev->FastEncodersOptions
+    uint8_t                   FastEncodersConfiguration;     // Fast encoders configuration, invert settings and 4x sampling (see protocol specification for details)
+    uint8_t                   FastEncodersOptions;           // Fast encoders additional options
+
+    */
+    if(dev->info.iFastEncoders){
+        
+    }
+
+    /*
+    uint8_t                   UltraFastEncoderConfiguration; // Ultra fast encoder configuration (see protocol specification for details)
+    uint8_t                   UltraFastEncoderOptions;       // Ultra fast encoder additional options
+    uint32_t                  UltraFastEncoderFilter;        // Ultra fast encoder digital filter setting
+    */
+    if(dev->info.iUltraFastEncoders){
+        
+    }
+    // PK_EncoderConfigurationSet(dev);
+    // PK_EncoderConfigurationGet(dev);
+
 }
 
 /**
