@@ -216,8 +216,8 @@ struct __comp_state {
     hal_u32_t *info_EasySensors;
 
     // sPoKeysDevice_Data
-    hal_u32_t data_DeviceTypeID;                     // ePK_DeviceTypes ID
-    hal_u32_t data_SerialNumber;                     // Serial number of the device
+    hal_u32_t data_DeviceTypeID; // ePK_DeviceTypes ID
+    hal_u32_t data_SerialNumber; // Serial number of the device
 
     /*uint8_t  DeviceName[30];                   // Device name (generic or user-specified)
     uint8_t  DeviceTypeName[30];               // Device type name
@@ -602,8 +602,8 @@ static int export(char *prefix, long extra_arg) {
     r = hal_param_u32_newf(HAL_RW, &(inst->devSerial), comp_id, "%s.devSerial", prefix);
     if (r != 0)
         return r;
-/*    hal_u32_t data_DeviceTypeID;                     // ePK_DeviceTypes ID
-    hal_u32_t data_SerialNumber;                     // Serial number of the device*/
+    /*    hal_u32_t data_DeviceTypeID;                     // ePK_DeviceTypes ID
+        hal_u32_t data_SerialNumber;                     // Serial number of the device*/
 
     r = hal_param_u32_newf(HAL_RO, &(inst->data_SerialNumber), comp_id, "%s.info.SerialNumber", prefix);
     if (r != 0)
@@ -1487,9 +1487,6 @@ void user_mainloop(void) {
                         __comp_inst->data_DeviceTypeID = dev->DeviceData.DeviceTypeID;
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: data_SerialNumber: %d\n", __FILE__, __FUNCTION__, dev->DeviceData.SerialNumber);
                         __comp_inst->data_SerialNumber = dev->DeviceData.SerialNumber;
-                      
-                        
-
                     }
                     switch (dev->connectionType) {
                         case PK_DeviceType_USBDevice:
