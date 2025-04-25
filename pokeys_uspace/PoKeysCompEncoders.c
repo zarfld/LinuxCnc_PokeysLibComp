@@ -274,6 +274,16 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
             return r;
         }
     }
+
+    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.FastEncoders.Options\n", __FILE__, __FUNCTION__, prefix);
+    r = hal_param_u32_newf(HAL_RW, &(encoder_data->FastEncodersOptions), id, "%s.encoder.FastEncoders.Options", prefix);
+    if (r != 0) {
+        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.FastEncoders.Options failed\n", __FILE__, __FUNCTION__, prefix, j);
+        return r;
+    }
+    
+
+
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: return: %d\n", __FILE__, __FUNCTION__, r);
     return r;
 }
@@ -452,16 +462,7 @@ void PKEncoder_Setup(sPoKeysDevice *dev) {
     }
 
 
-    /* encoder Data dev->Encoders
-    sPoKeysEncoder*           Encoders;                      // PoKeys encoders
 
-    dev->info.iBasicEncoderCount = 0; // Number of basic encoders
-    dev->info.iUltraFastEncoders = 0; // Number of ultra fast encoders
-    dev->info.iFastEncoders = 0;      // Number of fast encoders
-
-    POKEYSDECL int32_t PK_EncoderConfigurationGet(sPoKeysDevice* device);
-    POKEYSDECL int32_t PK_EncoderConfigurationSet(sPoKeysDevice* device);
-    */
     if (dev->info.iBasicEncoderCount > 0) {
         for (i = 0; i < device->info.iBasicEncoderCount; i++)
         { 
@@ -601,11 +602,6 @@ void PKEncoder_Setup(sPoKeysDevice *dev) {
         }
     }
 
-    /* FastEncoder parameters dev->FastEncodersConfiguration and dev->FastEncodersOptions
-    uint8_t                   FastEncodersConfiguration;     // Fast encoders configuration, invert settings and 4x sampling (see protocol specification for details)
-    uint8_t                   FastEncodersOptions;           // Fast encoders additional options
-
-    */
     if (dev->info.iFastEncoders) {
         uint8_t config = 0;
         uint8_t options = 0;

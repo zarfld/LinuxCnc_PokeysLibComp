@@ -398,7 +398,7 @@ typedef enum {
     PK_UFENCODER_INVERT_DIRECTION = (1 << 0), 
     PK_UFENCODER_SIGNAL_MODE = (1 << 1), 
     PK_UFENCODER_ENABLE_4X_SAMPLING = (1 << 2)
-    ePK_UltraFastEncoderOptions;
+}ePK_UltraFastEncoderOptions;
 
 /**
  * @brief Structure representing a single encoder channel with HAL and PoKeys configuration.
