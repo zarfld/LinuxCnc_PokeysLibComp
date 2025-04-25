@@ -1395,7 +1395,47 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
                     Bit 6  -> OC 4
                     Bit 7  -> Plasma Relay
                 */
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PoKeys57CNCpro4x25\n", __FILE__, __FUNCTION__);
+                if (external_relay_memory[0] != *(PEv2_data->PEv2_digout_ExternalRelay_out[0])) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DeviceID_PoKeys57CNCpro4x25 - set Plasma Relay: %d \n", __FILE__, __FUNCTION__, *(PEv2_data->PEv2_digout_ExternalRelay_out[0]));
+                    external_relay_memory[0] = *(PEv2_data->PEv2_digout_ExternalRelay_out[0]);
+                    DoExternalOutputsSet = true;
+                }
+                if (external_relay_memory[1] != *(PEv2_data->PEv2_digout_ExternalRelay_out[1])) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DeviceID_PoKeys57CNCpro4x25 - set FAN control: %d \n", __FILE__, __FUNCTION__, *(PEv2_data->PEv2_digout_ExternalRelay_out[1]));
+                    external_relay_memory[1] = *(PEv2_data->PEv2_digout_ExternalRelay_out[1]);
+                    DoExternalOutputsSet = true;
+                }
+                if (external_relay_memory[2] != *(PEv2_data->PEv2_digout_ExternalRelay_out[2])) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DeviceID_PoKeys57CNCpro4x25 - set Relay1: %d \n", __FILE__, __FUNCTION__, *(PEv2_data->PEv2_digout_ExternalRelay_out[2]));
+                    external_relay_memory[2] = *(PEv2_data->PEv2_digout_ExternalRelay_out[2]);
+                    DoExternalOutputsSet = true;
+                }
+                if (external_relay_memory[3] != *(PEv2_data->PEv2_digout_ExternalRelay_out[3])) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DeviceID_PoKeys57CNCpro4x25 - set Relay2: %d \n", __FILE__, __FUNCTION__, *(PEv2_data->PEv2_digout_ExternalRelay_out[3]));
+                    external_relay_memory[3] = *(PEv2_data->PEv2_digout_ExternalRelay_out[3]);
+                    DoExternalOutputsSet = true;
+                }
+                if (external_oc_memory[0] != *(PEv2_data->PEv2_digout_ExternalOC_out[0])) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DeviceID_PoKeys57CNCpro4x25 - set OC1: %d \n", __FILE__, __FUNCTION__, *(PEv2_data->PEv2_digout_ExternalOC_out[0]));
+                    external_oc_memory[0] = *(PEv2_data->PEv2_digout_ExternalOC_out[0]);
+                    DoExternalOutputsSet = true;
+                }
+                if (external_oc_memory[1] != *(PEv2_data->PEv2_digout_ExternalOC_out[1])) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DeviceID_PoKeys57CNCpro4x25 - set OC2: %d \n", __FILE__, __FUNCTION__, *(PEv2_data->PEv2_digout_ExternalOC_out[1]));
+                    external_oc_memory[1] = *(PEv2_data->PEv2_digout_ExternalOC_out[1]);
+                    DoExternalOutputsSet = true;
+                }
+                if (external_oc_memory[2] != *(PEv2_data->PEv2_digout_ExternalOC_out[2])) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DeviceID_PoKeys57CNCpro4x25 - set OC3: %d \n", __FILE__, __FUNCTION__, *(PEv2_data->PEv2_digout_ExternalOC_out[2]));
+                    external_oc_memory[2] = *(PEv2_data->PEv2_digout_ExternalOC_out[2]);
+                    DoExternalOutputsSet = true;
+                }
+                if (external_oc_memory[3] != *(PEv2_data->PEv2_digout_ExternalOC_out[3])) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PK_DeviceID_PoKeys57CNCpro4x25 - set OC4: %d \n", __FILE__, __FUNCTION__, *(PEv2_data->PEv2_digout_ExternalOC_out[3]));
+                    external_oc_memory[3] = *(PEv2_data->PEv2_digout_ExternalOC_out[3]);
+                    DoExternalOutputsSet = true;
+                }
+                
                 ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, *(PEv2_data->PEv2_digout_ExternalRelay_out[1])); // FAN control
                 ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, *(PEv2_data->PEv2_digout_ExternalRelay_out[2])); // Relay1
                 ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, *(PEv2_data->PEv2_digout_ExternalRelay_out[3])); // Relay2
@@ -1421,7 +1461,47 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
                     Bit 3  -> OC 4
 
                 */
-                rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PoKeysCNCaddon (DeviceTypeID: %d)\n", __FILE__, __FUNCTION__, dev->DeviceData.DeviceTypeID);
+                if (external_relay_memory[0] != *(PEv2_data->PEv2_digout_ExternalRelay_out[0])) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PoKeysCNCaddon(DeviceType: %d) - set Relay1: %d \n", __FILE__, __FUNCTION__, dev->DeviceData.DeviceType, *(PEv2_data->PEv2_digout_ExternalRelay_out[0]));
+                    external_relay_memory[0] = *(PEv2_data->PEv2_digout_ExternalRelay_out[0]);
+                    DoExternalOutputsSet = true;
+                }
+                if (external_relay_memory[1] != *(PEv2_data->PEv2_digout_ExternalRelay_out[1])) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PoKeysCNCaddon(DeviceType: %d) - set Relay2: %d \n", __FILE__, __FUNCTION__, dev->DeviceData.DeviceType, *(PEv2_data->PEv2_digout_ExternalRelay_out[1]));
+                    external_relay_memory[1] = *(PEv2_data->PEv2_digout_ExternalRelay_out[1]);
+                    DoExternalOutputsSet = true;
+                }
+                if (external_relay_memory[2] != *(PEv2_data->PEv2_digout_ExternalRelay_out[2])) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PoKeysCNCaddon(DeviceType: %d) - set Relay3: %d \n", __FILE__, __FUNCTION__, dev->DeviceData.DeviceType, *(PEv2_data->PEv2_digout_ExternalRelay_out[2]));
+                    external_relay_memory[2] = *(PEv2_data->PEv2_digout_ExternalRelay_out[2]);
+                    DoExternalOutputsSet = true;
+                }
+                if (external_relay_memory[3] != *(PEv2_data->PEv2_digout_ExternalRelay_out[3])) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PoKeysCNCaddon(DeviceType: %d) - set Relay4: %d \n", __FILE__, __FUNCTION__, dev->DeviceData.DeviceType, *(PEv2_data->PEv2_digout_ExternalRelay_out[3]));
+                    external_relay_memory[3] = *(PEv2_data->PEv2_digout_ExternalRelay_out[3]);
+                    DoExternalOutputsSet = true;
+                }
+                if (external_oc_memory[0] != *(PEv2_data->PEv2_digout_ExternalOC_out[0])) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PoKeysCNCaddon(DeviceType: %d) - set OC1: %d \n", __FILE__, __FUNCTION__, dev->DeviceData.DeviceType, *(PEv2_data->PEv2_digout_ExternalOC_out[0]));
+                    external_oc_memory[0] = *(PEv2_data->PEv2_digout_ExternalOC_out[0]);
+                    DoExternalOutputsSet = true;
+                }
+                if (external_oc_memory[1] != *(PEv2_data->PEv2_digout_ExternalOC_out[1])) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PoKeysCNCaddon(DeviceType: %d) - set OC2: %d \n", __FILE__, __FUNCTION__, dev->DeviceData.DeviceType, *(PEv2_data->PEv2_digout_ExternalOC_out[1]));
+                    external_oc_memory[1] = *(PEv2_data->PEv2_digout_ExternalOC_out[1]);
+                    DoExternalOutputsSet = true;
+                }
+                if (external_oc_memory[2] != *(PEv2_data->PEv2_digout_ExternalOC_out[2])) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PoKeysCNCaddon(DeviceType: %d) - set OC3: %d \n", __FILE__, __FUNCTION__, dev->DeviceData.DeviceType, *(PEv2_data->PEv2_digout_ExternalOC_out[2]));
+                    external_oc_memory[2] = *(PEv2_data->PEv2_digout_ExternalOC_out[2]);
+                    DoExternalOutputsSet = true;
+                }
+                if (external_oc_memory[3] != *(PEv2_data->PEv2_digout_ExternalOC_out[3])) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PoKeysCNCaddon(DeviceType: %d) - set OC4: %d \n", __FILE__, __FUNCTION__, dev->DeviceData.DeviceType, *(PEv2_data->PEv2_digout_ExternalOC_out[3]));
+                    external_oc_memory[3] = *(PEv2_data->PEv2_digout_ExternalOC_out[3]);
+                    DoExternalOutputsSet = true;
+                }
+
                 ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 0, *(PEv2_data->PEv2_digout_ExternalRelay_out[0]));
                 ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 1, *(PEv2_data->PEv2_digout_ExternalRelay_out[1]));
                 ExternalRelayOutputs_set = Set_BitOfByte(ExternalRelayOutputs_set, 2, *(PEv2_data->PEv2_digout_ExternalRelay_out[2]));
