@@ -215,6 +215,31 @@ struct __comp_state {
     hal_u32_t *info_PulseEnginev2;
     hal_u32_t *info_EasySensors;
 
+    // sPoKeysDevice_Data
+    hal_u32_t data_DeviceTypeID;                     // ePK_DeviceTypes ID
+    hal_u32_t data_SerialNumber;                     // Serial number of the device
+
+    /*uint8_t  DeviceName[30];                   // Device name (generic or user-specified)
+    uint8_t  DeviceTypeName[30];               // Device type name
+    uint8_t  BuildDate[12];                    // Build date string
+    uint8_t  ActivationCode[8];                // Activation code (when activating the device additional options)
+
+    uint8_t  FirmwareVersionMajor;             // Major firmware version number v(1+[4-7]).([0-3]) - upper 4 bits plus 1 for first part, lower 4 bits for second part
+    uint8_t  FirmwareVersionMinor;             // Minor firmware version number
+    uint8_t  UserID;                           // Device user ID
+    uint8_t  DeviceType;                       // Device type code
+
+    uint8_t  ActivatedOptions;                 // Additional activated options - bit 0 for Pulse engine
+    uint8_t  DeviceLockStatus;                 // Device lock status (if 1, device is locked)
+    uint8_t  HWtype;                           // HW type reported by the device
+    uint8_t  FWtype;                           // FW type reported by the device
+    uint8_t  ProductID;
+
+    uint8_t  SecondaryFirmwareVersionMajor;
+    uint8_t  SecondaryFirmwareVersionMinor;
+    uint8_t  deviceIsBootloader;
+*/
+
     all_PoExtBus_data_t *PoExtBus_data;
 
     PEv2_data_t *PEv2_data;
@@ -575,6 +600,16 @@ static int export(char *prefix, long extra_arg) {
         return r;
 
     r = hal_param_u32_newf(HAL_RW, &(inst->devSerial), comp_id, "%s.devSerial", prefix);
+    if (r != 0)
+        return r;
+/*    hal_u32_t data_DeviceTypeID;                     // ePK_DeviceTypes ID
+    hal_u32_t data_SerialNumber;                     // Serial number of the device*/
+
+    r = hal_param_u32_newf(HAL_RO, &(inst->data_SerialNumber), comp_id, "%s.info.SerialNumber", prefix);
+    if (r != 0)
+        return r;
+
+    r = hal_param_u32_newf(HAL_RO, &(inst->data_DeviceTypeID), comp_id, "%s.info.DeviceTypeID", prefix);
     if (r != 0)
         return r;
 
@@ -1445,8 +1480,16 @@ void user_mainloop(void) {
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev != NULL\n", __FILE__, __FUNCTION__);
                     if (devSerial == 0) {
 
-                        devSerial = dev->DeviceData.SerialNumber;
+                        __comp_inst->devSerial = dev->DeviceData.SerialNumber;
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: devSerial: %d\n", __FILE__, __FUNCTION__, devSerial);
+
+                        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: data_DeviceTypeID: %d\n", __FILE__, __FUNCTION__, dev->DeviceData.DeviceTypeID);
+                        __comp_inst->data_DeviceTypeID = dev->DeviceData.DeviceTypeID;
+                        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: data_SerialNumber: %d\n", __FILE__, __FUNCTION__, dev->DeviceData.SerialNumber);
+                        __comp_inst->data_SerialNumber = dev->DeviceData.SerialNumber;
+                      
+                        
+
                     }
                     switch (dev->connectionType) {
                         case PK_DeviceType_USBDevice:
