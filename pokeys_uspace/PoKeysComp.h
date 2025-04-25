@@ -385,20 +385,9 @@ typedef enum {
     PK_ENCODER_OPTION_MACRO_DIR_B = (1 << 7)   ///< Map to macro for direction B
 } ePK_EncoderOptions;
 
-typedef enum { 
-    PK_FASTENCODER_CONF_CFG1 = (0x01), 
-    PK_FASTENCODER_CONF_CFG2 = (0x10), 
-    PK_FASTENCODER_DISABLE_4X_SAMPLING = (1 << 4), 
-    PK_FASTENCODER_INVERT_E1 = (1 << 5), 
-    PK_FASTENCODER_INVERT_E2 = (1 << 6), 
-    PK_FASTENCODER_INVERT_E3 = (1 << 7) } 
-    ePK_FastEncoderOptions;
+typedef enum { PK_FASTENCODER_CONF_CFG1 = (0x01), PK_FASTENCODER_CONF_CFG2 = (0x10), PK_FASTENCODER_DISABLE_4X_SAMPLING = (1 << 4), PK_FASTENCODER_INVERT_E1 = (1 << 5), PK_FASTENCODER_INVERT_E2 = (1 << 6), PK_FASTENCODER_INVERT_E3 = (1 << 7) } ePK_FastEncoderOptions;
 
-typedef enum { 
-    PK_UFENCODER_INVERT_DIRECTION = (1 << 0), 
-    PK_UFENCODER_SIGNAL_MODE = (1 << 1), 
-    PK_UFENCODER_ENABLE_4X_SAMPLING = (1 << 2)
-}ePK_UltraFastEncoderOptions;
+typedef enum { PK_UFENCODER_INVERT_DIRECTION = (1 << 0), PK_UFENCODER_SIGNAL_MODE = (1 << 1), PK_UFENCODER_ENABLE_4X_SAMPLING = (1 << 2) } ePK_UltraFastEncoderOptions;
 
 /**
  * @brief Structure representing a single encoder channel with HAL and PoKeys configuration.
@@ -482,7 +471,7 @@ typedef struct {
     one_encoder_data_t encoder[29];
 
     // FastEncoder Parameters
-    hal_u32_t FastEncodersOptions; // 
+    hal_u32_t FastEncodersOptions;       //
     hal_u32_t FastEncodersConfiguration; //  for "param io unsigned Encoders.#.FastEncodersConfiguration [26]" see ePK_FastEncoderOptions
 
     /* There are two different fast encoders configurations. On newer PoKeys56 and PoKeys57 series devices, only
@@ -498,12 +487,12 @@ setup
     hal_bit_t FastEncodersInvert[3];
     hal_bit_t disable_4x_sampling;
 
-/* UltraFastEncoder Parameters
+    /* UltraFastEncoder Parameters
 
-*/
-    uint8_t                   UltraFastEncoderConfiguration; // Ultra fast encoder configuration (see protocol specification for details)
-    uint8_t                   UltraFastEncoderOptions;       // Ultra fast encoder additional options
-    hal_s32_t                  UltraFastEncoderFilter;        // Ultra fast encoder digital filter setting
+    */
+    uint8_t UltraFastEncoderConfiguration; // Ultra fast encoder configuration (see protocol specification for details)
+    uint8_t UltraFastEncoderOptions;       // Ultra fast encoder additional options
+    hal_s32_t UltraFastEncoderFilter;      // Ultra fast encoder digital filter setting
 
     hal_bit_t UltraFastEncoderOptions_INVERT_DIRECTION;
     hal_bit_t UltraFastEncoderOptions_SIGNAL_MODE;
