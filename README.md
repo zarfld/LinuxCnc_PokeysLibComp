@@ -275,6 +275,59 @@ Count: 29
 
 ![image](https://github.com/user-attachments/assets/3d8df6b2-d5df-4afc-9c14-a8d45ca47309)
 
+This section provides access to external **Relay** and **Open-Collector (OC)** outputs available on PoKeys devices that support Pulse Engine v2 (PEv2).
+
+##### HAL Pins
+
+The following HAL output pins are exposed by the component:
+
+###### Relay Outputs
+
+pokeys.[DevID].PEv2.digout.ExternalRelay-0.out
+pokeys.[DevID].PEv2.digout.ExternalRelay-1.out
+pokeys.[DevID].PEv2.digout.ExternalRelay-2.out
+pokeys.[DevID].PEv2.digout.ExternalRelay-3.out
+
+###### OC Outputs
+
+pokeys.[DevID].PEv2.digout.ExternalOC-0.out
+pokeys.[DevID].PEv2.digout.ExternalOC-1.out
+pokeys.[DevID].PEv2.digout.ExternalOC-2.out
+pokeys.[DevID].PEv2.digout.ExternalOC-3.out
+
+These pins correspond to the checkboxes shown in the _Aux. outputs_ section of the PoKeys configuration utility:
+
+### Relay Outputs
+
+| UI Label | HAL Pin                                          | PoKeys57CNC | PoKeys57CNCpro4x25 | PoKeysCNCaddon |
+| -------- | ------------------------------------------------ | ----------- | ------------------ | -------------- |
+| 0        | `pokeys.[DevID].PEv2.digout.ExternalRelay-0.out` | SSR1        | FAN Control        | Relay1         |
+| 1        | `pokeys.[DevID].PEv2.digout.ExternalRelay-1.out` | SSR2        | Plasma Relay       | Relay2         |
+| 2        | `pokeys.[DevID].PEv2.digout.ExternalRelay-2.out` | Relay1      | Relay1             | Relay3         |
+| 3        | `pokeys.[DevID].PEv2.digout.ExternalRelay-3.out` | Relay2      | Relay2             | Relay4         |
+
+### Open-Collector (OC) Outputs
+
+| UI Label | HAL Pin                                       | PoKeys57CNC | PoKeys57CNCpro4x25 | PoKeysCNCaddon |
+| -------- | --------------------------------------------- | ----------- | ------------------ | -------------- |
+| 0        | `pokeys.[DevID].PEv2.digout.ExternalOC-0.out` | OC1         | OC1                | OC1            |
+| 1        | `pokeys.[DevID].PEv2.digout.ExternalOC-1.out` | OC2         | OC2                | OC2            |
+| 2        | `pokeys.[DevID].PEv2.digout.ExternalOC-2.out` | OC3         | OC3                | OC3            |
+| 3        | `pokeys.[DevID].PEv2.digout.ExternalOC-3.out` | OC4         | OC4                | OC4            |
+
+> ℹ️ **Note:** These mappings are automatically applied at runtime based on the detected device type.
+> You don't need to change your HAL file — the component ensures correct hardware control behind the scenes.
+
+---
+
+##### Example Usage
+
+You can assign a logical signal to control a relay like this:
+
+```hal
+net floodlight-control => pokeys.0.PEv2_digout_ExternalRelay_out[2]
+```
+
 #### MPG jog setup
 
 ![image](https://github.com/user-attachments/assets/860896a5-b3c9-4c95-8bd4-eb01fc9b2f43)
