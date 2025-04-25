@@ -135,6 +135,6 @@ setp wcomp_zmin.max -6000
 setp wcomp_zmin.min -8000
 
 # set home switch to trip at 3.9 and release at 4.1
-setp wcomp_zhome.min 160000
+setp wcomp_zhome.min 168001
 setp wcomp_zhome.max 180000
 
