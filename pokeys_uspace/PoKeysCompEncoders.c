@@ -679,6 +679,11 @@ void PKEncoder_Setup(sPoKeysDevice *dev) {
             encoder_data->disable_4x_sampling = encoderFastDisable4xSampling;
         }
         else{
+            bool encoderFastEnable=false;
+            if (encoder_data->FastEncodersConfiguration != 0) {
+                encoderFastEnable = true;
+            }
+           
 
             if(encoder_data->encoderFastEnable != encoderFastEnable) {
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: FastEncoder enable = %d\n", __FILE__, __FUNCTION__, encoder_data->encoderFastEnable);
