@@ -493,7 +493,7 @@ void PKEncoder_Setup(sPoKeysDevice *dev) {
 
 
     if (dev->info.iBasicEncoderCount > 0) {
-        for (int i = 0; i = 0; i < device->info.iBasicEncoderCount; i++)
+        for (int i = 0; i < dev->info.iBasicEncoderCount; i++)
         { 
             encoder_data->encoder[i].encoderOptions = dev->Encoders[i].encoderOptions;
 
@@ -575,57 +575,57 @@ void PKEncoder_Setup(sPoKeysDevice *dev) {
             }     
 
             if (ApplyIniSettings == false || encoder_data->encoder[i].channelApin == 0) {
-                encoder_data->encoder[i].channelApin = device->Encoders[i].channelApin ;
+                encoder_data->encoder[i].channelApin = dev->Encoders[i].channelApin ;
             }
-            else if (encoder_data->encoder[i].channelApin != device->Encoders[i].channelApin){
+            else if (encoder_data->encoder[i].channelApin != dev->Encoders[i].channelApin){
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d channelApin = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].channelApin);
-                device->Encoders[i].channelApin = encoder_data->encoder[i].channelApin;
+                dev->Encoders[i].channelApin = encoder_data->encoder[i].channelApin;
                 EncoderConfigurationSet = true;
             }
 
             if (ApplyIniSettings == false || encoder_data->encoder[i].channelBpin == 0) {
-                encoder_data->encoder[i].channelBpin = device->Encoders[i].channelBpin;
+                encoder_data->encoder[i].channelBpin = dev->Encoders[i].channelBpin;
             }
-            else if (encoder_data->encoder[i].channelBpin != device->Encoders[i].channelBpin){
+            else if (encoder_data->encoder[i].channelBpin != dev->Encoders[i].channelBpin){
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d channelBpin = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].channelBpin);
-                device->Encoders[i].channelBpin = encoder_data->encoder[i].channelBpin;
+                dev->Encoders[i].channelBpin = encoder_data->encoder[i].channelBpin;
                 EncoderConfigurationSet = true;
             }
 
             /* prepared not existing - in current tasks of Linuxcnc not in use
             if (ApplyIniSettings == false || encoder_data->encoder[i].dirAkeyCode == 0) {
-                encoder_data->encoder[i].dirAkeyCode = device->Encoders[i].dirAkeyCode;
+                encoder_data->encoder[i].dirAkeyCode = dev->Encoders[i].dirAkeyCode;
             }
-            else if (encoder_data->encoder[i].dirAkeyCode != device->Encoders[i].dirAkeyCode){
+            else if (encoder_data->encoder[i].dirAkeyCode != dev->Encoders[i].dirAkeyCode){
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d dirAkeyCode = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].dirAkeyCode);
-                device->Encoders[i].dirAkeyCode = encoder_data->encoder[i].dirAkeyCode;
+                dev->Encoders[i].dirAkeyCode = encoder_data->encoder[i].dirAkeyCode;
                 EncoderConfigurationSet = true;
             }
 
             if (ApplyIniSettings == false || encoder_data->encoder[i].dirAkeyModifier == 0) {
-                encoder_data->encoder[i].dirAkeyModifier = device->Encoders[i].dirAkeyModifier;
+                encoder_data->encoder[i].dirAkeyModifier = dev->Encoders[i].dirAkeyModifier;
             }
-            else if (encoder_data->encoder[i].dirAkeyModifier != device->Encoders[i].dirAkeyModifier){
+            else if (encoder_data->encoder[i].dirAkeyModifier != dev->Encoders[i].dirAkeyModifier){
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d dirAkeyModifier = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].dirAkeyModifier);
-                device->Encoders[i].dirAkeyModifier = encoder_data->encoder[i].dirAkeyModifier;
+                dev->Encoders[i].dirAkeyModifier = encoder_data->encoder[i].dirAkeyModifier;
                 EncoderConfigurationSet = true;
             }
 
             if (ApplyIniSettings == false || encoder_data->encoder[i].dirBkeyCode == 0) {
-                encoder_data->encoder[i].dirBkeyCode = device->Encoders[i].dirBkeyCode;
+                encoder_data->encoder[i].dirBkeyCode = dev->Encoders[i].dirBkeyCode;
             }
-            else if (encoder_data->encoder[i].dirBkeyCode != device->Encoders[i].dirBkeyCode){
+            else if (encoder_data->encoder[i].dirBkeyCode != dev->Encoders[i].dirBkeyCode){
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d dirBkeyCode = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].dirBkeyCode);
-                device->Encoders[i].dirBkeyCode = encoder_data->encoder[i].dirBkeyCode;
+                dev->Encoders[i].dirBkeyCode = encoder_data->encoder[i].dirBkeyCode;
                 EncoderConfigurationSet = true;
             }
 
             if (ApplyIniSettings == false || encoder_data->encoder[i].keymap_dirB == 0) {
-                encoder_data->encoder[i].keymap_dirB = device->Encoders[i].dirBkeyModifier;
+                encoder_data->encoder[i].keymap_dirB = dev->Encoders[i].dirBkeyModifier;
             }
-            else if (encoder_data->encoder[i].keymap_dirB != device->Encoders[i].dirBkeyModifier){
+            else if (encoder_data->encoder[i].keymap_dirB != dev->Encoders[i].dirBkeyModifier){
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d dirBkeyModifier = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].dirBkeyModifier);
-                device->Encoders[i].dirBkeyModifier = encoder_data->encoder[i].keymap_dirB;
+                dev->Encoders[i].dirBkeyModifier = encoder_data->encoder[i].keymap_dirB;
                 EncoderConfigurationSet = true;
             }*/
         }
@@ -638,14 +638,41 @@ void PKEncoder_Setup(sPoKeysDevice *dev) {
         encoder_data->FastEncodersOptions = dev->FastEncodersOptions;
         encoder_data->FastEncodersConfiguration = dev->FastEncodersConfiguration;
 
-        bool encoderFastEnable = ((encoder_data->FastEncodersOptions) & PK_FASTENCODER_ENABLE)         ? 1 : 0;
+        if (encoder_data->FastEncodersConfiguration == 0) {
+            encoder_data->encoderFastEnable = 0;
+        }
+        else {
+
+            encoder_data->encoderFastEnable = 1;
+
+            if (dev->DeviceData.DeviceType != PK_DeviceID_55v1 || dev->DeviceData.DeviceType != PK_DeviceID_55v2 || dev->DeviceData.DeviceType != PK_DeviceID_55v3) {
+                /*There are two different fast encoders configurations. On newer PoKeys56 and PoKeys57 series devices, only second configuration can be selected.
+                */
+                encoder_data->alternativeconfig = 0;
+            }
+            else if (encoder_data->FastEncodersConfiguration == PK_FASTENCODER_CONF_CFG1) {
+                //Configuration 1: pins 1-2 as encoder 1, pins 3-4 as encoder 2, pins 15-16 as encoder 3
+
+                encoder_data->alternativeconfig = 1;
+            }
+            else if (encoder_data->FastEncodersConfiguration == PK_FASTENCODER_CONF_CFG2) {
+                //Configuration 2: pins 1-2 as encoder 1, pins 5-6 as encoder 2, pins 15-16 as encoder 3
+
+                encoder_data->alternativeconfig = 0;
+            }
+            else {
+                encoder_data->alternativeconfig = 0;
+                
+            }
+        }
+        //bool encoderFastEnable = ((encoder_data->FastEncodersOptions) & PK_FASTENCODER_ENABLE)         ? 1 : 0;
         bool encoderFastInvertE1 = ((encoder_data->FastEncodersOptions) & PK_FASTENCODER_INVERT_E1)     ? 1 : 0;
         bool encoderFastInvertE2 = ((encoder_data->FastEncodersOptions) & PK_FASTENCODER_INVERT_E2)     ? 1 : 0;
         bool encoderFastInvertE3 = ((encoder_data->FastEncodersOptions) & PK_FASTENCODER_INVERT_E3)     ? 1 : 0;
         bool encoderFastDisable4xSampling = ((encoder_data->FastEncodersOptions) & PK_FASTENCODER_DISABLE_4X_SAMPLING) ? 1 : 0;
 
         if (ApplyIniSettings == false ) {
-            encoder_data->encoderFastEnable = encoderFastEnable;
+           // encoder_data->encoderFastEnable = encoderFastEnable;
             encoder_data->FastEncodersInvert[0] = encoderFastInvertE1;
             encoder_data->FastEncodersInvert[1] = encoderFastInvertE2;
             encoder_data->FastEncodersInvert[2] = encoderFastInvertE3;
@@ -686,7 +713,7 @@ void PKEncoder_Setup(sPoKeysDevice *dev) {
 
         // 1. CONFIG: Which pin group config to use?
         if (encoder_data->encoderFastEnable) {
-            if (encoder_data->alternativeconfig)
+            if (!encoder_data->alternativeconfig)
                 config = PK_FASTENCODER_CONF_CFG2;
             else
                 config = PK_FASTENCODER_CONF_CFG1;
