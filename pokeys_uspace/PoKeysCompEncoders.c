@@ -836,22 +836,102 @@ void PKEncoder_Setup(sPoKeysDevice *dev) {
 }
 
 /**
- * @brief Reads encoder-related settings from the INI configuration file.
+ * @brief Reads encoder-related configuration values from the INI file and applies them to HAL parameters.
  *
- * This function is intended to load encoder configuration values (e.g., scale, pin assignments,
- * inversion flags, or other options) from an INI file section, typically used for persisting
- * user-defined settings between sessions.
+ * This function is responsible for reading user-defined encoder settings from the INI section `[POKEYS]`
+ * and populating the HAL parameters accordingly. It supports all encoder types available on PoKeys devices:
+ * basic encoders, fast encoders, and ultra-fast encoders.
  *
- * Currently, this function is a placeholder and does not perform any operation.
+ * The values are not written back to the device here, but merely loaded into the HAL parameter structures
+ * so they can later be written using `PK_EncoderConfigurationSet()`.
  *
- * You may extend it to:
- * - Load encoder scale factors
- * - Load encoder pin mappings (channel A/B)
- * - Load encoder mode or options
+ * The HAL parameter structure `encoder_data` is filled with values retrieved from the INI using keys
+ * that match the HAL parameter naming convention for consistency.
  *
- * @param[in,out] dev Pointer to the initialized PoKeys device structure
+ * Supported parameters:
+ * - Basic encoders (`encoder[#]`):
+ *   - `scale`, `enable`, `x4_sampling`, `x2_sampling`
+ *   - `keymap_dirA`, `macro_dirA`, `keymap_dirB`, `macro_dirB`
+ *   - `channelApin`, `channelBpin`
+ * - Fast encoders:
+ *   - `encoderFastEnable`, `alternativeconfig`, `disable_4x_sampling`
+ *   - `FastEncodersInvert[0..2]`
+ * - Ultra-fast encoder:
+ *   - `UltraFastEncoderOptions_INVERT_DIRECTION`
+ *   - `UltraFastEncoderOptions_SIGNAL_MODE`
+ *   - `UltraFastEncoderOptions_ENABLE_4X_SAMPLING`
+ *   - `UltraFastEncoderFilter`
+ *
+ * INI section used: `[POKEYS]`
+ * Keys must be named according to the HAL parameter names.
+ *
+ * @note Only parameters explicitly listed in the INI file will be overwritten; otherwise, defaults apply.
+ * @note The encoder reset-on-index option is **not yet supported** in the PoKeysLib API (see protocol limitations).
+ *
+ * Example INI keys:
+ * - `encoder.0.scale`, `encoder.0.enable`, `encoder.0.x4_sampling`, etc.
+ * - `FastEncodersInvert0`, `encoderFastEnable`, `alternativeconfig`
+ * - `UltraFastEncoderOptions_ENABLE_4X_SAMPLING`, `UltraFastEncoderFilter`
+ *
+ * @param dev Pointer to the PoKeys device structure.
+ * @see PK_EncoderConfigurationSet
+ * @see PK_EncoderConfigurationGet
+ * @see all_encoder_data_t
+ * @see sPoKeysDevice
+ * @see ini_read_float
+ * @see ini_read_int
  */
-void PKEncoder_ReadIniFile(sPoKeysDevice *dev) {
+ void PKEncoder_ReadIniFile(sPoKeysDevice *dev) {
+    char key[256];
+
+    for (int i = 0; i < dev->info.iBasicEncoderCount; i++) {
+        snprintf(key, sizeof(key), "encoder.%d.scale", i);
+        encoder_data->encoder[i].scale = ini_read_float("POKEYS", key, 1.0);
+
+        snprintf(key, sizeof(key), "encoder.%d.enable", i);
+        *(encoder_data->encoder[i].enable) = ini_read_int("POKEYS", key, 0);
+
+        snprintf(key, sizeof(key), "encoder.%d.x2_sampling", i);
+        *(encoder_data->encoder[i].x2_sampling) = ini_read_int("POKEYS", key, 0);
+
+        snprintf(key, sizeof(key), "encoder.%d.x4_sampling", i);
+        *(encoder_data->encoder[i].x4_sampling) = ini_read_int("POKEYS", key, 0);
+
+        snprintf(key, sizeof(key), "encoder.%d.keymap_dirA", i);
+        *(encoder_data->encoder[i].keymap_dirA) = ini_read_int("POKEYS", key, 0);
+
+        snprintf(key, sizeof(key), "encoder.%d.macro_dirA", i);
+        *(encoder_data->encoder[i].macro_dirA) = ini_read_int("POKEYS", key, 0);
+
+        snprintf(key, sizeof(key), "encoder.%d.keymap_dirB", i);
+        *(encoder_data->encoder[i].keymap_dirB) = ini_read_int("POKEYS", key, 0);
+
+        snprintf(key, sizeof(key), "encoder.%d.macro_dirB", i);
+        *(encoder_data->encoder[i].macro_dirB) = ini_read_int("POKEYS", key, 0);
+
+        snprintf(key, sizeof(key), "encoder.%d.channelApin", i);
+        *(encoder_data->encoder[i].channelApin) = ini_read_int("POKEYS", key, 0);
+
+        snprintf(key, sizeof(key), "encoder.%d.channelBpin", i);
+        *(encoder_data->encoder[i].channelBpin) = ini_read_int("POKEYS", key, 0);
+    }
+
+    // Fast Encoder global settings
+    *(encoder_data->encoderFastEnable) = ini_read_int("POKEYS", "encoderFastEnable", 0);
+    *(encoder_data->alternativeconfig) = ini_read_int("POKEYS", "alternativeconfig", 0);
+
+    for (int e = 0; e < 3; e++) {
+        snprintf(key, sizeof(key), "FastEncodersInvert.%d", e);
+        *(encoder_data->FastEncodersInvert[e]) = ini_read_int("POKEYS", key, 0);
+    }
+
+    *(encoder_data->disable_4x_sampling) = ini_read_int("POKEYS", "disable_4x_sampling", 0);
+
+    // Ultra-Fast Encoder settings
+    *(encoder_data->UltraFastEncoderOptions_INVERT_DIRECTION) = ini_read_int("POKEYS", "UltraFastEncoder.invert_direction", 0);
+    *(encoder_data->UltraFastEncoderOptions_SIGNAL_MODE) = ini_read_int("POKEYS", "UltraFastEncoder.signal_mode", 0);
+    *(encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING) = ini_read_int("POKEYS", "UltraFastEncoder.enable_4x_sampling", 0);
+    *(encoder_data->UltraFastEncoderFilter) = ini_read_int("POKEYS", "UltraFastEncoder.filter", 0);
 }
 
 /**
