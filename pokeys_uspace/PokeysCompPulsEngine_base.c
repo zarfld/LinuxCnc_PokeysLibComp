@@ -177,7 +177,7 @@ int PKPEv2_export_pins(char *prefix, long extra_arg, int comp_id, PEv2_data_t *P
         if (r != 0)
             return r;
 
-        r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_SoftLimitMinimum[j]), comp_id, "%s.hal_param_u32_newf.%01d.SoftLimitMinimum", prefix, j);
+        r = hal_param_u32_newf(HAL_RW, &(PEv2_data->PEv2_SoftLimitMinimum[j]), comp_id, "%s.PEv2.%01d.SoftLimitMinimum", prefix, j);
         if (r != 0)
             return r;
 
