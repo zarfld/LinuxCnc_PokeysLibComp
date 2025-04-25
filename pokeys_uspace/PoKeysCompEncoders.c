@@ -435,18 +435,47 @@ int PKEncoder_init(int id, sPoKeysDevice *dev) {
 }
 
 /**
- * @brief Placeholder function to perform encoder-specific setup actions.
+ * @brief Synchronizes encoder configuration between HAL and the PoKeys device.
  *
- * This function is intended to configure encoder-related parameters or device settings
- * before starting regular encoder operation. Currently, it is not implemented.
+ * This function manages encoder settings for all supported encoder types:
+ * - Basic encoders (PoKeys standard inputs)
+ * - Fast encoders (3x special dual-input configurations)
+ * - Ultra-fast encoder (1x high-speed input pair)
  *
- * You may extend this function to:
- * - Configure encoder sampling modes (1x, 2x, 4x)
- * - Assign pins for channel A/B
- * - Set scaling or filtering options
- * - Apply configuration stored from INI
+ * For each encoder type, the following logic is applied:
+ * - If `ApplyIniSettings == false`: configuration is read from the device and written to HAL parameters.
+ * - If `ApplyIniSettings == true`: configuration is read from HAL parameters and applied to the device.
  *
- * @param[in,out] dev Pointer to the initialized PoKeys device structure
+ * @details
+ * ### Basic Encoder Fields:
+ * - `encoderOptions`: Enable, sampling mode (1x/2x/4x), key mapping, macro mapping
+ * - `channelApin`, `channelBpin`: Pin assignment
+ *
+ * ### Fast Encoder Fields:
+ * - `FastEncodersConfiguration`: Configuration set (CFG1 or CFG2)
+ * - `FastEncodersOptions`: Inversion bits, disable 4x sampling
+ * - HAL parameters: `encoderFastEnable`, `alternativeconfig`, `disable_4x_sampling`, `FastEncodersInvert[]`
+ *
+ * ### Ultra-Fast Encoder Fields:
+ * - `UltraFastEncoderConfiguration`: Enable
+ * - `UltraFastEncoderOptions`: Direction invert, signal mode, 4x sampling
+ * - `UltraFastEncoderFilter`: Digital filter setting
+ *
+ * @note
+ * - Configuration is only written to the PoKeys device if differences are detected.
+ * - Final application of settings is triggered via `PK_EncoderConfigurationSet()` only if needed.
+ *
+ * @warning
+ * Index reset for the ultra-fast encoder (byte 5 of command 0x1C) is currently **not supported**
+ * in the PoKeysLib API (`PK_EncoderConfigurationSet()` and `PK_EncoderConfigurationGet()`).
+ * This feature cannot be enabled or read back until the API is extended accordingly.
+ *
+ * @param dev Pointer to the PoKeys device structure (must be connected and initialized).
+ *
+ * @see PK_EncoderConfigurationGet
+ * @see PK_EncoderConfigurationSet
+ * @see sPoKeysDevice
+ * @see all_encoder_data_t
  */
 void PKEncoder_Setup(sPoKeysDevice *dev) {
     bool EncoderConfigurationSet = false;
