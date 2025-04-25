@@ -530,7 +530,7 @@ void PKEncoder_Setup(sPoKeysDevice *dev) {
                 x2_sampling = encoder_data->encoder[i].x2_sampling;
             }
        
-            if (ApplyIniSettings == false || encoder_data->encoder[i].keymap_dirA == 0) {
+            /*if (ApplyIniSettings == false || encoder_data->encoder[i].keymap_dirA == 0) {
                 encoder_data->encoder[i].keymap_dirA = keymap_dirA;
             }
             else if(encoder_data->encoder[i].keymap_dirA != dev->Encoders[i].keymap_dirA) {
@@ -558,7 +558,7 @@ void PKEncoder_Setup(sPoKeysDevice *dev) {
             else if(encoder_data->encoder[i].macro_dirB != macro_dirB) {
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: encoder %d macro_dirB = %d\n", __FILE__, __FUNCTION__, i, encoder_data->encoder[i].macro_dirB);
                 macro_dirB = encoder_data->encoder[i].macro_dirB;
-            }
+            }*/
             
             if (enable)       encoderOptions |= PK_ENCODER_OPTION_ENABLE;
             if (x4_sampling)  encoderOptions |= PK_ENCODER_OPTION_4X_SAMPLING;
@@ -650,12 +650,12 @@ void PKEncoder_Setup(sPoKeysDevice *dev) {
                 */
                 encoder_data->alternativeconfig = 0;
             }
-            else if (encoder_data->FastEncodersConfiguration == PK_FASTENCODER_CONF_CFG1) {
+            else if ((encoder_data->FastEncodersConfiguration & 0x0F) == PK_FASTENCODER_CONF_CFG1) {
                 //Configuration 1: pins 1-2 as encoder 1, pins 3-4 as encoder 2, pins 15-16 as encoder 3
 
                 encoder_data->alternativeconfig = 1;
             }
-            else if (encoder_data->FastEncodersConfiguration == PK_FASTENCODER_CONF_CFG2) {
+            else if ((encoder_data->FastEncodersConfiguration & 0x0F) == PK_FASTENCODER_CONF_CFG2) {
                 //Configuration 2: pins 1-2 as encoder 1, pins 5-6 as encoder 2, pins 15-16 as encoder 3
 
                 encoder_data->alternativeconfig = 0;
