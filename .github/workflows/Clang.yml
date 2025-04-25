@@ -30,15 +30,29 @@ jobs:
       - name: Apply Clang-Format
         run: find . -name "*.c" -o -name "*.h" | xargs clang-format -i
 
+      # Auto-commit only on main (post-merge)
       - name: Commit Changes (if needed)
+        if: github.ref == 'refs/heads/main'
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add .
-          if ! git diff --cached --quiet; then
-            git commit -m "Auto-format code with clang-format"
-            git push
-          fi
+          git commit -m "Auto-format code with clang-format" || echo "Nothing to commit"
+          git push origin main
+
+      # Comment formatting issues on PR
+      - name: Comment formatting status
+        if: github.event_name == 'pull_request' && failure()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: '⚠️ Code formatting failed. Please run `clang-format` locally and push again.'
+            })
 
   analyze:
     runs-on: self-hosted
