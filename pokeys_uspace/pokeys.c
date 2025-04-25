@@ -1480,7 +1480,7 @@ void user_mainloop(void) {
                     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: dev != NULL\n", __FILE__, __FUNCTION__);
                     if (devSerial == 0) {
 
-                        __comp_inst->devSerial = dev->DeviceData.SerialNumber;
+                        devSerial = dev->DeviceData.SerialNumber;
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: devSerial: %d\n", __FILE__, __FUNCTION__, devSerial);
 
                         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: data_DeviceTypeID: %d\n", __FILE__, __FUNCTION__, dev->DeviceData.DeviceTypeID);
