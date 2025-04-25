@@ -889,49 +889,49 @@ void PKEncoder_Setup(sPoKeysDevice *dev) {
         encoder_data->encoder[i].scale = ini_read_float("POKEYS", key, 1.0);
 
         snprintf(key, sizeof(key), "encoder.%d.enable", i);
-        *(encoder_data->encoder[i].enable) = ini_read_int("POKEYS", key, 0);
+        encoder_data->encoder[i].enable = ini_read_int("POKEYS", key, 0);
 
         snprintf(key, sizeof(key), "encoder.%d.x2_sampling", i);
-        *(encoder_data->encoder[i].x2_sampling) = ini_read_int("POKEYS", key, 0);
+        encoder_data->encoder[i].x2_sampling = ini_read_int("POKEYS", key, 0);
 
         snprintf(key, sizeof(key), "encoder.%d.x4_sampling", i);
-        *(encoder_data->encoder[i].x4_sampling) = ini_read_int("POKEYS", key, 0);
+        encoder_data->encoder[i].x4_sampling = ini_read_int("POKEYS", key, 0);
 
         snprintf(key, sizeof(key), "encoder.%d.keymap_dirA", i);
-        *(encoder_data->encoder[i].keymap_dirA) = ini_read_int("POKEYS", key, 0);
+        encoder_data->encoder[i].keymap_dirA = ini_read_int("POKEYS", key, 0);
 
         snprintf(key, sizeof(key), "encoder.%d.macro_dirA", i);
-        *(encoder_data->encoder[i].macro_dirA) = ini_read_int("POKEYS", key, 0);
+        encoder_data->encoder[i].macro_dirA = ini_read_int("POKEYS", key, 0);
 
         snprintf(key, sizeof(key), "encoder.%d.keymap_dirB", i);
-        *(encoder_data->encoder[i].keymap_dirB) = ini_read_int("POKEYS", key, 0);
+        encoder_data->encoder[i].keymap_dirB = ini_read_int("POKEYS", key, 0);
 
         snprintf(key, sizeof(key), "encoder.%d.macro_dirB", i);
-        *(encoder_data->encoder[i].macro_dirB) = ini_read_int("POKEYS", key, 0);
+        encoder_data->encoder[i].macro_dirB = ini_read_int("POKEYS", key, 0);
 
         snprintf(key, sizeof(key), "encoder.%d.channelApin", i);
-        *(encoder_data->encoder[i].channelApin) = ini_read_int("POKEYS", key, 0);
+        encoder_data->encoder[i].channelApin = ini_read_int("POKEYS", key, 0);
 
         snprintf(key, sizeof(key), "encoder.%d.channelBpin", i);
-        *(encoder_data->encoder[i].channelBpin) = ini_read_int("POKEYS", key, 0);
+        encoder_data->encoder[i].channelBpin = ini_read_int("POKEYS", key, 0);
     }
 
     // Fast Encoder global settings
-    *(encoder_data->encoderFastEnable) = ini_read_int("POKEYS", "encoderFastEnable", 0);
-    *(encoder_data->alternativeconfig) = ini_read_int("POKEYS", "alternativeconfig", 0);
+    encoder_data->encoderFastEnable = ini_read_int("POKEYS", "encoderFastEnable", 0);
+    encoder_data->alternativeconfig = ini_read_int("POKEYS", "alternativeconfig", 0);
 
     for (int e = 0; e < 3; e++) {
         snprintf(key, sizeof(key), "FastEncodersInvert.%d", e);
-        *(encoder_data->FastEncodersInvert[e]) = ini_read_int("POKEYS", key, 0);
+        encoder_data->FastEncodersInvert[e] = ini_read_int("POKEYS", key, 0);
     }
 
-    *(encoder_data->disable_4x_sampling) = ini_read_int("POKEYS", "disable_4x_sampling", 0);
+    encoder_data->disable_4x_sampling = ini_read_int("POKEYS", "disable_4x_sampling", 0);
 
     // Ultra-Fast Encoder settings
-    *(encoder_data->UltraFastEncoderOptions_INVERT_DIRECTION) = ini_read_int("POKEYS", "UltraFastEncoder.invert_direction", 0);
-    *(encoder_data->UltraFastEncoderOptions_SIGNAL_MODE) = ini_read_int("POKEYS", "UltraFastEncoder.signal_mode", 0);
-    *(encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING) = ini_read_int("POKEYS", "UltraFastEncoder.enable_4x_sampling", 0);
-    *(encoder_data->UltraFastEncoderFilter) = ini_read_int("POKEYS", "UltraFastEncoder.filter", 0);
+    encoder_data->UltraFastEncoderOptions_INVERT_DIRECTION = ini_read_int("POKEYS", "UltraFastEncoder.invert_direction", 0);
+    encoder_data->UltraFastEncoderOptions_SIGNAL_MODE = ini_read_int("POKEYS", "UltraFastEncoder.signal_mode", 0);
+    encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING = ini_read_int("POKEYS", "UltraFastEncoder.enable_4x_sampling", 0);
+    encoder_data->UltraFastEncoderFilter = ini_read_int("POKEYS", "UltraFastEncoder.filter", 0);
 }
 
 /**
