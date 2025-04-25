@@ -233,33 +233,33 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.%01d.2x_sampling failed\n", __FILE__, __FUNCTION__, prefix, j);
             return r;
         }
-        
-/* prepared but it seems that there is no use for that in LinuxCnc
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.%01d.direct_key_mapping_A\n", __FILE__, __FUNCTION__, prefix, j);
-        r = hal_param_bit_newf(HAL_RW, &(addr->direct_key_mapping_A), id, "%s.encoder.%01d.direct_key_mapping_A", prefix, j);
-        if (r != 0) {
-            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.%01d.direct_key_mapping_A failed\n", __FILE__, __FUNCTION__, prefix, j);
-            return r;
-        }
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.%01d.macro_mapping_A\n", __FILE__, __FUNCTION__, prefix, j);
-        r = hal_param_bit_newf(HAL_RW, &(addr->macro_mapping_A), id, "%s.encoder.%01d.macro_mapping_A", prefix, j);
-        if (r != 0) {
-            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.%01d.macro_mapping_A failed\n", __FILE__, __FUNCTION__, prefix, j);
-            return r;
-        }
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.%01d.direct_key_mapping_B\n", __FILE__, __FUNCTION__, prefix, j);
-        r = hal_param_bit_newf(HAL_RW, &(addr->direct_key_mapping_B), id, "%s.encoder.%01d.direct_key_mapping_B", prefix, j);
-        if (r != 0) {
-            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.%01d.direct_key_mapping_B failed\n", __FILE__, __FUNCTION__, prefix, j);
-            return r;
-        }
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.%01d.macro_mapping_B\n", __FILE__, __FUNCTION__, prefix, j);
-        r = hal_param_bit_newf(HAL_RW, &(addr->macro_mapping_B), id, "%s.encoder.%01d.macro_mapping_B", prefix, j);
-        if (r != 0) {
-            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.%01d.macro_mapping_B failed\n", __FILE__, __FUNCTION__, prefix, j);
-            return r;
-        }
-*/
+
+        /* prepared but it seems that there is no use for that in LinuxCnc
+                rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.%01d.direct_key_mapping_A\n", __FILE__, __FUNCTION__, prefix, j);
+                r = hal_param_bit_newf(HAL_RW, &(addr->direct_key_mapping_A), id, "%s.encoder.%01d.direct_key_mapping_A", prefix, j);
+                if (r != 0) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.%01d.direct_key_mapping_A failed\n", __FILE__, __FUNCTION__, prefix, j);
+                    return r;
+                }
+                rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.%01d.macro_mapping_A\n", __FILE__, __FUNCTION__, prefix, j);
+                r = hal_param_bit_newf(HAL_RW, &(addr->macro_mapping_A), id, "%s.encoder.%01d.macro_mapping_A", prefix, j);
+                if (r != 0) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.%01d.macro_mapping_A failed\n", __FILE__, __FUNCTION__, prefix, j);
+                    return r;
+                }
+                rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.%01d.direct_key_mapping_B\n", __FILE__, __FUNCTION__, prefix, j);
+                r = hal_param_bit_newf(HAL_RW, &(addr->direct_key_mapping_B), id, "%s.encoder.%01d.direct_key_mapping_B", prefix, j);
+                if (r != 0) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.%01d.direct_key_mapping_B failed\n", __FILE__, __FUNCTION__, prefix, j);
+                    return r;
+                }
+                rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.%01d.macro_mapping_B\n", __FILE__, __FUNCTION__, prefix, j);
+                r = hal_param_bit_newf(HAL_RW, &(addr->macro_mapping_B), id, "%s.encoder.%01d.macro_mapping_B", prefix, j);
+                if (r != 0) {
+                    rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.%01d.macro_mapping_B failed\n", __FILE__, __FUNCTION__, prefix, j);
+                    return r;
+                }
+        */
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.%01d.channelApin\n", __FILE__, __FUNCTION__, prefix, j);
         r = hal_param_u32_newf(HAL_RW, &(addr->channelApin), id, "%s.encoder.%01d.channelApin", prefix, j);
         if (r != 0) {
@@ -351,7 +351,7 @@ void PKEncoder_Update(sPoKeysDevice *dev) {
                     *(encoder_data->encoder_deb_out) = 2213;
                     resetEncoders = true;
                     *(encoder_data->encoder_deb_out) = 2214;
-                    if (*(encoder_data->encoder[i].index_enable) != 0){
+                    if (*(encoder_data->encoder[i].index_enable) != 0) {
                         *(encoder_data->encoder[i].index_enable) = 0;
                     }
                 }
@@ -379,7 +379,7 @@ void PKEncoder_Update(sPoKeysDevice *dev) {
                     if ((encoder_data->encoder[i].reset != 0) || (*(encoder_data->encoder[i].index_enable) != 0) || (initEncodersDone == false)) {
                         dev->Encoders[i].encoderValue = 0;
                         resetEncoders = true;
-                        if (*(encoder_data->encoder[i].index_enable) != 0){
+                        if (*(encoder_data->encoder[i].index_enable) != 0) {
                             *(encoder_data->encoder[i].index_enable) = 0;
                         }
                     }

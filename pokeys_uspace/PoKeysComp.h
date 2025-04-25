@@ -371,39 +371,23 @@ void PKIO_WriteIniFile(sPoKeysDevice *dev);
 // ========================== Encoder Support ===================================
 /**
  * @brief Bitfield definitions for encoder options (used with command 0x11, byte 4).
- * 
+ *
  * These options control sampling modes, key/macro mapping and enabling for PoKeys encoders.
  */
- typedef enum
- {
-     PK_ENCODER_OPTION_ENABLE            = (1 << 0),  ///< Enable encoder
-     PK_ENCODER_OPTION_4X_SAMPLING      = (1 << 1),  ///< Enable 4x sampling (default is 1x)
-     PK_ENCODER_OPTION_2X_SAMPLING      = (1 << 2),  ///< Enable 2x sampling (default is 1x)
-     // bit 3 reserved
-     PK_ENCODER_OPTION_KEYMAP_DIR_A     = (1 << 4),  ///< Direct key mapping for direction A
-     PK_ENCODER_OPTION_MACRO_DIR_A      = (1 << 5),  ///< Map to macro for direction A
-     PK_ENCODER_OPTION_KEYMAP_DIR_B     = (1 << 6),  ///< Direct key mapping for direction B
-     PK_ENCODER_OPTION_MACRO_DIR_B      = (1 << 7)   ///< Map to macro for direction B
- } ePK_EncoderOptions;
+typedef enum {
+    PK_ENCODER_OPTION_ENABLE = (1 << 0),      ///< Enable encoder
+    PK_ENCODER_OPTION_4X_SAMPLING = (1 << 1), ///< Enable 4x sampling (default is 1x)
+    PK_ENCODER_OPTION_2X_SAMPLING = (1 << 2), ///< Enable 2x sampling (default is 1x)
+    // bit 3 reserved
+    PK_ENCODER_OPTION_KEYMAP_DIR_A = (1 << 4), ///< Direct key mapping for direction A
+    PK_ENCODER_OPTION_MACRO_DIR_A = (1 << 5),  ///< Map to macro for direction A
+    PK_ENCODER_OPTION_KEYMAP_DIR_B = (1 << 6), ///< Direct key mapping for direction B
+    PK_ENCODER_OPTION_MACRO_DIR_B = (1 << 7)   ///< Map to macro for direction B
+} ePK_EncoderOptions;
 
- typedef enum
- {
-     PK_FASTENCODER_CONF_CFG1              = (0x01),
-     PK_FASTENCODER_CONF_CFG2              = (0x10),
-     PK_FASTENCODER_DISABLE_4X_SAMPLING    = (1 << 4),
-     PK_FASTENCODER_INVERT_E1              = (1 << 5),
-     PK_FASTENCODER_INVERT_E2              = (1 << 6),
-     PK_FASTENCODER_INVERT_E3              = (1 << 7)
- } ePK_FastEncoderOptions;
+typedef enum { PK_FASTENCODER_CONF_CFG1 = (0x01), PK_FASTENCODER_CONF_CFG2 = (0x10), PK_FASTENCODER_DISABLE_4X_SAMPLING = (1 << 4), PK_FASTENCODER_INVERT_E1 = (1 << 5), PK_FASTENCODER_INVERT_E2 = (1 << 6), PK_FASTENCODER_INVERT_E3 = (1 << 7) } ePK_FastEncoderOptions;
 
- typedef enum
-{
-    PK_UFENCODER_INVERT_DIRECTION     = (1 << 0),
-    PK_UFENCODER_SIGNAL_MODE          = (1 << 1),
-    PK_UFENCODER_ENABLE_4X_SAMPLING   = (1 << 2),
-    PK_UFENCODER_RESET_ON_INDEX       = (1 << 5)
-} ePK_UltraFastEncoderOptions;
-
+typedef enum { PK_UFENCODER_INVERT_DIRECTION = (1 << 0), PK_UFENCODER_SIGNAL_MODE = (1 << 1), PK_UFENCODER_ENABLE_4X_SAMPLING = (1 << 2), PK_UFENCODER_RESET_ON_INDEX = (1 << 5) } ePK_UltraFastEncoderOptions;
 
 /**
  * @brief Structure representing a single encoder channel with HAL and PoKeys configuration.
@@ -452,21 +436,19 @@ typedef struct {
 
     // Custom parameters for communication with PoKeys
     hal_u32_t encoderOptions; // pointer for "pin io unsigned Encoders.#.encoderOptions [26]" see ePK_EncoderOptions
-    hal_bit_t enable; // pointer for "parameter io bit Encoders.#.enable [26]"  // Enable encoder
-    hal_bit_t x4_sampling; // pointer for "parameter io bit Encoders.#.x4_sampling [26]"  // 4x sampling
-    hal_bit_t x2_sampling; // pointer for "parameter io bit Encoders.#.x2_sampling [26]"  // 2x sampling
-    hal_bit_t keymap_dirA; // pointer for "parameter io bit Encoders.#.keymap_dirA [26]"  // Direct key mapping for direction A
-    hal_bit_t macro_dirA; // pointer for "parameter io bit Encoders.#.macro_dirA [26]"  // Map to macro for direction A
-    hal_bit_t keymap_dirB; // pointer for "parameter io bit Encoders.#.keymap_dirB [26]"  // Direct key mapping for direction B
-    hal_bit_t macro_dirB; // pointer for "parameter io bit Encoders.#.macro_dirB [26]"  // Map to macro for direction B
+    hal_bit_t enable;         // pointer for "parameter io bit Encoders.#.enable [26]"  // Enable encoder
+    hal_bit_t x4_sampling;    // pointer for "parameter io bit Encoders.#.x4_sampling [26]"  // 4x sampling
+    hal_bit_t x2_sampling;    // pointer for "parameter io bit Encoders.#.x2_sampling [26]"  // 2x sampling
+    hal_bit_t keymap_dirA;    // pointer for "parameter io bit Encoders.#.keymap_dirA [26]"  // Direct key mapping for direction A
+    hal_bit_t macro_dirA;     // pointer for "parameter io bit Encoders.#.macro_dirA [26]"  // Map to macro for direction A
+    hal_bit_t keymap_dirB;    // pointer for "parameter io bit Encoders.#.keymap_dirB [26]"  // Direct key mapping for direction B
+    hal_bit_t macro_dirB;     // pointer for "parameter io bit Encoders.#.macro_dirB [26]"  // Map to macro for direction B
 
     hal_u32_t channelApin; // pointer for "pin io unsigned Encoders.#.channelApin [26]"         // Channel A encoder pin"
     hal_u32_t channelBpin; // pointer for "pin io unsigned Encoders.#.channelBpin [26]"         // Channel B encoder pin"
 
 } one_encoder_data_t;
 
-
- 
 /**
  * @brief Structure representing all encoder channels and debug output for the PoKeys HAL component.
  *
