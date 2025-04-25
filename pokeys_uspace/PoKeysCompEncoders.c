@@ -281,7 +281,7 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
         rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.FastEncoders.Options failed\n", __FILE__, __FUNCTION__, prefix, j);
         return r;
     }
-    
+
 
 
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: return: %d\n", __FILE__, __FUNCTION__, r);
@@ -464,14 +464,14 @@ void PKEncoder_Setup(sPoKeysDevice *dev) {
 
 
     if (dev->info.iBasicEncoderCount > 0) {
-        for (i = 0; i < device->info.iBasicEncoderCount; i++)
+        for (int i = 0; i = 0; i < device->info.iBasicEncoderCount; i++)
         { 
             encoder_data->encoder[i].encoderOptions = dev->Encoders[i].encoderOptions;
 
             hal_u32_t encoderOptions = 0;
             bool enable       = ((encoder_data->encoder[i].encoderOptions) & PK_ENCODER_OPTION_ENABLE)         ? 1 : 0;
             bool x4_sampling  = ((encoder_data->encoder[i].encoderOptions) & PK_ENCODER_OPTION_4X_SAMPLING)    ? 1 : 0;
-            bool x2_sampling  = ((encoder_data->encoder[i].encoderOptions & PK_ENCODER_OPTION_2X_SAMPLING)    ? 1 : 0;
+            bool x2_sampling  = ((encoder_data->encoder[i].encoderOptions) & PK_ENCODER_OPTION_2X_SAMPLING)    ? 1 : 0;
             bool keymap_dirA  = ((encoder_data->encoder[i].encoderOptions) & PK_ENCODER_OPTION_KEYMAP_DIR_A)   ? 1 : 0;
             bool macro_dirA   = ((encoder_data->encoder[i].encoderOptions) & PK_ENCODER_OPTION_MACRO_DIR_A)    ? 1 : 0;
             bool keymap_dirB  = ((encoder_data->encoder[i].encoderOptions) & PK_ENCODER_OPTION_KEYMAP_DIR_B)   ? 1 : 0;
