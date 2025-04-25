@@ -1435,7 +1435,7 @@ int32_t PEv2_ExternalOutputsSet(sPoKeysDevice *dev) {
                     external_oc_memory[3] = *(PEv2_data->PEv2_digout_ExternalOC_out[3]);
                     DoExternalOutputsSet = true;
                 }
-                
+
                 ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 0, *(PEv2_data->PEv2_digout_ExternalRelay_out[1])); // FAN control
                 ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 1, *(PEv2_data->PEv2_digout_ExternalRelay_out[2])); // Relay1
                 ExternalOCOutputs_set = Set_BitOfByte(ExternalOCOutputs_set, 2, *(PEv2_data->PEv2_digout_ExternalRelay_out[3])); // Relay2
