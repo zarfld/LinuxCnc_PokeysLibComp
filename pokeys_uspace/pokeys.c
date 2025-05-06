@@ -300,7 +300,6 @@ void pokeys_read_ini(sPoKeysDevice *dev) {
     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKPEv2_ReadIniFile - done\n", __FILE__, __FUNCTION__);
     PKEncoder_ReadIniFile(dev);
     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKEncoder_ReadIniFile - done\n", __FILE__, __FUNCTION__);
-    
 
     PKIO_Setup(dev);
     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: PKIO_Setup - done\n", __FILE__, __FUNCTION__);
