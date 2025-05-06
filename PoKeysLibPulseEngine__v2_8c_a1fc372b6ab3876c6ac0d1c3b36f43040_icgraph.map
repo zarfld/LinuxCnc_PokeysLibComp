@@ -1,0 +1,14 @@
+<map id="PK_PEv2_DecodeStatus" name="PK_PEv2_DecodeStatus">
+<area shape="rect" id="node1" title=" " alt="" coords="861,107,1036,133"/>
+<area shape="rect" id="node2" href="$PoKeysLibPulseEngine__v2_8c.html#aab0910458741bb6d5d7f5705a43a29aa" title=" " alt="" coords="641,5,783,32"/>
+<area shape="rect" id="node3" href="$PoKeysLibPulseEngine__v2_8c.html#a06796328aa68321aac172b68bc721126" title=" " alt="" coords="629,56,795,83"/>
+<area shape="rect" id="node4" href="$PoKeysLibPulseEngine__v2_8c.html#a1762e7c3a3e4f04e8674752294c24ec0" title=" " alt="" coords="623,107,801,133"/>
+<area shape="rect" id="node5" href="$PoKeysLibPulseEngine__v2_8c.html#a593154a910ddfd52594d0e5d9157f95b" title=" " alt="" coords="611,157,813,184"/>
+<area shape="rect" id="node6" href="$PoKeysLibPulseEngine__v2_8c.html#a213445f67d5be94e76abcbfca950512d" title=" " alt="" coords="637,208,787,235"/>
+<area shape="rect" id="node7" href="$group__hal__component__pokeys.html#ga1cd78f86e93af262648c35386373cf3c" title="Retrieves and processes the current status of the PoKeys Pulse Engine v2 (PEv2)." alt="" coords="415,149,540,176"/>
+<area shape="rect" id="node10" href="$structPoKeysHALComponent.html#ad94418b2caeac0cbdd7c43ef55f15623" title="Reads configuration parameters for the PoKeys Pulse Engine v2 from the INI file." alt="" coords="392,201,563,242"/>
+<area shape="rect" id="node12" href="$group__hal__component__pokeys.html#ga1fd300cd610e9545e58b62ffd50e474e" title="Applies INI&#45;based configuration to PulseEngine and IO." alt="" coords="392,266,563,307"/>
+<area shape="rect" id="node8" href="$group__hal__component__pokeys.html#ga11eaeb83988c4e23fca22c07885baf31" title="Updates PulseEngine feedback and status." alt="" coords="173,142,344,183"/>
+<area shape="rect" id="node9" href="$pokeys_8c.html#a6e89ee20635570c2e51b81bf26e895cc" title=" " alt="" coords="5,149,125,176"/>
+<area shape="rect" id="node11" href="$pokeys_8c.html#a1d59e212b57d33fe74e44b64cadf3314" title=" " alt="" coords="195,240,322,267"/>
+</map>
