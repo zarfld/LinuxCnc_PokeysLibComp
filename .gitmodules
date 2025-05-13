@@ -5,3 +5,6 @@ branch = master
 [submodule "wiki"]
 	path = wiki
 	url = https://github.com/zarfld/LinuxCnc_PokeysLibComp.wiki.git
+[submodule "external/linuxcnc-hal-canon"]
+	path = external/linuxcnc-hal-canon
+	url = https://github.com/zarfld/linuxcnc-hal-canon
