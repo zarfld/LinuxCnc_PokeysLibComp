@@ -8,3 +8,6 @@ branch = master
 [submodule "external/linuxcnc-hal-canon"]
 	path = external/linuxcnc-hal-canon
 	url = https://github.com/zarfld/linuxcnc-hal-canon
+[submodule "external/pokeysHal"]
+	path = external/pokeysHal
+	url = https://github.com/zarfld/pokeysHal
