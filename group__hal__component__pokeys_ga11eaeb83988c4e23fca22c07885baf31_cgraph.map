@@ -1,0 +1,7 @@
+<map id="PoKeysHALComponent::PKPEv2_Update" name="PoKeysHALComponent::PKPEv2_Update">
+<area shape="rect" id="node1" title="Updates PulseEngine feedback and status." alt="" coords="5,49,176,90"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#gad0b4254d4beb35bce80cf4a89199b554" title="Reads and updates the state of dedicated limit and home inputs from the PoKeys Pulse Engine v2." alt="" coords="224,5,357,32"/>
+<area shape="rect" id="node4" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="405,56,529,83"/>
+<area shape="rect" id="node5" href="$group__hal__component__pokeys.html#ga1cd78f86e93af262648c35386373cf3c" title="Retrieves and processes the current status of the PoKeys Pulse Engine v2 (PEv2)." alt="" coords="228,107,353,133"/>
+<area shape="rect" id="node3" href="$group__hal__component__pokeys.html#gaacbe6bf27e2657b69cbd0a4f79140e2d" title="Retrieves the value of a specific bit in a byte." alt="" coords="410,5,525,32"/>
+</map>

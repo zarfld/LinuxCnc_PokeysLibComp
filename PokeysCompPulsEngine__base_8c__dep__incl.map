@@ -1,0 +1,5 @@
+<map id="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/pokeys_uspace/PokeysCompPulsEngine_base.c" name="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/pokeys_uspace/PokeysCompPulsEngine_base.c">
+<area shape="rect" id="node1" title="Base routines for setting up HAL pins and parameters for PoKeys Pulse Engine v2." alt="" coords="5,5,288,76"/>
+<area shape="rect" id="node2" href="$PoKeysCompPulseEngine__v2_8c.html" title="HAL component implementation for PoKeys Pulse Engine v2 (PEv2) in LinuxCNC." alt="" coords="8,124,285,195"/>
+<area shape="rect" id="node3" href="$pokeys_8c.html" title="HAL component for integrating PoKeys57 devices with LinuxCNC." alt="" coords="24,243,269,313"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="EMC_LUBE_STAT" name="EMC_LUBE_STAT">
+<area shape="rect" id="node1" title=" " alt="" coords="5,612,160,704"/>
+<area shape="rect" id="node2" href="$classEMC__LUBE__STAT__MSG.html" title=" " alt="" coords="135,471,327,563"/>
+<area shape="rect" id="node3" href="$classRCS__STAT__MSG.html" title=" " alt="" coords="233,344,381,421"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="255,145,359,281"/>
+<area shape="rect" id="node5" title=" " alt="" coords="65,5,103,83"/>
+<area shape="rect" id="node6" title=" " alt="" coords="408,5,475,83"/>
+<area shape="rect" id="node7" title=" " alt="" coords="281,5,332,83"/>
+<area shape="rect" id="node8" title=" " alt="" coords="383,175,433,252"/>
+</map>

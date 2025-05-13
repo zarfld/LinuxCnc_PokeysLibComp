@@ -1,0 +1,9 @@
+<map id="EMC_JOINT_DEACTIVATE" name="EMC_JOINT_DEACTIVATE">
+<area shape="rect" id="node1" title=" " alt="" coords="5,612,212,704"/>
+<area shape="rect" id="node2" href="$classEMC__JOINT__CMD__MSG.html" title=" " alt="" coords="11,471,206,563"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="111,344,259,421"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="289,145,393,281"/>
+<area shape="rect" id="node5" title=" " alt="" coords="119,5,157,83"/>
+<area shape="rect" id="node6" title=" " alt="" coords="325,5,391,83"/>
+<area shape="rect" id="node7" title=" " alt="" coords="415,5,466,83"/>
+</map>

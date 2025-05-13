@@ -1,0 +1,9 @@
+<map id="EMC_COOLANT_FLOOD_ON" name="EMC_COOLANT_FLOOD_ON">
+<area shape="rect" id="node1" title=" " alt="" coords="5,599,232,691"/>
+<area shape="rect" id="node2" href="$classEMC__COOLANT__CMD__MSG.html" title=" " alt="" coords="7,457,230,549"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="45,331,193,408"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="211,145,315,281"/>
+<area shape="rect" id="node5" title=" " alt="" coords="63,5,102,83"/>
+<area shape="rect" id="node6" title=" " alt="" coords="247,5,313,83"/>
+<area shape="rect" id="node7" title=" " alt="" coords="337,5,388,83"/>
+</map>

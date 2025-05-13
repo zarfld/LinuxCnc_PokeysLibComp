@@ -1,0 +1,9 @@
+<map id="EMC_MOTION_HALT" name="EMC_MOTION_HALT">
+<area shape="rect" id="node1" title=" " alt="" coords="23,599,200,691"/>
+<area shape="rect" id="node2" href="$classEMC__MOTION__CMD__MSG.html" title=" " alt="" coords="5,457,217,549"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="37,331,185,408"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="203,145,307,281"/>
+<area shape="rect" id="node5" title=" " alt="" coords="56,5,95,83"/>
+<area shape="rect" id="node6" title=" " alt="" coords="239,5,306,83"/>
+<area shape="rect" id="node7" title=" " alt="" coords="330,5,381,83"/>
+</map>

@@ -1,0 +1,14 @@
+<map id="EMC_TOOL_STAT" name="EMC_TOOL_STAT">
+<area shape="rect" id="node1" title=" " alt="" coords="304,697,460,804"/>
+<area shape="rect" id="node2" href="$classEMC__TOOL__STAT__MSG.html" title=" " alt="" coords="495,543,688,635"/>
+<area shape="rect" id="node3" href="$classRCS__STAT__MSG.html" title=" " alt="" coords="592,403,740,480"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="614,175,718,311"/>
+<area shape="rect" id="node5" title=" " alt="" coords="393,5,432,83"/>
+<area shape="rect" id="node9" href="$structCANON__TOOL__TABLE.html" title=" " alt="" coords="125,550,284,627"/>
+<area shape="rect" id="node6" title=" " alt="" coords="767,5,834,83"/>
+<area shape="rect" id="node7" title=" " alt="" coords="641,5,691,83"/>
+<area shape="rect" id="node8" title=" " alt="" coords="742,204,793,281"/>
+<area shape="rect" id="node10" href="$structEmcPose.html" title=" " alt="" coords="144,403,225,480"/>
+<area shape="rect" id="node11" href="$structPmCartesian.html" title=" " alt="" coords="132,204,237,281"/>
+<area shape="rect" id="node12" title=" " alt="" coords="50,5,117,83"/>
+</map>

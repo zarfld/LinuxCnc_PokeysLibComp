@@ -1,0 +1,5 @@
+<map id="PEv2_ExternalOutputsSet" name="PEv2_ExternalOutputsSet">
+<area shape="rect" id="node1" title="Sets the state of external relay and open&#45;collector outputs on the PoKeys device." alt="" coords="5,31,192,57"/>
+<area shape="rect" id="node2" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="240,5,364,32"/>
+<area shape="rect" id="node3" href="$group__hal__component__pokeys.html#gac0d0be13b1ea7237f8fb54953380d2a9" title="Sets or clears a specific bit in a byte." alt="" coords="245,56,359,83"/>
+</map>

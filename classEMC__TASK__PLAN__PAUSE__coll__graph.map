@@ -1,0 +1,9 @@
+<map id="EMC_TASK_PLAN_PAUSE" name="EMC_TASK_PLAN_PAUSE">
+<area shape="rect" id="node1" title=" " alt="" coords="5,599,212,691"/>
+<area shape="rect" id="node2" href="$classEMC__TASK__CMD__MSG.html" title=" " alt="" coords="13,457,204,549"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="35,331,183,408"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="201,145,305,281"/>
+<area shape="rect" id="node5" title=" " alt="" coords="53,5,92,83"/>
+<area shape="rect" id="node6" title=" " alt="" coords="237,5,303,83"/>
+<area shape="rect" id="node7" title=" " alt="" coords="327,5,378,83"/>
+</map>

@@ -1,0 +1,21 @@
+<map id="pokeys_read_ini" name="pokeys_read_ini">
+<area shape="rect" id="node1" title=" " alt="" coords="5,281,132,308"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#ga0769669c17b6eca58cffc1efd5246d2d" title="Reads encoder&#45;related settings from the INI configuration file." alt="" coords="180,5,351,32"/>
+<area shape="rect" id="node3" href="$group__hal__component__pokeys.html#ga3c9afba53772a416f90c9b80d74d76fe" title="Placeholder function to perform encoder&#45;specific setup actions." alt="" coords="707,157,841,184"/>
+<area shape="rect" id="node4" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="925,360,1049,387"/>
+<area shape="rect" id="node5" href="$group__hal__component__pokeys.html#ga1499e979e9aca26d5f59b8f25fd4406a" title="Reads and applies I/O configuration values for the PoKeys device from the INI file." alt="" coords="425,245,596,286"/>
+<area shape="rect" id="node8" href="$group__hal__component__pokeys.html#ga96c96a5b1b2aaa10d97aa8426bee3840" title="Initializes the PoKeys digital and analog I/O configuration." alt="" coords="689,411,859,453"/>
+<area shape="rect" id="node9" href="$structPoKeysHALComponent.html#ad94418b2caeac0cbdd7c43ef55f15623" title="Reads configuration parameters for the PoKeys Pulse Engine v2 from the INI file." alt="" coords="425,310,596,351"/>
+<area shape="rect" id="node10" href="$group__hal__component__pokeys.html#ga1fd300cd610e9545e58b62ffd50e474e" title="Applies INI&#45;based configuration to PulseEngine and IO." alt="" coords="180,521,351,562"/>
+<area shape="rect" id="node17" href="$group__hal__component__pokeys.html#gad42123ec302f37293abc024a15962d2b" title="Initializes or configures the PoExtBus interface on the PoKeys device." alt="" coords="193,587,337,613"/>
+<area shape="rect" id="node18" href="$group__hal__component__pokeys.html#ga1c22156d8f00d1810efc97b1911b1e29" title="Initializes or configures PoNET&#45;related settings for the given device." alt="" coords="204,637,327,664"/>
+<area shape="rect" id="node19" href="$pokeys__ini_8c.html#a673754b78f952029528a0e708834b455" title=" " alt="" coords="188,56,343,83"/>
+<area shape="rect" id="node6" href="$pokeys__ini_8c.html#ad18c54e99cc7b622b21a4952a228003d" title=" " alt="" coords="719,259,829,285"/>
+<area shape="rect" id="node7" href="$pokeys__ini_8c.html#ae4f6d1223dec24d90200b3798910dc6e" title=" " alt="" coords="725,309,823,336"/>
+<area shape="rect" id="node11" href="$group__hal__component__pokeys.html#gabf985299322e7850c8f962e6c1174103" title="Reads additional Pulse Engine v2 parameters from the PoKeys device." alt="" coords="399,528,623,555"/>
+<area shape="rect" id="node12" href="$group__hal__component__pokeys.html#ga03f28595c27000ef997f76c58d387efa" title="Updates and sets additional Pulse Engine v2 parameters, such as the emergency input pin." alt="" coords="399,579,622,605"/>
+<area shape="rect" id="node13" href="$group__PoKeys__Axis.html#gafbc819ed007226ee89a72106f88a257e" title="Retrieves and parses the axis configuration from the PoKeys Pulse Engine v2." alt="" coords="671,630,877,671"/>
+<area shape="rect" id="node14" href="$group__hal__component__pokeys.html#gaa49f4d7037a22852892704ca050145f8" title="Set the axis configuration of the PoKeys device." alt="" coords="408,746,613,787"/>
+<area shape="rect" id="node16" href="$group__hal__component__pokeys.html#ga43e962a08faf5dfdf24294fde5806ad1" title="Configures the PulseEngine v2 using current settings." alt="" coords="418,681,603,722"/>
+<area shape="rect" id="node15" href="$group__hal__component__pokeys.html#gac0d0be13b1ea7237f8fb54953380d2a9" title="Sets or clears a specific bit in a byte." alt="" coords="717,703,831,729"/>
+</map>

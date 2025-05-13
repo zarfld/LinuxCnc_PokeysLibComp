@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['k_5fflag_0',['k_flag',['../structblock__struct.html#a72698b6b2970a83f43dba37b2fba0e7e',1,'block_struct']]],
+  ['k_5fnumber_1',['k_number',['../structblock__struct.html#a3eef5f2f2aab5ad1530d246957a6f9e6',1,'block_struct']]],
+  ['kb_5fjjog_5factive_2',['kb_jjog_active',['../structemcmot__joint__t.html#a387bc6efdf7d896b79b4e7d20e63b376',1,'emcmot_joint_t']]],
+  ['kbd48cnc_5favailable_3',['kbd48CNC_available',['../structall__PoNET__data__t.html#a5531d2bc75a8b57ef2abe2c889606693',1,'all_PoNET_data_t']]],
+  ['kbd48cnc_5fcounter_4',['kbd48CNC_Counter',['../structall__PoNET__data__t.html#a73fa27f949848983a19f4c51522615d7',1,'all_PoNET_data_t']]],
+  ['kbd48cnc_5fkeybrightness_5',['kbd48CNC_KeyBrightness',['../structall__PoNET__data__t.html#a91135721fb813794ea754a23ab835826',1,'all_PoNET_data_t']]],
+  ['kbd48cnc_5flightvalue_6',['kbd48CNC_lightValue',['../structall__PoNET__data__t.html#aa793b249a9dc58a4485b24c9c58c60da',1,'all_PoNET_data_t']]],
+  ['kbd48cnc_5fponetid_7',['kbd48CNC_PoNetID',['../structall__PoNET__data__t.html#a7b70295c540f2586b16d1f64b991e2ae',1,'all_PoNET_data_t']]],
+  ['kbd48cnc_5fprevbrightness_8',['kbd48CNC_prevBrightness',['../structall__PoNET__data__t.html#abd1b662ccba5f66290c595d5c278c72e',1,'all_PoNET_data_t']]],
+  ['kbd48cncio_9',['kbd48CNCio',['../structall__PoNET__data__t.html#a7683f5ce1b62683555e0d0f7725645e3',1,'all_PoNET_data_t']]],
+  ['key_10',['key',['../classSHMEM.html#a8f6de81f50d3297f8a424bde6275dd53',1,'SHMEM::key()'],['../structshm__t.html#a2438a7ed751da49e8e88b1b5e15f7c41',1,'shm_t::key()']]],
+  ['key1_11',['key1',['../structREMOTE__GET__KEYS__REPLY.html#a38d2d3b6a2d833be49570a74f503fa64',1,'REMOTE_GET_KEYS_REPLY']]],
+  ['key2_12',['key2',['../structREMOTE__GET__KEYS__REPLY.html#a3ae74dea95aa1355280cfec5da6ce208',1,'REMOTE_GET_KEYS_REPLY']]],
+  ['keymap_5fdira_13',['keymap_dirA',['../structone__encoder__data__t.html#ad3bb7ce6f4b6fbf19024fce7fc3ef7df',1,'one_encoder_data_t']]],
+  ['keymap_5fdirb_14',['keymap_dirB',['../structone__encoder__data__t.html#a315913e41bc0ecc10144a7448f59214d',1,'one_encoder_data_t']]],
+  ['kinematics_5ftype_15',['kinematics_type',['../classEMC__TRAJ__STAT.html#ab87287a8543dd197c40437f45316359c',1,'EMC_TRAJ_STAT']]],
+  ['kink_5faccel_5freduce_16',['kink_accel_reduce',['../structTC__STRUCT.html#a929a89571a212ab095e537958aa3f02e',1,'TC_STRUCT']]],
+  ['kink_5faccel_5freduce_5fprev_17',['kink_accel_reduce_prev',['../structTC__STRUCT.html#ac4c06e8471ba4c75d7be401ad42985f3',1,'TC_STRUCT']]],
+  ['kink_5fvel_18',['kink_vel',['../structTC__STRUCT.html#a28d38b4fadd9a9207c69f2b17e6f1487',1,'TC_STRUCT']]],
+  ['kinsname_19',['kinsname',['../structkinematics__parms.html#a194c36563b9c979817a51b54aa6f9cb8',1,'kinematics_parms']]],
+  ['kintype_20',['kinType',['../structemcmot__config__t.html#a9e5904a9da635c90133b4149a135e5a0',1,'emcmot_config_t']]],
+  ['known_5fusers_21',['known_users',['../classCMS__SERVER.html#acf95353b1e716c3a81f6bcd527b4ced2',1,'CMS_SERVER']]]
+];

@@ -1,0 +1,15 @@
+<map id="EMC_TRAJ_SET_SO_ENABLE" name="EMC_TRAJ_SET_SO_ENABLE">
+<area shape="rect" id="node1" title=" " alt="" coords="391,683,617,775"/>
+<area shape="rect" id="node2" href="$classEMC__TRAJ__CMD__MSG.html" title=" " alt="" coords="410,528,598,620"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="597,366,745,443"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="692,145,796,281"/>
+<area shape="rect" id="node5" title=" " alt="" coords="426,5,465,83"/>
+<area shape="rect" id="node9" href="$structstate__tag__t.html" title=" " alt="" coords="159,175,254,252"/>
+<area shape="rect" id="node6" title=" " alt="" coords="728,5,795,83"/>
+<area shape="rect" id="node7" title=" " alt="" coords="819,5,869,83"/>
+<area shape="rect" id="node8" href="$structStateTag.html" title=" " alt="" coords="436,344,572,465"/>
+<area shape="rect" id="node10" title=" " alt="" coords="5,5,56,83"/>
+<area shape="rect" id="node11" title=" " alt="" coords="107,5,189,83"/>
+<area shape="rect" id="node12" title=" " alt="" coords="387,175,493,252"/>
+<area shape="rect" id="node13" title=" " alt="" coords="623,535,673,613"/>
+</map>

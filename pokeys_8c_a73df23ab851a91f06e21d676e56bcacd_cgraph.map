@@ -1,0 +1,7 @@
+<map id="main" name="main">
+<area shape="rect" id="node1" title="Main function for the PoKeys component." alt="" coords="5,81,60,108"/>
+<area shape="rect" id="node2" href="$pokeys_8c.html#a22fb33021986c7717081e1da60298bcc" title="Main loop for the PoKeys component." alt="" coords="112,5,271,32"/>
+<area shape="rect" id="node3" href="$pokeys_8c.html#a57e099851c5cce63201ff894f6e3c389" title="Parse the names from the command line arguments." alt="" coords="108,56,275,83"/>
+<area shape="rect" id="node4" href="$pokeys_8c.html#ac0b129af292c0005ec8a8abadd6398de" title="Main function for the PoKeys component." alt="" coords="130,107,253,133"/>
+<area shape="rect" id="node5" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="129,157,253,184"/>
+</map>

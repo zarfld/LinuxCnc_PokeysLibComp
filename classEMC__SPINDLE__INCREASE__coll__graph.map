@@ -1,0 +1,10 @@
+<map id="EMC_SPINDLE_INCREASE" name="EMC_SPINDLE_INCREASE">
+<area shape="rect" id="node1" title=" " alt="" coords="44,625,255,717"/>
+<area shape="rect" id="node2" href="$classEMC__SPINDLE__CMD__MSG.html" title=" " alt="" coords="43,471,256,563"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="143,344,291,421"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="339,145,443,281"/>
+<area shape="rect" id="node5" title=" " alt="" coords="127,5,166,83"/>
+<area shape="rect" id="node6" title=" " alt="" coords="375,5,441,83"/>
+<area shape="rect" id="node7" title=" " alt="" coords="465,5,516,83"/>
+<area shape="rect" id="node8" title=" " alt="" coords="280,478,347,555"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="all_encoder_data_t" name="all_encoder_data_t">
+<area shape="rect" id="node1" title="Structure representing all encoder channels and debug output for the PoKeys HAL component." alt="" coords="457,516,602,593"/>
+<area shape="rect" id="node2" href="$structone__encoder__data__t.html" title="Structure representing a single encoder channel with HAL and PoKeys configuration." alt="" coords="225,312,378,389"/>
+<area shape="rect" id="node3" title=" " alt="" coords="20,5,87,83"/>
+<area shape="rect" id="node4" title=" " alt="" coords="123,5,214,83"/>
+<area shape="rect" id="node5" title=" " alt="" coords="500,5,551,83"/>
+<area shape="rect" id="node6" title=" " alt="" coords="378,5,452,83"/>
+<area shape="rect" id="node7" title=" " alt="" coords="962,312,1028,389"/>
+</map>

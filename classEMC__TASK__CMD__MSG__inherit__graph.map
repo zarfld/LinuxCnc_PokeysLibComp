@@ -1,0 +1,26 @@
+<map id="EMC_TASK_CMD_MSG" name="EMC_TASK_CMD_MSG">
+<area shape="rect" id="node1" title=" " alt="" coords="2224,344,2415,436"/>
+<area shape="rect" id="node4" href="$classEMC__TASK__ABORT.html" title=" " alt="" coords="5,499,172,591"/>
+<area shape="rect" id="node5" href="$classEMC__TASK__HALT.html" title=" " alt="" coords="196,499,352,591"/>
+<area shape="rect" id="node6" href="$classEMC__TASK__INIT.html" title=" " alt="" coords="377,499,526,591"/>
+<area shape="rect" id="node7" href="$classEMC__TASK__PLAN__CLOSE.html" title=" " alt="" coords="551,499,757,591"/>
+<area shape="rect" id="node8" href="$classEMC__TASK__PLAN__END.html" title=" " alt="" coords="781,499,975,591"/>
+<area shape="rect" id="node9" href="$classEMC__TASK__PLAN__EXECUTE.html" title=" " alt="" coords="999,499,1224,591"/>
+<area shape="rect" id="node10" href="$classEMC__TASK__PLAN__FORWARD.html" title=" " alt="" coords="1249,506,1481,583"/>
+<area shape="rect" id="node11" href="$classEMC__TASK__PLAN__INIT.html" title=" " alt="" coords="1505,499,1696,591"/>
+<area shape="rect" id="node12" href="$classEMC__TASK__PLAN__OPEN.html" title=" " alt="" coords="1720,499,1921,591"/>
+<area shape="rect" id="node13" href="$classEMC__TASK__PLAN__OPTIONAL__STOP.html" title=" " alt="" coords="1945,491,2192,598"/>
+<area shape="rect" id="node14" href="$classEMC__TASK__PLAN__PAUSE.html" title=" " alt="" coords="2216,499,2423,591"/>
+<area shape="rect" id="node15" href="$classEMC__TASK__PLAN__READ.html" title=" " alt="" coords="2447,499,2648,591"/>
+<area shape="rect" id="node16" href="$classEMC__TASK__PLAN__RESUME.html" title=" " alt="" coords="2672,499,2892,591"/>
+<area shape="rect" id="node17" href="$classEMC__TASK__PLAN__REVERSE.html" title=" " alt="" coords="2917,506,3141,583"/>
+<area shape="rect" id="node18" href="$classEMC__TASK__PLAN__RUN.html" title=" " alt="" coords="3165,499,3359,591"/>
+<area shape="rect" id="node19" href="$classEMC__TASK__PLAN__SET__BLOCK__DELETE.html" title=" " alt="" coords="3384,484,3615,605"/>
+<area shape="rect" id="node20" href="$classEMC__TASK__PLAN__SET__OPTIONAL__STOP.html" title=" " alt="" coords="3639,491,3917,598"/>
+<area shape="rect" id="node21" href="$classEMC__TASK__PLAN__STEP.html" title=" " alt="" coords="3942,499,4139,591"/>
+<area shape="rect" id="node22" href="$classEMC__TASK__PLAN__SYNCH.html" title=" " alt="" coords="4163,499,4374,591"/>
+<area shape="rect" id="node23" href="$classEMC__TASK__SET__MODE.html" title=" " alt="" coords="4398,499,4593,591"/>
+<area shape="rect" id="node24" href="$classEMC__TASK__SET__STATE.html" title=" " alt="" coords="4617,499,4811,591"/>
+<area shape="rect" id="node2" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="2245,219,2393,296"/>
+<area shape="rect" id="node3" href="$classNMLmsg.html" title=" " alt="" coords="2236,5,2403,171"/>
+</map>

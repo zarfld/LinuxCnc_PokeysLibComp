@@ -1,0 +1,10 @@
+<map id="EMC_SPINDLE_ON" name="EMC_SPINDLE_ON">
+<area shape="rect" id="node1" title=" " alt="" coords="79,655,244,747"/>
+<area shape="rect" id="node2" href="$classEMC__SPINDLE__CMD__MSG.html" title=" " alt="" coords="55,471,268,563"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="199,344,347,421"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="395,145,499,281"/>
+<area shape="rect" id="node5" title=" " alt="" coords="183,5,222,83"/>
+<area shape="rect" id="node6" title=" " alt="" coords="431,5,497,83"/>
+<area shape="rect" id="node7" title=" " alt="" coords="521,5,572,83"/>
+<area shape="rect" id="node8" title=" " alt="" coords="292,478,359,555"/>
+</map>

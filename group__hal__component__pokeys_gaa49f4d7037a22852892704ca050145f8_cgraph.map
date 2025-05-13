@@ -1,0 +1,6 @@
+<map id="PoKeysHALComponent::PEv2_AxisConfigurationSet" name="PoKeysHALComponent::PEv2_AxisConfigurationSet">
+<area shape="rect" id="node1" title="Set the axis configuration of the PoKeys device." alt="" coords="5,64,211,105"/>
+<area shape="rect" id="node2" href="$group__PoKeys__Axis.html#gafbc819ed007226ee89a72106f88a257e" title="Retrieves and parses the axis configuration from the PoKeys Pulse Engine v2." alt="" coords="259,5,465,47"/>
+<area shape="rect" id="node3" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="513,42,637,69"/>
+<area shape="rect" id="node4" href="$group__hal__component__pokeys.html#gac0d0be13b1ea7237f8fb54953380d2a9" title="Sets or clears a specific bit in a byte." alt="" coords="305,122,419,149"/>
+</map>

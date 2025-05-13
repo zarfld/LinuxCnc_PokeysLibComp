@@ -1,0 +1,5 @@
+<map id="PEv2_Status2Get" name="PEv2_Status2Get">
+<area shape="rect" id="node1" title="Reads and updates the state of dedicated limit and home inputs from the PoKeys Pulse Engine v2." alt="" coords="5,31,139,57"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#gaacbe6bf27e2657b69cbd0a4f79140e2d" title="Retrieves the value of a specific bit in a byte." alt="" coords="191,5,306,32"/>
+<area shape="rect" id="node3" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="187,56,311,83"/>
+</map>

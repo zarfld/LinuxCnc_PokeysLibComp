@@ -1,0 +1,12 @@
+<map id="pokeys_update" name="pokeys_update">
+<area shape="rect" id="node1" title=" " alt="" coords="5,113,125,140"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#ga4282b939b3ee6e35a549933cfc1f70fa" title="Updates encoder data from the PoKeys device and writes values to HAL pins." alt="" coords="405,55,550,81"/>
+<area shape="rect" id="node4" href="$group__hal__component__pokeys.html#ga053adc615433218543268696998c7f32" title="Updates PoKeys I/O states from and to hardware." alt="" coords="392,106,563,147"/>
+<area shape="rect" id="node5" href="$group__hal__component__pokeys.html#ga11eaeb83988c4e23fca22c07885baf31" title="Updates PulseEngine feedback and status." alt="" coords="173,165,344,206"/>
+<area shape="rect" id="node9" href="$group__hal__component__pokeys.html#ga847756bee937458588675e919c70d798" title="Updates the PoExtBus data from and to the PoKeys device." alt="" coords="181,5,336,32"/>
+<area shape="rect" id="node10" href="$group__hal__component__pokeys.html#ga4d76e6cd067bd57f2574e514294cc3f8" title="Updates the state of the connected PoNET modules, specifically kbd48CNC." alt="" coords="193,231,325,257"/>
+<area shape="rect" id="node3" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="611,143,735,169"/>
+<area shape="rect" id="node6" href="$group__hal__component__pokeys.html#gad0b4254d4beb35bce80cf4a89199b554" title="Reads and updates the state of dedicated limit and home inputs from the PoKeys Pulse Engine v2." alt="" coords="411,273,544,300"/>
+<area shape="rect" id="node8" href="$group__hal__component__pokeys.html#ga1cd78f86e93af262648c35386373cf3c" title="Retrieves and processes the current status of the PoKeys Pulse Engine v2 (PEv2)." alt="" coords="415,223,540,249"/>
+<area shape="rect" id="node7" href="$group__hal__component__pokeys.html#gaacbe6bf27e2657b69cbd0a4f79140e2d" title="Retrieves the value of a specific bit in a byte." alt="" coords="615,273,730,300"/>
+</map>
