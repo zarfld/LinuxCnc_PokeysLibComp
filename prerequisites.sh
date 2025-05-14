@@ -109,10 +109,10 @@ export PATH="/usr/lib/ccache:$PATH"
 
 # Change directory to parent directory
 dir
-echo "Changing directory to parent directory..."
-cd ..
-echo "Changeddirectory to parent directory..."
-dir
+#echo "Changing directory to parent directory..."
+#cd ..
+#echo "Changed directory to parent directory..."
+#dir
 
 # Ensure external/pokeyslib submodule is initialized and up to date
 POKEYSLIB_DIR="external/pokeyslib"
