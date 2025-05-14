@@ -23,6 +23,16 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          submodules: recursive  # This ensures all nested submodules are fetched
+
+      - name: init submodules
+        run: git submodule update --init --recursive
+
+      - name: List submodule contents
+        run: |
+          git submodule status
+          find external/ -type f
 
       - name: Install Clang-Format
         run: sudo apt install clang-format -y
