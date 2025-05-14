@@ -111,23 +111,24 @@ export PATH="/usr/lib/ccache:$PATH"
 echo "Changing directory to parent directory..."
 cd ..
 
-# Check if pokeyslib folder exists
-if [ -d "pokeyslib" ]; then
-    # Fetch latest changes
-    echo "Fetching latest changes..."
-    cd pokeyslib
+# Ensure external/pokeyslib submodule is initialized and up to date
+POKEYSLIB_DIR="external/pokeyslib"
+
+if [ -d "$POKEYSLIB_DIR" ]; then
+    echo "Updating submodule $POKEYSLIB_DIR..."
+    git submodule update --init --recursive "$POKEYSLIB_DIR"
+    cd "$POKEYSLIB_DIR" || exit 1
     git config pull.ff only
     git pull
-    cd ..
+    cd - || exit 1
 else
-    # Clone the repository
-    echo "Cloning the repository..."
-    git clone https://bitbucket.org/mbosnak/pokeyslib.git
+    echo "Submodule directory missing, initializing..."
+    git submodule update --init --recursive "$POKEYSLIB_DIR"
 fi
 
 # Change directory to pokeyslib
-echo "Changing directory to pokeyslib..."
-cd pokeyslib
+echo "Changing directory to $POKEYSLIB_DIR..."
+cd "$POKEYSLIB_DIR" || exit 1
 
 # Build and install
 echo "Building and installing..."
