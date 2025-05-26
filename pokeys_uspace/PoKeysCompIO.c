@@ -215,12 +215,12 @@ int PKIO_export_pins(char *prefix, long extra_arg, int id, all_IO_data_t *Io_dat
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.Pins.%01d.PinFunction\n", __FILE__, __FUNCTION__, prefix, j);
         r = hal_param_u32_newf(HAL_RW, &(IO_data->Pin[j].PinFunction), id, "%s.pins.%01d.PinFunction", prefix, j);
         if (r != 0) {
-            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.digout.%01d.invert failed\n", __FILE__, __FUNCTION__, prefix, j);
+            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.pins.%01d.PinFunction failed\n", __FILE__, __FUNCTION__, prefix, j);
             return r;
         }
 
         if (PK_CheckPinCapability(dev, j, PK_AllPinCap_digitalInput) == 1) {
-            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.digin.%01d.deb.out\n", __FILE__, __FUNCTION__, prefix, j);
+            rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.digin.%01d.in\n", __FILE__, __FUNCTION__, prefix, j);
             r = hal_pin_bit_newf(HAL_OUT, &(IO_data->Pin[j].digin_in), id, "%s.digin.%01d.in", prefix, j);
             if (r != 0) {
                 rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.digin.%01d.in failed\n", __FILE__, __FUNCTION__, prefix, j);
