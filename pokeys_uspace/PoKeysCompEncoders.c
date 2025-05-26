@@ -155,8 +155,6 @@ int PKEncoder_export_pins(char *prefix, long extra_arg, int id, int njoints, all
     }
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: return: %d\n", __FILE__, __FUNCTION__, r);
     return r;
-
-
 }
 
 /**
@@ -279,7 +277,7 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
 
     if (dev->info.iFastEncoders > 0) {
 
-        //encoder_data->FastEncodersOptions
+        // encoder_data->FastEncodersOptions
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.FastEncoders.Options\n", __FILE__, __FUNCTION__, prefix);
         r = hal_param_u32_newf(HAL_RW, &(encoder_data->FastEncodersOptions), id, "%s.encoder.FastEncoders.Options", prefix);
         if (r != 0) {
@@ -287,7 +285,7 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
             return r;
         }
 
-        //encoder_data->FastEncodersConfiguration
+        // encoder_data->FastEncodersConfiguration
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.FastEncoders.Configuration\n", __FILE__, __FUNCTION__, prefix);
         r = hal_param_u32_newf(HAL_RW, &(encoder_data->FastEncodersConfiguration), id, "%s.encoder.FastEncoders.Configuration", prefix);
         if (r != 0) {
@@ -295,7 +293,7 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
             return r;
         }
 
-        //encoder_data->encoderFastEnable
+        // encoder_data->encoderFastEnable
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.FastEncoders.Enable\n", __FILE__, __FUNCTION__, prefix);
         r = hal_param_bit_newf(HAL_RW, &(encoder_data->encoderFastEnable), id, "%s.encoder.FastEncoders.Enable", prefix);
         if (r != 0) {
@@ -303,7 +301,7 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
             return r;
         }
 
-        //encoder_data->alternativeconfig
+        // encoder_data->alternativeconfig
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.FastEncoders.AlternativeConfig\n", __FILE__, __FUNCTION__, prefix);
         r = hal_param_bit_newf(HAL_RW, &(encoder_data->alternativeconfig), id, "%s.encoder.FastEncoders.AlternativeConfig", prefix);
         if (r != 0) {
@@ -311,7 +309,7 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
             return r;
         }
 
-        //encoder_data->FastEncodersInvert[0] = encoderFastInvertE1
+        // encoder_data->FastEncodersInvert[0] = encoderFastInvertE1
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.FastEncoders.InvertE1\n", __FILE__, __FUNCTION__, prefix);
         r = hal_param_bit_newf(HAL_RW, &(encoder_data->FastEncodersInvert[0]), id, "%s.encoder.FastEncoders.InvertE1", prefix);
         if (r != 0) {
@@ -319,7 +317,7 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
             return r;
         }
 
-        //encoder_data->FastEncodersInvert[1] = encoderFastInvertE2
+        // encoder_data->FastEncodersInvert[1] = encoderFastInvertE2
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.FastEncoders.InvertE2\n", __FILE__, __FUNCTION__, prefix);
         r = hal_param_bit_newf(HAL_RW, &(encoder_data->FastEncodersInvert[1]), id, "%s.encoder.FastEncoders.InvertE2", prefix);
         if (r != 0) {
@@ -327,7 +325,7 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
             return r;
         }
 
-        //encoder_data->FastEncodersInvert[2] = encoderFastInvertE3
+        // encoder_data->FastEncodersInvert[2] = encoderFastInvertE3
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.FastEncoders.InvertE3\n", __FILE__, __FUNCTION__, prefix);
         r = hal_param_bit_newf(HAL_RW, &(encoder_data->FastEncodersInvert[2]), id, "%s.encoder.FastEncoders.InvertE3", prefix);
         if (r != 0) {
@@ -335,18 +333,16 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
             return r;
         }
 
-        //encoder_data->disable_4x_sampling = encoderFastDisable4xSampling
+        // encoder_data->disable_4x_sampling = encoderFastDisable4xSampling
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.FastEncoders.Disable4xSampling\n", __FILE__, __FUNCTION__, prefix);
         r = hal_param_bit_newf(HAL_RW, &(encoder_data->disable_4x_sampling), id, "%s.encoder.FastEncoders.Disable4xSampling", prefix);
         if (r != 0) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.FastEncoders.Disable4xSampling failed\n", __FILE__, __FUNCTION__, prefix);
             return r;
         }
-        
-
     }
 
-    if (dev->info.iUltraFastEncoders) { 
+    if (dev->info.iUltraFastEncoders) {
         // encoder_data->UltraFastEncoderConfiguration
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.Configuration\n", __FILE__, __FUNCTION__, prefix);
         r = hal_param_u32_newf(HAL_RW, &(encoder_data->UltraFastEncoderConfiguration), id, "%s.encoder.UltraFastEncoder.Configuration", prefix);
@@ -365,14 +361,14 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
         }
 
         // encoder_data->UltraFastEncoderOptions_SIGNAL_MODE
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.SignalMode\n", __FILE__, __FUNCTION__, prefix);	
+        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.SignalMode\n", __FILE__, __FUNCTION__, prefix);
         r = hal_param_bit_newf(HAL_RW, &(encoder_data->UltraFastEncoderOptions_SIGNAL_MODE), id, "%s.encoder.UltraFastEncoder.SignalMode", prefix);
         if (r != 0) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.SignalMode failed\n", __FILE__, __FUNCTION__, prefix);
             return r;
         }
 
-        //encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING
+        // encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.Enable4xSampling\n", __FILE__, __FUNCTION__, prefix);
         r = hal_param_bit_newf(HAL_RW, &(encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING), id, "%s.encoder.UltraFastEncoder.Enable4xSampling", prefix);
         if (r != 0) {
@@ -380,7 +376,7 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
             return r;
         }
 
-        //encoder_data->UltraFastEncoderFilter
+        // encoder_data->UltraFastEncoderFilter
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.Filter\n", __FILE__, __FUNCTION__, prefix);
         r = hal_param_u32_newf(HAL_RW, &(encoder_data->UltraFastEncoderFilter), id, "%s.encoder.UltraFastEncoder.Filter", prefix);
         if (r != 0) {
