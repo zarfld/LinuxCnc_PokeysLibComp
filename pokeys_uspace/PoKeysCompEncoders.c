@@ -275,7 +275,7 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
         }
     }
 
-    if (dev->info.iFastEncoders > 0) {
+
 
         // encoder_data->FastEncodersOptions
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.FastEncoders.Options\n", __FILE__, __FUNCTION__, prefix);
@@ -340,21 +340,21 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.FastEncoders.Disable4xSampling failed\n", __FILE__, __FUNCTION__, prefix);
             return r;
         }
-    }
+   
 
-    if (dev->info.iUltraFastEncoders) {
+  
         // encoder_data->UltraFastEncoderConfiguration
-        rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.Configuration\n", __FILE__, __FUNCTION__, prefix);
-        r = hal_param_u32_newf(HAL_RW, &(encoder_data->UltraFastEncoderConfiguration), id, "%s.encoder.UltraFastEncoder.Configuration", prefix);
-        if (r != 0) {
-            rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.Configuration failed\n", __FILE__, __FUNCTION__, prefix);
-            return r;
-        }
+       // rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.Configuration\n", __FILE__, __FUNCTION__, prefix);
+       // r = hal_param_u32_newf(HAL_RW, &(encoder_data->UltraFastEncoderConfiguration), id, "%s.encoder.UltraFastEncoder.Configuration", prefix);
+       // if (r != 0) {
+       //     rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.Configuration failed\n", __FILE__, __FUNCTION__, prefix);
+       //     return r;
+       // }
 
         // encoder_data->UltraFastEncoderOptions
         // encoder_data->UltraFastEncoderOptions_INVERT_DIRECTION
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.Options\n", __FILE__, __FUNCTION__, prefix);
-        r = hal_param_u32_newf(HAL_RW, &(encoder_data->UltraFastEncoderOptions_INVERT_DIRECTION), id, "%s.encoder.UltraFastEncoder.Options", prefix);
+        r = hal_param_bit_newf(HAL_RW, &(encoder_data->UltraFastEncoderOptions_INVERT_DIRECTION), id, "%s.encoder.UltraFastEncoder.Options", prefix);
         if (r != 0) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.Options failed\n", __FILE__, __FUNCTION__, prefix);
             return r;
@@ -378,12 +378,12 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
 
         // encoder_data->UltraFastEncoderFilter
         rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.Filter\n", __FILE__, __FUNCTION__, prefix);
-        r = hal_param_u32_newf(HAL_RW, &(encoder_data->UltraFastEncoderFilter), id, "%s.encoder.UltraFastEncoder.Filter", prefix);
+        r = hal_param_s32_newf(HAL_RW, &(encoder_data->UltraFastEncoderFilter), id, "%s.encoder.UltraFastEncoder.Filter", prefix);
         if (r != 0) {
             rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.Filter failed\n", __FILE__, __FUNCTION__, prefix);
             return r;
         }
-    }
+
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: return: %d\n", __FILE__, __FUNCTION__, r);
     return r;
 }
