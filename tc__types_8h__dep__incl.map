@@ -1,0 +1,10 @@
+<map id="/usr/include/linuxcnc/tc_types.h" name="/usr/include/linuxcnc/tc_types.h">
+<area shape="rect" id="node1" title=" " alt="" coords="180,5,335,47"/>
+<area shape="rect" id="node2" href="$blendmath_8h.html" title=" " alt="" coords="5,95,160,136"/>
+<area shape="rect" id="node3" href="$tc_8h.html" title=" " alt="" coords="23,281,206,307"/>
+<area shape="rect" id="node4" href="$tcq_8h.html" title=" " alt="" coords="295,95,449,136"/>
+<area shape="rect" id="node5" href="$tp_8h.html" title=" " alt="" coords="409,281,593,307"/>
+<area shape="rect" id="node6" href="$tp__types_8h.html" title=" " alt="" coords="235,184,389,225"/>
+<area shape="rect" id="node7" href="$motion_8h.html" title=" " alt="" coords="231,273,385,315"/>
+<area shape="rect" id="node8" href="$pokeys__homecomp_8c.html" title="HAL component for managing homing sequence and state logic using PoKeys PulseEngine v2." alt="" coords="185,363,431,433"/>
+</map>

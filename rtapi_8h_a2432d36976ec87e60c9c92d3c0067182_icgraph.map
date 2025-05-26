@@ -1,0 +1,52 @@
+<map id="rtapi_print_msg" name="rtapi_print_msg">
+<area shape="rect" id="node1" title=" " alt="" coords="964,1247,1088,1273"/>
+<area shape="rect" id="node2" href="$group__pokeys__homecomp.html#ga44e2fe8e4a7b3b83f8ff87ce9f844ce0" title=" " alt="" coords="741,5,846,32"/>
+<area shape="rect" id="node3" href="$group__pokeys__homecomp.html#ga092905ee910988a60be2838734a26622" title="Initiates and manages the homing process for a given joint or sequence." alt="" coords="734,56,853,83"/>
+<area shape="rect" id="node4" href="$pokeys__async2_8c.html#a7d3a170e382b1912bd81bedce1e0e628" title=" " alt="" coords="220,157,311,184"/>
+<area shape="rect" id="node5" href="$group__pokeys__homecomp.html#ga990cc4843b3cbd8f24f67729ba03b565" title=" " alt="" coords="712,361,875,402"/>
+<area shape="rect" id="node6" href="$group__pokeys__homecomp.html#ga5e9a993bdcda28971824471aa977ea86" title=" " alt="" coords="691,426,896,467"/>
+<area shape="rect" id="node7" href="$pokeys__ini_8c.html#ad18c54e99cc7b622b21a4952a228003d" title=" " alt="" coords="738,863,849,889"/>
+<area shape="rect" id="node8" href="$group__hal__component__pokeys.html#ga1499e979e9aca26d5f59b8f25fd4406a" title="Reads and applies I/O configuration values for the PoKeys device from the INI file." alt="" coords="425,885,596,926"/>
+<area shape="rect" id="node9" href="$pokeys_8c.html#a1d59e212b57d33fe74e44b64cadf3314" title=" " alt="" coords="5,948,132,975"/>
+<area shape="rect" id="node10" href="$structPoKeysHALComponent.html#ad94418b2caeac0cbdd7c43ef55f15623" title="Reads configuration parameters for the PoKeys Pulse Engine v2 from the INI file." alt="" coords="425,810,596,851"/>
+<area shape="rect" id="node11" href="$pokeys__ini_8c.html#ae4f6d1223dec24d90200b3798910dc6e" title=" " alt="" coords="744,812,843,839"/>
+<area shape="rect" id="node12" href="$pokeys__ini_8c.html#a79c515f4a6bdeb74a2a27db3caa07dc1" title=" " alt="" coords="734,1167,853,1193"/>
+<area shape="rect" id="node13" href="$build_2pokeys__async_8c.html#a73df23ab851a91f06e21d676e56bcacd" title=" " alt="" coords="41,157,96,184"/>
+<area shape="rect" id="node14" href="$group__hal__component__pokeys.html#gabf985299322e7850c8f962e6c1174103" title="Reads additional Pulse Engine v2 parameters from the PoKeys device." alt="" coords="399,711,623,737"/>
+<area shape="rect" id="node15" href="$group__hal__component__pokeys.html#ga1fd300cd610e9545e58b62ffd50e474e" title="Applies INI&#45;based configuration to PulseEngine and IO." alt="" coords="180,623,351,665"/>
+<area shape="rect" id="node16" href="$group__hal__component__pokeys.html#ga03f28595c27000ef997f76c58d387efa" title="Updates and sets additional Pulse Engine v2 parameters, such as the emergency input pin." alt="" coords="399,492,622,519"/>
+<area shape="rect" id="node17" href="$group__PoKeys__Axis.html#gafbc819ed007226ee89a72106f88a257e" title="Retrieves and parses the axis configuration from the PoKeys Pulse Engine v2." alt="" coords="690,543,897,585"/>
+<area shape="rect" id="node18" href="$group__hal__component__pokeys.html#gaa49f4d7037a22852892704ca050145f8" title="Set the axis configuration of the PoKeys device." alt="" coords="408,594,613,635"/>
+<area shape="rect" id="node19" href="$group__hal__component__pokeys.html#ga4e976815038ba03865cf99c59c1e7635" title="Sets the state of external relay and open&#45;collector outputs on the PoKeys device." alt="" coords="700,1217,887,1244"/>
+<area shape="rect" id="node20" href="$group__hal__component__pokeys.html#ga1e2d76c62c7439ee937ce1559a77527c" title="Triggers a synchronized homing state transition for all axes in a given homing sequence." alt="" coords="671,1269,916,1310"/>
+<area shape="rect" id="node21" href="$group__hal__component__pokeys.html#gadd22880204794b8f9b9a6eafa4ed1d74" title="Configures and applies Pulse Engine v2 settings to the PoKeys device." alt="" coords="705,1335,882,1361"/>
+<area shape="rect" id="node22" href="$group__hal__component__pokeys.html#gad0b4254d4beb35bce80cf4a89199b554" title="Reads and updates the state of dedicated limit and home inputs from the PoKeys Pulse Engine v2." alt="" coords="727,1487,860,1513"/>
+<area shape="rect" id="node23" href="$group__hal__component__pokeys.html#ga11eaeb83988c4e23fca22c07885baf31" title="Updates PulseEngine feedback and status." alt="" coords="425,1497,596,1538"/>
+<area shape="rect" id="node25" href="$group__hal__component__pokeys.html#ga1cd78f86e93af262648c35386373cf3c" title="Retrieves and processes the current status of the PoKeys Pulse Engine v2 (PEv2)." alt="" coords="731,1537,856,1564"/>
+<area shape="rect" id="node26" href="$pokeysHal_2experimental_2build_2PoKeysLibCore_8c.html#ab408d399f6743266f7fb0b1c80d05cb5" title=" " alt="" coords="700,1689,887,1716"/>
+<area shape="rect" id="node27" href="$pokeysHal_2experimental_2build_2PoKeysLibCore_8c.html#a4a4450280f6d34ac5495f34bad644f83" title=" " alt="" coords="714,1740,873,1767"/>
+<area shape="rect" id="node28" href="$pokeysHal_2experimental_2build_2PoKeysLibCoreSockets_8c.html#adc6dbd8de4b4df5dbee307b15af90373" title=" " alt="" coords="687,1791,900,1817"/>
+<area shape="rect" id="node29" href="$pokeysHal_2experimental_2build_2PoKeysLibCore_8c.html#a8ca5d1c479c3da4457b38ec866ea7e3d" title=" " alt="" coords="691,1841,896,1868"/>
+<area shape="rect" id="node30" href="$pokeysHal_2experimental_2build_2PoKeysLibCore_8c.html#aad34d6ff8fa450eef13043fad9a9231b" title=" " alt="" coords="691,1893,896,1934"/>
+<area shape="rect" id="node31" href="$pokeysHal_2experimental_2build_2PoKeysLibCore_8c.html#ae21a3349787cf1f1150186e4858397e6" title=" " alt="" coords="674,1959,913,1985"/>
+<area shape="rect" id="node32" href="$pokeysHal_2experimental_2build_2PoKeysLibCore_8c.html#a2722ded598b35dcc0748e966668eb702" title=" " alt="" coords="695,2009,891,2036"/>
+<area shape="rect" id="node33" href="$PoKeysLibRTCAsync_8c.html#a9161c735be7333de615ac373afd0bf58" title="Starts an asynchronous RTC read from the device." alt="" coords="445,208,577,235"/>
+<area shape="rect" id="node34" href="$pokeys__async2_8c.html#aaf7e510ec6df908bbd750707b3105706" title=" " alt="" coords="206,208,325,235"/>
+<area shape="rect" id="node35" href="$group__hal__component__pokeys.html#ga1834d126fc8970eff001f72c01b9a6f8" title="Exports HAL parameters related to encoder configuration." alt="" coords="695,2060,891,2087"/>
+<area shape="rect" id="node36" href="$group__hal__component__pokeys.html#gab9105c3c043d29e6b9e65057651f291a" title="Exports HAL encoder pins for the PoKeys device." alt="" coords="706,2111,881,2137"/>
+<area shape="rect" id="node37" href="$group__hal__component__pokeys.html#ga3c9afba53772a416f90c9b80d74d76fe" title="Placeholder function to perform encoder&#45;specific setup actions." alt="" coords="198,948,333,975"/>
+<area shape="rect" id="node38" href="$group__hal__component__pokeys.html#ga4282b939b3ee6e35a549933cfc1f70fa" title="Updates encoder data from the PoKeys device and writes values to HAL pins." alt="" coords="438,1567,583,1593"/>
+<area shape="rect" id="node39" href="$group__hal__component__pokeys.html#ga02a043bec3c186f454680d36aa9a9604" title="Export HAL pins and parameters for PoKeys analog and digital I/O." alt="" coords="708,2162,879,2203"/>
+<area shape="rect" id="node40" href="$group__hal__component__pokeys.html#ga96c96a5b1b2aaa10d97aa8426bee3840" title="Initializes the PoKeys digital and analog I/O configuration." alt="" coords="180,999,351,1041"/>
+<area shape="rect" id="node41" href="$group__hal__component__pokeys.html#ga053adc615433218543268696998c7f32" title="Updates PoKeys I/O states from and to hardware." alt="" coords="425,1626,596,1667"/>
+<area shape="rect" id="node42" href="$PoKeysCompPoExtBus_8c.html#a2e69780ae077506c41890813516a0c3c" title="Export HAL pins for PoKeys PoExtBus (external digital I/O bus)." alt="" coords="702,2228,885,2255"/>
+<area shape="rect" id="node43" href="$group__hal__component__pokeys.html#ga847756bee937458588675e919c70d798" title="Updates the PoExtBus data from and to the PoKeys device." alt="" coords="433,1416,588,1443"/>
+<area shape="rect" id="node44" href="$group__hal__component__pokeys.html#ga378b0ae8cbc59c30e6abd28488c6883d" title="Exports HAL pins and parameters for PoNET modules and optionally kbd48CNC devices." alt="" coords="713,2279,874,2305"/>
+<area shape="rect" id="node45" href="$pokeysHal_2experimental_2build_2PoKeysLibCoreSockets_8c.html#a22759fb4024c9081af26ac1bc6541b47" title=" " alt="" coords="729,2329,857,2356"/>
+<area shape="rect" id="node46" href="$pokeysHal_2experimental_2build_2PoKeysLibCore_8c.html#ab5d92aa36d0a4a6953a055f5cd960aff" title=" " alt="" coords="740,2380,847,2407"/>
+<area shape="rect" id="node47" href="$pokeysHal_2experimental_2build_2PoKeysLibCore_8c.html#aa13f43984a7cb793f85a8850443f4f79" title=" " alt="" coords="696,2431,891,2457"/>
+<area shape="rect" id="node48" href="$experimental_2build_2PoKeysLibAsync_8c.html#a77fe6d8f453b9f120276324e0b2ad076" title="Sends an asynchronous request that was prepared earlier." alt="" coords="720,259,867,285"/>
+<area shape="rect" id="node49" href="$pokeys__ini_8c.html#a673754b78f952029528a0e708834b455" title=" " alt="" coords="188,1065,343,1092"/>
+<area shape="rect" id="node50" href="$build_2pokeys__async_8c.html#a52bac27291f624f14fd82f50b17978a0" title=" " alt="" coords="717,2481,870,2508"/>
+<area shape="rect" id="node24" href="$pokeys_8c.html#a6e89ee20635570c2e51b81bf26e895cc" title=" " alt="" coords="205,1533,325,1560"/>
+</map>

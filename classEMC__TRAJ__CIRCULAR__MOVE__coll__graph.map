@@ -1,0 +1,17 @@
+<map id="EMC_TRAJ_CIRCULAR_MOVE" name="EMC_TRAJ_CIRCULAR_MOVE">
+<area shape="rect" id="node1" title=" " alt="" coords="389,771,622,863"/>
+<area shape="rect" id="node2" href="$classEMC__TRAJ__CMD__MSG.html" title=" " alt="" coords="279,601,467,693"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="146,410,294,487"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="200,160,304,296"/>
+<area shape="rect" id="node5" title=" " alt="" coords="70,5,109,83"/>
+<area shape="rect" id="node8" href="$structstate__tag__t.html" title=" " alt="" coords="458,189,553,267"/>
+<area shape="rect" id="node6" title=" " alt="" coords="343,5,393,83"/>
+<area shape="rect" id="node7" href="$structStateTag.html" title=" " alt="" coords="319,388,455,509"/>
+<area shape="rect" id="node9" title=" " alt="" coords="448,5,499,83"/>
+<area shape="rect" id="node10" title=" " alt="" coords="550,5,631,83"/>
+<area shape="rect" id="node11" title=" " alt="" coords="329,189,434,267"/>
+<area shape="rect" id="node12" href="$structEmcPose.html" title=" " alt="" coords="561,609,642,686"/>
+<area shape="rect" id="node13" href="$structPmCartesian.html" title=" " alt="" coords="553,410,658,487"/>
+<area shape="rect" id="node14" title=" " alt="" coords="577,189,644,267"/>
+<area shape="rect" id="node15" title=" " alt="" coords="667,609,789,686"/>
+</map>

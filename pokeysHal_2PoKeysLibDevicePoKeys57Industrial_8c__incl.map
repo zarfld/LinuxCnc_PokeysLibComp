@@ -1,0 +1,31 @@
+<map id="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/external/pokeysHal/PoKeysLibDevicePoKeys57Industrial.c" name="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/external/pokeysHal/PoKeysLibDevicePoKeys57Industrial.c">
+<area shape="rect" id="node1" title=" " alt="" coords="697,5,1041,76"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,124,76,151"/>
+<area shape="rect" id="node3" href="$PoKeysLibHal_8h.html" title=" " alt="" coords="423,199,546,225"/>
+<area shape="rect" id="node17" href="$pokeysHal_2PoKeysLibCore_8h.html" title=" " alt="" coords="650,124,781,151"/>
+<area shape="rect" id="node20" title=" " alt="" coords="742,199,809,225"/>
+<area shape="rect" id="node21" title=" " alt="" coords="833,199,904,225"/>
+<area shape="rect" id="node22" title=" " alt="" coords="906,124,981,151"/>
+<area shape="rect" id="node23" title=" " alt="" coords="1005,124,1108,151"/>
+<area shape="rect" id="node24" title=" " alt="" coords="1132,124,1203,151"/>
+<area shape="rect" id="node25" title=" " alt="" coords="1227,124,1323,151"/>
+<area shape="rect" id="node26" title=" " alt="" coords="1347,124,1414,151"/>
+<area shape="rect" id="node27" title=" " alt="" coords="1438,124,1526,151"/>
+<area shape="rect" id="node28" href="$pokeysHal_2PoKeysLibDevicePoKeys57Industrial_8h.html" title=" " alt="" coords="101,124,370,151"/>
+<area shape="rect" id="node29" href="$pokeysHal_2PoKeysLibCoreSockets_8h.html" title=" " alt="" coords="395,124,575,151"/>
+<area shape="rect" id="node4" title=" " alt="" coords="292,273,363,300"/>
+<area shape="rect" id="node5" href="$hal_8h.html" title=" " alt="" coords="423,273,477,300"/>
+<area shape="rect" id="node16" title=" " alt="" coords="501,273,601,300"/>
+<area shape="rect" id="node6" href="$rtapi_8h.html" title=" " alt="" coords="210,348,274,375"/>
+<area shape="rect" id="node10" href="$rtapi__errno_8h.html" title=" " alt="" coords="335,348,440,375"/>
+<area shape="rect" id="node12" href="$rtapi__bool_8h.html" title=" " alt="" coords="465,348,563,375"/>
+<area shape="rect" id="node14" href="$rtapi__stdint_8h.html" title=" " alt="" coords="588,348,696,375"/>
+<area shape="rect" id="node7" title=" " alt="" coords="69,423,143,449"/>
+<area shape="rect" id="node8" title=" " alt="" coords="167,423,242,449"/>
+<area shape="rect" id="node9" title=" " alt="" coords="267,423,343,449"/>
+<area shape="rect" id="node11" title=" " alt="" coords="367,423,435,449"/>
+<area shape="rect" id="node13" title=" " alt="" coords="473,423,555,449"/>
+<area shape="rect" id="node15" title=" " alt="" coords="599,423,685,449"/>
+<area shape="rect" id="node18" href="$pokeysHal_2hidapi_8h.html" title=" " alt="" coords="643,199,718,225"/>
+<area shape="rect" id="node19" title=" " alt="" coords="645,273,717,300"/>
+</map>

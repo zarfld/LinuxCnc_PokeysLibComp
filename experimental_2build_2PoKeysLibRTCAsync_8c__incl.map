@@ -1,0 +1,21 @@
+<map id="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/external/pokeysHal/experimental/build/PoKeysLibRTCAsync.c" name="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/external/pokeysHal/experimental/build/PoKeysLibRTCAsync.c">
+<area shape="rect" id="node1" title="Asynchronous RTC (Real Time Clock) access for PoKeys devices." alt="" coords="85,5,450,76"/>
+<area shape="rect" id="node2" href="$hal_8h.html" title=" " alt="" coords="161,348,216,375"/>
+<area shape="rect" id="node13" href="$experimental_2build_2PoKeysLibHal_8h.html" title=" " alt="" coords="206,199,329,225"/>
+<area shape="rect" id="node19" href="$experimental_2build_2PoKeysLibAsync_8h.html" title=" " alt="" coords="306,124,445,151"/>
+<area shape="rect" id="node3" href="$rtapi_8h.html" title=" " alt="" coords="441,423,505,449"/>
+<area shape="rect" id="node7" href="$rtapi__errno_8h.html" title=" " alt="" coords="5,423,111,449"/>
+<area shape="rect" id="node9" href="$rtapi__bool_8h.html" title=" " alt="" coords="267,423,366,449"/>
+<area shape="rect" id="node11" href="$rtapi__stdint_8h.html" title=" " alt="" coords="135,423,243,449"/>
+<area shape="rect" id="node4" title=" " alt="" coords="675,497,750,524"/>
+<area shape="rect" id="node5" title=" " alt="" coords="422,497,497,524"/>
+<area shape="rect" id="node6" title=" " alt="" coords="521,497,597,524"/>
+<area shape="rect" id="node8" title=" " alt="" coords="24,497,92,524"/>
+<area shape="rect" id="node10" title=" " alt="" coords="289,497,371,524"/>
+<area shape="rect" id="node12" title=" " alt="" coords="145,497,232,524"/>
+<area shape="rect" id="node14" title=" " alt="" coords="340,273,411,300"/>
+<area shape="rect" id="node15" href="$pokeysHal_2experimental_2build_2hal__canon_8h.html" title="Canonical Device Interface definitions and export helpers for LinuxCNC HAL." alt="" coords="216,273,316,300"/>
+<area shape="rect" id="node16" href="$rtapi__string_8h.html" title=" " alt="" coords="476,348,584,375"/>
+<area shape="rect" id="node17" title=" " alt="" coords="529,423,600,449"/>
+<area shape="rect" id="node18" href="$rtapi__gfp_8h.html" title=" " alt="" coords="624,423,716,449"/>
+</map>

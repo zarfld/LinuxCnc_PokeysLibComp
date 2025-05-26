@@ -1,0 +1,5 @@
+var structREMOTE__CANCEL__SUBSCRIPTION__REQUEST =
+[
+    [ "REMOTE_CANCEL_SUBSCRIPTION_REQUEST", "structREMOTE__CANCEL__SUBSCRIPTION__REQUEST.html#a5e2dcbded4e01f4274d71eeaf9341a26", null ],
+    [ "subscription_id", "structREMOTE__CANCEL__SUBSCRIPTION__REQUEST.html#af38bee66cc81598eecdd6efc1f5f5d48", null ]
+];

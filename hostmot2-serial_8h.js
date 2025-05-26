@@ -1,0 +1,25 @@
+var hostmot2_serial_8h =
+[
+    [ "hm2_allocate_bspi_tram", "hostmot2-serial_8h.html#a199a8bbf64baab6fb7b2845598943099", null ],
+    [ "hm2_bspi_clear_fifo", "hostmot2-serial_8h.html#ad8c1946489110879cf564b890b1f4cfc", null ],
+    [ "hm2_bspi_set_read_function", "hostmot2-serial_8h.html#ace368c4c70712e7c4802de2810a4bb72", null ],
+    [ "hm2_bspi_set_write_function", "hostmot2-serial_8h.html#a87d9fab72df926358cf3e282e3a20fc8", null ],
+    [ "hm2_bspi_setup_chan", "hostmot2-serial_8h.html#a32cdda0b5e052f3b6f86ace9df46129e", null ],
+    [ "hm2_bspi_write_chan", "hostmot2-serial_8h.html#aad26bb42191ac13e07c20eb21180ef60", null ],
+    [ "hm2_pktuart_get_clock", "hostmot2-serial_8h.html#ab88ec0b7a1ea5e1473ea3256ff01a11a", null ],
+    [ "hm2_pktuart_get_rx_status", "hostmot2-serial_8h.html#a856ff6633d775d7d7da0ad5897ef6bc2", null ],
+    [ "hm2_pktuart_get_tx_status", "hostmot2-serial_8h.html#a80142d30c4edc3576f7c418523d87d87", null ],
+    [ "hm2_pktuart_get_version", "hostmot2-serial_8h.html#a0be0b42f0cc110982006904921bcf731", null ],
+    [ "hm2_pktuart_queue_get_frame_sizes", "hostmot2-serial_8h.html#ab75abed1c188de29eb6aca984586ec91", null ],
+    [ "hm2_pktuart_queue_read_data", "hostmot2-serial_8h.html#a2238e42267500357dbbc8687a72ff6c6", null ],
+    [ "hm2_pktuart_read", "hostmot2-serial_8h.html#a03a86ae668b1719e3d1b403487d2397b", null ],
+    [ "hm2_pktuart_reset", "hostmot2-serial_8h.html#a51f2f52788ef9a37397c69dd8dc9a60f", null ],
+    [ "hm2_pktuart_send", "hostmot2-serial_8h.html#a7004e2ca3ea4a421fa50fa7e1e41b9ee", null ],
+    [ "hm2_pktuart_setup", "hostmot2-serial_8h.html#a1d3ef31b5fbf72924123bd8996ca9ab5", null ],
+    [ "hm2_pktuart_setup_rx", "hostmot2-serial_8h.html#aacf7a2b9d3ec8c72cb5df8c006e0f14e", null ],
+    [ "hm2_pktuart_setup_tx", "hostmot2-serial_8h.html#ac847b0a3de3e7d2549f5e31f7a376b52", null ],
+    [ "hm2_tram_add_bspi_frame", "hostmot2-serial_8h.html#af1a5960eb1e13da14f1edbb0a9821945", null ],
+    [ "hm2_uart_read", "hostmot2-serial_8h.html#aab0927b68606e11f3269c2754a124285", null ],
+    [ "hm2_uart_send", "hostmot2-serial_8h.html#a1bf878ca4ad1053daebb633634f79af0", null ],
+    [ "hm2_uart_setup", "hostmot2-serial_8h.html#a26d6a5d15e94af670c1f8a3002abb05c", null ]
+];

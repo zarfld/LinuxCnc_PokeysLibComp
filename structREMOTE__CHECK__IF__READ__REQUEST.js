@@ -1,0 +1,4 @@
+var structREMOTE__CHECK__IF__READ__REQUEST =
+[
+    [ "REMOTE_CHECK_IF_READ_REQUEST", "structREMOTE__CHECK__IF__READ__REQUEST.html#ac1676006ff634ae446368e0d23ea9c21", null ]
+];
