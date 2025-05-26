@@ -147,6 +147,7 @@ jobs:
 
 
   close-issue2:
+    needs: close-issue
     # Only run on pull_request events where the PR was merged into the main branch
     if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' }}&#8203;:contentReference[oaicite:8]{index=8}
     runs-on: self-hosted  # also runs on the Pi runner
@@ -187,6 +188,7 @@ jobs:
             }
 
   close-issue:
+    needs: build
     # Only run on pull_request events where the PR was merged into the main branch
     if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' }}&#8203;:contentReference[oaicite:8]{index=8}
     runs-on: self-hosted  # also runs on the Pi runner
