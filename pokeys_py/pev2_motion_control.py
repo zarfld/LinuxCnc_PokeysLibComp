@@ -4,6 +4,9 @@ class PEv2MotionControl:
     def __init__(self, device, pokeyslib):
         self.device = device
         self.pokeyslib = pokeyslib
+        if not hasattr(self.device, "Axes"):
+            # Default to eight axes for tests using simple mocks
+            self.device.Axes = [None] * 8
 
     def setup(self, axis, parameters):
         """
