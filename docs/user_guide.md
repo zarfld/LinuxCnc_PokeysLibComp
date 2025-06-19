@@ -82,6 +82,24 @@ be chained. Contact ratings are **7&nbsp;A at 240&nbsp;VAC** or **10&nbsp;A at 1
 For parallel-input operation remove IC1 and drive the header with 3.3–5&nbsp;V
 signals.
 
+## Pulse Engine v2
+
+PoKeys Pulse Engine v2 provides step/dir motion control on PoKeys56U, PoKeys56E
+and PoKeys57E devices. It works in several modes:
+
+- **Integrated generator** – up to 3 axes at 25 kHz
+- **External generator** – up to 8 axes at 125 kHz using the PoKeysCNCaddon or a
+  custom 74HCT595 board
+
+The 10‑pin motor connector exposes axis enable, direction, step and error
+signals. Limit and home switch inputs are normally closed and should include
+pull‑ups. An emergency switch on pin 52 stops pulse generation.
+
+Additional features include three relay outputs, four open‑collector outputs
+(80 V/50 mA), a 0–10 V PWM‑derived output and an optional 5 kHz charge‑pump on
+pin 53. Soft limits, MPG jogging and operating states such as **Stopped**,
+**Error**, **Homing**, **Probing** and **Running** are supported.
+
 ## Getting Help
 
 For further details consult the PDF manuals in the `used_Manuals` directory. They contain wiring diagrams, additional specifications and complete feature lists for each board.
