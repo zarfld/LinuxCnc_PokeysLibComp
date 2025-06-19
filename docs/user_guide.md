@@ -100,6 +100,23 @@ Additional features include three relay outputs, four open‑collector outputs
 pin 53. Soft limits, MPG jogging and operating states such as **Stopped**,
 **Error**, **Homing**, **Probing** and **Running** are supported.
 
+## PoKeys57CNC Highlights
+
+### Connector Overview
+- External **6–26&nbsp;V** supply is required for stable operation. A jumper selects between USB power (for testing) and the external supply.
+- The board exposes connectors for SSR outputs, relays, galvanically isolated open collectors and a 0–10&nbsp;V analog output.
+- Dedicated headers are provided for an LCD module, pendant, encoders, analog inputs and eight step/dir motor drivers.
+- Limit and home switches per axis are available along with additional inputs for an emergency stop.
+
+### E-stop Wiring
+The manual notes that the emergency switch may be wired either to the 4‑pin E‑stop connector or to the pendant connector. When using the pendant connector the `NeST` jumper must remain in place. If only the dedicated connector is used, move the jumper to bridge pins&nbsp;4 and&nbsp;6 on the pendant header.
+
+### Failsafe Configuration
+A failsafe timeout can be configured so that digital outputs, PoExtBus devices and PWM channels revert to a defined state if communication is lost. The Pulse engine automatically enters emergency mode once the timeout expires.
+
+### Network Security and Web Interface
+Network‑enabled devices support password protection with three access levels: *full access*, *read‑only* and *full lock*. A simple web dashboard is enabled by default and can be disabled or configured to allow anonymous access or output control.
+
 ## Getting Help
 
 For further details consult the PDF manuals in the `used_Manuals` directory. They contain wiring diagrams, additional specifications and complete feature lists for each board.
