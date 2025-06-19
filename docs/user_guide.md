@@ -82,6 +82,25 @@ be chained. Contact ratings are **7&nbsp;A at 240&nbsp;VAC** or **10&nbsp;A at 1
 For parallel-input operation remove IC1 and drive the header with 3.3–5&nbsp;V
 signals.
 
+### PoNET kbd48CNC v2
+
+PoNET kbd48CNC v2 is an upgraded 48‑key keyboard for PoKeys controllers. Each key includes a red LED backlight and the unit has a light sensor for adjusting brightness. Two status LEDs show
+- **Solid on** – connected
+- **Slow blink** – no PoKeys link
+- **Fast blink** – bootloader
+- **Off** – disabled
+
+Key specifications from the manual:
+
+| Spec | Value |
+|------|------|
+| Dimensions | 295 × 105 × 4 mm |
+| Power supply | 5 V ±10 % |
+| Max current | 500 mA |
+| Keys/LEDs | 48 arranged in three 4×4 groups |
+| Interface | PoNET via adapter (up to 3 m cable) or CAN on PoKeys57CNC v2 |
+
+A PoNET_I2C extender board and several cables are included in the package. Firmware 6 or newer allows direct CAN bus connection—set the rear switch to position 2 and enable **PoCAN** in the configuration software. In matrix‑keyboard mode the keys can be mapped via the *Matrix Keyboard* menu. Default Mach4 mappings cover common actions like cycle start, feed hold, spindle control and jog speed adjustment.
 ## Pulse Engine v2
 
 PoKeys Pulse Engine v2 provides step/dir motion control on PoKeys56U, PoKeys56E
