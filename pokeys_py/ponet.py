@@ -1,11 +1,10 @@
 import ctypes
 
-# Load the PoKeysLib shared library
-pokeyslib = ctypes.CDLL('./pokeys_rt/PoKeysLib.so')
 
 class PoNET:
-    def __init__(self, device):
+    def __init__(self, device, pokeyslib):
         self.device = device
+        self.pokeyslib = pokeyslib
 
     def setup(self, module_id):
         """
@@ -13,7 +12,7 @@ class PoNET:
         :param module_id: Module ID
         """
         try:
-            pokeyslib.PK_PoNETGetModuleSettings(self.device, module_id)
+            self.pokeyslib.PK_PoNETGetModuleSettings(self.device, module_id)
         except ValueError:
             raise ValueError(f"Invalid module ID {module_id}")
 
@@ -24,8 +23,8 @@ class PoNET:
         :return: Module data
         """
         try:
-            pokeyslib.PK_PoNETGetModuleStatusRequest(self.device, module_id)
-            return pokeyslib.PK_PoNETGetModuleStatus(self.device, module_id)
+            self.pokeyslib.PK_PoNETGetModuleStatusRequest(self.device, module_id)
+            return self.pokeyslib.PK_PoNETGetModuleStatus(self.device, module_id)
         except ValueError:
             raise ValueError(f"Invalid module ID {module_id}")
 
@@ -36,6 +35,6 @@ class PoNET:
         :param data: Data to send
         """
         try:
-            pokeyslib.PK_PoNETSetModuleStatus(self.device, module_id, data)
+            self.pokeyslib.PK_PoNETSetModuleStatus(self.device, module_id, data)
         except ValueError:
             raise ValueError(f"Invalid module ID {module_id}")

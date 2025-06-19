@@ -1,11 +1,12 @@
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 from pokeys_py.pev2_motion_control import PEv2MotionControl
 
 class TestFunctionalPEv2MotionControl(unittest.TestCase):
     def setUp(self):
         self.device = MagicMock()
-        self.pev2 = PEv2MotionControl(self.device)
+        self.lib = MagicMock()
+        self.pev2 = PEv2MotionControl(self.device, self.lib)
 
     def test_motion_control_sequences(self):
         # Test starting motion control
