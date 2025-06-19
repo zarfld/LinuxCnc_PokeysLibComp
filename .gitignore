@@ -2927,6 +2927,7 @@ dmypy.json
 *.manifest
 *.spec
 *.py
+!pokeys_py/__main__.py
 DM542_XXYZ_mill/linuxcnc.var
 DM542_XXYZ_mill/halshow.preferences
 DM542_XXYZ_mill/linuxcnc.var.bak
