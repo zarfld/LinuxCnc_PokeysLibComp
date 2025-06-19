@@ -25,6 +25,18 @@ cd LinuxCnc_PokeysLibComp
 sudo sh install.sh
 ```
 
+## Running the UI Setup Tool
+
+After installation you can launch the graphical configuration utility with:
+
+```bash
+python -m pokeys_py
+```
+
+Importing the ``pokeys_py`` package no longer performs any device actions or
+telemetry initialization. Hardware is only accessed when the setup tool or
+``run_ui_setup_tool`` function is invoked.
+
 ## Hardware Requirements
 
 The project has been tested with the following hardware:

@@ -13,15 +13,9 @@ __all__ = [
 import os
 from .telemetry import Telemetry
 
-if os.getenv('CI') == 'true':
-    from tests.mocks.pokeyslib import pokeyslib
-    telemetry = Telemetry(dsn="", opt_in=False)
-else:
-    import ctypes
-    pokeyslib = ctypes.CDLL('/usr/lib/linuxcnc/modules/PoKeysLib.so')
-    telemetry = Telemetry(dsn="your_sentry_dsn_here", opt_in=True)
-
-telemetry.initialize_sentry()
+pokeyslib = None
+telemetry = None
+device_info = None
 
 # Add pins for device information
 class DeviceInfo:
@@ -333,12 +327,26 @@ class DeviceInfo:
         self.info["PEv2"]["BacklashAcceleration"] = [self.pokeyslib.PK_GetPEv2BacklashAcceleration(self.device, i) for i in range(8)]
         self.info["PEv2"]["HomeBackOffDistance"] = [self.pokeyslib.PK_GetPEv2HomeBackOffDistance(self.device, i) for i in range(8)]
 
-# Initialize the device information pins
-device_info = DeviceInfo(device=pokeyslib, pokeyslib=pokeyslib)
-device_info.initialize_pins()
+def run_ui_setup_tool(opt_in=True):
+    """Initialize the device and launch the graphical setup tool."""
+    global pokeyslib, telemetry, device_info
 
-# Import and initialize the UI setup tool
-from .ui_setup_tool import UISetupTool
+    if os.getenv("CI") == "true":
+        from tests.mocks.pokeyslib import pokeyslib as lib
+        telemetry = Telemetry(dsn="", opt_in=False)
+    else:
+        import ctypes
+        lib = ctypes.CDLL("/usr/lib/linuxcnc/modules/PoKeysLib.so")
+        telemetry = Telemetry(dsn="your_sentry_dsn_here", opt_in=opt_in)
 
-ui_setup_tool = UISetupTool()
-ui_setup_tool.run()
+    telemetry.initialize_sentry()
+
+    pokeyslib = lib
+    device_info = DeviceInfo(device=pokeyslib, pokeyslib=pokeyslib)
+    device_info.initialize_pins()
+
+    from .ui_setup_tool import UISetupTool
+
+    ui_setup_tool = UISetupTool()
+    ui_setup_tool.run()
+

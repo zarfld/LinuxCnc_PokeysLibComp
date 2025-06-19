@@ -3,10 +3,13 @@ import ctypes
 from .telemetry import Telemetry
 
 class UISetupTool:
-    def __init__(self):
+    def __init__(self, opt_in=False):
         self.pokeyslib = ctypes.CDLL('/usr/lib/linuxcnc/modules/PoKeysLib.so')
         self.device = None
-        self.telemetry = Telemetry(dsn="your_sentry_dsn_here", opt_in=True)
+        if os.getenv('CI') == 'true':
+            self.telemetry = Telemetry(dsn="", opt_in=False)
+        else:
+            self.telemetry = Telemetry(dsn="your_sentry_dsn_here", opt_in=opt_in)
         self.telemetry.initialize_sentry()
 
     def connect_device(self, device_index):
