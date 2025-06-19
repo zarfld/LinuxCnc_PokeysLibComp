@@ -33,6 +33,16 @@ According to the protocol specification:
 
 When multiple devices are present, use the serial number or user ID to select the desired unit.
 
+## PoExtBus Overview
+
+PoExtBus is a five‑pin expansion bus for connecting simple peripherals based on
+74HC595 shift registers. PoKeys56 and PoKeys57 devices share the PoExtBus and
+PoNET interfaces on a single connector. Only three signal wires are required to
+control up to 80 outputs and slave boards can be daisy‑chained — up to ten
+PoExtBusRE boards or five PoExtBusOC16 boards. Boards equipped with a PoExtension
+connector must be linked with a 10‑pin ribbon cable, but only one of the
+`PoExtBusIn` or `PoExtensionIn` connectors should be used at a time.
+
 ## Expansion Boards
 
 ### PoRelay8
@@ -54,6 +64,23 @@ Use the PoKeys configuration software to scan and add connected sensors.
 ### PoExtBusOC16CNC
 
 Provides up to eight step‑and‑direction signal pairs to drive external motor drivers. It connects to a PoKeys device via a ribbon cable and supports clamp diodes for transient suppression. Refer to the user manual for wiring details and absolute maximum ratings.
+
+### PoExtBusOC16
+
+A 16‑channel open collector output board with integrated clamp diodes and
+status LEDs. Up to five boards may be cascaded over PoExtBus. Each output can
+sink up to **400&nbsp;mA** at a supply voltage of **40&nbsp;V**. Connect the power
+supply positive to the **COM** terminal and the load between COM and the
+`ocA`–`ocP` pins.
+
+### PoExtBusRE
+
+Relay expansion board with eight electromechanical relays. The board exposes
+`Vin`, `NO` and `NC` contacts for each relay along with a `VCCre` power input.
+A green power LED and eight red LEDs indicate relay state. Up to ten boards can
+be chained. Contact ratings are **7&nbsp;A at 240&nbsp;VAC** or **10&nbsp;A at 125&nbsp;VAC / 28&nbsp;VDC**.
+For parallel-input operation remove IC1 and drive the header with 3.3–5&nbsp;V
+signals.
 
 ## Getting Help
 
