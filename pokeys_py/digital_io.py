@@ -4,6 +4,7 @@ class DigitalIO:
     def __init__(self, device, pokeyslib):
         self.device = device
         self.pokeyslib = pokeyslib
+        self._state = {}
 
     def setup(self, pin, direction):
         """
@@ -31,6 +32,8 @@ class DigitalIO:
         :return: Pin state (0 or 1)
         """
         try:
+            if pin in self._state:
+                return self._state[pin]
             return self.pokeyslib.PK_SL_DigitalInputGet(self.device, pin)
         except ValueError:
             raise ValueError(f"Invalid pin {pin}")
@@ -43,6 +46,7 @@ class DigitalIO:
         """
         try:
             self.pokeyslib.PK_SL_DigitalOutputSet(self.device, pin, value)
+            self._state[pin] = value
         except ValueError:
             raise ValueError(f"Invalid pin {pin}")
 

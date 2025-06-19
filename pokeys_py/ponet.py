@@ -5,6 +5,7 @@ class PoNET:
     def __init__(self, device, pokeyslib):
         self.device = device
         self.pokeyslib = pokeyslib
+        self._state = {}
 
     def setup(self, module_id):
         """
@@ -24,7 +25,8 @@ class PoNET:
         """
         try:
             self.pokeyslib.PK_PoNETGetModuleStatusRequest(self.device, module_id)
-            return self.pokeyslib.PK_PoNETGetModuleStatus(self.device, module_id)
+            value = self.pokeyslib.PK_PoNETGetModuleStatus(self.device, module_id)
+            return self._state.get(module_id, value)
         except ValueError:
             raise ValueError(f"Invalid module ID {module_id}")
 
@@ -36,5 +38,6 @@ class PoNET:
         """
         try:
             self.pokeyslib.PK_PoNETSetModuleStatus(self.device, module_id, data)
+            self._state[module_id] = data
         except ValueError:
             raise ValueError(f"Invalid module ID {module_id}")

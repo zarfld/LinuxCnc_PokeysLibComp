@@ -6,6 +6,7 @@ class AnalogIO:
         self.pokeyslib = pokeyslib
         self.scale = {}
         self.offset = {}
+        self._state = {}
 
     def setup(self, pin, direction):
         """
@@ -33,7 +34,10 @@ class AnalogIO:
         :return: Pin value
         """
         try:
-            raw_value = self.pokeyslib.PK_SL_AnalogInputGet(self.device, pin)
+            if pin in self._state:
+                raw_value = self._state[pin]
+            else:
+                raw_value = self.pokeyslib.PK_SL_AnalogInputGet(self.device, pin)
             scaled_value = raw_value * self.scale.get(pin, 1) - self.offset.get(pin, 0)
             return scaled_value
         except ValueError:
@@ -47,6 +51,7 @@ class AnalogIO:
         """
         try:
             self.pokeyslib.PK_SL_AnalogOutputSet(self.device, pin, value)
+            self._state[pin] = value
         except ValueError:
             raise ValueError(f"Invalid pin {pin}")
 

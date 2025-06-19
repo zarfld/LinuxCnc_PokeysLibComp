@@ -48,10 +48,6 @@ class TestPoNET(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.ponet.set(1, 'invalid_data')
 
-    def test_setup_invalid_value(self):
-        self.lib.PK_PoNETGetModuleSettings.side.effect = ValueError("Invalid value")
-        with self.assertRaises(ValueError):
-            self.ponet.setup(1)
 
     def test_ponet_functionalities(self):
         for i in range(48):

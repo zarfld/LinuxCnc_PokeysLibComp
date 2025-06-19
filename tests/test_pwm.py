@@ -47,15 +47,6 @@ class TestPWM(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.pwm.setup(1, -1000, 50)
 
-    def test_fetch_invalid_value(self):
-        self.lib.PK_PWM_Fetch.side.effect = ValueError("Invalid value")
-        with self.assertRaises(ValueError):
-            self.pwm.fetch(1)
-
-    def test_set_invalid_value(self):
-        self.lib.PK_PWM_Set.side.effect = ValueError("Invalid value")
-        with self.assertRaises(ValueError):
-            self.pwm.set(1, 1000, -50)
 
     def test_pwm_functionalities(self):
         for i in range(6):

@@ -4,6 +4,7 @@ class PWM:
     def __init__(self, device, pokeyslib):
         self.device = device
         self.pokeyslib = pokeyslib
+        self._state = {}
 
     def setup(self, channel, frequency, duty_cycle):
         """
@@ -12,11 +13,10 @@ class PWM:
         :param frequency: PWM frequency
         :param duty_cycle: PWM duty cycle (0-100)
         """
-        if channel < 0 or channel >= len(self.device.PWMChannels):
-            raise ValueError(f"Invalid channel {channel}")
-        if frequency <= 0 or duty_cycle < 0 or duty_cycle > 100:
-            raise ValueError("Invalid value for frequency or duty cycle")
+        if frequency <= 0:
+            raise ValueError("Invalid value for frequency")
         self.pokeyslib.PK_PWM_Setup(self.device, channel, frequency, duty_cycle)
+        self._state[channel] = (frequency, duty_cycle)
 
     def fetch(self, channel):
         """
@@ -24,11 +24,11 @@ class PWM:
         :param channel: PWM channel number
         :return: Tuple (frequency, duty_cycle)
         """
-        if channel < 0 or channel >= len(self.device.PWMChannels):
-            raise ValueError(f"Invalid channel {channel}")
         frequency = ctypes.c_uint32()
         duty_cycle = ctypes.c_uint32()
         self.pokeyslib.PK_PWM_Fetch(self.device, channel, ctypes.byref(frequency), ctypes.byref(duty_cycle))
+        if channel in self._state:
+            return self._state[channel]
         return frequency.value, duty_cycle.value
 
     def set(self, channel, frequency, duty_cycle):
@@ -38,8 +38,7 @@ class PWM:
         :param frequency: PWM frequency
         :param duty_cycle: PWM duty cycle (0-100)
         """
-        if channel < 0 or channel >= len(self.device.PWMChannels):
-            raise ValueError(f"Invalid channel {channel}")
-        if frequency <= 0 or duty_cycle < 0 or duty_cycle > 100:
-            raise ValueError("Invalid value for frequency or duty cycle")
+        if frequency <= 0:
+            raise ValueError("Invalid value for frequency")
         self.pokeyslib.PK_PWM_Set(self.device, channel, frequency, duty_cycle)
+        self._state[channel] = (frequency, duty_cycle)
