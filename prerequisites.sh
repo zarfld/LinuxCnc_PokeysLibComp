@@ -2,7 +2,7 @@
 
 # Update package lists
 echo "Updating package lists..."
-sudo apt-get update -y
+sudo apt-get update -Y
 
 retry() {
     local n=1
