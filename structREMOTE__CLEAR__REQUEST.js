@@ -1,0 +1,4 @@
+var structREMOTE__CLEAR__REQUEST =
+[
+    [ "REMOTE_CLEAR_REQUEST", "structREMOTE__CLEAR__REQUEST.html#a72afa73b8850c64511b3a24bbd754738", null ]
+];

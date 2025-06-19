@@ -1,0 +1,6 @@
+<map id="PK_DisconnectDevice" name="PK_DisconnectDevice">
+<area shape="rect" id="node1" title=" " alt="" coords="5,56,168,83"/>
+<area shape="rect" id="node2" href="$pokeyslib_2PoKeysLibCore_8c.html#a8ddc84176ab5e728aeef3077e4c04721" title=" " alt="" coords="273,5,377,32"/>
+<area shape="rect" id="node3" href="$group__API.html#ga9b64828273b8dd052731e79ba9e1a516" title="Close a HID device." alt="" coords="284,56,367,83"/>
+<area shape="rect" id="node4" href="$pokeysHal_2PoKeysLibCoreSockets_8c.html#a99687fe089d02ed7dc65edcd486a0640" title=" " alt="" coords="216,107,435,133"/>
+</map>

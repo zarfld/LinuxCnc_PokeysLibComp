@@ -1,0 +1,13 @@
+<map id="transaction_alloc" name="transaction_alloc">
+<area shape="rect" id="node1" title="Allocates a new free transaction." alt="" coords="817,151,951,178"/>
+<area shape="rect" id="node2" href="$experimental_2build_2PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="571,97,729,123"/>
+<area shape="rect" id="node9" href="$experimental_2build_2PoKeysLibAsync_8c.html#ad3d8835baba234e6767172b8574629e5" title="Prepares an asynchronous PoKeys request with optional payload data after header." alt="" coords="531,181,769,207"/>
+<area shape="rect" id="node3" href="$experimental_2build_2PoKeysLibEncodersAsync_8c.html#a6c07854c553edbdb000719bc0e4d0ad5" title="Starts the asynchronous encoder configuration retrieval." alt="" coords="275,5,483,47"/>
+<area shape="rect" id="node4" href="$experimental_2build_2PoKeysLibEncodersAsync_8c.html#a6da05adf9f93cba660f7ecb85f8a92d2" title="Starts asynchronous encoder values retrieval." alt="" coords="277,71,480,98"/>
+<area shape="rect" id="node5" href="$PoKeysLibRTCAsync_8c.html#a9161c735be7333de615ac373afd0bf58" title="Starts an asynchronous RTC read from the device." alt="" coords="313,122,445,149"/>
+<area shape="rect" id="node6" href="$pokeys__async2_8c.html#a7d3a170e382b1912bd81bedce1e0e628" title=" " alt="" coords="122,97,213,123"/>
+<area shape="rect" id="node7" href="$pokeys__async2_8c.html#aaf7e510ec6df908bbd750707b3105706" title=" " alt="" coords="108,147,227,174"/>
+<area shape="rect" id="node8" href="$build_2pokeys__async_8c.html#a73df23ab851a91f06e21d676e56bcacd" title=" " alt="" coords="5,147,60,174"/>
+<area shape="rect" id="node10" href="$experimental_2build_2PoKeysLibEncodersAsync_8c.html#a117781f6a4977f67bcb5f0d4901e6a47" title="Asynchronously sets the full PoKeys encoder configuration." alt="" coords="275,173,482,215"/>
+<area shape="rect" id="node11" href="$experimental_2build_2PoKeysLibEncodersAsync_8c.html#a750834bb2458087d9484ed7b81b2a01b" title="Starts asynchronous encoder values set sequence." alt="" coords="278,239,479,266"/>
+</map>

@@ -1,0 +1,53 @@
+<map id="__comp_state" name="__comp_state">
+<area shape="rect" id="node1" title="PoKeys component state." alt="" coords="1967,1431,2186,1655"/>
+<area shape="rect" id="node2" title=" " alt="" coords="251,5,302,83"/>
+<area shape="rect" id="node7" href="$structone__PoExtBus__data__t.html" title="Structure holding HAL pin references and configuration for one PoExtBus bank." alt="" coords="966,505,1129,582"/>
+<area shape="rect" id="node8" href="$structPEv2__data__t.html" title="State machine transitions for homing logic." alt="" coords="1269,431,1479,655"/>
+<area shape="rect" id="node12" href="$structone__adcout__data__t.html" title=" " alt="" coords="3220,505,3365,582"/>
+<area shape="rect" id="node14" href="$structone__digiIO__data__t.html" title=" " alt="" coords="2443,505,2582,582"/>
+<area shape="rect" id="node15" href="$structall__encoder__data__t.html" title="Structure representing all encoder channels and debug output for the PoKeys HAL component." alt="" coords="2321,1004,2467,1081"/>
+<area shape="rect" id="node16" href="$structone__encoder__data__t.html" title="Structure representing a single encoder channel with HAL and PoKeys configuration." alt="" coords="2191,505,2344,582"/>
+<area shape="rect" id="node18" href="$structall__PoNET__data__t.html" title="Contains all PoNET&#45;related data for communication with PoKeys devices." alt="" coords="1707,1004,1841,1081"/>
+<area shape="rect" id="node20" href="$structone__kbd48CNCButton__data__t.html" title="Represents a single button and LED pair on the kbd48CNC PoNET module." alt="" coords="373,497,537,589"/>
+<area shape="rect" id="node21" href="$structsPoKeysDevice.html" title=" " alt="" coords="7315,1232,7481,1368"/>
+<area shape="rect" id="node28" href="$structsPoKeysEncoder.html" title=" " alt="" coords="4063,505,4191,582"/>
+<area shape="rect" id="node3" title=" " alt="" coords="2667,5,2763,83"/>
+<area shape="rect" id="node11" href="$structall__IO__data__t.html" title=" " alt="" coords="2922,1004,3029,1081"/>
+<area shape="rect" id="node19" href="$structone__PoNET__data__t.html" title="Structure holding HAL parameters and pin references for one PoNET device." alt="" coords="3053,505,3196,582"/>
+<area shape="rect" id="node30" href="$structsPoKeysPWM.html" title=" " alt="" coords="6627,505,6737,582"/>
+<area shape="rect" id="node47" href="$structsPoKeysRTC.html" title=" " alt="" coords="5631,505,5731,582"/>
+<area shape="rect" id="node4" title=" " alt="" coords="1460,5,1499,83"/>
+<area shape="rect" id="node6" href="$structall__PoExtBus__data__t.html" title="Structure holding HAL&#45;related data for all PoExtBus banks." alt="" coords="531,1004,686,1081"/>
+<area shape="rect" id="node35" href="$structsPoKeysPEv2.html" title=" " alt="" coords="5079,931,5250,1155"/>
+<area shape="rect" id="node48" href="$structsPoKeysEasySensor.html" title=" " alt="" coords="5456,505,5607,582"/>
+<area shape="rect" id="node5" title=" " alt="" coords="4823,5,4959,83"/>
+<area shape="rect" id="node23" href="$structsPoKeysDevice__Info.html" title="PoKeys device information (HAL compatible version)" alt="" coords="5806,424,6025,663"/>
+<area shape="rect" id="node25" href="$structsPoKeysDevice__Data.html" title=" " alt="" coords="6181,439,6396,648"/>
+<area shape="rect" id="node27" href="$structsPoKeysPinData.html" title=" " alt="" coords="6420,468,6603,619"/>
+<area shape="rect" id="node42" href="$structsPoILStatus.html" title=" " alt="" coords="8132,931,8285,1155"/>
+<area shape="rect" id="node43" href="$structsPoILinfo.html" title=" " alt="" coords="8096,505,8177,582"/>
+<area shape="rect" id="node44" href="$structsPoILStack.html" title=" " alt="" coords="8201,505,8293,582"/>
+<area shape="rect" id="node45" href="$structsPoILmemoryChunk.html" title=" " alt="" coords="8318,505,8470,582"/>
+<area shape="rect" id="node49" href="$structsPoKeysOtherPeripherals.html" title=" " alt="" coords="8693,505,8879,582"/>
+<area shape="rect" id="node9" title=" " alt="" coords="650,5,751,83"/>
+<area shape="rect" id="node10" title=" " alt="" coords="3854,5,3945,83"/>
+<area shape="rect" id="node13" href="$structone__adcin__data__t.html" title=" " alt="" coords="3471,505,3607,582"/>
+<area shape="rect" id="node17" title=" " alt="" coords="2369,505,2419,582"/>
+<area shape="rect" id="node22" title=" " alt="" coords="5406,1004,5467,1081"/>
+<area shape="rect" id="node24" title=" " alt="" coords="8176,5,8257,83"/>
+<area shape="rect" id="node26" href="$structsPoKeysNetworkDeviceInfo.html" title=" " alt="" coords="9284,758,9485,835"/>
+<area shape="rect" id="node29" href="$structsMatrixKeyboard.html" title=" " alt="" coords="9492,736,9648,857"/>
+<area shape="rect" id="node33" href="$structsPoKeysMatrixLED.html" title=" " alt="" coords="9657,758,9800,835"/>
+<area shape="rect" id="node34" href="$structsPoKeysLCD.html" title=" " alt="" coords="9813,758,9916,835"/>
+<area shape="rect" id="node36" href="$structsPoKeysPEv2info.html" title=" " alt="" coords="7382,505,7515,582"/>
+<area shape="rect" id="node39" href="$structsPoKeysPoStepInterface.html" title=" " alt="" coords="7530,1004,7709,1081"/>
+<area shape="rect" id="node40" href="$structsPoPoStepDriverConfig.html" title=" " alt="" coords="7618,468,7789,619"/>
+<area shape="rect" id="node41" href="$structsPoNETmodule.html" title=" " alt="" coords="8462,758,8582,835"/>
+<area shape="rect" id="node46" href="$structsPoILTask.html" title=" " alt="" coords="9111,505,9195,582"/>
+<area shape="rect" id="node50" href="$structsPoKeysFailsafeSettings.html" title=" " alt="" coords="8589,758,8767,835"/>
+<area shape="rect" id="node31" title=" " alt="" coords="6080,5,6167,83"/>
+<area shape="rect" id="node32" title=" " alt="" coords="6888,5,7001,83"/>
+<area shape="rect" id="node37" title=" " alt="" coords="5079,505,5130,582"/>
+<area shape="rect" id="node38" title=" " alt="" coords="5155,505,5209,582"/>
+<area shape="rect" id="node51" title=" " alt="" coords="7733,1004,7884,1081"/>
+</map>

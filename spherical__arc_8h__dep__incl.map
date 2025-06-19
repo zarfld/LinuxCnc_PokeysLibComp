@@ -1,0 +1,11 @@
+<map id="/usr/include/linuxcnc/spherical_arc.h" name="/usr/include/linuxcnc/spherical_arc.h">
+<area shape="rect" id="node1" title=" " alt="" coords="65,5,219,47"/>
+<area shape="rect" id="node2" href="$tc_8h.html" title=" " alt="" coords="5,370,188,397"/>
+<area shape="rect" id="node3" href="$tc__types_8h.html" title=" " alt="" coords="173,95,327,136"/>
+<area shape="rect" id="node4" href="$blendmath_8h.html" title=" " alt="" coords="402,184,557,225"/>
+<area shape="rect" id="node5" href="$tcq_8h.html" title=" " alt="" coords="223,184,378,225"/>
+<area shape="rect" id="node6" href="$tp_8h.html" title=" " alt="" coords="391,370,575,397"/>
+<area shape="rect" id="node7" href="$tp__types_8h.html" title=" " alt="" coords="213,273,367,315"/>
+<area shape="rect" id="node8" href="$motion_8h.html" title=" " alt="" coords="213,363,367,404"/>
+<area shape="rect" id="node9" href="$pokeys__homecomp_8c.html" title="HAL component for managing homing sequence and state logic using PoKeys PulseEngine v2." alt="" coords="167,452,413,523"/>
+</map>
