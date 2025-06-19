@@ -55,6 +55,14 @@ Use the PoKeys configuration software to scan and add connected sensors.
 
 Provides up to eight step‑and‑direction signal pairs to drive external motor drivers. It connects to a PoKeys device via a ribbon cable and supports clamp diodes for transient suppression. Refer to the user manual for wiring details and absolute maximum ratings.
 
+### PoExtBusOC16
+
+Adds sixteen open‑collector outputs to a PoKeys master. Up to five boards can be chained using the 5‑wire PoExtBus cable or the 10‑pin PoExtension connector. Each output can sink up to 400 mA with a maximum supply of 40 V on the COM terminal. Connect the power supply GND to the board GND and tie the load’s positive lead to COM while the negative lead goes to pins `ocA`–`ocP`.
+
+### PoExtBusRE
+
+Provides eight electromechanical relays with both normally open and normally closed contacts. Boards may be daisy‑chained (up to ten) over PoExtBus. A separate `VCCre` connector powers the relay coils—match this voltage to the relay rating (typically 12 V). The relay contacts are rated up to 7 A at 240 VAC (10 A at 125 VAC or 28 VDC). The board also supports parallel input operation by removing the socketed IC1 and wiring the inputs directly (3.3–5 V levels).
+
 ## Getting Help
 
 For further details consult the PDF manuals in the `used_Manuals` directory. They contain wiring diagrams, additional specifications and complete feature lists for each board.
