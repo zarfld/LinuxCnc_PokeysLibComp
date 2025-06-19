@@ -4,11 +4,10 @@ setup(
     name='pokeys_py',
     version='0.1.0',
     packages=find_packages(),
-    install_requires=[
-        'ctypes',
-        'pytest',
-        'unittest.mock',
-    ],
+    install_requires=[],
+    extras_require={
+        'dev': ['pytest'],
+    },
     entry_points={
         'console_scripts': [
             'pokeys_py=pokeys_py.__main__:main',
