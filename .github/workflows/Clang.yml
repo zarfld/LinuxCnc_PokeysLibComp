@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: recursive  # This ensures all nested submodules are fetched
 
@@ -76,7 +76,7 @@ jobs:
           chmod -R u+rwx /home/cnc/actions-runner/_work
 
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: recursive  # This ensures all nested submodules are fetched
 
