@@ -25,7 +25,7 @@ cd LinuxCnc_PokeysLibComp
 sudo sh install.sh
 ```
 
-## Running the UI Setup Tool
+## Running the UI Setup Tool - !!! planned feature - Work in progress  - do NOT use!!!
 
 After installation you can launch the graphical configuration utility with:
 
