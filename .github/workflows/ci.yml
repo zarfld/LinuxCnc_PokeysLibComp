@@ -107,7 +107,7 @@ jobs:
 
     - name: Comment on issue about failure
       if: ${{ failure() }}
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
@@ -153,7 +153,7 @@ jobs:
     runs-on: self-hosted  # also runs on the Pi runner
     steps:
       - name: Close associated issue
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -194,7 +194,7 @@ jobs:
     runs-on: self-hosted  # also runs on the Pi runner
     steps:
       - name: Close associated issue
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
