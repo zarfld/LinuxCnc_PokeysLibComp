@@ -51,7 +51,7 @@ jobs:
           tar -czf doxygen-html.tar.gz html
       
       - name: Upload compressed docs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: doxygen-html
           path: code_analysis/doxygen-html.tar.gz
