@@ -364,7 +364,7 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
         return r;
     }
 
-    // encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING
+    // encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING - renamed due to issues #326
     rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.4xSampling\n", __FILE__, __FUNCTION__, prefix);
     r = hal_param_bit_newf(HAL_RW, &(encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING), id, "%s.encoder.UltraFastEncoder.4xSampling", prefix);
     if (r != 0) {
