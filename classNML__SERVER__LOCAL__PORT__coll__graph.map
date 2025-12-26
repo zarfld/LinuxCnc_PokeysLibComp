@@ -1,0 +1,43 @@
+<map id="NML_SERVER_LOCAL_PORT" name="NML_SERVER_LOCAL_PORT">
+<area shape="rect" id="node1" title=" " alt="" coords="743,2540,977,2735"/>
+<area shape="rect" id="node2" href="$classCMS__SERVER__LOCAL__PORT.html" title=" " alt="" coords="743,2195,977,2389"/>
+<area shape="rect" id="node3" href="$classCMS__USER.html" title=" " alt="" coords="2844,1871,2937,1949"/>
+<area shape="rect" id="node39" href="$classNML.html" title=" " alt="" coords="3283,2107,3469,2477"/>
+<area shape="rect" id="node4" href="$classCMS.html" title=" " alt="" coords="2926,1211,3157,1669"/>
+<area shape="rect" id="node21" href="$classCMS__UPDATER.html" title=" " alt="" coords="2961,1776,3116,2044"/>
+<area shape="rect" id="node5" title=" " alt="" coords="794,5,833,83"/>
+<area shape="rect" id="node19" href="$classPHYSMEM__HANDLE.html" title=" " alt="" coords="3503,189,3689,384"/>
+<area shape="rect" id="node29" href="$classLinkedList.html" title=" " alt="" coords="1601,509,1783,777"/>
+<area shape="rect" id="node30" href="$classLinkedListNode.html" title=" " alt="" coords="1463,241,1620,333"/>
+<area shape="rect" id="node33" href="$structREMOTE__READ__REPLY.html" title=" " alt="" coords="790,605,957,682"/>
+<area shape="rect" id="node34" href="$structREMOTE__CMS__REPLY.html" title=" " alt="" coords="252,248,436,325"/>
+<area shape="rect" id="node36" href="$structREMOTE__WRITE__REPLY.html" title=" " alt="" coords="455,605,627,682"/>
+<area shape="rect" id="node6" href="$structCMS__HEADER.html" title=" " alt="" coords="2684,408,2796,485"/>
+<area shape="rect" id="node7" title=" " alt="" coords="2640,5,2691,83"/>
+<area shape="rect" id="node8" href="$structCMS__QUEUING__HEADER.html" title=" " alt="" coords="2945,807,3127,884"/>
+<area shape="rect" id="node25" href="$classCMS__DIAG__PROC__INFO.html" title=" " alt="" coords="3301,605,3475,682"/>
+<area shape="rect" id="node26" href="$classCMS__DIAG__STATIC__PROC__INFO.html" title=" " alt="" coords="3713,248,3937,325"/>
+<area shape="rect" id="node28" href="$classCMS__DIAG__HEADER.html" title=" " alt="" coords="2282,408,2470,485"/>
+<area shape="rect" id="node9" title=" " alt="" coords="3520,970,3611,1047"/>
+<area shape="rect" id="node10" title=" " alt="" coords="2009,970,2116,1047"/>
+<area shape="rect" id="node11" title=" " alt="" coords="1428,5,1489,83"/>
+<area shape="rect" id="node12" title=" " alt="" coords="3631,5,3681,83"/>
+<area shape="rect" id="node37" href="$structREMOTE__GET__BUF__NAME__REPLY.html" title=" " alt="" coords="1859,597,2050,689"/>
+<area shape="rect" id="node13" title=" " alt="" coords="2140,970,2191,1047"/>
+<area shape="rect" id="node14" title=" " alt="" coords="2215,970,2356,1047"/>
+<area shape="rect" id="node15" title=" " alt="" coords="2381,970,2531,1047"/>
+<area shape="rect" id="node16" title=" " alt="" coords="2555,970,2749,1047"/>
+<area shape="rect" id="node17" title=" " alt="" coords="2773,963,2971,1055"/>
+<area shape="rect" id="node18" title=" " alt="" coords="2970,248,3190,325"/>
+<area shape="rect" id="node20" title=" " alt="" coords="4088,5,4155,83"/>
+<area shape="rect" id="node22" title=" " alt="" coords="3434,1401,3505,1479"/>
+<area shape="rect" id="node23" title=" " alt="" coords="2590,1401,2711,1479"/>
+<area shape="rect" id="node24" title=" " alt="" coords="2735,1401,2902,1479"/>
+<area shape="rect" id="node27" href="$classCMS__DIAGNOSTICS__INFO.html" title=" " alt="" coords="1762,963,1985,1055"/>
+<area shape="rect" id="node38" href="$structREMOTE__GET__DIAG__INFO__REPLY.html" title=" " alt="" coords="892,1394,1081,1486"/>
+<area shape="rect" id="node31" title=" " alt="" coords="1593,5,1653,83"/>
+<area shape="rect" id="node32" title=" " alt="" coords="1835,248,1983,325"/>
+<area shape="rect" id="node35" href="$structREMOTE__CMS__MESSAGE.html" title=" " alt="" coords="5,5,189,83"/>
+<area shape="rect" id="node40" title=" " alt="" coords="4362,1871,4505,1949"/>
+<area shape="rect" id="node41" title=" " alt="" coords="4529,1871,4689,1949"/>
+</map>

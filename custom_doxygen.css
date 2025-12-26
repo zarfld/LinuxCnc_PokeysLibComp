@@ -1,0 +1,120 @@
+/* === Doxygen custom theme matching PoKeys + LinuxCNC logo === */
+
+/* Style for Project Name (Title) */
+div.header > div.summary > h1.title {
+  font-size: 2.2em;
+  font-weight: 800;
+  color: #007acc; /* kräftiges Blau passend zur PoKeys-Schrift */
+  margin-bottom: 0.2em;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+}
+
+/* Style for Project Brief (Subtitle) */
+div.header > div.summary > span {
+  font-size: 1.1em;
+  font-style: italic;
+  color: #444;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* === Background and overall layout === */
+body,
+.contents {
+  background-color: #fdfdfd;
+  color: #1a1a1a;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* === Top title bar === */
+.title {
+  background-color: #009cde;
+  color: white;
+  padding: 10px;
+}
+
+/* === Navigation bar === */
+.navpath {
+  background-color: #f39200;
+  color: white;
+}
+
+.navpath ul {
+  background-color: #f39200;
+  padding: 5px;
+}
+
+.navpath li {
+  color: white;
+}
+
+/* === Sidebar / summary boxes === */
+div.summary {
+  background-color: #f0f0f0;
+  border: 1px solid #cccccc;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+/* === Headings === */
+h1,
+h2,
+h3,
+h4 {
+  color: #009cde;
+  border-bottom: 1px solid #cccccc;
+}
+
+/* === Links === */
+a {
+  color: #f39200;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #d67e00;
+  text-decoration: underline;
+}
+
+/* === Code blocks and inline code === */
+code,
+pre.fragment {
+  background-color: #eeeeee;
+  color: #1a1a1a;
+  border-radius: 4px;
+  padding: 4px;
+  font-family: "Courier New", Courier, monospace;
+}
+
+div.fragment {
+  background-color: #eeeeee;
+  border: 1px solid #cccccc;
+  padding: 10px;
+  border-radius: 5px;
+  overflow-x: auto;
+}
+
+/* === Tables === */
+table.doxtable {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table.doxtable th,
+table.doxtable td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+table.doxtable th {
+  background-color: #009cde;
+  color: white;
+}
+
+/* === Footer === */
+.footer {
+  background-color: #f39200;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}

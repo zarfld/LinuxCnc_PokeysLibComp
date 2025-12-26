@@ -1,0 +1,4 @@
+<map id="Canonical Digital Input" name="Canonical Digital Input">
+<area shape="rect" id="node1" title="Canonical HAL interface for binary hardware inputs." alt="" coords="208,5,379,31"/>
+<area shape="rect" id="node2" href="$group__hal__digital.html" title="Export and registration helpers for canonical digital input/output." alt="" coords="5,5,160,31"/>
+</map>

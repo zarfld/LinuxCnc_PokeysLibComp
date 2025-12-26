@@ -1,0 +1,8 @@
+<map id="EMC_SPINDLE_BRAKE_RELEASE" name="EMC_SPINDLE_BRAKE_RELEASE">
+<area shape="rect" id="node1" title=" " alt="" coords="5,627,259,719"/>
+<area shape="rect" id="node2" href="$classEMC__SPINDLE__CMD__MSG.html" title=" " alt="" coords="125,485,339,577"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="226,359,374,436"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="404,160,508,296"/>
+<area shape="rect" id="node5" title=" " alt="" coords="210,5,249,83"/>
+<area shape="rect" id="node6" title=" " alt="" coords="465,5,516,83"/>
+</map>

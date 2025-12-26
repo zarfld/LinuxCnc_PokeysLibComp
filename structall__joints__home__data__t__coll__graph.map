@@ -1,0 +1,7 @@
+<map id="all_joints_home_data_t" name="all_joints_home_data_t">
+<area shape="rect" id="node1" title="Containerstruktur für alle HAL&#45;Pin&#45;Sätze pro Joint." alt="" coords="73,329,247,407"/>
+<area shape="rect" id="node2" href="$structone__joint__home__data__t.html" title="HAL pin structure for managing homing state per joint." alt="" coords="73,189,247,267"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,5,56,83"/>
+<area shape="rect" id="node4" title=" " alt="" coords="141,5,179,83"/>
+<area shape="rect" id="node5" title=" " alt="" coords="236,5,332,83"/>
+</map>

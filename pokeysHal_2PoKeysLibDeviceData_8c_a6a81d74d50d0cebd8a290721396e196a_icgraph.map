@@ -1,0 +1,8 @@
+<map id="PK_SaveConfiguration" name="PK_SaveConfiguration">
+<area shape="rect" id="node1" title="Save current configuration to device flash (command 0x50)." alt="" coords="669,64,835,91"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#ga03f28595c27000ef997f76c58d387efa" title="Updates and sets additional Pulse Engine v2 parameters, such as the emergency input pin." alt="" coords="399,5,621,32"/>
+<area shape="rect" id="node5" href="$group__hal__component__pokeys.html#gaa49f4d7037a22852892704ca050145f8" title="Set the axis configuration of the PoKeys device." alt="" coords="407,57,613,98"/>
+<area shape="rect" id="node6" href="$group__hal__component__pokeys.html#gadd22880204794b8f9b9a6eafa4ed1d74" title="Configures and applies Pulse Engine v2 settings to the PoKeys device." alt="" coords="421,123,599,149"/>
+<area shape="rect" id="node3" href="$group__hal__component__pokeys.html#ga1fd300cd610e9545e58b62ffd50e474e" title="Applies INI&#45;based configuration to PulseEngine and IO." alt="" coords="180,27,351,69"/>
+<area shape="rect" id="node4" href="$pokeys_8c.html#a1d59e212b57d33fe74e44b64cadf3314" title=" " alt="" coords="5,35,132,61"/>
+</map>

@@ -1,0 +1,4 @@
+var structREMOTE__GET__DIAG__INFO__REQUEST =
+[
+    [ "REMOTE_GET_DIAG_INFO_REQUEST", "structREMOTE__GET__DIAG__INFO__REQUEST.html#ad4557da14f401c1338ec9b3b12d0f26e", null ]
+];

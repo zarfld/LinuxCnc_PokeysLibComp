@@ -1,0 +1,9 @@
+<map id="PK_DigitalCounterGetAsync" name="PK_DigitalCounterGetAsync">
+<area shape="rect" id="node1" title="Starts async request to get digital counter values (CMD 0xD8)." alt="" coords="5,81,208,108"/>
+<area shape="rect" id="node2" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="265,31,422,57"/>
+<area shape="rect" id="node5" href="$PoKeysLibIOAsync_8c.html#a51f7d826c8359aae79213ffb96fb426b" title="Parser for digital counter values (CMD 0xD8)." alt="" coords="256,81,431,108"/>
+<area shape="rect" id="node6" href="$pokeysHal_2PoKeysLibIO_8c.html#a4397536c30fe3f56eb74b56210839349" title="Check if a pin supports a counter (command 0xC0/0x01)." alt="" coords="479,119,647,145"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="499,5,626,32"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="496,56,629,83"/>
+<area shape="rect" id="node7" href="$pokeyslib_2PoKeysLibIO_8c.html#ae7007ad0d96ba1ff2fadba2101016ce7" title=" " alt="" coords="695,119,925,145"/>
+</map>

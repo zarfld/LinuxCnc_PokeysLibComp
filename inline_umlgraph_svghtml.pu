@@ -1,0 +1,65 @@
+@startuml inline_umlgraph_1.svg
+start
+:Check all axes in sequence;
+if (All in RequiredState?) then (yes)
+  :Set NextState for each axis;
+  if (NextState == ARMENCODER) then (yes)
+    :Set zero position;
+  endif
+  if (NextState == HOMINGFinalMove) then (yes)
+    :Start final move;
+  endif
+  :Done;
+else (no)
+  :Wait;
+endif
+stop
+@enduml
+@startuml inline_umlgraph_2.svg
+title Homing Sequence Interaction
+
+state IDLE
+state DO_ONE_JOINT
+state DO_ONE_SEQUENCE
+state START
+state START_JOINTS
+state WAIT_JOINTS
+
+[*] --> IDLE
+IDLE --> DO_ONE_JOINT : H[*].home_state = START
+DO_ONE_JOINT --> START : joints_in_sequence > 0
+DO_ONE_SEQUENCE --> START : prepare multi-joint homing
+START --> WAIT_JOINTS : issue HOMINGSTART
+WAIT_JOINTS --> IDLE : all joints homed\n(last sequence)
+WAIT_JOINTS --> DO_ONE_SEQUENCE : proceed next sequence
+WAIT_JOINTS --> START_JOINTS : AxesState = READY/RUNNING
+START_JOINTS --> WAIT_JOINTS : reset joint states
+@enduml
+@startuml AxisStateMachine.svg
+[*] --> STOPPED
+STOPPED --> READY
+READY --> RUNNING
+RUNNING --> HOMINGSTART
+HOMINGSTART --> HOMING_RESETTING
+HOMING_RESETTING --> HOMING_BACKING_OFF
+HOMING_BACKING_OFF --> HOMINGSEARCH
+HOMINGSEARCH --> HOMINGBACK
+HOMINGBACK --> HOME
+HOME --> [*]
+PROBESTART --> PROBESEARCH
+PROBESEARCH --> PROBED
+PROBED --> READY
+LIMIT --> STOPPED
+ERROR --> STOPPED
+@enduml
+@startuml AxisCommand.svg
+[*] --> IDLE
+IDLE --> HOMINGSTART
+HOMINGSTART --> ARMENCODER
+ARMENCODER --> HOMINGWaitFinalMove
+HOMINGWaitFinalMove --> HOMINGFinalMove
+HOMINGFinalMove --> IDLE
+IDLE --> HOMINGCancel
+HOMINGFinalMove --> HOMINGFinalize
+HOMINGFinalize --> ARMENCODER
+@enduml

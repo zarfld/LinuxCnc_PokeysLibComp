@@ -1,0 +1,12 @@
+<map id="Update_LCD" name="Update_LCD">
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,108,57"/>
+<area shape="rect" id="node2" href="$pokeysHal_2PoKeysLibLCD_8c.html#a88d0b0c64adb179a20929f6f9930ed22" title="Upload custom character patterns to the LCD." alt="" coords="156,5,369,32"/>
+<area shape="rect" id="node10" href="$pokeysHal_2PoKeysLibLCD_8c.html#a0dd641cf4fe7d7ced700ece30b60ea3e" title="Update LCD display using buffered lines." alt="" coords="203,56,322,83"/>
+<area shape="rect" id="node3" href="$pokeyslib_2PoKeysLibCore_8c.html#acb1fdd8f77277dc66c4d037218bfcece" title=" " alt="" coords="417,5,536,32"/>
+<area shape="rect" id="node4" href="$pokeyslib_2PoKeysLibCore_8c.html#ab5d92aa36d0a4a6953a055f5cd960aff" title=" " alt="" coords="423,56,530,83"/>
+<area shape="rect" id="node5" href="$pokeyslib_2PoKeysLibCore_8c.html#a273b6d635dea8f559b915cdb289d021e" title=" " alt="" coords="773,5,883,32"/>
+<area shape="rect" id="node6" href="$group__API.html#ga6b820f3e72097cf7f994e33715dc7af1" title="Read an Input report from a HID device." alt="" coords="609,81,687,108"/>
+<area shape="rect" id="node8" href="$group__API.html#gad14ea48e440cf5066df87cc6488493af" title="Write an Output report to a HID device." alt="" coords="607,132,689,159"/>
+<area shape="rect" id="node9" href="$pokeyslib_2PoKeysLibCoreSockets_8c.html#a22759fb4024c9081af26ac1bc6541b47" title=" " alt="" coords="584,31,712,57"/>
+<area shape="rect" id="node7" href="$group__API.html#gaa5c9ed5aa290688ffac03343989ad75a" title="Read an Input report from a HID device with timeout." alt="" coords="760,81,896,108"/>
+</map>

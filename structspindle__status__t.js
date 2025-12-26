@@ -1,0 +1,27 @@
+var structspindle__status__t =
+[
+    [ "at_speed", "structspindle__status__t.html#a96c041a191b9edc78d4e9af54c7e1204", null ],
+    [ "brake", "structspindle__status__t.html#a32c53183208a7293f3ae92bbba08a771", null ],
+    [ "css_factor", "structspindle__status__t.html#ad37461e55765684549b690c54231775d", null ],
+    [ "direction", "structspindle__status__t.html#afb8bc81f7e068ccf53706d8c378ed2e2", null ],
+    [ "fault", "structspindle__status__t.html#a20d6ca2faea0915363207177913453c4", null ],
+    [ "home_angle", "structspindle__status__t.html#a12568b20cb4fa521ee27a7860e2b4f22", null ],
+    [ "home_search_vel", "structspindle__status__t.html#a7da7146249f886bbc491064f02bf7b38", null ],
+    [ "home_sequence", "structspindle__status__t.html#a38333f910866a26c9cdfa3fbb76a0ab9", null ],
+    [ "increment", "structspindle__status__t.html#a45802f3cd783bd72f804fabe93df5650", null ],
+    [ "locked", "structspindle__status__t.html#af9c4ccb91fbe5c06b864a03db54b587d", null ],
+    [ "max_neg_speed", "structspindle__status__t.html#a99970db9db07a738648a9c99873489e7", null ],
+    [ "max_pos_speed", "structspindle__status__t.html#ac8b35c9d9b41462ac4fd12bf5e2f5607", null ],
+    [ "min_neg_speed", "structspindle__status__t.html#a5565789d91873c43d0c9317820b80fbb", null ],
+    [ "min_pos_speed", "structspindle__status__t.html#a97b7b179a8fc282c9c881a04295689bd", null ],
+    [ "net_scale", "structspindle__status__t.html#a37f0557ee475144997e985bdd10ebddf", null ],
+    [ "orient_fault", "structspindle__status__t.html#ab5a26c070943204c692b40aed5a46924", null ],
+    [ "orient_state", "structspindle__status__t.html#a2d612e9d408dbe39fda409596d81bbab", null ],
+    [ "scale", "structspindle__status__t.html#a2c4f119f4f5ab720aaafaac48303d12e", null ],
+    [ "speed", "structspindle__status__t.html#a44826f2eaf1d936f6b3cdcba71fe5cd1", null ],
+    [ "spindle_index_enable", "structspindle__status__t.html#af408e9ba35ef5039897b3cab8388b003", null ],
+    [ "spindleRevs", "structspindle__status__t.html#a80c7888ef64bb819cc6d2d674dfa1309", null ],
+    [ "spindleSpeedIn", "structspindle__status__t.html#ab4d3c68c2f9d8f215c4a770d7f6b9b9c", null ],
+    [ "state", "structspindle__status__t.html#add79af6341b8f2ef01725646d527aee3", null ],
+    [ "xoffset", "structspindle__status__t.html#a737c1e344f95111bb114daabb9c1b3c9", null ]
+];

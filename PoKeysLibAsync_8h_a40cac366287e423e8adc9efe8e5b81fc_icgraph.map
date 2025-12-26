@@ -1,0 +1,5 @@
+<map id="PK_DigitalIOSetGetAsync" name="PK_DigitalIOSetGetAsync">
+<area shape="rect" id="node1" title="Combined Set and Get digital IO in one async call." alt="" coords="257,31,444,57"/>
+<area shape="rect" id="node2" href="$PoKeysLibAdvancedRTAsync_8c.html#a4ed1a6fbf44221a75d100efbb8f41ca4" title="Emergency stop all motion and outputs (async)" alt="" coords="5,5,209,32"/>
+<area shape="rect" id="node3" href="$PoKeysLibAdvancedRTAsync_8c.html#a62f34b5fbad7130f28b4ee32263ee6c7" title="Perform complete IO update cycle (async)" alt="" coords="16,56,199,83"/>
+</map>

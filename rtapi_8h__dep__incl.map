@@ -1,0 +1,96 @@
+<map id="/usr/include/linuxcnc/rtapi.h" name="/usr/include/linuxcnc/rtapi.h">
+<area shape="rect" id="node1" title=" " alt="" coords="7961,5,8116,47"/>
+<area shape="rect" id="node2" href="$linuxcnc-hal-canon_2hal__analog_8c.html" title="HAL export and function registration for canonical analog input and output." alt="" coords="3188,303,3441,373"/>
+<area shape="rect" id="node3" href="$linuxcnc-hal-canon_2hal__canon_8h.html" title="Canonical Device Interface definitions and export helpers for LinuxCNC HAL." alt="" coords="3189,184,3443,255"/>
+<area shape="rect" id="node4" href="$linuxcnc-hal-canon_2hal__digital_8c.html" title="Canonical HAL export functions for digital input and output devices." alt="" coords="2633,303,2887,373"/>
+<area shape="rect" id="node5" href="$linuxcnc-hal-canon_2hal__encoder_8c.html" title="HAL export and function registration helpers for canonical encoder devices." alt="" coords="2911,303,3164,373"/>
+<area shape="rect" id="node6" href="$async__scheduler_8c.html" title=" " alt="" coords="5,429,312,499"/>
+<area shape="rect" id="node7" href="$pokeys__async_8c.html" title=" " alt="" coords="3743,303,4033,373"/>
+<area shape="rect" id="node8" href="$pokeys__async2_8c.html" title=" " alt="" coords="4388,303,4687,373"/>
+<area shape="rect" id="node9" href="$pokeysHal_2hal-canon_2hal__analog_8c.html" title="HAL export and function registration for canonical analog input and output." alt="" coords="3465,303,3719,373"/>
+<area shape="rect" id="node10" href="$pokeysHal_2hal-canon_2hal__canon_8h.html" title="Canonical Device Interface definitions and export helpers for LinuxCNC HAL." alt="" coords="4676,184,4929,255"/>
+<area shape="rect" id="node11" href="$pokeysHal_2hal-canon_2hal__digital_8c.html" title="Canonical HAL export functions for digital input and output devices." alt="" coords="9103,303,9356,373"/>
+<area shape="rect" id="node12" href="$pokeysHal_2hal-canon_2hal__encoder_8c.html" title="HAL export and function registration helpers for canonical encoder devices." alt="" coords="4058,303,4313,373"/>
+<area shape="rect" id="node13" href="$pokeys__homecomp_8c.html" title="HAL component for managing homing sequence and state logic using PoKeys PulseEngine v2." alt="" coords="4204,184,4449,255"/>
+<area shape="rect" id="node14" href="$PoKeysCompEncoders_8c.html" title=" " alt="" coords="8345,184,8591,255"/>
+<area shape="rect" id="node15" href="$pokeys_8c.html" title="HAL component for integrating PoKeys57 devices with LinuxCNC." alt="" coords="9532,303,9777,373"/>
+<area shape="rect" id="node16" href="$PoKeysCompIO_8c.html" title="HAL interface for PoKeys digital and analog I/O handling." alt="" coords="8615,184,8860,255"/>
+<area shape="rect" id="node17" href="$PoKeysCompPoExtBus_8c.html" title=" " alt="" coords="8935,184,9180,255"/>
+<area shape="rect" id="node18" href="$PoKeysCompPoNet_8c.html" title=" " alt="" coords="8076,184,8321,255"/>
+<area shape="rect" id="node19" href="$hal_8h.html" title=" " alt="" coords="7044,95,7199,136"/>
+<area shape="rect" id="node82" href="$hostmot2-serial_8h.html" title=" " alt="" coords="8508,95,8663,136"/>
+<area shape="rect" id="node83" href="$rtapi__device_8h.html" title=" " alt="" coords="8687,95,8841,136"/>
+<area shape="rect" id="node84" href="$rtapi__firmware_8h.html" title=" " alt="" coords="8865,95,9020,136"/>
+<area shape="rect" id="node85" href="$rtapi__io_8h.html" title=" " alt="" coords="9044,95,9199,136"/>
+<area shape="rect" id="node86" href="$rtapi__parport_8h.html" title=" " alt="" coords="9433,199,9588,240"/>
+<area shape="rect" id="node88" href="$rtapi__list_8h.html" title=" " alt="" coords="9273,95,9428,136"/>
+<area shape="rect" id="node89" href="$rtapi__math_8h.html" title=" " alt="" coords="8228,95,8383,136"/>
+<area shape="rect" id="node92" href="$rtapi__pci_8h.html" title=" " alt="" coords="9452,95,9607,136"/>
+<area shape="rect" id="node93" href="$rtapi__string_8h.html" title=" " alt="" coords="4064,95,4219,136"/>
+<area shape="rect" id="node20" href="$PoKeysLibCoreSocketsAsync_8c.html" title=" " alt="" coords="14246,429,14541,499"/>
+<area shape="rect" id="node21" href="$PoKeysLibHal_8h.html" title=" " alt="" coords="6679,184,6932,255"/>
+<area shape="rect" id="node49" href="$PoKeysLibPoNETHal_8c.html" title="HAL interface functions for PoNET devices (including kbd48CNC)" alt="" coords="14565,429,14819,499"/>
+<area shape="rect" id="node53" href="$PoKeysLibRTCAsync_8c.html" title="Asynchronous RTC (Real Time Clock) access for PoKeys devices." alt="" coords="14843,429,15096,499"/>
+<area shape="rect" id="node78" href="$axis_8h.html" title=" " alt="" coords="7209,199,7364,240"/>
+<area shape="rect" id="node79" href="$genhexkins_8h.html" title=" " alt="" coords="7388,199,7543,240"/>
+<area shape="rect" id="node80" href="$genserkins_8h.html" title=" " alt="" coords="9801,317,9956,359"/>
+<area shape="rect" id="node81" href="$inihal_8hh.html" title=" " alt="" coords="7567,199,7721,240"/>
+<area shape="rect" id="node22" href="$pokeysHal_2PoKeysLib1Wire_8c.html" title="Implementation of 1&#45;wire bus operations (command 0xDC)." alt="" coords="4040,429,4293,499"/>
+<area shape="rect" id="node23" href="$PoKeysLib1WireAsync_8c.html" title=" " alt="" coords="7405,429,7659,499"/>
+<area shape="rect" id="node24" href="$PoKeysLibAdvancedRTAsync_8c.html" title=" " alt="" coords="7683,429,7976,499"/>
+<area shape="rect" id="node25" href="$PoKeysLibAsync_8h.html" title=" " alt="" coords="7121,303,7375,373"/>
+<area shape="rect" id="node27" href="$pokeysHal_2PoKeysLibCAN_8c.html" title="Implementation of CAN bus operations (command 0x86)." alt="" coords="4317,429,4571,499"/>
+<area shape="rect" id="node28" href="$PoKeysLibCANAsync_8c.html" title=" " alt="" coords="8000,429,8253,499"/>
+<area shape="rect" id="node29" href="$PoKeysLibCOSM_8c.html" title="COSM/HTTP reporting configuration (command 0xF7)." alt="" coords="4595,429,4848,499"/>
+<area shape="rect" id="node30" href="$PoKeysLibCOSMAsync_8c.html" title=" " alt="" coords="8277,429,8531,499"/>
+<area shape="rect" id="node31" href="$PoKeysLibDeviceDataAsync_8c.html" title=" " alt="" coords="8555,429,8845,499"/>
+<area shape="rect" id="node32" href="$PoKeysLibDevicePoKeys57IndustrialAsync_8c.html" title=" " alt="" coords="13839,429,14222,499"/>
+<area shape="rect" id="node33" href="$PoKeysLibDeviceStatusAsync_8c.html" title=" " alt="" coords="9147,429,9447,499"/>
+<area shape="rect" id="node34" href="$PoKeysLibEasySensorsAsync_8c.html" title=" " alt="" coords="9472,429,9768,499"/>
+<area shape="rect" id="node35" href="$pokeysHal_2PoKeysLibEncoders_8c.html" title="Functions for configuring and reading encoder channels." alt="" coords="4872,429,5125,499"/>
+<area shape="rect" id="node36" href="$PoKeysLibEncodersAsync_8c.html" title=" " alt="" coords="9793,429,10066,499"/>
+<area shape="rect" id="node37" href="$PoKeysLibFailsafeAsync_8c.html" title=" " alt="" coords="10091,429,10355,499"/>
+<area shape="rect" id="node38" href="$pokeysHal_2PoKeysLibI2C_8c.html" title="I\2C communication helpers (command 0xDB)." alt="" coords="5149,429,5403,499"/>
+<area shape="rect" id="node39" href="$PoKeysLibI2CAsync_8c.html" title=" " alt="" coords="10379,429,10632,499"/>
+<area shape="rect" id="node40" href="$PoKeysLibIOAsync_8c.html" title=" " alt="" coords="10656,429,10909,499"/>
+<area shape="rect" id="node41" href="$pokeysHal_2PoKeysLibLCD_8c.html" title=" " alt="" coords="5427,429,5680,499"/>
+<area shape="rect" id="node42" href="$PoKeysLibLCDAsync_8c.html" title="Asynchronous LCD helper functions." alt="" coords="10933,429,11187,499"/>
+<area shape="rect" id="node43" href="$PoKeysLibMatrixKBAsync_8c.html" title=" " alt="" coords="11211,429,11485,499"/>
+<area shape="rect" id="node44" href="$PoKeysLibMatrixLEDAsync_8c.html" title=" " alt="" coords="11510,429,11791,499"/>
+<area shape="rect" id="node45" href="$PoKeysLibPWMAsync_8c.html" title=" " alt="" coords="11816,429,12069,499"/>
+<area shape="rect" id="node46" href="$pokeysHal_2PoKeysLibPoNET_8c.html" title=" " alt="" coords="5704,429,5957,499"/>
+<area shape="rect" id="node47" href="$PoKeysLibPoNETAsync_8c.html" title=" " alt="" coords="12094,429,12349,499"/>
+<area shape="rect" id="node48" href="$PoKeysLibPoNETAsyncEnhanced_8c.html" title=" " alt="" coords="12373,429,12691,499"/>
+<area shape="rect" id="node50" href="$pokeysHal_2PoKeysLibPulseEngine__v2_8c.html" title="Pulse engine v2 control functions (command 0x85)." alt="" coords="5981,429,6259,499"/>
+<area shape="rect" id="node51" href="$PoKeysLibPulseEngine__v2Async_8c.html" title=" " alt="" coords="12716,421,12969,507"/>
+<area shape="rect" id="node52" href="$pokeysHal_2PoKeysLibRTC_8c.html" title="Real&#45;time clock access helpers (command 0x83)." alt="" coords="6283,429,6536,499"/>
+<area shape="rect" id="node54" href="$pokeysHal_2PoKeysLibSPI_8c.html" title="SPI communication helpers (command 0xE5)." alt="" coords="6560,429,6813,499"/>
+<area shape="rect" id="node55" href="$PoKeysLibSPIAsync_8c.html" title=" " alt="" coords="12993,429,13247,499"/>
+<area shape="rect" id="node56" href="$PoKeysLibSecurity_8c.html" title="Security and authorisation helpers (commands 0xE1&#45;0xE3)." alt="" coords="6837,429,7091,499"/>
+<area shape="rect" id="node57" href="$PoKeysLibSecurityAsync_8c.html" title=" " alt="" coords="13271,429,13537,499"/>
+<area shape="rect" id="node58" href="$pokeysHal_2PoKeysLibUART_8c.html" title="UART communication helpers (command 0xDE)." alt="" coords="3763,429,4016,499"/>
+<area shape="rect" id="node59" href="$PoKeysLibUARTAsync_8c.html" title=" " alt="" coords="13561,429,13815,499"/>
+<area shape="rect" id="node60" href="$pokeysHal_2PoKeysLibWS2812_8c.html" title="WS2812 LED strip control (command 0x4B)." alt="" coords="3485,429,3739,499"/>
+<area shape="rect" id="node61" href="$PoKeysLibWS2812Async_8c.html" title=" " alt="" coords="7115,429,7381,499"/>
+<area shape="rect" id="node62" href="$pokeysHal_2PoKeysLibCore_8c.html" title="Core communication helpers for the PoKeys protocol." alt="" coords="336,429,589,499"/>
+<area shape="rect" id="node63" href="$pokeysHal_2PoKeysLibCore_8h.html" title=" " alt="" coords="5932,303,6185,373"/>
+<area shape="rect" id="node64" href="$pokeysHal_2PoKeysLibCoreSockets_8c.html" title="Network transport helpers for PoKeys devices." alt="" coords="982,429,1237,499"/>
+<area shape="rect" id="node65" href="$pokeysHal_2PoKeysLibDeviceData_8c.html" title="Device information and configuration helpers." alt="" coords="1261,429,1515,499"/>
+<area shape="rect" id="node66" href="$pokeysHal_2PoKeysLibDevicePoKeys57Industrial_8c.html" title="Support for the PoKeys57Industrial device." alt="" coords="613,429,957,499"/>
+<area shape="rect" id="node67" href="$pokeysHal_2PoKeysLibEasySensors_8c.html" title="Access helper for EasySensors block (command 0x76/0x77)." alt="" coords="1539,429,1797,499"/>
+<area shape="rect" id="node68" href="$pokeysHal_2PoKeysLibFailsafe_8c.html" title="Failsafe configuration helpers (command 0x81)." alt="" coords="1821,429,2075,499"/>
+<area shape="rect" id="node69" href="$pokeysHal_2PoKeysLibFastUSB_8c.html" title=" " alt="" coords="2099,429,2352,499"/>
+<area shape="rect" id="node70" href="$pokeysHal_2PoKeysLibIO_8c.html" title="Digital and analog I/O management (commands 0xC0&#45;0xCC)." alt="" coords="2376,429,2629,499"/>
+<area shape="rect" id="node71" href="$pokeysHal_2PoKeysLibMatrixKB_8c.html" title=" " alt="" coords="2653,429,2907,499"/>
+<area shape="rect" id="node72" href="$pokeysHal_2PoKeysLibMatrixLED_8c.html" title=" " alt="" coords="2931,429,3184,499"/>
+<area shape="rect" id="node73" href="$pokeysHal_2PoKeysLibPoIL_8c.html" title=" " alt="" coords="3208,429,3461,499"/>
+<area shape="rect" id="node74" href="$pokeysHal_2PoKeysLibCoreSockets_8h.html" title=" " alt="" coords="5095,303,5351,373"/>
+<area shape="rect" id="node75" href="$PoKeysLibCoreSocketsAsync_8h.html" title=" " alt="" coords="8631,303,8926,373"/>
+<area shape="rect" id="node76" href="$pokeysHal_2PoKeysLibDevicePoKeys57Industrial_8h.html" title=" " alt="" coords="7805,303,8150,373"/>
+<area shape="rect" id="node77" href="$async__scheduler_8h.html" title=" " alt="" coords="4711,303,5019,373"/>
+<area shape="rect" id="node26" href="$PoKeysLibAsync_8c.html" title=" " alt="" coords="8869,429,9123,499"/>
+<area shape="rect" id="node87" href="$hal__parport_8h.html" title=" " alt="" coords="9980,317,10135,359"/>
+<area shape="rect" id="node90" href="$gomath_8h.html" title=" " alt="" coords="9204,199,9359,240"/>
+<area shape="rect" id="node91" href="$rtapi__vsnprintf_8h.html" title=" " alt="" coords="7847,199,8001,240"/>
+<area shape="rect" id="node94" href="$interp__internal_8hh.html" title=" " alt="" coords="3873,199,4028,240"/>
+</map>

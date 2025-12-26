@@ -1,0 +1,6 @@
+<map id="EMC_MOTION_SET_DOUT" name="EMC_MOTION_SET_DOUT">
+<area shape="rect" id="node1" title=" " alt="" coords="5,484,219,620"/>
+<area shape="rect" id="node2" href="$classEMC__MOTION__CMD__MSG.html" title=" " alt="" coords="6,344,218,436"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="38,219,186,296"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="29,5,195,171"/>
+</map>

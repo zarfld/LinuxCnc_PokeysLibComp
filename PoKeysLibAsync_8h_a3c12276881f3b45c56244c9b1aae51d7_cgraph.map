@@ -1,0 +1,6 @@
+<map id="PK_PoNETGetModuleLightAsync" name="PK_PoNETGetModuleLightAsync">
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,236,57"/>
+<area shape="rect" id="node2" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="284,31,441,57"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="493,5,619,32"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="489,56,623,83"/>
+</map>

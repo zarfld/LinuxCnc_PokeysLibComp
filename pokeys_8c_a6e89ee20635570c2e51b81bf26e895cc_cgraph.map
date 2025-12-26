@@ -1,0 +1,33 @@
+<map id="pokeys_update" name="pokeys_update">
+<area shape="rect" id="node1" title=" " alt="" coords="5,411,125,437"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#ga4282b939b3ee6e35a549933cfc1f70fa" title="Updates encoder data from the PoKeys device and writes values to HAL pins." alt="" coords="405,411,550,437"/>
+<area shape="rect" id="node4" href="$group__hal__component__pokeys.html#ga053adc615433218543268696998c7f32" title="Updates PoKeys I/O states from and to hardware." alt="" coords="392,251,563,293"/>
+<area shape="rect" id="node23" href="$group__hal__component__pokeys.html#ga11eaeb83988c4e23fca22c07885baf31" title="Updates PulseEngine feedback and status." alt="" coords="173,462,344,503"/>
+<area shape="rect" id="node30" href="$group__hal__component__pokeys.html#ga847756bee937458588675e919c70d798" title="Updates the PoExtBus data from and to the PoKeys device." alt="" coords="181,360,336,387"/>
+<area shape="rect" id="node31" href="$group__hal__component__pokeys.html#ga4d76e6cd067bd57f2574e514294cc3f8" title="Updates the state of the connected PoNET modules, specifically kbd48CNC." alt="" coords="193,528,325,555"/>
+<area shape="rect" id="node3" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="643,461,767,488"/>
+<area shape="rect" id="node5" href="$pokeysHal_2PoKeysLibIO_8c.html#aa3cbbaa7a57191d5e9d626757d45e396" title="Read all analog input channels (command 0x3A/1)." alt="" coords="641,360,769,387"/>
+<area shape="rect" id="node13" href="$pokeysHal_2PoKeysLibDeviceData_8c.html#a3e3806b8d08aea01d2e7d5e752ee63b3" title="Wrapper for PK_CheckPinCapabilityByTypeID() using a device handle." alt="" coords="619,5,791,32"/>
+<area shape="rect" id="node15" href="$pokeysHal_2PoKeysLibIO_8c.html#a4c133a83e9843b4ed2842b0dd32c09c8" title="Read values of all digital counters (command 0xD8)." alt="" coords="624,107,787,133"/>
+<area shape="rect" id="node17" href="$pokeysHal_2PoKeysLibIO_8c.html#a281ff3583d597f6702bd26bdde9f06d3" title="Read digital input states (command 0xCC/0)." alt="" coords="642,411,769,437"/>
+<area shape="rect" id="node18" href="$pokeysHal_2PoKeysLibIO_8c.html#a0d3c2b4f13d7f9e1adecd75102106b4b" title="Set digital output states (command 0xCC/1)." alt="" coords="643,157,767,184"/>
+<area shape="rect" id="node19" href="$pokeysHal_2PoKeysLibIO_8c.html#a7540328350bf7a0de8d4cd968eb81068" title="Read pin configuration from the device (command 0xC0)." alt="" coords="617,56,793,83"/>
+<area shape="rect" id="node20" href="$pokeysHal_2PoKeysLibIO_8c.html#a5bbc9f37369faac5fbbe357a9393b8ae" title=" " alt="" coords="611,208,800,235"/>
+<area shape="rect" id="node21" href="$pokeysHal_2PoKeysLibIO_8c.html#a74a7b181f1bbb877bb965343a64d43e2" title=" " alt="" coords="612,259,799,285"/>
+<area shape="rect" id="node22" href="$pokeysHal_2PoKeysLibIO_8c.html#a2fef84a920878e3060d96217731123fa" title=" " alt="" coords="642,309,769,336"/>
+<area shape="rect" id="node6" href="$pokeyslib_2PoKeysLibCore_8c.html#acb1fdd8f77277dc66c4d037218bfcece" title=" " alt="" coords="905,259,1024,285"/>
+<area shape="rect" id="node7" href="$pokeyslib_2PoKeysLibCore_8c.html#ab5d92aa36d0a4a6953a055f5cd960aff" title=" " alt="" coords="911,309,1018,336"/>
+<area shape="rect" id="node8" href="$pokeyslib_2PoKeysLibCore_8c.html#a273b6d635dea8f559b915cdb289d021e" title=" " alt="" coords="1318,259,1429,285"/>
+<area shape="rect" id="node9" href="$group__API.html#ga6b820f3e72097cf7f994e33715dc7af1" title="Read an Input report from a HID device." alt="" coords="1154,335,1233,361"/>
+<area shape="rect" id="node11" href="$group__API.html#gad14ea48e440cf5066df87cc6488493af" title="Write an Output report to a HID device." alt="" coords="1152,385,1235,412"/>
+<area shape="rect" id="node12" href="$pokeyslib_2PoKeysLibCoreSockets_8c.html#a22759fb4024c9081af26ac1bc6541b47" title=" " alt="" coords="1129,284,1257,311"/>
+<area shape="rect" id="node10" href="$group__API.html#gaa5c9ed5aa290688ffac03343989ad75a" title="Read an Input report from a HID device with timeout." alt="" coords="1305,335,1441,361"/>
+<area shape="rect" id="node14" href="$pokeyslib_2PoKeysLibDeviceData_8c.html#a7b36c724a486431479416439a5d943c9" title=" " alt="" coords="848,5,1081,32"/>
+<area shape="rect" id="node16" href="$pokeyslib_2PoKeysLibIO_8c.html#a4397536c30fe3f56eb74b56210839349" title=" " alt="" coords="881,81,1049,108"/>
+<area shape="rect" id="node24" href="$group__hal__component__pokeys.html#gad0b4254d4beb35bce80cf4a89199b554" title="Reads and updates the state of dedicated limit and home inputs from the PoKeys Pulse Engine v2." alt="" coords="411,512,544,539"/>
+<area shape="rect" id="node27" href="$group__hal__component__pokeys.html#ga1cd78f86e93af262648c35386373cf3c" title="Retrieves and processes the current status of the PoKeys Pulse Engine v2 (PEv2)." alt="" coords="415,563,540,589"/>
+<area shape="rect" id="node25" href="$group__hal__component__pokeys.html#gaacbe6bf27e2657b69cbd0a4f79140e2d" title="Retrieves the value of a specific bit in a byte." alt="" coords="648,563,763,589"/>
+<area shape="rect" id="node26" href="$pokeysHal_2PoKeysLibPulseEngine__v2_8c.html#a5cbfd274854dfee2aa6a756c86896939" title="Obtain extended status information." alt="" coords="627,512,784,539"/>
+<area shape="rect" id="node28" href="$pokeysHal_2PoKeysLibPulseEngine__v2_8c.html#a213445f67d5be94e76abcbfca950512d" title="Retrieve pulse engine status." alt="" coords="631,613,780,640"/>
+<area shape="rect" id="node29" href="$pokeyslib_2PoKeysLibPulseEngine__v2_8c.html#a1fc372b6ab3876c6ac0d1c3b36f43040" title=" " alt="" coords="877,613,1052,640"/>
+</map>

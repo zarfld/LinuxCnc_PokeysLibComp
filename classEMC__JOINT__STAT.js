@@ -1,0 +1,27 @@
+var classEMC__JOINT__STAT =
+[
+    [ "EMC_JOINT_STAT", "classEMC__JOINT__STAT.html#aa2ce5aacaaadae049e64da030b69ef8d", null ],
+    [ "update", "classEMC__JOINT__STAT.html#ae0b9ddd43a6e35e2d96b5687ad78a305", null ],
+    [ "backlash", "classEMC__JOINT__STAT.html#a63f39804523de55a9a7de22836339fa4", null ],
+    [ "enabled", "classEMC__JOINT__STAT.html#a8f5a70eb8a3a678b0e68630862d90a99", null ],
+    [ "fault", "classEMC__JOINT__STAT.html#ad04a7967d2a531f104bc96c762b972f1", null ],
+    [ "ferrorCurrent", "classEMC__JOINT__STAT.html#a5965636c350ce29fbc62f8360393ba38", null ],
+    [ "ferrorHighMark", "classEMC__JOINT__STAT.html#abe32a05e330b6266f544f33cdfb951f0", null ],
+    [ "homed", "classEMC__JOINT__STAT.html#a56acbde80831d8e84474d7b5c4fb29cb", null ],
+    [ "homing", "classEMC__JOINT__STAT.html#a7466d0332f6d1985c7aee7a52cea3f0b", null ],
+    [ "inpos", "classEMC__JOINT__STAT.html#a7ce3f48d68e79987c1d69e1387310592", null ],
+    [ "input", "classEMC__JOINT__STAT.html#a5b2df20451727087b1255848eee66255", null ],
+    [ "jointType", "classEMC__JOINT__STAT.html#a024cf5757332d411c4e3e96415e45f00", null ],
+    [ "maxFerror", "classEMC__JOINT__STAT.html#a3187df51feef8bfd22d3e6bcfa2f0b12", null ],
+    [ "maxHardLimit", "classEMC__JOINT__STAT.html#a53d3767f7e636cf6cfca3cd98af0d652", null ],
+    [ "maxPositionLimit", "classEMC__JOINT__STAT.html#aa1fa0ba2c62a6fb08fb492dd9d86487d", null ],
+    [ "maxSoftLimit", "classEMC__JOINT__STAT.html#a068084b5c6d0e4c018f0da9e87322755", null ],
+    [ "minFerror", "classEMC__JOINT__STAT.html#a875420d9efeec6c92ac61b5357fe4ef2", null ],
+    [ "minHardLimit", "classEMC__JOINT__STAT.html#a973c7b5a24841a274954f296e0df3045", null ],
+    [ "minPositionLimit", "classEMC__JOINT__STAT.html#a289d75023fd0b94194eb11287096b6d9", null ],
+    [ "minSoftLimit", "classEMC__JOINT__STAT.html#ac7345b4503ddaf41a31ac1c0d6d5602c", null ],
+    [ "output", "classEMC__JOINT__STAT.html#a1e303a2f62595a48b2ace31d7394adb9", null ],
+    [ "overrideLimits", "classEMC__JOINT__STAT.html#a8446269645acdc4c220dd892a2475be6", null ],
+    [ "units", "classEMC__JOINT__STAT.html#a57551ddc1e67ee991efb4e5cd49e58ba", null ],
+    [ "velocity", "classEMC__JOINT__STAT.html#a59831fb5442f012ca57b5181f26db0fc", null ]
+];

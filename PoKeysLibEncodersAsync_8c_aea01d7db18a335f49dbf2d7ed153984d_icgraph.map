@@ -1,0 +1,4 @@
+<map id="PK_EncoderOptionsParse" name="PK_EncoderOptionsParse">
+<area shape="rect" id="node1" title="Parses encoderOptions field and fills HAL encoder parameters." alt="" coords="261,13,444,39"/>
+<area shape="rect" id="node2" href="$PoKeysLibEncodersAsync_8c.html#a6c07854c553edbdb000719bc0e4d0ad5" title="Starts the asynchronous encoder configuration retrieval." alt="" coords="5,5,213,47"/>
+</map>

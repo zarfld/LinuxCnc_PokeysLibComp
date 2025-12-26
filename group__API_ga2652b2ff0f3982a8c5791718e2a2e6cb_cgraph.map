@@ -1,0 +1,4 @@
+<map id="hid_get_manufacturer_string" name="hid_get_manufacturer_string">
+<area shape="rect" id="node1" title="Get The Manufacturer String from a HID device." alt="" coords="5,5,171,47"/>
+<area shape="rect" id="node2" href="$group__API.html#ga03810bc0be3c21e9229feff689a9de85" title="Get a string from a HID device, based on its string index." alt="" coords="219,13,391,39"/>
+</map>

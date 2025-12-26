@@ -1,0 +1,4 @@
+<map id="PK_PWMUpdateAsync" name="PK_PWMUpdateAsync">
+<area shape="rect" id="node1" title="Starts async command to update PWM values only (CMD 0xCB, param1=1, param2=1)." alt="" coords="269,5,435,32"/>
+<area shape="rect" id="node2" href="$PoKeysLibPWMAsync_8c.html#a1e7c6675ce5072a1baa6723f67b0b428" title="Update PWM duty cycles directly (async)" alt="" coords="5,5,221,32"/>
+</map>

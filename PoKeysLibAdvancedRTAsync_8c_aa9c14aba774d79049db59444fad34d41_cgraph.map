@@ -1,0 +1,10 @@
+<map id="PK_SystemStatusGetAllAsync" name="PK_SystemStatusGetAllAsync">
+<area shape="rect" id="node1" title="Get comprehensive system status in one operation (async)" alt="" coords="5,81,220,108"/>
+<area shape="rect" id="node2" href="$PoKeysLibDeviceStatusAsync_8c.html#a5170acde0df1f5e6e9d66a8ff87fee7e" title="Check if device is alive/responsive (async)" alt="" coords="268,5,471,32"/>
+<area shape="rect" id="node6" href="$PoKeysLibDeviceDataAsync_8c.html#a0edc71adc6ebc9d62a632a8af7419bdd" title=" " alt="" coords="277,56,461,83"/>
+<area shape="rect" id="node7" href="$PoKeysLibDeviceStatusAsync_8c.html#a306fac7ee187cfa6d68dceb10a5d7abe" title="Get device error status (async)" alt="" coords="268,107,471,133"/>
+<area shape="rect" id="node8" href="$PoKeysLibDeviceStatusAsync_8c.html#afecdca5ec99a0f1fa28fea82e42c624f" title="Get device load status (async)" alt="" coords="268,157,471,184"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="519,81,676,108"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="727,56,854,83"/>
+<area shape="rect" id="node5" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="724,107,857,133"/>
+</map>

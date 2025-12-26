@@ -1,0 +1,21 @@
+<map id="PK_IsCounterAvailable" name="PK_IsCounterAvailable">
+<area shape="rect" id="node1" title="Check if a pin supports a counter (command 0xC0/0x01)." alt="" coords="1099,289,1267,316"/>
+<area shape="rect" id="node2" href="$PoKeysLibCoreAsync_8c.html#ae3a4511713f05f8d9ba2f0250f07957e" title=" " alt="" coords="867,129,1019,156"/>
+<area shape="rect" id="node11" href="$PoKeysLibIOAsync_8c.html#af661ae8f666cf02c3d161938bd482064" title="Starts async request to get digital counter values (CMD 0xD8)." alt="" coords="567,239,770,265"/>
+<area shape="rect" id="node13" href="$PoKeysLibIOAsync_8c.html#a51f7d826c8359aae79213ffb96fb426b" title="Parser for digital counter values (CMD 0xD8)." alt="" coords="856,289,1031,316"/>
+<area shape="rect" id="node14" href="$PoKeysLibCoreAsync_8c.html#acc56e7da96608a84025b34b1417331de" title=" " alt="" coords="836,344,1051,371"/>
+<area shape="rect" id="node18" href="$PoKeysLibIOAsync_8c.html#a9cdd57f6374cb5e84120d74256de6444" title="Parser for digital counter configuration response (CMD 0xC0, param1=1)." alt="" coords="841,431,1045,473"/>
+<area shape="rect" id="node3" href="$PoKeysLibCoreAsync_8c.html#a4a4450280f6d34ac5495f34bad644f83" title=" " alt="" coords="589,5,748,32"/>
+<area shape="rect" id="node5" href="$PoKeysLibCoreSocketsAsync_8c.html#af026e295100bd1c2db31bbba282f4816" title="Connects to a PoKeys network device asynchronously (UDP only, Linux&#45;only)." alt="" coords="562,57,775,98"/>
+<area shape="rect" id="node6" href="$PoKeysLibCoreAsync_8c.html#aad34d6ff8fa450eef13043fad9a9231b" title=" " alt="" coords="566,122,771,163"/>
+<area shape="rect" id="node10" href="$PoKeysLibCoreAsync_8c.html#ae21a3349787cf1f1150186e4858397e6" title=" " alt="" coords="549,188,788,215"/>
+<area shape="rect" id="node4" href="$pokeysHal_2pokeyslib_2PoKeysLibDevicePoKeys57Industrial_8c.html#ac8fc7ddca3e4def19bafb5dfb39bcc19" title=" " alt="" coords="339,5,458,32"/>
+<area shape="rect" id="node7" href="$PoKeysLibCoreAsync_8c.html#a8ca5d1c479c3da4457b38ec866ea7e3d" title=" " alt="" coords="296,159,501,185"/>
+<area shape="rect" id="node8" href="$PoKeysLibCoreAsync_8c.html#ae19db1487bf5225a8fc84e9b70f0e2ec" title=" " alt="" coords="23,133,231,160"/>
+<area shape="rect" id="node9" href="$PoKeysLibCoreAsync_8c.html#a6ca83890b4c63d6132c83c7df831fb65" title=" " alt="" coords="5,184,248,211"/>
+<area shape="rect" id="node12" href="$PoKeysLibAdvancedRTAsync_8c.html#a62f34b5fbad7130f28b4ee32263ee6c7" title="Perform complete IO update cycle (async)" alt="" coords="307,239,490,265"/>
+<area shape="rect" id="node15" href="$PoKeysLibCoreAsync_8c.html#a69c51cb8610e4f5b3e5ca7ec8e8d7ce2" title=" " alt="" coords="570,289,767,316"/>
+<area shape="rect" id="node16" href="$PoKeysLibCoreAsync_8c.html#aeb938e90bdf18533a0f33c0f9d4c29e0" title=" " alt="" coords="566,341,771,382"/>
+<area shape="rect" id="node17" href="$PoKeysLibCoreAsync_8c.html#afb629f72217e5d0568b204b21253f8a0" title=" " alt="" coords="566,406,771,447"/>
+<area shape="rect" id="node19" href="$PoKeysLibIOAsync_8c.html#ada173b70174c44c42d5ae835358d0d95" title=" " alt="" coords="561,472,776,499"/>
+</map>

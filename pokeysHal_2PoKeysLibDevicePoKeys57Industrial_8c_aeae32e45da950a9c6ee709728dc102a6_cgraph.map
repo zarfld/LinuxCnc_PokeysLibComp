@@ -1,0 +1,7 @@
+<map id="PK57i_Disconnect" name="PK57i_Disconnect">
+<area shape="rect" id="node1" title="Close the connection opened by PK57i_Connect()." alt="" coords="5,56,144,83"/>
+<area shape="rect" id="node2" href="$PoKeysLibCoreAsync_8c.html#a5048159684edb84a2da9f20e358507fc" title=" " alt="" coords="192,56,355,83"/>
+<area shape="rect" id="node3" href="$pokeyslib_2PoKeysLibCore_8c.html#a8ddc84176ab5e728aeef3077e4c04721" title=" " alt="" coords="460,5,564,32"/>
+<area shape="rect" id="node4" href="$group__API.html#ga9b64828273b8dd052731e79ba9e1a516" title="Close a HID device." alt="" coords="471,56,553,83"/>
+<area shape="rect" id="node5" href="$pokeysHal_2PoKeysLibCoreSockets_8c.html#a99687fe089d02ed7dc65edcd486a0640" title=" " alt="" coords="403,107,621,133"/>
+</map>

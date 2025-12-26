@@ -1,0 +1,15 @@
+<map id="/usr/include/linuxcnc/inihal.hh" name="/usr/include/linuxcnc/inihal.hh">
+<area shape="rect" id="node1" title=" " alt="" coords="361,5,516,47"/>
+<area shape="rect" id="node2" href="$hal_8h.html" title=" " alt="" coords="359,95,414,121"/>
+<area shape="rect" id="node13" href="$emcmotcfg_8h.html" title=" " alt="" coords="438,95,546,121"/>
+<area shape="rect" id="node3" href="$rtapi_8h.html" title=" " alt="" coords="147,169,211,196"/>
+<area shape="rect" id="node7" href="$rtapi__errno_8h.html" title=" " alt="" coords="271,169,377,196"/>
+<area shape="rect" id="node9" href="$rtapi__bool_8h.html" title=" " alt="" coords="401,169,500,196"/>
+<area shape="rect" id="node11" href="$rtapi__stdint_8h.html" title=" " alt="" coords="525,169,633,196"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,244,80,271"/>
+<area shape="rect" id="node5" title=" " alt="" coords="104,244,179,271"/>
+<area shape="rect" id="node6" title=" " alt="" coords="203,244,279,271"/>
+<area shape="rect" id="node8" title=" " alt="" coords="303,244,371,271"/>
+<area shape="rect" id="node10" title=" " alt="" coords="409,244,492,271"/>
+<area shape="rect" id="node12" title=" " alt="" coords="535,244,622,271"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="PEv2_StatusGet" name="PEv2_StatusGet">
+<area shape="rect" id="node1" title="Retrieves and processes the current status of the PoKeys Pulse Engine v2 (PEv2)." alt="" coords="392,13,517,39"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#ga11eaeb83988c4e23fca22c07885baf31" title="Updates PulseEngine feedback and status." alt="" coords="173,5,344,47"/>
+<area shape="rect" id="node3" href="$pokeys_8c.html#a6e89ee20635570c2e51b81bf26e895cc" title=" " alt="" coords="5,13,125,39"/>
+</map>

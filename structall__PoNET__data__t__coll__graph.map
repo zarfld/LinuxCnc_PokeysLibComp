@@ -1,0 +1,10 @@
+<map id="all_PoNET_data_t" name="all_PoNET_data_t">
+<area shape="rect" id="node1" title="Contains all PoNET&#45;related data for communication with PoKeys devices." alt="" coords="595,359,730,436"/>
+<area shape="rect" id="node2" href="$structone__PoNET__data__t.html" title="Structure holding HAL parameters and pin references for one PoNET device." alt="" coords="215,211,358,289"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,5,141,83"/>
+<area shape="rect" id="node4" title=" " alt="" coords="309,5,405,83"/>
+<area shape="rect" id="node5" title=" " alt="" coords="712,5,763,83"/>
+<area shape="rect" id="node6" href="$structone__kbd48CNCButton__data__t.html" title="Represents a single button and LED pair on the kbd48CNC PoNET module." alt="" coords="838,204,1002,296"/>
+<area shape="rect" id="node7" title=" " alt="" coords="1027,211,1077,289"/>
+<area shape="rect" id="node8" title=" " alt="" coords="1150,211,1189,289"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="PK_DigitalCounterGet" name="PK_DigitalCounterGet">
+<area shape="rect" id="node1" title="Read values of all digital counters (command 0xD8)." alt="" coords="392,13,555,39"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#ga053adc615433218543268696998c7f32" title="Updates PoKeys I/O states from and to hardware." alt="" coords="173,5,344,47"/>
+<area shape="rect" id="node3" href="$pokeys_8c.html#a6e89ee20635570c2e51b81bf26e895cc" title=" " alt="" coords="5,13,125,39"/>
+</map>

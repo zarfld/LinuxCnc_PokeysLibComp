@@ -1,0 +1,9 @@
+<map id="PK_EncoderConfigurationGetAsync" name="PK_EncoderConfigurationGetAsync">
+<area shape="rect" id="node1" title="Starts the asynchronous encoder configuration retrieval." alt="" coords="5,99,213,141"/>
+<area shape="rect" id="node2" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="291,31,448,57"/>
+<area shape="rect" id="node5" href="$PoKeysLibEncodersAsync_8c.html#aea01d7db18a335f49dbf2d7ed153984d" title="Parses encoderOptions field and fills HAL encoder parameters." alt="" coords="278,81,461,108"/>
+<area shape="rect" id="node6" href="$PoKeysLibEncodersAsync_8c.html#aa954d7c42b135212abfeca07a26e21c6" title="Parses FastEncodersOptions byte into individual HAL parameters." alt="" coords="261,132,477,159"/>
+<area shape="rect" id="node7" href="$PoKeysLibEncodersAsync_8c.html#a0a37e14175e7a6eda3850d2b7ebdc986" title=" " alt="" coords="266,183,473,225"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="529,5,655,32"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="525,56,659,83"/>
+</map>

@@ -1,0 +1,15 @@
+<map id="PoKeysHALComponent::PKPEv2_ReadIniFile" name="PoKeysHALComponent::PKPEv2_ReadIniFile">
+<area shape="rect" id="node1" title="Reads configuration parameters for the PoKeys Pulse Engine v2 from the INI file." alt="" coords="5,74,176,115"/>
+<area shape="rect" id="node2" href="$pokeys__ini_8c.html#ad18c54e99cc7b622b21a4952a228003d" title=" " alt="" coords="243,5,354,32"/>
+<area shape="rect" id="node3" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="447,56,571,83"/>
+<area shape="rect" id="node4" href="$pokeys__ini_8c.html#ae4f6d1223dec24d90200b3798910dc6e" title=" " alt="" coords="249,107,348,133"/>
+<area shape="rect" id="node5" href="$pokeysHal_2PoKeysLibPulseEngine__v2_8c.html#a213445f67d5be94e76abcbfca950512d" title="Retrieve pulse engine status." alt="" coords="224,157,373,184"/>
+<area shape="rect" id="node6" href="$pokeyslib_2PoKeysLibCore_8c.html#acb1fdd8f77277dc66c4d037218bfcece" title=" " alt="" coords="449,157,568,184"/>
+<area shape="rect" id="node7" href="$pokeyslib_2PoKeysLibPulseEngine__v2_8c.html#a1fc372b6ab3876c6ac0d1c3b36f43040" title=" " alt="" coords="421,208,596,235"/>
+<area shape="rect" id="node8" href="$pokeyslib_2PoKeysLibCore_8c.html#ab5d92aa36d0a4a6953a055f5cd960aff" title=" " alt="" coords="455,107,562,133"/>
+<area shape="rect" id="node9" href="$pokeyslib_2PoKeysLibCore_8c.html#a273b6d635dea8f559b915cdb289d021e" title=" " alt="" coords="833,132,943,159"/>
+<area shape="rect" id="node10" href="$group__API.html#ga6b820f3e72097cf7f994e33715dc7af1" title="Read an Input report from a HID device." alt="" coords="669,31,747,57"/>
+<area shape="rect" id="node12" href="$group__API.html#gad14ea48e440cf5066df87cc6488493af" title="Write an Output report to a HID device." alt="" coords="667,132,749,159"/>
+<area shape="rect" id="node13" href="$pokeyslib_2PoKeysLibCoreSockets_8c.html#a22759fb4024c9081af26ac1bc6541b47" title=" " alt="" coords="644,183,772,209"/>
+<area shape="rect" id="node11" href="$group__API.html#gaa5c9ed5aa290688ffac03343989ad75a" title="Read an Input report from a HID device with timeout." alt="" coords="820,31,956,57"/>
+</map>

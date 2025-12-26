@@ -1,0 +1,8 @@
+<map id="getChecksum" name="getChecksum">
+<area shape="rect" id="node1" title=" " alt="" coords="287,107,397,133"/>
+<area shape="rect" id="node2" href="$PoKeysLibCoreSocketsAsync_8c.html#a2afb5eaa2140bac1c02f18ec7f1dedcb" title="Receives the response to a large (multi&#45;part) PoKeys request asynchronously." alt="" coords="11,5,233,32"/>
+<area shape="rect" id="node3" href="$PoKeysLibCoreSocketsAsync_8c.html#ac1c7ffe51aee601c616a62ac70f985bd" title="Receives a PoKeys response packet asynchronously (non&#45;blocking, realtime&#45;safe)." alt="" coords="21,56,223,83"/>
+<area shape="rect" id="node4" href="$PoKeysLibCoreSocketsAsync_8c.html#a56864af28148c7da0ad04535138cccd7" title="Sends a PoKeys request packet asynchronously (non&#45;blocking, realtime&#45;safe)." alt="" coords="27,107,217,133"/>
+<area shape="rect" id="node5" href="$PoKeysLibCoreSocketsAsync_8c.html#a1474633bdaa3d6a7b76f1b77d00ab84f" title="Sends a large (multi&#45;part) PoKeys request asynchronously (non&#45;blocking)." alt="" coords="16,157,228,184"/>
+<area shape="rect" id="node6" href="$PoKeysLibCoreSocketsAsync_8c.html#aae3408d7f4d33757f65b1d1e7bd1071c" title="Sends a PoKeys request packet asynchronously without expecting a response (fire&#45;and&#45;forget)." alt="" coords="5,209,239,250"/>
+</map>

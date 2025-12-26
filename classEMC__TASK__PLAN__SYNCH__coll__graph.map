@@ -1,0 +1,8 @@
+<map id="EMC_TASK_PLAN_SYNCH" name="EMC_TASK_PLAN_SYNCH">
+<area shape="rect" id="node1" title=" " alt="" coords="5,613,216,705"/>
+<area shape="rect" id="node2" href="$classEMC__TASK__CMD__MSG.html" title=" " alt="" coords="15,472,206,564"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="37,345,185,423"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="189,160,293,296"/>
+<area shape="rect" id="node5" title=" " alt="" coords="59,5,98,83"/>
+<area shape="rect" id="node6" title=" " alt="" coords="251,5,301,83"/>
+</map>

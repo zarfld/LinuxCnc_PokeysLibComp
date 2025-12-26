@@ -1,0 +1,12 @@
+<map id="PK_PoNETKbd48CNCBrightnessSetAsync" name="PK_PoNETKbd48CNCBrightnessSetAsync">
+<area shape="rect" id="node1" title=" " alt="" coords="5,99,232,141"/>
+<area shape="rect" id="node2" href="$PoKeysLibPoNETAsync_8c.html#a545d854e41e3d2a894d3e57e16ae5841" title=" " alt="" coords="280,107,509,133"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="557,56,715,83"/>
+<area shape="rect" id="node6" href="$PoKeysLibAsync_8c.html#a77fe6d8f453b9f120276324e0b2ad076" title="Sends an asynchronous request that was prepared earlier." alt="" coords="563,132,709,159"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="777,5,903,32"/>
+<area shape="rect" id="node5" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="773,56,907,83"/>
+<area shape="rect" id="node7" href="$PoKeysLibAsync_8c.html#a2d192ebf6b1b209c93b2158460c24aa2" title=" " alt="" coords="763,107,917,133"/>
+<area shape="rect" id="node9" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="778,157,902,184"/>
+<area shape="rect" id="node10" href="$PoKeysLibAsync_8c.html#a47e60ec1f2ceb9c913f4b3fdd448595b" title="Finds an open transaction by its Request ID." alt="" coords="777,208,903,235"/>
+<area shape="rect" id="node8" href="$rtapi_8h.html#a935411bb5eff04e82620819db6645685" title=" " alt="" coords="965,107,1083,133"/>
+</map>

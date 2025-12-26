@@ -1,0 +1,33 @@
+<map id="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/external/pokeysHal/hidapi.h" name="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/external/pokeysHal/hidapi.h">
+<area shape="rect" id="node1" title=" " alt="" coords="4117,5,4371,76"/>
+<area shape="rect" id="node2" href="$pokeysHal_2PoKeysLibCore_8h.html" title=" " alt="" coords="3432,124,3685,195"/>
+<area shape="rect" id="node28" href="$PoKeysLibDevicePoKeys57IndustrialAsync_8c.html" title=" " alt="" coords="3710,124,4093,195"/>
+<area shape="rect" id="node29" href="$pokeysHal_2hid-libusb_8c.html" title=" " alt="" coords="4117,124,4371,195"/>
+<area shape="rect" id="node30" href="$pokeysHal_2hid-mac_8c.html" title=" " alt="" coords="4395,124,4648,195"/>
+<area shape="rect" id="node31" href="$pokeysHal_2hid_8c.html" title=" " alt="" coords="4672,124,4925,195"/>
+<area shape="rect" id="node3" href="$pokeysHal_2PoKeysLib1Wire_8c.html" title="Implementation of 1&#45;wire bus operations (command 0xDC)." alt="" coords="5,243,259,313"/>
+<area shape="rect" id="node4" href="$pokeysHal_2PoKeysLibCAN_8c.html" title="Implementation of CAN bus operations (command 0x86)." alt="" coords="283,243,536,313"/>
+<area shape="rect" id="node5" href="$PoKeysLibCOSM_8c.html" title="COSM/HTTP reporting configuration (command 0xF7)." alt="" coords="560,243,813,313"/>
+<area shape="rect" id="node6" href="$pokeysHal_2PoKeysLibCore_8c.html" title="Core communication helpers for the PoKeys protocol." alt="" coords="837,243,1091,313"/>
+<area shape="rect" id="node7" href="$pokeysHal_2PoKeysLibCoreSockets_8c.html" title="Network transport helpers for PoKeys devices." alt="" coords="1115,243,1370,313"/>
+<area shape="rect" id="node8" href="$pokeysHal_2PoKeysLibDeviceData_8c.html" title="Device information and configuration helpers." alt="" coords="1395,243,1648,313"/>
+<area shape="rect" id="node9" href="$pokeysHal_2PoKeysLibDevicePoKeys57Industrial_8c.html" title="Support for the PoKeys57Industrial device." alt="" coords="1672,243,2016,313"/>
+<area shape="rect" id="node10" href="$pokeysHal_2PoKeysLibEasySensors_8c.html" title="Access helper for EasySensors block (command 0x76/0x77)." alt="" coords="2041,243,2298,313"/>
+<area shape="rect" id="node11" href="$pokeysHal_2PoKeysLibEncoders_8c.html" title="Functions for configuring and reading encoder channels." alt="" coords="2323,243,2576,313"/>
+<area shape="rect" id="node12" href="$pokeysHal_2PoKeysLibFailsafe_8c.html" title="Failsafe configuration helpers (command 0x81)." alt="" coords="2600,243,2853,313"/>
+<area shape="rect" id="node13" href="$pokeysHal_2PoKeysLibFastUSB_8c.html" title=" " alt="" coords="2877,243,3131,313"/>
+<area shape="rect" id="node14" href="$pokeysHal_2PoKeysLibI2C_8c.html" title="I\2C communication helpers (command 0xDB)." alt="" coords="3155,243,3408,313"/>
+<area shape="rect" id="node15" href="$pokeysHal_2PoKeysLibIO_8c.html" title="Digital and analog I/O management (commands 0xC0&#45;0xCC)." alt="" coords="3432,243,3685,313"/>
+<area shape="rect" id="node16" href="$pokeysHal_2PoKeysLibLCD_8c.html" title=" " alt="" coords="3709,243,3963,313"/>
+<area shape="rect" id="node17" href="$pokeysHal_2PoKeysLibMatrixKB_8c.html" title=" " alt="" coords="3987,243,4240,313"/>
+<area shape="rect" id="node18" href="$pokeysHal_2PoKeysLibMatrixLED_8c.html" title=" " alt="" coords="4264,243,4517,313"/>
+<area shape="rect" id="node19" href="$pokeysHal_2PoKeysLibPoIL_8c.html" title=" " alt="" coords="4541,243,4795,313"/>
+<area shape="rect" id="node20" href="$pokeysHal_2PoKeysLibPoNET_8c.html" title=" " alt="" coords="4819,243,5072,313"/>
+<area shape="rect" id="node21" href="$pokeysHal_2PoKeysLibPulseEngine__v2_8c.html" title="Pulse engine v2 control functions (command 0x85)." alt="" coords="5096,243,5373,313"/>
+<area shape="rect" id="node22" href="$pokeysHal_2PoKeysLibRTC_8c.html" title="Real&#45;time clock access helpers (command 0x83)." alt="" coords="5397,243,5651,313"/>
+<area shape="rect" id="node23" href="$pokeysHal_2PoKeysLibSPI_8c.html" title="SPI communication helpers (command 0xE5)." alt="" coords="5675,243,5928,313"/>
+<area shape="rect" id="node24" href="$PoKeysLibSecurity_8c.html" title="Security and authorisation helpers (commands 0xE1&#45;0xE3)." alt="" coords="5952,243,6205,313"/>
+<area shape="rect" id="node25" href="$pokeysHal_2PoKeysLibUART_8c.html" title="UART communication helpers (command 0xDE)." alt="" coords="6229,243,6483,313"/>
+<area shape="rect" id="node26" href="$pokeysHal_2PoKeysLibWS2812_8c.html" title="WS2812 LED strip control (command 0x4B)." alt="" coords="6507,243,6760,313"/>
+<area shape="rect" id="node27" href="$PoKeysLibWS2812Async_8c.html" title=" " alt="" coords="6784,243,7051,313"/>
+</map>

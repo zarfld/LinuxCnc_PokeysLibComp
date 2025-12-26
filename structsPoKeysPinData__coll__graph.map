@@ -1,0 +1,9 @@
+<map id="sPoKeysPinData" name="sPoKeysPinData">
+<area shape="rect" id="node1" title=" " alt="" coords="385,447,568,597"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,160,87,237"/>
+<area shape="rect" id="node3" title=" " alt="" coords="174,160,310,237"/>
+<area shape="rect" id="node4" title=" " alt="" coords="370,160,466,237"/>
+<area shape="rect" id="node5" href="$structhal__digin__t.html" title=" " alt="" coords="685,160,778,237"/>
+<area shape="rect" id="node6" title=" " alt="" coords="706,5,757,83"/>
+<area shape="rect" id="node7" href="$structhal__digout__t.html" title="Register canonical digin read function." alt="" coords="803,160,905,237"/>
+</map>

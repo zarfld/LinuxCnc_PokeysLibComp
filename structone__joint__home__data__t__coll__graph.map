@@ -1,0 +1,6 @@
+<map id="one_joint_home_data_t" name="one_joint_home_data_t">
+<area shape="rect" id="node1" title="HAL pin structure for managing homing state per joint." alt="" coords="73,189,247,267"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,5,56,83"/>
+<area shape="rect" id="node3" title=" " alt="" coords="141,5,179,83"/>
+<area shape="rect" id="node4" title=" " alt="" coords="236,5,332,83"/>
+</map>

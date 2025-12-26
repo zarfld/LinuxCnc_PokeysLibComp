@@ -1,0 +1,5 @@
+<map id="hid_init" name="hid_init">
+<area shape="rect" id="node1" title="Initialize the HIDAPI library." alt="" coords="173,31,244,57"/>
+<area shape="rect" id="node2" href="$group__API.html#gaae7d1c3e90835556ddc73fabe3a9ca9d" title="Enumerate the HID Devices." alt="" coords="5,5,125,32"/>
+<area shape="rect" id="node3" href="$group__API.html#ga954ecb58b5dfb4a6ef6be3dcd520e42f" title="Open a HID device by its path name." alt="" coords="7,56,124,83"/>
+</map>

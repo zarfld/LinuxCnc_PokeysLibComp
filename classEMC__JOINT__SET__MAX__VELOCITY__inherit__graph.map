@@ -1,0 +1,6 @@
+<map id="EMC_JOINT_SET_MAX_VELOCITY" name="EMC_JOINT_SET_MAX_VELOCITY">
+<area shape="rect" id="node1" title=" " alt="" coords="5,484,263,576"/>
+<area shape="rect" id="node2" href="$classEMC__JOINT__CMD__MSG.html" title=" " alt="" coords="37,344,231,436"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="60,219,208,296"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="51,5,217,171"/>
+</map>

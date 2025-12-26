@@ -1,0 +1,13 @@
+<map id="PoKeysHALComponent::PKIO_export_pins" name="PoKeysHALComponent::PKIO_export_pins">
+<area shape="rect" id="node1" title="Export HAL pins and parameters for PoKeys analog and digital I/O." alt="" coords="5,201,176,242"/>
+<area shape="rect" id="node2" href="$hal_8h.html#a37b839660591a915940fc471bbb5df4f" title=" " alt="" coords="263,5,357,32"/>
+<area shape="rect" id="node3" href="$hal_8h.html#a876b00d86de051676c4aedb139816dc0" title=" " alt="" coords="233,56,387,83"/>
+<area shape="rect" id="node4" href="$hal_8h.html#adef766a37d1d2117869c0ede414f67a3" title=" " alt="" coords="227,107,393,133"/>
+<area shape="rect" id="node5" href="$hal_8h.html#ab691c88ce6355ee2ba3938814992d346" title=" " alt="" coords="229,157,391,184"/>
+<area shape="rect" id="node6" href="$hal_8h.html#a49080baf78ff314f51e93e06efd6c6b5" title=" " alt="" coords="244,208,376,235"/>
+<area shape="rect" id="node7" href="$hal_8h.html#a4c39ab9a9c7ddf3db11a4563c1ba8c1b" title=" " alt="" coords="238,259,382,285"/>
+<area shape="rect" id="node8" href="$hal_8h.html#a5cf4eeb8d2f7b1c4bb9f38e24a0f7e39" title=" " alt="" coords="241,309,379,336"/>
+<area shape="rect" id="node9" href="$pokeysHal_2PoKeysLibDeviceData_8c.html#a3e3806b8d08aea01d2e7d5e752ee63b3" title="Wrapper for PK_CheckPinCapabilityByTypeID() using a device handle." alt="" coords="224,360,396,387"/>
+<area shape="rect" id="node11" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="248,411,372,437"/>
+<area shape="rect" id="node10" href="$pokeyslib_2PoKeysLibDeviceData_8c.html#a7b36c724a486431479416439a5d943c9" title=" " alt="" coords="444,360,677,387"/>
+</map>

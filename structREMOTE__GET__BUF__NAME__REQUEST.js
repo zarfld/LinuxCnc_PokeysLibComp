@@ -1,0 +1,4 @@
+var structREMOTE__GET__BUF__NAME__REQUEST =
+[
+    [ "REMOTE_GET_BUF_NAME_REQUEST", "structREMOTE__GET__BUF__NAME__REQUEST.html#abea0bde641a7985cc74c31500bb971c9", null ]
+];

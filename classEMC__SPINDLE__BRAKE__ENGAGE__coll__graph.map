@@ -1,0 +1,8 @@
+<map id="EMC_SPINDLE_BRAKE_ENGAGE" name="EMC_SPINDLE_BRAKE_ENGAGE">
+<area shape="rect" id="node1" title=" " alt="" coords="5,627,256,719"/>
+<area shape="rect" id="node2" href="$classEMC__SPINDLE__CMD__MSG.html" title=" " alt="" coords="124,485,337,577"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="225,359,373,436"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="403,160,507,296"/>
+<area shape="rect" id="node5" title=" " alt="" coords="209,5,247,83"/>
+<area shape="rect" id="node6" title=" " alt="" coords="464,5,515,83"/>
+</map>

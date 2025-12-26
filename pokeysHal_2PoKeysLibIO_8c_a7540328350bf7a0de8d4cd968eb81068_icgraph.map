@@ -1,0 +1,7 @@
+<map id="PK_PinConfigurationGet" name="PK_PinConfigurationGet">
+<area shape="rect" id="node1" title="Read pin configuration from the device (command 0xC0)." alt="" coords="399,46,575,73"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#ga96c96a5b1b2aaa10d97aa8426bee3840" title="Initializes the PoKeys digital and analog I/O configuration." alt="" coords="180,5,351,47"/>
+<area shape="rect" id="node4" href="$group__hal__component__pokeys.html#ga053adc615433218543268696998c7f32" title="Updates PoKeys I/O states from and to hardware." alt="" coords="180,71,351,112"/>
+<area shape="rect" id="node3" href="$pokeys_8c.html#a1d59e212b57d33fe74e44b64cadf3314" title=" " alt="" coords="5,13,132,39"/>
+<area shape="rect" id="node5" href="$pokeys_8c.html#a6e89ee20635570c2e51b81bf26e895cc" title=" " alt="" coords="9,78,129,105"/>
+</map>

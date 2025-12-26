@@ -1,0 +1,6 @@
+<map id="PK_CheckPinCapability" name="PK_CheckPinCapability">
+<area shape="rect" id="node1" title="Wrapper for PK_CheckPinCapabilityByTypeID() using a device handle." alt="" coords="392,46,564,73"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#ga02a043bec3c186f454680d36aa9a9604" title="Export HAL pins and parameters for PoKeys analog and digital I/O." alt="" coords="173,5,344,47"/>
+<area shape="rect" id="node3" href="$group__hal__component__pokeys.html#ga053adc615433218543268696998c7f32" title="Updates PoKeys I/O states from and to hardware." alt="" coords="173,71,344,112"/>
+<area shape="rect" id="node4" href="$pokeys_8c.html#a6e89ee20635570c2e51b81bf26e895cc" title=" " alt="" coords="5,78,125,105"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="PEv2_StatusGet" name="PEv2_StatusGet">
+<area shape="rect" id="node1" title="Retrieves and processes the current status of the PoKeys Pulse Engine v2 (PEv2)." alt="" coords="5,81,131,108"/>
+<area shape="rect" id="node2" href="$pokeysHal_2PoKeysLibPulseEngine__v2_8c.html#a213445f67d5be94e76abcbfca950512d" title="Retrieve pulse engine status." alt="" coords="179,56,328,83"/>
+<area shape="rect" id="node11" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="191,107,315,133"/>
+<area shape="rect" id="node3" href="$pokeyslib_2PoKeysLibCore_8c.html#acb1fdd8f77277dc66c4d037218bfcece" title=" " alt="" coords="404,5,523,32"/>
+<area shape="rect" id="node4" href="$pokeyslib_2PoKeysLibPulseEngine__v2_8c.html#a1fc372b6ab3876c6ac0d1c3b36f43040" title=" " alt="" coords="376,56,551,83"/>
+<area shape="rect" id="node5" href="$pokeyslib_2PoKeysLibCore_8c.html#ab5d92aa36d0a4a6953a055f5cd960aff" title=" " alt="" coords="410,107,517,133"/>
+<area shape="rect" id="node6" href="$pokeyslib_2PoKeysLibCore_8c.html#a273b6d635dea8f559b915cdb289d021e" title=" " alt="" coords="787,132,898,159"/>
+<area shape="rect" id="node7" href="$group__API.html#ga6b820f3e72097cf7f994e33715dc7af1" title="Read an Input report from a HID device." alt="" coords="623,31,702,57"/>
+<area shape="rect" id="node9" href="$group__API.html#gad14ea48e440cf5066df87cc6488493af" title="Write an Output report to a HID device." alt="" coords="621,132,704,159"/>
+<area shape="rect" id="node10" href="$pokeyslib_2PoKeysLibCoreSockets_8c.html#a22759fb4024c9081af26ac1bc6541b47" title=" " alt="" coords="599,183,727,209"/>
+<area shape="rect" id="node8" href="$group__API.html#gaa5c9ed5aa290688ffac03343989ad75a" title="Read an Input report from a HID device with timeout." alt="" coords="775,31,911,57"/>
+</map>

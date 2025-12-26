@@ -1,0 +1,121 @@
+<map id="transaction_alloc" name="transaction_alloc">
+<area shape="rect" id="node1" title="Allocates a new free transaction." alt="" coords="995,3336,1128,3363"/>
+<area shape="rect" id="node2" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="749,1927,906,1953"/>
+<area shape="rect" id="node89" href="$PoKeysLibAsync_8c.html#ad3d8835baba234e6767172b8574629e5" title="Prepares an asynchronous PoKeys request with optional payload data after header." alt="" coords="708,4716,947,4743"/>
+<area shape="rect" id="node3" href="$PoKeysLib1WireAsync_8c.html#aec0e765c53812c869ba7059b8ced5c38" title=" " alt="" coords="415,5,651,32"/>
+<area shape="rect" id="node4" href="$PoKeysLib1WireAsync_8c.html#a878dd702f0df49ae22c86f4f99b9fd53" title=" " alt="" coords="427,57,638,98"/>
+<area shape="rect" id="node5" href="$PoKeysLib1WireAsync_8c.html#a5090383ce42f5945ad6fdb13f58deefe" title=" " alt="" coords="428,123,637,149"/>
+<area shape="rect" id="node6" href="$PoKeysLib1WireAsync_8c.html#a53e249e8559a26cfb22a10240aa0c477" title=" " alt="" coords="429,173,636,200"/>
+<area shape="rect" id="node7" href="$PoKeysLib1WireAsync_8c.html#af3616e4763df7965bafe1b7120ee8f59" title=" " alt="" coords="423,224,643,251"/>
+<area shape="rect" id="node8" href="$PoKeysLib1WireAsync_8c.html#a27b76ca2d5b1d26d974c12d46f3f514d" title=" " alt="" coords="439,275,626,301"/>
+<area shape="rect" id="node9" href="$PoKeysLib1WireAsync_8c.html#ad97af3dcf701f261d6eaeb3d313329b1" title=" " alt="" coords="440,325,625,352"/>
+<area shape="rect" id="node10" href="$PoKeysLibIOAsync_8c.html#aecad147343298f84dade6a69adfa8987" title="Starts async request for analog inputs (CMD 0x3A, param1=1)." alt="" coords="449,376,616,403"/>
+<area shape="rect" id="node12" href="$PoKeysLibIOAsync_8c.html#ab930c7f71999b485e25d875e41f17595" title="Starts async request for RC analog filter value (CMD 0x38)." alt="" coords="431,680,635,707"/>
+<area shape="rect" id="node13" href="$PoKeysLibIOAsync_8c.html#a7eec947d6d5fcee98270ac1dce3cf5e4" title="Starts async command to set RC analog filter (CMD 0x39)." alt="" coords="431,731,634,757"/>
+<area shape="rect" id="node14" href="$PoKeysLibCANAsync_8c.html#ad3598db254b26ca453af76cbfb1b9c35" title=" " alt="" coords="459,781,607,808"/>
+<area shape="rect" id="node15" href="$PoKeysLibCANAsync_8c.html#ae8c71f9f4a00dbe0e36ffd1a08d13b7e" title=" " alt="" coords="459,832,606,859"/>
+<area shape="rect" id="node16" href="$PoKeysLibCOSMAsync_8c.html#ac33c0b227e108cae7fca18785cd48565" title=" " alt="" coords="433,883,633,909"/>
+<area shape="rect" id="node17" href="$PoKeysLibDeviceStatusAsync_8c.html#a5170acde0df1f5e6e9d66a8ff87fee7e" title="Check if device is alive/responsive (async)" alt="" coords="431,933,634,960"/>
+<area shape="rect" id="node21" href="$PoKeysLibDeviceDataAsync_8c.html#a0edc71adc6ebc9d62a632a8af7419bdd" title=" " alt="" coords="441,1085,625,1112"/>
+<area shape="rect" id="node22" href="$PoKeysLibDeviceStatusAsync_8c.html#a72c023192dbf269ae0fb588331073d55" title="Reset device error counters (async)" alt="" coords="433,1136,632,1163"/>
+<area shape="rect" id="node23" href="$PoKeysLibDeviceStatusAsync_8c.html#a306fac7ee187cfa6d68dceb10a5d7abe" title="Get device error status (async)" alt="" coords="431,984,634,1011"/>
+<area shape="rect" id="node24" href="$PoKeysLibDeviceStatusAsync_8c.html#afecdca5ec99a0f1fa28fea82e42c624f" title="Get device load status (async)" alt="" coords="431,1035,634,1061"/>
+<area shape="rect" id="node25" href="$PoKeysLibIOAsync_8c.html#a7ff8b0c54a340ff85d51f3e1d4c09155" title="Starts async request to clear digital counters (CMD 0x1D)." alt="" coords="426,1187,639,1213"/>
+<area shape="rect" id="node26" href="$PoKeysLibIOAsync_8c.html#af661ae8f666cf02c3d161938bd482064" title="Starts async request to get digital counter values (CMD 0xD8)." alt="" coords="431,427,634,453"/>
+<area shape="rect" id="node27" href="$PoKeysLibIOAsync_8c.html#a679431a5f36a3addc438529fa503582b" title="Asynchronously requests digital IO input values." alt="" coords="450,1237,615,1264"/>
+<area shape="rect" id="node28" href="$PoKeysLibIOAsync_8c.html#aeb6b4b588ae6fc701a3a9345622253e7" title="Asynchronously sets the digital IO values." alt="" coords="451,1288,614,1315"/>
+<area shape="rect" id="node29" href="$PoKeysLibIOAsync_8c.html#a40cac366287e423e8adc9efe8e5b81fc" title="Combined Set and Get digital IO in one async call." alt="" coords="439,528,626,555"/>
+<area shape="rect" id="node31" href="$PoKeysLibEasySensorsAsync_8c.html#acdc79e27f6d5431fa91ea736cd21994f" title=" " alt="" coords="419,1339,646,1365"/>
+<area shape="rect" id="node32" href="$PoKeysLibEasySensorsAsync_8c.html#afef682e1e6cb19a0af62a2e2c862482f" title=" " alt="" coords="431,1390,635,1431"/>
+<area shape="rect" id="node33" href="$PoKeysLibEncodersAsync_8c.html#a6c07854c553edbdb000719bc0e4d0ad5" title="Starts the asynchronous encoder configuration retrieval." alt="" coords="429,1455,637,1497"/>
+<area shape="rect" id="node34" href="$PoKeysLibEncodersAsync_8c.html#a2be46ec25c963225584afac09c8c2d2f" title="Reset encoder raw values asynchronously (command 0x1A)." alt="" coords="413,1521,652,1548"/>
+<area shape="rect" id="node37" href="$PoKeysLibEncodersAsync_8c.html#a6da05adf9f93cba660f7ecb85f8a92d2" title="Starts asynchronous encoder values retrieval." alt="" coords="431,477,634,504"/>
+<area shape="rect" id="node38" href="$PoKeysLibFailsafeAsync_8c.html#a0a8e502782a39a3715f1ada6ee7d1a5e" title=" " alt="" coords="427,1572,638,1599"/>
+<area shape="rect" id="node39" href="$PoKeysLibI2CAsync_8c.html#a14affb8564ce9a09281efe0bf7b0ba5a" title=" " alt="" coords="417,1623,649,1649"/>
+<area shape="rect" id="node40" href="$PoKeysLibI2CAsync_8c.html#a0f66f22ee7f7231e8dd02e1e2ecfea92" title=" " alt="" coords="437,1673,629,1700"/>
+<area shape="rect" id="node41" href="$PoKeysLibI2CAsync_8c.html#a1bcb697935a331a104095b2193b49c01" title=" " alt="" coords="447,1724,618,1751"/>
+<area shape="rect" id="node42" href="$PoKeysLibI2CAsync_8c.html#a538b71d4c5ca5edfb6ad4e99fe6e8a7a" title=" " alt="" coords="447,1775,618,1801"/>
+<area shape="rect" id="node43" href="$PoKeysLibI2CAsync_8c.html#a0570f60a72b2d1ca3bb56af87ab21189" title=" " alt="" coords="431,1825,634,1852"/>
+<area shape="rect" id="node44" href="$PoKeysLibI2CAsync_8c.html#a252743c98fb9000159e57120aae163a4" title=" " alt="" coords="449,1876,617,1903"/>
+<area shape="rect" id="node45" href="$PoKeysLibI2CAsync_8c.html#a16f0fa39bc0d434439a366bb876220e1" title=" " alt="" coords="430,1927,635,1953"/>
+<area shape="rect" id="node46" href="$PoKeysLibLCDAsync_8c.html#a2e4f2ce86ca90c96446c7c114669fb13" title=" " alt="" coords="422,1977,643,2004"/>
+<area shape="rect" id="node47" href="$PoKeysLibLCDAsync_8c.html#a4d19354198a1df95ecca2a9c1863c8c4" title=" " alt="" coords="423,2028,642,2055"/>
+<area shape="rect" id="node48" href="$PoKeysLibMatrixKBAsync_8c.html#a6c5760edec7c3c531c7179c007142eef" title=" " alt="" coords="436,2079,629,2121"/>
+<area shape="rect" id="node49" href="$PoKeysLibMatrixKBAsync_8c.html#a72587f160bc91fc76ab46fe3f3c34861" title=" " alt="" coords="428,2145,637,2172"/>
+<area shape="rect" id="node50" href="$PoKeysLibMatrixLEDAsync_8c.html#a981b3c37670da4d184dd4fd4e0d49f70" title=" " alt="" coords="433,2197,633,2238"/>
+<area shape="rect" id="node51" href="$PoKeysLibMatrixLEDAsync_8c.html#a5330931ab154547af667520967c47a0c" title=" " alt="" coords="433,2262,633,2303"/>
+<area shape="rect" id="node52" href="$PoKeysLibPulseEngine__v2Async_8c.html#a4bd15472d06a3bf54e88b02c33c98a36" title=" " alt="" coords="420,2327,645,2369"/>
+<area shape="rect" id="node53" href="$PoKeysLibPulseEngine__v2Async_8c.html#ad84b1e1e67a25462dbc6ec3b6bfb31c9" title=" " alt="" coords="433,2393,633,2434"/>
+<area shape="rect" id="node54" href="$PoKeysLibPulseEngine__v2Async_8c.html#a14db5c7e27afacb5152c2cdc71f7b776" title=" " alt="" coords="435,2459,631,2485"/>
+<area shape="rect" id="node55" href="$PoKeysLibPulseEngine__v2Async_8c.html#a103a40823d26c0c2860ee49d65702b8c" title=" " alt="" coords="439,629,627,656"/>
+<area shape="rect" id="node56" href="$PoKeysLibIOAsync_8c.html#ada173b70174c44c42d5ae835358d0d95" title=" " alt="" coords="425,2509,640,2536"/>
+<area shape="rect" id="node57" href="$PoKeysLibIOAsync_8c.html#a5773f08dff2523a9ea9ffcf88d37047b" title="Sets all pin configuration fields asynchronously." alt="" coords="426,2560,639,2587"/>
+<area shape="rect" id="node58" href="$PoKeysLibIOAsync_8c.html#a0a6ceb1aa0613a1e3bb0d2bdabb20c4f" title="Starts async request to get PoExtBus data (CMD 0xDA, param1=2)." alt="" coords="448,2611,617,2637"/>
+<area shape="rect" id="node59" href="$PoKeysLibIOAsync_8c.html#a05ced4309098aae67f170ac47d4aaddb" title="Starts async request to set PoExtBus data (CMD 0xDA)." alt="" coords="449,2661,616,2688"/>
+<area shape="rect" id="node60" href="$PoKeysLibPoNETAsyncEnhanced_8c.html#a97520d849976956f0a57a57e11033ce4" title=" " alt="" coords="414,2712,651,2739"/>
+<area shape="rect" id="node61" href="$PoKeysLibPoNETAsync_8c.html#a3c12276881f3b45c56244c9b1aae51d7" title=" " alt="" coords="417,2763,648,2789"/>
+<area shape="rect" id="node63" href="$PoKeysLibPoNETAsync_8c.html#af2afc2d1a902285c403724e18e0d0d93" title=" " alt="" coords="411,2814,655,2855"/>
+<area shape="rect" id="node64" href="$PoKeysLibPoNETAsync_8c.html#abf6e043583e7f2e498881fe18717d3ec" title=" " alt="" coords="427,2879,639,2921"/>
+<area shape="rect" id="node65" href="$PoKeysLibPoNETAsync_8c.html#a8d522e5440b51d57c64449f9709f0f5d" title=" " alt="" coords="413,2945,652,2972"/>
+<area shape="rect" id="node66" href="$PoKeysLibPoNETAsync_8c.html#a06569777b67554ecb5b8d2313aaa0043" title=" " alt="" coords="406,2997,659,3038"/>
+<area shape="rect" id="node67" href="$PoKeysLibPoNETAsync_8c.html#ae30d618a9ef584142fd9569030f0a842" title=" " alt="" coords="416,3113,649,3140"/>
+<area shape="rect" id="node68" href="$PoKeysLibPoNETAsyncEnhanced_8c.html#a2ca760795795083aa3ab999eb42a2311" title=" " alt="" coords="428,3165,637,3206"/>
+<area shape="rect" id="node69" href="$PoKeysLibPoNETAsync_8c.html#a545d854e41e3d2a894d3e57e16ae5841" title=" " alt="" coords="418,3063,647,3089"/>
+<area shape="rect" id="node71" href="$PoKeysLibPWMAsync_8c.html#ad16f337dd4875c516988e4276b5443bb" title="Starts async request to get PWM configuration (CMD 0xCB, param1=0)" alt="" coords="419,3231,647,3257"/>
+<area shape="rect" id="node72" href="$PoKeysLibPWMAsync_8c.html#a3cca862944a5c7bc849878bc5e2fbba1" title="Starts async command to configure PWM duty cycle and period (CMD 0xCB)." alt="" coords="419,3281,646,3308"/>
+<area shape="rect" id="node73" href="$PoKeysLibPWMAsync_8c.html#a6ffbea072a9da9a81b47ed643f617527" title="Set PWM configuration directly with specified parameters (async)" alt="" coords="413,3333,652,3374"/>
+<area shape="rect" id="node74" href="$PoKeysLibPWMAsync_8c.html#a76f281e5617d4e0e7dc5baed00a220be" title="Get PWM pin assignments (async)" alt="" coords="410,3399,655,3425"/>
+<area shape="rect" id="node75" href="$PoKeysLibPWMAsync_8c.html#a7500e5ce4dda887a97eea5a177c8b62c" title="Set single PWM channel duty cycle (async)" alt="" coords="417,3449,649,3476"/>
+<area shape="rect" id="node76" href="$PoKeysLibPWMAsync_8c.html#a994703c751d423c56e7d6eae8a3bdba4" title="Starts async command to update PWM values only (CMD 0xCB, param1=1, param2=1)." alt="" coords="450,579,615,605"/>
+<area shape="rect" id="node77" href="$PoKeysLibPWMAsync_8c.html#a1e7c6675ce5072a1baa6723f67b0b428" title="Update PWM duty cycles directly (async)" alt="" coords="425,3500,641,3527"/>
+<area shape="rect" id="node78" href="$PoKeysLibAdvancedRTAsync_8c.html#a4578c218c41816ec06b35a234b9873f3" title="Set PWM duty cycles for selected channels only (async)" alt="" coords="411,3551,654,3593"/>
+<area shape="rect" id="node79" href="$PoKeysLibRTCAsync_8c.html#a9161c735be7333de615ac373afd0bf58" title="Starts an asynchronous RTC read from the device." alt="" coords="467,3668,599,3695"/>
+<area shape="rect" id="node83" href="$PoKeysLibSecurityAsync_8c.html#a8b2e8539aad7e2668c234f1550fbb4b4" title=" " alt="" coords="431,3719,634,3745"/>
+<area shape="rect" id="node84" href="$PoKeysLibSPIAsync_8c.html#a85c002999e1c2a023ac24f3c9fdb585e" title="Configure the SPI interface asynchronously (command 0xE5/0x01)." alt="" coords="449,3769,616,3796"/>
+<area shape="rect" id="node85" href="$PoKeysLibSPIAsync_8c.html#a22152dce4fc221634e5380dfec846f58" title="Read data from SPI bus asynchronously (command 0xE5/0x03)." alt="" coords="463,3820,602,3847"/>
+<area shape="rect" id="node86" href="$PoKeysLibIOAsync_8c.html#a00c7951fbf0a11c16f264d07c73a64aa" title="Starts async pin function configuration request (CMD 0xC0, param1=0)." alt="" coords="427,3871,639,3913"/>
+<area shape="rect" id="node87" href="$PoKeysLibUARTAsync_8c.html#a20b20b0372d79d88ecfd7ab382195260" title=" " alt="" coords="456,3937,609,3964"/>
+<area shape="rect" id="node88" href="$PoKeysLibWS2812Async_8c.html#aac805690341891d82e4cd3a61953846e" title=" " alt="" coords="437,3988,629,4015"/>
+<area shape="rect" id="node11" href="$PoKeysLibAdvancedRTAsync_8c.html#a62f34b5fbad7130f28b4ee32263ee6c7" title="Perform complete IO update cycle (async)" alt="" coords="141,477,324,504"/>
+<area shape="rect" id="node18" href="$PoKeysLibAdvancedRTAsync_8c.html#aa9b22206b88388435198b2dd0f274e00" title="Test device communication and RT timing (async)" alt="" coords="125,933,340,960"/>
+<area shape="rect" id="node19" href="$PoKeysLibDeviceStatusAsync_8c.html#ad6c128974b6662af73631f314dd94401" title="Comprehensive device status check (async)" alt="" coords="135,984,330,1011"/>
+<area shape="rect" id="node20" href="$PoKeysLibAdvancedRTAsync_8c.html#aa9c14aba774d79049db59444fad34d41" title="Get comprehensive system status in one operation (async)" alt="" coords="125,1035,340,1061"/>
+<area shape="rect" id="node30" href="$PoKeysLibAdvancedRTAsync_8c.html#a4ed1a6fbf44221a75d100efbb8f41ca4" title="Emergency stop all motion and outputs (async)" alt="" coords="131,579,335,605"/>
+<area shape="rect" id="node35" href="$PoKeysLibEncodersAsync_8c.html#a46b9ad786bf66f8a1b9fb1c2e0ac2831" title="Reset all encoders&#39; raw values asynchronously." alt="" coords="137,1496,328,1523"/>
+<area shape="rect" id="node36" href="$PoKeysLibEncodersAsync_8c.html#a32ab0fb5b93b308e19e66015cdfa6ebd" title="Reset a single encoder&#39;s raw value asynchronously." alt="" coords="125,1547,340,1573"/>
+<area shape="rect" id="node62" href="$PoKeysLibPoNETAsyncEnhanced_8c.html#abbf8834b3a28fe508ab44e49093fad1a" title=" " alt="" coords="113,2938,353,2979"/>
+<area shape="rect" id="node70" href="$PoKeysLibPoNETAsyncEnhanced_8c.html#a617e0b8a5218bd81b7cd87c82c3677dc" title=" " alt="" coords="119,3055,346,3097"/>
+<area shape="rect" id="node80" href="$pokeys__async2_8c.html#a7d3a170e382b1912bd81bedce1e0e628" title=" " alt="" coords="187,3668,278,3695"/>
+<area shape="rect" id="node81" href="$pokeys__async2_8c.html#aaf7e510ec6df908bbd750707b3105706" title=" " alt="" coords="173,3719,292,3745"/>
+<area shape="rect" id="node82" href="$pokeys__async_8c.html#a73df23ab851a91f06e21d676e56bcacd" title=" " alt="" coords="5,3719,60,3745"/>
+<area shape="rect" id="node90" href="$PoKeysLib1WireAsync_8c.html#ab48e61f29b87b0b20a0c97db291baff9" title=" " alt="" coords="421,4039,644,4065"/>
+<area shape="rect" id="node91" href="$PoKeysLib1WireAsync_8c.html#af59da056d90f3f8cbe187378661db009" title=" " alt="" coords="433,4090,632,4131"/>
+<area shape="rect" id="node92" href="$PoKeysLibCANAsync_8c.html#a93468fc1c3cc3c04ca452721d86b308f" title=" " alt="" coords="445,4156,620,4183"/>
+<area shape="rect" id="node93" href="$PoKeysLibCANAsync_8c.html#a9a8d4488fe4cd835dbdb756a83c27a03" title=" " alt="" coords="433,4207,633,4233"/>
+<area shape="rect" id="node94" href="$PoKeysLibCANAsync_8c.html#a5d393baa1ba4e9d6d5fe12aa171bea86" title=" " alt="" coords="459,4257,607,4284"/>
+<area shape="rect" id="node95" href="$PoKeysLibCOSMAsync_8c.html#a8b3b1a3ceb4b4adaf121b630f490fdb6" title=" " alt="" coords="433,4308,632,4335"/>
+<area shape="rect" id="node96" href="$PoKeysLibEasySensorsAsync_8c.html#a30827a27bf2e00942726be940471cfc6" title=" " alt="" coords="420,4359,645,4385"/>
+<area shape="rect" id="node97" href="$PoKeysLibEncodersAsync_8c.html#a117781f6a4977f67bcb5f0d4901e6a47" title="Asynchronously sets the full PoKeys encoder configuration." alt="" coords="429,4410,636,4451"/>
+<area shape="rect" id="node98" href="$PoKeysLibEncodersAsync_8c.html#a750834bb2458087d9484ed7b81b2a01b" title="Starts asynchronous encoder values set sequence." alt="" coords="432,4476,633,4503"/>
+<area shape="rect" id="node99" href="$PoKeysLibFailsafeAsync_8c.html#a6830709da02ba56475091d3aeb6bfa18" title=" " alt="" coords="428,4527,637,4553"/>
+<area shape="rect" id="node100" href="$PoKeysLibI2CAsync_8c.html#a4808b1c539055751f59605639203c144" title=" " alt="" coords="417,4577,648,4604"/>
+<area shape="rect" id="node101" href="$PoKeysLibI2CAsync_8c.html#a745b083bf9c3e57209826574d33571ad" title=" " alt="" coords="447,4628,619,4655"/>
+<area shape="rect" id="node102" href="$PoKeysLibLCDAsync_8c.html#a6aec34ba0e73e54d8ed57a5a402182fa" title=" " alt="" coords="426,4679,639,4721"/>
+<area shape="rect" id="node103" href="$PoKeysLibLCDAsync_8c.html#a20c0abfc86d310530b99e7db6b7c4e98" title=" " alt="" coords="453,4745,612,4772"/>
+<area shape="rect" id="node104" href="$PoKeysLibMatrixKBAsync_8c.html#a98a9bea03693d3957f2e4782294f1d57" title=" " alt="" coords="436,4797,629,4838"/>
+<area shape="rect" id="node105" href="$PoKeysLibMatrixLEDAsync_8c.html#a40f6efbdf2520af47db38678077ef8e5" title=" " alt="" coords="433,4863,632,4889"/>
+<area shape="rect" id="node106" href="$PoKeysLibPulseEngine__v2Async_8c.html#a53f0614f33fccfe2e0bbc726641bed51" title=" " alt="" coords="420,4914,645,4955"/>
+<area shape="rect" id="node107" href="$PoKeysLibPulseEngine__v2Async_8c.html#a4e43799dba91cd1d637fcc702bf0b336" title=" " alt="" coords="433,4979,633,5021"/>
+<area shape="rect" id="node108" href="$PoKeysLibPulseEngine__v2Async_8c.html#afcefae34cd3c9b79d1e9e3bdf4d29d18" title=" " alt="" coords="427,5045,638,5086"/>
+<area shape="rect" id="node109" href="$PoKeysLibPulseEngine__v2Async_8c.html#ad237da4187cb752d13bae3cc88a0a549" title=" " alt="" coords="429,5111,636,5137"/>
+<area shape="rect" id="node110" href="$PoKeysLibPulseEngine__v2Async_8c.html#aa8ce6159e641891e0f7384a7818d41d0" title=" " alt="" coords="405,5161,660,5188"/>
+<area shape="rect" id="node111" href="$PoKeysLibPulseEngine__v2Async_8c.html#aaaef541dd46b265976495eb7292d34c0" title=" " alt="" coords="432,5213,633,5254"/>
+<area shape="rect" id="node112" href="$PoKeysLibPoNETAsync_8c.html#a37a28fc2391a33de6bb4f0529408cc0b" title=" " alt="" coords="414,3617,651,3644"/>
+<area shape="rect" id="node114" href="$PoKeysLibSPIAsync_8c.html#a129c7aee204d5fd2ee7553119b8a900a" title="Perform SPI write/read transaction asynchronously (command 0xE5/0x04)." alt="" coords="454,5279,611,5305"/>
+<area shape="rect" id="node115" href="$PoKeysLibSPIAsync_8c.html#a57886bd80708389b699f2f2ca70ba87f" title="Write data to SPI bus asynchronously (command 0xE5/0x02)." alt="" coords="463,5329,603,5356"/>
+<area shape="rect" id="node116" href="$PoKeysLibUARTAsync_8c.html#aea87db7469895f77a250b33b1b4c2386" title=" " alt="" coords="442,5380,623,5407"/>
+<area shape="rect" id="node117" href="$PoKeysLibUARTAsync_8c.html#a77b6114b16cd7a136e59e4912644501b" title=" " alt="" coords="455,5431,610,5457"/>
+<area shape="rect" id="node118" href="$PoKeysLibSecurityAsync_8c.html#ae0c9142e84950ab126a83001ac7b3872" title=" " alt="" coords="444,5481,621,5508"/>
+<area shape="rect" id="node119" href="$PoKeysLibSecurityAsync_8c.html#ab08ae8bd6f049dff6571e6bc5853da0e" title=" " alt="" coords="434,5532,631,5559"/>
+<area shape="rect" id="node113" href="$PoKeysLibPoNETAsyncEnhanced_8c.html#ab41437e73751987ff690ee6be106600e" title=" " alt="" coords="108,3602,357,3643"/>
+</map>

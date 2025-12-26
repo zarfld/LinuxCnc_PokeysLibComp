@@ -1,0 +1,4 @@
+<map id="SendRequest" name="SendRequest">
+<area shape="rect" id="node1" title="Send a request and wait for a response (async context)." alt="" coords="203,5,309,32"/>
+<area shape="rect" id="node2" href="$PoKeysLibCoreAsync_8c.html#a5e99bef619c902443eecbaacd8e0be19" title="Send a command composed from the provided parameters." alt="" coords="5,5,155,32"/>
+</map>

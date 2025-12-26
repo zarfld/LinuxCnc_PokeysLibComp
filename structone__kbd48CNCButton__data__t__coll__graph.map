@@ -1,0 +1,4 @@
+<map id="one_kbd48CNCButton_data_t" name="one_kbd48CNCButton_data_t">
+<area shape="rect" id="node1" title="Represents a single button and LED pair on the kbd48CNC PoNET module." alt="" coords="5,160,169,252"/>
+<area shape="rect" id="node2" title=" " alt="" coords="62,5,113,83"/>
+</map>

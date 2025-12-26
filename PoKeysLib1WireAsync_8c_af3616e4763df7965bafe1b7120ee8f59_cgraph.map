@@ -1,0 +1,6 @@
+<map id="PK_1WireReadStatusGetAsync" name="PK_1WireReadStatusGetAsync">
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,225,57"/>
+<area shape="rect" id="node2" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="273,31,431,57"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="482,5,609,32"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="479,56,612,83"/>
+</map>

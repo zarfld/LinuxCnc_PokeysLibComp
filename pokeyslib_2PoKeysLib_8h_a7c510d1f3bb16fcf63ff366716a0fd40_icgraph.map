@@ -1,0 +1,5 @@
+<map id="PK_EncoderConfigurationGet" name="PK_EncoderConfigurationGet">
+<area shape="rect" id="node1" title="Retrieve encoder configuration from the device." alt="" coords="363,5,571,32"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#ga3c9afba53772a416f90c9b80d74d76fe" title="Placeholder function to perform encoder&#45;specific setup actions." alt="" coords="180,5,315,32"/>
+<area shape="rect" id="node3" href="$pokeys_8c.html#a1d59e212b57d33fe74e44b64cadf3314" title=" " alt="" coords="5,5,132,32"/>
+</map>

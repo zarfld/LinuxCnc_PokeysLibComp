@@ -1,0 +1,8 @@
+<map id="PK_PWMUpdateDirectlyAsync" name="PK_PWMUpdateDirectlyAsync">
+<area shape="rect" id="node1" title="Update PWM duty cycles directly (async)" alt="" coords="5,56,221,83"/>
+<area shape="rect" id="node2" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="503,31,661,57"/>
+<area shape="rect" id="node5" href="$PoKeysLibPWMAsync_8c.html#a994703c751d423c56e7d6eae8a3bdba4" title="Update PWM duty cycles (async)" alt="" coords="269,81,435,108"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="733,5,859,32"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="729,56,863,83"/>
+<area shape="rect" id="node6" href="$pokeysHal_2hal-canon_2hal__analog_8c.html#a888571c8ceab990ef5d043685915e2e7" title=" " alt="" coords="483,81,681,108"/>
+</map>

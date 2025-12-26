@@ -1,0 +1,5 @@
+<map id="PK_EncoderRawValueResetAsync" name="PK_EncoderRawValueResetAsync">
+<area shape="rect" id="node1" title="Reset encoder raw values asynchronously (command 0x1A)." alt="" coords="268,31,507,57"/>
+<area shape="rect" id="node2" href="$PoKeysLibEncodersAsync_8c.html#a46b9ad786bf66f8a1b9fb1c2e0ac2831" title="Reset all encoders&#39; raw values asynchronously." alt="" coords="17,5,208,32"/>
+<area shape="rect" id="node3" href="$PoKeysLibEncodersAsync_8c.html#a32ab0fb5b93b308e19e66015cdfa6ebd" title="Reset a single encoder&#39;s raw value asynchronously." alt="" coords="5,56,220,83"/>
+</map>

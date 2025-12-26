@@ -1,0 +1,23 @@
+<map id="user_mainloop" name="user_mainloop">
+<area shape="rect" id="node1" title=" " alt="" coords="5,171,124,197"/>
+<area shape="rect" id="node2" href="$PoKeysLibAsync_8c.html#ad9c2ccf7f8aaaa52ad2ccbf77e2efe71" title="Receives UDP packets and dispatches them to the correct async transaction." alt="" coords="182,5,362,32"/>
+<area shape="rect" id="node4" href="$pokeysHal_2PoKeysLibRTC_8c.html#a3e0fb79fbdbcd9ac1dd0f20f9564c684" title="Read the real&#45;time clock values (command 0x83/0x00)." alt="" coords="225,411,319,437"/>
+<area shape="rect" id="node12" href="$PoKeysLibRTCAsync_8c.html#a9161c735be7333de615ac373afd0bf58" title="Starts an asynchronous RTC read from the device." alt="" coords="206,171,338,197"/>
+<area shape="rect" id="node17" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="673,107,797,133"/>
+<area shape="rect" id="node21" href="$PoKeysLibAsync_8c.html#aac592ef253302b3b4230421a769276a9" title="Enhanced timeout and retry check with exponential backoff and error recovery." alt="" coords="172,233,372,260"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a47e60ec1f2ceb9c913f4b3fdd448595b" title="Finds an open transaction by its Request ID." alt="" coords="671,31,798,57"/>
+<area shape="rect" id="node5" href="$pokeyslib_2PoKeysLibCore_8c.html#acb1fdd8f77277dc66c4d037218bfcece" title=" " alt="" coords="455,461,574,488"/>
+<area shape="rect" id="node6" href="$pokeyslib_2PoKeysLibCore_8c.html#ab5d92aa36d0a4a6953a055f5cd960aff" title=" " alt="" coords="461,411,568,437"/>
+<area shape="rect" id="node7" href="$pokeyslib_2PoKeysLibCore_8c.html#a273b6d635dea8f559b915cdb289d021e" title=" " alt="" coords="873,461,983,488"/>
+<area shape="rect" id="node8" href="$group__API.html#ga6b820f3e72097cf7f994e33715dc7af1" title="Read an Input report from a HID device." alt="" coords="695,360,774,387"/>
+<area shape="rect" id="node10" href="$group__API.html#gad14ea48e440cf5066df87cc6488493af" title="Write an Output report to a HID device." alt="" coords="693,461,776,488"/>
+<area shape="rect" id="node11" href="$pokeyslib_2PoKeysLibCoreSockets_8c.html#a22759fb4024c9081af26ac1bc6541b47" title=" " alt="" coords="671,512,799,539"/>
+<area shape="rect" id="node9" href="$group__API.html#gaa5c9ed5aa290688ffac03343989ad75a" title="Read an Input report from a HID device with timeout." alt="" coords="860,360,996,387"/>
+<area shape="rect" id="node13" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="436,309,593,336"/>
+<area shape="rect" id="node16" href="$PoKeysLibRTCAsync_8c.html#a813f467d47294d4c3abd9282a20743c4" title="Processes the RTC response and fills HAL&#45;safe structure." alt="" coords="420,208,609,235"/>
+<area shape="rect" id="node18" href="$PoKeysLibAsync_8c.html#a77fe6d8f453b9f120276324e0b2ad076" title="Sends an asynchronous request that was prepared earlier." alt="" coords="441,157,588,184"/>
+<area shape="rect" id="node14" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="671,309,798,336"/>
+<area shape="rect" id="node15" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="668,259,801,285"/>
+<area shape="rect" id="node19" href="$PoKeysLibAsync_8c.html#a2d192ebf6b1b209c93b2158460c24aa2" title=" " alt="" coords="657,183,812,209"/>
+<area shape="rect" id="node20" href="$rtapi_8h.html#a935411bb5eff04e82620819db6645685" title=" " alt="" coords="869,183,987,209"/>
+</map>

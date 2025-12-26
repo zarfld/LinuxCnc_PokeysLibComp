@@ -1,0 +1,13 @@
+<map id="hal_adcout_getscaledvalue" name="hal_adcout_getscaledvalue">
+<area shape="rect" id="node1" title=" " alt="" coords="707,89,905,115"/>
+<area shape="rect" id="node2" href="$pokeysHal_2PoKeysLibIO_8c.html#a74a7b181f1bbb877bb965343a64d43e2" title=" " alt="" coords="452,13,639,39"/>
+<area shape="rect" id="node7" href="$PoKeysLibPWMAsync_8c.html#a3cca862944a5c7bc849878bc5e2fbba1" title="Starts async command to configure PWM duty cycle and period (CMD 0xCB)." alt="" coords="432,63,659,90"/>
+<area shape="rect" id="node8" href="$pokeysHal_2PoKeysLibIO_8c.html#a2fef84a920878e3060d96217731123fa" title=" " alt="" coords="482,114,609,141"/>
+<area shape="rect" id="node9" href="$PoKeysLibPWMAsync_8c.html#a994703c751d423c56e7d6eae8a3bdba4" title="Starts async command to update PWM values only (CMD 0xCB, param1=1, param2=1)." alt="" coords="463,165,628,191"/>
+<area shape="rect" id="node3" href="$group__hal__component__pokeys.html#ga96c96a5b1b2aaa10d97aa8426bee3840" title="Initializes the PoKeys digital and analog I/O configuration." alt="" coords="197,5,367,47"/>
+<area shape="rect" id="node5" href="$group__hal__component__pokeys.html#ga053adc615433218543268696998c7f32" title="Updates PoKeys I/O states from and to hardware." alt="" coords="197,77,367,119"/>
+<area shape="rect" id="node4" href="$pokeys_8c.html#a1d59e212b57d33fe74e44b64cadf3314" title=" " alt="" coords="5,13,132,39"/>
+<area shape="rect" id="node6" href="$pokeys_8c.html#a6e89ee20635570c2e51b81bf26e895cc" title=" " alt="" coords="9,85,129,111"/>
+<area shape="rect" id="node10" href="$PoKeysLibAdvancedRTAsync_8c.html#a4ed1a6fbf44221a75d100efbb8f41ca4" title="Emergency stop all motion and outputs (async)" alt="" coords="180,157,384,183"/>
+<area shape="rect" id="node11" href="$PoKeysLibAdvancedRTAsync_8c.html#a62f34b5fbad7130f28b4ee32263ee6c7" title="Perform complete IO update cycle (async)" alt="" coords="191,207,373,234"/>
+</map>

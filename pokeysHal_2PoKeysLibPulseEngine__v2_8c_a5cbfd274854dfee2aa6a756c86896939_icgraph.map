@@ -1,0 +1,8 @@
+<map id="PK_PEv2_Status2Get" name="PK_PEv2_Status2Get">
+<area shape="rect" id="node1" title="Obtain extended status information." alt="" coords="611,42,768,69"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#gad0b4254d4beb35bce80cf4a89199b554" title="Reads and updates the state of dedicated limit and home inputs from the PoKeys Pulse Engine v2." alt="" coords="411,13,544,39"/>
+<area shape="rect" id="node5" href="$group__hal__component__pokeys.html#ga1fd300cd610e9545e58b62ffd50e474e" title="Applies INI&#45;based configuration to PulseEngine and IO." alt="" coords="392,64,563,105"/>
+<area shape="rect" id="node3" href="$group__hal__component__pokeys.html#ga11eaeb83988c4e23fca22c07885baf31" title="Updates PulseEngine feedback and status." alt="" coords="173,5,344,47"/>
+<area shape="rect" id="node4" href="$pokeys_8c.html#a6e89ee20635570c2e51b81bf26e895cc" title=" " alt="" coords="5,13,125,39"/>
+<area shape="rect" id="node6" href="$pokeys_8c.html#a1d59e212b57d33fe74e44b64cadf3314" title=" " alt="" coords="195,71,322,98"/>
+</map>

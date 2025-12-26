@@ -1,0 +1,7 @@
+<map id="PK_PEv2_AxisConfigurationGet" name="PK_PEv2_AxisConfigurationGet">
+<area shape="rect" id="node1" title="Retrieve configuration for one axis." alt="" coords="907,42,1129,69"/>
+<area shape="rect" id="node2" href="$group__PoKeys__Axis.html#gafbc819ed007226ee89a72106f88a257e" title="Retrieves and parses the axis configuration from the PoKeys Pulse Engine v2." alt="" coords="652,35,859,76"/>
+<area shape="rect" id="node3" href="$group__hal__component__pokeys.html#gaa49f4d7037a22852892704ca050145f8" title="Set the axis configuration of the PoKeys device." alt="" coords="399,5,604,47"/>
+<area shape="rect" id="node4" href="$group__hal__component__pokeys.html#ga1fd300cd610e9545e58b62ffd50e474e" title="Applies INI&#45;based configuration to PulseEngine and IO." alt="" coords="180,35,351,76"/>
+<area shape="rect" id="node5" href="$pokeys_8c.html#a1d59e212b57d33fe74e44b64cadf3314" title=" " alt="" coords="5,42,132,69"/>
+</map>

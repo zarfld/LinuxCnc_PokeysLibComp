@@ -1,0 +1,17 @@
+<map id="InitializeNewDevice" name="InitializeNewDevice">
+<area shape="rect" id="node1" title=" " alt="" coords="5,183,157,209"/>
+<area shape="rect" id="node2" href="$hal_8h.html#a37b839660591a915940fc471bbb5df4f" title=" " alt="" coords="247,81,341,108"/>
+<area shape="rect" id="node3" href="$pokeysHal_2PoKeysLibDeviceData_8c.html#a9508e9fcbc964cae1ccdb57f582cb5e1" title="Read device identification and feature set." alt="" coords="221,132,367,159"/>
+<area shape="rect" id="node12" href="$pokeysHal_2PoKeysLibDeviceData_8c.html#ae4798f617a5dd5ebb93c534258cd0eb9" title="Populate PWM pin ID table in the device structure." alt="" coords="205,183,383,209"/>
+<area shape="rect" id="node13" href="$pokeysHal_2PoKeysLibIO_8c.html#a4397536c30fe3f56eb74b56210839349" title="Check if a pin supports a counter (command 0xC0/0x01)." alt="" coords="210,233,378,260"/>
+<area shape="rect" id="node15" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="232,284,356,311"/>
+<area shape="rect" id="node4" href="$pokeyslib_2PoKeysLibDeviceData_8c.html#a8fa8788bebd4d9501da88a32620a6be1" title=" " alt="" coords="486,132,606,159"/>
+<area shape="rect" id="node5" href="$pokeyslib_2PoKeysLibCore_8c.html#acb1fdd8f77277dc66c4d037218bfcece" title=" " alt="" coords="487,183,605,209"/>
+<area shape="rect" id="node6" href="$pokeyslib_2PoKeysLibCore_8c.html#ab5d92aa36d0a4a6953a055f5cd960aff" title=" " alt="" coords="493,81,599,108"/>
+<area shape="rect" id="node7" href="$pokeyslib_2PoKeysLibCore_8c.html#a273b6d635dea8f559b915cdb289d021e" title=" " alt="" coords="898,107,1009,133"/>
+<area shape="rect" id="node8" href="$group__API.html#ga6b820f3e72097cf7f994e33715dc7af1" title="Read an Input report from a HID device." alt="" coords="734,5,813,32"/>
+<area shape="rect" id="node10" href="$group__API.html#gad14ea48e440cf5066df87cc6488493af" title="Write an Output report to a HID device." alt="" coords="732,107,815,133"/>
+<area shape="rect" id="node11" href="$pokeyslib_2PoKeysLibCoreSockets_8c.html#a22759fb4024c9081af26ac1bc6541b47" title=" " alt="" coords="709,157,837,184"/>
+<area shape="rect" id="node9" href="$group__API.html#gaa5c9ed5aa290688ffac03343989ad75a" title="Read an Input report from a HID device with timeout." alt="" coords="885,5,1021,32"/>
+<area shape="rect" id="node14" href="$pokeyslib_2PoKeysLibIO_8c.html#ae7007ad0d96ba1ff2fadba2101016ce7" title=" " alt="" coords="431,233,661,260"/>
+</map>
