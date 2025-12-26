@@ -17,19 +17,14 @@ else
     echo "PoKeysLib repository already cloned."
 fi
 
-# Initialize the submodule manually
+# Initialize the submodule for pokeyslib only (not recursive to avoid other submodules)
 echo "Initializing the pokeyslib submodule..."
-cd external/pokeyslib
-git submodule init
-
-# Update the submodule manually
-echo "Updating the pokeyslib submodule..."
-git submodule update
+git submodule update --init external/pokeyslib
 
 # Überprüfen, ob der Treiber bereits kompiliert ist
+cd external/pokeyslib || exit 1
 if [ ! -f "pokeyslib/libpokeyslib.so" ]; then
     echo "Compiling and installing the PoKeys driver..."
-   # cd pokeyslib
     sudo make -f Makefile.noqmake install
 else
     echo "PoKeys driver already compiled and installed."
