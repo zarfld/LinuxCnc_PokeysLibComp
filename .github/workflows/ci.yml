@@ -36,9 +36,26 @@ jobs:
           rm -rf /home/cnc/actions-runner/_work/_temp/* || true
           sudo apt clean
           df -h
+
+    - name: Clean submodule cache before checkout
+      run: |
+        echo "Removing cached submodule state from previous runs..."
+        cd /home/cnc/actions-runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp || exit 0
+        # Remove all submodule-related cached data
+        rm -rf .git/modules/wiki || true
+        rm -rf .git/modules/external/linuxcnc-hal-canon || true
+        rm -rf .git/modules/external/pokeysHal || true
+        rm -rf wiki external/linuxcnc-hal-canon external/pokeysHal || true
+        # Clean git index of submodule entries
+        git rm --cached wiki || true
+        git rm --cached external/linuxcnc-hal-canon || true
+        git rm --cached external/pokeysHal || true
+        # Reset to clean state
+        git reset --hard || true
+        echo "Submodule cache cleaned."
   
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v6.0.1
       with:
         submodules: false
         clean: true
