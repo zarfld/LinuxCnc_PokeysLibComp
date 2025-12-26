@@ -44,13 +44,26 @@ jobs:
         clean: true
         fetch-depth: 1
 
-    - name: Deinitialize unnecessary submodules
+    - name: Remove problematic submodule references
       run: |
-        echo "Deinitializing unnecessary submodules to avoid checkout issues..."
-        git submodule deinit -f external/pokeysHal || true
-        git submodule deinit -f external/linuxcnc-hal-canon || true
-        git submodule deinit -f wiki || true
-        echo "Only external/pokeyslib will be initialized later."
+        echo "Removing problematic submodule references..."
+        # Completely remove submodule entries except pokeyslib
+        git config --file .gitmodules --remove-section submodule.wiki || true
+        git config --file .gitmodules --remove-section "submodule.external/linuxcnc-hal-canon" || true
+        git config --file .gitmodules --remove-section "submodule.external/pokeysHal" || true
+        git config --remove-section submodule.wiki || true
+        git config --remove-section "submodule.external/linuxcnc-hal-canon" || true
+        git config --remove-section "submodule.external/pokeysHal" || true
+        # Remove .git/modules directories for unused submodules
+        rm -rf .git/modules/wiki || true
+        rm -rf .git/modules/external/linuxcnc-hal-canon || true
+        rm -rf .git/modules/external/pokeysHal || true
+        # Clean up any leftover submodule directories
+        rm -rf wiki || true
+        rm -rf external/linuxcnc-hal-canon || true
+        rm -rf external/pokeysHal || true
+        git add .gitmodules || true
+        echo "Only external/pokeyslib submodule will be used."
 
     - name: Check runner availability
       run: |
