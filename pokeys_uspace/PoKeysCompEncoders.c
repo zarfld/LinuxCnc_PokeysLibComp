@@ -365,10 +365,10 @@ int PKEncoder_export_params(char *prefix, long extra_arg, int id, int njoints) {
     }
 
     // encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING
-    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.Enable4xSampling\n", __FILE__, __FUNCTION__, prefix);
-    r = hal_param_bit_newf(HAL_RW, &(encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING), id, "%s.encoder.UltraFastEncoder.Enable4xSampling", prefix);
+    rtapi_print_msg(RTAPI_MSG_DBG, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.4xSampling\n", __FILE__, __FUNCTION__, prefix);
+    r = hal_param_bit_newf(HAL_RW, &(encoder_data->UltraFastEncoderOptions_ENABLE_4X_SAMPLING), id, "%s.encoder.UltraFastEncoder.4xSampling", prefix);
     if (r != 0) {
-        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.Enable4xSampling failed\n", __FILE__, __FUNCTION__, prefix);
+        rtapi_print_msg(RTAPI_MSG_ERR, "PoKeys: %s:%s: %s.encoder.UltraFastEncoder.4xSampling failed\n", __FILE__, __FUNCTION__, prefix);
         return r;
     }
 
