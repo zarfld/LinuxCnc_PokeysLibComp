@@ -29,6 +29,17 @@ jobs:
         sudo chown -R cnc:cnc /home/cnc/actions-runner/_work
         chmod -R u+rwx /home/cnc/actions-runner/_work
 
+    - name: Check Actions Runner version
+      run: |
+        echo "Checking Actions Runner version..."
+        if [ -f /home/cnc/actions-runner/bin/Runner.Listener ]; then
+          RUNNER_VERSION=$(/home/cnc/actions-runner/bin/Runner.Listener --version 2>/dev/null || echo "unknown")
+          echo "Actions Runner version: $RUNNER_VERSION"
+          echo "Required minimum version: v2.329.0 for checkout@v6"
+        else
+          echo "Runner version check: Runner.Listener not found"
+        fi
+
     - name: Cleanup old logs and temp files
       run: |
           echo "Cleaning up logs and temp files to free up space..."
