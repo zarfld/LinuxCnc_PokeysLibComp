@@ -29,6 +29,17 @@ jobs:
         sudo chown -R cnc:cnc /home/cnc/actions-runner/_work
         chmod -R u+rwx /home/cnc/actions-runner/_work
 
+    - name: Check Actions Runner version
+      run: |
+        echo "Checking Actions Runner version..."
+        if [ -f /home/cnc/actions-runner/bin/Runner.Listener ]; then
+          RUNNER_VERSION=$(/home/cnc/actions-runner/bin/Runner.Listener --version 2>/dev/null || echo "unknown")
+          echo "Actions Runner version: $RUNNER_VERSION"
+          echo "Required minimum version: v2.329.0 for checkout@v6"
+        else
+          echo "Runner version check: Runner.Listener not found"
+        fi
+
     - name: Cleanup old logs and temp files
       run: |
           echo "Cleaning up logs and temp files to free up space..."
@@ -36,11 +47,51 @@ jobs:
           rm -rf /home/cnc/actions-runner/_work/_temp/* || true
           sudo apt clean
           df -h
+
+    - name: Clean submodule cache before checkout
+      run: |
+        echo "Removing cached submodule state from previous runs..."
+        cd /home/cnc/actions-runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp || exit 0
+        # Remove all submodule-related cached data
+        rm -rf .git/modules/wiki || true
+        rm -rf .git/modules/external/linuxcnc-hal-canon || true
+        rm -rf .git/modules/external/pokeysHal || true
+        rm -rf wiki external/linuxcnc-hal-canon external/pokeysHal || true
+        # Clean git index of submodule entries
+        git rm --cached wiki || true
+        git rm --cached external/linuxcnc-hal-canon || true
+        git rm --cached external/pokeysHal || true
+        # Reset to clean state
+        git reset --hard || true
+        echo "Submodule cache cleaned."
   
     - name: Checkout code
-      uses: actions/checkout@v6
+      uses: actions/checkout@v6.0.1
       with:
         submodules: false
+        clean: true
+        fetch-depth: 1
+
+    - name: Remove problematic submodule references
+      run: |
+        echo "Removing problematic submodule references..."
+        # Completely remove submodule entries except pokeyslib
+        git config --file .gitmodules --remove-section submodule.wiki || true
+        git config --file .gitmodules --remove-section "submodule.external/linuxcnc-hal-canon" || true
+        git config --file .gitmodules --remove-section "submodule.external/pokeysHal" || true
+        git config --remove-section submodule.wiki || true
+        git config --remove-section "submodule.external/linuxcnc-hal-canon" || true
+        git config --remove-section "submodule.external/pokeysHal" || true
+        # Remove .git/modules directories for unused submodules
+        rm -rf .git/modules/wiki || true
+        rm -rf .git/modules/external/linuxcnc-hal-canon || true
+        rm -rf .git/modules/external/pokeysHal || true
+        # Clean up any leftover submodule directories
+        rm -rf wiki || true
+        rm -rf external/linuxcnc-hal-canon || true
+        rm -rf external/pokeysHal || true
+        git add .gitmodules || true
+        echo "Only external/pokeyslib submodule will be used."
 
     - name: Check runner availability
       run: |
@@ -99,7 +150,7 @@ jobs:
 
     - name: Upload logs on failure
       if: failure()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: Logs
         path: /home/cnc/actions-runner/_work/_temp/linuxcnc_build.log

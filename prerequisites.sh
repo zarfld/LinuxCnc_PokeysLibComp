@@ -117,16 +117,16 @@ dir
 # Ensure external/pokeyslib submodule is initialized and up to date
 POKEYSLIB_DIR="external/pokeyslib"
 
-if [ -d "$POKEYSLIB_DIR" ]; then
+if [ -d "$POKEYSLIB_DIR/.git" ] || [ -f "$POKEYSLIB_DIR/.git" ]; then
     echo "Updating submodule $POKEYSLIB_DIR..."
-    git submodule update --init --recursive "$POKEYSLIB_DIR"
+    git submodule update --init "$POKEYSLIB_DIR"
     cd "$POKEYSLIB_DIR" || exit 1
     git config pull.ff only
     git pull
     cd - || exit 1
 else
     echo "Submodule directory missing, initializing..."
-    git submodule update --init --recursive "$POKEYSLIB_DIR"
+    git submodule update --init "$POKEYSLIB_DIR"
 fi
 
 # Change directory to pokeyslib
