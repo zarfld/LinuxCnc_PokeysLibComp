@@ -25,7 +25,7 @@ jobs:
           chmod -R u+rwx /home/cnc/actions-runner/_work
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install Doxygen and Graphviz
         run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
@@ -67,7 +67,7 @@ jobs:
           chmod -R u+rwx /home/cnc/actions-runner/_work
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         
       - name: Install Doxygen and Graphviz, PlantUML, and Java
         run: |
