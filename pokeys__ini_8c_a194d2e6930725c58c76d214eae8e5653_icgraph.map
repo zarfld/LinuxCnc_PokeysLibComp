@@ -1,0 +1,6 @@
+<map id="ini_write_int" name="ini_write_int">
+<area shape="rect" id="node1" title=" " alt="" coords="403,46,505,73"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#ga0a1d130932646897a1863a90d328b795" title="Writes the current PoKeys I/O configuration to the INI file." alt="" coords="184,5,355,47"/>
+<area shape="rect" id="node4" href="$structPoKeysHALComponent.html#abf4318149fdc0fb40cf6d5f6f8652335" title="Write the configuration settings to the INI file." alt="" coords="184,71,355,112"/>
+<area shape="rect" id="node3" href="$pokeys_8c.html#a0da658623a5514ac62ea1393cd3463f3" title=" " alt="" coords="5,46,136,73"/>
+</map>

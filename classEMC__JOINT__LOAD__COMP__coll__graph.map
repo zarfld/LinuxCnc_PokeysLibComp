@@ -1,0 +1,9 @@
+<map id="EMC_JOINT_LOAD_COMP" name="EMC_JOINT_LOAD_COMP">
+<area shape="rect" id="node1" title=" " alt="" coords="36,640,244,732"/>
+<area shape="rect" id="node2" href="$classEMC__JOINT__CMD__MSG.html" title=" " alt="" coords="43,485,237,577"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="126,359,274,436"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="287,160,391,296"/>
+<area shape="rect" id="node5" title=" " alt="" coords="102,5,141,83"/>
+<area shape="rect" id="node6" title=" " alt="" coords="348,5,399,83"/>
+<area shape="rect" id="node7" title=" " alt="" coords="261,493,312,570"/>
+</map>

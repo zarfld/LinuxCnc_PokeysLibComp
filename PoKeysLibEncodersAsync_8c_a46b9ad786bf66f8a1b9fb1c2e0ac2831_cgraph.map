@@ -1,0 +1,7 @@
+<map id="PK_EncoderAllResetAsync" name="PK_EncoderAllResetAsync">
+<area shape="rect" id="node1" title="Reset all encoders&#39; raw values asynchronously." alt="" coords="5,31,196,57"/>
+<area shape="rect" id="node2" href="$PoKeysLibEncodersAsync_8c.html#a2be46ec25c963225584afac09c8c2d2f" title="Reset encoder raw values asynchronously (command 0x1A)." alt="" coords="244,31,483,57"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="531,31,688,57"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="739,5,866,32"/>
+<area shape="rect" id="node5" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="736,56,869,83"/>
+</map>

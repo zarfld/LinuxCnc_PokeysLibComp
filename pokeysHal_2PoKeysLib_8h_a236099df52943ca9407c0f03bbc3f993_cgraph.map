@@ -1,0 +1,6 @@
+<map id="PK_UserAuthoriseAsync" name="PK_UserAuthoriseAsync">
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,183,57"/>
+<area shape="rect" id="node2" href="$PoKeysLibAsync_8c.html#ad3d8835baba234e6767172b8574629e5" title="Prepares an asynchronous PoKeys request with optional payload data after header." alt="" coords="231,31,469,57"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="521,5,647,32"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="517,56,651,83"/>
+</map>

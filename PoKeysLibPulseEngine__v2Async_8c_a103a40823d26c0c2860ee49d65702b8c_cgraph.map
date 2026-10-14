@@ -1,0 +1,6 @@
+<map id="PK_PEv2_StatusGetAsync" name="PK_PEv2_StatusGetAsync">
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,193,57"/>
+<area shape="rect" id="node2" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="241,31,399,57"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="450,5,577,32"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="447,56,580,83"/>
+</map>

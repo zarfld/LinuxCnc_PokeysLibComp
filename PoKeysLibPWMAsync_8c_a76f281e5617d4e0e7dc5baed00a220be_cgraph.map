@@ -1,0 +1,8 @@
+<map id="PK_PWMGetPinAssignmentsAsync" name="PK_PWMGetPinAssignmentsAsync">
+<area shape="rect" id="node1" title="Get PWM pin assignments (async)" alt="" coords="5,81,251,108"/>
+<area shape="rect" id="node2" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="329,31,487,57"/>
+<area shape="rect" id="node5" href="$pokeysHal_2PoKeysLibDeviceData_8c.html#ae4798f617a5dd5ebb93c534258cd0eb9" title="Populate PWM pin ID table in the device structure." alt="" coords="319,81,497,108"/>
+<area shape="rect" id="node6" href="$PoKeysLibIOAsync_8c.html#a004b9c9e60fdb050d53307dc0139b98f" title="Parser for PWM pin assignments (CMD 0xCB, param1=2)" alt="" coords="299,132,517,159"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="569,5,695,32"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="565,56,699,83"/>
+</map>

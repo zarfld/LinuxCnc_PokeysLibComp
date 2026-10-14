@@ -1,0 +1,10 @@
+<map id="PK_SecurityStatusGet" name="PK_SecurityStatusGet">
+<area shape="rect" id="node1" title="Retrieve the device security level (command 0xE1)." alt="" coords="5,56,168,83"/>
+<area shape="rect" id="node2" href="$pokeyslib_2PoKeysLibCore_8c.html#acb1fdd8f77277dc66c4d037218bfcece" title=" " alt="" coords="216,31,335,57"/>
+<area shape="rect" id="node3" href="$pokeyslib_2PoKeysLibCore_8c.html#ab5d92aa36d0a4a6953a055f5cd960aff" title=" " alt="" coords="222,81,329,108"/>
+<area shape="rect" id="node4" href="$pokeyslib_2PoKeysLibCore_8c.html#a273b6d635dea8f559b915cdb289d021e" title=" " alt="" coords="571,107,682,133"/>
+<area shape="rect" id="node5" href="$group__API.html#ga6b820f3e72097cf7f994e33715dc7af1" title="Read an Input report from a HID device." alt="" coords="407,5,486,32"/>
+<area shape="rect" id="node7" href="$group__API.html#gad14ea48e440cf5066df87cc6488493af" title="Write an Output report to a HID device." alt="" coords="405,107,488,133"/>
+<area shape="rect" id="node8" href="$pokeyslib_2PoKeysLibCoreSockets_8c.html#a22759fb4024c9081af26ac1bc6541b47" title=" " alt="" coords="383,157,511,184"/>
+<area shape="rect" id="node6" href="$group__API.html#gaa5c9ed5aa290688ffac03343989ad75a" title="Read an Input report from a HID device with timeout." alt="" coords="559,5,695,32"/>
+</map>

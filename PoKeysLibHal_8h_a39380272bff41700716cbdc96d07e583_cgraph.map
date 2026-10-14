@@ -1,0 +1,10 @@
+<map id="PK_ClearConfiguration" name="PK_ClearConfiguration">
+<area shape="rect" id="node1" title="Reset configuration in device flash (command 0x52)." alt="" coords="5,56,172,83"/>
+<area shape="rect" id="node2" href="$pokeyslib_2PoKeysLibCore_8c.html#acb1fdd8f77277dc66c4d037218bfcece" title=" " alt="" coords="220,31,339,57"/>
+<area shape="rect" id="node3" href="$pokeyslib_2PoKeysLibCore_8c.html#ab5d92aa36d0a4a6953a055f5cd960aff" title=" " alt="" coords="226,81,333,108"/>
+<area shape="rect" id="node4" href="$pokeyslib_2PoKeysLibCore_8c.html#a273b6d635dea8f559b915cdb289d021e" title=" " alt="" coords="575,107,686,133"/>
+<area shape="rect" id="node5" href="$group__API.html#ga6b820f3e72097cf7f994e33715dc7af1" title="Read an Input report from a HID device." alt="" coords="411,5,490,32"/>
+<area shape="rect" id="node7" href="$group__API.html#gad14ea48e440cf5066df87cc6488493af" title="Write an Output report to a HID device." alt="" coords="409,107,492,133"/>
+<area shape="rect" id="node8" href="$pokeyslib_2PoKeysLibCoreSockets_8c.html#a22759fb4024c9081af26ac1bc6541b47" title=" " alt="" coords="387,157,515,184"/>
+<area shape="rect" id="node6" href="$group__API.html#gaa5c9ed5aa290688ffac03343989ad75a" title="Read an Input report from a HID device with timeout." alt="" coords="563,5,699,32"/>
+</map>

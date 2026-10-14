@@ -1,0 +1,4 @@
+<map id="hid_get_serial_number_string" name="hid_get_serial_number_string">
+<area shape="rect" id="node1" title="Get The Serial Number String from a HID device." alt="" coords="5,5,176,47"/>
+<area shape="rect" id="node2" href="$group__API.html#ga03810bc0be3c21e9229feff689a9de85" title="Get a string from a HID device, based on its string index." alt="" coords="224,13,396,39"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="SendRequest" name="SendRequest">
+<area shape="rect" id="node1" title="Send a request and wait for the device response." alt="" coords="5,107,112,133"/>
+<area shape="rect" id="node2" href="$pokeyslib_2PoKeysLibCore_8c.html#a273b6d635dea8f559b915cdb289d021e" title=" " alt="" coords="349,132,459,159"/>
+<area shape="rect" id="node3" href="$group__API.html#ga6b820f3e72097cf7f994e33715dc7af1" title="Read an Input report from a HID device." alt="" coords="185,5,263,32"/>
+<area shape="rect" id="node5" href="$group__API.html#gad14ea48e440cf5066df87cc6488493af" title="Write an Output report to a HID device." alt="" coords="183,107,265,133"/>
+<area shape="rect" id="node6" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="162,157,286,184"/>
+<area shape="rect" id="node7" href="$pokeyslib_2PoKeysLibCoreSockets_8c.html#a22759fb4024c9081af26ac1bc6541b47" title=" " alt="" coords="160,208,288,235"/>
+<area shape="rect" id="node4" href="$group__API.html#gaa5c9ed5aa290688ffac03343989ad75a" title="Read an Input report from a HID device with timeout." alt="" coords="336,5,472,32"/>
+</map>

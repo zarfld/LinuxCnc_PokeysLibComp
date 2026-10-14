@@ -1,0 +1,8 @@
+<map id="/usr/include/linuxcnc/kinematics.h" name="/usr/include/linuxcnc/kinematics.h">
+<area shape="rect" id="node1" title=" " alt="" coords="273,5,428,47"/>
+<area shape="rect" id="node2" href="$genhexkins_8h.html" title=" " alt="" coords="5,95,160,136"/>
+<area shape="rect" id="node3" href="$genserkins_8h.html" title=" " alt="" coords="184,95,339,136"/>
+<area shape="rect" id="node4" href="$motion_8h.html" title=" " alt="" coords="363,95,517,136"/>
+<area shape="rect" id="node6" href="$switchkins_8h.html" title=" " alt="" coords="541,95,696,136"/>
+<area shape="rect" id="node5" href="$pokeys__homecomp_8c.html" title="HAL component for managing homing sequence and state logic using PoKeys PulseEngine v2." alt="" coords="317,184,563,255"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="EMC_TASK_PLAN_SET_OPTIONAL_STOP" name="EMC_TASK_PLAN_SET_OPTIONAL_STOP">
+<area shape="rect" id="node1" title=" " alt="" coords="5,484,284,591"/>
+<area shape="rect" id="node2" href="$classEMC__TASK__CMD__MSG.html" title=" " alt="" coords="49,344,240,436"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="71,219,219,296"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="61,5,228,171"/>
+</map>

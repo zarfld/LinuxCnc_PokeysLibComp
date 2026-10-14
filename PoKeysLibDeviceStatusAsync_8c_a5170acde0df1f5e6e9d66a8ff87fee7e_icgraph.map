@@ -1,0 +1,6 @@
+<map id="PK_DeviceAliveCheckAsync" name="PK_DeviceAliveCheckAsync">
+<area shape="rect" id="node1" title="Check if device is alive/responsive (async)" alt="" coords="268,56,471,83"/>
+<area shape="rect" id="node2" href="$PoKeysLibAdvancedRTAsync_8c.html#aa9b22206b88388435198b2dd0f274e00" title="Test device communication and RT timing (async)" alt="" coords="5,5,220,32"/>
+<area shape="rect" id="node3" href="$PoKeysLibDeviceStatusAsync_8c.html#ad6c128974b6662af73631f314dd94401" title="Comprehensive device status check (async)" alt="" coords="15,56,210,83"/>
+<area shape="rect" id="node4" href="$PoKeysLibAdvancedRTAsync_8c.html#aa9c14aba774d79049db59444fad34d41" title="Get comprehensive system status in one operation (async)" alt="" coords="5,107,220,133"/>
+</map>

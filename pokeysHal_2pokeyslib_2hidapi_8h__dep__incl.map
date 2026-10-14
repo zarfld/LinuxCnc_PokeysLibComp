@@ -1,0 +1,29 @@
+<map id="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/external/pokeysHal/pokeyslib/hidapi.h" name="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/external/pokeysHal/pokeyslib/hidapi.h">
+<area shape="rect" id="node1" title=" " alt="" coords="3825,5,4078,76"/>
+<area shape="rect" id="node2" href="$pokeysHal_2pokeyslib_2PoKeysLibCore_8h.html" title=" " alt="" coords="3390,124,3662,195"/>
+<area shape="rect" id="node25" href="$pokeysHal_2pokeyslib_2hid-libusb_8c.html" title=" " alt="" coords="3686,124,3939,195"/>
+<area shape="rect" id="node26" href="$pokeysHal_2pokeyslib_2hid-mac_8c.html" title=" " alt="" coords="3963,124,4217,195"/>
+<area shape="rect" id="node27" href="$pokeysHal_2pokeyslib_2hid_8c.html" title=" " alt="" coords="4241,124,4494,195"/>
+<area shape="rect" id="node3" href="$pokeysHal_2pokeyslib_2PoKeysLib1Wire_8c.html" title=" " alt="" coords="5,250,284,321"/>
+<area shape="rect" id="node4" href="$pokeysHal_2pokeyslib_2PoKeysLibCAN_8c.html" title=" " alt="" coords="309,250,578,321"/>
+<area shape="rect" id="node5" href="$pokeysHal_2pokeyslib_2PoKeysLibCore_8c.html" title=" " alt="" coords="603,250,873,321"/>
+<area shape="rect" id="node6" href="$pokeysHal_2pokeyslib_2PoKeysLibCoreSockets_8c.html" title=" " alt="" coords="897,250,1219,321"/>
+<area shape="rect" id="node7" href="$pokeysHal_2pokeyslib_2PoKeysLibDeviceData_8c.html" title=" " alt="" coords="1243,250,1561,321"/>
+<area shape="rect" id="node8" href="$pokeysHal_2pokeyslib_2PoKeysLibDevicePoKeys57Industrial_8c.html" title=" " alt="" coords="1585,243,1923,328"/>
+<area shape="rect" id="node9" href="$pokeysHal_2pokeyslib_2PoKeysLibEasySensors_8c.html" title=" " alt="" coords="1947,250,2270,321"/>
+<area shape="rect" id="node10" href="$pokeysHal_2pokeyslib_2PoKeysLibEncoders_8c.html" title=" " alt="" coords="2295,250,2595,321"/>
+<area shape="rect" id="node11" href="$pokeysHal_2pokeyslib_2PoKeysLibFailsafe_8c.html" title=" " alt="" coords="2619,250,2910,321"/>
+<area shape="rect" id="node12" href="$pokeysHal_2pokeyslib_2PoKeysLibFastUSB_8c.html" title=" " alt="" coords="2935,250,3229,321"/>
+<area shape="rect" id="node13" href="$pokeysHal_2pokeyslib_2PoKeysLibI2C_8c.html" title=" " alt="" coords="3253,250,3516,321"/>
+<area shape="rect" id="node14" href="$pokeysHal_2pokeyslib_2PoKeysLibIO_8c.html" title=" " alt="" coords="3540,250,3795,321"/>
+<area shape="rect" id="node15" href="$pokeysHal_2pokeyslib_2PoKeysLibLCD_8c.html" title=" " alt="" coords="3819,250,4086,321"/>
+<area shape="rect" id="node16" href="$pokeysHal_2pokeyslib_2PoKeysLibMatrixKB_8c.html" title=" " alt="" coords="4110,250,4411,321"/>
+<area shape="rect" id="node17" href="$pokeysHal_2pokeyslib_2PoKeysLibMatrixLED_8c.html" title=" " alt="" coords="4436,250,4744,321"/>
+<area shape="rect" id="node18" href="$pokeysHal_2pokeyslib_2PoKeysLibPoIL_8c.html" title=" " alt="" coords="4768,250,5036,321"/>
+<area shape="rect" id="node19" href="$pokeysHal_2pokeyslib_2PoKeysLibPoNET_8c.html" title=" " alt="" coords="5061,250,5343,321"/>
+<area shape="rect" id="node20" href="$pokeysHal_2pokeyslib_2PoKeysLibPulseEngine__v2_8c.html" title=" " alt="" coords="5368,250,5711,321"/>
+<area shape="rect" id="node21" href="$pokeysHal_2pokeyslib_2PoKeysLibRTC_8c.html" title=" " alt="" coords="5735,250,6000,321"/>
+<area shape="rect" id="node22" href="$pokeysHal_2pokeyslib_2PoKeysLibSPI_8c.html" title=" " alt="" coords="6025,250,6286,321"/>
+<area shape="rect" id="node23" href="$pokeysHal_2pokeyslib_2PoKeysLibUART_8c.html" title=" " alt="" coords="6310,250,6585,321"/>
+<area shape="rect" id="node24" href="$pokeysHal_2pokeyslib_2PoKeysLibWS2812_8c.html" title=" " alt="" coords="6609,250,6904,321"/>
+</map>

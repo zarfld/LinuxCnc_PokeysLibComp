@@ -1,0 +1,12 @@
+<map id="PKEncoder_Setup" name="PKEncoder_Setup">
+<area shape="rect" id="node1" title="Placeholder function to perform encoder&#45;specific setup actions." alt="" coords="5,81,140,108"/>
+<area shape="rect" id="node2" href="$pokeysHal_2PoKeysLibEncoders_8c.html#a49958241ba81a7096d1d4634140f6e26" title="Retrieve encoder configuration from the device." alt="" coords="188,56,396,83"/>
+<area shape="rect" id="node10" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="230,107,354,133"/>
+<area shape="rect" id="node3" href="$pokeyslib_2PoKeysLibCore_8c.html#acb1fdd8f77277dc66c4d037218bfcece" title=" " alt="" coords="444,31,563,57"/>
+<area shape="rect" id="node4" href="$pokeyslib_2PoKeysLibCore_8c.html#ab5d92aa36d0a4a6953a055f5cd960aff" title=" " alt="" coords="450,81,557,108"/>
+<area shape="rect" id="node5" href="$pokeyslib_2PoKeysLibCore_8c.html#a273b6d635dea8f559b915cdb289d021e" title=" " alt="" coords="799,107,910,133"/>
+<area shape="rect" id="node6" href="$group__API.html#ga6b820f3e72097cf7f994e33715dc7af1" title="Read an Input report from a HID device." alt="" coords="635,5,714,32"/>
+<area shape="rect" id="node8" href="$group__API.html#gad14ea48e440cf5066df87cc6488493af" title="Write an Output report to a HID device." alt="" coords="633,107,716,133"/>
+<area shape="rect" id="node9" href="$pokeyslib_2PoKeysLibCoreSockets_8c.html#a22759fb4024c9081af26ac1bc6541b47" title=" " alt="" coords="611,157,739,184"/>
+<area shape="rect" id="node7" href="$group__API.html#gaa5c9ed5aa290688ffac03343989ad75a" title="Read an Input report from a HID device with timeout." alt="" coords="787,5,923,32"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="PK_DigitalCounterParse" name="PK_DigitalCounterParse">
+<area shape="rect" id="node1" title="Parser for digital counter values (CMD 0xD8)." alt="" coords="487,5,661,32"/>
+<area shape="rect" id="node2" href="$PoKeysLibIOAsync_8c.html#af661ae8f666cf02c3d161938bd482064" title="Starts async request to get digital counter values (CMD 0xD8)." alt="" coords="236,5,439,32"/>
+<area shape="rect" id="node3" href="$PoKeysLibAdvancedRTAsync_8c.html#a62f34b5fbad7130f28b4ee32263ee6c7" title="Perform complete IO update cycle (async)" alt="" coords="5,5,188,32"/>
+</map>

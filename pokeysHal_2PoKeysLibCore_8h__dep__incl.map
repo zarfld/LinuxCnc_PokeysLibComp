@@ -1,0 +1,28 @@
+<map id="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/external/pokeysHal/PoKeysLibCore.h" name="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/external/pokeysHal/PoKeysLibCore.h">
+<area shape="rect" id="node1" title=" " alt="" coords="3432,5,3685,76"/>
+<area shape="rect" id="node2" href="$pokeysHal_2PoKeysLib1Wire_8c.html" title="Implementation of 1&#45;wire bus operations (command 0xDC)." alt="" coords="5,124,259,195"/>
+<area shape="rect" id="node3" href="$pokeysHal_2PoKeysLibCAN_8c.html" title="Implementation of CAN bus operations (command 0x86)." alt="" coords="283,124,536,195"/>
+<area shape="rect" id="node4" href="$PoKeysLibCOSM_8c.html" title="COSM/HTTP reporting configuration (command 0xF7)." alt="" coords="560,124,813,195"/>
+<area shape="rect" id="node5" href="$pokeysHal_2PoKeysLibCore_8c.html" title="Core communication helpers for the PoKeys protocol." alt="" coords="837,124,1091,195"/>
+<area shape="rect" id="node6" href="$pokeysHal_2PoKeysLibCoreSockets_8c.html" title="Network transport helpers for PoKeys devices." alt="" coords="1115,124,1370,195"/>
+<area shape="rect" id="node7" href="$pokeysHal_2PoKeysLibDeviceData_8c.html" title="Device information and configuration helpers." alt="" coords="1395,124,1648,195"/>
+<area shape="rect" id="node8" href="$pokeysHal_2PoKeysLibDevicePoKeys57Industrial_8c.html" title="Support for the PoKeys57Industrial device." alt="" coords="1672,124,2016,195"/>
+<area shape="rect" id="node9" href="$pokeysHal_2PoKeysLibEasySensors_8c.html" title="Access helper for EasySensors block (command 0x76/0x77)." alt="" coords="2041,124,2298,195"/>
+<area shape="rect" id="node10" href="$pokeysHal_2PoKeysLibEncoders_8c.html" title="Functions for configuring and reading encoder channels." alt="" coords="2323,124,2576,195"/>
+<area shape="rect" id="node11" href="$pokeysHal_2PoKeysLibFailsafe_8c.html" title="Failsafe configuration helpers (command 0x81)." alt="" coords="2600,124,2853,195"/>
+<area shape="rect" id="node12" href="$pokeysHal_2PoKeysLibFastUSB_8c.html" title=" " alt="" coords="2877,124,3131,195"/>
+<area shape="rect" id="node13" href="$pokeysHal_2PoKeysLibI2C_8c.html" title="I\2C communication helpers (command 0xDB)." alt="" coords="3155,124,3408,195"/>
+<area shape="rect" id="node14" href="$pokeysHal_2PoKeysLibIO_8c.html" title="Digital and analog I/O management (commands 0xC0&#45;0xCC)." alt="" coords="3432,124,3685,195"/>
+<area shape="rect" id="node15" href="$pokeysHal_2PoKeysLibLCD_8c.html" title=" " alt="" coords="3709,124,3963,195"/>
+<area shape="rect" id="node16" href="$pokeysHal_2PoKeysLibMatrixKB_8c.html" title=" " alt="" coords="3987,124,4240,195"/>
+<area shape="rect" id="node17" href="$pokeysHal_2PoKeysLibMatrixLED_8c.html" title=" " alt="" coords="4264,124,4517,195"/>
+<area shape="rect" id="node18" href="$pokeysHal_2PoKeysLibPoIL_8c.html" title=" " alt="" coords="4541,124,4795,195"/>
+<area shape="rect" id="node19" href="$pokeysHal_2PoKeysLibPoNET_8c.html" title=" " alt="" coords="4819,124,5072,195"/>
+<area shape="rect" id="node20" href="$pokeysHal_2PoKeysLibPulseEngine__v2_8c.html" title="Pulse engine v2 control functions (command 0x85)." alt="" coords="5096,124,5373,195"/>
+<area shape="rect" id="node21" href="$pokeysHal_2PoKeysLibRTC_8c.html" title="Real&#45;time clock access helpers (command 0x83)." alt="" coords="5397,124,5651,195"/>
+<area shape="rect" id="node22" href="$pokeysHal_2PoKeysLibSPI_8c.html" title="SPI communication helpers (command 0xE5)." alt="" coords="5675,124,5928,195"/>
+<area shape="rect" id="node23" href="$PoKeysLibSecurity_8c.html" title="Security and authorisation helpers (commands 0xE1&#45;0xE3)." alt="" coords="5952,124,6205,195"/>
+<area shape="rect" id="node24" href="$pokeysHal_2PoKeysLibUART_8c.html" title="UART communication helpers (command 0xDE)." alt="" coords="6229,124,6483,195"/>
+<area shape="rect" id="node25" href="$pokeysHal_2PoKeysLibWS2812_8c.html" title="WS2812 LED strip control (command 0x4B)." alt="" coords="6507,124,6760,195"/>
+<area shape="rect" id="node26" href="$PoKeysLibWS2812Async_8c.html" title=" " alt="" coords="6784,124,7051,195"/>
+</map>

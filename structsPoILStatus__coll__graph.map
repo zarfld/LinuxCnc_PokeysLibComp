@@ -1,0 +1,9 @@
+<map id="sPoILStatus" name="sPoILStatus">
+<area shape="rect" id="node1" title=" " alt="" coords="330,443,483,667"/>
+<area shape="rect" id="node2" href="$structsPoILinfo.html" title=" " alt="" coords="586,246,667,323"/>
+<area shape="rect" id="node3" title=" " alt="" coords="194,5,275,83"/>
+<area shape="rect" id="node5" href="$structsPoILStack.html" title=" " alt="" coords="292,246,384,323"/>
+<area shape="rect" id="node6" href="$structsPoILmemoryChunk.html" title=" " alt="" coords="409,246,561,323"/>
+<area shape="rect" id="node7" href="$structsPoILTask.html" title=" " alt="" coords="184,246,268,323"/>
+<area shape="rect" id="node4" title=" " alt="" coords="752,5,888,83"/>
+</map>

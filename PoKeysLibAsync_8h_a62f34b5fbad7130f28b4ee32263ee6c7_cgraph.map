@@ -1,0 +1,21 @@
+<map id="PK_IOUpdateCycleAsync" name="PK_IOUpdateCycleAsync">
+<area shape="rect" id="node1" title="Perform complete IO update cycle (async)" alt="" coords="5,183,188,209"/>
+<area shape="rect" id="node2" href="$PoKeysLibIOAsync_8c.html#aecad147343298f84dade6a69adfa8987" title="Starts async request for analog inputs (CMD 0x3A, param1=1)." alt="" coords="254,132,421,159"/>
+<area shape="rect" id="node7" href="$PoKeysLibIOAsync_8c.html#af661ae8f666cf02c3d161938bd482064" title="Starts async request to get digital counter values (CMD 0xD8)." alt="" coords="236,56,439,83"/>
+<area shape="rect" id="node11" href="$PoKeysLibIOAsync_8c.html#a40cac366287e423e8adc9efe8e5b81fc" title="Combined Set and Get digital IO in one async call." alt="" coords="244,183,431,209"/>
+<area shape="rect" id="node13" href="$PoKeysLibEncodersAsync_8c.html#a6da05adf9f93cba660f7ecb85f8a92d2" title="Starts asynchronous encoder values retrieval." alt="" coords="236,241,439,268"/>
+<area shape="rect" id="node18" href="$PoKeysLibPWMAsync_8c.html#a994703c751d423c56e7d6eae8a3bdba4" title="Starts async command to update PWM values only (CMD 0xCB, param1=1, param2=1)." alt="" coords="255,292,420,319"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="509,132,667,159"/>
+<area shape="rect" id="node6" href="$PoKeysLibIOAsync_8c.html#a190430eb8cc6de26da9acf33b7a7ebea" title="Parser for analog inputs (CMD 0x3A, param1=1)." alt="" coords="518,81,658,108"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="758,157,885,184"/>
+<area shape="rect" id="node5" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="755,107,888,133"/>
+<area shape="rect" id="node8" href="$PoKeysLibIOAsync_8c.html#a51f7d826c8359aae79213ffb96fb426b" title="Parser for digital counter values (CMD 0xD8)." alt="" coords="501,31,675,57"/>
+<area shape="rect" id="node9" href="$pokeysHal_2PoKeysLibIO_8c.html#a4397536c30fe3f56eb74b56210839349" title="Check if a pin supports a counter (command 0xC0/0x01)." alt="" coords="737,5,905,32"/>
+<area shape="rect" id="node10" href="$pokeyslib_2PoKeysLibIO_8c.html#ae7007ad0d96ba1ff2fadba2101016ce7" title=" " alt="" coords="953,5,1184,32"/>
+<area shape="rect" id="node12" href="$PoKeysLibIOAsync_8c.html#a886493cf603ab925679634c2b1f1ae32" title="Parser for digital IO input values (CMD 0xCC, param1=0)" alt="" coords="507,183,669,209"/>
+<area shape="rect" id="node14" href="$PoKeysLibEncodersAsync_8c.html#a66a25d628aef55b44454158bf5a3c664" title=" " alt="" coords="487,365,689,406"/>
+<area shape="rect" id="node15" href="$PoKeysLibEncodersAsync_8c.html#a36ca815bf22d5eae09f6c49473e4d85f" title=" " alt="" coords="487,430,689,471"/>
+<area shape="rect" id="node16" href="$PoKeysLibEncodersAsync_8c.html#ae95b91435106be8f711596c350598cd0" title=" " alt="" coords="487,234,689,275"/>
+<area shape="rect" id="node17" href="$PoKeysLibEncodersAsync_8c.html#aa0e608278d3d9905856ca1fe7f9ad5ac" title=" " alt="" coords="487,299,689,341"/>
+<area shape="rect" id="node19" href="$pokeysHal_2hal-canon_2hal__analog_8c.html#a888571c8ceab990ef5d043685915e2e7" title=" " alt="" coords="489,496,687,523"/>
+</map>

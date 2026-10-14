@@ -1,0 +1,6 @@
+<map id="EMC_TASK_PLAN_RESUME" name="EMC_TASK_PLAN_RESUME">
+<area shape="rect" id="node1" title=" " alt="" coords="5,484,225,576"/>
+<area shape="rect" id="node2" href="$classEMC__TASK__CMD__MSG.html" title=" " alt="" coords="20,344,211,436"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="41,219,189,296"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="32,5,199,171"/>
+</map>

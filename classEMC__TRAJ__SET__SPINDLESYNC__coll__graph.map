@@ -1,0 +1,15 @@
+<map id="EMC_TRAJ_SET_SPINDLESYNC" name="EMC_TRAJ_SET_SPINDLESYNC">
+<area shape="rect" id="node1" title=" " alt="" coords="443,697,685,789"/>
+<area shape="rect" id="node2" href="$classEMC__TRAJ__CMD__MSG.html" title=" " alt="" coords="410,543,598,635"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="597,381,745,458"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="675,160,779,296"/>
+<area shape="rect" id="node5" title=" " alt="" coords="426,5,465,83"/>
+<area shape="rect" id="node8" href="$structstate__tag__t.html" title=" " alt="" coords="159,189,254,267"/>
+<area shape="rect" id="node6" title=" " alt="" coords="736,5,787,83"/>
+<area shape="rect" id="node7" href="$structStateTag.html" title=" " alt="" coords="436,359,572,480"/>
+<area shape="rect" id="node9" title=" " alt="" coords="5,5,56,83"/>
+<area shape="rect" id="node10" title=" " alt="" coords="107,5,189,83"/>
+<area shape="rect" id="node11" title=" " alt="" coords="387,189,493,267"/>
+<area shape="rect" id="node12" title=" " alt="" coords="623,550,689,627"/>
+<area shape="rect" id="node13" title=" " alt="" coords="760,550,811,627"/>
+</map>

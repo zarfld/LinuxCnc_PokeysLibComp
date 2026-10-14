@@ -1,0 +1,8 @@
+<map id="PK_SearchNetworkDevices" name="PK_SearchNetworkDevices">
+<area shape="rect" id="node1" title="Broadcasts a discovery request and collects responses from PoKeys devices." alt="" coords="803,64,1000,91"/>
+<area shape="rect" id="node2" href="$PoKeysLibCoreAsync_8c.html#aad34d6ff8fa450eef13043fad9a9231b" title=" " alt="" coords="549,23,755,65"/>
+<area shape="rect" id="node6" href="$PoKeysLibCoreAsync_8c.html#aeb938e90bdf18533a0f33c0f9d4c29e0" title=" " alt="" coords="549,89,755,130"/>
+<area shape="rect" id="node3" href="$PoKeysLibCoreAsync_8c.html#a8ca5d1c479c3da4457b38ec866ea7e3d" title=" " alt="" coords="296,31,501,57"/>
+<area shape="rect" id="node4" href="$PoKeysLibCoreAsync_8c.html#ae19db1487bf5225a8fc84e9b70f0e2ec" title=" " alt="" coords="23,5,231,32"/>
+<area shape="rect" id="node5" href="$PoKeysLibCoreAsync_8c.html#a6ca83890b4c63d6132c83c7df831fb65" title=" " alt="" coords="5,56,248,83"/>
+</map>

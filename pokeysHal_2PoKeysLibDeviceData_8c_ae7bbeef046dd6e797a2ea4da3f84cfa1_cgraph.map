@@ -1,0 +1,4 @@
+<map id="PK_CheckPinCapabilityByDevice" name="PK_CheckPinCapabilityByDevice">
+<area shape="rect" id="node1" title="Determine if a device class supports a pin capability." alt="" coords="5,5,240,32"/>
+<area shape="rect" id="node2" href="$pokeysHal_2PoKeysLibIO_8c.html#ae7007ad0d96ba1ff2fadba2101016ce7" title="Check counter support for a device type." alt="" coords="288,5,519,32"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="PK_EncoderValuesGetAsync" name="PK_EncoderValuesGetAsync">
+<area shape="rect" id="node1" title="Starts asynchronous encoder values retrieval." alt="" coords="5,155,208,181"/>
+<area shape="rect" id="node2" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="279,31,436,57"/>
+<area shape="rect" id="node5" href="$PoKeysLibEncodersAsync_8c.html#a66a25d628aef55b44454158bf5a3c664" title=" " alt="" coords="256,82,459,123"/>
+<area shape="rect" id="node6" href="$PoKeysLibEncodersAsync_8c.html#a36ca815bf22d5eae09f6c49473e4d85f" title=" " alt="" coords="256,147,459,189"/>
+<area shape="rect" id="node7" href="$PoKeysLibEncodersAsync_8c.html#ae95b91435106be8f711596c350598cd0" title=" " alt="" coords="256,213,459,254"/>
+<area shape="rect" id="node8" href="$PoKeysLibEncodersAsync_8c.html#aa0e608278d3d9905856ca1fe7f9ad5ac" title=" " alt="" coords="256,278,459,319"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="510,5,637,32"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="507,56,640,83"/>
+</map>

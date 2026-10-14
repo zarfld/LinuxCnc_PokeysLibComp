@@ -1,0 +1,5 @@
+<map id="PK_IsCounterAvailable" name="PK_IsCounterAvailable">
+<area shape="rect" id="node1" title="Check if a pin supports a counter (command 0xC0/0x01)." alt="" coords="229,31,397,57"/>
+<area shape="rect" id="node2" href="$pokeysHal_2pokeyslib_2PoKeysLibIO_8c.html#a4c133a83e9843b4ed2842b0dd32c09c8" title=" " alt="" coords="12,5,175,32"/>
+<area shape="rect" id="node3" href="$pokeysHal_2pokeyslib_2PoKeysLibIO_8c.html#a7540328350bf7a0de8d4cd968eb81068" title=" " alt="" coords="5,56,181,83"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="PK_PinCounterConfigurationParse" name="PK_PinCounterConfigurationParse">
+<area shape="rect" id="node1" title="Parser for digital counter configuration response (CMD 0xC0, param1=1)." alt="" coords="5,5,209,47"/>
+<area shape="rect" id="node2" href="$pokeysHal_2PoKeysLibIO_8c.html#a4397536c30fe3f56eb74b56210839349" title="Check if a pin supports a counter (command 0xC0/0x01)." alt="" coords="257,13,425,39"/>
+<area shape="rect" id="node3" href="$pokeyslib_2PoKeysLibIO_8c.html#ae7007ad0d96ba1ff2fadba2101016ce7" title=" " alt="" coords="473,13,704,39"/>
+</map>

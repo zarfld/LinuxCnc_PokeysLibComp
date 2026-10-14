@@ -1,0 +1,4 @@
+<map id="PoKeysHALComponent::PKIO_ReadIniFile" name="PoKeysHALComponent::PKIO_ReadIniFile">
+<area shape="rect" id="node1" title="Reads and applies I/O configuration values for the PoKeys device from the INI file." alt="" coords="180,5,351,47"/>
+<area shape="rect" id="node2" href="$pokeys_8c.html#a1d59e212b57d33fe74e44b64cadf3314" title=" " alt="" coords="5,13,132,39"/>
+</map>

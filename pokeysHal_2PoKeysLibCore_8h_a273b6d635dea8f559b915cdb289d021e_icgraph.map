@@ -1,0 +1,9 @@
+<map id="getChecksum" name="getChecksum">
+<area shape="rect" id="node1" title=" " alt="" coords="467,107,577,133"/>
+<area shape="rect" id="node2" href="$pokeysHal_2pokeyslib_2PoKeysLibCoreSockets_8c.html#a22759fb4024c9081af26ac1bc6541b47" title=" " alt="" coords="247,5,375,32"/>
+<area shape="rect" id="node3" href="$pokeysHal_2pokeyslib_2PoKeysLibCoreSockets_8c.html#a4469c22e60b829230559121a144ffb5a" title=" " alt="" coords="203,56,419,83"/>
+<area shape="rect" id="node4" href="$pokeysHal_2pokeyslib_2PoKeysLibCoreSockets_8c.html#aeec64d9e2d4a84b6bc913f75c2169d51" title=" " alt="" coords="236,107,385,133"/>
+<area shape="rect" id="node5" href="$PoKeysLibCoreAsync_8c.html#ab5d92aa36d0a4a6953a055f5cd960aff" title="Send a request and wait for a response (async context)." alt="" coords="257,157,364,184"/>
+<area shape="rect" id="node7" href="$PoKeysLibCoreAsync_8c.html#aa13f43984a7cb793f85a8850443f4f79" title="Transmit a request without reading any reply." alt="" coords="213,208,408,235"/>
+<area shape="rect" id="node6" href="$PoKeysLibCoreAsync_8c.html#a5e99bef619c902443eecbaacd8e0be19" title="Send a command composed from the provided parameters." alt="" coords="5,157,155,184"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="PK_DigitalIOGetAsync" name="PK_DigitalIOGetAsync">
+<area shape="rect" id="node1" title="Asynchronously requests digital IO input values." alt="" coords="239,13,404,39"/>
+<area shape="rect" id="node2" href="$PoKeysLibIOAsync_8c.html#a9513ead9df98cdc45eb810a648681969" title="Get a single digital input pin state (async)" alt="" coords="5,5,191,47"/>
+</map>

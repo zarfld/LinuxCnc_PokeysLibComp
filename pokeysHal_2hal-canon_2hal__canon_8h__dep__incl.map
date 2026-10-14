@@ -1,0 +1,6 @@
+<map id="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/external/pokeysHal/hal&#45;canon/hal_canon.h" name="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/external/pokeysHal/hal&#45;canon/hal_canon.h">
+<area shape="rect" id="node1" title="Canonical Device Interface definitions and export helpers for LinuxCNC HAL." alt="" coords="283,5,536,76"/>
+<area shape="rect" id="node2" href="$pokeysHal_2hal-canon_2hal__analog_8c.html" title="HAL export and function registration for canonical analog input and output." alt="" coords="5,124,259,195"/>
+<area shape="rect" id="node3" href="$pokeysHal_2hal-canon_2hal__digital_8c.html" title="Canonical HAL export functions for digital input and output devices." alt="" coords="283,124,536,195"/>
+<area shape="rect" id="node4" href="$pokeysHal_2hal-canon_2hal__encoder_8c.html" title="HAL export and function registration helpers for canonical encoder devices." alt="" coords="561,124,815,195"/>
+</map>

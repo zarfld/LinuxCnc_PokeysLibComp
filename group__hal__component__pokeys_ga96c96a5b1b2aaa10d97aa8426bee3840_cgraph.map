@@ -1,0 +1,16 @@
+<map id="PoKeysHALComponent::PKIO_Setup" name="PoKeysHALComponent::PKIO_Setup">
+<area shape="rect" id="node1" title="Initializes the PoKeys digital and analog I/O configuration." alt="" coords="5,99,176,141"/>
+<area shape="rect" id="node2" href="$pokeysHal_2PoKeysLibIO_8c.html#a7540328350bf7a0de8d4cd968eb81068" title="Read pin configuration from the device (command 0xC0)." alt="" coords="231,5,407,32"/>
+<area shape="rect" id="node11" href="$pokeysHal_2PoKeysLibIO_8c.html#a3c1a71efe7cfbd9690b2e8b24a736f55" title="Write pin configuration to the device (command 0xC0)." alt="" coords="231,56,406,83"/>
+<area shape="rect" id="node12" href="$pokeysHal_2PoKeysLibIO_8c.html#a5bbc9f37369faac5fbbe357a9393b8ae" title=" " alt="" coords="224,107,413,133"/>
+<area shape="rect" id="node13" href="$pokeysHal_2PoKeysLibIO_8c.html#a74a7b181f1bbb877bb965343a64d43e2" title=" " alt="" coords="225,157,412,184"/>
+<area shape="rect" id="node14" href="$rtapi_8h.html#a2432d36976ec87e60c9c92d3c0067182" title=" " alt="" coords="257,208,381,235"/>
+<area shape="rect" id="node3" href="$pokeyslib_2PoKeysLibCore_8c.html#acb1fdd8f77277dc66c4d037218bfcece" title=" " alt="" coords="486,107,605,133"/>
+<area shape="rect" id="node4" href="$pokeyslib_2PoKeysLibIO_8c.html#a4397536c30fe3f56eb74b56210839349" title=" " alt="" coords="461,5,629,32"/>
+<area shape="rect" id="node5" href="$pokeyslib_2PoKeysLibCore_8c.html#ab5d92aa36d0a4a6953a055f5cd960aff" title=" " alt="" coords="492,56,599,83"/>
+<area shape="rect" id="node6" href="$pokeyslib_2PoKeysLibCore_8c.html#a273b6d635dea8f559b915cdb289d021e" title=" " alt="" coords="866,5,977,32"/>
+<area shape="rect" id="node7" href="$group__API.html#ga6b820f3e72097cf7f994e33715dc7af1" title="Read an Input report from a HID device." alt="" coords="702,81,781,108"/>
+<area shape="rect" id="node9" href="$group__API.html#gad14ea48e440cf5066df87cc6488493af" title="Write an Output report to a HID device." alt="" coords="700,132,783,159"/>
+<area shape="rect" id="node10" href="$pokeyslib_2PoKeysLibCoreSockets_8c.html#a22759fb4024c9081af26ac1bc6541b47" title=" " alt="" coords="677,31,805,57"/>
+<area shape="rect" id="node8" href="$group__API.html#gaa5c9ed5aa290688ffac03343989ad75a" title="Read an Input report from a HID device with timeout." alt="" coords="853,81,989,108"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="hid_get_indexed_string" name="hid_get_indexed_string">
+<area shape="rect" id="node1" title="Get a string from a HID device, based on its string index." alt="" coords="224,71,396,98"/>
+<area shape="rect" id="node2" href="$group__API.html#ga2652b2ff0f3982a8c5791718e2a2e6cb" title="Get The Manufacturer String from a HID device." alt="" coords="8,5,173,47"/>
+<area shape="rect" id="node3" href="$group__API.html#gaa78526041c4bb470b2c1ad9eb0791c5f" title="Get The Product String from a HID device." alt="" coords="5,71,176,98"/>
+<area shape="rect" id="node4" href="$group__API.html#ga73994b7820264d3604d6ee25de9c66be" title="Get The Serial Number String from a HID device." alt="" coords="5,123,176,164"/>
+</map>

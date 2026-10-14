@@ -1,0 +1,6 @@
+<map id="PK_LCDConfigurationGetAsync" name="PK_LCDConfigurationGetAsync">
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,227,57"/>
+<area shape="rect" id="node2" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="275,31,432,57"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="483,5,610,32"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="480,56,613,83"/>
+</map>

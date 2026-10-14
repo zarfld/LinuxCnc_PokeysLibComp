@@ -1,0 +1,4 @@
+<map id="PK_AnalogIOGetAsync" name="PK_AnalogIOGetAsync">
+<area shape="rect" id="node1" title="Starts async request for analog inputs (CMD 0x3A, param1=1)." alt="" coords="236,5,403,32"/>
+<area shape="rect" id="node2" href="$PoKeysLibAdvancedRTAsync_8c.html#a62f34b5fbad7130f28b4ee32263ee6c7" title="Perform complete IO update cycle (async)" alt="" coords="5,5,188,32"/>
+</map>

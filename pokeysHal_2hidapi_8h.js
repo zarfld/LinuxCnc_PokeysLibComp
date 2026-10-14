@@ -1,0 +1,26 @@
+var pokeysHal_2hidapi_8h =
+[
+    [ "hid_device_info", "structhid__device__info.html", "structhid__device__info" ],
+    [ "HID_API_CALL", "pokeysHal_2hidapi_8h.html#af140a25716604e86096670a505a58ee0", null ],
+    [ "HID_API_EXPORT", "pokeysHal_2hidapi_8h.html#aa60150016800ccb88fdf140e8553ae13", null ],
+    [ "HID_API_EXPORT_CALL", "pokeysHal_2hidapi_8h.html#a70c49eda5025c1bc455af77da19ca312", null ],
+    [ "hid_device", "pokeysHal_2hidapi_8h.html#aa6da74d5686d198dd3e5440e60088fcc", null ],
+    [ "hid_close", "group__API.html#ga9b64828273b8dd052731e79ba9e1a516", null ],
+    [ "hid_enumerate", "group__API.html#gaae7d1c3e90835556ddc73fabe3a9ca9d", null ],
+    [ "hid_error", "group__API.html#ga72ff14aea753bbac0ca0a44036e5ab9f", null ],
+    [ "hid_exit", "group__API.html#gacf5da9ce37132eba69fc259f17f13023", null ],
+    [ "hid_free_enumeration", "group__API.html#gafc2d2adf71db3784b783b9a554527aa4", null ],
+    [ "hid_get_feature_report", "group__API.html#ga34d43ac6da0fb785b88fcc2edf13ed65", null ],
+    [ "hid_get_indexed_string", "group__API.html#ga03810bc0be3c21e9229feff689a9de85", null ],
+    [ "hid_get_manufacturer_string", "group__API.html#ga2652b2ff0f3982a8c5791718e2a2e6cb", null ],
+    [ "hid_get_product_string", "group__API.html#gaa78526041c4bb470b2c1ad9eb0791c5f", null ],
+    [ "hid_get_serial_number_string", "group__API.html#ga73994b7820264d3604d6ee25de9c66be", null ],
+    [ "hid_init", "group__API.html#ga142ffc1b0b7a7fa412d3862b2a17164b", null ],
+    [ "hid_open", "group__API.html#ga636b1cfffcde4f707cb93d9897c40c1d", null ],
+    [ "hid_open_path", "group__API.html#ga954ecb58b5dfb4a6ef6be3dcd520e42f", null ],
+    [ "hid_read", "group__API.html#ga6b820f3e72097cf7f994e33715dc7af1", null ],
+    [ "hid_read_timeout", "group__API.html#gaa5c9ed5aa290688ffac03343989ad75a", null ],
+    [ "hid_send_feature_report", "group__API.html#gae43ab80f741786ac4374216658fd5ab3", null ],
+    [ "hid_set_nonblocking", "group__API.html#gaf9d54208d314047727598b506577bb87", null ],
+    [ "hid_write", "group__API.html#gad14ea48e440cf5066df87cc6488493af", null ]
+];

@@ -1,0 +1,13 @@
+<map id="/usr/include/linuxcnc/modal_state.hh" name="/usr/include/linuxcnc/modal_state.hh">
+<area shape="rect" id="node1" title=" " alt="" coords="528,5,683,47"/>
+<area shape="rect" id="node2" href="$canon_8hh.html" title=" " alt="" coords="235,95,389,136"/>
+<area shape="rect" id="node3" href="$emc__nml_8hh.html" title=" " alt="" coords="471,273,625,315"/>
+<area shape="rect" id="node7" href="$emc_8hh.html" title=" " alt="" coords="617,95,772,136"/>
+<area shape="rect" id="node11" href="$interp__base_8hh.html" title=" " alt="" coords="413,95,568,136"/>
+<area shape="rect" id="node4" href="$interp__internal_8hh.html" title=" " alt="" coords="235,184,389,225"/>
+<area shape="rect" id="node5" href="$rs274ngc_8hh.html" title=" " alt="" coords="413,184,568,225"/>
+<area shape="rect" id="node6" href="$saicanon_8hh.html" title=" " alt="" coords="5,184,160,225"/>
+<area shape="rect" id="node8" href="$emcIniFile_8hh.html" title=" " alt="" coords="643,184,797,225"/>
+<area shape="rect" id="node9" href="$iniaxis_8hh.html" title=" " alt="" coords="821,184,976,225"/>
+<area shape="rect" id="node10" href="$inispindle_8hh.html" title=" " alt="" coords="1000,184,1155,225"/>
+</map>

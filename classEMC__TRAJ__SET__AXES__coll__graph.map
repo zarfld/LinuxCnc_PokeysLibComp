@@ -1,0 +1,13 @@
+<map id="EMC_TRAJ_SET_AXES" name="EMC_TRAJ_SET_AXES">
+<area shape="rect" id="node1" title=" " alt="" coords="299,684,485,776"/>
+<area shape="rect" id="node2" href="$classEMC__TRAJ__CMD__MSG.html" title=" " alt="" coords="393,543,581,635"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="579,381,727,458"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="675,160,779,296"/>
+<area shape="rect" id="node5" title=" " alt="" coords="426,5,465,83"/>
+<area shape="rect" id="node8" href="$structstate__tag__t.html" title=" " alt="" coords="159,189,254,267"/>
+<area shape="rect" id="node6" title=" " alt="" coords="736,5,787,83"/>
+<area shape="rect" id="node7" href="$structStateTag.html" title=" " alt="" coords="419,359,555,480"/>
+<area shape="rect" id="node9" title=" " alt="" coords="5,5,56,83"/>
+<area shape="rect" id="node10" title=" " alt="" coords="107,5,189,83"/>
+<area shape="rect" id="node11" title=" " alt="" coords="387,189,493,267"/>
+</map>

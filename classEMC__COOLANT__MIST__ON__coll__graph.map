@@ -1,0 +1,8 @@
+<map id="EMC_COOLANT_MIST_ON" name="EMC_COOLANT_MIST_ON">
+<area shape="rect" id="node1" title=" " alt="" coords="10,613,223,705"/>
+<area shape="rect" id="node2" href="$classEMC__COOLANT__CMD__MSG.html" title=" " alt="" coords="5,472,228,564"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="43,345,191,423"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="195,160,299,296"/>
+<area shape="rect" id="node5" title=" " alt="" coords="65,5,104,83"/>
+<area shape="rect" id="node6" title=" " alt="" coords="257,5,307,83"/>
+</map>

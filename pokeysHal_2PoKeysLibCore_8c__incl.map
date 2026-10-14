@@ -1,0 +1,24 @@
+<map id="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/external/pokeysHal/PoKeysLibCore.c" name="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/external/pokeysHal/PoKeysLibCore.c">
+<area shape="rect" id="node1" title="Core communication helpers for the PoKeys protocol." alt="" coords="391,5,644,76"/>
+<area shape="rect" id="node2" title=" " alt="" coords="191,124,262,151"/>
+<area shape="rect" id="node3" href="$PoKeysLibHal_8h.html" title=" " alt="" coords="359,199,481,225"/>
+<area shape="rect" id="node17" href="$pokeysHal_2PoKeysLibCore_8h.html" title=" " alt="" coords="543,124,673,151"/>
+<area shape="rect" id="node20" title=" " alt="" coords="655,199,721,225"/>
+<area shape="rect" id="node21" title=" " alt="" coords="746,199,817,225"/>
+<area shape="rect" id="node22" href="$pokeysHal_2PoKeysLibCoreSockets_8h.html" title=" " alt="" coords="338,124,518,151"/>
+<area shape="rect" id="node4" title=" " alt="" coords="265,273,335,300"/>
+<area shape="rect" id="node5" href="$hal_8h.html" title=" " alt="" coords="359,273,414,300"/>
+<area shape="rect" id="node16" title=" " alt="" coords="438,273,538,300"/>
+<area shape="rect" id="node6" href="$rtapi_8h.html" title=" " alt="" coords="147,348,211,375"/>
+<area shape="rect" id="node10" href="$rtapi__errno_8h.html" title=" " alt="" coords="271,348,377,375"/>
+<area shape="rect" id="node12" href="$rtapi__bool_8h.html" title=" " alt="" coords="401,348,500,375"/>
+<area shape="rect" id="node14" href="$rtapi__stdint_8h.html" title=" " alt="" coords="525,348,633,375"/>
+<area shape="rect" id="node7" title=" " alt="" coords="5,423,80,449"/>
+<area shape="rect" id="node8" title=" " alt="" coords="104,423,179,449"/>
+<area shape="rect" id="node9" title=" " alt="" coords="203,423,279,449"/>
+<area shape="rect" id="node11" title=" " alt="" coords="303,423,371,449"/>
+<area shape="rect" id="node13" title=" " alt="" coords="409,423,492,449"/>
+<area shape="rect" id="node15" title=" " alt="" coords="535,423,622,449"/>
+<area shape="rect" id="node18" href="$pokeysHal_2hidapi_8h.html" title=" " alt="" coords="556,199,631,225"/>
+<area shape="rect" id="node19" title=" " alt="" coords="563,273,635,300"/>
+</map>

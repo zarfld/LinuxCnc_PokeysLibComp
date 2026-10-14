@@ -1,0 +1,8 @@
+<map id="PK_PWMConfigurationSetDirectlyAsync" name="PK_PWMConfigurationSetDirectlyAsync">
+<area shape="rect" id="node1" title="Set PWM configuration directly with specified parameters (async)" alt="" coords="5,49,244,90"/>
+<area shape="rect" id="node2" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="587,31,745,57"/>
+<area shape="rect" id="node5" href="$PoKeysLibPWMAsync_8c.html#a3cca862944a5c7bc849878bc5e2fbba1" title="Set PWM configuration (async)" alt="" coords="292,81,519,108"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="817,5,943,32"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="813,56,947,83"/>
+<area shape="rect" id="node6" href="$pokeysHal_2hal-canon_2hal__analog_8c.html#a888571c8ceab990ef5d043685915e2e7" title=" " alt="" coords="567,81,765,108"/>
+</map>

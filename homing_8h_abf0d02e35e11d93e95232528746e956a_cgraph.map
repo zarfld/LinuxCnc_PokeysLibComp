@@ -1,0 +1,4 @@
+<map id="do_homing" name="do_homing">
+<area shape="rect" id="node1" title=" " alt="" coords="5,5,100,32"/>
+<area shape="rect" id="node2" href="$group__pokeys__homecomp.html#ga2d44f2a3dc911448e9a66f18982a9aa0" title="Gibt an, ob alle Achsen erfolgreich ge&#45;homed wurden." alt="" coords="148,5,259,32"/>
+</map>

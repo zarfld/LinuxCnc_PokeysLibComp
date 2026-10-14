@@ -1,0 +1,8 @@
+<map id="pokeys_write_ini" name="pokeys_write_ini">
+<area shape="rect" id="node1" title=" " alt="" coords="5,64,136,91"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#ga7fb4a6aff5508d2a16751f329e12b272" title="Writes encoder&#45;related configuration to the INI file." alt="" coords="184,5,356,32"/>
+<area shape="rect" id="node3" href="$group__hal__component__pokeys.html#ga0a1d130932646897a1863a90d328b795" title="Writes the current PoKeys I/O configuration to the INI file." alt="" coords="185,122,355,163"/>
+<area shape="rect" id="node6" href="$structPoKeysHALComponent.html#abf4318149fdc0fb40cf6d5f6f8652335" title="Write the configuration settings to the INI file." alt="" coords="185,57,355,98"/>
+<area shape="rect" id="node4" href="$pokeys__ini_8c.html#a425f2d493d465afe4887e5ceb6e41159" title=" " alt="" coords="404,68,519,95"/>
+<area shape="rect" id="node5" href="$pokeys__ini_8c.html#a194d2e6930725c58c76d214eae8e5653" title=" " alt="" coords="410,123,513,149"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/pokeys_uspace/PoKeysComp.h" name="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/pokeys_uspace/PoKeysComp.h">
+<area shape="rect" id="node1" title="Main header file for the PoKeys HAL component in LinuxCNC." alt="" coords="325,5,571,76"/>
+<area shape="rect" id="node2" href="$PoKeysCompEncoders_8c.html" title=" " alt="" coords="5,124,251,195"/>
+<area shape="rect" id="node3" href="$pokeys_8c.html" title="HAL component for integrating PoKeys57 devices with LinuxCNC." alt="" coords="325,243,571,313"/>
+<area shape="rect" id="node4" href="$PoKeysCompPoExtBus_8c.html" title=" " alt="" coords="325,124,571,195"/>
+<area shape="rect" id="node5" href="$PoKeysCompPoNet_8c.html" title=" " alt="" coords="595,124,840,195"/>
+<area shape="rect" id="node6" href="$PoKeysCompPulseEngine__v2_8c.html" title="HAL component implementation for PoKeys Pulse Engine v2 (PEv2) in LinuxCNC." alt="" coords="864,124,1141,195"/>
+</map>

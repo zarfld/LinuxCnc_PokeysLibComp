@@ -1,0 +1,4 @@
+<map id="PK_SearchNetworkDevices" name="PK_SearchNetworkDevices">
+<area shape="rect" id="node1" title="Broadcasts a discovery request and collects responses from PoKeys devices." alt="" coords="5,5,203,32"/>
+<area shape="rect" id="node2" href="$pokeyslib_2PoKeysLibCoreSockets_8c.html#a4349c2ab43b65eb5448bfd273c899086" title=" " alt="" coords="251,5,428,32"/>
+</map>

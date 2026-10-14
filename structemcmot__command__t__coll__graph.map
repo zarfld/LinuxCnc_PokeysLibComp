@@ -1,0 +1,12 @@
+<map id="emcmot_command_t" name="emcmot_command_t">
+<area shape="rect" id="node1" title=" " alt="" coords="450,828,610,1052"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,514,105,591"/>
+<area shape="rect" id="node3" title=" " alt="" coords="160,180,199,257"/>
+<area shape="rect" id="node8" href="$structstate__tag__t.html" title=" " alt="" coords="349,514,444,591"/>
+<area shape="rect" id="node4" title=" " alt="" coords="699,5,766,83"/>
+<area shape="rect" id="node5" href="$structEmcPose.html" title=" " alt="" coords="692,514,773,591"/>
+<area shape="rect" id="node6" href="$structPmCartesian.html" title=" " alt="" coords="781,180,887,257"/>
+<area shape="rect" id="node7" title=" " alt="" coords="919,514,970,591"/>
+<area shape="rect" id="node9" title=" " alt="" coords="257,180,307,257"/>
+<area shape="rect" id="node10" title=" " alt="" coords="359,180,440,257"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="PK_DigitalIOGetAsync" name="PK_DigitalIOGetAsync">
+<area shape="rect" id="node1" title="Asynchronously requests digital IO input values." alt="" coords="5,56,171,83"/>
+<area shape="rect" id="node2" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="221,31,378,57"/>
+<area shape="rect" id="node5" href="$PoKeysLibIOAsync_8c.html#a886493cf603ab925679634c2b1f1ae32" title="Parser for digital IO input values (CMD 0xCC, param1=0)" alt="" coords="219,81,380,108"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="431,5,558,32"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="428,56,561,83"/>
+</map>

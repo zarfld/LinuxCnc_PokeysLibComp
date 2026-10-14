@@ -1,0 +1,23 @@
+<map id="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/external/pokeysHal/PoKeysLibRTC.c" name="/home/cnc/actions&#45;runner/_work/LinuxCnc_PokeysLibComp/LinuxCnc_PokeysLibComp/external/pokeysHal/PoKeysLibRTC.c">
+<area shape="rect" id="node1" title="Real&#45;time clock access helpers (command 0x83)." alt="" coords="268,5,521,76"/>
+<area shape="rect" id="node2" href="$PoKeysLibHal_8h.html" title=" " alt="" coords="331,199,453,225"/>
+<area shape="rect" id="node16" href="$pokeysHal_2PoKeysLibCore_8h.html" title=" " alt="" coords="448,124,579,151"/>
+<area shape="rect" id="node21" href="$PoKeysLibAsync_8h.html" title=" " alt="" coords="219,124,357,151"/>
+<area shape="rect" id="node3" title=" " alt="" coords="274,273,345,300"/>
+<area shape="rect" id="node4" href="$hal_8h.html" title=" " alt="" coords="369,273,423,300"/>
+<area shape="rect" id="node15" title=" " alt="" coords="447,273,547,300"/>
+<area shape="rect" id="node5" href="$rtapi_8h.html" title=" " alt="" coords="117,348,181,375"/>
+<area shape="rect" id="node9" href="$rtapi__errno_8h.html" title=" " alt="" coords="406,348,511,375"/>
+<area shape="rect" id="node11" href="$rtapi__bool_8h.html" title=" " alt="" coords="283,348,381,375"/>
+<area shape="rect" id="node13" href="$rtapi__stdint_8h.html" title=" " alt="" coords="535,348,643,375"/>
+<area shape="rect" id="node6" title=" " alt="" coords="5,423,80,449"/>
+<area shape="rect" id="node7" title=" " alt="" coords="104,423,179,449"/>
+<area shape="rect" id="node8" title=" " alt="" coords="203,423,279,449"/>
+<area shape="rect" id="node10" title=" " alt="" coords="425,423,493,449"/>
+<area shape="rect" id="node12" title=" " alt="" coords="304,423,387,449"/>
+<area shape="rect" id="node14" title=" " alt="" coords="546,423,633,449"/>
+<area shape="rect" id="node17" href="$pokeysHal_2hidapi_8h.html" title=" " alt="" coords="573,199,648,225"/>
+<area shape="rect" id="node19" title=" " alt="" coords="672,199,739,225"/>
+<area shape="rect" id="node20" title=" " alt="" coords="478,199,549,225"/>
+<area shape="rect" id="node18" title=" " alt="" coords="575,273,647,300"/>
+</map>

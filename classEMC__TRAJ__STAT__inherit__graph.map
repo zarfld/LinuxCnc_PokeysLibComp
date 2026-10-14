@@ -1,0 +1,6 @@
+<map id="EMC_TRAJ_STAT" name="EMC_TRAJ_STAT">
+<area shape="rect" id="node1" title=" " alt="" coords="24,572,175,811"/>
+<area shape="rect" id="node2" href="$classEMC__TRAJ__STAT__MSG.html" title=" " alt="" coords="5,432,193,524"/>
+<area shape="rect" id="node3" href="$classRCS__STAT__MSG.html" title=" " alt="" coords="15,219,183,384"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="16,5,183,171"/>
+</map>

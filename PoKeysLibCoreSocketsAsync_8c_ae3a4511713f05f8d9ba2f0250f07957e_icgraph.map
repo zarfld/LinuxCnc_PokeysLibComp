@@ -1,0 +1,12 @@
+<map id="InitializeNewDevice" name="InitializeNewDevice">
+<area shape="rect" id="node1" title=" " alt="" coords="836,115,988,141"/>
+<area shape="rect" id="node2" href="$PoKeysLibCoreAsync_8c.html#a4a4450280f6d34ac5495f34bad644f83" title=" " alt="" coords="589,5,748,32"/>
+<area shape="rect" id="node4" href="$pokeysHal_2pokeyslib_2PoKeysLibCoreSockets_8c.html#adc6dbd8de4b4df5dbee307b15af90373" title=" " alt="" coords="562,56,775,83"/>
+<area shape="rect" id="node5" href="$PoKeysLibCoreSocketsAsync_8c.html#af026e295100bd1c2db31bbba282f4816" title="Connects to a PoKeys network device asynchronously (UDP only, Linux&#45;only)." alt="" coords="562,107,775,149"/>
+<area shape="rect" id="node6" href="$PoKeysLibCoreAsync_8c.html#aad34d6ff8fa450eef13043fad9a9231b" title=" " alt="" coords="566,173,771,214"/>
+<area shape="rect" id="node10" href="$PoKeysLibCoreAsync_8c.html#ae21a3349787cf1f1150186e4858397e6" title=" " alt="" coords="549,239,788,265"/>
+<area shape="rect" id="node3" href="$pokeysHal_2pokeyslib_2PoKeysLibDevicePoKeys57Industrial_8c.html#ac8fc7ddca3e4def19bafb5dfb39bcc19" title=" " alt="" coords="339,5,458,32"/>
+<area shape="rect" id="node7" href="$PoKeysLibCoreAsync_8c.html#a8ca5d1c479c3da4457b38ec866ea7e3d" title=" " alt="" coords="296,209,501,236"/>
+<area shape="rect" id="node8" href="$PoKeysLibCoreAsync_8c.html#ae19db1487bf5225a8fc84e9b70f0e2ec" title=" " alt="" coords="23,184,231,211"/>
+<area shape="rect" id="node9" href="$PoKeysLibCoreAsync_8c.html#a6ca83890b4c63d6132c83c7df831fb65" title=" " alt="" coords="5,235,248,261"/>
+</map>

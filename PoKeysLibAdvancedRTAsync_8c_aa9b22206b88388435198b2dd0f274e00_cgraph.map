@@ -1,0 +1,7 @@
+<map id="PK_CommunicationTestAsync" name="PK_CommunicationTestAsync">
+<area shape="rect" id="node1" title="Test device communication and RT timing (async)" alt="" coords="5,31,220,57"/>
+<area shape="rect" id="node2" href="$PoKeysLibDeviceStatusAsync_8c.html#a5170acde0df1f5e6e9d66a8ff87fee7e" title="Check if device is alive/responsive (async)" alt="" coords="268,31,471,57"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="519,31,676,57"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="727,5,854,32"/>
+<area shape="rect" id="node5" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="724,56,857,83"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="PK_MatrixKBConfigurationGetAsync" name="PK_MatrixKBConfigurationGetAsync">
+<area shape="rect" id="node1" title=" " alt="" coords="5,23,199,65"/>
+<area shape="rect" id="node2" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="247,31,404,57"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="455,5,582,32"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="452,56,585,83"/>
+</map>

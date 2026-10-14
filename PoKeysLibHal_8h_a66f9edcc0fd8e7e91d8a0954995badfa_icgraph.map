@@ -1,0 +1,4 @@
+<map id="PK_AnalogIOGet" name="PK_AnalogIOGet">
+<area shape="rect" id="node1" title="Read all analog input channels (command 0x3A/1)." alt="" coords="232,5,360,32"/>
+<area shape="rect" id="node2" href="$pokeysHal_2pokeyslib_2PoKeysLibIO_8c.html#ab37e749b34cf17d4a87b86d5814c7e4e" title=" " alt="" coords="5,5,184,32"/>
+</map>

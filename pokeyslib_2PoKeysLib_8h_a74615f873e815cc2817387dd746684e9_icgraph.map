@@ -1,0 +1,4 @@
+<map id="PK_PEv2_PulseEngineSetup" name="PK_PEv2_PulseEngineSetup">
+<area shape="rect" id="node1" title="Configure the pulse engine parameters." alt="" coords="231,5,432,32"/>
+<area shape="rect" id="node2" href="$group__hal__component__pokeys.html#gadd22880204794b8f9b9a6eafa4ed1d74" title="Configures and applies Pulse Engine v2 settings to the PoKeys device." alt="" coords="5,5,183,32"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="PK_WS2812_SendLEDdataEx" name="PK_WS2812_SendLEDdataEx">
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,213,57"/>
+<area shape="rect" id="node2" href="$pokeyslib_2PoKeysLibCore_8c.html#acb1fdd8f77277dc66c4d037218bfcece" title=" " alt="" coords="299,5,418,32"/>
+<area shape="rect" id="node3" href="$pokeyslib_2PoKeysLibCore_8c.html#aa13f43984a7cb793f85a8850443f4f79" title=" " alt="" coords="261,56,456,83"/>
+<area shape="rect" id="node4" href="$pokeyslib_2PoKeysLibCore_8c.html#a273b6d635dea8f559b915cdb289d021e" title=" " alt="" coords="768,56,879,83"/>
+<area shape="rect" id="node5" href="$group__API.html#gad14ea48e440cf5066df87cc6488493af" title="Write an Output report to a HID device." alt="" coords="571,56,653,83"/>
+<area shape="rect" id="node6" href="$pokeyslib_2PoKeysLibCoreSockets_8c.html#a4469c22e60b829230559121a144ffb5a" title=" " alt="" coords="504,107,720,133"/>
+</map>

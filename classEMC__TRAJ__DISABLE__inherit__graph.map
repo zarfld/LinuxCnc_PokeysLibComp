@@ -1,0 +1,6 @@
+<map id="EMC_TRAJ_DISABLE" name="EMC_TRAJ_DISABLE">
+<area shape="rect" id="node1" title=" " alt="" coords="11,484,187,576"/>
+<area shape="rect" id="node2" href="$classEMC__TRAJ__CMD__MSG.html" title=" " alt="" coords="5,344,193,436"/>
+<area shape="rect" id="node3" href="$classRCS__CMD__MSG.html" title=" " alt="" coords="25,219,173,296"/>
+<area shape="rect" id="node4" href="$classNMLmsg.html" title=" " alt="" coords="16,5,183,171"/>
+</map>

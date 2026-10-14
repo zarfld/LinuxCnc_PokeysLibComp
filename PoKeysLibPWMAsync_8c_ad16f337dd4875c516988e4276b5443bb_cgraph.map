@@ -1,0 +1,7 @@
+<map id="PK_PWMConfigurationGetAsync" name="PK_PWMConfigurationGetAsync">
+<area shape="rect" id="node1" title="Get PWM configuration (async)" alt="" coords="5,56,233,83"/>
+<area shape="rect" id="node2" href="$PoKeysLibAsync_8c.html#a8ed8b17dbfd4e5cfba35c6b1e2ea6956" title="Prepares an asynchronous request (non&#45;sending)." alt="" coords="303,31,461,57"/>
+<area shape="rect" id="node5" href="$PoKeysLibIOAsync_8c.html#a77b0163738dbd4889e9db3e73d81b3e2" title="Parser for reading PWM configuration (CMD 0xCB, param1=0)" alt="" coords="281,81,483,108"/>
+<area shape="rect" id="node3" href="$PoKeysLibAsync_8c.html#a8e57ea5df5b229f5a1317bf4e4918c1b" title=" " alt="" coords="534,5,661,32"/>
+<area shape="rect" id="node4" href="$PoKeysLibAsync_8c.html#a0daf7f6eb658a60879d46369307db3f0" title="Allocates a new free transaction." alt="" coords="531,56,664,83"/>
+</map>
